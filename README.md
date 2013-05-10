@@ -1,4 +1,4 @@
-xinet
-=====
+xiNET interaction viewer
+========================
 
-crosslink viewer, to be interaction viewer
+cross-link viewer, to be interaction viewer

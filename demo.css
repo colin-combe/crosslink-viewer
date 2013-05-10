@@ -1,0 +1,96 @@
+body {
+    margin:0px;
+    padding: 0px;
+}
+html, body, #outerDiv  {
+    /*margin: 4px;*/
+    height: 100%;
+}
+
+p{
+    margin-left:8px;
+}
+#leftColumn{
+    width: 228px;
+    height:100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+#title{
+    width:220px;
+}
+#menu{
+    padding-left: 33px;
+    line-height: 2;
+}
+.contact{
+    display:inline-block;
+    margin:16px;
+}
+figcaption{
+    text-align: center;
+}
+strong {
+    font-weight: bold;
+}
+div#controlsOuterDiv{
+    max-width: 201px;
+    padding: 8px;
+}
+fieldset{
+    margin-top:8px;
+    max-width: 187px;
+    padding: 8px;
+}
+input, select, button {
+    max-width: 171px;
+    margin:2px;
+    margin-top:4px;
+}
+/*            button {
+                max-width: 171px;
+                margin:2px;
+                margin-top:8px;
+            }*/
+input#score_slider{
+    width: 171px;
+}
+div#networkContainer{
+    clear: both;
+    border: 1px solid black;
+    height:80%;
+    overflow: hidden;
+    margin: 8px;
+}
+div#networkCaption{
+    /*clear: both;*/
+    /*border: 1px solid black;*/
+    /*top:95%;*/
+    /*overflow: hidden;*/
+    /*position:absolute;*/
+/*    margin: 8px;*/
+    /*margin-left:228px;*/
+    line-height: 1;
+
+}
+table {
+    overflow:auto;
+    width: 100%;
+}
+tr {
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid gray;
+    padding:4px;
+    margin: 4px;
+    vertical-align:middle;
+    border-width: 2px;
+}
+
+th {
+    font-weight:bold;
+}
+
