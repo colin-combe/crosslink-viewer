@@ -1,6 +1,8 @@
-// Protein.js
+//      xiNET interaction viewer
+//      Copyright 2013 Rappsilber Laboratory
+
 //TODO - implement start and end residues (and rename class as Segment?)
-//TODO - move link posiitons to middle of reisue letters - avoids a prob when rotated 180
+//TODO - move link posiitons to middle of residue letters - avoids a prob when rotated 180
 Protein.STICKHEIGHT = 20;//height of stick in pixels
 Protein.MAXSIZE = 0; // residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
@@ -14,11 +16,12 @@ function Protein(id, xlvController, acc, name) {
     this.accession = acc;
     this.xlv = xlvController;
     this.name = name;
-    this.tooltip = this.accession;
 }
 
 Protein.prototype.initProtein = function(sequence, name, description, size)
 {
+    this.description = description;
+    this.tooltip = this.description;
     if (this.name == null) {
         this.name = name;
     }
@@ -125,20 +128,33 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     this.upperGroup.appendChild(this.labelSVG);
 
     //make blob
-    this.blob = document.createElementNS(xinet.svgns, "circle");
+    if (this.accession.indexOf("CHEBI") !== -1) {
+        var points = "0, -10  8.66,5 -8.66,5";
+        this.blob = document.createElementNS(xinet.svgns, "polygon");
+        this.blob.setAttribute("points", points);
+        this.blobHighlight = document.createElementNS(xinet.svgns, "polygon");
+        this.blobHighlight.setAttribute("points", points);
+        this.parked = document.createElementNS(xinet.svgns, "polygon");
+        this.parked.setAttribute("points", points);
+    }
+    else {
+        this.blob = document.createElementNS(xinet.svgns, "circle");
+        this.blob.setAttribute("r", this.getBlobRadius());
+        this.blobHighlight = document.createElementNS(xinet.svgns, "circle");
+        this.blobHighlight.setAttribute("r", this.getBlobRadius());
+        this.parked = document.createElementNS(xinet.svgns, "circle");
+        this.parked.setAttribute("r", this.getBlobRadius());
+    }
     this.blob.setAttribute("cx", 0);
     this.blob.setAttribute("cy", 0);
-    this.blob.setAttribute("r", this.getBlobRadius());
     //style it
     this.blob.setAttribute("fill", "white");
     this.blob.setAttribute("fill-opacity", "1");
     this.blob.setAttribute("stroke", "black");
     this.blob.setAttribute("stroke-width", "1");
     //make blobHighlight
-    this.blobHighlight = document.createElementNS(xinet.svgns, "circle");
     this.blobHighlight.setAttribute("cx", 0);
     this.blobHighlight.setAttribute("cy", 0);
-    this.blobHighlight.setAttribute("r", this.getBlobRadius());
     //    this.blobHighlight.setAttribute("class", "Xlr_protein Xlr_blob");
     //style it
     this.blobHighlight.setAttribute("stroke-opacity", "0");
@@ -147,10 +163,8 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     this.blobHighlight.setAttribute("stroke-width", "10");
 
     //make parked blob //TODO: don't use new SVG element, change attributes of blob
-    this.parked = document.createElementNS(xinet.svgns, "circle");
     this.parked.setAttribute("cx", 0);
     this.parked.setAttribute("cy", 0);
-    this.parked.setAttribute("r", this.getBlobRadius());
     this.parked.setAttribute("class", "Xlr_protein Xlr_parked");
     this.parked.setAttribute("fill", "lightGrey");
     this.parked.setAttribute("fill-opacity", "0.75");
@@ -235,14 +249,19 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
         if (self.form === 0) {
             self.setForm(1, c);
         } else {
-             self.setForm(0, c);
+            self.setForm(0, c);
         }
         self.xlv.checkLinks();
     };
 };
 
 Protein.prototype.getBlobRadius = function() {
+    if (this.accession.indexOf("CHEBI") !== -1) {
+        return 10;
+    }
+    else {
     return Math.sqrt(this.size / Math.PI);
+    }
 };
 
 //only output the info needed to reproduce the layout
@@ -295,37 +314,37 @@ Protein.prototype.showHighlight = function(show) {
 };
 
 Protein.prototype.setSelected = function(select) {
-//    if (select && this.isSelected === false) {
-//        this.xlv.selectedProteins.set(this.id, this);
-//        this.isSelected = true;
-//        if (this.form !== 1) {
-//            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//            this.blobHighlight.setAttribute("stroke-opacity", "1");
-//        }
-//        else {
-//            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//            this.rectHighlight.setAttribute("stroke-opacity", "1");
-//        }
-//    }
-//    else if (select === false && this.isSelected === true) {
-//        this.xlv.selectedProteins.remove(this.id);
-//        this.isSelected = false;
-//        if (this.form !== 1) {
-//            this.blobHighlight.setAttribute("stroke-opacity", "0");
-//            this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
-//        }
-//        else {
-//            this.rectHighlight.setAttribute("stroke-opacity", "0");
-//            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//        }
-//    }
+    //    if (select && this.isSelected === false) {
+    //        this.xlv.selectedProteins.set(this.id, this);
+    //        this.isSelected = true;
+    //        if (this.form !== 1) {
+    //            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //            this.blobHighlight.setAttribute("stroke-opacity", "1");
+    //        }
+    //        else {
+    //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //            this.rectHighlight.setAttribute("stroke-opacity", "1");
+    //        }
+    //    }
+    //    else if (select === false && this.isSelected === true) {
+    //        this.xlv.selectedProteins.remove(this.id);
+    //        this.isSelected = false;
+    //        if (this.form !== 1) {
+    //            this.blobHighlight.setAttribute("stroke-opacity", "0");
+    //            this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+    //        }
+    //        else {
+    //            this.rectHighlight.setAttribute("stroke-opacity", "0");
+    //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //        }
+    //    }
 };
 Protein.prototype.setRotation = function(angle) {
     this.previousRotation = this.rotation;
     this.rotation = angle % 360;
     if (this.rotation < 0)
         this.rotation += 360;
-    //    this.xlv.message(this.rotation);
+    this.xlv.message(this.rotation);
     this.rectHighlight.setAttribute("transform", "rotate(" + this.rotation + ")");
     this.stick.setAttribute("transform", "rotate(" + this.rotation + ")");
     this.rectDomainsColoured.setAttribute("transform", "rotate(" + this.rotation + ") scale(" + (this.stickZoom) + " 1 )");
@@ -599,10 +618,12 @@ Protein.prototype.setForm = function(form, svgP) {
     else
     {
         if (form == 1) {
-            if (this.form === 0) {
-                this.fromBlob();
+            if (this.accession.indexOf("CHEBI") === -1) { // CAN'T TOGGLE SMALL MOLECULES
+                if (this.form === 0) {
+                    this.fromBlob();
+                }
+                this.toStick();
             }
-            this.toStick();
         }
         else {
             if (this.form === 1) {
@@ -645,8 +666,8 @@ Protein.prototype.toBlob = function() {
         var c = links.length;
         for (var l = 0; l < c; l++) {
             var link = links[l];
-            if ((link.getFromProtein() === this && link.getToProtein().form === 0) ||
-                    (link.getToProtein() === this && link.getFromProtein().form === 0))
+            if ((link.fromProtein === this && link.toProtein.form === 0) ||
+                    (link.toProtein === this && link.fromProtein.form === 0))
             {
                 // swap links
                 //out with the old
@@ -784,11 +805,30 @@ Protein.prototype.initStick = function() {
     }
 };
 Protein.prototype.getResXUnzoomed = function(r) {
-    return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
+    if (r === 'n') {
+        return this.getResXUnzoomed(1);
+    }
+    else if (r === 'c') {
+        return this.getResXUnzoomed(this.size);
+    }
+    else if (r === '?' || r === '?-?' || r === 'n-n') {
+        return this.rectX - 10;
+    }
+    else if (r === 'c-c') {
+        return (this.getResXUnzoomed(this.size) + 10);
+    }
+    else {
+        return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
+    }
 };
+
 Protein.prototype.getResXwithStickZoom = function(r) {
+    if (r === '?' || r === '?-?' || r === 'n-n') {
+        return (this.rectX * this.stickZoom) - 5;// ;
+    }
     return this.getResXUnzoomed(r) * this.stickZoom;
 };
+
 //calculate the  coordinates of a residue (relative to this.xlv.container)
 Protein.prototype.getResidueCoordinates = function(r) {
     if (Protein.UNITS_PER_RESIDUE === undefined)
@@ -810,83 +850,26 @@ Protein.prototype.getResidueCoordinates = function(r) {
     y = y + this.y;
     return [x, y];
 };
+
 // update all lines (e.g after a move)
 Protein.prototype.setAllLineCoordinates = function() {
     var links = this.proteinLinks.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        if (link.getFromProtein().form === 0 && link.getToProtein().form === 0) {
-            this.setLineCoordinates(link);
+        if (link.fromProtein.form === 0 && link.toProtein.form === 0) {
+            link.setLinkCoordinates(this);
         }
         else {
             var resLinks = link.residueLinks.values();
             var resLinkCount = resLinks.length;
             for (var rl = 0; rl < resLinkCount; rl++) {
-                var residueLink = resLinks[rl];
-                this.setLineCoordinates(residueLink);
+                resLinks[rl].setLinkCoordinates(this);
             }
         }
     }
 };
-// update the links(lines) to fit to the protein
-Protein.prototype.setLineCoordinates = function(link) {
-    //a defensive check
-    if (this.x == null || this.y == null) {
-        return;
-    }
-    //don't waste time changing DOM if link not visible
-    if (link.shown) {
-        if (link.getFromProtein() === this) {
-            if (this.form === 0) {
-                if (link.getToProtein().form === 0) {
-                    link.line.setAttribute("x1", this.x);
-                    link.line.setAttribute("y1", this.y);
-                    //                    if (moveHighlight == false){
-                    link.highlightLine.setAttribute("x1", this.x);
-                    link.highlightLine.setAttribute("y1", this.y);
-                    //                    }
-                    //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-                    link.fatLine.setAttribute("x1", this.x);
-                    link.fatLine.setAttribute("y1", this.y);
-                    //                    }
-                }
-                else {
-                    link.setLineCoord(true, [this.x, this.y]);
-                }
-            }
-            else //if (this.form == 1)
-            {
-                var coord = this.getResidueCoordinates(link.fromResidue);
-                link.setLineCoord(true, coord);
-            }
-        }
-        else if (link.getToProtein() === this) {
-            if (this.form === 0) {
-                if (link.getFromProtein().form === 0) {
-                    link.line.setAttribute("x2", this.x);
-                    link.line.setAttribute("y2", this.y);
-                    //                    if (moveHighlight == false){
-                    link.highlightLine.setAttribute("x2", this.x);
-                    link.highlightLine.setAttribute("y2", this.y);
-                    //                    }
-                    //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-                    link.fatLine.setAttribute("x2", this.x);
-                    link.fatLine.setAttribute("y2", this.y);
-                    //                    }
-                }
-                else {
-                    link.setLineCoord(false, [this.x, this.y]);
-                }
-            }
-            else //if (this.form == 1)
-            {
-                var coord = this.getResidueCoordinates(link.toResidue);
-                link.setLineCoord(false, coord);
-            }
-        }
-    }
-};
+
 Protein.prototype.countExternalLinks = function() {
     if (this.isParked) {
         return 0;
@@ -904,6 +887,7 @@ Protein.prototype.countExternalLinks = function() {
     }
     return countExternal;
 };
+
 Protein.prototype.getSubgraph = function(subgraphs) {
     //u r here
     if (this.subgraph == null) { // don't check for undefined here
@@ -931,11 +915,11 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
             if (!subgraph.links.has(externalLink.id)) {
                 subgraph.links.set(externalLink.id, externalLink);
                 var otherEnd;
-                if (externalLink.getFromProtein() === this) {
-                    otherEnd = externalLink.getToProtein();
+                if (externalLink.fromProtein === this) {
+                    otherEnd = externalLink.toProtein;
                 }
                 else {
-                    otherEnd = externalLink.getFromProtein();
+                    otherEnd = externalLink.fromProtein;
                 }
                 if (!subgraph.nodes.has(otherEnd.id)) {
                     subgraph.nodes.set(otherEnd.id, otherEnd);

@@ -48,7 +48,7 @@
 
         <div style="height:100%;">
             <p style="display:inline-block;">xiNET interaction viewer demo</p>
-            <p style="text-decoration: underline;float:right;display:inline-block;" onclick="help()">HELP</p>
+            <p style="text-decoration: underline;float:right;display:inline-block;" onclick="help()"><strong>HELP</strong></p>
 
             <form>
                 <p style="display:inline-block;">PSI-MI TAB:</p>
@@ -88,7 +88,7 @@
 
                 //xlv.readMIJSON(miData);
                 
-                d3.text('./MITAB_P51587.tab', function(text) {
+                d3.text('./MITAB_Q9GZM8.tab', function(text) {
                     xlv.readMITAB(text);
                     }
                 );

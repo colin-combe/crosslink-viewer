@@ -370,7 +370,7 @@ Protein.prototype.printAnnotationInfo = function() {
     //non DAS info -
     //original FASTA file info
     if (typeof this.description !== 'undefined' && this.description !== '') {
-        message += "<p>FASTA: " + highlightRegex(this.description, self.xlv.fields.names) + "</p>";
+        message += "<p>" + highlightRegex(this.description, self.xlv.fields.names) + "</p>";
     }
     if (typeof this.geneName !== 'undefined') {
         message += "<p>Gene names: " + highlightRegex(this.geneName, self.xlv.fields.names) + "</p>";

@@ -1,14 +1,56 @@
-//ResidueLink.js
-// the class representing a residue-residue link
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
+//rename to linked features
 ResidueLink.prototype = new xinet.Link();
-function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd) {
+function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController) {
     this.id = id;
-    //    this.matches = new Array(0);
+    //this.matches = new Array(0); //rename to evidence, temp commented out as filtering disabled
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
+
     this.fromResidue = fromResidue;
     this.toResidue = toResidue;
+
+//    var tempSourceRanges = fromResidue.split(/,/);
+//    var tempTargetRanges = toResidue.split(/,/);
+//
+//    var sourceRangeCount = tempSourceRanges.length;
+//    var targetRangeCount = tempTargetRanges.length;
+//
+//    this.sourceRanges = new Array();
+//    this.targetRanges = new Array();
+//    this.sourceRangeGraphic = new Array();
+//    this.targetRangeGraphic = new Array();
+//    this.sourceRangeMidPoint = 0;
+//    this.sourceRangeMidPoint = 0;
+//
+//    for (var s = 0; s < sourceRangeCount; s++){
+//        var boundFeature = new BoundFeature(tempSourceRanges[s], proteinLink.fromProtein);
+//        this.sourceRanges.push(boundFeature);
+//        var graphic = null;
+//        if (boundFeature.singlePoint !== null) {
+//            graphic = document.createElementNS(xinet.svgns, "line");
+//        }
+//        else {
+//            graphic = document.createElementNS(xinet.svgns, "path");
+//        }
+//    }
+//    for (var t = 0; t < targetRangeCount; t++){
+//        boundFeature = new BoundFeature(tempTargetRanges[t], proteinLink.toProtein);
+//        this.targetRanges.push(boundFeature);
+//        var graphic = null;
+//        if (boundFeature.singlePoint !== null) {
+//            graphic = document.createElementNS(xinet.svgns, "line");
+//        }
+//        else {
+//            graphic = document.createElementNS(xinet.svgns, "path");
+//        }
+//    }
+
     this.intra = false;
     if (typeof this.proteinLink !== 'undefined') {
         if (this.proteinLink.fromProtein === this.proteinLink.toProtein) {
@@ -18,13 +60,11 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd)
 
     this.ambig = false;
     this.tooltip = this.id;
-    if (hd === true) {
-        //     alert('true');
-        this.homodimer = true;
-    }
+
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
+
     this.curveMidX = null;
 }
 
@@ -36,21 +76,54 @@ ResidueLink.prototype.initSVG = function() {
             this.line.setAttribute("stroke-linecap", "round");
             this.highlightLine = document.createElementNS(xinet.svgns, "line");
             this.highlightLine.setAttribute("stroke-linecap", "round");
+
+//            this.sourceLines = new Array();
+//            this.targetLines = new Array();
+//
+//            this.sourceSitesMid = 0;
+//            this.targetSitesMid = 0;
+//
+//            for (var sl = 0; sl < this.sourceBindingSites.length; sl++) {
+//
+//                this.sourceSitesMid += (this.sourceBindingSites[sl] * 1);
+//
+//                var sourceLine = document.createElementNS(xinet.svgns, "line");
+//                sourceLine.setAttribute("stroke", "#E08214");
+//                this.sourceLines.push(sourceLine);
+//            }
+//
+//            this.sourceSitesMid = this.sourceSitesMid / this.sourceBindingSites.length;
+//
+//            for (var tl = 0; tl < this.targetBindingSites.length; tl++) {
+//
+//                this.targetSitesMid += (this.targetBindingSites[tl] * 1);
+//
+//                var targetLine = document.createElementNS(xinet.svgns, "line");
+//                targetLine.setAttribute("stroke", "#E08214");
+//                this.targetLines.push(targetLine);
+//            }
+//
+//            this.targetSitesMid = this.targetSitesMid / this.targetBindingSites.length;
+
+
         } else {
-            this.line = document.createElementNS(xinet.svgns, "path");
-            this.line.setAttribute('stroke', '#8073AC');
-            this.highlightLine = document.createElementNS(xinet.svgns, "path");
+
+            //temp intra links disabed
+
+            //            this.line = document.createElementNS(xinet.svgns, "path");
+            //            this.line.setAttribute('stroke', '#8073AC');
+            //            this.highlightLine = document.createElementNS(xinet.svgns, "path");
         }
 
-        this.line.setAttribute("class", "link");
-        this.line.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("class", "link");
-        this.highlightLine.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
-        this.highlightLine.setAttribute("stroke-width", "10");
-        this.highlightLine.setAttribute("stroke-opacity", "0")
+        //        this.line.setAttribute("class", "link");
+        //        this.line.setAttribute("fill", "none");
+        //        this.highlightLine.setAttribute("class", "link");
+        //        this.highlightLine.setAttribute("fill", "none");
+        //        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+        //        this.highlightLine.setAttribute("stroke-width", "10");
+        //        this.highlightLine.setAttribute("stroke-opacity", "0")
 
-        if (typeof this.colour !== 'undefined'){
+        if (typeof this.colour !== 'undefined') {
             this.line.setAttribute("stroke", this.colour.toString());
         }
 
@@ -76,7 +149,7 @@ ResidueLink.prototype.initSVG = function() {
         };
     }
     if (this.intra === true) {
-        this.setUpCurve();
+//        this.setUpCurve();
     }
 };
 
@@ -90,9 +163,9 @@ ResidueLink.prototype.getToProtein = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
-        if (typeof andAlternatives === 'undefined') {
-    andAlternatives = false;//TODO: tEMP HACK
-        }
+    if (typeof andAlternatives === 'undefined') {
+        andAlternatives = false;//TODO: tEMP HACK
+    }
     if (this.shown) {
         if (show) {
             this.highlightLine.setAttribute("stroke-opacity", "1");
@@ -140,11 +213,10 @@ ResidueLink.prototype.showID = function() {
         var fromProt = this.getFromProtein();
         var toProt = this.getToProtein();
         var linkInfo = "<p><strong>" + fromProt.name + " (" + fromProt.accession
-                        + "), residue " + this.fromResidue + " - "
-                        + toProt.name + " (" + toProt.accession
-                        + "), residue " + this.toResidue + "</strong></p>";
-        linkInfo += "<p> Protein - protein interaction confidence: " +
-                        + this.proteinLink.sc + "% </p>";
+                + "), residue " + JSON.stringify(this.sourceBindingSites) + " - "
+                + toProt.name + " (" + toProt.accession
+                + "), residue " + JSON.stringify(this.targetBindingSites) + "</strong></p>";
+
         this.xlv.message(linkInfo);
     }
 };
@@ -175,33 +247,33 @@ ResidueLink.prototype.check = function(filter) {
         this.hide();
         return false;
     }
-    if (typeof this.matches === 'undefined' || this.matches == null) {
-        if (this.proteinLink.sc >= this.xlv.cutOff) {
-            this.show();
-            return true;
-        } else {
-            this.hide();
-            return false;
-        }
-    }
-    var filteredMatches = this.getFilteredMatches();
-    var countFilteredMatches = filteredMatches.length;
-    if (countFilteredMatches > 0) {
-        this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
-                    + "-"  + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
-        if (countFilteredMatches == 1) {
-            this.tooltip += ' match)';
-        } else {
-            this.tooltip += ' matches)';
-        }
-        this.show();
-        this.dashedLine(this.ambig);
-        return true;
-    }
-    else {
-        this.hide();
-        return false;
-    }
+    //    if (typeof this.matches === 'undefined' || this.matches == null) {
+    //        if (this.proteinLink.sc >= this.xlv.cutOff) {
+    this.show();
+    return true;
+//        } else {
+//            this.hide();
+//            return false;
+//        }
+//   }
+//    var filteredMatches = this.getFilteredMatches();
+//    var countFilteredMatches = filteredMatches.length;
+//    if (countFilteredMatches > 0) {
+//        this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
+//                    + "-"  + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
+//        if (countFilteredMatches == 1) {
+//            this.tooltip += ' match)';
+//        } else {
+//            this.tooltip += ' matches)';
+//        }
+//        this.show();
+//        this.dashedLine(this.ambig);
+//        return true;
+//    }
+//    else {
+//        this.hide();
+//        return false;
+//    }
 };
 
 ResidueLink.prototype.dashedLine = function(dash) {
@@ -237,12 +309,20 @@ ResidueLink.prototype.show = function() {
                 this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
             }
             else {
-                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.proteinLink.fromProtein.setLineCoordinates(this);
-                this.proteinLink.toProtein.setLineCoordinates(this);
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.res_resLinks.appendChild(this.line);
+
+                                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
+                                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+                this.setLinkCoordinates(this.proteinLink.fromProtein);
+                this.setLinkCoordinates(this.proteinLink.toProtein);
+                                this.xlv.highlights.appendChild(this.highlightLine);
+                                this.xlv.res_resLinks.appendChild(this.line);
+
+//                for (var sl = 0; sl < this.sourceBindingSites.length; sl++) {
+//                    this.xlv.res_resLinks.appendChild(this.sourceLines[sl]);
+//                }
+//                for (var tl = 0; tl < this.targetBindingSites.length; tl++) {
+//                    this.xlv.res_resLinks.appendChild(this.targetLines[tl]);
+//                }
             }
         }
     }
@@ -278,11 +358,11 @@ ResidueLink.prototype.setUpCurve = function() {
     midY = midY / 2;
     this.curveMidX = x1 + ((x2 - x1) / 2);
     pathAtt = "M " + x1 + " 0 "
-    + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-    + " A " + midY + " " + midY + "  0 1 1 "
-    + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-    + " L " + x2 + " 0 "
-    ;
+            + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
+            + " A " + midY + " " + midY + "  0 1 1 "
+            + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
+            + " L " + x2 + " 0 "
+            ;
     //    }
 
     this.line.setAttribute("d", pathAtt);
@@ -296,33 +376,88 @@ ResidueLink.prototype.setUpCurve = function() {
     }
 };
 
-ResidueLink.prototype.setLineCoord = function(from, coord) {
-    if (from) {
-        this.line.setAttribute("x1", coord[0]);
-        this.line.setAttribute("y1", coord[1]);
-        this.highlightLine.setAttribute("x1", coord[0]);
-        this.highlightLine.setAttribute("y1", coord[1]);
+// update the links(lines) to fit to the protein
+ResidueLink.prototype.setLinkCoordinates = function(interactor) {
+    if (this.shown) { //don't waste time changing DOM if link not visible
+//        var blobMidPoint = this.proteinLink.getBlobMidPoint();
+//
+//        var sMid = this.proteinLink.fromProtein.getResidueCoordinates(this.sourceSitesMid);
+//        sMid[1] = sMid[1] - 20;
+//
+//        var countSourceBindingSites = this.sourceBindingSites.length;
+//        for (var sbs = 0; sbs < countSourceBindingSites; sbs++) {
+//            var s;
+//            if (this.proteinLink.fromProtein.form === 1) {
+//                s = this.proteinLink.fromProtein.getResidueCoordinates(this.sourceBindingSites[sbs]);
+//            }
+//            else {
+//                s = [this.proteinLink.fromProtein.x, this.proteinLink.fromProtein.y];
+//            }
+//            var line = this.sourceLines[sbs];
+//            line.setAttribute("x1", s[0]);
+//            line.setAttribute("y1", s[1]);
+//            line.setAttribute("x2", sMid[0]);
+//            line.setAttribute("y2", sMid[1]);
+//        }
+//
+//        var tMid = this.proteinLink.toProtein.getResidueCoordinates(this.targetSitesMid);
+//        //tMid[1] = tMid[1] - 20;
+//        var rotRad = (this.proteinLink.toProtein.rotation / 360) * Math.PI * 2;
+//        tMid[0] = tMid[0] + (40 * Math.sin(rotRad));
+//        tMid[1] = tMid[1] - (40 * Math.cos(rotRad));
+//
+//        var countTargetBindingSites = this.targetBindingSites.length;
+//        for (var tbs = 0; tbs < countTargetBindingSites; tbs++) {
+//            var t;
+//            if (this.proteinLink.toProtein.form === 1) {
+//                t = this.proteinLink.toProtein.getResidueCoordinates(this.targetBindingSites[tbs]);
+//            }
+//            else {
+//                t = [this.proteinLink.toProtein.x, this.proteinLink.toProtein.y];
+//            }
+//            line = this.targetLines[tbs];
+//            line.setAttribute("x1", t[0]);
+//            line.setAttribute("y1", t[1]);
+//            line.setAttribute("x2", tMid[0]);
+//            line.setAttribute("y2", tMid[1]);
+//        }
+
+        if (this.proteinLink.fromProtein === interactor) {
+            if (interactor.form === 0) {
+                this.line.setAttribute("x1", interactor.x);
+                this.line.setAttribute("y1", interactor.y);
+                this.highlightLine.setAttribute("x1", interactor.x);
+                this.highlightLine.setAttribute("y1", interactor.y);
+            }
+            else //if (this.form == 1)
+            {
+                var coord = interactor.getResidueCoordinates(this.fromResidue);
+                this.line.setAttribute("x1", coord[0]);
+                this.line.setAttribute("y1", coord[1]);
+                this.highlightLine.setAttribute("x1", coord[0]);
+                this.highlightLine.setAttribute("y1", coord[1]);
+            }
+        }
+        else { //if (link.toProtein === interactor) {
+            if (interactor.form === 0) {
+                this.line.setAttribute("x2", interactor.x);
+                this.line.setAttribute("y2", interactor.y);
+                this.highlightLine.setAttribute("x2", interactor.x);
+                this.highlightLine.setAttribute("y2", interactor.y);
+            }
+            else //if (this.form == 1)
+            {
+                var coord = interactor.getResidueCoordinates(this.toResidue);
+                this.line.setAttribute("x2", coord[0]);
+                this.line.setAttribute("y2", coord[1]);
+                this.highlightLine.setAttribute("x2", coord[0]);
+                this.highlightLine.setAttribute("y2", coord[1]);
+            }
+        }
+
+
     }
-    else {
-        this.line.setAttribute("x2", coord[0]);
-        this.line.setAttribute("y2", coord[1]);
-        this.highlightLine.setAttribute("x2", coord[0]);
-        this.highlightLine.setAttribute("y2", coord[1]);
-    }
+
+
 };
 
-// used by hover highlight
-ResidueLink.prototype.leastAmbiguousMatches = function() {// yes: plural
-    //var leastAmbigMatches
-    };
-
-ResidueLink.prototype.toJSON = function() {
-    var m = new Array();
-    var mc = this.matches.length;
-    for (var i = 0; i < mc; i++) {
-        m.push(this.matches[i].id);
-    }
-    return {
-    //      m: m
-    };
-};

@@ -98,8 +98,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
             if (p2ID[0] === "'")
                 p2ID = p2ID.substring(1, p2ID.length - 1);
             // * residue numbering starts at 1 *
-            var res1 = (pep1_positions[i] * 1);
-            var res2 = (pep2_positions[j] * 1);
+            var res1 = (pep1_positions[i]);// * 1);
+            var res2 = (pep2_positions[j]);// * 1);
             if (typeof linkPos1 !== 'undefined') {
                 res1 += linkPos1;
             }
