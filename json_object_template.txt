@@ -1,0 +1,91 @@
+{
+"dataRoot": {
+              "interactors": 'listType_interactor'
+              "interactions": 'listType_interaction'
+},
+
+"interactor": {
+            "sequence": 'string',
+            "type": 'cvType',
+            "organism": 'organismType',
+            "accession": "P46109",
+            "label": "CRKL"
+        },
+
+"organismType": {
+              "taxid": 'integer',
+              "common": 'string',
+              "scientific": 'string'
+        },
+
+"cvType": {
+             "id": 'string', 
+             "name": 'string'
+        },
+
+"interaction":  {
+            "experiment": 'experimentType',
+            "interactionType": 'cvType',
+            "source": 'participantType',
+            "target": 'participantType',
+            "metaData": [free array]
+        },
+
+"experimentType":  {
+            "detmethod": 'cvtype',
+            "pubid": 'string',
+            "host": 'organismType',
+            "sourceDatabase" : 'cvType',
+            "experimentModification" : 'String',
+            "figure" : 'String',
+        },
+
+"participantType":  {
+            "id": 'string',
+            "bioRole": 'cvType',
+            "exprole": 'cvType',
+            "identificationMethod": 'cvType',
+            "expressedIn": 'organismType',
+            "experimentalFeatures": 'listType_experimentalFeature',
+            "pointMutations": 'listType_pointMutation',
+            "bindingFeatures": 'listType_bindingFeature',
+            "ptmFeatures": 'listType_ptmFeature',
+        },
+
+"experimentalFeature" : {
+         "id": 'string',
+	 "name" : 'string',
+	 "type" : 'cvType',
+	 "detmethod" : "cvType",	
+	 "sequenceData" : "listType_rangeData"	  			
+},
+
+"bindingFeature" : {
+        "id": 'string',
+	 "name" : 'string',
+	 "type" : 'cvType',
+	 "detmethod" : "cvType",
+         "Binding_Site_Domain" : 'string',	
+	 "sequenceData" : "listType_rangeData",
+         "linkedFeatures": 'listType_featureId'		
+},
+
+"ptmFeature" : {
+	"id": 'string',
+	 "name" : 'string',
+	 "type" : 'cvType',
+	 "detmethod" : "cvType",
+	"Post_Translation_Modification_Choice" : "dummy",		
+	"sequenceData" :   "listType_rangeData",
+         "linkedFeatures": 'listType_featureId'			    	
+},
+
+"pointMutation" : {
+	"id": 'string',
+	 "name" : 'string',
+	 "type" : 'cvType',
+	 "detmethod" : "cvType",		
+	"sequenceData" :   "listType_rangeData",
+         "linkedFeatures": 'listType_featureId'			    	
+}
+}

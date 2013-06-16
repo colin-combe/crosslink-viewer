@@ -8,14 +8,15 @@ Protein.MAXSIZE = 0; // residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
 Protein.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Protein.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Protein.domainColours = d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 
 //http://stackoverflow.com/questions/4179283/how-to-overload-constructor-of-an-object-in-js-javascript
-function Protein(id, xlvController, acc, name) {
+function Protein(id, xlvController, acc, name, organism) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.accession = acc;
     this.xlv = xlvController;
     this.name = name;
+    this.organism = organism;
 }
 
 Protein.prototype.initProtein = function(sequence, name, description, size)
@@ -44,7 +45,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
             this.labeling += 'R10';
     }
     this.sequence = sequence.replace(/[^A-Z]/g, '');//remove modification site info from seq
-    if (typeof size !== 'undefined') {
+    if (typeof size !== 'undefined' && size != null) {
         this.size = size;
     } else {
         this.size = this.sequence.length;
@@ -104,19 +105,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     }
     else {
         this.labelText = this.accession;
-    }
-    var organismCheck = this.labelText.indexOf("_CHICK");
-    if (organismCheck === -1) {
-        organismCheck = this.labelText.indexOf("_MYCPN");
-    }
-    if (organismCheck === -1) {
-        organismCheck = this.labelText.indexOf("_ECOLI");
-    }
-    if (organismCheck !== -1) {
-        this.labelText = this.labelText.substring(0, organismCheck);
-    }
-    if (this.labelText.length > 19) {
-        this.labelText = this.labelText.substr(0, 16) + "...";
     }
     if (typeof this.labeling !== 'undefined') {
         this.labelText = '[' + this.labeling + '] ' + this.labelText;
@@ -260,7 +248,7 @@ Protein.prototype.getBlobRadius = function() {
         return 10;
     }
     else {
-    return Math.sqrt(this.size / Math.PI);
+        return Math.sqrt(this.size / Math.PI);
     }
 };
 
@@ -294,6 +282,36 @@ Protein.prototype.addLink = function(link) {
         this.internalLink = link;
     }
 };
+
+Protein.prototype.addFeature = function(feature) {
+    if (typeof feature !== 'undefined') {
+        var annotName = feature.name;
+        if (typeof feature.type !== 'undefined') {
+            annotName += ', ' + feature.type.name;
+        }
+        if (typeof feature.detmethod !== 'undefined') {
+            annotName += ', ' + feature.detmethod.name;
+        }
+        var colour = Protein.domainColours(feature.type.name);
+        var segments = feature.sequenceData;
+        var countSegments = segments.length;
+
+        for (var i = 0; i < countSegments; i++) {
+            var segment = segments[i];
+            var sequenceRegex = /(\d+)-(\d+)/;
+            var match = sequenceRegex.exec(segment.range);
+            var startRes = match[1] * 1;
+            var endRes = match[2] * 1;
+            console.log(segment.range);
+            console.log(match);
+            var annotation = new Annotation(annotName, startRes, endRes, colour);
+            if (this.customAnnotations == null) {
+                this.customAnnotations = new Array();
+            }
+            this.customAnnotations.push(annotation);
+        }
+    }
+}
 
 Protein.prototype.showHighlight = function(show) {
     if (show) {
@@ -344,7 +362,7 @@ Protein.prototype.setRotation = function(angle) {
     this.rotation = angle % 360;
     if (this.rotation < 0)
         this.rotation += 360;
-    this.xlv.message(this.rotation);
+    //    this.xlv.message(this.rotation);
     this.rectHighlight.setAttribute("transform", "rotate(" + this.rotation + ")");
     this.stick.setAttribute("transform", "rotate(" + this.rotation + ")");
     this.rectDomainsColoured.setAttribute("transform", "rotate(" + this.rotation + ") scale(" + (this.stickZoom) + " 1 )");
@@ -804,26 +822,13 @@ Protein.prototype.initStick = function() {
         protein.rect.appendChild(p);
     }
 };
+
 Protein.prototype.getResXUnzoomed = function(r) {
-    if (r === 'n') {
-        return this.getResXUnzoomed(1);
-    }
-    else if (r === 'c') {
-        return this.getResXUnzoomed(this.size);
-    }
-    else if (r === '?' || r === '?-?' || r === 'n-n') {
-        return this.rectX - 10;
-    }
-    else if (r === 'c-c') {
-        return (this.getResXUnzoomed(this.size) + 10);
-    }
-    else {
-        return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
-    }
+    return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
 };
 
 Protein.prototype.getResXwithStickZoom = function(r) {
-    if (r === '?' || r === '?-?' || r === 'n-n') {
+    if (r === '?' || r === 'n') {
         return (this.rectX * this.stickZoom) - 5;// ;
     }
     return this.getResXUnzoomed(r) * this.stickZoom;
@@ -837,14 +842,12 @@ Protein.prototype.getResidueCoordinates = function(r) {
         alert("Error: residue number is undefined");
     var x = this.getResXwithStickZoom(r) * this.xlv.z;
     var y = 0;
-    if (x !== 0) {
+    if (this.rotation !== 0 && x !== 0) {
         var l = Math.abs(x);
         var a = Math.acos(x / l);
         var rotRad = (this.rotation / 360) * Math.PI * 2;
-        if (this.rotation !== 0) {
-            x = l * Math.cos(rotRad + a);
-            y = l * Math.sin(rotRad + a);
-        }
+        x = l * Math.cos(rotRad + a);
+        y = l * Math.sin(rotRad + a);
     }
     x = x + this.x;
     y = y + this.y;

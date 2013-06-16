@@ -9,7 +9,7 @@
 
 ProteinLink.prototype = new xinet.Link();
 //used to calculate width of thivh background line
-ProteinLink.maxNoResidueLinks = 0;
+ProteinLink.maxNoEvidences = 0;
 function ProteinLink(id, fromP, toP, xlvController) {
     this.id = id;
     this.residueLinks = d3.map();
@@ -27,7 +27,64 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.dashed = false;
     //layout stuff
     this.hidden = false;
+
+    this.evidences = new Array();
 }
+
+ProteinLink.prototype.addEvidence = function(interaction) {
+    this.evidences.push(interaction);
+    if (this.evidences.length > ProteinLink.maxNoEvidences) {
+        ProteinLink.maxNoEvidences = this.evidences.length;
+    }
+
+
+    //adding features
+    //we will do this here for moment...
+    //not really right place, needs to be associated with the sequence links
+    //features for an experiemnt should dissappear when experiemntal
+    // evidience does not meet filter criteria
+
+    //NB. sourec and target in JSON may not correspond to sourec and 
+    // target in INteractionLInk,
+    //may have had to swap them around (to get consistent id's)
+
+    var source, target;
+    if (interaction.source.id === this.fromProtein.id) {
+        source = interaction.source;
+        target = interaction.target;
+    } else {
+        source = interaction.target
+        target = interaction.source;
+    }
+    
+    var fromBindingSite, toBindingSite;
+    
+    if (typeof source.bindingSites !== 'undefined') {
+        this.fromProtein.addFeature(source.bindingSites[0]);
+        fromBindingSite = source.bindingSites[0];
+    }
+    if (typeof target.bindingSites !== 'undefined') {
+        this.toProtein.addFeature(target.bindingSites[0]);
+        toBindingSite = target.bindingSites[0];
+    }
+    
+    if (typeof source.pointMutations !== 'undefined') {
+        this.fromProtein.addFeature(source.pointMutations[0]);
+    }
+    if (typeof target.pointMutations !== 'undefined') {
+        this.toProtein.addFeature(target.pointMutations[0]);
+    }
+    var fromBinding = (typeof fromBindingSite !== 'undefined')?
+        fromBindingSite.sequenceData[0].range : '?-?';
+    var toBinding = (typeof toBindingSite !== 'undefined')?
+        toBindingSite.sequenceData[0].range : '?-?';
+    var seqLinkId = fromBinding + ':' +
+                    this.fromProtein.id + ' to ' +
+                    toBinding  + ':' + this.toProtein.id;
+    console.log(seqLinkId);
+    this.residueLinks.set(seqLinkId,
+       new ResidueLink (seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
+};
 
 ProteinLink.prototype.initSVG = function() {
     if (!this.intra) {
@@ -50,8 +107,8 @@ ProteinLink.prototype.initSVG = function() {
         var cp1 = trig(intraR, 40 + r);
         var cp2 = trig(intraR, -40 + r);
         var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
-        + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
-        + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
+                + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
+                + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
         this.line = document.createElementNS(xinet.svgns, "path");
         this.line.setAttribute('d', path);
         this.highlightLine = document.createElementNS(xinet.svgns, 'path');
@@ -113,15 +170,6 @@ ProteinLink.prototype.initSVG = function() {
     };
 };
 
-ProteinLink.prototype.getBlobMidPoint = function() {
-    var midX = (this.fromProtein.x + this.toProtein.x) / 2;
-    var midY = (this.fromProtein.y + this.toProtein.y) / 2;
-    return {
-        "x":midX,
-        "y":midY
-    };
-};
-
 ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false;//TODO: tEMP HACK
@@ -161,39 +209,11 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
 
 //used when link clicked
 ProteinLink.prototype.showID = function() {
-    if (typeof send_match_ids === 'function') {
-        var matchIDs
-        var matches = this.getFilteredMatches();
-        var c = matches.length;
-        var firstMatch = true;
-        for (var i = 0; i < c; i++) {
-            if (firstMatch === true) {
-                firstMatch = false;
-            }
-            else {
-                matchIDs = matchIDs + ",";
-            }
-            matchIDs = matchIDs + matches[i];
-        }//
-        send_match_ids(matchIDs);
-    }
-    else {
-        var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
-        + ") - " + this.toProtein.name + " (" + this.toProtein.accession
-        + ")</strong></p>";
-        linkInfo += "<p>Protein - protein interaction confidence: " +
-        + this.sc + "%";
-        linkInfo += "<p>" + this.residueLinks.values().length
-        + " unique residue - residue linkage sites:</p>";
-        for (var i = 0; i < this.residueLinks.values().length; i ++ ){
-            var rl = this.residueLinks.values()[i];
-            linkInfo += "<p>" + this.fromProtein.name + " (" + this.fromProtein.accession
-            + "), residue " + rl.fromResidue + " - "
-            + this.toProtein.name + " (" + this.toProtein.accession
-            + "), residue " + rl.toResidue + "</p>";
-        }
-        this.xlv.message(linkInfo);
-    }
+    var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
+            + ") - " + this.toProtein.name + " (" + this.toProtein.accession
+            + ")</strong></p>";
+    linkInfo += "<pre>" + JSON.stringify(this.evidences, null, '\t') + "</pre>";
+    this.xlv.message(linkInfo);
 };
 
 //TEMP - this was used by filtering...
@@ -222,8 +242,8 @@ ProteinLink.prototype.check = function() {
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
     if (this.fromProtein.isParked || this.toProtein.isParked
-        || (this.xlv.intraHidden && this.intra)
-        || this.hidden) {
+            || (this.xlv.intraHidden && this.intra)
+            || this.hidden) {
         //if both ends are blobs then hide interactor-level link
         if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
             this.hide();
@@ -270,16 +290,23 @@ ProteinLink.prototype.check = function() {
         //            }
         //            var filteredResLinkCount = filteredResLinks.length;
         //            if (filteredResLinkCount > 0) {
-        //                this.tooltip = this.id + ', ' + filteredResLinkCount + ' unique cross-link';
-        //                if (filteredResLinkCount > 1)
-        //                    this.tooltip += 's';
-        //                this.tooltip += ' (' + filteredMatches.keys().length;
-        //                if (filteredMatches.keys().length === 1) {
-        //                    this.tooltip += ' match)';
-        //                } else {
-        //                    this.tooltip += ' matches)';
-        //                }
-        //                this.w = filteredResLinkCount * (45 / ProteinLink.maxNoResidueLinks);
+        var countEvidences = this.evidences.length;
+        this.tooltip = this.id + ', ' + countEvidences + ' evidence';
+        if (countEvidences > 1) {
+            this.tooltip += 's';
+        }
+        this.tooltip += ' (';
+
+        for (var i = 0; i < countEvidences; i++) {
+            if (i > 0)
+                this.tooltip += ', ';
+            var evid = this.evidences[i];
+            this.tooltip += evid.experiment.detmethod.name;// + ':' + evid.interactionType.name;
+        }
+
+        this.tooltip += ' )';
+
+        this.w = countEvidences * (45 / ProteinLink.maxNoEvidences);
         //                //acknowledge following line is a bit confusing...
         //                this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
         //                this.dashedLine(this.ambig);
@@ -307,7 +334,7 @@ ProteinLink.prototype.check = function() {
 };
 
 ProteinLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line === 'undefined'){
+    if (typeof this.line === 'undefined') {
         this.initSVG();
     }
     if (dash && !this.dashed) {
@@ -332,10 +359,10 @@ ProteinLink.prototype.show = function() {
             if (this.intra) {
                 //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
 
-                if (ProteinLink.maxNoResidueLinks > 1) {
+                if (ProteinLink.maxNoEvidences > 1) {
                     this.fatLine.setAttribute("transform", "translate(" +
-                        this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
-                        + " scale(" + (this.xlv.z) + ")");
+                            this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
+                            + " scale(" + (this.xlv.z) + ")");
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
 
@@ -349,14 +376,14 @@ ProteinLink.prototype.show = function() {
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates(this.fromProtein);
                 this.setLinkCoordinates(this.toProtein);
-                if (ProteinLink.maxNoResidueLinks > 1) {
+                if (ProteinLink.maxNoEvidences > 1) {
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.p_pLinks.appendChild(this.line);
             }
         }
-        if (ProteinLink.maxNoResidueLinks > 1) {
+        if (ProteinLink.maxNoEvidences > 1) {
             if (this.intra) {
                 this.fatLine.setAttribute("stroke-width", this.w);
             } else {
@@ -371,13 +398,13 @@ ProteinLink.prototype.hide = function() {
         this.shown = false;
         if (this.intra) {
             //TODO: be more selective about when to show 'fatLine'
-            if (ProteinLink.maxNoResidueLinks > 1) {
+            if (ProteinLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
             this.fromProtein.upperGroup.removeChild(this.highlightLine);
             this.fromProtein.upperGroup.removeChild(this.line);
         } else {
-            if (ProteinLink.maxNoResidueLinks > 1) {
+            if (ProteinLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
             this.xlv.highlights.removeChild(this.highlightLine);
@@ -400,9 +427,9 @@ ProteinLink.prototype.setLinkCoordinates = function(interactor) {
             //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
             this.fatLine.setAttribute("x1", interactor.x);
             this.fatLine.setAttribute("y1", interactor.y);
-        //                    }
+            //                    }
         }
-        else  {
+        else {
             this.line.setAttribute("x2", interactor.x);
             this.line.setAttribute("y2", interactor.y);
             this.highlightLine.setAttribute("x2", interactor.x);
@@ -410,7 +437,7 @@ ProteinLink.prototype.setLinkCoordinates = function(interactor) {
             //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
             this.fatLine.setAttribute("x2", interactor.x);
             this.fatLine.setAttribute("y2", interactor.y);
-        //                    }
+            //                    }
         }
     }
 };

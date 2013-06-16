@@ -8,16 +8,17 @@ xinet.DASUtil = function(xlvController) {
         {
             "name": "UniProt",
             "url": "http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/features"
-        },
-        {
-            "name": "GO",
-            "url": "http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot-goa/features"
         }
-        ,
-        {
-            "name": "Pfam",
-            "url": "http://das.sanger.ac.uk/das/pfam/features"
-        }
+//        ,
+//        {
+//            "name": "GO",
+//            "url": "http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot-goa/features"
+//        }
+//        ,
+//        {
+//            "name": "Pfam",
+//            "url": "http://das.sanger.ac.uk/das/pfam/features"
+//        }
         //        ,
         //        {
         //            "name": "InterPro",
@@ -365,8 +366,8 @@ Protein.prototype.printAnnotationInfo = function() {
 
         }
     }
-    message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-            + this.accession + "' target='_blank'>PDB</a></p>";
+//    message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
+//            + this.accession + "' target='_blank'>PDB</a></p>";
     //non DAS info -
     //original FASTA file info
     if (typeof this.description !== 'undefined' && this.description !== '') {

@@ -227,7 +227,7 @@ xinet.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 };
 
 //Positions are one based
-xinet.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
+xinet.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
         pep2_protIDs, pep2_positions,
         id, meta, linkPos1, linkPos2, pep1_seq, pep2_seq) {
     var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
@@ -240,7 +240,7 @@ xinet.Controller.prototype.addMatches = function(matches) {
     var l = matches.length;
     for (var i = 0; i < l; i++) {
         //        alert(matches[i]);
-        this.addMatch(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
+        this.addInteraction(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
                 matches[i][4], matches[i][5], matches[i][6], matches[i][7],
                 matches[i][8], matches[i][9]);
     }
@@ -297,8 +297,8 @@ xinet.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-    Protein.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
-
+   // Protein.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+    
     this.initComplete = true;
 
     if (typeof this.layout !== 'undefined' && this.layout != null) {

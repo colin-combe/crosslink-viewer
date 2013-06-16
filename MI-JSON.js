@@ -1,56 +1,67 @@
 /* JSON format for PSI-MI data.
- * - first attempt, change it if you think terminology or structure is wrong.
+ * - second attempt, please change it if you think terminology or structure is wrong.
  *
  * *Overview*
+ * A list of Interactors followed by a list of Interactions.
+ * Interactions contain a list of experiments.
+ * Experiments contain a list of source features and a list of target features.
+ * Features have an attribute to say whether or not they are linked.
+ * 
+ * *Interactors*
  * An array of Interactors, each with:
- *      sequence,
- *      type (values are "protein", "bioactive entity", "gene", or "nucliec acid"),
- *      organism,
- *      accession,
+ *      sequence, (optional, if missing download from DAS. 
+ * 					Some things, like small molecules, don't have sequence.)
+ *      type (possible values are "protein", "bioactive entity", "gene", or "nucliec acid"),
+ *      	(if 'type' is missing it could be figured out from accession id?
+ * 				e.g. does accession contain string "CHEBI")
+ * 		organism, (will need to be an object with distinct taxid, scientific name and 
+ * 					common name attributes. As in MITAB make taxid required 
+ * 					and scientific/common name optional?)
+ *      accession/unique ID,
  *      label,
- *      array of features (such as PTM's, i.e. unlinked features), each with:
- *          name,
- *          start residue (1 based),
- *          end residue (1 based)
- *      meta? - you could put any other relevant info in here?
- *      [TODO: add information about membership of complexes (parent node)
- *       and stochiometry in order to make complex viewer :) ]
+ *      meta? - you could put any other relevant info in here
  *
- *then an array of Interactions, each with:
- *      source accession,
- *      target accession,
- *      an array of linked features
+ * *Interactions*
+ * An array of Interactions, each with:
+ *      accession/id of source Interactor,
+ *      accession/id of target Interactor,
+ * 		type, (this is present in Guilluame's JSON, value usually seems to be "association")
+ * 		array of Experiments, for each Experiment:
+ * 				source particpant detection method,
+ * 				target particpant detection method,
+ * 				interaction detection method,
+ * 				type? (has value "experiment" in Guilluames format)
+ * 				meta/other info?
+ * 					(from Guilluame's JSON and from looking at MITAB I know there 
+ * 					is alot of other relevant info for experiments, 
+ * 					such as experimental role of particpants, publication details, stochiometry, host)     
  *
- *      for each linked feature:
- *          evidence,
- *          source binding sites (string, see below),
- *          target binding sites (string, see below),
- *          meta? - you could put any other relevant info in here? publication?
- *
- * Strings describing binding sites (MI-TAB like)
- *      - comma seperated list of binding sites,
- *          - binding sites can be specific residue, range with or without fuzzy
- *            boundaries, fuzzy range, greater than, less than,
- *            or keywords for unknown, n/c terminus, n/c terminus range
- *
- *      - i.e. a comma seperated list of any of the following (numerical values are 1 based):
- *
- *              "?" = unknown (represented as link to circle beside interactors label)
- *              "n" = residue 1
- *              "c" = residue at interactor.sequence.length
- *              "n-n" = n-terminal range (represented as link to triangle beside n terminal)
- *              "c-c" = c-terminal range (represented as link to triangle beside c terminal)
- *              "123" = specific residue
- *              "123-456" = residue range
- *              "86..123-456..464" = residue range with fuzzy boundaries
- *              "86..123-456" = residue range with one fuzzy boundary
- *              "23..45" = fuzzy range
- *              "<8" = range between 1 and 8
- *              ">256" = range between 256 and interactor.sequence.length
+ *          	array of source Features, see below
+ *				array of target Features, see below
+ *              
+ * 				for each Feature   
+ *          		name,
+ * 					comma seperated list of ranges (MITAB-like), 
+ * 						where ranges can be any of following:-
+ *             			
+ * 						"?" = unknown (represented as link to a circle beside interactors label,
+ * 								will also accept "?-?" as unknown)
+ *              		"n" = residue 1
+ *              		"c" = residue at interactor.sequence.length
+ *              		"n-n" = n-terminal range (represented as link to triangle beside n terminal)
+ *              		"c-c" = c-terminal range (represented as link to triangle beside c terminal)
+ *              		"123" = specific residue
+ *              		"123-456" = residue range
+ *              		"86..123-456..464" = residue range with fuzzy boundaries
+ *              		"86..123-456" = residue range with one fuzzy boundary
+ *              		"23..45" = fuzzy range
+ *              		"<8" = range between 1 and 8
+ *              		">256" = range between 256 and interactor.sequence.length
+ * 
  */
 
 
-//example
+//example !!THIS HAS NOT BEEN UPDATED TO FIT WITH CHANGES MADE ABOVE!! ignore example for moment...
 var miData = {
     "interactors": [
         {

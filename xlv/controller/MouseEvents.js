@@ -76,22 +76,22 @@ xinet.Controller.prototype.mouseDown = function(evt) {
         rightClick = (evt.button === 2);
 
     if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
-        alert("here");
-        this.state = xinet.Controller.SELECTING;
-//        //      marquee.style.strokeDashoffset=0;
-               this.marquee.setAttribute('x', 100);
-    this.marquee.setAttribute('y', 100);
-    this.marquee.setAttribute('width', 100);
-    this.marquee.setAttribute('height', 100);
-   this.svgElement.appendChild(this.marquee);
- //        this.updateMarquee(this.marquee, this.dragStart);
-////      var offset = 0, marcher = setInterval(function(){
-////        marquee.style.strokeDashoffset = offset--;
-////      },30);
-//        //clear selection if ctrl not pressed
-//        if (evt.ctrlKey === false) {
-//            this.clearSelection();
-//        }
+//        alert("here");
+//        this.state = xinet.Controller.SELECTING;
+////        //      marquee.style.strokeDashoffset=0;
+//               this.marquee.setAttribute('x', 100);
+//    this.marquee.setAttribute('y', 100);
+//    this.marquee.setAttribute('width', 100);
+//    this.marquee.setAttribute('height', 100);
+//   this.svgElement.appendChild(this.marquee);
+// //        this.updateMarquee(this.marquee, this.dragStart);
+//////      var offset = 0, marcher = setInterval(function(){
+//////        marquee.style.strokeDashoffset = offset--;
+//////      },30);
+////        //clear selection if ctrl not pressed
+////        if (evt.ctrlKey === false) {
+////            this.clearSelection();
+////        }
     } else {
     this.state = xinet.Controller.PANNING;
     this.panned = false;

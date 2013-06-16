@@ -4,16 +4,30 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-//rename to linked features
+//rename to sequence link
 ResidueLink.prototype = new xinet.Link();
-function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController) {
+function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, interaction) {
     this.id = id;
     //this.matches = new Array(0); //rename to evidence, temp commented out as filtering disabled
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
-
-    this.fromResidue = fromResidue;
-    this.toResidue = toResidue;
+    if (fromBinding === '?-?') {
+        this.fromStartRes = -1;
+        this.fromEndRes = -1;
+    } else {
+        var match = /(\d+)-(\d+)/.exec(fromBinding);
+        this.fromStartRes = match[1] * 1;
+        this.fromEndRes = match[2] * 1;
+    }
+    if (toBinding === '?-?') {
+        this.toStartRes = -1;
+        this.toEndRes = -1;
+    } else {
+        match = /(\d+)-(\d+)/.exec(toBinding);
+        this.toStartRes = match[1] * 1;
+        this.toEndRes = match[2] * 1;
+    }
+    this.evidence = interaction;
 
 //    var tempSourceRanges = fromResidue.split(/,/);
 //    var tempTargetRanges = toResidue.split(/,/);
@@ -87,7 +101,8 @@ ResidueLink.prototype.initSVG = function() {
 //
 //                this.sourceSitesMid += (this.sourceBindingSites[sl] * 1);
 //
-//                var sourceLine = document.createElementNS(xinet.svgns, "line");
+            this.fromGlyph = document.createElementNS(xinet.svgns, "path");
+            this.toGlyph = document.createElementNS(xinet.svgns, "path");
 //                sourceLine.setAttribute("stroke", "#E08214");
 //                this.sourceLines.push(sourceLine);
 //            }
@@ -115,13 +130,17 @@ ResidueLink.prototype.initSVG = function() {
             //            this.highlightLine = document.createElementNS(xinet.svgns, "path");
         }
 
-        //        this.line.setAttribute("class", "link");
-        //        this.line.setAttribute("fill", "none");
-        //        this.highlightLine.setAttribute("class", "link");
-        //        this.highlightLine.setAttribute("fill", "none");
-        //        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
-        //        this.highlightLine.setAttribute("stroke-width", "10");
-        //        this.highlightLine.setAttribute("stroke-opacity", "0")
+        this.line.setAttribute("class", "link");
+        this.line.setAttribute("fill", "none");
+        this.highlightLine.setAttribute("class", "link");
+        this.highlightLine.setAttribute("fill", "none");
+        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke-width", "10");
+        this.highlightLine.setAttribute("stroke-opacity", "0")
+
+        this.fromGlyph.setAttribute("fill", "#E08214");
+        this.toGlyph.setAttribute("fill", "#E08214");
+
 
         if (typeof this.colour !== 'undefined') {
             this.line.setAttribute("stroke", this.colour.toString());
@@ -192,33 +211,15 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 
 //used when link clicked
 ResidueLink.prototype.showID = function() {
-    if (typeof send_match_ids === 'function') {
-        var matches = this.getFilteredMatches();
-        var matchIDs = new Array();
-        var c = matches.length;
-        var firstMatch = true;
-        for (var i = 0; i < c; i++) {
-            if (firstMatch) {
-                firstMatch = false;
-            }
-            else {
-                matchIDs = matchIDs + ",";
-            }
-            matchIDs = matchIDs + matches[i].id;
-        }
-        send_match_ids(matchIDs);
-    }
-    else {
-        //only same info as in tooltip but may need to print to page if on touch screen
-        var fromProt = this.getFromProtein();
-        var toProt = this.getToProtein();
-        var linkInfo = "<p><strong>" + fromProt.name + " (" + fromProt.accession
-                + "), residue " + JSON.stringify(this.sourceBindingSites) + " - "
-                + toProt.name + " (" + toProt.accession
-                + "), residue " + JSON.stringify(this.targetBindingSites) + "</strong></p>";
-
-        this.xlv.message(linkInfo);
-    }
+    var fromProt = this.proteinLink.fromProtein;
+    var toProt = this.proteinLink.toProtein;
+    var linkInfo = "<p><strong>" + this.fromStartRes + "-" + this.fromEndRes
+            + ", " + fromProt.name + " (" + fromProt.accession
+            + ") to " + this.toStartRes + "-" + this.toEndRes
+            + ", " + toProt.name + " (" + toProt.accession
+            + ")</strong></p>";
+    linkInfo += "<pre>" + JSON.stringify(this.evidence, null, '\t') + "</pre>";
+    this.xlv.message(linkInfo);
 };
 
 ResidueLink.prototype.getFilteredMatches = function() {
@@ -310,12 +311,14 @@ ResidueLink.prototype.show = function() {
             }
             else {
 
-                                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
-                                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
+                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates(this.proteinLink.fromProtein);
                 this.setLinkCoordinates(this.proteinLink.toProtein);
-                                this.xlv.highlights.appendChild(this.highlightLine);
-                                this.xlv.res_resLinks.appendChild(this.line);
+                this.xlv.highlights.appendChild(this.highlightLine);
+                this.xlv.res_resLinks.appendChild(this.fromGlyph);
+                this.xlv.res_resLinks.appendChild(this.toGlyph);
+                this.xlv.res_resLinks.appendChild(this.line);
 
 //                for (var sl = 0; sl < this.sourceBindingSites.length; sl++) {
 //                    this.xlv.res_resLinks.appendChild(this.sourceLines[sl]);
@@ -379,51 +382,69 @@ ResidueLink.prototype.setUpCurve = function() {
 // update the links(lines) to fit to the protein
 ResidueLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) { //don't waste time changing DOM if link not visible
-//        var blobMidPoint = this.proteinLink.getBlobMidPoint();
-//
-//        var sMid = this.proteinLink.fromProtein.getResidueCoordinates(this.sourceSitesMid);
-//        sMid[1] = sMid[1] - 20;
-//
-//        var countSourceBindingSites = this.sourceBindingSites.length;
-//        for (var sbs = 0; sbs < countSourceBindingSites; sbs++) {
-//            var s;
-//            if (this.proteinLink.fromProtein.form === 1) {
-//                s = this.proteinLink.fromProtein.getResidueCoordinates(this.sourceBindingSites[sbs]);
-//            }
-//            else {
-//                s = [this.proteinLink.fromProtein.x, this.proteinLink.fromProtein.y];
-//            }
-//            var line = this.sourceLines[sbs];
-//            line.setAttribute("x1", s[0]);
-//            line.setAttribute("y1", s[1]);
-//            line.setAttribute("x2", sMid[0]);
-//            line.setAttribute("y2", sMid[1]);
-//        }
-//
-//        var tMid = this.proteinLink.toProtein.getResidueCoordinates(this.targetSitesMid);
-//        //tMid[1] = tMid[1] - 20;
-//        var rotRad = (this.proteinLink.toProtein.rotation / 360) * Math.PI * 2;
-//        tMid[0] = tMid[0] + (40 * Math.sin(rotRad));
-//        tMid[1] = tMid[1] - (40 * Math.cos(rotRad));
-//
-//        var countTargetBindingSites = this.targetBindingSites.length;
-//        for (var tbs = 0; tbs < countTargetBindingSites; tbs++) {
-//            var t;
-//            if (this.proteinLink.toProtein.form === 1) {
-//                t = this.proteinLink.toProtein.getResidueCoordinates(this.targetBindingSites[tbs]);
-//            }
-//            else {
-//                t = [this.proteinLink.toProtein.x, this.proteinLink.toProtein.y];
-//            }
-//            line = this.targetLines[tbs];
-//            line.setAttribute("x1", t[0]);
-//            line.setAttribute("y1", t[1]);
-//            line.setAttribute("x2", tMid[0]);
-//            line.setAttribute("y2", tMid[1]);
-//        }
 
-        if (this.proteinLink.fromProtein === interactor) {
-            if (interactor.form === 0) {
+        //TODO: - tidy this up, store stick rotation in rad's not deg's 
+        //flip or not? - first get mid points
+        var fromMidRes = (this.fromStartRes + this.fromEndRes) / 2;
+        var fMid = this.proteinLink.fromProtein.getResidueCoordinates(fromMidRes);
+
+        var toMidRes = (this.toStartRes + this.toEndRes) / 2;
+        var tMid = this.proteinLink.toProtein.getResidueCoordinates(toMidRes);
+
+        //calculate angle from fromProtMidPOint to toProtMidPoint 
+        var deltaX = fMid[0] - tMid[0];
+        var deltaY = fMid[1] - tMid[1];
+
+        var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
+        var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
+//        abmpDeg = abmpDeg % 360;
+        if (abmpDeg < 0)
+            abmpDeg += 360;
+        var out = (abmpDeg - this.proteinLink.fromProtein.rotation);
+
+        if (out < 0)
+            out += 360;
+//        xlv.message("FROM END- abmp:" + abmpDeg + "\tfpr:" + this.proteinLink.fromProtein.rotation
+//                + "\td: " + out);
+
+        var fRotRad = (this.proteinLink.fromProtein.rotation / 360) * Math.PI * 2;
+
+        if (out > 180)
+            fRotRad = fRotRad - Math.PI;
+
+        fMid[0] = fMid[0] + (30 * Math.sin(fRotRad));
+        fMid[1] = fMid[1] - (30 * Math.cos(fRotRad));
+
+        var fs = this.proteinLink.fromProtein.getResidueCoordinates(this.fromStartRes);
+        var fe = this.proteinLink.fromProtein.getResidueCoordinates(this.fromEndRes);
+        this.fromGlyph.setAttribute("d", 'M' + fs[0] + ' ' + fs[1] +
+                ' L' + fMid[0] + ' ' + fMid[1]
+                + ' L' + fe[0] + ' ' + fe[1] + ' Z');
+
+        out = (abmpDeg - this.proteinLink.toProtein.rotation);
+        if (out < 0)
+            out += 360;
+        xlv.message("TO END- abmp:" + abmpDeg + "\ttpr:" + this.proteinLink.toProtein.rotation
+                + "\td: " + out);
+
+        var tRotRad = (this.proteinLink.toProtein.rotation / 360) * Math.PI * 2;
+
+        if (out < 180)
+            tRotRad = tRotRad - Math.PI;
+
+
+        tMid[0] = tMid[0] + (30 * Math.sin(tRotRad));
+        tMid[1] = tMid[1] - (30 * Math.cos(tRotRad));
+
+        var ts = this.proteinLink.toProtein.getResidueCoordinates(this.toStartRes);
+        var te = this.proteinLink.toProtein.getResidueCoordinates(this.toEndRes);
+        this.toGlyph.setAttribute("d", 'M' + ts[0] + ' ' + ts[1] +
+                ' L' + tMid[0] + ' ' + tMid[1]
+                + ' L' + te[0] + ' ' + te[1] + ' Z');
+
+
+//        if (this.proteinLink.fromProtein === interactor) {
+            if (this.proteinLink.fromProtein.form === 0) {
                 this.line.setAttribute("x1", interactor.x);
                 this.line.setAttribute("y1", interactor.y);
                 this.highlightLine.setAttribute("x1", interactor.x);
@@ -431,15 +452,15 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
             }
             else //if (this.form == 1)
             {
-                var coord = interactor.getResidueCoordinates(this.fromResidue);
+                var coord = fMid;
                 this.line.setAttribute("x1", coord[0]);
                 this.line.setAttribute("y1", coord[1]);
                 this.highlightLine.setAttribute("x1", coord[0]);
                 this.highlightLine.setAttribute("y1", coord[1]);
             }
-        }
-        else { //if (link.toProtein === interactor) {
-            if (interactor.form === 0) {
+//        }
+//        else { //if (link.toProtein === interactor) {
+            if (this.proteinLink.toProtein === 0) {
                 this.line.setAttribute("x2", interactor.x);
                 this.line.setAttribute("y2", interactor.y);
                 this.highlightLine.setAttribute("x2", interactor.x);
@@ -447,17 +468,12 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
             }
             else //if (this.form == 1)
             {
-                var coord = interactor.getResidueCoordinates(this.toResidue);
+                var coord = tMid;
                 this.line.setAttribute("x2", coord[0]);
                 this.line.setAttribute("y2", coord[1]);
                 this.highlightLine.setAttribute("x2", coord[0]);
                 this.highlightLine.setAttribute("y2", coord[1]);
             }
         }
-
-
-    }
-
-
 };
 
