@@ -445,10 +445,10 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
 
 //        if (this.proteinLink.fromProtein === interactor) {
             if (this.proteinLink.fromProtein.form === 0) {
-                this.line.setAttribute("x1", interactor.x);
-                this.line.setAttribute("y1", interactor.y);
-                this.highlightLine.setAttribute("x1", interactor.x);
-                this.highlightLine.setAttribute("y1", interactor.y);
+                this.line.setAttribute("x1", this.proteinLink.fromProtein.x);
+                this.line.setAttribute("y1", this.proteinLink.fromProtein.y);
+                this.highlightLine.setAttribute("x1", this.proteinLink.fromProtein.x);
+                this.highlightLine.setAttribute("y1", this.proteinLink.fromProtein.y);
             }
             else //if (this.form == 1)
             {
@@ -460,11 +460,11 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
             }
 //        }
 //        else { //if (link.toProtein === interactor) {
-            if (this.proteinLink.toProtein === 0) {
-                this.line.setAttribute("x2", interactor.x);
-                this.line.setAttribute("y2", interactor.y);
-                this.highlightLine.setAttribute("x2", interactor.x);
-                this.highlightLine.setAttribute("y2", interactor.y);
+            if (this.proteinLink.toProtein.form === 0) {
+                this.line.setAttribute("x2", this.proteinLink.toProtein.x);
+                this.line.setAttribute("y2", this.proteinLink.toProtein.y);
+                this.highlightLine.setAttribute("x2", this.proteinLink.toProtein.x);
+                this.highlightLine.setAttribute("y2", this.proteinLink.toProtein.y);
             }
             else //if (this.form == 1)
             {
