@@ -558,7 +558,7 @@ Protein.prototype.scale = function() {
             var scaleLabelGroup = document.createElementNS(xinet.svgns, "g");
             scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
             var scaleLabel = document.createElementNS(xinet.svgns, "text");
-            scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
+            scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText xlv_text");
             scaleLabel.setAttribute('font-family', 'Arial');
             scaleLabel.setAttribute('font-size', '14');
             scaleLabel.setAttribute("text-anchor", "middle");

@@ -4,7 +4,7 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-//rename to sequence link
+//rename to sequence link?
 ResidueLink.prototype = new xinet.Link();
 function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, interaction) {
     this.id = id;
@@ -29,146 +29,62 @@ function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, int
     }
     this.evidence = interaction;
 
-//    var tempSourceRanges = fromResidue.split(/,/);
-//    var tempTargetRanges = toResidue.split(/,/);
-//
-//    var sourceRangeCount = tempSourceRanges.length;
-//    var targetRangeCount = tempTargetRanges.length;
-//
-//    this.sourceRanges = new Array();
-//    this.targetRanges = new Array();
-//    this.sourceRangeGraphic = new Array();
-//    this.targetRangeGraphic = new Array();
-//    this.sourceRangeMidPoint = 0;
-//    this.sourceRangeMidPoint = 0;
-//
-//    for (var s = 0; s < sourceRangeCount; s++){
-//        var boundFeature = new BoundFeature(tempSourceRanges[s], proteinLink.fromProtein);
-//        this.sourceRanges.push(boundFeature);
-//        var graphic = null;
-//        if (boundFeature.singlePoint !== null) {
-//            graphic = document.createElementNS(xinet.svgns, "line");
-//        }
-//        else {
-//            graphic = document.createElementNS(xinet.svgns, "path");
-//        }
-//    }
-//    for (var t = 0; t < targetRangeCount; t++){
-//        boundFeature = new BoundFeature(tempTargetRanges[t], proteinLink.toProtein);
-//        this.targetRanges.push(boundFeature);
-//        var graphic = null;
-//        if (boundFeature.singlePoint !== null) {
-//            graphic = document.createElementNS(xinet.svgns, "line");
-//        }
-//        else {
-//            graphic = document.createElementNS(xinet.svgns, "path");
-//        }
-//    }
-
     this.intra = false;
     if (typeof this.proteinLink !== 'undefined') {
         if (this.proteinLink.fromProtein === this.proteinLink.toProtein) {
             this.intra = true;
         }
     }
-
     this.ambig = false;
     this.tooltip = this.id;
-
+    this.curveMidX = null;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
 
-    this.curveMidX = null;
 }
 
 ResidueLink.prototype.initSVG = function() {
-    if (typeof this.line === 'undefined') {
-        if (!this.intra) {
-            this.line = document.createElementNS(xinet.svgns, "line");
-            this.line.setAttribute("stroke", "#E08214");
-            this.line.setAttribute("stroke-linecap", "round");
-            this.highlightLine = document.createElementNS(xinet.svgns, "line");
-            this.highlightLine.setAttribute("stroke-linecap", "round");
-
-//            this.sourceLines = new Array();
-//            this.targetLines = new Array();
-//
-//            this.sourceSitesMid = 0;
-//            this.targetSitesMid = 0;
-//
-//            for (var sl = 0; sl < this.sourceBindingSites.length; sl++) {
-//
-//                this.sourceSitesMid += (this.sourceBindingSites[sl] * 1);
-//
-            this.fromGlyph = document.createElementNS(xinet.svgns, "path");
-            this.toGlyph = document.createElementNS(xinet.svgns, "path");
-//                sourceLine.setAttribute("stroke", "#E08214");
-//                this.sourceLines.push(sourceLine);
-//            }
-//
-//            this.sourceSitesMid = this.sourceSitesMid / this.sourceBindingSites.length;
-//
-//            for (var tl = 0; tl < this.targetBindingSites.length; tl++) {
-//
-//                this.targetSitesMid += (this.targetBindingSites[tl] * 1);
-//
-//                var targetLine = document.createElementNS(xinet.svgns, "line");
-//                targetLine.setAttribute("stroke", "#E08214");
-//                this.targetLines.push(targetLine);
-//            }
-//
-//            this.targetSitesMid = this.targetSitesMid / this.targetBindingSites.length;
+    if (typeof this.glyph === 'undefined') {
+        this.glyph = document.createElementNS(xinet.svgns, "path");
+        this.highlightGlyph = document.createElementNS(xinet.svgns, "path");
+        this.glyph.setAttribute("stroke-linecap", "round");
+        this.highlightGlyph.setAttribute("stroke-linecap", "round");
 
 
-        } else {
-
-            //temp intra links disabed
-
-            //            this.line = document.createElementNS(xinet.svgns, "path");
-            //            this.line.setAttribute('stroke', '#8073AC');
-            //            this.highlightLine = document.createElementNS(xinet.svgns, "path");
-        }
-
-        this.line.setAttribute("class", "link");
-        this.line.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("class", "link");
-        this.highlightLine.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
-        this.highlightLine.setAttribute("stroke-width", "10");
-        this.highlightLine.setAttribute("stroke-opacity", "0")
-
-        this.fromGlyph.setAttribute("fill", "#E08214");
-        this.toGlyph.setAttribute("fill", "#E08214");
-
+        this.glyph.setAttribute("class", "link");
+        this.glyph.setAttribute("fill", "#E08214");
+        this.glyph.setAttribute("stroke", "#A08214");
+        this.highlightGlyph.setAttribute("class", "link");
+        this.highlightGlyph.setAttribute("fill", "none");
+        this.highlightGlyph.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke-width", "10");
+        this.highlightGlyph.setAttribute("stroke-opacity", "0");
 
         if (typeof this.colour !== 'undefined') {
-            this.line.setAttribute("stroke", this.colour.toString());
+            this.glyph.setAttribute("fill", this.colour.toString());
         }
 
         //set the events for it
         var self = this;
-        this.line.onmousedown = function(evt) {
+        this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
         };
-        this.line.onmouseover = function(evt) {
+        this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
         };
-        this.line.onmouseout = function(evt) {
+        this.glyph.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
-        this.highlightLine.onmousedown = function(evt) {
+        this.highlightGlyph.onmousedown = function(evt) {
             self.mouseDown(evt);
         };
-        this.highlightLine.onmouseover = function(evt) {
+        this.highlightGlyph.onmouseover = function(evt) {
             self.mouseOver(evt);
         };
-        this.highlightLine.onmouseout = function(evt) {
+        this.highlightGlyph.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
-    }
-    if (this.intra === true) {
-//        this.setUpCurve();
     }
 };
 
@@ -187,9 +103,9 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
     }
     if (this.shown) {
         if (show) {
-            this.highlightLine.setAttribute("stroke-opacity", "1");
+            this.highlightGlyph.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
+            this.highlightGlyph.setAttribute("stroke-opacity", "0");
         }
     }
     if (andAlternatives && this.ambig) {
@@ -222,22 +138,6 @@ ResidueLink.prototype.showID = function() {
     this.xlv.message(linkInfo);
 };
 
-ResidueLink.prototype.getFilteredMatches = function() {
-    this.ambig = true;
-    var filteredMatches = new Array();
-    var count = this.matches.length;
-    for (var i = 0; i < count; i++) {
-        var match = this.matches[i];
-        if (match.meetsFilterCriteria()) {
-            filteredMatches.push(match);
-            if (match.isAmbig() === false) {
-                this.ambig = false;
-            }
-        }
-    }
-    return filteredMatches;
-};
-
 //used when filter changed
 ResidueLink.prototype.check = function(filter) {
     if (this.xlv.intraHidden && this.intra) {
@@ -248,7 +148,6 @@ ResidueLink.prototype.check = function(filter) {
         this.hide();
         return false;
     }
-    //    if (typeof this.matches === 'undefined' || this.matches == null) {
     //        if (this.proteinLink.sc >= this.xlv.cutOff) {
     this.show();
     return true;
@@ -257,43 +156,6 @@ ResidueLink.prototype.check = function(filter) {
 //            return false;
 //        }
 //   }
-//    var filteredMatches = this.getFilteredMatches();
-//    var countFilteredMatches = filteredMatches.length;
-//    if (countFilteredMatches > 0) {
-//        this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
-//                    + "-"  + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
-//        if (countFilteredMatches == 1) {
-//            this.tooltip += ' match)';
-//        } else {
-//            this.tooltip += ' matches)';
-//        }
-//        this.show();
-//        this.dashedLine(this.ambig);
-//        return true;
-//    }
-//    else {
-//        this.hide();
-//        return false;
-//    }
-};
-
-ResidueLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line !== 'undefined') {
-        if (dash) {// && !this.dashed){
-            if (this.intra) {
-                this.dashed = true;
-                this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-            }
-            else {
-                this.dashed = true;
-                this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
-            }
-        }
-        else if (!dash) {// && this.dashed){
-            this.dashed = false;
-            this.line.removeAttribute("stroke-dasharray");
-        }
-    }
 };
 
 ResidueLink.prototype.show = function() {
@@ -311,21 +173,11 @@ ResidueLink.prototype.show = function() {
             }
             else {
 
-                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.setLinkCoordinates(this.proteinLink.fromProtein);
-                this.setLinkCoordinates(this.proteinLink.toProtein);
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.res_resLinks.appendChild(this.fromGlyph);
-                this.xlv.res_resLinks.appendChild(this.toGlyph);
-                this.xlv.res_resLinks.appendChild(this.line);
-
-//                for (var sl = 0; sl < this.sourceBindingSites.length; sl++) {
-//                    this.xlv.res_resLinks.appendChild(this.sourceLines[sl]);
-//                }
-//                for (var tl = 0; tl < this.targetBindingSites.length; tl++) {
-//                    this.xlv.res_resLinks.appendChild(this.targetLines[tl]);
-//                }
+                this.glyph.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
+                this.highlightGlyph.setAttribute("stroke-width", this.xlv.z * 10);
+                this.setLinkCoordinates();
+                this.xlv.highlights.appendChild(this.highlightGlyph);
+                this.xlv.res_resLinks.appendChild(this.glyph);
             }
         }
     }
@@ -336,52 +188,20 @@ ResidueLink.prototype.hide = function() {
         if (this.shown) {
             this.shown = false;
             if (this.intra) {
-                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
+//                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
                 this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
             }
             else {
-                this.xlv.res_resLinks.removeChild(this.line);
+//                this.xlv.res_resLinks.removeChild(this.line);
                 this.xlv.highlights.removeChild(this.highlightLine);
             }
         }
     }
 };
 
-ResidueLink.prototype.setUpCurve = function() {
-    //    alert("yup, here");
-    var pathAtt;
-    var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-    //    if (this.fromResidue == this.toResidue){
-    //        pathAtt = "M " + x1 + " 0 L " + x1 + " 25";
-    //    //        this.line.setAttribute("stroke", "red");
-    //    }
-    //    else {
-    var x2 = this.proteinLink.fromProtein.getResXwithStickZoom(this.toResidue);
-    var midY = (Math.abs(x2 - x1));
-    midY = midY / 2;
-    this.curveMidX = x1 + ((x2 - x1) / 2);
-    pathAtt = "M " + x1 + " 0 "
-            + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-            + " A " + midY + " " + midY + "  0 1 1 "
-            + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-            + " L " + x2 + " 0 "
-            ;
-    //    }
-
-    this.line.setAttribute("d", pathAtt);
-    this.highlightLine.setAttribute("d", pathAtt);
-    //
-    if (this.homodimer === true) {
-        //        alert('true');
-        this.line.setAttribute("stroke", "red");
-        this.line.setAttribute("transform", "scale (1 -1)");
-        this.highlightLine.setAttribute("transform", "scale (1 -1)");
-    }
-};
-
 // update the links(lines) to fit to the protein
 ResidueLink.prototype.setLinkCoordinates = function(interactor) {
-    if (this.shown) { //don't waste time changing DOM if link not visible
+    if (this.shown) { //don't waste time changing DOM if link is not visible
 
         //TODO: - tidy this up, store stick rotation in rad's not deg's 
         //flip or not? - first get mid points
@@ -408,18 +228,15 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
 //                + "\td: " + out);
 
         var fRotRad = (this.proteinLink.fromProtein.rotation / 360) * Math.PI * 2;
-
-        if (out > 180)
-            fRotRad = fRotRad - Math.PI;
-
-        fMid[0] = fMid[0] + (30 * Math.sin(fRotRad));
-        fMid[1] = fMid[1] - (30 * Math.cos(fRotRad));
-
         var fs = this.proteinLink.fromProtein.getResidueCoordinates(this.fromStartRes);
         var fe = this.proteinLink.fromProtein.getResidueCoordinates(this.fromEndRes);
-        this.fromGlyph.setAttribute("d", 'M' + fs[0] + ' ' + fs[1] +
-                ' L' + fMid[0] + ' ' + fMid[1]
-                + ' L' + fe[0] + ' ' + fe[1] + ' Z');
+
+        if (out > 180) {
+            fRotRad = fRotRad - Math.PI;
+        }
+
+        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad)),
+            fMid[1] - (30 * Math.cos(fRotRad))];
 
         out = (abmpDeg - this.proteinLink.toProtein.rotation);
         if (out < 0)
@@ -429,51 +246,61 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
 
         var tRotRad = (this.proteinLink.toProtein.rotation / 360) * Math.PI * 2;
 
-        if (out < 180)
-            tRotRad = tRotRad - Math.PI;
-
-
-        tMid[0] = tMid[0] + (30 * Math.sin(tRotRad));
-        tMid[1] = tMid[1] - (30 * Math.cos(tRotRad));
-
         var ts = this.proteinLink.toProtein.getResidueCoordinates(this.toStartRes);
         var te = this.proteinLink.toProtein.getResidueCoordinates(this.toEndRes);
-        this.toGlyph.setAttribute("d", 'M' + ts[0] + ' ' + ts[1] +
-                ' L' + tMid[0] + ' ' + tMid[1]
-                + ' L' + te[0] + ' ' + te[1] + ' Z');
+        if (out < 180) {
+            tRotRad = tRotRad - Math.PI;
+//            ts[1] += Protein.STICKHEIGHT / 2;
+//            te[1] += Protein.STICKHEIGHT / 2;
 
-
-//        if (this.proteinLink.fromProtein === interactor) {
-            if (this.proteinLink.fromProtein.form === 0) {
-                this.line.setAttribute("x1", this.proteinLink.fromProtein.x);
-                this.line.setAttribute("y1", this.proteinLink.fromProtein.y);
-                this.highlightLine.setAttribute("x1", this.proteinLink.fromProtein.x);
-                this.highlightLine.setAttribute("y1", this.proteinLink.fromProtein.y);
-            }
-            else //if (this.form == 1)
-            {
-                var coord = fMid;
-                this.line.setAttribute("x1", coord[0]);
-                this.line.setAttribute("y1", coord[1]);
-                this.highlightLine.setAttribute("x1", coord[0]);
-                this.highlightLine.setAttribute("y1", coord[1]);
-            }
-//        }
-//        else { //if (link.toProtein === interactor) {
-            if (this.proteinLink.toProtein.form === 0) {
-                this.line.setAttribute("x2", this.proteinLink.toProtein.x);
-                this.line.setAttribute("y2", this.proteinLink.toProtein.y);
-                this.highlightLine.setAttribute("x2", this.proteinLink.toProtein.x);
-                this.highlightLine.setAttribute("y2", this.proteinLink.toProtein.y);
-            }
-            else //if (this.form == 1)
-            {
-                var coord = tMid;
-                this.line.setAttribute("x2", coord[0]);
-                this.line.setAttribute("y2", coord[1]);
-                this.highlightLine.setAttribute("x2", coord[0]);
-                this.highlightLine.setAttribute("y2", coord[1]);
-            }
         }
-};
+        else {
+//            ts[1] -= Protein.STICKHEIGHT / 2;
+//            te[1] -= Protein.STICKHEIGHT / 2;
 
+        }
+
+        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad)),
+            tMid[1] - (30 * Math.cos(tRotRad))];
+
+        var triPointMid = [(ftMid[0] + ttMid[0]) / 2, (ftMid[1] + ttMid[1]) / 2];
+
+        var path = 'M' + fs[0] + ',' + fs[1] +
+                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1] +
+                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
+                ' L' + te[0] + ',' + te[1] +
+                ' Q ' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1]
+                + ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1]
+                + ' Z';
+        
+        this.glyph.setAttribute("d", path);
+        this.highlightGlyph.setAttribute("d", path);
+
+        function midPoint(a, b)
+        {
+            return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+        };
+        function reflect(point, around, scale)
+        {
+            return [around[0] + scale * (around[0] - point[0]), around[1] + scale * (around[1] - point[1])];
+        };
+
+//        this.glyph.setAttribute("d", 'M' + fs[0] + ' ' + fs[1] +
+//                ' L' + fMid[0] + ' ' + fMid[1]
+//                + ' L' + fe[0] + ' ' + fe[1] + ' Z');    
+                    
+//        var triPointThird = [fMid[0] + ((tMid[0] - fMid[0]) / 3), fMid[1] + ((tMid[1] - fMid[1]) / 3)];
+//        var triPointTwoThird = [fMid[0] + ((tMid[0] - fMid[0]) * 2 / 3), fMid[1] + ((tMid[1] - fMid[1]) * 2 / 3)];
+//        var reflectFtMid = reflect(ftMid, triPointThird, 0.7);
+//        var reflectTtMid = reflect(ttMid, triPointTwoThird, 0.7);
+//        var path = 'M' + fs[0] + ',' + fs[1] +
+//                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
+//                ' C' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
+//                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
+//                ' L' + te[0] + ',' + te[1] +
+//                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
+//                ' C' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
+//                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1] +
+//                ' Z';
+    }
+};

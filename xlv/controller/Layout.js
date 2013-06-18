@@ -231,7 +231,7 @@ xinet.Controller.prototype.autoLayout = function() {
                 .links(jsonObj.links)
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
-                .charge(-30 / k)
+                .charge(-45 / k)
                 .size([gWidth, height]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;

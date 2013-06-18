@@ -51,8 +51,8 @@ xinet.Controller.prototype.scale = function() {
                         for (var rl = 0; rl < c2; rl++) {
                             var resLink = protLink.residueLinks.values()[rl];
                             if (resLink.check()) {
-                                protLink.residueLinks.values()[rl].line.setAttribute("stroke-width", this.z * xinet.linkWidth);
-                                protLink.residueLinks.values()[rl].highlightLine.setAttribute("stroke-width", this.z * 10);
+                                protLink.residueLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xinet.linkWidth);
+                                protLink.residueLinks.values()[rl].highlightGlyph.setAttribute("stroke-width", this.z * 10);
                                 if (resLink.ambig) {
                                     resLink.dashedLine(true); //rescale spacing of dashes
                                 }
