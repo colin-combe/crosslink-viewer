@@ -189,11 +189,11 @@ ResidueLink.prototype.hide = function() {
             this.shown = false;
             if (this.intra) {
 //                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
-                this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
+//                this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
             }
             else {
-//                this.xlv.res_resLinks.removeChild(this.line);
-                this.xlv.highlights.removeChild(this.highlightLine);
+                this.xlv.res_resLinks.removeChild(this.glyph);
+                this.xlv.highlights.removeChild(this.highlightGlyph);
             }
         }
     }
