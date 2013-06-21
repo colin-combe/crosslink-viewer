@@ -8,26 +8,25 @@
 ResidueLink.prototype = new xinet.Link();
 function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, interaction) {
     this.id = id;
-    //this.matches = new Array(0); //rename to evidence, temp commented out as filtering disabled
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
-    if (fromBinding === '?-?') {
-        this.fromStartRes = -1;
-        this.fromEndRes = -1;
-    } else {
-        var match = /(\d+)-(\d+)/.exec(fromBinding);
-        this.fromStartRes = match[1] * 1;
-        this.fromEndRes = match[2] * 1;
-    }
-    if (toBinding === '?-?') {
-        this.toStartRes = -1;
-        this.toEndRes = -1;
-    } else {
-        match = /(\d+)-(\d+)/.exec(toBinding);
-        this.toStartRes = match[1] * 1;
-        this.toEndRes = match[2] * 1;
-    }
-    this.evidence = interaction;
+    //    if (fromBinding === '?-?') {
+    //        this.fromStartRes = -1;
+    //        this.fromEndRes = -1;
+    //    } else {
+    var match = /(.+)-(.+)/.exec(fromBinding);
+    this.fromStartRes = match[1] * 1;
+    this.fromEndRes = match[2] * 1;
+    //    }
+    //    if (toBinding === '?-?') {
+    //        this.toStartRes = -1;
+    //        this.toEndRes = -1;
+    //    } else {
+    match = /(.+)-(.+)/.exec(toBinding);
+    this.toStartRes = match[1] * 1;
+    this.toEndRes = match[2] * 1;
+    //    }
+    this.evidence = interaction;//todo: needs to be an array
 
     this.intra = false;
     if (typeof this.proteinLink !== 'undefined') {
@@ -41,7 +40,6 @@ function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, int
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
-
 }
 
 ResidueLink.prototype.initSVG = function() {
@@ -130,10 +128,10 @@ ResidueLink.prototype.showID = function() {
     var fromProt = this.proteinLink.fromProtein;
     var toProt = this.proteinLink.toProtein;
     var linkInfo = "<p><strong>" + this.fromStartRes + "-" + this.fromEndRes
-            + ", " + fromProt.name + " (" + fromProt.accession
-            + ") to " + this.toStartRes + "-" + this.toEndRes
-            + ", " + toProt.name + " (" + toProt.accession
-            + ")</strong></p>";
+    + ", " + fromProt.name + " (" + fromProt.accession
+    + ") to " + this.toStartRes + "-" + this.toEndRes
+    + ", " + toProt.name + " (" + toProt.accession
+    + ")</strong></p>";
     linkInfo += "<pre>" + JSON.stringify(this.evidence, null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
@@ -188,8 +186,8 @@ ResidueLink.prototype.hide = function() {
         if (this.shown) {
             this.shown = false;
             if (this.intra) {
-//                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
-//                this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
+            //                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
+            //                this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
             }
             else {
                 this.xlv.res_resLinks.removeChild(this.glyph);
@@ -202,77 +200,112 @@ ResidueLink.prototype.hide = function() {
 // update the links(lines) to fit to the protein
 ResidueLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) { //don't waste time changing DOM if link is not visible
+        var fromInteractor = this.proteinLink.fromProtein;
+        var toInteractor = this.proteinLink.toProtein;
 
-        //TODO: - tidy this up, store stick rotation in rad's not deg's 
-        //flip or not? - first get mid points
-        var fromMidRes = (this.fromStartRes + this.fromEndRes) / 2;
-        var fMid = this.proteinLink.fromProtein.getResidueCoordinates(fromMidRes);
+        var fMid, tMid;
+        if (fromInteractor.form === 0) {
+            fMid = [fromInteractor.x, fromInteractor.y];
+        }
+        else {
+            fMid = fromInteractor.getResidueCoordinates(
+                (this.fromStartRes + this.fromEndRes) / 2);
+        }
+        if (toInteractor.form === 0) {
+            tMid = [toInteractor.x, toInteractor.y];
+        }
+        else {
+            tMid = toInteractor.getResidueCoordinates(
+                (this.toStartRes + this.toEndRes) / 2);
+        }
 
-        var toMidRes = (this.toStartRes + this.toEndRes) / 2;
-        var tMid = this.proteinLink.toProtein.getResidueCoordinates(toMidRes);
-
-        //calculate angle from fromProtMidPOint to toProtMidPoint 
+        //calculate angle from fromInteractor mid point to toInteractor mid point
         var deltaX = fMid[0] - tMid[0];
         var deltaY = fMid[1] - tMid[1];
-
         var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
+
+        //todo: tidy up trig code so eveything is always in radian
         var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
-//        abmpDeg = abmpDeg % 360;
-        if (abmpDeg < 0)
+        if (abmpDeg < 0) {
             abmpDeg += 360;
-        var out = (abmpDeg - this.proteinLink.fromProtein.rotation);
+        }
 
-        if (out < 0)
+        //out is value we use to decide which side of bat the link glyph is drawn
+        var out = (abmpDeg - fromInteractor.rotation);
+        if (out < 0) {
             out += 360;
-//        xlv.message("FROM END- abmp:" + abmpDeg + "\tfpr:" + this.proteinLink.fromProtein.rotation
-//                + "\td: " + out);
-
+        }
+        //        xlv.message("FROM END- abmp:" + abmpDeg + "\tfpr:" + fromInteractor.rotation
+        //                + "\td: " + out);
+        var yOffset = 10;
+        if (out < 180) {
+            yOffset = -10;
+        }
         var fRotRad = (this.proteinLink.fromProtein.rotation / 360) * Math.PI * 2;
-        var fs = this.proteinLink.fromProtein.getResidueCoordinates(this.fromStartRes);
-        var fe = this.proteinLink.fromProtein.getResidueCoordinates(this.fromEndRes);
+        var fs = fromInteractor.getResidueCoordinates(this.fromStartRes, yOffset);
+        var fe = fromInteractor.getResidueCoordinates(this.fromEndRes, yOffset);
+        if (fromInteractor.form === 0) {
+            fs = [fromInteractor.x, fromInteractor.y];
+            fe = fs;
+        }
 
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
 
         var ftMid = [fMid[0] + (30 * Math.sin(fRotRad)),
-            fMid[1] - (30 * Math.cos(fRotRad))];
+        fMid[1] - (30 * Math.cos(fRotRad))];
+        if (fromInteractor.form === 0) {
+            ftMid = fMid;
+        }
 
         out = (abmpDeg - this.proteinLink.toProtein.rotation);
-        if (out < 0)
+        if (out < 0){
             out += 360;
-        xlv.message("TO END- abmp:" + abmpDeg + "\ttpr:" + this.proteinLink.toProtein.rotation
-                + "\td: " + out);
+        }
+        //        xlv.message("TO END- abmp:" + abmpDeg + "\ttpr:" + this.proteinLink.toProtein.rotation
+        //                + "\td: " + out);
 
-        var tRotRad = (this.proteinLink.toProtein.rotation / 360) * Math.PI * 2;
+        var tRotRad = (toInteractor.rotation / 360) * Math.PI * 2;
+        yOffset = 10;
+        if (out > 180) {
+            yOffset = -10;
+        }
+        var ts = toInteractor.getResidueCoordinates(this.toStartRes, yOffset);
+        var te = toInteractor.getResidueCoordinates(this.toEndRes, yOffset);
+        if (toInteractor.form === 0) {
+            ts = [toInteractor.x, toInteractor.y];
+            te = ts;
+        }
 
-        var ts = this.proteinLink.toProtein.getResidueCoordinates(this.toStartRes);
-        var te = this.proteinLink.toProtein.getResidueCoordinates(this.toEndRes);
         if (out < 180) {
             tRotRad = tRotRad - Math.PI;
-//            ts[1] += Protein.STICKHEIGHT / 2;
-//            te[1] += Protein.STICKHEIGHT / 2;
+        //            ts[1] += Protein.STICKHEIGHT / 2;
+        //            te[1] += Protein.STICKHEIGHT / 2;
 
         }
         else {
-//            ts[1] -= Protein.STICKHEIGHT / 2;
-//            te[1] -= Protein.STICKHEIGHT / 2;
+        //            ts[1] -= Protein.STICKHEIGHT / 2;
+        //            te[1] -= Protein.STICKHEIGHT / 2;
 
         }
 
         var ttMid = [tMid[0] + (30 * Math.sin(tRotRad)),
-            tMid[1] - (30 * Math.cos(tRotRad))];
+        tMid[1] - (30 * Math.cos(tRotRad))];
+        if (toInteractor.form === 0) {
+            ttMid = tMid;
+        }
 
         var triPointMid = [(ftMid[0] + ttMid[0]) / 2, (ftMid[1] + ttMid[1]) / 2];
 
         var path = 'M' + fs[0] + ',' + fs[1] +
-                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1] +
-                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
-                ' L' + te[0] + ',' + te[1] +
-                ' Q ' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1]
-                + ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1]
-                + ' Z';
-        
+        ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1] +
+        ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
+        ' L' + te[0] + ',' + te[1] +
+        ' Q ' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointMid[0] + ',' + triPointMid[1]
+        + ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1]
+        + ' Z';
+
         this.glyph.setAttribute("d", path);
         this.highlightGlyph.setAttribute("d", path);
 
@@ -285,22 +318,22 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
             return [around[0] + scale * (around[0] - point[0]), around[1] + scale * (around[1] - point[1])];
         };
 
-//        this.glyph.setAttribute("d", 'M' + fs[0] + ' ' + fs[1] +
-//                ' L' + fMid[0] + ' ' + fMid[1]
-//                + ' L' + fe[0] + ' ' + fe[1] + ' Z');    
-                    
-//        var triPointThird = [fMid[0] + ((tMid[0] - fMid[0]) / 3), fMid[1] + ((tMid[1] - fMid[1]) / 3)];
-//        var triPointTwoThird = [fMid[0] + ((tMid[0] - fMid[0]) * 2 / 3), fMid[1] + ((tMid[1] - fMid[1]) * 2 / 3)];
-//        var reflectFtMid = reflect(ftMid, triPointThird, 0.7);
-//        var reflectTtMid = reflect(ttMid, triPointTwoThird, 0.7);
-//        var path = 'M' + fs[0] + ',' + fs[1] +
-//                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
-//                ' C' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
-//                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
-//                ' L' + te[0] + ',' + te[1] +
-//                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
-//                ' C' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
-//                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1] +
-//                ' Z';
+    //        this.glyph.setAttribute("d", 'M' + fs[0] + ' ' + fs[1] +
+    //                ' L' + fMid[0] + ' ' + fMid[1]
+    //                + ' L' + fe[0] + ' ' + fe[1] + ' Z');
+
+    //        var triPointThird = [fMid[0] + ((tMid[0] - fMid[0]) / 3), fMid[1] + ((tMid[1] - fMid[1]) / 3)];
+    //        var triPointTwoThird = [fMid[0] + ((tMid[0] - fMid[0]) * 2 / 3), fMid[1] + ((tMid[1] - fMid[1]) * 2 / 3)];
+    //        var reflectFtMid = reflect(ftMid, triPointThird, 0.7);
+    //        var reflectTtMid = reflect(ttMid, triPointTwoThird, 0.7);
+    //        var path = 'M' + fs[0] + ',' + fs[1] +
+    //                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
+    //                ' C' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
+    //                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + ts[0] + ',' + ts[1] +
+    //                ' L' + te[0] + ',' + te[1] +
+    //                ' Q' + ttMid[0] + ',' + ttMid[1] + ' ' + triPointTwoThird[0] + ',' + triPointTwoThird[1] +
+    //                ' C' + reflectTtMid[0] + ',' + reflectTtMid[1] + ' ' + reflectFtMid[0] + ',' + reflectFtMid[1] + ' ' + triPointThird[0] + ',' + triPointThird[1] +
+    //                ' Q' + ftMid[0] + ',' + ftMid[1] + ' ' + fe[0] + ',' + fe[1] +
+    //                ' Z';
     }
 };

@@ -356,7 +356,7 @@ Protein.prototype.setSelected = function(select) {
     //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
     //        }
     //    }
-};
+    };
 Protein.prototype.setRotation = function(angle) {
     this.previousRotation = this.rotation;
     this.rotation = angle % 360;
@@ -370,20 +370,20 @@ Protein.prototype.setRotation = function(angle) {
     if (this.rotation > 90 && this.rotation <= 270) {
 
         this.labelSVG.setAttribute("transform", " rotate(" + (this.rotation - 180) + ")" +
-                "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
+            "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation <= 90 || this.previousRotation > 270){
         for (var i = 0; i < sll; i++) {
             this.scaleLabels[i].setAttribute("transform", "rotate(180)");
         }
-        //        }
+    //        }
     }
     else {
         this.labelSVG.setAttribute("transform", " rotate(" + this.rotation + ")" +
-                "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
+            "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation > 90 || this.previousRotation <= 270){
         for (var j = 0; j < sll; j++) {
             this.scaleLabels[j].setAttribute("transform", "rotate(0)");
-            //            }
+        //            }
         }
     }
 };
@@ -397,7 +397,7 @@ Protein.prototype.setPosition = function(x, y) {
     if (this.internalLink != null) {
         if (typeof this.internalLink.fatLine !== 'undefined') {
             this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
-                    + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+                + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
         }
     }
 };
@@ -406,7 +406,7 @@ Protein.minXDist = 30;
 Protein.prototype.switchStickScale = function(svgP) {
     if (this.isParked) {
         this.toggleParked();
-        //        this.xlv.stickUnderMouse = null;
+    //        this.xlv.stickUnderMouse = null;
     }
     if (this.form === 0) {
         this.fromBlob();
@@ -444,15 +444,15 @@ Protein.prototype.scale = function() {
         this.setRotation(this.rotation); //places label
         this.setAllLineCoordinates();
         this.rect.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
+            " scale(" + (this.stickZoom) + " 1 )");
         //        this.rectDomainsColoured.setAttribute("transform",
         //            " scale("+(this.stickZoom) + " 1 )");
         this.rectDomainsMouseEvents.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
+            " scale(" + (this.stickZoom) + " 1 )");
         //place rotators
         this.lowerRotator.svg.setAttribute("transform", "translate(" + (this.getResXwithStickZoom(0) - Protein.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform", "translate("
-                + (this.getResXwithStickZoom(this.size) + Protein.rotOffset) + " 0)");
+            + (this.getResXwithStickZoom(this.size) + Protein.rotOffset) + " 0)");
         //internal links
         if (this.internalLink != null) {
             var resLinks = this.internalLink.residueLinks.values();
@@ -508,9 +508,9 @@ Protein.prototype.scale = function() {
         //        }
         for (var res = 1; res <= protein.size; res++) {
             if (res === 1 ||
-                    ((res % 100 === testOffset100) && (200 * pixPerRes > Protein.minXDist)) ||
-                    ((res % 10 === testOffset10) && (20 * pixPerRes > Protein.minXDist))
-                    ) {
+                ((res % 100 === testOffset100) && (200 * pixPerRes > Protein.minXDist)) ||
+                ((res % 10 === testOffset10) && (20 * pixPerRes > Protein.minXDist))
+                ) {
                 var tx = protein.getResXwithStickZoom(res);
                 // for juan
                 //                if (xinet.sid == 682 && res == 1)
@@ -549,7 +549,7 @@ Protein.prototype.scale = function() {
                 protein.scaleLabels.push(seqLabel);
                 scaleGroup.appendChild(seqLabelGroup);
             }
-            //            if (res == 1) res = 0; // means next tick will be 100 not 101
+        //            if (res == 1) res = 0; // means next tick will be 100 not 101
         }
         scaleLabelAt(protein.size, scaleGroup, lastTickX);
         tickAt(scaleGroup, lastTickX);
@@ -685,8 +685,8 @@ Protein.prototype.toBlob = function() {
         for (var l = 0; l < c; l++) {
             var link = links[l];
             if ((link.fromProtein === this && link.toProtein.form === 0) ||
-                    (link.toProtein === this && link.fromProtein.form === 0))
-            {
+                (link.toProtein === this && link.fromProtein.form === 0))
+                {
                 // swap links
                 //out with the old
                 //would it  be better if checkLinks did this? no, slower
@@ -697,8 +697,8 @@ Protein.prototype.toBlob = function() {
                         resLink.hide();
                     }
                 }
-                //in with the new
-                //// done by setAllLineCoordinates
+            //in with the new
+            //// done by setAllLineCoordinates
             }
         }
     }
@@ -786,7 +786,7 @@ Protein.prototype.toStick = function() {
 
 Protein.prototype.initStick = function() {
     if (this.stick !== null) {
-        //        alert("this shouldn't really happen...");
+    //        alert("this shouldn't really happen...");
     }
     else {
         //rotators
@@ -828,26 +828,33 @@ Protein.prototype.getResXUnzoomed = function(r) {
 };
 
 Protein.prototype.getResXwithStickZoom = function(r) {
-    if (r === '?' || r === 'n') {
-        return (this.rectX * this.stickZoom) - 5;// ;
+    if (isNaN(r) || r === '?' || r === 'n') {
+        return (this.rectX * this.stickZoom) - 8;// ;
     }
     return this.getResXUnzoomed(r) * this.stickZoom;
 };
 
 //calculate the  coordinates of a residue (relative to this.xlv.container)
-Protein.prototype.getResidueCoordinates = function(r) {
+Protein.prototype.getResidueCoordinates = function(r, yOff) {
     if (Protein.UNITS_PER_RESIDUE === undefined)
         alert("Error: Protein.UNITS_PER_RESIDUE is undefined");
     if (r === undefined)
         alert("Error: residue number is undefined");
     var x = this.getResXwithStickZoom(r) * this.xlv.z;
     var y = 0;
-    if (this.rotation !== 0 && x !== 0) {
+    if (x !== 0) {
         var l = Math.abs(x);
         var a = Math.acos(x / l);
         var rotRad = (this.rotation / 360) * Math.PI * 2;
         x = l * Math.cos(rotRad + a);
         y = l * Math.sin(rotRad + a);
+        if (typeof yOff !== 'undefined'){
+            x += yOff * Math.cos(rotRad + (Math.PI / 2));
+            y += yOff * Math.sin(rotRad + (Math.PI / 2));
+        }
+    }
+    else {
+        y = yOff;
     }
     x = x + this.x;
     y = y + this.y;

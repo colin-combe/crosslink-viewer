@@ -21,7 +21,7 @@ var miData = {
             "type": {"id": "MI:0326", "name": "protein"},
             "organism": {"taxid":9606, "common": "human", "scientific": "homo sapiens"},
             "accession": "P46108-2",
-            "label": "CRK-2",          
+            "label": "CRK-2",
         },
         {
             "sequence": "MAGNFDSEERSSWYWGRLSRQEAVALLQGQRHGVFLVRDSSTSPGDYVLSVSENSRVSHYIINSSGPRPPVPPSPAQPPPGVSPSRLRIGDQEFDSLPALLEFYKIHYLDTTTLIEPVSRSRQGSGVILRQEEAEYVRALFDFNGNDEEDLPFKKGDILRIRDKPEEQWWNAEDSEGKRGMIPVPYVEKYRPASASVSALIGGNQEGSHPQPLGGPEPGPYAQPSVNTPLPNLQNGPIYARVIQKRVPNAYDKTALALEVGELVKVTKINVSGQWEGECNGKRGHFPFTHVRLLDQQNPDEDFS",
@@ -61,7 +61,7 @@ var miData = {
                                               "detmethod": {"id":"MI:0074", "name": "mutation analysis"},
                                               "sequenceData": [{"range":"53-53"}, {"range":"72-72"}, {"range":"33-33"}]
                                            }
-                                         ]                     
+                                         ]
                        },
             "target": {
                        "id": "P06213",
@@ -69,7 +69,7 @@ var miData = {
                        "exprole": {"id": "MI:0496", "name": "bait"},
                        "identificationMethod": {"id": "MI:0396", "name": "predetermined participant"},
                        "pointMutations": [
-                                           { 
+                                           {
                                               "id": "2",
                                               "name": "lys1057ala",
                                               "type": {"id": "MI:0119", "name": "mutation decreasing interaction"},
@@ -84,7 +84,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"979-1382"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -99,7 +99,7 @@ var miData = {
                        "id": "P46108-2",
                        "bioRole": {"id": "MI:0499", "name": "unspecified role"},
                        "exprole": {"id": "MI:0498", "name": "prey"},
-                       "identificationMethod": {"id": "MI:0396", "name": "predetermined participant"}                   
+                       "identificationMethod": {"id": "MI:0396", "name": "predetermined participant"}
                        },
             "target": {
                        "id": "P06213",
@@ -113,7 +113,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"979-1382"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -128,7 +128,7 @@ var miData = {
                        "id": "P46108-1",
                        "bioRole": {"id": "MI:0499", "name": "unspecified role"},
                        "identificationMethod": {"id": "MI:0396", "name": "predetermined participant"},
-                       "exprole": {"id": "MI:0498", "name": "prey"}                   
+                       "exprole": {"id": "MI:0498", "name": "prey"}
                        },
             "target": {
                        "id": "P06213",
@@ -142,7 +142,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"979-1382"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -167,7 +167,7 @@ var miData = {
                                               "sequenceData": [{"range":"1-114"}],
                                               "linkedFeatures": [{"id":"7"}]
                                            }
-                                         ]                    
+                                         ]
                        },
             "target": {
                        "id": "P06213",
@@ -182,7 +182,7 @@ var miData = {
                                               "sequenceData": [{"range":"979-1382"}],
                                               "linkedFeatures": [{"id":"6"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -212,7 +212,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"959-1367"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -236,7 +236,7 @@ var miData = {
                                               "detmethod": {"id":"MI:0074", "name": "mutation analysis"},
                                               "sequenceData": [{"range":"53-53"}, {"range":"72-72"}, {"range":"33-33"}]
                                            }
-                                         ]                  
+                                         ]
                        },
             "target": {
                        "id": "P06213",
@@ -244,7 +244,7 @@ var miData = {
                        "exprole": {"id": "MI:0498", "name": "prey"},
                        "identificationMethod": {"id": "MI:0396", "name": "predetermined participant"},
                        "pointMutations": [
-                                           { 
+                                           {
                                               "id": "10",
                                               "name": "lys1057ala",
                                               "type": {"id": "MI:0119", "name": "mutation decreasing interaction"},
@@ -259,7 +259,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"979-1382"}]
                                            }
-                                         ] 
+                                         ]
 		      }
         },
         {
@@ -282,7 +282,7 @@ var miData = {
                                               "type": {"id": "MI:0117", "name": "binding-associated region"},
                                               "sequenceData": [{"range":"959-1367"}]
                                            }
-                                         ]                    
+                                         ]
                        },
             "target": {
                        "id": "P46108-1",

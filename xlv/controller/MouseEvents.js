@@ -244,7 +244,7 @@ xinet.Controller.prototype.mouseUp = function(evt) {
         }
         else if (this.state === xinet.Controller.ROTATING) {
             //round protein rotation to nearest 5 degrees (looks neater)
-            this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+         //   this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
         }
         else {
         } //end of protein drag; do nothing
