@@ -849,8 +849,8 @@ Protein.prototype.getResidueCoordinates = function(r, yOff) {
         x = l * Math.cos(rotRad + a);
         y = l * Math.sin(rotRad + a);
         if (typeof yOff !== 'undefined'){
-            x += yOff * Math.cos(rotRad + (Math.PI / 2));
-            y += yOff * Math.sin(rotRad + (Math.PI / 2));
+            x += yOff * this.xlv.z * Math.cos(rotRad + (Math.PI / 2));
+            y += yOff * this.xlv.z * Math.sin(rotRad + (Math.PI / 2));
         }
     }
     else {

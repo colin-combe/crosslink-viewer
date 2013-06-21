@@ -46,8 +46,14 @@
     <body>
 
         <div style="height:100%;">
-            <p style="display:inline-block;">xiNET interaction viewer</p>
-            <p style="text-decoration: underline;float:right;display:inline-block;" onclick="help()">HELP</p>
+            <p style="display:inline-block;"><a href="https://github.com/colin-combe/interaction-viewer" target="_blank">xiNET interaction viewer</a></p>
+            <!--TODO: change exportSVG so param not needed?-->
+            <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
+
+            <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
+            <p style="float:right;display:inline-block;">created by the 
+                <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
+            </p>
 
 
             <!--            <p id="middle-title"><span>Demo</span></p>
@@ -69,7 +75,7 @@
           </select>-->
 
             <div id="networkContainer"></div>
-            <div id="networkCaption"></div>
+            <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
         </div>
 
         <script type="text/javascript">

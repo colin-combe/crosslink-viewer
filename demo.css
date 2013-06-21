@@ -76,7 +76,7 @@ div#networkCaption{
 }
 table {
     overflow:auto;
-    width: 100%;
+    /*width: 100%;*/
 }
 tr {
     width: 100%;

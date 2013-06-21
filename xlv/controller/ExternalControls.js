@@ -279,6 +279,7 @@ xinet.Controller.prototype.hideAmbig = function(bool) {
 //    };
 
 xinet.Controller.prototype.exportSVG = function(containerName) {
+    alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
     var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
     //TODO: rotator hide not working
     var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
@@ -390,7 +391,7 @@ function loadLayout(layoutDesc) {
 }
 
 function help() {
-    var helpText = "<P>Tip: To change the size of proteins in relation to the size of the page press Ctrl/- or Ctrl/+. (This zooms the browser, on a Mac its Cmd/- or Cmd/+.)   </P>\
+    var helpText = "<P>Tip: To change the size of proteins in relation to the size of the page press Ctrl/- or Ctrl/+.<br/> (This zooms the browser, on a Mac its Cmd/- or Cmd/+.)   </P>\
 <TABLE >\
 	<TR>\
 		<TD>\
