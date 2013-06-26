@@ -27,7 +27,7 @@
         <script type="text/javascript" src="./xlv/controller/Layout.js"></script>
         <script type="text/javascript" src="./xlv/controller/Refresh.js"></script>
         <script type="text/javascript" src="./xlv/controller/ToolTips.js"></script>
-        <script type="text/javascript" src="./xlv/model/Match.js"></script>
+        <!--<script type="text/javascript" src="./xlv/model/Match.js"></script>-->
         <script type="text/javascript" src="./xlv/model/Link.js"></script>
         <script type="text/javascript" src="./xlv/model/Protein.js"></script>
         <script type="text/javascript" src="./xlv/model/Annotations.js"></script>
@@ -39,41 +39,28 @@
         <!--<script type="text/javascript" src="./xlv/InfoBox.js"></script>-->
         <script type="text/javascript" src="./xlv/DASUtil.js"></script>
         <script type="text/javascript" src="./xlv/ReadCSV.js"></script>
+        <script type="text/javascript" src="./xlv/ReadMIJSON.js"></script>
         <script type="text/javascript" src="./xlv/ReadMITAB.js"></script>
-        <!--<script type="text/javascript" src="./xlv/ReadMIJSON.js"></script>-->
         <!--data-->
-        <!--<script type="text/javascript" src="./MI-JSON.js"></script>-->
+        <script type="text/javascript" src="./JSON_example1.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
-            <p style="display:inline-block;">xiNET interaction viewer demo</p>
-            <p style="text-decoration: underline;float:right;display:inline-block;" onclick="help()">HELP</p>
+            <p style="display:inline-block;"><a href="https://github.com/colin-combe/interaction-viewer" target="_blank">xiNET interaction viewer</a></p>
+            <!--TODO: change exportSVG so param not needed?-->
+            <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 
-            <form>
+            <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
+            <p style="float:right;display:inline-block;">created by the 
+                <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
+            </p>
+<!--            <form>
                 <p style="display:inline-block;">PSI-MI TAB:</p>
                 <input type="text" name="url" id="mitabUrl" size="88"
                        value="http://www.ebi.ac.uk/Tools/webservices/psicquic/intact/webservices/current/search/interactor/P51587?format=tab27">
                 <button type="button" onclick="getMITAB(document.getElementById('mitabUrl').value)">Load</button>
-            </form>
-
-            <!--            <p id="middle-title"><span>Demo</span></p>
-          <p>Data from <a target="_blank" href="http://www.sciencemag.org/content/337/6100/1348">Herzog, F. et al. Structural Probing of a Protein Phosphatase 2A Network by Chemical Cross-Linking and Mass Spectrometry. Science 337, 1348–1352 (2012).</a></p>
-          <div style="float:right;margin:8px;">
-              <label for='pos_feat_select'>Annotations:</label>
-              <select id='pos_feat_select' disabled
-                      onchange="xlv.changeAnnotations(1, document.getElementById('pos_feat_select'));"
-                      >
-                  <option>DAS incomplete</option>
-              </select>
-          </div>
-          <p id="menu" style="padding-left:0px;">
-          </p>
-          <select id='keyword_select' style='display:none;' disabled
-                  onchange="xlv.changeAnnotations(2, document.getElementById('keyword_select'));"
-                  >
-              <option>DAS incomplete</option>
-          </select>-->
+            </form>-->
 
             <div id="networkContainer"></div>
             <div id="networkCaption"></div>
@@ -87,8 +74,8 @@
                 xlv.setMessageElement(messageDiv);
 
                 //xlv.readMIJSON(miData);
-                
-                d3.text('./MITAB_Q96B97.tab', function(text) {
+                      d3.text('./data/MITAB_Q96B97.tab', function(text) {
+//                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
                     xlv.readMITAB(text);
                     }
                 );

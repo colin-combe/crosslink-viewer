@@ -28,8 +28,19 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
     var interactions = miJson.interactions;
     var interactionCount = interactions.length;
     for (var l = 0; l < interactionCount; l++) {
-        var interaction = interactions[l];
-        var sourceInteractor = this.proteins.get(interaction.source.id);
+     this.addInteraction(interactions[l]); 
+    }
+    for (var p = 0; p < proteinCount; p++) {
+        var prot = proteins[p];
+        prot.setPositionalFeatures(prot.customAnnotations);
+    }
+    xlv.init();
+    this.checkLinks();
+//    new xinet.DASUtil(this);
+};
+
+xinet.Controller.prototype.addInteraction = function(interaction){
+           var sourceInteractor = this.proteins.get(interaction.source.id);
         if (typeof sourceInteractor === 'undefined') {
             alert("Fail - no interactor with id " + interaction.source.id);
         }
@@ -65,13 +76,4 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
 //                    link, linkedF.sourceSites, linkedF.targetSites, this);
 //            link.residueLinks.set(linkedFID, resLink);
 //        }
-    }
-    for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
-        prot.setPositionalFeatures(prot.customAnnotations);
-    }
-    xlv.init();
-    this.checkLinks();
-//    new xinet.DASUtil(this);
-}
-;
+};

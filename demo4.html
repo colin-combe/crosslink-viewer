@@ -52,7 +52,7 @@
             <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 
             <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
-            <p style="float:right;display:inline-block;">created by the 
+            <p style="float:right;display:inline-block;">created by the
                 <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
             </p>
 <!--            <form>
@@ -74,13 +74,13 @@
                 xlv.setMessageElement(messageDiv);
 
                 //xlv.readMIJSON(miData);
-                
-//                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
-               d3.text('./data/MITAB_P51587.tab', function(text) {
+                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
+//                  d3.text('./data/query_species:mycoplasma_21062013_1131.txt', function(text) {
                     xlv.readMITAB(text);
                     }
                 );
 
+                    //CORS not enabled on PSICQUIC services
                 function getMITAB(url) {
                     var xmlhttp = new XMLHttpRequest();
                     var params = "";

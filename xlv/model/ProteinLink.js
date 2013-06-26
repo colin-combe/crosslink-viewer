@@ -27,7 +27,6 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.dashed = false;
     //layout stuff
     this.hidden = false;
-
     this.evidences = new Array();
 }
 
@@ -38,15 +37,15 @@ ProteinLink.prototype.addEvidence = function(interaction) {
     }
 
 
-    //adding features
-    //we will do this here for moment...
-    //not really right place, needs to be associated with the sequence links
-    //features for an experiemnt should dissappear when experiemntal
-    // evidience does not meet filter criteria
+//adding features
+//we will do this here for moment...
+//not really right place, needs to be associated with the sequence links
+//features for an experiemnt should dissappear when experiemntal
+// evidience does not meet filter criteria
 
-    //NB. sourec and target in JSON may not correspond to sourec and 
-    // target in INteractionLInk,
-    //may have had to swap them around (to get consistent id's)
+//NB. source and target in JSON may not correspond to source and 
+// target in InteractionLink,
+//may have had to swap them around (to get consistent id's)
 
     var source, target;
     if (interaction.source.id === this.fromProtein.id) {
@@ -56,9 +55,10 @@ ProteinLink.prototype.addEvidence = function(interaction) {
         source = interaction.target
         target = interaction.source;
     }
-    
+
     var fromBindingSite, toBindingSite;
-    
+    //TODO: use LinkedFeatures to know which bindinsSites are linked to which
+    //TODO: decide what to assume about linkedFeatures when reading mitab
     if (typeof source.bindingSites !== 'undefined') {
         this.fromProtein.addFeature(source.bindingSites[0]);
         fromBindingSite = source.bindingSites[0];
@@ -67,23 +67,23 @@ ProteinLink.prototype.addEvidence = function(interaction) {
         this.toProtein.addFeature(target.bindingSites[0]);
         toBindingSite = target.bindingSites[0];
     }
-    
+
     if (typeof source.pointMutations !== 'undefined') {
         this.fromProtein.addFeature(source.pointMutations[0]);
     }
     if (typeof target.pointMutations !== 'undefined') {
         this.toProtein.addFeature(target.pointMutations[0]);
     }
-    var fromBinding = (typeof fromBindingSite !== 'undefined')?
-        fromBindingSite.sequenceData[0].range : '?-?';
-    var toBinding = (typeof toBindingSite !== 'undefined')?
-        toBindingSite.sequenceData[0].range : '?-?';
+    var fromBinding = (typeof fromBindingSite !== 'undefined') ?
+            fromBindingSite.sequenceData[0].range : '?-?';
+    var toBinding = (typeof toBindingSite !== 'undefined') ?
+            toBindingSite.sequenceData[0].range : '?-?';
     var seqLinkId = fromBinding + ':' +
-                    this.fromProtein.id + ' to ' +
-                    toBinding  + ':' + this.toProtein.id;
+            this.fromProtein.id + ' to ' +
+            toBinding + ':' + this.toProtein.id;
     console.log(seqLinkId);
     this.residueLinks.set(seqLinkId,
-       new ResidueLink (seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
+            new ResidueLink(seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
 };
 
 ProteinLink.prototype.initSVG = function() {
@@ -93,7 +93,7 @@ ProteinLink.prototype.initSVG = function() {
         this.fatLine = document.createElementNS(xinet.svgns, "line");
     } else {
         function trig(radius, angleDegrees) {
-            //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
             var radians = (angleDegrees / 360) * Math.PI * 2;
             return {
                 x: (radius * Math.cos(radians)),
@@ -102,10 +102,10 @@ ProteinLink.prototype.initSVG = function() {
         }
         var intraR = this.fromProtein.getBlobRadius() + 7;
         var r = 45;
-        var arcStart = trig(intraR, 25 + r);
-        var arcEnd = trig(intraR, -25 + r);
-        var cp1 = trig(intraR, 40 + r);
-        var cp2 = trig(intraR, -40 + r);
+        var arcStart = trig(intraR, 15 + r);
+        var arcEnd = trig(intraR, -35 + r);
+        var cp1 = trig(intraR, 30 + r);
+        var cp2 = trig(intraR, -50 + r);
         var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
                 + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
                 + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
@@ -149,11 +149,11 @@ ProteinLink.prototype.initSVG = function() {
         self.mouseDown(evt);
     };
     this.highlightLine.onmouseover = function(evt) {
-        //        this.xlv.setTooltip(this.tooltip);
+//        this.xlv.setTooltip(this.tooltip);
         self.mouseOver(evt);
     };
     this.highlightLine.onmouseout = function(evt) {
-        //         this.xlv.hideTooltip();
+//         this.xlv.hideTooltip();
         self.mouseOut(evt);
     };
     this.fatLine.onmousedown = function(evt) {
@@ -169,10 +169,9 @@ ProteinLink.prototype.initSVG = function() {
         self.mouseOut(evt);
     };
 };
-
 ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false;//TODO: tEMP HACK
+        andAlternatives = false; //TODO: tEMP HACK
     }
     if (this.shown) {
         if (show) {
@@ -182,7 +181,7 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
         }
     }
     if (andAlternatives && this.ambig) {
-        //TODO: we want to highlight smallest possible set of alternatives
+//TODO: we want to highlight smallest possible set of alternatives
         var rc = this.residueLinks.values().length;
         for (var rl = 0; rl < rc; rl++) {
             var resLink = this.residueLinks.values()[rl];
@@ -206,7 +205,6 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
         }
     }
 };
-
 //used when link clicked
 ProteinLink.prototype.showID = function() {
     var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
@@ -215,7 +213,6 @@ ProteinLink.prototype.showID = function() {
     linkInfo += "<pre>" + JSON.stringify(this.evidences, null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
-
 //TEMP - this was used by filtering...
 //its an array of match id's its going to return
 ProteinLink.prototype.getFilteredMatches = function() {
@@ -234,7 +231,6 @@ ProteinLink.prototype.getFilteredMatches = function() {
     }
     return filteredMatches.keys();
 };
-
 ProteinLink.prototype.check = function() {
     var resLinks = this.residueLinks.values();
     var resLinkCount = resLinks.length;
@@ -244,11 +240,11 @@ ProteinLink.prototype.check = function() {
     if (this.fromProtein.isParked || this.toProtein.isParked
             || (this.xlv.intraHidden && this.intra)
             || this.hidden) {
-        //if both ends are blobs then hide interactor-level link
+//if both ends are blobs then hide interactor-level link
         if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
             this.hide();
         }
-        //else loop through linked features hiding them
+//else loop through linked features hiding them
         else {
             for (var i = 0; i < resLinkCount; i++) {
                 resLinks[i].hide();
@@ -259,53 +255,59 @@ ProteinLink.prototype.check = function() {
     else // we need to check which linked features match the filter criteria
     if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
 
-        //TEMP HACK -
+//TEMP HACK -
 
-        //            this.ambig = true;
-        //            var filteredResLinks = new Array();
-        //            var filteredMatches = d3.map();
-        //            var altProteinLinks = d3.map();
-        //            for (var i = 0; i < resLinkCount; i++) {
-        //                var resLink = resLinks[i];
-        //                var resLinkMeetsCriteria = false;
-        //                var mCount = resLink.matches.length;
-        //                for (var m = 0; m < mCount; m++) {
-        //                    var match = resLink.matches[m];
-        //                    if (match.meetsFilterCriteria()) {
-        //                        if (resLinkMeetsCriteria === false) {
-        //                            resLinkMeetsCriteria = true;
-        //                            filteredResLinks.push(resLink);
-        //                        }
-        //                        filteredMatches.set(match.id);
-        //                        if (match.isAmbig()) {
-        //                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-        //                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
-        //                            }
-        //                        }
-        //                        else {
-        //                            this.ambig = false;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            var filteredResLinkCount = filteredResLinks.length;
-        //            if (filteredResLinkCount > 0) {
+//            this.ambig = true;
+//            var filteredResLinks = new Array();
+//            var filteredMatches = d3.map();
+//            var altProteinLinks = d3.map();
+//            for (var i = 0; i < resLinkCount; i++) {
+//                var resLink = resLinks[i];
+//                var resLinkMeetsCriteria = false;
+//                var mCount = resLink.matches.length;
+//                for (var m = 0; m < mCount; m++) {
+//                    var match = resLink.matches[m];
+//                    if (match.meetsFilterCriteria()) {
+//                        if (resLinkMeetsCriteria === false) {
+//                            resLinkMeetsCriteria = true;
+//                            filteredResLinks.push(resLink);
+//                        }
+//                        filteredMatches.set(match.id);
+//                        if (match.isAmbig()) {
+//                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+//                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+//                            }
+//                        }
+//                        else {
+//                            this.ambig = false;
+//                        }
+//                    }
+//                }
+//            }
+//            var filteredResLinkCount = filteredResLinks.length;
+//            if (filteredResLinkCount > 0) {
         var countEvidences = this.evidences.length;
-        this.tooltip = this.id + ', ' + countEvidences + ' evidence';
+        this.tooltip = /*this.id + ', ' +*/ countEvidences + ' experiment';
         if (countEvidences > 1) {
             this.tooltip += 's';
         }
         this.tooltip += ' (';
-
-        for (var i = 0; i < countEvidences; i++) {
-            if (i > 0)
+        var nested_data = d3.nest()
+           .key(function(d) { return d.experiment.detmethod.name;})
+           .rollup(function(leaves) { return leaves.length;})
+           .entries(this.evidences);
+           
+        nested_data.sort(function (a, b) {return b.values - a.values});
+           
+        var countDetMethods = nested_data.length
+        for (var i = 0; i < countDetMethods; i++) {
+            if (i > 0) {
                 this.tooltip += ', ';
-            var evid = this.evidences[i];
-            this.tooltip += evid.experiment.detmethod.name;// + ':' + evid.interactionType.name;
+            }
+            this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
         }
 
         this.tooltip += ' )';
-
         this.w = countEvidences * (45 / ProteinLink.maxNoEvidences);
         //                //acknowledge following line is a bit confusing...
         //                this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
@@ -328,18 +330,16 @@ ProteinLink.prototype.check = function() {
                 showedResResLink = true;
             }
         }
-        ////TODO: fix this? - always returning true if one end is stick?
+////TODO: fix this? - always returning true if one end is stick?
         return showedResResLink;
     }
 };
-
 ProteinLink.prototype.dashedLine = function(dash) {
     if (typeof this.line === 'undefined') {
         this.initSVG();
     }
     if (dash && !this.dashed) {
         this.dashed = true;
-        //TODO: sometimes getting dash wrong when zoomed
         this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
     }
     else if (!dash && this.dashed) {
@@ -347,17 +347,16 @@ ProteinLink.prototype.dashedLine = function(dash) {
         this.line.removeAttribute("stroke-dasharray");
     }
 };
-
 ProteinLink.prototype.show = function() {
     if (this.xlv.initComplete) {
-        // TODO: check how some of this compares to whats in Refresh.js, scale()
+// TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
             if (this.intra) {
-                //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
+//this.line.setAttribute("stroke-width", 1);//this.xlv.z*
 
                 if (ProteinLink.maxNoEvidences > 1) {
                     this.fatLine.setAttribute("transform", "translate(" +
@@ -392,12 +391,11 @@ ProteinLink.prototype.show = function() {
         }
     }
 };
-
 ProteinLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         if (this.intra) {
-            //TODO: be more selective about when to show 'fatLine'
+//TODO: be more selective about when to show 'fatLine'
             if (ProteinLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
@@ -412,11 +410,9 @@ ProteinLink.prototype.hide = function() {
         }
     }
 };
-
 ProteinLink.prototype.getOtherEnd = function(protein) {
     return ((this.fromProtein === protein) ? this.toProtein : this.fromProtein);
 };
-
 ProteinLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
         if (this.fromProtein === interactor) {

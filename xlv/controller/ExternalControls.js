@@ -484,6 +484,6 @@ function help() {
 	</TR>\
 </TABLE>\
 ";
-    xlv.message(helpText, true);
+    xlv.message(helpText);
 
 }

@@ -226,25 +226,25 @@ xinet.Controller.prototype.addProtein = function(id, label, sequence, descriptio
     this.proteins.set(id, newProt);
 };
 
-//Positions are one based
-xinet.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
-        pep2_protIDs, pep2_positions,
-        id, meta, linkPos1, linkPos2, pep1_seq, pep2_seq) {
-    var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-            id, meta, this, linkPos1, linkPos2, pep1_seq, pep2_seq);
-    this.matches.set(id, match);
-};
-
-// add all matches with single call, arg is an array of arrays
-xinet.Controller.prototype.addMatches = function(matches) {
-    var l = matches.length;
-    for (var i = 0; i < l; i++) {
-        //        alert(matches[i]);
-        this.addInteraction(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
-                matches[i][4], matches[i][5], matches[i][6], matches[i][7],
-                matches[i][8], matches[i][9]);
-    }
-}
+////Positions are one based
+//xinet.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
+//        pep2_protIDs, pep2_positions,
+//        id, meta, linkPos1, linkPos2, pep1_seq, pep2_seq) {
+//    var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
+//            id, meta, this, linkPos1, linkPos2, pep1_seq, pep2_seq);
+//    this.matches.set(id, match);
+//};
+//
+//// add all matches with single call, arg is an array of arrays
+//xinet.Controller.prototype.addMatches = function(matches) {
+//    var l = matches.length;
+//    for (var i = 0; i < l; i++) {
+//        //        alert(matches[i]);
+//        this.addInteraction(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
+//                matches[i][4], matches[i][5], matches[i][6], matches[i][7],
+//                matches[i][8], matches[i][9]);
+//    }
+//}
 
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args

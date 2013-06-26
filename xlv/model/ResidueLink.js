@@ -15,16 +15,16 @@ function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, int
     //        this.fromEndRes = -1;
     //    } else {
     var match = /(.+)-(.+)/.exec(fromBinding);
-    this.fromStartRes = match[1] * 1;
-    this.fromEndRes = match[2] * 1;
+    this.fromStartRes = match[1];
+    this.fromEndRes = match[2];
     //    }
     //    if (toBinding === '?-?') {
     //        this.toStartRes = -1;
     //        this.toEndRes = -1;
     //    } else {
     match = /(.+)-(.+)/.exec(toBinding);
-    this.toStartRes = match[1] * 1;
-    this.toEndRes = match[2] * 1;
+    this.toStartRes = match[1];
+    this.toEndRes = match[2];
     //    }
     this.evidence = interaction;//todo: needs to be an array
 
@@ -163,20 +163,20 @@ ResidueLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            if (this.intra) {
-                this.line.setAttribute("stroke-width", xinet.linkWidth); //this.xlv.z*
-                //                this.highlightLine.setAttribute("stroke-width", 10);
-                this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
-                this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
-            }
-            else {
+//            if (this.intra) {
+//                this.line.setAttribute("stroke-width", xinet.linkWidth); //this.xlv.z*
+//                //                this.highlightLine.setAttribute("stroke-width", 10);
+//                this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
+//                this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
+//            }
+//            else {
 
                 this.glyph.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
                 this.highlightGlyph.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates();
                 this.xlv.highlights.appendChild(this.highlightGlyph);
                 this.xlv.res_resLinks.appendChild(this.glyph);
-            }
+//            }
         }
     }
 };
@@ -209,14 +209,14 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
         }
         else {
             fMid = fromInteractor.getResidueCoordinates(
-                (this.fromStartRes + this.fromEndRes) / 2);
+                (this.fromStartRes * 1 + this.fromEndRes * 1) / 2);
         }
         if (toInteractor.form === 0) {
             tMid = [toInteractor.x, toInteractor.y];
         }
         else {
             tMid = toInteractor.getResidueCoordinates(
-                (this.toStartRes + this.toEndRes) / 2);
+                (this.toStartRes * 1 + this.toEndRes * 1) / 2);
         }
 
         //calculate angle from fromInteractor mid point to toInteractor mid point
@@ -253,8 +253,8 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
             fRotRad = fRotRad - Math.PI;
         }
 
-        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad)),
-        fMid[1] - (30 * Math.cos(fRotRad))];
+        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.xlv.z),
+        fMid[1] - (30 * Math.cos(fRotRad) * this.xlv.z)];
         if (fromInteractor.form === 0) {
             ftMid = fMid;
         }
@@ -290,8 +290,8 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
 
         }
 
-        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad)),
-        tMid[1] - (30 * Math.cos(tRotRad))];
+        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.xlv.z),
+        tMid[1] - (30 * Math.cos(tRotRad) * this.xlv.z)];
         if (toInteractor.form === 0) {
             ttMid = tMid;
         }
