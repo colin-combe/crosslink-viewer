@@ -4,9 +4,9 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>xiNET | Interaction Viewer</title>
+        <title>xiNET interaction viewer | Demo 2</title>
         <meta name="xinet molecular interaction viewer" content="xinet molecular interaction viewer">
-        <!--<link rel="icon" type="image/x-icon" href="./favicon.ico">-->
+        <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
         <!--<link rel="stylesheet" href="css/normalize.css">
             <link rel="stylesheet" href="css/new-main.css">-->
@@ -47,14 +47,14 @@
     <body>
 
         <div style="height:100%;">
-            <p style="display:inline-block;"><a href="https://github.com/colin-combe/interaction-viewer" target="_blank">xiNET interaction viewer</a></p>
+            <h1 style="display:inline-block;"><a href="./index.html">xiNET interaction viewer</a></h1>
             <!--TODO: change exportSVG so param not needed?-->
             <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 
             <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
-            <p style="float:right;display:inline-block;">created by the 
+            <h1 style="float:right;display:inline-block;">created by the
                 <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
-            </p>
+            </h1>
 <!--            <form>
                 <p style="display:inline-block;">PSI-MI TAB:</p>
                 <input type="text" name="url" id="mitabUrl" size="88"
@@ -74,7 +74,7 @@
                 xlv.setMessageElement(messageDiv);
 
                 //xlv.readMIJSON(miData);
-                
+
 //                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
                d3.text('./data/MITAB_P51587.tab', function(text) {
                     xlv.readMITAB(text);
