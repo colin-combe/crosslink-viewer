@@ -4,9 +4,9 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>xiNET | Interaction Viewer</title>
+        <title>xiNET interaction viewer| Demo 1</title>
         <meta name="xinet molecular interaction viewer" content="xinet molecular interaction viewer">
-        <!--<link rel="icon" type="image/x-icon" href="./favicon.ico">-->
+        <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
         <!--<link rel="stylesheet" href="css/normalize.css">
             <link rel="stylesheet" href="css/new-main.css">-->
@@ -40,30 +40,42 @@
         <script type="text/javascript" src="./xlv/DASUtil.js"></script>
         <script type="text/javascript" src="./xlv/ReadCSV.js"></script>
         <script type="text/javascript" src="./xlv/ReadMIJSON.js"></script>
-        <script type="text/javascript" src="./xlv/ReadMITAB.js"></script>
         <!--data-->
-        <script type="text/javascript" src="./JSON_example1.js"></script>
+        <script type="text/javascript" src="./data/example3.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
-            <p style="display:inline-block;"><a href="https://github.com/colin-combe/interaction-viewer" target="_blank">xiNET interaction viewer</a></p>
+           <h1 style="display:inline-block;"><a href="./index.html">xiNET interaction viewer</a></h1>
             <!--TODO: change exportSVG so param not needed?-->
             <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 
             <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
-            <p style="float:right;display:inline-block;">created by the 
+            <h1 style="float:right;display:inline-block;">created by the
                 <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
-            </p>
-<!--            <form>
-                <p style="display:inline-block;">PSI-MI TAB:</p>
-                <input type="text" name="url" id="mitabUrl" size="88"
-                       value="http://www.ebi.ac.uk/Tools/webservices/psicquic/intact/webservices/current/search/interactor/P51587?format=tab27">
-                <button type="button" onclick="getMITAB(document.getElementById('mitabUrl').value)">Load</button>
-            </form>-->
+            </h1>
+
+
+            <!--            <p id="middle-title"><span>Demo</span></p>
+          <p>Data from <a target="_blank" href="http://www.sciencemag.org/content/337/6100/1348">Herzog, F. et al. Structural Probing of a Protein Phosphatase 2A Network by Chemical Cross-Linking and Mass Spectrometry. Science 337, 1348–1352 (2012).</a></p>
+          <div style="float:right;margin:8px;">
+              <label for='pos_feat_select'>Annotations:</label>
+              <select id='pos_feat_select' disabled
+                      onchange="xlv.changeAnnotations(1, document.getElementById('pos_feat_select'));"
+                      >
+                  <option>DAS incomplete</option>
+              </select>
+          </div>
+          <p id="menu" style="padding-left:0px;">
+          </p>
+          <select id='keyword_select' style='display:none;' disabled
+                  onchange="xlv.changeAnnotations(2, document.getElementById('keyword_select'));"
+                  >
+              <option>DAS incomplete</option>
+          </select>-->
 
             <div id="networkContainer"></div>
-            <div id="networkCaption"></div>
+            <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
         </div>
 
         <script type="text/javascript">
@@ -73,28 +85,7 @@
                 xlv = new xinet.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
 
-                //xlv.readMIJSON(miData);
-                      d3.text('./data/MITAB_Q96B97.tab', function(text) {
-//                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
-                    xlv.readMITAB(text);
-                    }
-                );
-
-                function getMITAB(url) {
-                    var xmlhttp = new XMLHttpRequest();
-                    var params = "";
-                    xmlhttp.open("POST", url, true);
-                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-                        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                            var response = xmlhttp.responseText;
-                            xlv.message("response:" + response, true);
-                        }
-                    };
-                    xmlhttp.send(params);
-                }
-
-
+                xlv.readMIJSON(miJson);
                 //]]>
         </script>
 

@@ -842,7 +842,7 @@ Protein.prototype.getResidueCoordinates = function(r, yOff) {
         alert("Error: Protein.UNITS_PER_RESIDUE is undefined");
     if (r === undefined)
         alert("Error: residue number is undefined");
-    console.log(r * 1);
+  //  console.log(r * 1);
     var x = this.getResXwithStickZoom(r * 1) * this.xlv.z;
     var y = 0;
     if (x !== 0) {

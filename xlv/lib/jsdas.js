@@ -2410,7 +2410,7 @@ JSDAS.XMLLoader = {
 					  new_xhr.onreadystatechange = function() {change(new_xhr);}
 					  new_xhr.send(null);
 					} else {
-					  errorcallback && errorcallback({id: "xmlhttprequest_error", msg: xhr.status});
+					  errorcallback && errorcallback({id: "xmlhttprequest_error", msg: xhr.status, url: url});
 					}
 				}
 				//to prevent IE memory leaks

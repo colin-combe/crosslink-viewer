@@ -8,12 +8,12 @@ html, body, #outerDiv  {
     height: 100%;
 }
 
-@font-face {
+/*@font-face {
     font-family: 'Asap';
     font-style: normal;
     font-weight: 400;
     src: local('Asap'), local('Asap-Regular'), url("./css/nvGvEwsMAvkIa6w2U-PXffesZW2xOQ-xsNqO47m55DA.woff") format('woff');
-}
+}*/
 
 h1{
     font-family: "Asap", "Helvetica", Arial, serif;
