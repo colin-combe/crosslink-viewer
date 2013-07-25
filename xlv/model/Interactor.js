@@ -11,16 +11,18 @@ Interactor.labelY = -5; //label Y offset, better if calc'd half height of label 
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 
 //http://stackoverflow.com/questions/4179283/how-to-overload-constructor-of-an-object-in-js-javascript
-function Interactor(id, xlvController, acc, name, organism) {
+function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.accession = acc;
     this.xlv = xlvController;
-    this.name = name;
-    this.organism = organism;
+    this.json = json;    
 }
 
 Interactor.prototype.initProtein = function(sequence, name, description, size)
 {
+    this.accession = this.json.identifier.id;
+    this.name = this.json.label;
+    this.organism = this.json.organism;
+
     this.description = description;
     this.tooltip = this.description;
     if (this.name == null) {
@@ -216,6 +218,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
         //store start location
         var p = self.xlv.getEventPoint(evt);
         self.xlv.dragStart = self.xlv.mouseToSVG(p.x, p.y);
+        //self.xlv.message(JSON.stringify(self.json));
         self.printAnnotationInfo();
         return false;
     };
@@ -299,7 +302,7 @@ Interactor.prototype.addFeature = function(feature) {
         for (var i = 0; i < countSegments; i++) {
             var segment = segments[i];
             var sequenceRegex = /(.+)-(.+)/;
-            var match = sequenceRegex.exec(segment.range);
+            var match = sequenceRegex.exec(segment);
             var startRes = match[1] * 1;
             var endRes = match[2] * 1;
             if (isNaN(startRes) === false && isNaN(endRes) === false) {

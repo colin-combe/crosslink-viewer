@@ -34,7 +34,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
                 }
                 if (!xlv.proteins.has(acc)) {
                     tempStack.set(acc, 1);
-                    xlv.proteins.set(acc, new Protein(acc, xlv, acc, name));
+                    xlv.proteins.set(acc, new Interactor(acc, xlv, acc, name));
                 }
             }
         }

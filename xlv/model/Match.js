@@ -127,7 +127,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
                     alert("Something has gone wrong; a link has been added before a protein it links to. " +
                             p1ID + "-" + p2ID);
                 }
-                link = new ProteinLink(proteinLinkID, fromProt, toProt, this.xlv);
+                link = new InteractorLink(proteinLinkID, fromProt, toProt, this.xlv);
                 this.xlv.proteinLinks.set(proteinLinkID, link);
                 fromProt.addLink(link);
                 toProt.addLink(link);
@@ -173,8 +173,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
                     resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv, hd);
                 }
                 link.residueLinks.set(residueLinkID, resLink);
-                if (link.residueLinks.keys().length > ProteinLink.maxNoResidueLinks) {
-                    ProteinLink.maxNoResidueLinks = link.residueLinks.keys().length;
+                if (link.residueLinks.keys().length > InteractorLink.maxNoResidueLinks) {
+                    InteractorLink.maxNoResidueLinks = link.residueLinks.keys().length;
                 }
             }
             //we have residue link we want - associate this match with it

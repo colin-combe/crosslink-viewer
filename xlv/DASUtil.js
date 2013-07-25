@@ -88,7 +88,7 @@ xinet.DASUtil.prototype.nextDASQuery = function(prot, server) {
     }
 };
 
-Protein.prototype.processDAS = function(serverName, das) {
+Interactor.prototype.processDAS = function(serverName, das) {
     //    console.log(JSON.stringify(das, null, '\t'));
     if (das !== undefined) {
         if (this.processedDAS === undefined) {
@@ -264,7 +264,7 @@ Protein.prototype.processDAS = function(serverName, das) {
                         }
                     }
                     //onto the not positional/not keywords annotations
-                    else if (typeCat === "Protein name") {
+                    else if (typeCat === "Interactor name") {
                         //its the name from UniProt
                         if (serverName === 'UniProt') {
                             var name = ann.label;
@@ -350,7 +350,7 @@ Protein.prototype.processDAS = function(serverName, das) {
     }
 };
 
-Protein.prototype.printAnnotationInfo = function() {
+Interactor.prototype.printAnnotationInfo = function() {
     var self = this;
     var message = "";
     //heading, including PDB link
@@ -376,6 +376,11 @@ Protein.prototype.printAnnotationInfo = function() {
     if (typeof this.geneName !== 'undefined') {
         message += "<p>Gene names: " + highlightRegex(this.geneName, self.xlv.fields.names) + "</p>";
     }
+
+    if (typeof this.json !== 'undefined'){
+        message += '<pre>' + JSON.stringify(this.json, null, '\t') + '</pre>';
+    }
+
     //TODO: print custom domain annotation info
 
     if (this.processedDAS) {
@@ -521,16 +526,16 @@ Protein.prototype.printAnnotationInfo = function() {
             //NOTs
             countRegex = self.xlv.textFilterRegexNOT.length;
             for (var r = 0; r < countRegex; r++) {
-                regex =  new RegExp(">[^<]+(" + self.xlv.textFilterRegexNOT[r].source + ")", "gi");
+                regex = new RegExp(">[^<]+(" + self.xlv.textFilterRegexNOT[r].source + ")", "gi");
                 regex.lastIndex = 0;
                 result = regex.exec(">" + annotationText);
                 //console.log("in regex loop");
                 while (result != null) {
-                     var match = result[1];
+                    var match = result[1];
                     NOTs.push({start: (regex.lastIndex - match.length - 1), stop: regex.lastIndex - 1});
                     result = regex.exec(">" + annotationText);
-            //console.log(JSON.stringify(NOTs));
-                       }
+                    //console.log(JSON.stringify(NOTs));
+                }
             }
             var openSpanNOT = "<span class='NOT'>";
             var highlightSpanNotTagLength = openSpanNOT.length + closeSpan.length;
@@ -594,103 +599,103 @@ function updateMenus(xlv) {
     var select = document.getElementById('pos_feat_select');
     //empty menu
     if (typeof select !== 'undefined' && select != null) {
-    while (select.firstChild) {
-        select.removeChild(select.firstChild);
-    }
-    //add none option
-    var noneOption = document.createElement("option");
-    noneOption.setAttribute('value', 'none');
-    if (customAnnot) {
-        noneOption.appendChild(document.createTextNode('None or custom'));
-    } else {
-        noneOption.appendChild(document.createTextNode('None'));
-    }
-    select.appendChild(noneOption);
-    d3.keys(nestedPos).forEach(
-            function(group) {
-                var optGroup = document.createElement("optGroup");
-                optGroup.setAttribute('label', group);
-                d3.keys(nestedPos[group]).forEach(
-                        function(opt) {
-                            var option = document.createElement("option");
-                            option.setAttribute('value', opt);
-                            option.appendChild(document.createTextNode(opt));
-                            optGroup.appendChild(option);
-                        }
-                );
-                select.appendChild(optGroup);
-            }
-    );
-    select.value = 'miscellaneous';
-    select.removeAttribute('disabled');
-
-    message += "<h6>Keyword sets</h4>";
-    var allKey = new Array();
-    for (var p = 0; p < protCount; p++) {
-        prots[p].processedDAS.forEach(
-                function(serverName, das) {
-                    if (das.keywords) {
-                        das.keywords = d3.map(das.keywords);
-                        das.keywords.forEach(
-                                function(cat, posFeatArray) {
-                                    allKey.push({
-                                        server: serverName,
-                                        category: cat
-                                    });
-                                }
-                        );
-                    }
+        while (select.firstChild) {
+            select.removeChild(select.firstChild);
+        }
+        //add none option
+        var noneOption = document.createElement("option");
+        noneOption.setAttribute('value', 'none');
+        if (customAnnot) {
+            noneOption.appendChild(document.createTextNode('None or custom'));
+        } else {
+            noneOption.appendChild(document.createTextNode('None'));
+        }
+        select.appendChild(noneOption);
+        d3.keys(nestedPos).forEach(
+                function(group) {
+                    var optGroup = document.createElement("optGroup");
+                    optGroup.setAttribute('label', group);
+                    d3.keys(nestedPos[group]).forEach(
+                            function(opt) {
+                                var option = document.createElement("option");
+                                option.setAttribute('value', opt);
+                                option.appendChild(document.createTextNode(opt));
+                                optGroup.appendChild(option);
+                            }
+                    );
+                    select.appendChild(optGroup);
                 }
         );
-    }
-    var nestedKeywords = d3.nest()
-            .key(function(d) {
-        return d.server;
-    })
-            .key(function(d) {
-        return d.category;
-    })
-            .rollup(function(d) {
-        return (d.length + " annotated proteins");
-    })
-            .map(allKey);
-    message += '<pre>' + JSON.stringify(nestedKeywords, null, '\t') + '</pre>';
+        select.value = 'miscellaneous';
+        select.removeAttribute('disabled');
 
-    //update option menu
-    select = document.getElementById('keyword_select');
-    //empty menu
-    while (select.firstChild) {
-        select.removeChild(select.firstChild);
-    }
-    //add none option
-    var noneOption = document.createElement("option");
-    noneOption.setAttribute('value', 'none');
-    noneOption.appendChild(document.createTextNode('None'));
-    select.appendChild(noneOption);
-    d3.keys(nestedKeywords).forEach(
-            function(group) {
-                var optGroup = document.createElement("optGroup");
-                optGroup.setAttribute('label', group);
-                d3.keys(nestedKeywords[group]).forEach(
-                        function(opt) {
-                            var option = document.createElement("option");
-                            option.setAttribute('value', opt);
-                            option.appendChild(document.createTextNode(opt));
-                            optGroup.appendChild(option);
+        message += "<h6>Keyword sets</h4>";
+        var allKey = new Array();
+        for (var p = 0; p < protCount; p++) {
+            prots[p].processedDAS.forEach(
+                    function(serverName, das) {
+                        if (das.keywords) {
+                            das.keywords = d3.map(das.keywords);
+                            das.keywords.forEach(
+                                    function(cat, posFeatArray) {
+                                        allKey.push({
+                                            server: serverName,
+                                            category: cat
+                                        });
+                                    }
+                            );
                         }
-                );
-                select.appendChild(optGroup);
-            }
-    );
-    select.removeAttribute('disabled');
-  
-    //enable additonal text search checkboxes
+                    }
+            );
+        }
+        var nestedKeywords = d3.nest()
+                .key(function(d) {
+            return d.server;
+        })
+                .key(function(d) {
+            return d.category;
+        })
+                .rollup(function(d) {
+            return (d.length + " annotated proteins");
+        })
+                .map(allKey);
+        message += '<pre>' + JSON.stringify(nestedKeywords, null, '\t') + '</pre>';
+
+        //update option menu
+        select = document.getElementById('keyword_select');
+        //empty menu
+        while (select.firstChild) {
+            select.removeChild(select.firstChild);
+        }
+        //add none option
+        var noneOption = document.createElement("option");
+        noneOption.setAttribute('value', 'none');
+        noneOption.appendChild(document.createTextNode('None'));
+        select.appendChild(noneOption);
+        d3.keys(nestedKeywords).forEach(
+                function(group) {
+                    var optGroup = document.createElement("optGroup");
+                    optGroup.setAttribute('label', group);
+                    d3.keys(nestedKeywords[group]).forEach(
+                            function(opt) {
+                                var option = document.createElement("option");
+                                option.setAttribute('value', opt);
+                                option.appendChild(document.createTextNode(opt));
+                                optGroup.appendChild(option);
+                            }
+                    );
+                    select.appendChild(optGroup);
+                }
+        );
+        select.removeAttribute('disabled');
+
+        //enable additonal text search checkboxes
 //    document.getElementById('notes').removeAttribute('disabled');
-    //    document.getElementById('notes').setAttribute('checked', 'checked');
+        //    document.getElementById('notes').setAttribute('checked', 'checked');
 //    document.getElementById('key_text').removeAttribute('disabled');
-    //    document.getElementById('key_text').setAttribute('checked', 'checked');
+        //    document.getElementById('key_text').setAttribute('checked', 'checked');
 //    document.getElementById('posFeat_text').removeAttribute('disabled');
-  }
+    }
 //    document.getElementById('posFeat_text').setAttribute('checked', 'checked');
 //xlv.message(message);
 }

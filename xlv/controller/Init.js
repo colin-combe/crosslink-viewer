@@ -169,7 +169,7 @@ xinet.Controller.prototype.clear = function() {
 
     this.proteinCount = 0;
     this.maxBlobRadius = 0;
-    Protein.MAXSIZE = 0;
+    Interactor.MAXSIZE = 0;
 
     this.layout = null;
     this.z = 1;
@@ -221,7 +221,7 @@ xinet.Controller.prototype.message = function(text, preformatted) {
 };
 
 xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
-    var newProt = new Protein(id, this, accession, label);
+    var newProt = new Interactor(id, this, accession, label);
     newProt.initProtein(sequence, label, description, size);
     this.proteins.set(id, newProt);
 };
@@ -296,8 +296,8 @@ xinet.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("height", "100%");
     this.svgElement.setAttribute("style", "display:block;");
 
-    this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-   // Protein.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+    this.maxBlobRadius = Math.sqrt(2000 / Math.PI);//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000)
+   // Interactor.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Interactor.LABELMAXLENGTH) / Interactor.MAXSIZE;//TODO: fix that -350 hack
     
     this.initComplete = true;
 

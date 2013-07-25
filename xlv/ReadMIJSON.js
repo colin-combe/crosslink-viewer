@@ -5,8 +5,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
     for (var n = 0; n < dataElementCount; n++) {
         var interactor = data[n];
         if (interactor.object === 'interactor') {
-            //TODO: rename Protein 'class' to Interactor
-            var p = new Protein(interactor.identifier.id, this, interactor.identifier.id, interactor.label, interactor.organism);
+            var p = new Interactor(interactor.identifier.id, this, interactor);
             this.proteins.set(interactor.identifier.id, p);
             var organismText = "organism data missing";
             if (interactor.organism) {
@@ -48,12 +47,25 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
         var client = JSDAS.Simple.getClient(server_url);
         // This function will be executed in case of error
         var error_response = function(e) {
-            console.error('Sequence DAS lookup FAILED for ' + accession);
             var id = e.url.substring(e.url.lastIndexOf('=') + 1);
-            console.log(JSON.stringify(id));
+            console.error('Sequence DAS lookup FAILED for ' + id);
+            console.error(e.url);
             var p = self.proteins.get(id);
-             p.initProtein('NOSEQUENCE');
+            p.initProtein('NOSEQUENCE');
             proteinsMissingSequence.remove(id);
+            var dashIndex = id.lastIndexOf('-')
+            if (dashIndex !== -1) {
+                var notIsoformAccession = id.substring(dashIndex + 1);
+                client.sequence({
+                    segment: notIsoformAccession
+                }, response, error_response);
+                self.message('<p>Waiting on sequence DAS response for: '
+                        + proteinsMissingSequence.values().toString() + '</p>');
+            }
+            if (proteinsMissingSequence.values().length === 0) {
+                self.message('<p>All sequences downloaded from DAS</p>');
+                addInteractions();
+            }
         };
         // This function inits the protein
         var response = function(res) {
@@ -69,7 +81,6 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
                     + proteinsMissingSequence.values().toString() + '</p>');
             if (proteinsMissingSequence.values().length === 0) {
                 self.message('<p>All sequences downloaded from DAS</p>');
-
                 addInteractions();
             }
         };
@@ -87,7 +98,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
 
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
-        Protein.UNITS_PER_RESIDUE = (((width - 350) * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+        Interactor.UNITS_PER_RESIDUE = (((width - 350) * 0.5) - Interactor.LABELMAXLENGTH) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         var proteins = self.proteins.values();
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
@@ -130,9 +141,9 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
     var link = this.proteinLinks.get(linkID);
     if (typeof link === 'undefined') {
         if (interaction.source.identifier.id < interaction.target.identifier.id) {
-            link = new ProteinLink(linkID, sourceInteractor, targetInteractor, this);
+            link = new InteractorLink(linkID, sourceInteractor, targetInteractor, this);
         } else {
-            link = new ProteinLink(linkID, sourceInteractor, targetInteractor, this);
+            link = new InteractorLink(linkID, sourceInteractor, targetInteractor, this);
         }
         this.proteinLinks.set(linkID, link);
         sourceInteractor.addLink(link);

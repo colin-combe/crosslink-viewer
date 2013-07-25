@@ -6,11 +6,11 @@ xinet.selectedColour = new RGBColor("orange");
 //static var's signifying Controller's status
 xinet.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
 xinet.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xinet.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
+xinet.Controller.DRAGGING = 2;//set by mouse down on Interactor or Link
 xinet.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
 xinet.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
-//listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events
+//listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
 xinet.Controller.prototype.initMouseEvents = function() {
     //add listeners
@@ -218,7 +218,7 @@ xinet.Controller.prototype.mouseUp = function(evt) {
                         if (this.dragElement.proteinLink)
                             this.dragElement.proteinLink.fromProtein.toggleFlipped();
                     } else {
-                        if (this.dragElement.hidden !== undefined) {//if ProteinLink
+                        if (this.dragElement.hidden !== undefined) {//if InteractorLink
                             this.dragElement.hidden = true;
                         } else {//its a residue link
                             this.dragElement.proteinLink.hidden = true;

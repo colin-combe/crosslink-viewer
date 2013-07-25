@@ -280,13 +280,13 @@ ResidueLink.prototype.setLinkCoordinates = function(interactor) {
 
         if (out < 180) {
             tRotRad = tRotRad - Math.PI;
-        //            ts[1] += Protein.STICKHEIGHT / 2;
-        //            te[1] += Protein.STICKHEIGHT / 2;
+        //            ts[1] += Interactor.STICKHEIGHT / 2;
+        //            te[1] += Interactor.STICKHEIGHT / 2;
 
         }
         else {
-        //            ts[1] -= Protein.STICKHEIGHT / 2;
-        //            te[1] -= Protein.STICKHEIGHT / 2;
+        //            ts[1] -= Interactor.STICKHEIGHT / 2;
+        //            te[1] -= Interactor.STICKHEIGHT / 2;
 
         }
 

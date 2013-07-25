@@ -1,14 +1,13 @@
 {
 "dataRoot": {
-              "interactors": 'listType_interactor'
-              "interactions": 'listType_interaction'
+              "data": 'listType_mix_interactor_interaction'
 },
 
 "interactor": {
             "sequence": 'string',
             "type": 'cvType',
             "organism": 'organismType',
-            "accession": "P46109",
+            "identifier": 'xrefType',
             "label": "CRKL"
         },
 
@@ -16,6 +15,11 @@
               "taxid": 'integer',
               "common": 'string',
               "scientific": 'string'
+        },
+
+"xrefType": {
+              "db": 'string',
+              "id": 'string'
         },
 
 "cvType": {
@@ -27,65 +31,38 @@
             "experiment": 'experimentType',
             "interactionType": 'cvType',
             "source": 'participantType',
-            "target": 'participantType',
-            "metaData": [free array]
+            "target": 'participantType'
         },
 
 "experimentType":  {
             "detmethod": 'cvtype',
-            "pubid": 'string',
+            "pubid": 'xrefType',
             "host": 'organismType',
             "sourceDatabase" : 'cvType',
-            "experimentModification" : 'String',
-            "figure" : 'String',
+            "experimentModification" : list_of_string,
+            "figure" : list_of_string,
         },
 
 "participantType":  {
-            "id": 'string',
+            "identifier": 'xrefType',
             "bioRole": 'cvType',
             "exprole": 'cvType',
-            "identificationMethod": 'cvType',
+            "identificationMethod": list_of_cvType,
             "expressedIn": 'organismType',
-            "experimentalFeatures": 'listType_experimentalFeature',
-            "pointMutations": 'listType_pointMutation',
-            "bindingFeatures": 'listType_bindingFeature',
-            "ptmFeatures": 'listType_ptmFeature',
+            "experimentalFeatures": 'listType_feature',
+            "pointMutations": 'listType_feature',
+            "bindingFeatures": 'listType_feature',
+            "ptmFeatures": 'listType_feature',
+            "otherFeatures": 'listType_feature'
         },
 
-"experimentalFeature" : {
+"feature" : {
          "id": 'string',
 	 "name" : 'string',
 	 "type" : 'cvType',
 	 "detmethod" : "cvType",	
-	 "sequenceData" : "listType_rangeData"	  			
-},
-
-"bindingFeature" : {
-        "id": 'string',
-	 "name" : 'string',
-	 "type" : 'cvType',
-	 "detmethod" : "cvType",
-         "Binding_Site_Domain" : 'string',	
+         "interpro" : 'string',	
 	 "sequenceData" : "listType_rangeData",
-         "linkedFeatures": 'listType_featureId'		
-},
-
-"ptmFeature" : {
-	"id": 'string',
-	 "name" : 'string',
-	 "type" : 'cvType',
-	 "detmethod" : "cvType",
-	"Post_Translation_Modification_Choice" : "dummy",		
-	"sequenceData" :   "listType_rangeData",
-         "linkedFeatures": 'listType_featureId'			    	
-},
-
-"pointMutation" : {
-	"id": 'string',
-	 "name" : 'string',
-	 "type" : 'cvType',
-	 "detmethod" : "cvType",		
-	"sequenceData" :   "listType_rangeData",
-         "linkedFeatures": 'listType_featureId'			    	
+         "linkedFeatures": 'listType_featureId'		  			
 }
 }

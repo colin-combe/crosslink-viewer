@@ -39,7 +39,7 @@ xinet.Controller.prototype.readMITAB = function(mitab) {
             var organism = new MiTabData(rows[row][organismIndex]);
 
             if (!self.proteins.has(acc)) {
-                var interactor = new Protein(acc, self, acc, label, organism);
+                var interactor = new Interactor(acc, self, acc, label, organism);
                 self.proteins.set(acc, interactor);
                 if (accDb === "uniprotkb") {
                     tempStack.set(acc, alias);
@@ -70,7 +70,7 @@ xinet.Controller.prototype.readMITAB = function(mitab) {
                 + tempStack.keys().toString() + '</p>');
             if (tempStack.keys().length === 0) {
                 self.message('<p>All sequences downloaded from DAS</p>');
-                Protein.UNITS_PER_RESIDUE = (((/*width - 350*/1024) * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+                Interactor.UNITS_PER_RESIDUE = (((/*width - 350*/1024) * 0.5) - Interactor.LABELMAXLENGTH) / Interactor.MAXSIZE;//TODO: fix that -350 hack
                 var proteins = self.proteins.values();
                 var proteinCount = proteins.length;
                 for (var p = 0; p < proteinCount; p++) {

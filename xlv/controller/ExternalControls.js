@@ -63,7 +63,7 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
     this.checkLinks();
 };
 
-Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
+Interactor.prototype.meetsTextFilter = function(filterRegex, fields) {
     var searchString = "";
 
     if (fields.names === true) {

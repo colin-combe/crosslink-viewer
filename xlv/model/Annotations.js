@@ -9,7 +9,7 @@ function Annotation(annotName, startRes, endRes, colour, notes) {
     this.notes = notes;
 }
 
-Protein.prototype.setAnnotations = function(pos, group, category) {
+Interactor.prototype.setAnnotations = function(pos, group, category) {
     //clear
     while (this.circDomains.firstChild) {
         this.circDomains.removeChild(this.circDomains.firstChild);
@@ -44,7 +44,7 @@ Protein.prototype.setAnnotations = function(pos, group, category) {
     }
 };
 
-Protein.prototype.setKeywords = function(keywords) {
+Interactor.prototype.setKeywords = function(keywords) {
     if (keywords !== undefined && keywords !== null) {
         var numberOfKeywords = keywords.length;
         var sliceAngleDegrees = 359 / numberOfKeywords;
@@ -81,7 +81,7 @@ Protein.prototype.setKeywords = function(keywords) {
             var c;
             //temp
             if (anno.colour == null) { //check why == needed here
-                c = new RGBColor(Protein.domainColours(anno.name));
+                c = new RGBColor(Interactor.domainColours(anno.name));
             }
             else {
                 c = anno.colour;
@@ -105,9 +105,9 @@ Protein.prototype.setKeywords = function(keywords) {
     }
 };
 
-Protein.prototype.setPositionalFeatures = function(posFeats) {
+Interactor.prototype.setPositionalFeatures = function(posFeats) {
     if (posFeats !== undefined && posFeats !== null) {
-        var y = -Protein.STICKHEIGHT / 2;
+        var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
         posFeats.sort(function(a, b) {
             return (b.end - b.start) - (a.end - a.start);
@@ -152,15 +152,15 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             //            }
             //Ouch!! Without brackets following does string concatenation
             var annoSize = (1 + (anno.end - anno.start));
-            var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;
+            var annoLength = annoSize * Interactor.UNITS_PER_RESIDUE;
             annotColouredRect.setAttribute("x", annotX);
             annotColouredRect.setAttribute("y", y);//svgHeight);
             annotColouredRect.setAttribute("width", annoLength);
-            annotColouredRect.setAttribute("height", Protein.STICKHEIGHT);
+            annotColouredRect.setAttribute("height", Interactor.STICKHEIGHT);
             annotMouseEventRect.setAttribute("x", annotX);
             annotMouseEventRect.setAttribute("y", y);//svgHeight);
             annotMouseEventRect.setAttribute("width", annoLength);
-            annotMouseEventRect.setAttribute("height", Protein.STICKHEIGHT);
+            annotMouseEventRect.setAttribute("height", Interactor.STICKHEIGHT);
 
             //style 'em // u r here
             annotPieSlice.setAttribute("stroke", "none");
@@ -177,7 +177,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
                     c = new RGBColor('#FF00AA88');
                 }
                 else {
-                    c = new RGBColor(Protein.domainColours(anno.name));
+                    c = new RGBColor(Interactor.domainColours(anno.name));
                 }
             }
             else {

@@ -19,10 +19,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0114","name":"x-ray crystallography"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
 			"pubid":[{"db":"pubmed","id":"18160037"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 3 B-D, Table S1; Fig. S3-S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 3 B-D, Table S1; Fig. S3-S5"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1627151"}],
@@ -32,11 +31,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"14445175",
+				"id":"18415963",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-172"},{"range":"210-251"}]
+				"sequenceData":["1-172","210-251"]
 				}]
 		},
 		"target":{
@@ -44,11 +43,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"12710158",
+				"id":"7301738",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"78-112"},{"range":"1-52"}]
+				"sequenceData":["78-112","1-52"]
 				}]
 		}
 	},
@@ -71,13 +70,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -85,11 +83,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12115695",
+				"id":"11765404",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -111,13 +109,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -125,11 +122,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15674464",
+				"id":"4883909",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -151,13 +148,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -165,11 +161,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2730814",
+				"id":"7426130",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -191,13 +187,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -205,11 +200,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27891041",
+				"id":"22050116",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -231,13 +226,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.55"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -245,11 +239,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9319143",
+				"id":"21164068",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -271,13 +265,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -285,11 +278,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11541827",
+				"id":"27524709",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -311,13 +304,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -325,11 +317,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5324016",
+				"id":"30564957",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -351,13 +343,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580346"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580346"},{"db":"imex","id":"IM-11983-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -365,11 +356,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12110054",
+				"id":"20435151",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -384,13 +375,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -398,11 +388,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13205705",
+				"id":"7478930",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -417,13 +407,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -431,11 +420,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19272103",
+				"id":"3474559",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -450,13 +439,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.55"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -464,11 +452,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5309741",
+				"id":"12203823",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -483,13 +471,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -497,11 +484,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2780950",
+				"id":"17659794",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -516,13 +503,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -530,11 +516,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31658378",
+				"id":"19222087",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -549,13 +535,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -563,11 +548,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25197736",
+				"id":"3554254",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -582,13 +567,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -596,11 +580,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7866553",
+				"id":"9470913",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -615,13 +599,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0676","name":"tandem affinity purification"},
 			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"host":{"taxid":"3702","common":"arath-cell-culture"},
-			"pubid":[{"db":"pubmed","id":"18160042"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18160042"},{"db":"imex","id":"IM-11983"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580456"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580456"},{"db":"imex","id":"IM-11983-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -629,11 +612,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0427","name":"Identification by mass spectrometry"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20727434",
+				"id":"23393515",
 				"type":{"name":"calmodulin binding peptide plus protein a tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -662,24 +645,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 C"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 C"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580629"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580629"},{"db":"imex","id":"IM-11984-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.81"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"3874052",
+				"id":"17536498",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		},
 		"target":{
@@ -694,24 +676,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 C"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 C"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580636"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580636"},{"db":"imex","id":"IM-11984-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.81"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"3779465",
+				"id":"27346029",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		},
 		"target":{
@@ -726,13 +707,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 C"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 C"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580645"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580645"},{"db":"imex","id":"IM-11984-5"}],
 		"confidences":[{"type":"intact-miscore","value":"0.81"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q04491"},
@@ -745,11 +725,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"2929821",
+				"id":"9668693",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		}
 	},
@@ -765,24 +745,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 D, E"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 D, E"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580653"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580653"},{"db":"imex","id":"IM-11984-6"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P55735"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"17160330",
+				"id":"31179076",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		},
 		"target":{
@@ -790,11 +769,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"13328393",
+				"id":"7176273",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		}
 	},
@@ -803,24 +782,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 D, E"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 D, E"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580661"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580661"},{"db":"imex","id":"IM-11984-7"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P55735"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"927929",
+				"id":"17004889",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		},
 		"target":{
@@ -828,11 +806,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"26453615",
+				"id":"18082716",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		}
 	},
@@ -841,24 +819,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 D"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 D"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580669"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580669"},{"db":"imex","id":"IM-11984-8"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"9688764",
+				"id":"22494771",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		},
 		"target":{
@@ -873,24 +850,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 D"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 D"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580677"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580677"},{"db":"imex","id":"IM-11984-9"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"32956236",
+				"id":"11832867",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		},
 		"target":{
@@ -919,13 +895,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"6"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["6"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580856"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580856"},{"db":"imex","id":"IM-11984-12"}],
 		"confidences":[{"type":"intact-miscore","value":"0.68"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P46673"},
@@ -934,9 +909,9 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12455463",
+				"id":"31436981",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"1-570"}]
+				"sequenceData":["1-570"]
 				}]
 		},
 		"target":{
@@ -951,13 +926,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"6"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["6"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580888"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580888"},{"db":"imex","id":"IM-11984-13"}],
 		"confidences":[{"type":"intact-miscore","value":"0.68"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P53011"},
@@ -972,9 +946,9 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26425437",
+				"id":"13266771",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"1-570"}]
+				"sequenceData":["1-570"]
 				}]
 		}
 	},
@@ -983,24 +957,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0067","name":"light scattering"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 F"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 F"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580693"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580693"},{"db":"imex","id":"IM-11984-14"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P55735"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"5862378",
+				"id":"5428064",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		},
 		"target":{
@@ -1008,11 +981,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"13177628",
+				"id":"28531029",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		}
 	},
@@ -1021,24 +994,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0067","name":"light scattering"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 F"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 F"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580701"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580701"},{"db":"imex","id":"IM-11984-15"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P55735"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"17152415",
+				"id":"28175810",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		},
 		"target":{
@@ -1046,11 +1018,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"14525019",
+				"id":"30705273",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"730-1060"}]
+				"sequenceData":["730-1060"]
 				}]
 		}
 	},
@@ -1059,24 +1031,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"S1 B"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["S1 B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580715"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580715"},{"db":"imex","id":"IM-11984-16"}],
 		"confidences":[{"type":"intact-miscore","value":"0.81"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0818","name":"molecular weight estimation by coomasie staining"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"13508999",
+				"id":"29921964",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"830-1160"}]
+				"sequenceData":["830-1160"]
 				}]
 		},
 		"target":{
@@ -1091,24 +1062,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0071","name":"molecular sieving"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"S1 B"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["S1 B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1580721"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580721"},{"db":"imex","id":"IM-11984-17"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0818","name":"molecular weight estimation by coomasie staining"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"22172629",
+				"id":"18179949",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"830-1160"}]
+				"sequenceData":["830-1160"]
 				}]
 		},
 		"target":{
@@ -1116,11 +1086,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0818","name":"molecular weight estimation by coomasie staining"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"33414193",
+				"id":"3753334",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		}
 	},
@@ -1129,24 +1099,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0114","name":"x-ray crystallography"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2, Table S1"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2, Table S1"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
-		"identifiers":[{"db":"intact","id":"EBI-1580766"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580766"},{"db":"imex","id":"IM-11984-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P49687"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"25383554",
+				"id":"33509728",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"830-1160"}]
+				"sequenceData":["830-1160"]
 				}]
 		},
 		"target":{
@@ -1154,11 +1123,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"10351444",
+				"id":"20413120",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		}
 	},
@@ -1167,24 +1136,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0114","name":"x-ray crystallography"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"18160040"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2, Table S2"}]
+			"pubid":[{"db":"pubmed","id":"18160040"},{"db":"imex","id":"IM-11984"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2, Table S2"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
-		"identifiers":[{"db":"intact","id":"EBI-1580832"}],
+		"identifiers":[{"db":"intact","id":"EBI-1580832"},{"db":"imex","id":"IM-11984-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.60"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P55735"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"30549415",
+				"id":"19508891",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1-316"}]
+				"sequenceData":["1-316"]
 				}]
 		},
 		"target":{
@@ -1192,11 +1160,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"27667505",
+				"id":"25589773",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"830-1160"}]
+				"sequenceData":["830-1160"]
 				}]
 		}
 	},
@@ -1219,12 +1187,11 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0018","name":"two hybrid"},
 			"host":{"taxid":"4932","common":"yeasx"},
-			"host":{"taxid":"4932","common":"yeasx"},
-			"pubid":[{"db":"pubmed","id":"18188704"}],
-			"source":{"id":"MI:0469","name":"IntAct"}
+			"pubid":[{"db":"pubmed","id":"18188704"},{"db":"imex","id":"IM-19797"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"}
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581189"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581189"},{"db":"imex","id":"IM-19797-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.51"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q6QNY1"},
@@ -1237,11 +1204,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0078","name":"nucleotide sequence identification"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"15668093",
+				"id":"20166107",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"335-429"}]
+				"sequenceData":["335-429"]
 				}]
 		}
 	},
@@ -1250,24 +1217,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293t"},
-			"host":{"taxid":"9606","common":"human-293t"},
-			"pubid":[{"db":"pubmed","id":"18188704"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2 A"}]
+			"pubid":[{"db":"pubmed","id":"18188704"},{"db":"imex","id":"IM-19797"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2 A"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581202"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581202"},{"db":"imex","id":"IM-19797-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.51"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q9NWB7"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32012057",
+				"id":"32002033",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -1275,11 +1241,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14886914",
+				"id":"14191483",
 				"type":{"name":"ha tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1288,29 +1254,29 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293t"},
-			"host":{"taxid":"9606","common":"human-293t"},
-			"pubid":[{"db":"pubmed","id":"18188704"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2 B"}]
+			"pubid":[{"db":"pubmed","id":"18188704"},{"db":"imex","id":"IM-19797"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2 B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581211"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581211"},{"db":"imex","id":"IM-19797-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.51"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q9NWB7"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22528701",
+				"id":"11367730",
 				"type":{"name":"myc tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"11678224",
+				"id":"32057085",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"335-429"}]
+				"sequenceData":["335-429"]
 				}]
 		},
 		"target":{
@@ -1318,11 +1284,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16053322",
+				"id":"33477107",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1345,24 +1311,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0018","name":"two hybrid"},
 			"host":{"taxid":"4932","common":"yeasx"},
-			"host":{"taxid":"4932","common":"yeasx"},
-			"pubid":[{"db":"pubmed","id":"18165900"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 A"}]
+			"pubid":[{"db":"pubmed","id":"18165900"},{"db":"imex","id":"IM-19798"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 A"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581234"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581234"},{"db":"imex","id":"IM-19798-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.54"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q96P48"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0078","name":"nucleotide sequence identification"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"30562042",
+				"id":"9035490",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1190-1450"}]
+				"sequenceData":["1190-1450"]
 				}]
 		},
 		"target":{
@@ -1370,11 +1335,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0078","name":"nucleotide sequence identification"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"4999541",
+				"id":"25687255",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"269-468"}]
+				"sequenceData":["269-468"]
 				}]
 		}
 	},
@@ -1383,24 +1348,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0018","name":"two hybrid"},
 			"host":{"taxid":"4932","common":"yeasx"},
-			"host":{"taxid":"4932","common":"yeasx"},
-			"pubid":[{"db":"pubmed","id":"18165900"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"1 B"}]
+			"pubid":[{"db":"pubmed","id":"18165900"},{"db":"imex","id":"IM-19798"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["1 B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581253"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581253"},{"db":"imex","id":"IM-19798-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.54"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q96P48"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"6997089",
+				"id":"14381540",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1190-1450"}]
+				"sequenceData":["1190-1450"]
 				}]
 		},
 		"target":{
@@ -1408,11 +1372,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"25352765",
+				"id":"17971560",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"269-468"}]
+				"sequenceData":["269-468"]
 				}]
 		}
 	},
@@ -1421,29 +1385,29 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0006","name":"anti bait coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293t"},
-			"host":{"taxid":"9606","common":"human-293t"},
-			"pubid":[{"db":"pubmed","id":"18165900"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2 A, B"}]
+			"pubid":[{"db":"pubmed","id":"18165900"},{"db":"imex","id":"IM-19798"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2 A, B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581280"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581280"},{"db":"imex","id":"IM-19798-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.54"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q96P48"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29751107",
-				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"1190-1450"}]
-				},
-				{
-				"id":"1623405",
+				"id":"24567153",
 				"type":{"name":"myc tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
+				{
+				"id":"12869346",
+				"type":{"name":"sufficient binding region"},
+				"sequenceData":["1190-1450"]
 				}]
 		},
 		"target":{
@@ -1451,16 +1415,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"pointMutations":[
 				{
-				"id":"4815156",
-				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"365-378"}]
-				},
-				{
-				"id":"28606871",
+				"id":"3242781",
 				"type":{"name":"mutation decreasing interaction"},
-				"sequenceData":[{"range":"368-368"},{"range":"369-369"}]
+				"sequenceData":["368-368","369-369"]
+				}],
+			"bindingSites":[
+				{
+				"id":"9025875",
+				"type":{"name":"necessary binding region"},
+				"sequenceData":["365-378"]
 				}]
 		}
 	},
@@ -1476,24 +1441,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0006","name":"anti bait coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293t"},
-			"host":{"taxid":"9606","common":"human-293t"},
-			"pubid":[{"db":"pubmed","id":"18165900"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2 B"}]
+			"pubid":[{"db":"pubmed","id":"18165900"},{"db":"imex","id":"IM-19798"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2 B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1581300"}],
+		"identifiers":[{"db":"intact","id":"EBI-1581300"},{"db":"imex","id":"IM-19798-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.40"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q96P48"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15512193",
+				"id":"31860110",
 				"type":{"name":"myc tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -1522,29 +1486,29 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0030","name":"cross-linking study"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"9425043"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 3 and 4"}]
+			"pubid":[{"db":"pubmed","id":"9425043"},{"db":"imex","id":"IM-19724"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 3 and 4"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
-		"identifiers":[{"db":"intact","id":"EBI-1256888"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256888"},{"db":"imex","id":"IM-19724-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.44"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P00533"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0818","name":"molecular weight estimation by coomasie staining"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29057219",
+				"id":"11250516",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"13480046",
+				"id":"8205007",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"645-660"}]
+				"sequenceData":["645-660"]
 				}]
 		},
 		"target":{
@@ -1566,13 +1530,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0030","name":"cross-linking study"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"11853560"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 2A"}]
+			"pubid":[{"db":"pubmed","id":"11853560"},{"db":"imex","id":"IM-19262"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 2A"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1256912"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256912"},{"db":"imex","id":"IM-19262-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P00533"},
@@ -1585,11 +1548,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"33168310",
+				"id":"24706882",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1598,13 +1561,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0030","name":"cross-linking study"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"11853560"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 3B"}]
+			"pubid":[{"db":"pubmed","id":"11853560"},{"db":"imex","id":"IM-19262"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 3B"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1256931"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256931"},{"db":"imex","id":"IM-19262-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P00533"},
@@ -1617,11 +1579,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20012340",
+				"id":"12473643",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1630,24 +1592,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0030","name":"cross-linking study"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"11853560"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 3A and 4"}]
+			"pubid":[{"db":"pubmed","id":"11853560"},{"db":"imex","id":"IM-19262"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 3A and 4"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1256939"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256939"},{"db":"imex","id":"IM-19262-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P62161"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31335791",
+				"id":"29996263",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -1662,24 +1623,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0047","name":"far western blotting"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"11853560"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 5, 6 & 7"}]
+			"pubid":[{"db":"pubmed","id":"11853560"},{"db":"imex","id":"IM-19262"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 5, 6 & 7"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1256956"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256956"},{"db":"imex","id":"IM-19262-5"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P62161"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23845098",
+				"id":"16743523",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -1694,13 +1654,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0047","name":"far western blotting"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"11853560"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 5, 6 & 7"}]
+			"pubid":[{"db":"pubmed","id":"11853560"},{"db":"imex","id":"IM-19262"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 5, 6 & 7"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1256966"}],
+		"identifiers":[{"db":"intact","id":"EBI-1256966"},{"db":"imex","id":"IM-19262-6"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P00533"},
@@ -1713,11 +1672,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23994289",
+				"id":"20940721",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1733,13 +1692,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0047","name":"far western blotting"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15080792"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 6"}]
+			"pubid":[{"db":"pubmed","id":"15080792"},{"db":"imex","id":"IM-19726"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 6"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
-		"identifiers":[{"db":"intact","id":"EBI-1257044"}],
+		"identifiers":[{"db":"intact","id":"EBI-1257044"},{"db":"imex","id":"IM-19726-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.44"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P04626"},
@@ -1752,11 +1710,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14863189",
+				"id":"31828850",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1772,24 +1730,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0047","name":"far western blotting"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Figure 2b"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Figure 2b"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1257094"}],
+		"identifiers":[{"db":"intact","id":"EBI-1257094"},{"db":"imex","id":"IM-19557-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P62161"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26435810",
+				"id":"22736709",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -1804,24 +1761,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0047","name":"far western blotting"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Figures 2 & 4"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Figures 2 & 4"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1257103"}],
+		"identifiers":[{"db":"intact","id":"EBI-1257103"},{"db":"imex","id":"IM-19557-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q14451"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"12432643",
+				"id":"20320302",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"]
 				}]
 		},
 		"target":{
@@ -1829,11 +1785,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11985823",
+				"id":"6309077",
 				"type":{"name":"biotin tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -1842,13 +1798,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1257135"}],
+		"identifiers":[{"db":"intact","id":"EBI-1257135"},{"db":"imex","id":"IM-19557-5"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -1858,9 +1813,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"23506867",
+				"id":"14454637",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -1881,13 +1837,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1257135"}],
+		"identifiers":[{"db":"intact","id":"EBI-1257135"},{"db":"imex","id":"IM-19557-5"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -1903,9 +1858,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"10044878",
+				"id":"5010147",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -1920,13 +1876,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263225"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263225"},{"db":"imex","id":"IM-19557-6"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -1940,11 +1895,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"11918020",
+				"id":"17484435",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -1953,13 +1909,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263225"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263225"},{"db":"imex","id":"IM-19557-6"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -1967,11 +1922,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"19764978",
+				"id":"24753126",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -1986,13 +1942,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263236"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263236"},{"db":"imex","id":"IM-19557-7"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2000,11 +1955,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"24499883",
+				"id":"17950393",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -2019,13 +1975,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263236"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263236"},{"db":"imex","id":"IM-19557-7"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2039,11 +1994,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"22293109",
+				"id":"4368209",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2058,13 +2014,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263246"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263246"},{"db":"imex","id":"IM-19557-8"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2078,11 +2033,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"11508030",
+				"id":"32947226",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2091,13 +2047,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263246"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263246"},{"db":"imex","id":"IM-19557-8"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2105,11 +2060,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"7726332",
+				"id":"28794452",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -2124,13 +2080,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263258"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263258"},{"db":"imex","id":"IM-19557-9"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2140,9 +2095,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"811720",
+				"id":"26342987",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -2163,13 +2119,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263258"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263258"},{"db":"imex","id":"IM-19557-9"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2185,9 +2140,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"19480755",
+				"id":"29423188",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2196,13 +2152,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263268"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263268"},{"db":"imex","id":"IM-19557-10"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2210,11 +2165,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"22460089",
+				"id":"23872318",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -2235,13 +2191,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263268"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263268"},{"db":"imex","id":"IM-19557-10"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2255,11 +2210,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"32926975",
+				"id":"11719307",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2268,13 +2224,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263278"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263278"},{"db":"imex","id":"IM-19557-11"}],
 		"confidences":[{"type":"intact-miscore","value":"0.50"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2282,11 +2237,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"23979164",
+				"id":"1879101",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		},
 		"target":{
@@ -2307,13 +2263,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263278"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263278"},{"db":"imex","id":"IM-19557-11"}],
 		"confidences":[{"type":"intact-miscore","value":"0.52"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2327,11 +2282,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"29094346",
+				"id":"7339988",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2346,10 +2302,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1263290"}],
@@ -2365,11 +2320,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"33492446",
+				"id":"17100784",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2378,10 +2334,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264463"}],
@@ -2399,9 +2354,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"31952838",
+				"id":"19182761",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2410,10 +2366,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264472"}],
@@ -2429,11 +2384,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"26219575",
+				"id":"13681621",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2442,10 +2398,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264481"}],
@@ -2461,11 +2416,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"2056742",
+				"id":"32038290",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2474,10 +2430,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264490"}],
@@ -2493,11 +2448,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"6613606",
+				"id":"19585733",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2506,10 +2462,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264499"}],
@@ -2527,9 +2482,10 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"bindingSites":[
 				{
-				"id":"22608339",
+				"id":"8441753",
 				"type":{"name":"binding-associated region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2538,10 +2494,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264508"}],
@@ -2557,11 +2512,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"7971559",
+				"id":"12418684",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2570,10 +2526,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0049","name":"filter binding"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"15806159"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig 7"}]
+			"pubid":[{"db":"pubmed","id":"15806159"},{"db":"imex","id":"IM-19557"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig 7"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
 		"identifiers":[{"db":"intact","id":"EBI-1264517"}],
@@ -2589,11 +2544,12 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"28705408",
+				"id":"12264761",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"243-256"}]
+				"sequenceData":["243-256"],
+				"InterPro":"IPR001849"
 				}]
 		}
 	},
@@ -2616,13 +2572,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0006","name":"anti bait coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293t"},
-			"host":{"taxid":"9606","common":"human-293t"},
-			"pubid":[{"db":"pubmed","id":"17525332"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"2 A"}]
+			"pubid":[{"db":"pubmed","id":"17525332"},{"db":"imex","id":"IM-19727"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["2 A"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1263044"}],
+		"identifiers":[{"db":"intact","id":"EBI-1263044"},{"db":"imex","id":"IM-19727-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.53"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q14676"},
@@ -2637,9 +2592,9 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0113","name":"western blot"}],
 			"otherFeatures":[
 				{
-				"id":"6182315",
+				"id":"20091355",
 				"type":{"name":"O-phospho-L-serine"},
-				"sequenceData":[{"range":"1423-1423"}]
+				"sequenceData":["1423-1423"]
 				}]
 		}
 	},
@@ -2662,24 +2617,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0006","name":"anti bait coimmunoprecipitation"},
 			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"pubid":[{"db":"pubmed","id":"15350535"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 8"}]
+			"pubid":[{"db":"pubmed","id":"15350535"},{"db":"imex","id":"IM-18879"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 8"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638075"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638075"},{"db":"imex","id":"IM-18879-1"}],
 		"confidences":[{"type":"intact-miscore","value":"0.59"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q7L0Q8"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"pointMutations":[
 				{
-				"id":"22057969",
+				"id":"17161516",
 				"type":{"name":"mutation decreasing interaction"},
-				"sequenceData":[{"range":"63-63"}]
+				"sequenceData":["63-63"]
 				}]
 		},
 		"target":{
@@ -2687,11 +2641,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18923308",
+				"id":"33268061",
 				"type":{"name":"ha tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -2707,24 +2661,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0006","name":"anti bait coimmunoprecipitation"},
 			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"pubid":[{"db":"pubmed","id":"15350535"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 8"}]
+			"pubid":[{"db":"pubmed","id":"15350535"},{"db":"imex","id":"IM-18879"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 8"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638084"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638084"},{"db":"imex","id":"IM-18879-2"}],
 		"confidences":[{"type":"intact-miscore","value":"0.67"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"O43639"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15136722",
+				"id":"18802909",
 				"type":{"name":"ha tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -2732,11 +2685,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"26752749",
+				"id":"4861638",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"1-47"}]
+				"sequenceData":["1-47"]
 				}]
 		}
 	},
@@ -2745,34 +2698,36 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"host":{"taxid":"9534","common":"chlae-cos_7"},
-			"pubid":[{"db":"pubmed","id":"15350535"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 10"}]
+			"pubid":[{"db":"pubmed","id":"15350535"},{"db":"imex","id":"IM-18879"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 10"]
 		},
 		"interactionType":{"id":"MI:0915","name":"physical association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638105"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638105"},{"db":"imex","id":"IM-18879-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.67"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"O43639"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21350489",
-				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"195..195-257..257"}]
-				},
-				{
-				"id":"6588476",
-				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"111..111-170..170"}]
-				},
-				{
-				"id":"2891371",
+				"id":"24268593",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
+				{
+				"id":"28125457",
+				"type":{"name":"sufficient binding region"},
+				"sequenceData":["195..195-257..257"],
+				"InterPro":"IPR001452"
+				},
+				{
+				"id":"23280050",
+				"type":{"name":"sufficient binding region"},
+				"sequenceData":["111..111-170..170"],
+				"InterPro":"IPR001452"
 				}]
 		},
 		"target":{
@@ -2780,11 +2735,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0705","name":"anti tag western blot"}],
-			"otherFeatures":[
+			"bindingSites":[
 				{
-				"id":"8461448",
+				"id":"23136542",
 				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"1-47"}]
+				"sequenceData":["1-47"]
 				}]
 		}
 	},
@@ -2793,29 +2748,29 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0663","name":"confocal microscopy"},
 			"host":{"taxid":"10090","common":"mouse-nih_3t3"},
-			"host":{"taxid":"10090","common":"mouse-nih_3t3"},
-			"pubid":[{"db":"pubmed","id":"15350535"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 11"}]
+			"pubid":[{"db":"pubmed","id":"15350535"},{"db":"imex","id":"IM-18879"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 11"]
 		},
 		"interactionType":{"id":"MI:0403","name":"colocalization"},
-		"identifiers":[{"db":"intact","id":"EBI-1638127"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638127"},{"db":"imex","id":"IM-18879-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.67"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"Q7L0Q8"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0707","name":"anti tag immunostaining"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7888229",
-				"type":{"name":"necessary binding region"},
-				"sequenceData":[{"range":"1-47"}]
-				},
-				{
-				"id":"3916375",
+				"id":"27114588",
 				"type":{"name":"myc tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
+				{
+				"id":"12150765",
+				"type":{"name":"necessary binding region"},
+				"sequenceData":["1-47"]
 				}]
 		},
 		"target":{
@@ -2823,11 +2778,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0497","name":"neutral component"},
 			"identificationMethods":[{"id":"MI:0707","name":"anti tag immunostaining"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22279806",
+				"id":"5647691",
 				"type":{"name":"ha tag"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		}
 	},
@@ -2850,13 +2805,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2864,16 +2818,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22797392",
+				"id":"28811873",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"31275026",
+				"id":"17156513",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -2895,13 +2850,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2909,16 +2863,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9192299",
+				"id":"16283625",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"10378355",
+				"id":"8951503",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -2940,13 +2895,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2954,16 +2908,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13078969",
+				"id":"23401001",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"3154093",
+				"id":"9129144",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -2985,13 +2940,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -2999,16 +2953,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28399250",
+				"id":"22664114",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"27959193",
+				"id":"5861827",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3030,13 +2985,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3044,16 +2998,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13905160",
+				"id":"3929576",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"30961619",
+				"id":"9275605",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3075,13 +3030,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3089,16 +3043,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9800632",
+				"id":"1203023",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"521452",
+				"id":"19446596",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3120,13 +3075,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3134,16 +3088,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6349096",
+				"id":"18785887",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"6164599",
+				"id":"20764085",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3165,13 +3120,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3179,16 +3133,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25899876",
+				"id":"15891310",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"31131058",
+				"id":"25532460",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3210,13 +3165,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3224,16 +3178,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5442802",
+				"id":"29983993",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"7797664",
+				"id":"20517374",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3255,13 +3210,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3269,16 +3223,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25292190",
+				"id":"30176715",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"18306082",
+				"id":"4814550",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3300,13 +3255,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3314,16 +3268,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9740137",
+				"id":"18418940",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"23965177",
+				"id":"27505018",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3345,13 +3300,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3359,16 +3313,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28890871",
+				"id":"30984084",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"2691004",
+				"id":"18285053",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3390,13 +3345,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3404,16 +3358,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29887233",
+				"id":"25411576",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"4890830",
+				"id":"11554100",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3435,13 +3390,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3449,16 +3403,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26171428",
+				"id":"10262644",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"31706449",
+				"id":"14488863",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3480,13 +3435,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3494,16 +3448,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12357150",
+				"id":"9809631",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"18248114",
+				"id":"17548342",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3525,13 +3480,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3539,16 +3493,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8549963",
+				"id":"25083384",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"19157736",
+				"id":"32109282",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3570,13 +3525,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3584,16 +3538,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29310343",
+				"id":"4776645",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"6330655",
+				"id":"18885126",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3615,13 +3570,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3629,16 +3583,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31782850",
+				"id":"10951834",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"21360867",
+				"id":"21414603",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3660,13 +3615,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3674,16 +3628,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13228332",
+				"id":"10406974",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"30472956",
+				"id":"24312778",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3705,13 +3660,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3719,16 +3673,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17680053",
+				"id":"32542360",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"24166053",
+				"id":"2204750",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3750,13 +3705,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3764,16 +3718,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16020374",
+				"id":"11146116",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"13676443",
+				"id":"31943304",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3795,13 +3750,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3809,16 +3763,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12122347",
+				"id":"212233",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"31332340",
+				"id":"10241795",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3840,13 +3795,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3854,16 +3808,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32946703",
+				"id":"33174795",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"20003078",
+				"id":"28344803",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3885,13 +3840,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3899,16 +3853,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9883409",
+				"id":"18834451",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"16022517",
+				"id":"31675754",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3930,13 +3885,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3944,16 +3898,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16139149",
+				"id":"33342712",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"30214280",
+				"id":"31946444",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -3975,13 +3930,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -3989,16 +3943,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10272075",
+				"id":"19433882",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"5218268",
+				"id":"6423554",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4020,13 +3975,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4034,16 +3988,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25699763",
+				"id":"16075151",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"23275591",
+				"id":"28335152",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4065,13 +4020,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4079,16 +4033,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15293014",
+				"id":"24410133",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"2745175",
+				"id":"24621203",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4110,13 +4065,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4124,16 +4078,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"828528",
+				"id":"15304902",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"33539718",
+				"id":"1224664",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4155,13 +4110,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4169,16 +4123,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21151438",
+				"id":"14068132",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"16579154",
+				"id":"18567287",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4200,13 +4155,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4214,16 +4168,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9838079",
+				"id":"4180406",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"25919971",
+				"id":"30665902",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4245,13 +4200,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4259,16 +4213,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"33320514",
+				"id":"5743047",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"27979955",
+				"id":"20860035",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4290,13 +4245,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4304,16 +4258,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27296482",
+				"id":"17917840",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"15779934",
+				"id":"27680796",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4335,13 +4290,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4349,16 +4303,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32675815",
+				"id":"32503582",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"30604342",
+				"id":"21556533",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4380,13 +4335,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4394,16 +4348,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11299397",
+				"id":"13458237",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"24446859",
+				"id":"2171130",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4425,13 +4380,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4439,16 +4393,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4347180",
+				"id":"16524584",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"15055830",
+				"id":"32216790",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4470,13 +4425,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4484,16 +4438,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9363478",
+				"id":"33284484",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"1696092",
+				"id":"26388026",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4515,13 +4470,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4529,16 +4483,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18511266",
+				"id":"14640938",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"2165595",
+				"id":"15603102",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4560,13 +4515,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4574,16 +4528,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24152206",
+				"id":"13463799",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"18179071",
+				"id":"28545426",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4605,13 +4560,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4619,16 +4573,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14780827",
+				"id":"1718612",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"17905186",
+				"id":"27901165",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4650,13 +4605,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4664,16 +4618,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16316379",
+				"id":"11697637",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"22566565",
+				"id":"6780142",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4695,13 +4650,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4709,16 +4663,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7990655",
+				"id":"3005291",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"14105722",
+				"id":"10515942",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4740,13 +4695,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4754,16 +4708,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12818976",
+				"id":"10248659",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"29086271",
+				"id":"14316901",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4785,13 +4740,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4799,16 +4753,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31999426",
+				"id":"5332800",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"3932167",
+				"id":"4498314",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4830,13 +4785,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4844,16 +4798,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19267322",
+				"id":"5030238",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"25616143",
+				"id":"19597210",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4875,13 +4830,12 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table 1"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table 1"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
-		"identifiers":[{"db":"intact","id":"EBI-1638145"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638145"},{"db":"imex","id":"IM-11875-3"}],
 		"confidences":[{"type":"intact-miscore","value":"0.35"}],
 		"expansion":{"name":"spoke expansion"},
 		"source":{
@@ -4889,16 +4843,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27168535",
+				"id":"10939",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"12864392",
+				"id":"16083289",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"749-1209"}]
+				"sequenceData":["749-1209"]
 				}]
 		},
 		"target":{
@@ -4920,24 +4875,23 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0096","name":"pull down"},
 			"host":{"taxid":"-1","common":"in vitro"},
-			"host":{"taxid":"-1","common":"in vitro"},
-			"pubid":[{"db":"pubmed","id":"17610306"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Fig. 3A, 3C"}]
+			"pubid":[{"db":"pubmed","id":"17610306"},{"db":"imex","id":"IM-11875"}],
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Fig. 3A, 3C"]
 		},
 		"interactionType":{"id":"MI:0407","name":"direct interaction"},
-		"identifiers":[{"db":"intact","id":"EBI-1638576"}],
+		"identifiers":[{"db":"intact","id":"EBI-1638576"},{"db":"imex","id":"IM-11875-4"}],
 		"confidences":[{"type":"intact-miscore","value":"0.61"}],
 		"source":{
 			"identifier":{"db":"uniprotkb","id":"P02688"},
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0498","name":"prey"},
 			"identificationMethods":[{"id":"MI:0821","name":"molecular weight estimation by autoradiography"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20632381",
+				"id":"30898830",
 				"type":{"name":"35s radiolabel"},
-				"sequenceData":[{"range":"?-?"}]
+				"sequenceData":["?-?"]
 				}]
 		},
 		"target":{
@@ -4945,16 +4899,17 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0821","name":"molecular weight estimation by autoradiography"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16939420",
+				"id":"28256924",
 				"type":{"name":"glutathione s tranferase tag"},
-				"sequenceData":[{"range":"?-?"}]
-				},
+				"sequenceData":["?-?"]
+				}],
+			"bindingSites":[
 				{
-				"id":"25039388",
+				"id":"18248944",
 				"type":{"name":"sufficient binding region"},
-				"sequenceData":[{"range":"953-1119"}]
+				"sequenceData":["953-1119"]
 				}]
 		}
 	},
@@ -4977,10 +4932,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -4991,11 +4945,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30863650",
+				"id":"4981716",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5017,10 +4971,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5031,11 +4984,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7408068",
+				"id":"849296",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5057,10 +5010,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5071,11 +5023,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20469344",
+				"id":"13500823",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5097,10 +5049,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5111,11 +5062,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28235257",
+				"id":"13263607",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5137,10 +5088,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5151,11 +5101,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23191477",
+				"id":"19365882",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5177,10 +5127,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5191,11 +5140,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10884088",
+				"id":"4404019",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5217,10 +5166,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5231,11 +5179,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23667197",
+				"id":"30833473",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5257,10 +5205,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5271,11 +5218,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20358204",
+				"id":"3542598",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5297,10 +5244,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5311,11 +5257,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5807702",
+				"id":"14886447",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5337,10 +5283,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5351,11 +5296,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"213274",
+				"id":"14677731",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5377,10 +5322,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5391,11 +5335,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27742346",
+				"id":"30008530",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5417,10 +5361,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5431,11 +5374,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26790717",
+				"id":"30256499",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5457,10 +5400,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5471,11 +5413,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15594486",
+				"id":"3572736",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5497,10 +5439,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5511,11 +5452,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2868213",
+				"id":"18108262",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5537,10 +5478,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5551,11 +5491,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21905217",
+				"id":"6868426",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5577,10 +5517,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5591,11 +5530,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26936546",
+				"id":"10392644",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5617,10 +5556,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5631,11 +5569,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6147782",
+				"id":"18356845",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5657,10 +5595,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5671,11 +5608,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11688861",
+				"id":"24046250",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5697,10 +5634,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5711,11 +5647,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27058272",
+				"id":"15755959",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5737,10 +5673,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5751,11 +5686,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5165021",
+				"id":"32393254",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5777,10 +5712,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5791,11 +5725,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3201069",
+				"id":"12773899",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5817,10 +5751,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5831,11 +5764,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12621140",
+				"id":"8615493",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5857,10 +5790,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5871,11 +5803,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25948274",
+				"id":"13227080",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5897,10 +5829,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5911,11 +5842,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5699121",
+				"id":"9424814",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5937,10 +5868,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5951,11 +5881,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20785379",
+				"id":"25943850",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -5977,10 +5907,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -5991,11 +5920,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3902281",
+				"id":"31998532",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6017,10 +5946,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6031,11 +5959,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20290587",
+				"id":"22460353",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6057,10 +5985,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6071,11 +5998,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10217370",
+				"id":"10327615",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6097,10 +6024,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6111,11 +6037,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25310701",
+				"id":"32709909",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6137,10 +6063,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6151,11 +6076,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27427682",
+				"id":"33192392",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6177,10 +6102,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6191,11 +6115,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6278953",
+				"id":"22110320",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6217,10 +6141,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6231,11 +6154,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1683934",
+				"id":"26373697",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6257,10 +6180,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6271,11 +6193,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15493888",
+				"id":"8682641",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6297,10 +6219,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6311,11 +6232,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23387093",
+				"id":"938343",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6337,10 +6258,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6351,11 +6271,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10268916",
+				"id":"156434",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6377,10 +6297,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6391,11 +6310,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19235919",
+				"id":"11948158",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6417,10 +6336,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6431,11 +6349,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1152907",
+				"id":"22985480",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6457,10 +6375,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6471,11 +6388,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16001744",
+				"id":"4790863",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6497,10 +6414,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6511,11 +6427,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19963527",
+				"id":"22952635",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6537,10 +6453,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6551,11 +6466,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16237341",
+				"id":"23198170",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6577,10 +6492,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6591,11 +6505,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2804837",
+				"id":"22698751",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6617,10 +6531,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6631,11 +6544,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30476892",
+				"id":"17577129",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6657,10 +6570,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6671,11 +6583,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16720915",
+				"id":"5592376",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6697,10 +6609,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6711,11 +6622,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10059989",
+				"id":"5114937",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6737,10 +6648,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6751,11 +6661,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31020178",
+				"id":"303495",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6777,10 +6687,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6791,11 +6700,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20935297",
+				"id":"567853",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6817,10 +6726,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6831,11 +6739,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7777071",
+				"id":"14460343",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6857,10 +6765,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6871,11 +6778,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14732323",
+				"id":"236039",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6897,10 +6804,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6911,11 +6817,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8000886",
+				"id":"7685286",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6937,10 +6843,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6951,11 +6856,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18291494",
+				"id":"15604386",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -6977,10 +6882,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -6991,11 +6895,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32997440",
+				"id":"1480889",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7017,10 +6921,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7031,11 +6934,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"330120",
+				"id":"24803425",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7057,10 +6960,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7071,11 +6973,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11854491",
+				"id":"24471452",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7097,10 +6999,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7111,11 +7012,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25772535",
+				"id":"15025658",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7137,10 +7038,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7151,11 +7051,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4839036",
+				"id":"30374417",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7177,10 +7077,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7191,11 +7090,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27291192",
+				"id":"5706974",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7217,10 +7116,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7231,11 +7129,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27535250",
+				"id":"18559324",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7257,10 +7155,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7271,11 +7168,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2228437",
+				"id":"4574760",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7297,10 +7194,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7311,11 +7207,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6597453",
+				"id":"14794734",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7337,10 +7233,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7351,11 +7246,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19551658",
+				"id":"16757535",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7377,10 +7272,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7391,11 +7285,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6165421",
+				"id":"21552028",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7417,10 +7311,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7431,11 +7324,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6149506",
+				"id":"4855768",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7457,10 +7350,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7471,11 +7363,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7100506",
+				"id":"6517341",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7497,10 +7389,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7511,11 +7402,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18655235",
+				"id":"15289442",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7537,10 +7428,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7551,11 +7441,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5924809",
+				"id":"9814708",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7577,10 +7467,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7591,11 +7480,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22266741",
+				"id":"2226002",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7617,10 +7506,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7631,11 +7519,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4536327",
+				"id":"32788362",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7657,10 +7545,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7671,11 +7558,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6393126",
+				"id":"9573108",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7697,10 +7584,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7711,11 +7597,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7987972",
+				"id":"1733982",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7737,10 +7623,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7751,11 +7636,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2569862",
+				"id":"17792713",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7777,10 +7662,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7791,11 +7675,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7122710",
+				"id":"5034798",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7817,10 +7701,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7831,11 +7714,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22730182",
+				"id":"29134306",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7857,10 +7740,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7871,11 +7753,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8970973",
+				"id":"462609",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7897,10 +7779,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7911,11 +7792,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15091334",
+				"id":"24007229",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7937,10 +7818,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7951,11 +7831,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2112561",
+				"id":"31014713",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -7977,10 +7857,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -7991,11 +7870,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5226838",
+				"id":"29740460",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8017,10 +7896,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8031,11 +7909,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1977511",
+				"id":"21101046",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8057,10 +7935,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8071,11 +7948,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17153368",
+				"id":"8502922",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8097,10 +7974,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8111,11 +7987,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30533424",
+				"id":"295262",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8137,10 +8013,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8151,11 +8026,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27334345",
+				"id":"29969295",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8177,10 +8052,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8191,11 +8065,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11372121",
+				"id":"8375678",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8217,10 +8091,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8231,11 +8104,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5195164",
+				"id":"9178234",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8257,10 +8130,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8271,11 +8143,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6504030",
+				"id":"8857631",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8297,10 +8169,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8311,11 +8182,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26460367",
+				"id":"22759428",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8337,10 +8208,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8351,11 +8221,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22507120",
+				"id":"30740670",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8377,10 +8247,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8391,11 +8260,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18055655",
+				"id":"7317484",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8417,10 +8286,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8431,11 +8299,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28678543",
+				"id":"7964567",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8457,10 +8325,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8471,11 +8338,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24417480",
+				"id":"15537607",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8497,10 +8364,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8511,11 +8377,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13884241",
+				"id":"19981388",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8537,10 +8403,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8551,11 +8416,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14927396",
+				"id":"14438856",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8577,10 +8442,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8591,11 +8455,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31817359",
+				"id":"8207246",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8617,10 +8481,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8631,11 +8494,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30931963",
+				"id":"30472005",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8657,10 +8520,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8671,11 +8533,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14688457",
+				"id":"1698697",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8697,10 +8559,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8711,11 +8572,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8949356",
+				"id":"28741695",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8737,10 +8598,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8751,11 +8611,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3794357",
+				"id":"12078148",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8777,10 +8637,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8791,11 +8650,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18346782",
+				"id":"26681190",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8817,10 +8676,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8831,11 +8689,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22700073",
+				"id":"9337330",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8857,10 +8715,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8871,11 +8728,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6251267",
+				"id":"31995269",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8897,10 +8754,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8911,11 +8767,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6131844",
+				"id":"1165141",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8937,10 +8793,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8951,11 +8806,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12245160",
+				"id":"20298030",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -8977,10 +8832,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -8991,11 +8845,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15081425",
+				"id":"1089678",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9017,10 +8871,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9031,11 +8884,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3346521",
+				"id":"27066107",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9050,10 +8903,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9064,11 +8916,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7760420",
+				"id":"2635915",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9090,10 +8942,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9104,11 +8955,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3307594",
+				"id":"9989730",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9130,10 +8981,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9144,11 +8994,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24595355",
+				"id":"24569154",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9170,10 +9020,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9184,11 +9033,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17089909",
+				"id":"12944408",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9210,10 +9059,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9224,11 +9072,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4171180",
+				"id":"23295306",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9250,10 +9098,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9264,11 +9111,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24763620",
+				"id":"11104739",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9290,10 +9137,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9304,11 +9150,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26542488",
+				"id":"7608442",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9330,10 +9176,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9344,11 +9189,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26980954",
+				"id":"32713802",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9370,10 +9215,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9384,11 +9228,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14314484",
+				"id":"31506614",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9410,10 +9254,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9424,11 +9267,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31820984",
+				"id":"9176655",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9450,10 +9293,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9464,11 +9306,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24744797",
+				"id":"15874598",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9490,10 +9332,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9504,11 +9345,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12182618",
+				"id":"13092220",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9530,10 +9371,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9544,11 +9384,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4126736",
+				"id":"24545724",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9570,10 +9410,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9584,11 +9423,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1049443",
+				"id":"21806168",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9610,10 +9449,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9624,11 +9462,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21925102",
+				"id":"14770209",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9650,10 +9488,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9664,11 +9501,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"421988",
+				"id":"7225609",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9690,10 +9527,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9704,11 +9540,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12376621",
+				"id":"7330828",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9730,10 +9566,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S3"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S3"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642094"}],
@@ -9744,11 +9579,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9949215",
+				"id":"30907957",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9763,10 +9598,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9777,11 +9611,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14721926",
+				"id":"13872011",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9796,10 +9630,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9810,11 +9643,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1043272",
+				"id":"10703853",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9836,10 +9669,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9850,11 +9682,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18871350",
+				"id":"14348553",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9876,10 +9708,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9890,11 +9721,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14301726",
+				"id":"431013",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9909,10 +9740,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9923,11 +9753,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18725445",
+				"id":"29836290",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9942,10 +9772,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9956,11 +9785,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11549664",
+				"id":"21109424",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -9975,10 +9804,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -9989,11 +9817,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2814081",
+				"id":"15083736",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10015,10 +9843,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10029,11 +9856,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18064701",
+				"id":"8623087",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10055,10 +9882,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10069,11 +9895,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12929374",
+				"id":"6639084",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10095,10 +9921,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10109,11 +9934,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5503831",
+				"id":"14601066",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10135,10 +9960,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10149,11 +9973,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26882784",
+				"id":"16555948",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10175,10 +9999,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10189,11 +10012,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8534260",
+				"id":"22469597",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10208,10 +10031,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10222,11 +10044,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23668144",
+				"id":"24942903",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10248,10 +10070,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10262,11 +10083,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2719739",
+				"id":"19858242",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10281,10 +10102,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10295,11 +10115,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9523050",
+				"id":"25106695",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10321,10 +10141,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10335,11 +10154,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32820206",
+				"id":"21252478",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10361,10 +10180,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10375,11 +10193,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7896426",
+				"id":"3484503",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10394,10 +10212,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10408,11 +10225,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7461949",
+				"id":"11569400",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10427,10 +10244,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10441,11 +10257,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20079748",
+				"id":"32534760",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10467,10 +10283,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10481,11 +10296,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23414511",
+				"id":"8701358",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10507,10 +10322,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10521,11 +10335,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1321194",
+				"id":"13514570",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10540,10 +10354,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10554,11 +10367,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25840096",
+				"id":"9432614",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10580,10 +10393,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10594,11 +10406,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"33040770",
+				"id":"22819146",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10620,10 +10432,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10634,11 +10445,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23930419",
+				"id":"27791288",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10653,10 +10464,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10667,11 +10477,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15142448",
+				"id":"10488395",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10686,10 +10496,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10700,11 +10509,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22316618",
+				"id":"17027752",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10726,10 +10535,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10740,11 +10548,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3969559",
+				"id":"33245819",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10759,10 +10567,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10773,11 +10580,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10175206",
+				"id":"14087720",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10792,10 +10599,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10806,11 +10612,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21307627",
+				"id":"12246624",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10832,10 +10638,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10846,11 +10651,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24389376",
+				"id":"6129815",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10872,10 +10677,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10886,11 +10690,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11317592",
+				"id":"11708956",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10905,10 +10709,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10919,11 +10722,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28259286",
+				"id":"29242476",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10938,10 +10741,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10952,11 +10754,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24392121",
+				"id":"6537522",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -10971,10 +10773,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -10985,11 +10786,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23886295",
+				"id":"18938218",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11004,10 +10805,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11018,11 +10818,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11746570",
+				"id":"30858310",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11044,10 +10844,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11058,11 +10857,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23894119",
+				"id":"18328287",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11084,10 +10883,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11098,11 +10896,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9030750",
+				"id":"13840032",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11124,10 +10922,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11138,11 +10935,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13121485",
+				"id":"10102923",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11157,10 +10954,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11171,11 +10967,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13080585",
+				"id":"14417564",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11197,10 +10993,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11211,11 +11006,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30308427",
+				"id":"19452404",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11230,10 +11025,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11244,11 +11038,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3916915",
+				"id":"15731607",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11263,10 +11057,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11277,11 +11070,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31365828",
+				"id":"25761586",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11303,10 +11096,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11317,11 +11109,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25345246",
+				"id":"22152612",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11343,10 +11135,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11357,11 +11148,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5324129",
+				"id":"32541460",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11376,10 +11167,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11390,11 +11180,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26530674",
+				"id":"20646012",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11409,10 +11199,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11423,11 +11212,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28652556",
+				"id":"11155926",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11442,10 +11231,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11456,11 +11244,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23860799",
+				"id":"29047814",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11475,10 +11263,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11489,11 +11276,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19432672",
+				"id":"23193926",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11508,10 +11295,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11522,11 +11308,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19647819",
+				"id":"18478969",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11541,10 +11327,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11555,11 +11340,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11732976",
+				"id":"29779986",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11574,10 +11359,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11588,11 +11372,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30293957",
+				"id":"14330353",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11614,10 +11398,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11628,11 +11411,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29154294",
+				"id":"30093447",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11647,10 +11430,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11661,11 +11443,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"849515",
+				"id":"14624872",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11680,10 +11462,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11694,11 +11475,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17171576",
+				"id":"14009943",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11720,10 +11501,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11734,11 +11514,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1023040",
+				"id":"13674058",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11753,10 +11533,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11767,11 +11546,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14372770",
+				"id":"5602325",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11786,10 +11565,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11800,11 +11578,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4791372",
+				"id":"4555620",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11819,10 +11597,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11833,11 +11610,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31519478",
+				"id":"28659376",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11859,10 +11636,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11873,11 +11649,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24061351",
+				"id":"4273376",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11892,10 +11668,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11906,11 +11681,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1117233",
+				"id":"16151500",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11925,10 +11700,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11939,11 +11713,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20415955",
+				"id":"2909685",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11965,10 +11739,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -11979,11 +11752,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3338151",
+				"id":"14277585",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -11998,10 +11771,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12012,11 +11784,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1309073",
+				"id":"15629550",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12031,10 +11803,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12045,11 +11816,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23438274",
+				"id":"21759841",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12071,10 +11842,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12085,11 +11855,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31598780",
+				"id":"7902680",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12111,10 +11881,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12125,11 +11894,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14707008",
+				"id":"11911470",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12144,10 +11913,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12158,11 +11926,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18746387",
+				"id":"10338747",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12177,10 +11945,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12191,11 +11958,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27978063",
+				"id":"18484619",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12210,10 +11977,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12224,11 +11990,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29056009",
+				"id":"24062847",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12243,10 +12009,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12257,11 +12022,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26697745",
+				"id":"26267858",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12283,10 +12048,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12297,11 +12061,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19147537",
+				"id":"8237241",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12316,10 +12080,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12330,11 +12093,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25657668",
+				"id":"31286217",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12349,10 +12112,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12363,11 +12125,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20435088",
+				"id":"29509377",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12389,10 +12151,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12403,11 +12164,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22917908",
+				"id":"29607640",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12422,10 +12183,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12436,11 +12196,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9956845",
+				"id":"3385979",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12455,10 +12215,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12469,11 +12228,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32801378",
+				"id":"33396293",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12488,10 +12247,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12502,11 +12260,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26999600",
+				"id":"26519738",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12521,10 +12279,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12535,11 +12292,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25706868",
+				"id":"13730173",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12554,10 +12311,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12568,11 +12324,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8470547",
+				"id":"9192793",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12587,10 +12343,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12601,11 +12356,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26596606",
+				"id":"18677074",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12627,10 +12382,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12641,11 +12395,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30584859",
+				"id":"3873079",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12660,10 +12414,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12674,11 +12427,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19397138",
+				"id":"32809053",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12700,10 +12453,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12714,11 +12466,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26396889",
+				"id":"21782950",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12733,10 +12485,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12747,11 +12498,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29384701",
+				"id":"27203194",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12766,10 +12517,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12780,11 +12530,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14556042",
+				"id":"24952861",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12806,10 +12556,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12820,11 +12569,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31601333",
+				"id":"19449663",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12839,10 +12588,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12853,11 +12601,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24056908",
+				"id":"3221204",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12879,10 +12627,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12893,11 +12640,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27108604",
+				"id":"15477362",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12912,10 +12659,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12926,11 +12672,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12231782",
+				"id":"14073481",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12945,10 +12691,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12959,11 +12704,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25116828",
+				"id":"7813825",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -12985,10 +12730,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -12999,11 +12743,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23776721",
+				"id":"22665110",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13018,10 +12762,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13032,11 +12775,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15623809",
+				"id":"27164849",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13051,10 +12794,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13065,11 +12807,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25934938",
+				"id":"18027118",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13084,10 +12826,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13098,11 +12839,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16437003",
+				"id":"18812666",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13124,10 +12865,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13138,11 +12878,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3083761",
+				"id":"1080367",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13157,10 +12897,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13171,11 +12910,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20736546",
+				"id":"4783616",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13190,10 +12929,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13204,11 +12942,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22808536",
+				"id":"1827945",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13230,10 +12968,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13244,11 +12981,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17244592",
+				"id":"19971338",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13263,10 +13000,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13277,11 +13013,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20230270",
+				"id":"13309332",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13296,10 +13032,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13310,11 +13045,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3098834",
+				"id":"16106406",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13336,10 +13071,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13350,11 +13084,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5626173",
+				"id":"16773065",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13376,10 +13110,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13390,11 +13123,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2715510",
+				"id":"14134009",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13416,10 +13149,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13430,11 +13162,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5555373",
+				"id":"18481264",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13456,10 +13188,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13470,11 +13201,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20738936",
+				"id":"1240299",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13496,10 +13227,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13510,11 +13240,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29422309",
+				"id":"8404868",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13536,10 +13266,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13550,11 +13279,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9090824",
+				"id":"30028535",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13569,10 +13298,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13583,11 +13311,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16165899",
+				"id":"30939891",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13602,10 +13330,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13616,11 +13343,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10040532",
+				"id":"10665941",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13635,10 +13362,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13649,11 +13375,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5998631",
+				"id":"14694989",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13668,10 +13394,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13682,11 +13407,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21479899",
+				"id":"18062031",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13701,10 +13426,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13715,11 +13439,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"535863",
+				"id":"1609642",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13741,10 +13465,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13755,11 +13478,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13671123",
+				"id":"8384065",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13781,10 +13504,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13795,11 +13517,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23370564",
+				"id":"15935783",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13814,10 +13536,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13828,11 +13549,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"902782",
+				"id":"1244800",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13847,10 +13568,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13861,11 +13581,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6460907",
+				"id":"16957442",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13880,10 +13600,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13894,11 +13613,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6330713",
+				"id":"25944728",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13920,10 +13639,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13934,11 +13652,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32755292",
+				"id":"13216403",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13953,10 +13671,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -13967,11 +13684,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24193850",
+				"id":"31307269",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -13986,10 +13703,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14000,11 +13716,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13446707",
+				"id":"14230276",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14019,10 +13735,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14033,11 +13748,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9717476",
+				"id":"25827210",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14059,10 +13774,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14073,11 +13787,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12213370",
+				"id":"17798137",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14092,10 +13806,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14106,11 +13819,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17652030",
+				"id":"29091041",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14125,10 +13838,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14139,11 +13851,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22939763",
+				"id":"11507884",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14158,10 +13870,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14172,11 +13883,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8175078",
+				"id":"5267783",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14198,10 +13909,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14212,11 +13922,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26704795",
+				"id":"19039407",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14231,10 +13941,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14245,11 +13954,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3408129",
+				"id":"20251621",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14271,10 +13980,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14285,11 +13993,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3022623",
+				"id":"26401559",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14311,10 +14019,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S4"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S4"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642362"}],
@@ -14325,11 +14032,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"33385450",
+				"id":"7194864",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14344,10 +14051,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14358,11 +14064,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12053597",
+				"id":"27472100",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14384,10 +14090,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14398,11 +14103,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16711231",
+				"id":"14608998",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14417,10 +14122,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14431,11 +14135,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15079989",
+				"id":"15658959",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14450,10 +14154,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14464,11 +14167,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12759798",
+				"id":"12727777",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14490,10 +14193,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14504,11 +14206,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7566193",
+				"id":"6258319",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14530,10 +14232,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14544,11 +14245,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27263487",
+				"id":"23986260",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14563,10 +14264,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14577,11 +14277,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31664352",
+				"id":"14127272",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14603,10 +14303,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14617,11 +14316,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9486447",
+				"id":"5912650",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14643,10 +14342,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14657,11 +14355,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21616774",
+				"id":"19242534",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14683,10 +14381,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14697,11 +14394,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"19297865",
+				"id":"11665552",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14723,10 +14420,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14737,11 +14433,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2091149",
+				"id":"4396883",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14756,10 +14452,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14770,11 +14465,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14463035",
+				"id":"11564643",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14796,10 +14491,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14810,11 +14504,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11930515",
+				"id":"19695089",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14829,10 +14523,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14843,11 +14536,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28441588",
+				"id":"893761",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14869,10 +14562,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14883,11 +14575,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1345122",
+				"id":"22618433",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14902,10 +14594,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14916,11 +14607,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25337455",
+				"id":"9851620",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14935,10 +14626,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14949,11 +14639,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7318012",
+				"id":"18625160",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -14968,10 +14658,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -14982,11 +14671,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16837612",
+				"id":"3775490",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15001,10 +14690,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15015,11 +14703,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25229676",
+				"id":"3243465",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15041,10 +14729,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15055,11 +14742,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7812797",
+				"id":"20532893",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15074,10 +14761,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15088,11 +14774,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11197591",
+				"id":"22558850",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15114,10 +14800,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15128,11 +14813,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24659469",
+				"id":"15075988",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15147,10 +14832,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15161,11 +14845,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20914447",
+				"id":"12616765",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15187,10 +14871,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15201,11 +14884,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26443833",
+				"id":"19521524",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15227,10 +14910,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15241,11 +14923,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13059051",
+				"id":"3018187",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15267,10 +14949,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15281,11 +14962,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3945515",
+				"id":"25928745",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15307,10 +14988,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15321,11 +15001,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8728760",
+				"id":"13023214",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15340,10 +15020,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15354,11 +15033,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4300037",
+				"id":"5611782",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15373,10 +15052,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15387,11 +15065,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28036099",
+				"id":"29269874",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15413,10 +15091,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15427,11 +15104,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31386432",
+				"id":"30806780",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15453,10 +15130,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15467,11 +15143,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2550265",
+				"id":"24668041",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15493,10 +15169,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15507,11 +15182,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13302614",
+				"id":"30774201",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15526,10 +15201,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15540,11 +15214,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3860801",
+				"id":"13995518",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15566,10 +15240,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15580,11 +15253,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27778511",
+				"id":"6105179",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15599,10 +15272,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15613,11 +15285,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30633470",
+				"id":"290707",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15639,10 +15311,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15653,11 +15324,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31090332",
+				"id":"20526476",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15679,10 +15350,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15693,11 +15363,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25610032",
+				"id":"15375304",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15712,10 +15382,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15726,11 +15395,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25109548",
+				"id":"10055979",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15745,10 +15414,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15759,11 +15427,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2086370",
+				"id":"30733235",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15778,10 +15446,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15792,11 +15459,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1243630",
+				"id":"30115412",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15818,10 +15485,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15832,11 +15498,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30844270",
+				"id":"14679795",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15851,10 +15517,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15865,11 +15530,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17235092",
+				"id":"31133504",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15884,10 +15549,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15898,11 +15562,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29775659",
+				"id":"12999080",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15924,10 +15588,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15938,11 +15601,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8702985",
+				"id":"2634323",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15957,10 +15620,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -15971,11 +15633,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7314318",
+				"id":"16781903",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -15990,10 +15652,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16004,11 +15665,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21868771",
+				"id":"28446306",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16030,10 +15691,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16044,11 +15704,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"26750913",
+				"id":"13522230",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16063,10 +15723,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16077,11 +15736,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6775863",
+				"id":"3958082",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16096,10 +15755,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16110,11 +15768,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31753535",
+				"id":"18607596",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16136,10 +15794,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16150,11 +15807,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31983818",
+				"id":"10570644",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16169,10 +15826,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16183,11 +15839,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10038190",
+				"id":"23661024",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16209,10 +15865,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16223,11 +15878,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"179514",
+				"id":"17265062",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16249,10 +15904,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16263,11 +15917,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30752603",
+				"id":"28724715",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16282,10 +15936,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16296,11 +15949,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2545159",
+				"id":"28681237",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16315,10 +15968,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16329,11 +15981,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28154095",
+				"id":"2582472",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16355,10 +16007,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16369,11 +16020,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"1281123",
+				"id":"17732125",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16395,10 +16046,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16409,11 +16059,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23459640",
+				"id":"26924663",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16435,10 +16085,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16449,11 +16098,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21607056",
+				"id":"7750228",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16468,10 +16117,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16482,11 +16130,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23738549",
+				"id":"33338817",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16501,10 +16149,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16515,11 +16162,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11601738",
+				"id":"49429",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16541,10 +16188,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16555,11 +16201,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2272087",
+				"id":"25452612",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16581,10 +16227,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16595,11 +16240,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2026549",
+				"id":"30164077",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16621,10 +16266,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16635,11 +16279,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2476072",
+				"id":"27294748",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16654,10 +16298,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16668,11 +16311,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7860099",
+				"id":"20201007",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16687,10 +16330,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16701,11 +16343,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"886220",
+				"id":"14585245",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16727,10 +16369,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16741,11 +16382,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30102190",
+				"id":"19087331",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16767,10 +16408,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16781,11 +16421,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27337877",
+				"id":"20414951",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16807,10 +16447,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16821,11 +16460,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"6865516",
+				"id":"20024921",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16847,10 +16486,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16861,11 +16499,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28591825",
+				"id":"7896807",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16880,10 +16518,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16894,11 +16531,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9788629",
+				"id":"13860164",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16920,10 +16557,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16934,11 +16570,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"114148",
+				"id":"12921592",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16953,10 +16589,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -16967,11 +16602,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5896993",
+				"id":"8921344",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -16986,10 +16621,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17000,11 +16634,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"24537094",
+				"id":"19837006",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17026,10 +16660,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17040,11 +16673,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10973446",
+				"id":"3726796",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17066,10 +16699,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17080,11 +16712,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15558189",
+				"id":"23699743",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17099,10 +16731,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17113,11 +16744,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30362156",
+				"id":"30474522",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17139,10 +16770,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17153,11 +16783,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"961626",
+				"id":"10443545",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17172,10 +16802,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17186,11 +16815,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22377952",
+				"id":"1433407",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17212,10 +16841,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17226,11 +16854,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28171097",
+				"id":"32749756",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17252,10 +16880,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17266,11 +16893,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"18607473",
+				"id":"31804928",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17292,10 +16919,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17306,11 +16932,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8499707",
+				"id":"23337303",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17325,10 +16951,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17339,11 +16964,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"13359904",
+				"id":"12299469",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17358,10 +16983,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17372,11 +16996,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27211574",
+				"id":"21883913",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17398,10 +17022,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17412,11 +17035,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31578843",
+				"id":"12799961",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17431,10 +17054,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17445,11 +17067,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15177785",
+				"id":"11490791",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17471,10 +17093,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17485,11 +17106,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12241337",
+				"id":"19980346",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17504,10 +17125,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17518,11 +17138,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17938704",
+				"id":"30490373",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17544,10 +17164,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17558,11 +17177,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9236202",
+				"id":"8422674",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17584,10 +17203,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17598,11 +17216,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10050169",
+				"id":"27293585",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17617,10 +17235,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17631,11 +17248,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"181086",
+				"id":"648688",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17657,10 +17274,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17671,11 +17287,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23625340",
+				"id":"30876646",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17697,10 +17313,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17711,11 +17326,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21509627",
+				"id":"24501047",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17730,10 +17345,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17744,11 +17358,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30408372",
+				"id":"9109717",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17763,10 +17377,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17777,11 +17390,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5965416",
+				"id":"31705410",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17796,10 +17409,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17810,11 +17422,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"120224",
+				"id":"28456987",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17836,10 +17448,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17850,11 +17461,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"7346727",
+				"id":"25273515",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17869,10 +17480,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17883,11 +17493,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29689095",
+				"id":"6424457",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17902,10 +17512,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17916,11 +17525,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"30216319",
+				"id":"31248458",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17942,10 +17551,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17956,11 +17564,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"32915800",
+				"id":"32424133",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -17982,10 +17590,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -17996,11 +17603,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3941240",
+				"id":"28433682",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18022,10 +17629,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18036,11 +17642,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"3981922",
+				"id":"2675678",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18055,10 +17661,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18069,11 +17674,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16625677",
+				"id":"7191791",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18095,10 +17700,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18109,11 +17713,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20000831",
+				"id":"9372581",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18135,10 +17739,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18149,11 +17752,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5670411",
+				"id":"20473010",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18175,10 +17778,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18189,11 +17791,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"8018457",
+				"id":"22744006",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18208,10 +17810,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18222,11 +17823,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11608737",
+				"id":"6429655",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18241,10 +17842,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18255,11 +17855,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"22584918",
+				"id":"17943221",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18281,10 +17881,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18295,11 +17894,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"16988783",
+				"id":"18041931",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18321,10 +17920,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18335,11 +17933,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"15830670",
+				"id":"32891370",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18361,10 +17959,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18375,11 +17972,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12985263",
+				"id":"29552270",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18401,10 +17998,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18415,11 +18011,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"5294604",
+				"id":"12311999",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18434,10 +18030,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18448,11 +18043,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"59219",
+				"id":"31155071",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18474,10 +18069,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18488,11 +18082,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20391510",
+				"id":"30671204",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18507,10 +18101,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18521,11 +18114,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"28708894",
+				"id":"27748574",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18547,10 +18140,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18561,11 +18153,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"31212095",
+				"id":"30795640",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18587,10 +18179,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18601,11 +18192,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"25254907",
+				"id":"5208908",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18627,10 +18218,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18641,11 +18231,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"29215192",
+				"id":"2617889",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18660,10 +18250,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18674,11 +18263,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"17738170",
+				"id":"9011383",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18700,10 +18289,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18714,11 +18302,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"27859157",
+				"id":"23174090",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18740,10 +18328,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18754,11 +18341,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"10313829",
+				"id":"20644102",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18780,10 +18367,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18794,11 +18380,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"2329159",
+				"id":"12598221",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18820,10 +18406,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18834,11 +18419,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"21716810",
+				"id":"9845555",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18853,10 +18438,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18867,11 +18451,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"11424570",
+				"id":"17341921",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18886,10 +18470,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18900,11 +18483,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14293164",
+				"id":"11876070",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18926,10 +18509,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18940,11 +18522,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"9045316",
+				"id":"19359389",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18966,10 +18548,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -18980,11 +18561,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"23053324",
+				"id":"29488119",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -18999,10 +18580,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -19013,11 +18593,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"4199273",
+				"id":"7856411",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -19039,10 +18619,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -19053,11 +18632,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"12213211",
+				"id":"6020060",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -19072,10 +18651,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -19086,11 +18664,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"14982605",
+				"id":"12540188",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{
@@ -19112,10 +18690,9 @@ var miJson = {
 		"experiment":{
 			"detmethod":{"id":"MI:0007","name":"anti tag coimmunoprecipitation"},
 			"host":{"taxid":"9606","common":"human-293"},
-			"host":{"taxid":"9606","common":"human-293"},
 			"pubid":[{"db":"pubmed","id":"17620599"}],
-			"source":{"id":"MI:0469","name":"IntAct"},
-			"figures":[{"figure":"Table S5"}]
+			"sourceDatabase":{"id":"MI:0469","name":"IntAct"},
+			"figures":["Table S5"]
 		},
 		"interactionType":{"id":"MI:0914","name":"association"},
 		"identifiers":[{"db":"intact","id":"EBI-1642567"}],
@@ -19126,11 +18703,11 @@ var miJson = {
 			"bioRole":{"id":"MI:0499","name":"unspecified role"},
 			"expRole":{"id":"MI:0496","name":"bait"},
 			"identificationMethods":[{"id":"MI:0658","name":"multidimensional protein identification technology"}],
-			"otherFeatures":[
+			"experimentalFeatures":[
 				{
-				"id":"20201168",
+				"id":"7566865",
 				"type":{"name":"flag tag"},
-				"sequenceData":[{"range":"c-c"}]
+				"sequenceData":["c-c"]
 				}]
 		},
 		"target":{

@@ -5,15 +5,16 @@ xinet.Controller.prototype.autoLayout = function() {
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
+    var proteinCount = this.proteins.keys().length;
     if (proteinCount === 1) {
-        var protein = proteins[0];
+        var protein = this.proteins.values()[0];
         protein.setPosition(width / 2, height / 4 * 3);
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = proteins[0];
+        var p1 = this.proteins.values()[0];
         p1.setPosition(width / 2, height / 2);
-        var p2 = proteins[1];
+        var p2 = this.proteins.values()[1];
         p2.setPosition(width / 2, height - 32);
         return;
     }
@@ -31,9 +32,9 @@ xinet.Controller.prototype.autoLayout = function() {
         for (var p = 0; p < proteinCount; p++) {
             prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
         }
-        //sort subgraphs by size
+        //sort subgraphs by decreasing size
         this.subgraphs.sort(function(a, b) {
-            return a.nodes.values().length - b.nodes.values().length;
+            return b.nodes.values().length - a.nodes.values().length;
         });
         //Sort subgraphs into linear and non-linear sets
         var linearGraphs = [];
@@ -70,14 +71,16 @@ xinet.Controller.prototype.autoLayout = function() {
             }
         }
         //Grid layout linear graphs
-        var column = 0, row = 0, parkedRow = 0, parkedColumn = -1;
+        var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
+        var singleCount = 0;
         if (linearGraphs.length > 0) {
-            column++;
             for (var g = 0; g < linearGraphs.length; g++) {
                 var nodes = linearGraphs[g].nodes.keys(); //
                 var nodeCount = nodes.length;
+
                 if (nodeCount > 2) {
                     nodes = reorderedNodes(linearGraphs[g]);
+
                 }
                 for (var n = 0; n < nodeCount; n++) {
                     var p = this.proteins.get(nodes[n]);
@@ -94,10 +97,6 @@ xinet.Controller.prototype.autoLayout = function() {
                         }
                     }
                     else {
-                        row++;
-                        if (proteinCount < 60 || nodeCount > 1) {
-                            row++;
-                        }
                         x = xForColumn(column);
                         y = yForRow(row);
                         var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
@@ -110,16 +109,28 @@ xinet.Controller.prototype.autoLayout = function() {
                             x = xForColumn(column);
                             y = yForRow(row);
                         }
+                        row++;
+                        if (proteinCount < 60 || nodeCount > 1) {
+                            row++;
+                        }
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
                     this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
                     p.setAllLineCoordinates();//TODO: check this is needed
                 }
+                if (nodeCount === 1){
+                    singleCount++;
+                }
+                if (nodeCount > 1 || singleCount % 3 === 0) {
+                    column++;
+                    row = 1;
+                }
+
             }
         }
         //remember edge of gridded proteins
-        this.layoutXOffset = xForColumn(column + 0.5);
+        //this.layoutXOffset = xForColumn(column + 0.5);
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
@@ -131,8 +142,9 @@ xinet.Controller.prototype.autoLayout = function() {
                 for (var n = 0; n < nodeCount; n++) {
                     var prot = this.proteins.get(nodes[n].id);
 //                prot.fixed = false;
-                    if (pi > 0)
+                    if (pi > 0){
                         json += ",";
+                    }
                     pi++;
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
                             + prot.proteinLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
@@ -142,7 +154,7 @@ xinet.Controller.prototype.autoLayout = function() {
             json += "]}";
             var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
-                    .size([width - this.layoutXOffset, height])
+                    .size([width, height])
                     //    .children(json.children);
                     .value(function(d) {
                 return d.size;
@@ -172,6 +184,24 @@ xinet.Controller.prototype.autoLayout = function() {
         var protLookUp = {};
         var pi = 0;
 
+        for (var g = 0; g < linearGraphs.length; g++) {
+            var nodes = linearGraphs[g].nodes.values();
+            var nodeCount = nodes.length;
+            for (var n = 0; n < nodeCount; n++) {
+                var prot = this.proteins.get(nodes[n].id);
+//        if (prot.fixed === false) {
+                protLookUp[prot.id] = pi;
+                if (pi > 0)
+                    json += ",";
+                pi++;
+                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
+                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
+                        + ",\"py\":" + prot.y
+                        + ",\"fixed\":\"true\"";
+                json += "}";
+            }
+//        }
+        }
         for (var g = 0; g < nonLinearGraphs.length; g++) {
             var nodes = nonLinearGraphs[g].nodes.values();
             var nodeCount = nodes.length;
@@ -182,10 +212,11 @@ xinet.Controller.prototype.autoLayout = function() {
                 if (pi > 0)
                     json += ",";
                 pi++;
-                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x - this.layoutXOffset)
-                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x - this.layoutXOffset) + ""
-                        + ",\"py\":" + prot.y + "";
-                json += "}";
+                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
+                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
+                        + ",\"py\":" + prot.y
+                     //   + ",\"fixed\":\"false\"";
+                 + "}";
             }
 //        }
         }
@@ -229,9 +260,9 @@ xinet.Controller.prototype.autoLayout = function() {
         this.force = d3.layout.force()
                 .nodes(jsonObj.nodes)
                 .links(jsonObj.links)
-                .gravity(85 * k)
+                .gravity(40 * k)
                 .linkDistance(linkDistance)
-                .charge(-30 / k)
+                .charge(-15 / k)
                 .size([gWidth, height]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
@@ -286,7 +317,7 @@ xinet.Controller.prototype.autoLayout = function() {
 
     //functions used...
     function xForColumn(c) {
-        return (c * ((2 * self.maxBlobRadius) + Protein.LABELMAXLENGTH)) - self.maxBlobRadius;
+        return (c * ((2 * self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
     }
     ;
 

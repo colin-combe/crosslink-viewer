@@ -4,9 +4,9 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>xiNET interaction viewer| Demo 1</title>
+        <title>xiNET | Interaction Viewer</title>
         <meta name="xinet molecular interaction viewer" content="xinet molecular interaction viewer">
-        <link rel="icon" type="image/x-icon" href="./favicon.ico">
+        <!--<link rel="icon" type="image/x-icon" href="./favicon.ico">-->
         <!-- css -->
         <!--<link rel="stylesheet" href="css/normalize.css">
             <link rel="stylesheet" href="css/new-main.css">-->
@@ -40,24 +40,30 @@
         <script type="text/javascript" src="./xlv/DASUtil.js"></script>
         <script type="text/javascript" src="./xlv/ReadCSV.js"></script>
         <script type="text/javascript" src="./xlv/ReadMIJSON.js"></script>
+        <script type="text/javascript" src="./xlv/ReadMITAB.js"></script>
         <!--data-->
-        <script type="text/javascript" src="./data/example3.js"></script>
+        <script type="text/javascript" src="./JSON_example1.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
-           <h1 style="display:inline-block;"><a href="./index.html">xiNET interaction viewer</a></h1>
+            <p style="display:inline-block;"><a href="https://github.com/colin-combe/interaction-viewer" target="_blank">xiNET interaction viewer</a></p>
             <!--TODO: change exportSVG so param not needed?-->
             <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 
             <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
-            <h1 style="float:right;display:inline-block;">created by the
+            <p style="float:right;display:inline-block;">created by the
                 <a href="http://rappsilberlab.org" target="_blank">Rappsilber Laboratory</a>
-            </h1>
-
+            </p>
+<!--            <form>
+                <p style="display:inline-block;">PSI-MI TAB:</p>
+                <input type="text" name="url" id="mitabUrl" size="88"
+                       value="http://www.ebi.ac.uk/Tools/webservices/psicquic/intact/webservices/current/search/interactor/P51587?format=tab27">
+                <button type="button" onclick="getMITAB(document.getElementById('mitabUrl').value)">Load</button>
+            </form>-->
 
             <div id="networkContainer"></div>
-            <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
+            <div id="networkCaption"></div>
         </div>
 
         <script type="text/javascript">
@@ -67,7 +73,29 @@
                 xlv = new xinet.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
 
-                xlv.readMIJSON(miJson);
+                //xlv.readMIJSON(miData);
+                d3.text('./data/MITAB_Q9GZM8.tab', function(text) {
+//                  d3.text('./data/query_species:mycoplasma_21062013_1131.txt', function(text) {
+                    xlv.readMITAB(text);
+                    }
+                );
+
+                    //CORS not enabled on PSICQUIC services
+                function getMITAB(url) {
+                    var xmlhttp = new XMLHttpRequest();
+                    var params = "";
+                    xmlhttp.open("POST", url, true);
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+                        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                            var response = xmlhttp.responseText;
+                            xlv.message("response:" + response, true);
+                        }
+                    };
+                    xmlhttp.send(params);
+                }
+
+
                 //]]>
         </script>
 
