@@ -48,7 +48,7 @@ InteractorLink.prototype.addEvidence = function(interaction) {
 //may have had to swap them around (to get consistent id's)
 
     var source, target;
-    if (interaction.source.id === this.fromProtein.id) {
+    if (interaction.source.identifier.id === this.fromProtein.id) {
         source = interaction.source;
         target = interaction.target;
     } else {

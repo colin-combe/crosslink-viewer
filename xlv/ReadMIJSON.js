@@ -46,6 +46,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
         var server_url = 'http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/';
         var client = JSDAS.Simple.getClient(server_url);
         // This function will be executed in case of error
+//        var outerFunction = this;
         var error_response = function(e) {
             var id = e.url.substring(e.url.lastIndexOf('=') + 1);
             console.error('Sequence DAS lookup FAILED for ' + id);
@@ -56,11 +57,15 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
             var dashIndex = id.lastIndexOf('-')
             if (dashIndex !== -1) {
                 var notIsoformAccession = id.substring(dashIndex + 1);
+                
                 client.sequence({
                     segment: notIsoformAccession
                 }, response, error_response);
                 self.message('<p>Waiting on sequence DAS response for: '
                         + proteinsMissingSequence.values().toString() + '</p>');
+            }
+            else {
+            
             }
             if (proteinsMissingSequence.values().length === 0) {
                 self.message('<p>All sequences downloaded from DAS</p>');
@@ -111,10 +116,10 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
             }
         }
 
-//        for (var p = 0; p < proteinCount; p++) {
-//            var prot = proteins[p];
-//            prot.setPositionalFeatures(prot.customAnnotations);
-//        }
+        for (var p = 0; p < proteinCount; p++) {
+            var prot = proteins[p];
+            prot.setPositionalFeatures(prot.customAnnotations);
+        }
 
         self.init();
         self.checkLinks();
@@ -129,7 +134,7 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
     }
     var targetInteractor = this.proteins.get(interaction.target.identifier.id);
     if (typeof targetInteractor === 'undefined') {
-        alert("Fail - no interactor with id " + interaction.target.identifierid);
+        alert("Fail - no interactor with id " + interaction.target.identifier.id);
     }
 
     var linkID; //= interaction.source.id + '_' + interaction.target.id;
@@ -143,7 +148,7 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
         if (interaction.source.identifier.id < interaction.target.identifier.id) {
             link = new InteractorLink(linkID, sourceInteractor, targetInteractor, this);
         } else {
-            link = new InteractorLink(linkID, sourceInteractor, targetInteractor, this);
+            link = new InteractorLink(linkID, targetInteractor, sourceInteractor, this);
         }
         this.proteinLinks.set(linkID, link);
         sourceInteractor.addLink(link);
