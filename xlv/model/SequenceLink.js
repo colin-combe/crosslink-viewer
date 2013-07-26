@@ -5,8 +5,8 @@
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 //rename to sequence link?
-ResidueLink.prototype = new xinet.Link();
-function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, interaction) {
+SequenceLink.prototype = new xinet.Link();
+function SequenceLink(id, proteinLink, fromBinding, toBinding, xlvController, interaction) {
     this.id = id;
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
@@ -42,7 +42,7 @@ function ResidueLink(id, proteinLink, fromBinding, toBinding, xlvController, int
     this.dashed = false;
 }
 
-ResidueLink.prototype.initSVG = function() {
+SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
         this.glyph = document.createElementNS(xinet.svgns, "path");
         this.highlightGlyph = document.createElementNS(xinet.svgns, "path");
@@ -86,16 +86,16 @@ ResidueLink.prototype.initSVG = function() {
     }
 };
 
-ResidueLink.prototype.getFromProtein = function() {
+SequenceLink.prototype.getFromProtein = function() {
     return this.proteinLink.fromProtein;
 };
 
-ResidueLink.prototype.getToProtein = function() {
+SequenceLink.prototype.getToProtein = function() {
     return this.proteinLink.toProtein;
 };
 
 //andAlternatives means highlight alternative links in case of site ambiguity
-ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
+SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false;//TODO: tEMP HACK
     }
@@ -124,7 +124,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 };
 
 //used when link clicked
-ResidueLink.prototype.showID = function() {
+SequenceLink.prototype.showID = function() {
     var fromProt = this.proteinLink.fromProtein;
     var toProt = this.proteinLink.toProtein;
     var linkInfo = "<p><strong>" + this.fromStartRes + "-" + this.fromEndRes
@@ -137,7 +137,7 @@ ResidueLink.prototype.showID = function() {
 };
 
 //used when filter changed
-ResidueLink.prototype.check = function(filter) {
+SequenceLink.prototype.check = function(filter) {
     if (this.xlv.intraHidden && this.intra) {
         this.hide();
         return false;
@@ -156,7 +156,7 @@ ResidueLink.prototype.check = function(filter) {
 //   }
 };
 
-ResidueLink.prototype.show = function() {
+SequenceLink.prototype.show = function() {
     if (this.xlv.initComplete) {
         if (!this.shown) {
             this.shown = true;
@@ -181,7 +181,7 @@ ResidueLink.prototype.show = function() {
     }
 };
 
-ResidueLink.prototype.hide = function() {
+SequenceLink.prototype.hide = function() {
     if (this.xlv.initComplete) {
         if (this.shown) {
             this.shown = false;
@@ -198,7 +198,7 @@ ResidueLink.prototype.hide = function() {
 };
 
 // update the links(lines) to fit to the protein
-ResidueLink.prototype.setLinkCoordinates = function(interactor) {
+SequenceLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) { //don't waste time changing DOM if link is not visible
         var fromInteractor = this.proteinLink.fromProtein;
         var toInteractor = this.proteinLink.toProtein;

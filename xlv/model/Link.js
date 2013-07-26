@@ -1,4 +1,4 @@
-//'superclass' for Interactor, ResidueLink, InteractorLink
+//'superclass' for Interactor, SequenceLink, InteractorLink
 xinet.Link = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
 xinet.Link.prototype.mouseDown = function(evt) {

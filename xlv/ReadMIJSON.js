@@ -160,7 +160,7 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
 //        for (var lf = 0; lf < linkedFeatureCount; lf++) {
 //            var linkedF = linkedFeatures[lf];
 //            var linkedFID = linkedF.sourceSites + '---' + linkedF.targetSites
-//            var resLink = new ResidueLink(linkedFID,
+//            var resLink = new SequenceLink(linkedFID,
 //                    link, linkedF.sourceSites, linkedF.targetSites, this);
 //            link.residueLinks.set(linkedFID, resLink);
 //        }

@@ -43,36 +43,35 @@ InteractorLink.prototype.addEvidence = function(interaction) {
 //features for an experiemnt should dissappear when experiemntal
 // evidience does not meet filter criteria
 
-//NB. source and target in JSON may not correspond to source and 
-// target in InteractionLink,
+//NB. source and target in JSON may not correspond with from and 
+// to in InteractionLink,
 //may have had to swap them around (to get consistent id's)
-
-    var source, target;
+    var from, to;
     if (interaction.source.identifier.id === this.fromProtein.id) {
-        source = interaction.source;
-        target = interaction.target;
+        from = interaction.source;
+        to = interaction.target;
     } else {
-        source = interaction.target
-        target = interaction.source;
+        from = interaction.target
+        to = interaction.source;
     }
 
     var fromBindingSite, toBindingSite;
     //TODO: use LinkedFeatures to know which bindinsSites are linked to which
     //TODO: decide what to assume about linkedFeatures when reading mitab
-    if (typeof source.bindingSites !== 'undefined') {
-        this.fromProtein.addFeature(source.bindingSites[0]);
-        fromBindingSite = source.bindingSites[0];
+    if (typeof from.bindingSites !== 'undefined') {
+        this.fromProtein.addFeature(from.bindingSites[0]);
+        fromBindingSite = from.bindingSites[0];
     }
-    if (typeof target.bindingSites !== 'undefined') {
-        this.toProtein.addFeature(target.bindingSites[0]);
-        toBindingSite = target.bindingSites[0];
+    if (typeof to.bindingSites !== 'undefined') {
+        this.toProtein.addFeature(to.bindingSites[0]);
+        toBindingSite = to.bindingSites[0];
     }
 
-    if (typeof source.pointMutations !== 'undefined') {
-        this.fromProtein.addFeature(source.pointMutations[0]);
+    if (typeof from.pointMutations !== 'undefined') {
+        this.fromProtein.addFeature(from.pointMutations[0]);
     }
-    if (typeof target.pointMutations !== 'undefined') {
-        this.toProtein.addFeature(target.pointMutations[0]);
+    if (typeof to.pointMutations !== 'undefined') {
+        this.toProtein.addFeature(to.pointMutations[0]);
     }
     var fromBinding = (typeof fromBindingSite !== 'undefined') ?
             fromBindingSite.sequenceData[0] : '?-?';
@@ -83,7 +82,7 @@ InteractorLink.prototype.addEvidence = function(interaction) {
             toBinding + ':' + this.toProtein.id;
     console.log(seqLinkId);
     this.residueLinks.set(seqLinkId,
-            new ResidueLink(seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
+            new SequenceLink(seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
 };
 
 InteractorLink.prototype.initSVG = function() {
@@ -205,6 +204,7 @@ InteractorLink.prototype.showHighlight = function(show, andAlternatives) {
         }
     }
 };
+
 //used when link clicked
 InteractorLink.prototype.showID = function() {
     var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
@@ -213,8 +213,7 @@ InteractorLink.prototype.showID = function() {
     linkInfo += "<pre>" + JSON.stringify(this.evidences, null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
-//TEMP - this was used by filtering...
-//its an array of match id's its going to return
+
 InteractorLink.prototype.getFilteredMatches = function() {
     var resLinks = this.residueLinks.values();
     var resLinkCount = resLinks.length;
@@ -231,6 +230,7 @@ InteractorLink.prototype.getFilteredMatches = function() {
     }
     return filteredMatches.keys();
 };
+
 InteractorLink.prototype.check = function() {
     var resLinks = this.residueLinks.values();
     var resLinkCount = resLinks.length;
@@ -240,11 +240,11 @@ InteractorLink.prototype.check = function() {
     if (this.fromProtein.isParked || this.toProtein.isParked
             || (this.xlv.intraHidden && this.intra)
             || this.hidden) {
-//if both ends are blobs then hide interactor-level link
+        //if both ends are blobs then hide interactor-level link
         if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
             this.hide();
         }
-//else loop through linked features hiding them
+        //else loop through linked features hiding them
         else {
             for (var i = 0; i < resLinkCount; i++) {
                 resLinks[i].hide();
@@ -252,7 +252,7 @@ InteractorLink.prototype.check = function() {
         }
         return false;
     }
-    else // we need to check which linked features match the filter criteria
+    else // we need to check which interaction evidences match the filter criteria
     if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
 
 //TEMP HACK -
@@ -391,11 +391,12 @@ InteractorLink.prototype.show = function() {
         }
     }
 };
+
 InteractorLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         if (this.intra) {
-//TODO: be more selective about when to show 'fatLine'
+            //TODO: be more selective about when to show 'fatLine' (for performance)
             if (InteractorLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
@@ -410,9 +411,11 @@ InteractorLink.prototype.hide = function() {
         }
     }
 };
+
 InteractorLink.prototype.getOtherEnd = function(protein) {
     return ((this.fromProtein === protein) ? this.toProtein : this.fromProtein);
 };
+
 InteractorLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
         if (this.fromProtein === interactor) {
