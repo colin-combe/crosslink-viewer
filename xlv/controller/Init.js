@@ -127,10 +127,10 @@ xinet.Controller = function(targetDiv) {
         this.svgElement.appendChild(defs);
     }
     //showing title as tooltips is not part of svg spec
-    //also more repsonsive if we do out own
+    //also more repsonsive if we do our own
     this.tooltip = document.createElementNS(xinet.svgns, "text");
-    this.tooltip.setAttribute('class', 'tooltip');
-    this.tooltip.setAttribute('id', 'tooltip');
+//    this.tooltip.setAttribute('class', 'tooltip');//class conflicts with bootstrap
+//    this.tooltip.setAttribute('id', 'tooltip');
     this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
     var tooltipTextNode = document.createTextNode('tooltip');
@@ -491,7 +491,7 @@ xinet.Controller.prototype.loadLayout = function() {
                 link.hidden = linkState.hidden;
             var c = linkState.colour;
             if (typeof c !== 'undefined') {
-                var resLinks = link.residueLinks.values();
+                var resLinks = link.sequenceLinks.values();
                 var resLinkCount = resLinks.length;
                 for (var r = 0; r < resLinkCount; r++) {
                     var resLink = resLinks[r];

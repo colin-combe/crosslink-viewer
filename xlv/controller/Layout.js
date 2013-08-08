@@ -228,8 +228,8 @@ xinet.Controller.prototype.autoLayout = function() {
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
 //            if (link.check() === true) { //not needed due to way subgraphs init'ed
-                var fromProt = link.fromProtein;
-                var toProt = link.toProtein;
+                var fromProt = link.fromInteractor;
+                var toProt = link.toInteractor;
                 var source = protLookUp[fromProt.id];
                 var target = protLookUp[toProt.id];
 

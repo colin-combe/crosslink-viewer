@@ -35,9 +35,9 @@ xinet.Controller.prototype.scale = function() {
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var protLink = links[l];
-            if (protLink.fromProtein !== protLink.toProtein) {
-                if (!protLink.fromProtein.isParked && !protLink.toProtein.isParked) {
-                    if (protLink.fromProtein.form === 0 && protLink.toProtein.form === 0) {
+            if (protLink.fromInteractor !== protLink.toInteractor) {
+                if (!protLink.fromInteractor.isParked && !protLink.toInteractor.isParked) {
+                    if (protLink.fromInteractor.form === 0 && protLink.toInteractor.form === 0) {
                         protLink.line.setAttribute("stroke-width", this.z * xinet.linkWidth);
                         protLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                         protLink.fatLine.setAttribute("stroke-width", this.z * protLink.w);
@@ -47,16 +47,16 @@ xinet.Controller.prototype.scale = function() {
                     }
                     else {
                         //inter protein res links
-                        var c2 = protLink.residueLinks.keys().length;
+                        var c2 = protLink.sequenceLinks.keys().length;
                         for (var rl = 0; rl < c2; rl++) {
-                            var resLink = protLink.residueLinks.values()[rl];
-                            if (resLink.check()) {
-                                protLink.residueLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xinet.linkWidth);
-                                protLink.residueLinks.values()[rl].highlightGlyph.setAttribute("stroke-width", this.z * 10);
+                            var resLink = protLink.sequenceLinks.values()[rl];
+                          //  if (resLink.check()) {
+                                protLink.sequenceLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xinet.linkWidth);
+                                protLink.sequenceLinks.values()[rl].highlightGlyph.setAttribute("stroke-width", this.z * 10);
                                 if (resLink.ambig) {
                                     resLink.dashedLine(true); //rescale spacing of dashes
                                 }
-                            }
+                          //  }
                         }
                     }
                 }

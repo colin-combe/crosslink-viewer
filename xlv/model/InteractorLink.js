@@ -12,12 +12,12 @@ InteractorLink.prototype = new xinet.Link();
 InteractorLink.maxNoEvidences = 0;
 function InteractorLink(id, fromP, toP, xlvController) {
     this.id = id;
-    this.residueLinks = d3.map();
+    this.sequenceLinks = d3.map();
     this.xlv = xlvController;
-    this.fromProtein = fromP; //its the object. not the ID number
-    this.toProtein = toP; //its the object. not the ID number
+    this.fromInteractor = fromP; //its the object. not the ID number
+    this.toInteractor = toP; //its the object. not the ID number
     this.intra = false;
-    if (this.fromProtein === this.toProtein) {
+    if (this.fromInteractor === this.toInteractor) {
         this.intra = true;
     }
     this.ambig = false;
@@ -27,62 +27,79 @@ function InteractorLink(id, fromP, toP, xlvController) {
     this.dashed = false;
     //layout stuff
     this.hidden = false;
-    this.evidences = new Array();
+    this.evidenceCount = 0;
 }
 
 InteractorLink.prototype.addEvidence = function(interaction) {
-    this.evidences.push(interaction);
-    if (this.evidences.length > InteractorLink.maxNoEvidences) {
-        InteractorLink.maxNoEvidences = this.evidences.length;
+    this.evidenceCount++;
+    if (this.evidenceCount > InteractorLink.maxNoEvidences) {
+        InteractorLink.maxNoEvidences = this.evidenceCount;
     }
-
-
-//adding features
-//we will do this here for moment...
-//not really right place, needs to be associated with the sequence links
-//features for an experiemnt should dissappear when experiemntal
-// evidience does not meet filter criteria
-
-//NB. source and target in JSON may not correspond with from and 
-// to in InteractionLink,
-//may have had to swap them around (to get consistent id's)
+    //NB. source and target in JSON may not correspond with from and 
+    // to in InteractionLink,
+    //may have had to swap them around (to get consistent id's)
     var from, to;
-    if (interaction.source.identifier.id === this.fromProtein.id) {
+    if (interaction.source.identifier.id === this.fromInteractor.id) {
         from = interaction.source;
         to = interaction.target;
     } else {
         from = interaction.target
         to = interaction.source;
     }
-
-    var fromBindingSite, toBindingSite;
-    //TODO: use LinkedFeatures to know which bindinsSites are linked to which
-    //TODO: decide what to assume about linkedFeatures when reading mitab
-    if (typeof from.bindingSites !== 'undefined') {
-        this.fromProtein.addFeature(from.bindingSites[0]);
-        fromBindingSite = from.bindingSites[0];
+    var hasLinkedFeatures = false;
+    /*
+     * TODO: check for linked features
+     */
+    //hmmm... in fact, when LinkedFeatures implemented then one interaction may result in many sequenceLinks
+    //for time being one interaction can only result in at most one sequenceLink
+    if (hasLinkedFeatures) {
+        //LinkedFeatures not yet implemented in JAMI
     }
-    if (typeof to.bindingSites !== 'undefined') {
-        this.toProtein.addFeature(to.bindingSites[0]);
-        toBindingSite = to.bindingSites[0];
+    //if no linked features may be able to make some assumptions about whats linked to what. 
+    // If:
+    // 1. it is not a product of expansion   
+    // 2. there is no more than binding site feature at each of interaction
+    else if ((typeof interaction.expansion === 'undefined')
+            && (typeof from.bindingSites === 'undefined'
+            || from.bindingSites.length === 1)
+            && (typeof to.bindingSites === 'undefined'
+            || to.bindingSites.length === 1)
+            ) {
+        // first we need to know ID for sequenceLink, 
+        // that means knowing the binding sites
+        var fromBindingSite, toBindingSite;
+        if (typeof from.bindingSites !== 'undefined') {
+            fromBindingSite = from.bindingSites[0];
+        }
+        if (typeof to.bindingSites !== 'undefined') {
+            toBindingSite = to.bindingSites[0];
+        }
+        var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
+                fromBindingSite.sequenceData.sort() : ['?-?'];
+        var toSequenceData = (typeof toBindingSite !== 'undefined') ?
+                toBindingSite.sequenceData.sort() : ['?-?'];
+        var seqLinkId = fromSequenceData.toString() + ':' +
+                this.fromInteractor.id + ' to ' +
+                toSequenceData.toString() + ':' + this.toInteractor.id;
+        console.log(seqLinkId);
+        var sequenceLink = this.sequenceLinks.get(seqLinkId);
+        if (typeof sequenceLink === 'undefined') {
+            sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
+            this.sequenceLinks.set(seqLinkId, sequenceLink);
+        }
+        sequenceLink.addEvidence(interaction);
+    } else {
+        var seqLinkId = '?-?:' +
+                this.fromInteractor.id + ' to ' +
+                '?-?:' + this.toInteractor.id;
+        console.log(seqLinkId);
+        var sequenceLink = this.sequenceLinks.get(seqLinkId);
+        if (typeof sequenceLink === 'undefined') {
+            sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.xlv, interaction);
+            this.sequenceLinks.set(seqLinkId, sequenceLink);
+        }
+        sequenceLink.addEvidence(interaction);
     }
-
-    if (typeof from.pointMutations !== 'undefined') {
-        this.fromProtein.addFeature(from.pointMutations[0]);
-    }
-    if (typeof to.pointMutations !== 'undefined') {
-        this.toProtein.addFeature(to.pointMutations[0]);
-    }
-    var fromBinding = (typeof fromBindingSite !== 'undefined') ?
-            fromBindingSite.sequenceData[0] : '?-?';
-    var toBinding = (typeof toBindingSite !== 'undefined') ?
-            toBindingSite.sequenceData[0] : '?-?';
-    var seqLinkId = fromBinding + ':' +
-            this.fromProtein.id + ' to ' +
-            toBinding + ':' + this.toProtein.id;
-    console.log(seqLinkId);
-    this.residueLinks.set(seqLinkId,
-            new SequenceLink(seqLinkId, this, fromBinding, toBinding, this.xlv, interaction));
 };
 
 InteractorLink.prototype.initSVG = function() {
@@ -99,7 +116,7 @@ InteractorLink.prototype.initSVG = function() {
                 y: -(radius * Math.sin(radians))
             };
         }
-        var intraR = this.fromProtein.getBlobRadius() + 7;
+        var intraR = this.fromInteractor.getBlobRadius() + 7;
         var r = 45;
         var arcStart = trig(intraR, 15 + r);
         var arcEnd = trig(intraR, -35 + r);
@@ -179,174 +196,158 @@ InteractorLink.prototype.showHighlight = function(show, andAlternatives) {
             this.highlightLine.setAttribute("stroke-opacity", "0");
         }
     }
-    if (andAlternatives && this.ambig) {
-//TODO: we want to highlight smallest possible set of alternatives
-        var rc = this.residueLinks.values().length;
-        for (var rl = 0; rl < rc; rl++) {
-            var resLink = this.residueLinks.values()[rl];
-            var mc = resLink.matches.length;
-            for (var m = 0; m < mc; m++) {
-                var match = resLink.matches[m];
-                if (match.isAmbig()) {
-                    var mrc = match.residueLinks.length;
-                    for (var mrl = 0; mrl < mrc; mrl++) {
-                        var resLink = match.residueLinks[mrl];
-                        if (resLink.shown === true) {
-                            resLink.showHighlight(show, false);
-                        }
-                        if (resLink.proteinLink.shown === true) {
-                            resLink.proteinLink.showHighlight(show, false);
-                        }
-                    }
-                }
-
-            }
-        }
-    }
+//    if (andAlternatives && this.ambig) {
+////TODO: we want to highlight smallest possible set of alternatives
+//        var rc = this.sequenceLinks.values().length;
+//        for (var rl = 0; rl < rc; rl++) {
+//            var resLink = this.sequenceLinks.values()[rl];
+//            var mc = resLink.matches.length;
+//            for (var m = 0; m < mc; m++) {
+//                var match = resLink.matches[m];
+//                if (match.isAmbig()) {
+//                    var mrc = match.sequenceLinks.length;
+//                    for (var mrl = 0; mrl < mrc; mrl++) {
+//                        var resLink = match.sequenceLinks[mrl];
+//                        if (resLink.shown === true) {
+//                            resLink.showHighlight(show, false);
+//                        }
+//                        if (resLink.proteinLink.shown === true) {
+//                            resLink.proteinLink.showHighlight(show, false);
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 };
 
 //used when link clicked
 InteractorLink.prototype.showID = function() {
-    var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
-            + ") - " + this.toProtein.name + " (" + this.toProtein.accession
+    var linkInfo = "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
+            + ") - " + this.toInteractor.name + " (" + this.toInteractor.accession
             + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.evidences, null, '\t') + "</pre>";
+    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
 
-InteractorLink.prototype.getFilteredMatches = function() {
-    var resLinks = this.residueLinks.values();
-    var resLinkCount = resLinks.length;
-    var filteredMatches = d3.map();
-    for (var i = 0; i < resLinkCount; i++) {
-        var resLink = resLinks[i];
-        var mCount = resLink.matches.length;
-        for (var m = 0; m < mCount; m++) {
-            var match = resLink.matches[m];
-            if (match.meetsFilterCriteria()) {
-                filteredMatches.set(match.id);
-            }
+InteractorLink.prototype.getFilteredEvidences = function() {
+    var seqLinks = this.sequenceLinks.values();
+    var seqLinkCount = seqLinks.length;
+    // use map to eliminate duplicates 
+    // (which result from linked features resulting in multiple SequenceLinks for single interaction)
+    var filteredEvids = d3.map();
+    for (var i = 0; i < seqLinkCount; i++) {
+        var seqLink = seqLinks[i];
+        var seqLinkEvids = seqLink.getFilteredEvidences();
+        var seqLinkEvidCount = seqLinkEvids.length;
+        for (var j = 0; j < seqLinkEvidCount; j++) {
+            filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
         }
     }
-    return filteredMatches.keys();
+    return filteredEvids.values();
 };
 
 InteractorLink.prototype.check = function() {
-    var resLinks = this.residueLinks.values();
-    var resLinkCount = resLinks.length;
+    var seqLinks = this.sequenceLinks.values();
+    var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
-    if (this.fromProtein.isParked || this.toProtein.isParked
+    if (this.fromInteractor.isParked || this.toInteractor.isParked
             || (this.xlv.intraHidden && this.intra)
             || this.hidden) {
         //if both ends are blobs then hide interactor-level link
-        if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
+        if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
             this.hide();
         }
         //else loop through linked features hiding them
         else {
-            for (var i = 0; i < resLinkCount; i++) {
-                resLinks[i].hide();
+            for (var i = 0; i < seqLinkCount; i++) {
+                seqLinks[i].hide();
             }
         }
         return false;
     }
     else // we need to check which interaction evidences match the filter criteria
-    if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
-
-//TEMP HACK -
-
-//            this.ambig = true;
-//            var filteredResLinks = new Array();
-//            var filteredMatches = d3.map();
-//            var altProteinLinks = d3.map();
-//            for (var i = 0; i < resLinkCount; i++) {
-//                var resLink = resLinks[i];
-//                var resLinkMeetsCriteria = false;
-//                var mCount = resLink.matches.length;
-//                for (var m = 0; m < mCount; m++) {
-//                    var match = resLink.matches[m];
-//                    if (match.meetsFilterCriteria()) {
-//                        if (resLinkMeetsCriteria === false) {
-//                            resLinkMeetsCriteria = true;
-//                            filteredResLinks.push(resLink);
-//                        }
-//                        filteredMatches.set(match.id);
-//                        if (match.isAmbig()) {
-//                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-//                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
-//                            }
-//                        }
-//                        else {
-//                            this.ambig = false;
-//                        }
-//                    }
-//                }
-//            }
-//            var filteredResLinkCount = filteredResLinks.length;
-//            if (filteredResLinkCount > 0) {
-        var countEvidences = this.evidences.length;
-        this.tooltip = /*this.id + ', ' +*/ countEvidences + ' experiment';
-        if (countEvidences > 1) {
-            this.tooltip += 's';
-        }
-        this.tooltip += ' (';
-        var nested_data = d3.nest()
-           .key(function(d) { return d.experiment.detmethod.name;})
-           .rollup(function(leaves) { return leaves.length;})
-           .entries(this.evidences);
-           
-        nested_data.sort(function (a, b) {return b.values - a.values});
-           
-        var countDetMethods = nested_data.length
-        for (var i = 0; i < countDetMethods; i++) {
-            if (i > 0) {
-                this.tooltip += ', ';
+    if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
+        this.ambig = true;
+        var filteredEvids = this.getFilteredEvidences();
+        var evidCount = filteredEvids.length;
+        for (var i = 0; i < evidCount; i++) {
+            var evid = filteredEvids[i];
+            if (typeof evid.expansion === 'undefined') {
+                this.ambig = false;
             }
-            this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
         }
+        if (evidCount > 0) {
+            //tooltip
+            this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
+            if (evidCount > 1) {
+                this.tooltip += 's';
+            }
+            this.tooltip += ' (';
+            var nested_data = d3.nest()
+                    .key(function(d) {
+                return d.experiment.detmethod.name;
+            })
+                    .rollup(function(leaves) {
+                return leaves.length;
+            })
+                    .entries(filteredEvids);
 
-        this.tooltip += ' )';
-        this.w = countEvidences * (45 / InteractorLink.maxNoEvidences);
-        //                //acknowledge following line is a bit confusing...
-        //                this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
-        //                this.dashedLine(this.ambig);
+            nested_data.sort(function(a, b) {
+                return b.values - a.values
+            });
+            var countDetMethods = nested_data.length
+            for (var i = 0; i < countDetMethods; i++) {
+                if (i > 0) {
+                    this.tooltip += ', ';
+                }
+                this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
+            }
+            this.tooltip += ' )';
+            //fatLine
+            this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
+//                        this.ambig = this.ambig && true;
+            //ambig?
+            this.dashedLine(this.ambig);
 
-        //linkedfeature links will have been hidden previously
-        this.show();
-        return true;
+            //sequence links will have been hidden previously
+            this.show();
+            return true;
+        }
+        else {
+            this.hide();
+            return false;
+        }
     }
-    else {
+    else {//at least one end was in stick form
         this.hide();
-        //                return false;
-        //            }
-        //        }
-        //        else {
         var showedResResLink = false
-        //            //at least one end was in stick form
-        for (var rl = 0; rl < resLinkCount; rl++) {
-            if (resLinks[rl].check() === true) {
+        for (var rl = 0; rl < seqLinkCount; rl++) {
+            if (seqLinks[rl].check() === true) {
                 showedResResLink = true;
             }
         }
-////TODO: fix this? - always returning true if one end is stick?
         return showedResResLink;
     }
 };
+
 InteractorLink.prototype.dashedLine = function(dash) {
     if (typeof this.line === 'undefined') {
         this.initSVG();
     }
-    if (dash && !this.dashed) {
+    if (dash){// && !this.dashed) {
         this.dashed = true;
         this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
     }
-    else if (!dash && this.dashed) {
+    else if (!dash){// && this.dashed) {
         this.dashed = false;
         this.line.removeAttribute("stroke-dasharray");
     }
 };
+
 InteractorLink.prototype.show = function() {
     if (this.xlv.initComplete) {
 // TODO: check how some of this compares to whats in Refresh.js, scale()
@@ -360,21 +361,21 @@ InteractorLink.prototype.show = function() {
 
                 if (InteractorLink.maxNoEvidences > 1) {
                     this.fatLine.setAttribute("transform", "translate(" +
-                            this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
+                            this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
                             + " scale(" + (this.xlv.z) + ")");
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
 
-                this.fromProtein.upperGroup.appendChild(this.highlightLine);
-                this.fromProtein.upperGroup.appendChild(this.line);
-                this.fromProtein.upperGroup.appendChild(this.fromProtein.blob);
-                this.fromProtein.upperGroup.appendChild(this.fromProtein.circDomains);
+                this.fromInteractor.upperGroup.appendChild(this.highlightLine);
+                this.fromInteractor.upperGroup.appendChild(this.line);
+                this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
+                this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
             }
             else {
                 this.line.setAttribute("stroke-width", this.xlv.z * 1);
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.setLinkCoordinates(this.fromProtein);
-                this.setLinkCoordinates(this.toProtein);
+                this.setLinkCoordinates(this.fromInteractor);
+                this.setLinkCoordinates(this.toInteractor);
                 if (InteractorLink.maxNoEvidences > 1) {
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
@@ -383,6 +384,7 @@ InteractorLink.prototype.show = function() {
             }
         }
         if (InteractorLink.maxNoEvidences > 1) {
+            
             if (this.intra) {
                 this.fatLine.setAttribute("stroke-width", this.w);
             } else {
@@ -400,8 +402,8 @@ InteractorLink.prototype.hide = function() {
             if (InteractorLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.fromProtein.upperGroup.removeChild(this.highlightLine);
-            this.fromProtein.upperGroup.removeChild(this.line);
+            this.fromInteractor.upperGroup.removeChild(this.highlightLine);
+            this.fromInteractor.upperGroup.removeChild(this.line);
         } else {
             if (InteractorLink.maxNoEvidences > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
@@ -413,12 +415,12 @@ InteractorLink.prototype.hide = function() {
 };
 
 InteractorLink.prototype.getOtherEnd = function(protein) {
-    return ((this.fromProtein === protein) ? this.toProtein : this.fromProtein);
+    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
 
 InteractorLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
-        if (this.fromProtein === interactor) {
+        if (this.fromInteractor === interactor) {
             this.line.setAttribute("x1", interactor.x);
             this.line.setAttribute("y1", interactor.y);
             this.highlightLine.setAttribute("x1", interactor.x);

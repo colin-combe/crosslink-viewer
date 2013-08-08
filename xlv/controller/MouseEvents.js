@@ -118,10 +118,10 @@ xinet.Controller.prototype.mouseMove = function(evt) {
                 if (typeof this.dragElement.x === 'undefined') { // if not a protein
                     //its a link - drag whole connected subgraph
                     var prot;
-                    if (this.dragElement.fromProtein)
-                        prot = this.dragElement.fromProtein;
+                    if (this.dragElement.fromInteractor)
+                        prot = this.dragElement.fromInteractor;
                     else
-                        prot = this.dragElement.proteinLink.fromProtein;
+                        prot = this.dragElement.proteinLink.fromInteractor;
                     var prots = this.proteins.values();
                     var protCount = prots.length;
                     for (var p = 0; p < protCount; p++) {

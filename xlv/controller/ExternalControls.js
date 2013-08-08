@@ -3,7 +3,7 @@ xinet.Controller.prototype.changeAnnotations = function(choice, opt) {
     if (choice !== 1) {
         positional = false;
     }
-    if (typeof opt !== 'undefined' && opt != null){
+    if (typeof opt !== 'undefined' && opt != null) {
         var group = opt.options[opt.selectedIndex].parentNode.label;
         var category = opt.options[opt.selectedIndex].value;
     }
@@ -25,10 +25,10 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
     };
     if (filterText === '!') {
         this.parkAll();
-    //        this.textFilterRegexNOT[0] = new RegExp("*", 'gi');
+        //        this.textFilterRegexNOT[0] = new RegExp("*", 'gi');
     }
     else if (filterText === '') {
-    //        this.unparkAll();
+        //        this.unparkAll();
     }
     else {
         var filters = filterText.split(' ');
@@ -57,9 +57,9 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
         }
     }
     this.message("<p>Text filter: " + filterText
-        //            + "<br/>" + JSON.stringify(this.textFilterRegex, '\t')
-        //            + "<br/>" + JSON.stringify(this.textFilterRegexNOT, '\t')
-        + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
+            //            + "<br/>" + JSON.stringify(this.textFilterRegex, '\t')
+            //            + "<br/>" + JSON.stringify(this.textFilterRegexNOT, '\t')
+            + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
     this.checkLinks();
 };
 
@@ -242,33 +242,18 @@ xinet.Controller.prototype.exportProteins = function() {
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
         output += "xlv.addProtein('" + protein.id + "','"
-                                    + protein.name  + "','"
-                                    + protein.sequence  + "','"
-                                      + "','"
-                                    + protein.accession  +  "');\n"
+                + protein.name + "','"
+                + protein.sequence + "','"
+                + "','"
+                + protein.accession + "');\n"
     }
-xlv.message(output);
+    xlv.message(output);
 };
 
 xinet.Controller.prototype.exportLinks = function() {
     var myJSONText = JSON.stringify(this.proteinLinks, null, '\t');
     myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     xlv.message(myJSONText, true);
-};
-
-xinet.Controller.prototype.setCutOff = function(cutOff) {
-    this.cutOff = cutOff;
-    this.checkLinks();
-};
-
-xinet.Controller.prototype.hideInternal = function(bool) {
-    this.intraHidden = bool;
-    this.checkLinks();
-};
-
-xinet.Controller.prototype.hideAmbig = function(bool) {
-    this.ambigHidden = bool;
-    this.checkLinks();
 };
 
 //TODO:fix
@@ -283,17 +268,17 @@ xinet.Controller.prototype.exportSVG = function(containerName) {
     var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
     //TODO: rotator hide not working
     var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
-    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
-    //    .replace(/xmlns:svg=/gi,"xmlns=")
-    //    .replace(/svg:/gi,"")
-    .replace(/<rect .*?\/rect>/i, "");
+            //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
+            //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
+            //    .replace(/xmlns:svg=/gi,"xmlns=")
+            //    .replace(/svg:/gi,"")
+            .replace(/<rect .*?\/rect>/i, "");
 
     var args = [];
     args.source = svgXml;
     var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-    + svgXml;//markup_beauty(args);
+            + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+            + svgXml;//markup_beauty(args);
 
     //    alert("/");
 
@@ -331,7 +316,7 @@ function saveLayout() {
         }
         var url = "./saveLayout.php";
         var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
-            layout) + "&desc=" + desc;
+                layout) + "&desc=" + desc;
         xmlhttp.open("POST", url, true);
         //Send the proper header information along with the request
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -345,7 +330,7 @@ function saveLayout() {
                 xlv.message("<br>Layout saved");
                 var select = document.getElementById('load_layout');
                 var optionlist = select.options;
-                for (var option = 0; option < optionlist.length; option++ )
+                for (var option = 0; option < optionlist.length; option++)
                 {
                     if (optionlist[option].text == desc)
                     {

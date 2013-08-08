@@ -1,25 +1,30 @@
+//      xiNET interaction viewer
+//      Copyright 2013 Rappsilber Laboratory
+
+// reads our MI JSON format 
 xinet.Controller.prototype.readMIJSON = function(miJson) {
+    //just check that we've got a parsed javacsript object here, not a String
+    miJson = (typeof miJson === 'object') ? miJson : JSON.parse(decodeURIComponent(layoutJSON));
+    //we're gonna need to keep track of what things have missing sequences 
+    var proteinsMissingSequence = d3.set();
+    // we iterate through the data twice, once for interactors and once for interactions
+    // (iteractors and interactions are missed together in 'data')
+    // the second iteration is in the 'addInteractions' function below
     var data = miJson.data;
     var dataElementCount = data.length;
-    var proteinsMissingSequence = d3.set();
     for (var n = 0; n < dataElementCount; n++) {
-        var interactor = data[n];
-        if (interactor.object === 'interactor') {
+        if (data[n].object === 'interactor') {
+            var interactor = data[n];
             var p = new Interactor(interactor.identifier.id, this, interactor);
             this.proteins.set(interactor.identifier.id, p);
-            var organismText = "organism data missing";
+            var organismText = "no organism data";
             if (interactor.organism) {
-                // interactor.organism.common + ' (' + interactor.organism.scientific + '), '
+                organismText = interactor.organism.scientific + '(' + interactor.organism.common + ')';
             }
-            //to get seq out of description text
             var description = interactor.type.name + ', '
-                    + organismText
-                    + interactor.accession;
-//        JSON.stringify({
-//            "type": interactor.type,
-//            "organism": interactor.organism,
-//            "accession": interactor.accession,
-//        }, null, ' ');
+                    + organismText + ', '
+                    + interactor.identifier.id;
+
             if (typeof interactor.sequence !== 'undefined') {
                 p.initProtein(interactor.sequence, interactor.label, description);
             }
@@ -28,59 +33,49 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
                     proteinsMissingSequence.add(interactor.identifier.id);
                 }
                 else {
-                    p.initProtein('NOSEQUENCE', interactor.label, description);
+                    p.initProtein('--------', interactor.label, description);
                 }
             }
         }
     }
     var self = this;
-    if (proteinsMissingSequence.values().length === 0) {
+
+    //we will download missing sequences before doing second iteration to add interactions
+    if (proteinsMissingSequence.values().length === 0) {//if no missing sequences
         addInteractions();
     }
     else {
-        self.message(proteinsMissingSequence);
-        initProteinSequences();//calss addInteractions when complete
+        this.message(proteinsMissingSequence);
+        initProteinSequences();//calls addInteractions when complete
     }
-
+    
+    var self = this; // the javascript bodge 
     function initProteinSequences() {
         var server_url = 'http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/';
         var client = JSDAS.Simple.getClient(server_url);
         // This function will be executed in case of error
-//        var outerFunction = this;
         var error_response = function(e) {
+            //we need to parse id out of URL, this is not ideal
             var id = e.url.substring(e.url.lastIndexOf('=') + 1);
             console.error('Sequence DAS lookup FAILED for ' + id);
             console.error(e.url);
             var p = self.proteins.get(id);
-            p.initProtein('NOSEQUENCE');
+            p.initProtein('--------');
             proteinsMissingSequence.remove(id);
-            var dashIndex = id.lastIndexOf('-')
-            if (dashIndex !== -1) {
-                var notIsoformAccession = id.substring(dashIndex + 1);
-                
-                client.sequence({
-                    segment: notIsoformAccession
-                }, response, error_response);
-                self.message('<p>Waiting on sequence DAS response for: '
-                        + proteinsMissingSequence.values().toString() + '</p>');
-            }
-            else {
-            
-            }
+            self.message('<p>Waiting on sequence DAS response for: '
+                    + proteinsMissingSequence.values().toString() + '</p>');
             if (proteinsMissingSequence.values().length === 0) {
-                self.message('<p>All sequences downloaded from DAS</p>');
+                self.message('<p>All DAS sequence queries returned</p>');
                 addInteractions();
             }
         };
-        // This function inits the protein
+        // This function inits the protein with sequence
         var response = function(res) {
-            //this.message(res);
             var id = res.SEQUENCE[0].id;
             var seq = res.SEQUENCE[0].textContent;
             var label = res.SEQUENCE[0].label;
             var prot = self.proteins.get(id);
             prot.initProtein(seq, label, id);
-            //            var key = '\\u0000' + seq;
             proteinsMissingSequence.remove(id);
             self.message('<p>Waiting on sequence DAS response for: '
                     + proteinsMissingSequence.values().toString() + '</p>');
@@ -89,6 +84,8 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
                 addInteractions();
             }
         };
+
+        //send off the DAS sequence requests
         var keys = proteinsMissingSequence.values();
         var proteinCount = keys.length;
         for (var p = 0; p < proteinCount; p++) {
@@ -99,7 +96,6 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
             }, response, error_response);
         }
     }
-
 
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
@@ -115,19 +111,34 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
                 self.addInteraction(interaction);
             }
         }
-
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
             prot.setPositionalFeatures(prot.customAnnotations);
         }
-
         self.init();
         self.checkLinks();
+        //    new xinet.DASUtil(this);
     }
-//    new xinet.DASUtil(this);
 };
 
 xinet.Controller.prototype.addInteraction = function(interaction) {
+    
+    if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
+        alert('missing interaction identifier');
+        console.error(JSON.stringify(interaction));
+    }
+    
+    if (typeof interaction.confidences !== 'undefined') {
+        var confidences = interaction.confidences;
+        var confCount = confidences.length;
+        for (var c = 0; c < confCount; c++){
+            var conf = confidences[c];
+            if (conf.type === 'intact-miscore'){
+                interaction.score = conf.value * 1.0;
+            }
+        }
+    }
+    
     var sourceInteractor = this.proteins.get(interaction.source.identifier.id);
     if (typeof sourceInteractor === 'undefined') {
         alert("Fail - no interactor with id " + interaction.source.identifier.id);
@@ -136,8 +147,9 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
     if (typeof targetInteractor === 'undefined') {
         alert("Fail - no interactor with id " + interaction.target.identifier.id);
     }
-
-    var linkID; //= interaction.source.id + '_' + interaction.target.id;
+    // these links are undirected and should have same ID regardless of which way round 
+    // source and target are
+    var linkID;
     if (interaction.source.identifier.id < interaction.target.identifier.id) {
         linkID = interaction.source.identifier.id + '_' + interaction.target.identifier.id;
     } else {
@@ -154,14 +166,6 @@ xinet.Controller.prototype.addInteraction = function(interaction) {
         sourceInteractor.addLink(link);
         targetInteractor.addLink(link);
     }
+    //all other initialisation to do with interactions takes place within InteractorLink 
     link.addEvidence(interaction);
-//        var linkedFeatures = interaction.linkedFeatures;
-//        var linkedFeatureCount = linkedFeatures.length;
-//        for (var lf = 0; lf < linkedFeatureCount; lf++) {
-//            var linkedF = linkedFeatures[lf];
-//            var linkedFID = linkedF.sourceSites + '---' + linkedF.targetSites
-//            var resLink = new SequenceLink(linkedFID,
-//                    link, linkedF.sourceSites, linkedF.targetSites, this);
-//            link.residueLinks.set(linkedFID, resLink);
-//        }
 };

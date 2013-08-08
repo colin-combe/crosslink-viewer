@@ -460,7 +460,7 @@ Interactor.prototype.scale = function() {
                 + (this.getResXwithStickZoom(this.size) + Interactor.rotOffset) + " 0)");
         //internal links
 //        if (this.internalLink != null) {
-//            var resLinks = this.internalLink.residueLinks.values();
+//            var resLinks = this.internalLink.sequenceLinks.values();
 //            var iLinkCount = resLinks.length;
 //            for (var l = 0; l < iLinkCount; l++) {
 //                resLinks[l].setUpCurve();
@@ -695,9 +695,9 @@ Interactor.prototype.toBlob = function() {
                 // swap links
                 //out with the old
                 //would it  be better if checkLinks did this? no, slower
-                for (var rl in link.residueLinks) {
-                    var resLink = link.residueLinks[rl];
-                    //TODO: !fix this issue to do with iterating residueLinks!
+                for (var rl in link.sequenceLinks) {
+                    var resLink = link.sequenceLinks[rl];
+                    //TODO: !fix this issue to do with iterating sequenceLinks!
                     if (resLink.shown) {
                         resLink.hide();
                     }
@@ -718,8 +718,8 @@ Interactor.prototype.toParked = function() {
         var link = this.proteinLinks.values()[l];
         //out with the old (i.e. all links)
         link.hide();
-        for (var rl in link.residueLinks) {
-            var resLink = link.residueLinks[rl];
+        for (var rl in link.sequenceLinks) {
+            var resLink = link.sequenceLinks[rl];
             if (resLink.shown) {//TODO: fix fact this line is required, prob is with for...in loop (when certain libs loaded)
                 resLink.hide();
             }
@@ -750,9 +750,9 @@ Interactor.prototype.toStick = function() {
         this.upperGroup.appendChild(this.stick);
         //    this.upperGroup.appendChild(this.rectDomainsMouseEvents);
         if (this.internalLink != null) {
-            var intraResLinks = this.internalLink.residueLinks.values();
+            var intraResLinks = this.internalLink.sequenceLinks.values();
             var rlCount = intraResLinks.length;
-            if (typeof intraResLinks[0].line === 'undefined') {
+            if (typeof intraResLinks[0].glyph === 'undefined') {
                 for (var irl = 0; irl < rlCount; irl++) {
                     intraResLinks[irl].initSVG();
                 }
@@ -873,11 +873,11 @@ Interactor.prototype.setAllLineCoordinates = function() {
     var c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        if (link.fromProtein.form === 0 && link.toProtein.form === 0) {
+        if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
             link.setLinkCoordinates(this);
         }
         else {
-            var resLinks = link.residueLinks.values();
+            var resLinks = link.sequenceLinks.values();
             var resLinkCount = resLinks.length;
             for (var rl = 0; rl < resLinkCount; rl++) {
                 resLinks[rl].setLinkCoordinates(this);
@@ -931,11 +931,11 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
             if (!subgraph.links.has(externalLink.id)) {
                 subgraph.links.set(externalLink.id, externalLink);
                 var otherEnd;
-                if (externalLink.fromProtein === this) {
-                    otherEnd = externalLink.toProtein;
+                if (externalLink.fromInteractor === this) {
+                    otherEnd = externalLink.toInteractor;
                 }
                 else {
-                    otherEnd = externalLink.fromProtein;
+                    otherEnd = externalLink.fromInteractor;
                 }
                 if (!subgraph.nodes.has(otherEnd.id)) {
                     subgraph.nodes.set(otherEnd.id, otherEnd);
