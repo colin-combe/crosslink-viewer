@@ -121,7 +121,7 @@ xinet.Controller.prototype.mouseMove = function(evt) {
                     if (this.dragElement.fromInteractor)
                         prot = this.dragElement.fromInteractor;
                     else
-                        prot = this.dragElement.proteinLink.fromInteractor;
+                        prot = this.dragElement.interactorLink.fromInteractor;
                     var prots = this.proteins.values();
                     var protCount = prots.length;
                     for (var p = 0; p < protCount; p++) {

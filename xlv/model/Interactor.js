@@ -689,18 +689,20 @@ Interactor.prototype.toBlob = function() {
         var c = links.length;
         for (var l = 0; l < c; l++) {
             var link = links[l];
-            if ((link.fromProtein === this && link.toProtein.form === 0) ||
-                    (link.toProtein === this && link.fromProtein.form === 0))
+            if ((link.fromInteractor === this && link.toInteractor.form === 0) ||
+                    (link.toInteractor === this && link.fromInteractor.form === 0))
             {
                 // swap links
                 //out with the old
                 //would it  be better if checkLinks did this? no, slower
-                for (var rl in link.sequenceLinks) {
-                    var resLink = link.sequenceLinks[rl];
+                var seqLinks = link.sequenceLinks.values();
+                var slCount = seqLinks.length;
+                for (var sl = 0; sl < slCount; sl ++) {
+                    var seqLink = seqLinks[sl];
                     //TODO: !fix this issue to do with iterating sequenceLinks!
-                    if (resLink.shown) {
-                        resLink.hide();
-                    }
+//                    if (seqLink.shown) {
+                        seqLink.hide();
+//                    }
                 }
                 //in with the new
                 //// done by setAllLineCoordinates

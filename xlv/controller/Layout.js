@@ -175,39 +175,38 @@ xinet.Controller.prototype.autoLayout = function() {
         }
         //do force directed layout
         //TODO: don't create JSON string, just create object
-        var gWidth = width - this.layoutXOffset;
-        if (gWidth < 200) {
-            gWidth = width;
-        }
+        var gWidth = width;// - this.layoutXOffset;
+        //~ if (gWidth < 200) {
+            //~ gWidth = width;
+        //~ }
         var linkDistance = 60;
         var json = "{\"nodes\":[";
         var protLookUp = {};
         var pi = 0;
 
-        for (var g = 0; g < linearGraphs.length; g++) {
-            var nodes = linearGraphs[g].nodes.values();
-            var nodeCount = nodes.length;
-            for (var n = 0; n < nodeCount; n++) {
-                var prot = this.proteins.get(nodes[n].id);
-//        if (prot.fixed === false) {
-                protLookUp[prot.id] = pi;
-                if (pi > 0)
-                    json += ",";
-                pi++;
-                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
-                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
-                        + ",\"py\":" + prot.y
-                        + ",\"fixed\":\"true\"";
-                json += "}";
-            }
-//        }
-        }
+//         for (var g = 0; g < linearGraphs.length; g++) {
+//             var nodes = linearGraphs[g].nodes.values();
+//             var nodeCount = nodes.length;
+//             for (var n = 0; n < nodeCount; n++) {
+//                 var prot = this.proteins.get(nodes[n].id);
+//                 protLookUp[prot.id] = pi;
+//                 if (pi > 0)
+//                     json += ",";
+//                pi++;
+//                 json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
+//                         + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
+//                         + ",\"py\":" + prot.y
+//                         + ",\"fixed\":\"true\"";
+//                 json += "}";
+//             }
+//         }
+         var nodesInPlay = 0;
         for (var g = 0; g < nonLinearGraphs.length; g++) {
             var nodes = nonLinearGraphs[g].nodes.values();
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
+                nodesInPlay++;
                 var prot = this.proteins.get(nodes[n].id);
-//        if (prot.fixed === false) {
                 protLookUp[prot.id] = pi;
                 if (pi > 0)
                     json += ",";
@@ -218,7 +217,6 @@ xinet.Controller.prototype.autoLayout = function() {
                      //   + ",\"fixed\":\"false\"";
                  + "}";
             }
-//        }
         }
         json += "],\"links\":[";
         var li = 0;
@@ -253,7 +251,7 @@ xinet.Controller.prototype.autoLayout = function() {
         json += "]}";
 //        this.message(json);
         var jsonObj = JSON.parse(json);
-        var k = Math.sqrt(jsonObj.nodes.length / ((gWidth) * height));
+        var k = Math.sqrt(nodesInPlay / ((gWidth) * height));
 // mike suggests:
 //    .charge(-10 / k)
 //    .gravity(100 * k)
@@ -273,7 +271,7 @@ xinet.Controller.prototype.autoLayout = function() {
                 var protein = self.proteins.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx + self.layoutXOffset, ny);
+                protein.setPosition(nx, ny);
                 protein.setAllLineCoordinates();
             }
         });
