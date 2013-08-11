@@ -33,7 +33,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
                     proteinsMissingSequence.add(interactor.identifier.id);
                 }
                 else {
-                    p.initProtein('--------', interactor.label, description);
+                    p.initProtein('MISSING', interactor.label, description);
                 }
             }
         }
@@ -60,7 +60,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
             console.error('Sequence DAS lookup FAILED for ' + id);
             console.error(e.url);
             var p = self.proteins.get(id);
-            p.initProtein('--------');
+            p.initProtein('MISSING');
             proteinsMissingSequence.remove(id);
             self.message('<p>Waiting on sequence DAS response for: '
                     + proteinsMissingSequence.values().toString() + '</p>');
@@ -99,7 +99,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
 
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
-        Interactor.UNITS_PER_RESIDUE = (((width - 350) * 0.5) - Interactor.LABELMAXLENGTH) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
+        Interactor.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         var proteins = self.proteins.values();
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {

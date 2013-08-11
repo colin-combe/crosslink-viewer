@@ -250,6 +250,9 @@ Interactor.prototype.getBlobRadius = function() {
     if (this.accession.indexOf("CHEBI") !== -1) {
         return 10;
     }
+    else if (this.json.type.name === 'peptide' || this.json.type.name === 'single stranded deoxyribonucleic acid'){
+        return 5;
+    }
     else {
         return Math.sqrt(this.size / 3 / Math.PI);
     }
@@ -288,9 +291,12 @@ Interactor.prototype.addLink = function(link) {
 
 Interactor.prototype.addFeature = function(feature) {
     if (typeof feature !== 'undefined') {
-        var annotName = feature.name;
+        var annotName = "";
+        if (typeof feature.name !== 'undefined') {
+            annotName += feature.name + ', ';
+        }
         if (typeof feature.type !== 'undefined') {
-            annotName += ', ' + feature.type.name;
+            annotName += feature.type.name;
         }
         if (typeof feature.detmethod !== 'undefined') {
             annotName += ', ' + feature.detmethod.name;

@@ -208,7 +208,7 @@ xinet.Controller.prototype.toJSON = function() {
 
 
 xinet.Controller.prototype.message = function(text, preformatted) {
-    if (this.messageElement !== null) {
+    if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
             text = JSON.stringify(text, null, '\t');
             text = text.replace(/\\u0000/gi, '');

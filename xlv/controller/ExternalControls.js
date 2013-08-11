@@ -459,14 +459,6 @@ function help() {
 			<P >Right-click on background</P>\
 		</TD>\
 	</TR>\
-	<TR>\
-		<TD >\
-			<P >'Flip' side of bar on which internal links are shown</P>\
-		</TD>\
-		<TD >\
-			<P >Right-click on internal link</P>\
-		</TD>\
-	</TR>\
 </TABLE>\
 ";
     xlv.message(helpText);

@@ -168,27 +168,76 @@ SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
 };
 //used when link clicked
 SequenceLink.prototype.showID = function() {
-    var fromProt = this.interactorLink.fromInteractor;
-    var toProt = this.interactorLink.toInteractor;
-    var linkInfo = "<p><strong>" + this.fromStartRes + "-" + this.fromEndRes
-            + ", " + fromProt.name + " (" + fromProt.accession
-            + ") to " + this.toStartRes + "-" + this.toEndRes
-            + ", " + toProt.name + " (" + toProt.accession
-            + ")</strong></p>";
+    var fromInt = this.interactorLink.fromInteractor;
+    var toInt = this.interactorLink.toInteractor;
+    var linkInfo = "<p><strong>" + fromInt.name + " (" + fromInt.accession
+            + ") to" + ' ' + toInt.name + " (" + toInt.accession
+            + ")</strong></p><p><strong>" + this.id + "</strong></p>";
     linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
+
 //used when filter changed
 SequenceLink.prototype.check = function(filter) {
-    if (this.interactorLink.hidden || this.getFilteredEvidences().length === 0) {
+    var filteredEvids = this.getFilteredEvidences();
+    var evidCount = filteredEvids.length;
+    if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
         this.hide();
         return false;
     }
     else {
+//        this.ambig = true;
+//        for (var i = 0; i < evidCount; i++) {
+//            var evid = filteredEvids[i];
+//            if (typeof evid.expansion === 'undefined') {
+//                this.ambig = false;
+//            }
+//        } 
+
+//            //tooltip
+            this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
+            if (evidCount > 1) {
+                this.tooltip += 's';
+            }
+            this.tooltip += ' (';
+            var nested_data = d3.nest()
+                    .key(function(d) {
+                return d.experiment.detmethod.name;
+            })
+                    .rollup(function(leaves) {
+                return leaves.length;
+            })
+                    .entries(filteredEvids);
+
+            nested_data.sort(function(a, b) {
+                return b.values - a.values
+            });
+            var countDetMethods = nested_data.length
+            for (var i = 0; i < countDetMethods; i++) {
+                if (i > 0) {
+                    this.tooltip += ', ';
+                }
+                this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
+            }
+            this.tooltip += ' )';
+
+//            //fatLine
+//            if (evidCount > 1) {
+//                this.fatLineShown = true
+//                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
+//            }
+//            else {
+////                this.fatLineShown = false;
+//                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);//hack
+//            }
+//            //ambig?
+//            this.dashedLine(this.ambig);
+
         this.show();
         return true;
     }
 };
+
 SequenceLink.prototype.getFilteredEvidences = function() {
     var evids = this.evidences;
     var evidCount = evids.length;
@@ -231,6 +280,59 @@ SequenceLink.prototype.hide = function() {
 };
 // update the links(polygons/lines) to fit to the protein
 SequenceLink.prototype.setLinkCoordinates = function(interactor) {
+	        function isNumber(thing) {
+            return (!isNaN(parseFloat(thing)) && isFinite(thing));
+        }
+
+        function getPathSegments(midPoint, controlPoint, startRes, endRes, interactor, yOffset) {
+            var startPoint, endPoint;
+            if (interactor.form === 0) {
+                startPoint = [interactor.x, interactor.y];
+                endPoint = startPoint;
+            }
+            else {
+                startPoint = interactor.getResidueCoordinates(startRes, yOffset);
+                endPoint = interactor.getResidueCoordinates(endRes, yOffset);
+
+            }
+            return ' Q' + controlPoint[0] + ',' + controlPoint[1] + ' ' + startPoint[0] + ',' + startPoint[1] +
+                    ' L' + endPoint[0] + ',' + endPoint[1] +
+                    ' Q' + controlPoint[0] + ',' + controlPoint[1] + ' ' + midPoint[0] + ',' + midPoint[1];
+        }
+
+        function sequenceDataMidPoint(sequenceData, interactor) {
+//get the smallest start and the biggest end
+            var lowestLinkedRes = null, highestLinkedRes = null;
+            var sdCount = sequenceData.length;
+            for (var s = 0; s < sdCount; s++) {
+                var seqDatum = sequenceData[s];
+                if (!isNaN(parseFloat(seqDatum.start)) && isFinite(seqDatum.start)) {
+                    var start = seqDatum.start * 1;
+                    if (lowestLinkedRes === null || start < lowestLinkedRes) {
+                        lowestLinkedRes = start;
+                    }
+                }
+                if (!isNaN(parseFloat(seqDatum.uncertainStart)) && isFinite(seqDatum.uncertainStart)) {
+                    var uncertainStart = seqDatum.uncertainStart * 1;
+                    if (lowestLinkedRes === null || uncertainStart < lowestLinkedRes) {
+                        lowestLinkedRes = uncertainStart;
+                    }
+                }
+                if (!isNaN(parseFloat(seqDatum.end)) && isFinite(seqDatum.end)) {
+                    var end = seqDatum.end * 1;
+                    if (highestLinkedRes === null || end > highestLinkedRes) {
+                        highestLinkedRes = end;
+                    }
+                }
+                if (!isNaN(parseFloat(seqDatum.uncertainEnd)) && isFinite(seqDatum.uncertainEnd)) {
+                    var uncertainEnd = seqDatum.uncertainEnd * 1;
+                    if (highestLinkedRes === null || uncertainEnd > highestLinkedRes) {
+                        highestLinkedRes = uncertainEnd;
+                    }
+                }
+            }
+            return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2);
+        }
     if (this.shown) { //don't waste time changing DOM if link is not visible
         var fromInteractor = this.interactorLink.fromInteractor;
         var toInteractor = this.interactorLink.toInteractor;
@@ -346,59 +448,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         this.glyph.setAttribute("d", glyphPath);
         this.uncertainGlyph.setAttribute("d", uncertainGlyphPath);
         this.highlightGlyph.setAttribute("d", highlightGlyphPath);
+	}
 
-        function isNumber(thing) {
-            return (!isNaN(parseFloat(thing)) && isFinite(thing));
-        }
-
-        function getPathSegments(midPoint, controlPoint, startRes, endRes, interactor, yOffset) {
-            var startPoint, endPoint;
-            if (interactor.form === 0) {
-                startPoint = [interactor.x, interactor.y];
-                endPoint = startPoint;
-            }
-            else {
-                startPoint = interactor.getResidueCoordinates(startRes, yOffset);
-                endPoint = interactor.getResidueCoordinates(endRes, yOffset);
-
-            }
-            return ' Q' + controlPoint[0] + ',' + controlPoint[1] + ' ' + startPoint[0] + ',' + startPoint[1] +
-                    ' L' + endPoint[0] + ',' + endPoint[1] +
-                    ' Q' + controlPoint[0] + ',' + controlPoint[1] + ' ' + midPoint[0] + ',' + midPoint[1];
-        }
-
-        function sequenceDataMidPoint(sequenceData, interactor) {
-//get the smallest start and the biggest end
-            var lowestLinkedRes = null, highestLinkedRes = null;
-            var sdCount = sequenceData.length;
-            for (var s = 0; s < sdCount; s++) {
-                var seqDatum = sequenceData[s];
-                if (!isNaN(parseFloat(seqDatum.start)) && isFinite(seqDatum.start)) {
-                    var start = seqDatum.start * 1;
-                    if (lowestLinkedRes === null || start < lowestLinkedRes) {
-                        lowestLinkedRes = start;
-                    }
-                }
-                if (!isNaN(parseFloat(seqDatum.uncertainStart)) && isFinite(seqDatum.uncertainStart)) {
-                    var uncertainStart = seqDatum.uncertainStart * 1;
-                    if (lowestLinkedRes === null || uncertainStart < lowestLinkedRes) {
-                        lowestLinkedRes = uncertainStart;
-                    }
-                }
-                if (!isNaN(parseFloat(seqDatum.end)) && isFinite(seqDatum.end)) {
-                    var end = seqDatum.end * 1;
-                    if (highestLinkedRes === null || end > highestLinkedRes) {
-                        highestLinkedRes = end;
-                    }
-                }
-                if (!isNaN(parseFloat(seqDatum.uncertainEnd)) && isFinite(seqDatum.uncertainEnd)) {
-                    var uncertainEnd = seqDatum.uncertainEnd * 1;
-                    if (highestLinkedRes === null || uncertainEnd > highestLinkedRes) {
-                        highestLinkedRes = uncertainEnd;
-                    }
-                }
-            }
-            return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2);
-        }
-    }
+    
 };

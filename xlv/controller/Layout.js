@@ -73,7 +73,9 @@ xinet.Controller.prototype.autoLayout = function() {
         //Grid layout linear graphs
         var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
         var singleCount = 0;
+        var yOffset = 0;
         if (linearGraphs.length > 0) {
+            yOffset = yForRow(4);
             for (var g = 0; g < linearGraphs.length; g++) {
                 var nodes = linearGraphs[g].nodes.keys(); //
                 var nodeCount = nodes.length;
@@ -175,10 +177,6 @@ xinet.Controller.prototype.autoLayout = function() {
         }
         //do force directed layout
         //TODO: don't create JSON string, just create object
-        var gWidth = width;// - this.layoutXOffset;
-        //~ if (gWidth < 200) {
-            //~ gWidth = width;
-        //~ }
         var linkDistance = 60;
         var json = "{\"nodes\":[";
         var protLookUp = {};
@@ -214,7 +212,7 @@ xinet.Controller.prototype.autoLayout = function() {
                 json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
                         + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
                         + ",\"py\":" + prot.y
-                     //   + ",\"fixed\":\"false\"";
+                        + ",\"radius\":" + prot.getBlobRadius()
                  + "}";
             }
         }
@@ -251,7 +249,7 @@ xinet.Controller.prototype.autoLayout = function() {
         json += "]}";
 //        this.message(json);
         var jsonObj = JSON.parse(json);
-        var k = Math.sqrt(nodesInPlay / ((gWidth) * height));
+        var k = Math.sqrt(nodesInPlay / ((width) * (height - yOffset)));
 // mike suggests:
 //    .charge(-10 / k)
 //    .gravity(100 * k)
@@ -260,8 +258,11 @@ xinet.Controller.prototype.autoLayout = function() {
                 .links(jsonObj.links)
                 .gravity(40 * k)
                 .linkDistance(linkDistance)
-                .charge(-15 / k)
-                .size([gWidth, height]);
+                .charge(function(n){
+                            var chrg = -15 / k  * (n.radius / 8);
+                     //       console.log((-15 / k) + " - " + chrg);
+                            return chrg;})//-15 / k;})
+                .size([width, (height - yOffset)]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
@@ -271,7 +272,7 @@ xinet.Controller.prototype.autoLayout = function() {
                 var protein = self.proteins.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx, ny);
+                protein.setPosition(nx, ny + yOffset);
                 protein.setAllLineCoordinates();
             }
         });

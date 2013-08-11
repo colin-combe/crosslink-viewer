@@ -24,7 +24,7 @@ function InteractorLink(id, fromP, toP, xlvController) {
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.dashed = false;
+    this.fatLineShown = false;
     //layout stuff
     this.hidden = false;
     this.evidenceCount = 0;
@@ -81,7 +81,7 @@ InteractorLink.prototype.addEvidence = function(interaction) {
         var seqLinkId = fromSequenceData.toString() + ':' +
                 this.fromInteractor.id + ' to ' +
                 toSequenceData.toString() + ':' + this.toInteractor.id;
-        console.log(seqLinkId);
+//        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
             sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
@@ -92,7 +92,7 @@ InteractorLink.prototype.addEvidence = function(interaction) {
         var seqLinkId = '?-?:' +
                 this.fromInteractor.id + ' to ' +
                 '?-?:' + this.toInteractor.id;
-        console.log(seqLinkId);
+//        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
             sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.xlv, interaction);
@@ -225,7 +225,7 @@ InteractorLink.prototype.showHighlight = function(show, andAlternatives) {
 //used when link clicked
 InteractorLink.prototype.showID = function() {
     var linkInfo = "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-            + ") - " + this.toInteractor.name + " (" + this.toInteractor.accession
+            + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
             + ")</strong></p>";
     linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
@@ -308,8 +308,14 @@ InteractorLink.prototype.check = function() {
             }
             this.tooltip += ' )';
             //fatLine
-            this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
-//                        this.ambig = this.ambig && true;
+            if (evidCount > 1) {
+                this.fatLineShown = true
+                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
+            }
+            else {
+//                this.fatLineShown = false;//hack
+                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);//hack
+            }
             //ambig?
             this.dashedLine(this.ambig);
 
@@ -338,11 +344,11 @@ InteractorLink.prototype.dashedLine = function(dash) {
     if (typeof this.line === 'undefined') {
         this.initSVG();
     }
-    if (dash){// && !this.dashed) {
+    if (dash) {// && !this.dashed) {
         this.dashed = true;
         this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
     }
-    else if (!dash){// && this.dashed) {
+    else if (!dash) {// && this.dashed) {
         this.dashed = false;
         this.line.removeAttribute("stroke-dasharray");
     }
@@ -359,7 +365,7 @@ InteractorLink.prototype.show = function() {
             if (this.intra) {
 //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
 
-                if (InteractorLink.maxNoEvidences > 1) {
+                if (this.fatLineShown) {
                     this.fatLine.setAttribute("transform", "translate(" +
                             this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
                             + " scale(" + (this.xlv.z) + ")");
@@ -376,15 +382,14 @@ InteractorLink.prototype.show = function() {
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates(this.fromInteractor);
                 this.setLinkCoordinates(this.toInteractor);
-                if (InteractorLink.maxNoEvidences > 1) {
+                if (this.fatLineShown) {
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.p_pLinks.appendChild(this.line);
             }
         }
-        if (InteractorLink.maxNoEvidences > 1) {
-            
+        if (this.fatLineShown) {
             if (this.intra) {
                 this.fatLine.setAttribute("stroke-width", this.w);
             } else {
@@ -398,14 +403,13 @@ InteractorLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         if (this.intra) {
-            //TODO: be more selective about when to show 'fatLine' (for performance)
-            if (InteractorLink.maxNoEvidences > 1) {
+           if (this.fatLineShown) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
             this.fromInteractor.upperGroup.removeChild(this.highlightLine);
             this.fromInteractor.upperGroup.removeChild(this.line);
         } else {
-            if (InteractorLink.maxNoEvidences > 1) {
+            if (this.fatLineShown) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
             this.xlv.highlights.removeChild(this.highlightLine);
@@ -425,20 +429,20 @@ InteractorLink.prototype.setLinkCoordinates = function(interactor) {
             this.line.setAttribute("y1", interactor.y);
             this.highlightLine.setAttribute("x1", interactor.x);
             this.highlightLine.setAttribute("y1", interactor.y);
-            //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-            this.fatLine.setAttribute("x1", interactor.x);
-            this.fatLine.setAttribute("y1", interactor.y);
-            //                    }
+            if (this.fatLineShown) {
+                this.fatLine.setAttribute("x1", interactor.x);
+                this.fatLine.setAttribute("y1", interactor.y);
+            }
         }
         else {
             this.line.setAttribute("x2", interactor.x);
             this.line.setAttribute("y2", interactor.y);
             this.highlightLine.setAttribute("x2", interactor.x);
             this.highlightLine.setAttribute("y2", interactor.y);
-            //                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-            this.fatLine.setAttribute("x2", interactor.x);
-            this.fatLine.setAttribute("y2", interactor.y);
-            //                    }
+            if (this.fatLineShown) {
+                this.fatLine.setAttribute("x2", interactor.x);
+                this.fatLine.setAttribute("y2", interactor.y);
+            }
         }
     }
 };
