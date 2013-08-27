@@ -297,7 +297,7 @@ xinet.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-    Protein.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+    Protein.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//(((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
 
     this.initComplete = true;
 
