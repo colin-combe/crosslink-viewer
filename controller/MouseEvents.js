@@ -325,18 +325,18 @@ xinet.Controller.prototype.clearSelection = function() {
 //gets mouse position
 xinet.Controller.prototype.getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
-    var obj = this.svgElement.parentNode;
-    var curleft = 0, curtop = 0;
-    if (obj.offsetParent) {
-        do {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-    }
-    var x = evt.pageX - curleft;
-    var y = evt.pageY - curtop;
-    p.x = x;
-    p.y = y;
+//    var rect = this.container.getBoundingClientRect();
+//   p.x = evt.clientX - rect.left;
+//    p.y = evt.clientY - rect.top;
+    var element = this.svgElement.parentNode;
+    var top = 0, left = 0;
+    do {
+        top += element.offsetTop  || 0;
+        left += element.offsetLeft || 0;
+        element = element.offsetParent;
+    } while(element);
+    p.x = evt.pageX - left;
+    p.y = evt.pageY - top;
     return p;
 };
 
