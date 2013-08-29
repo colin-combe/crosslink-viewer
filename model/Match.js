@@ -1,33 +1,28 @@
 //Match.js
 
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-        id, meta, xlvController, linkPos1, linkPos2, pep1_seq, pep2_seq) {
+        id, score, xlvController, linkPos1, linkPos2, pep1_seq, pep2_seq) {
 
     this.xlv = xlvController;
     this.residueLinks = new Array();
 
     this.id = id;
-    this.meta = meta;
-    if (this.meta != undefined) {
-//        if (this.meta.score != undefined){
-//            this.score = this.meta.score - 0;
-            if (this.xlv.scores == null){
-                this.xlv.scores = {
-                    'min':this.score,
-                    'max':this.score
-                };
-            }
-//            else
-        this.score = meta - 0;
-        if (this.score > this.xlv.scores.max) {
-            this.xlv.scores.max = this.score
-        }
-        else if (this.score < this.xlv.scores.min) {
-            this.xlv.scores.min = this.score
-        }
-//        }
-    }
-//semi-colon is seperator
+    if (score != null){
+		this.score = score - 0;
+		if (this.xlv.scores == null){
+				this.xlv.scores = {
+					'min':this.score,
+					'max':this.score
+				};
+		}
+		if (this.score > this.xlv.scores.max) {
+			this.xlv.scores.max = this.score;
+		}
+		else if (this.score < this.xlv.scores.min) {
+			this.xlv.scores.min = this.score;
+		}
+	}
+    //semi-colon is seperator
     pep1_protIDs = pep1_protIDs.toString().split(";");
     pep1_positions = pep1_positions.toString().split(";");
     pep2_protIDs = pep2_protIDs.toString().split(";");
@@ -184,8 +179,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
             resLink.matches.push(this);
             this.residueLinks.push(resLink);
             // has colour been specified?
-            if (typeof this.meta !== 'undefined' && typeof this.meta.colour !== 'undefined')
-                resLink.colour = this.meta.colour;
+            //~ if (typeof this.meta !== 'undefined' && typeof this.meta.colour !== 'undefined')
+                //~ resLink.colour = this.meta.colour;
         }
     }
 }
@@ -197,8 +192,8 @@ Match.prototype.meetsFilterCriteria = function() {
     if (typeof this.xlv.filter == 'function') {
         return this.xlv.filter(this);
     }
-    else if (typeof this.xlv.cutOff !== 'undefined' && typeof this.meta.score !== 'undefined') {
-        if (this.meta.score >= this.xlv.cutOff)
+    else if (typeof this.xlv.cutOff !== 'undefined' && typeof this.score !== 'undefined') {
+        if (this.score >= this.xlv.cutOff)
             return true;
         else
             return false;

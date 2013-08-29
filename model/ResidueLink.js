@@ -78,6 +78,8 @@ ResidueLink.prototype.initSVG = function() {
     if (this.intra === true) {
         this.setUpCurve();
     }
+    
+    this.isSelected = false;
 };
 
 ResidueLink.prototype.getFromProtein = function() {
@@ -97,7 +99,9 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
         if (show) {
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
+			if (this.isSelected == false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			}
         }
     }
     if (andAlternatives && this.ambig) {
@@ -109,11 +113,26 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
                 var rc = match.residueLinks.length;
                 for (var rl = 0; rl < rc; rl++) {
                     var resLink = match.residueLinks[rl];
-                    resLink.showHighlight(show, false);
-                    resLink.proteinLink.showHighlight(show, false);
+                    if (resLink.isSelected == false) {
+						resLink.showHighlight(show, false);
+						resLink.proteinLink.showHighlight(show, false);
+					}
                 }
             }
         }
+    }
+};
+
+ResidueLink.prototype.setSelected = function(select) {
+    if (select && this.isSelected === false) {
+        this.xlv.selected.set(this.id, this);//ok, 
+        this.isSelected = true;
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+    }
+    else if (select === false && this.isSelected === true) {
+        this.xlv.selected.remove(this.id);
+        this.isSelected = false;
+		this.highlightLine.setAttribute("stroke-opacity", "0");
     }
 };
 
@@ -139,12 +158,39 @@ ResidueLink.prototype.showID = function() {
         //only same info as in tooltip but may need to print to page if on touch screen
         var fromProt = this.getFromProtein();
         var toProt = this.getToProtein();
-        var linkInfo = "<p><strong>" + fromProt.name + " (" + fromProt.accession
-                        + "), residue " + this.fromResidue + " - "
-                        + toProt.name + " (" + toProt.accession
-                        + "), residue " + this.toResidue + "</strong></p>";
 //        linkInfo += "<p> Protein - protein interaction confidence: " +
 //                        + this.proteinLink.sc + "% </p>";
+
+      linkInfo = "<h5>" + fromProt.name + " (" + fromProt.accession
+            + "), residue " + this.fromResidue + " - "
+            + toProt.name + " (" + toProt.accession
+            + "), residue " + this.toResidue + "</h5>";
+            var matches = this.getFilteredMatches();
+            var c = matches.length;
+            linkInfo += "<p>" + c + " match";
+            if (c > 1){
+				linkInfo += "es, scores:";
+			} else {
+				linkInfo += ", score:";
+			}
+             var scores = "";
+
+            var scores = "";
+            var firstMatch = true;
+            for (var j = 0; j < c; j++) {
+                if (firstMatch === true) {
+                    firstMatch = false;
+                }
+                else {
+                    scores = scores + ",";
+                }
+                scores = scores + " " + 
+                ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
+            }
+
+            linkInfo += scores + "</p>";
+
+
         this.xlv.message(linkInfo);
     }
 };

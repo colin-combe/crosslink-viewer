@@ -206,12 +206,12 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
             self.xlv.force.stop();
         }
         self.xlv.dragElement = self;
-        if (evt.ctrlKey === false) {
+        //~ if (evt.ctrlKey === false) {
             self.xlv.clearSelection();
             self.setSelected(true);
-        } else {
-            self.setSelected(!this.isSelected);
-        }
+        //~ } else {
+            //~ self.setSelected(!this.isSelected);
+        //~ }
         //store start location
         var p = self.xlv.getEventPoint(evt);
         self.xlv.dragStart = self.xlv.mouseToSVG(p.x, p.y);
@@ -240,6 +240,8 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
         }
         self.xlv.checkLinks();
     };
+    
+    this.isSelected = false;
 };
 
 Protein.prototype.getBlobRadius = function() {
@@ -284,7 +286,7 @@ Protein.prototype.showHighlight = function(show) {
         this.blobHighlight.setAttribute("stroke-opacity", "1");
         this.rectHighlight.setAttribute("stroke-opacity", "1");
     } else {
-        if (this.isSelected === false) {
+        if (this.isSelected == false) {
             if (this.form !== 1)
                 this.blobHighlight.setAttribute("stroke-opacity", "0");
             else
@@ -296,30 +298,30 @@ Protein.prototype.showHighlight = function(show) {
 };
 
 Protein.prototype.setSelected = function(select) {
-//    if (select && this.isSelected === false) {
-//        this.xlv.selectedProteins.set(this.id, this);
-//        this.isSelected = true;
-//        if (this.form !== 1) {
-//            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//            this.blobHighlight.setAttribute("stroke-opacity", "1");
-//        }
-//        else {
-//            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//            this.rectHighlight.setAttribute("stroke-opacity", "1");
-//        }
-//    }
-//    else if (select === false && this.isSelected === true) {
-//        this.xlv.selectedProteins.remove(this.id);
-//        this.isSelected = false;
-//        if (this.form !== 1) {
-//            this.blobHighlight.setAttribute("stroke-opacity", "0");
-//            this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
-//        }
-//        else {
-//            this.rectHighlight.setAttribute("stroke-opacity", "0");
-//            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-//        }
-//    }
+    if (select && this.isSelected === false) {
+        this.xlv.selected.set(this.id, this);
+        this.isSelected = true;
+        if (this.form !== 1) {
+            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+            this.blobHighlight.setAttribute("stroke-opacity", "1");
+        }
+        else {
+            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+            this.rectHighlight.setAttribute("stroke-opacity", "1");
+        }
+    }
+    else if (select === false && this.isSelected === true) {
+        this.xlv.selected.remove(this.id);
+        this.isSelected = false;
+        if (this.form !== 1) {
+            this.blobHighlight.setAttribute("stroke-opacity", "0");
+            this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+        }
+        else {
+            this.rectHighlight.setAttribute("stroke-opacity", "0");
+            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+        }
+    }
 };
 Protein.prototype.setRotation = function(angle) {
     this.previousRotation = this.rotation;

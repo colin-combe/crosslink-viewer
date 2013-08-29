@@ -9,7 +9,8 @@ xinet.Link.prototype.mouseDown = function(evt) {
         this.xlv.force.stop();
     }
     this.xlv.dragElement = this;
-
+            this.xlv.clearSelection();
+            this.setSelected(true);
     //store start location
     var p = this.xlv.getEventPoint(evt);// seems to be correct, see above
     this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);

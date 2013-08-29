@@ -1,7 +1,7 @@
 // highlight and selection colours are global
 // (because all instances of xiNet should use same colours for this)
 xinet.highlightColour = new RGBColor("yellow");
-xinet.selectedColour = new RGBColor("orange");
+xinet.selectedColour = new RGBColor("yellow");
 
 //static var's signifying Controller's status
 xinet.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
@@ -314,12 +314,20 @@ xinet.Controller.prototype.mouseWheel = function(evt) {
 };
 
 xinet.Controller.prototype.clearSelection = function() {
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
-    for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
-        prot.setSelected(false);
+    //~ var proteins = this.proteins.values();
+    //~ var proteinCount = proteins.length;
+    //~ for (var p = 0; p < proteinCount; p++) {
+        //~ var prot = proteins[p];
+        //~ prot.setSelected(false);
+    //~ }
+
+	var things = this.selected.values();
+    var count = things.length;
+    for (var t = 0; t < count; t++) {
+        var thing = things[t];
+        thing.setSelected(false);
     }
+
 };
 
 //gets mouse position

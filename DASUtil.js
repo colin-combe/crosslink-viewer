@@ -355,8 +355,8 @@ Protein.prototype.printAnnotationInfo = function() {
     var self = this;
     var message = "";
     //heading, including PDB link
-    message += "<p><strong>" + highlightRegex(this.name, this.xlv.fields.names)
-            + "</strong> [" + highlightRegex(this.accession, self.xlv.fields.names) + "] ";
+    message += "<h5>" + highlightRegex(this.name, this.xlv.fields.names)
+            + " [" + highlightRegex(this.accession, self.xlv.fields.names) + "] </h5><p>";
     if (this.processedDAS) {
         //do UniProt first
         var uniprot = this.processedDAS.get('UniProt');
@@ -402,24 +402,24 @@ Protein.prototype.printAnnotationInfo = function() {
     xlv.message(message);
 
     function printProcessedDAS(processed, serverName) {
-        message += "<p><strong style='text-decoration: underline;'>" + serverName + "</strong></p><div style='margin:32px;'>";
+        message += "<h6>" + serverName + "</h6>";
         //notes
         if (processed.notes) {
-            message += "<p style='text-decoration: underline;'>Notes:</p>";
+            message += "<h7>Notes:</h7>";
             processed.notes.forEach(function(n) {
                 printNotes(n);
             });
         }
         //keywords
         if (processed.keywords) {
-            message += "<p style='text-decoration: underline;'>Keywords:</p>";
+            message += "<h7>Keywords:</h7><br/>";
             var keywordString = "";
             var keywords = processed.keywords;
             var categories = keywords.keys();
             var catCount = categories.length;
             for (var c = 0; c < catCount; c++) {
                 var category = categories[c];
-                keywordString += '<p><strong>' + category + ':</strong> ';
+                keywordString += '<h8>' + category + ':</h8> ';
                 var keywordArray = keywords.get(category);
                 var keywordCount = keywordArray.length;
                 for (var k = 0; k < keywordCount; k++) {
@@ -445,7 +445,7 @@ Protein.prototype.printAnnotationInfo = function() {
         if (processed.positional) {
             processed.positional.forEach(
                     function(category, features) {
-                        message += "<p style='text-decoration: underline;'>Positional features: <strong>" + category + "</strong></p>";
+                        message += "<h7>Positional features: " + category + "</h7>";
                         message += "<table><tr><th>Name</th><th>Start</th><th>End</th><th>Notes</th></tr>";
                         for (var i = 0; i < features.length; i++) {
                             var anno = features[i];
@@ -469,11 +469,11 @@ Protein.prototype.printAnnotationInfo = function() {
                             }
                             message += "</td></tr>";
                         }
-                        message += "</table>";
+                        message += "</table><p>&nbsp;</p>";
                     }
             );
         }
-        message += "</div>";
+       
         //        if (processed.html) {
         //            message += processed.html;
         //        }

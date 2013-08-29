@@ -105,6 +105,8 @@ ProteinLink.prototype.initSVG = function() {
     this.fatLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    
+    this.isSelected = false;
 }
 ;
 ProteinLink.prototype.getFromProtein = function() {
@@ -121,7 +123,9 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
         if (show) {
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
+           if (this.isSelected == false) {
+			    this.highlightLine.setAttribute("stroke-opacity", "0");
+		   }
         }
     }
     if (andAlternatives && this.ambig) {
@@ -137,10 +141,14 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
                     for (var mrl = 0; mrl < mrc; mrl++) {
                         var resLink = match.residueLinks[mrl];
                         if (resLink.shown === true) {
-                            resLink.showHighlight(show, false);
+							if (resLink.isSelected == false) {
+								resLink.showHighlight(show, false);
+							}
                         }
                         if (resLink.proteinLink.shown === true) {
-                            resLink.proteinLink.showHighlight(show, false);
+							{
+								resLink.proteinLink.showHighlight(show, false);
+							}
                         }
                     }
                 }
@@ -149,6 +157,20 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
         }
     }
 };
+
+ProteinLink.prototype.setSelected = function(select) {
+    if (select && this.isSelected === false) {
+        this.xlv.selected.set(this.id, this);//ok, 
+        this.isSelected = true;
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+    }
+    else if (select === false && this.isSelected === true) {
+        this.xlv.selected.remove(this.id);
+        this.isSelected = false;
+		this.highlightLine.setAttribute("stroke-opacity", "0");
+    }
+};
+
 //used when link clicked
 ProteinLink.prototype.showID = function() {
     if (typeof send_match_ids === 'function') {
@@ -169,34 +191,80 @@ ProteinLink.prototype.showID = function() {
         send_match_ids(matchIDs);
     }
     else {
-        var linkInfo = "<p><strong>" + this.fromProtein.name + " (" + this.fromProtein.accession
+        var linkInfo = "<h5>" + this.fromProtein.name + " (" + this.fromProtein.accession
         + ") - " + this.toProtein.name + " (" + this.toProtein.accession
-        + ")</strong></p>";
+        + ")</h5>";
         //        linkInfo += "<p>Protein - protein interaction confidence: " +
         //                        + this.sc + "%";
-        linkInfo += "<p>" + this.residueLinks.values().length
-        + " unique residue - residue linkage sites:</p>";
-        for (var i = 0; i < this.residueLinks.values().length; i ++ ){
-            var rl = this.residueLinks.values()[i];
-            linkInfo += "<p>" + this.fromProtein.name + " (" + this.fromProtein.accession
+        
+        //todo: remove this code duplication
+        var resLinks = this.residueLinks.values();
+        var resLinkCount = resLinks.length;
+      
+		var filteredResLinks = new Array();
+        var filteredMatches = d3.map();
+        var altProteinLinks = d3.map();
+          
+        for (var i = 0; i < resLinkCount; i++) {
+                var resLink = resLinks[i];
+                var resLinkMeetsCriteria = false;
+                var mCount = resLink.matches.length;
+                for (var m = 0; m < mCount; m++) {
+                    var match = resLink.matches[m];
+                    if (match.meetsFilterCriteria()) {
+                        if (resLinkMeetsCriteria === false) {
+                            resLinkMeetsCriteria = true;
+                            filteredResLinks.push(resLink);
+                        }
+                        filteredMatches.set(match.id);
+                        if (match.isAmbig()) {
+                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+                            }
+                        }
+                        else {
+                            this.ambig = false;
+                        }
+                    }
+                }
+            }
+            var filteredResLinkCount = filteredResLinks.length;
+
+            
+		 linkInfo += "<h5>" + filteredResLinkCount
+			+ " unique residue - residue linkage site";
+			if (filteredResLinkCount) linkInfo += "s";
+			linkInfo += ":</h5>";
+   
+        
+      for (var i = 0; i < filteredResLinkCount; i ++ ){
+            var rl = filteredResLinks [i];
+            linkInfo += "<h7>" + this.fromProtein.name + " (" + this.fromProtein.accession
             + "), residue " + rl.fromResidue + " - "
             + this.toProtein.name + " (" + this.toProtein.accession
-            + "), residue " + rl.toResidue + ", Scores:";
+            + "), residue " + rl.toResidue + "</h7>";
+            var matches = rl.getFilteredMatches();
+            var c = matches.length;
+            linkInfo += "<p>" + c + " match";
+            if (c > 1){
+				linkInfo += "es, scores:";
+			} else {
+				linkInfo += ", score:";
+			}
+             var scores = "";
+
             var scores = "";
-//
-//            var matches = this.getFilteredMatches();
-//            var c = matches.length;
-//            var scores = "";
-//            var firstMatch = true;
-//            for (var j = 0; j < c; j++) {
-//                if (firstMatch === true) {
-//                    firstMatch = false;
-//                }
-//                else {
-//                    scores = scores + ",";
-//                }
-//                scores = scores + " " + xlv.matches.get(matches[i]).meta.score.toFixed(2);
-//            }
+            var firstMatch = true;
+            for (var j = 0; j < c; j++) {
+                if (firstMatch === true) {
+                    firstMatch = false;
+                }
+                else {
+                    scores = scores + ",";
+                }
+                scores = scores + " " +
+                 ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
+            }
 
             linkInfo += scores + "</p>";
         }
