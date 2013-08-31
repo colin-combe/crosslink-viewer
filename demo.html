@@ -50,15 +50,47 @@
         </div>
 
         <script type="text/javascript">
-                //<![CDATA[
-                var targetDiv = document.getElementById('networkContainer');
+		var holder = document.getElementById('networkContainer');
+		holder.ondragover = function () { this.className = 'hover'; return false; };
+holder.ondragend = function () { this.className = ''; return false; };
+		holder.ondrop = function (e) {
+  e.preventDefault();
+
+  var file = e.dataTransfer.files[0];
+var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xinet.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
-				d3.text('./Herzog.csv', "text/csv", function(text) {
+				d3.text(file, "text/csv", function(text) {
 					xlv.readCSV(text);
 					new xinet.DASUtil(xlv);
 				});
+  return false;
+};
+holder.ondrop = function (e) {
+  this.className = '';
+  e.preventDefault();
+
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    console.log(event.target);
+	var targetDiv = document.getElementById('networkContainer');
+                var messageDiv = document.getElementById('networkCaption');
+                xlv = new xinet.Controller(targetDiv);
+                xlv.setMessageElement(messageDiv);
+				d3.text(event.target.result, "text/csv", function(text) {
+					xlv.readCSV(text);
+					new xinet.DASUtil(xlv);
+				});
+  };
+  console.log(file);
+  reader.readAsDataURL(file);
+
+  return false;
+};
+                //<![CDATA[
+                
                 //]]>
         </script>
 
