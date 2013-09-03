@@ -9,10 +9,12 @@
         <link rel="stylesheet" href="./demo.css">
         <link rel='stylesheet' type='text/css' href='./XLV.css'/>
         <!--libraries-->
-        <script type="text/javascript" src="./lib/d3.v3.js"></script>
-        <script type="text/javascript" src="./lib/colorbrewer.js"></script>
-        <script type="text/javascript" src="./lib/jsdas.js"></script>
-        <script type="text/javascript" src="./lib/rgbcolor.js"></script>
+<script type="text/javascript" src="./lib/d3.js"></script>
+<script type="text/javascript" src="./lib/colorbrewer.js"></script>
+<script type="text/javascript" src="./lib/jsdas.js"></script>
+<script type="text/javascript" src="./lib/rgbcolor.js"></script>
+<script type="text/javascript" src="./lib/prototype.js"></script>
+<script type="text/javascript" src="./lib/slider.js"></script>
         <!--xiNet-->
         <script type="text/javascript" src="./controller/Init.js"></script>
         <script type="text/javascript" src="./controller/MouseEvents.js"></script>
@@ -24,10 +26,10 @@
         <script type="text/javascript" src="./model/Protein.js"></script>
         <script type="text/javascript" src="./model/Annotations.js"></script>
         <script type="text/javascript" src="./model/ProteinLink.js"></script>
+        <script type="text/javascript" src="./model/Rotator.js"></script>
         <script type="text/javascript" src="./model/ResidueLink.js"></script>
         <script type="text/javascript" src="./model/SequenceDatum.js"></script>
         <script type="text/javascript" src="./controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="./Rotator.js"></script>
         <!--<script type="text/javascript" src="./InfoBox.js"></script>-->
         <script type="text/javascript" src="./DASUtil.js"></script>
         <script type="text/javascript" src="./ReadCSV.js"></script>
@@ -42,15 +44,26 @@
             
             <button type="button" id="autoLayout" onclick="xlv.autoLayout();">Auto</button>
             <button type="button" id="resetViewport" onclick="xlv.resetZoom();">Reset zoom</button>
-      
+            <div class="controlGroup">Self links&nbsp;&nbsp;<input checked="checked" id="internal" onclick="xlv.hideInternal(!document.getElementById('internal').checked)" type="checkbox"></div>
+<div style="display:inline-block" class="outlined" id="scoreSlider">
+<div id="track1" style="width:200px; background-color:#fff;-webkit-box-shadow: inset 1px 1px 1px 1px #999;box-shadow: inset 1px 1px 1px 1px #999; height:15px;display:inline-block;">
+<div class="selected" id="handle1" style="width: 30px; height: 14px; border: solid #000 1px; background-color: #777; cursor: move; left: 0px; position: relative; "></div>
+</div>
+<p id="debug1" style="display:inline-block;width:140px">score cut-off: </p>
+      </div>
 			<p>Data from <a target="_blank" href="http://www.sciencemag.org/content/337/6100/1348">Herzog, F. et al. Structural Probing of a Protein Phosphatase 2A Network by Chemical Cross-Linking and Mass Spectrometry. Science 337, 1348–1352 (2012).</a></p>
 
             <div id="networkContainer"></div>
             <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
         </div>
 
-        <script type="text/javascript">
-		var holder = document.getElementById('networkContainer');
+<script type="text/javascript">
+                    //<![CDATA[
+                    var targetDiv = document.getElementById('networkContainer');
+                    var messageDiv = document.getElementById('networkCaption');
+                    var xlv = new xinet.Controller(targetDiv);
+                    xlv.setMessageElement(messageDiv);
+					var holder = document.getElementById('networkContainer');
 		holder.ondragover = function () { this.className = 'hover'; return false; };
 holder.ondragend = function () { this.className = ''; return false; };
 holder.ondrop = function (e) {
@@ -60,11 +73,6 @@ holder.ondrop = function (e) {
   var file = e.dataTransfer.files[0],
       reader = new FileReader();
   reader.onload = function (event) {
-    console.log(event.target);
-	var targetDiv = document.getElementById('networkContainer');
-                var messageDiv = document.getElementById('networkCaption');
-                xlv = new xinet.Controller(targetDiv);
-                xlv.setMessageElement(messageDiv);
 				d3.text(event.target.result, "text/csv", function(text) {
 					xlv.readCSV(text);
 					new xinet.DASUtil(xlv);
@@ -75,9 +83,53 @@ holder.ondrop = function (e) {
 
   return false;
 };
-                //<![CDATA[
-                
-                //]]>
-        </script>
+                    xlv.init();
+
+                    //new xinet.DASUtil(xlv);
+//                    var proteins = xlv.proteins.values();
+//                    var proteinCount = proteins.length;
+//
+//                    for (var p = 0; p < proteinCount; p++) {
+//                        var prot = proteins[p];
+//    //            prot.setPositionalFeatures(prot.customAnnotations);
+//                    }
+
+                    xlv.checkLinks();
+
+//                    function send_match_ids(ids) {
+//                        //xlv.message(ids);
+//                        var message = '<pre>\n';
+//                        var splitIds = ids.split(',');
+//                        for (var i = 0; i < splitIds.length; i++) {
+//                            var id = splitIds[i];
+//                            message += id + ': ' + JSON.stringify(xlv.matches.get(id).meta) + '\n';
+//                        }
+//                        message += '</pre>';
+//                        xlv.message(message);
+//                    }
+
+                new Control.Slider('handle1', 'track1', {
+                    sliderValue: 0,
+                    onSlide: function(v) {
+                        var cut = calcCutOff(v);
+                        $('debug1').innerHTML = 'score cut-off: ' + cut;
+                        xlv.setCutOff(cut);
+                    },
+                    onChange: function(v) {
+                        var cut = calcCutOff(v);
+                        $('debug1').innerHTML = 'score cut-off: ' + cut;
+                        xlv.setCutOff(cut);
+                    }
+                });
+
+                function calcCutOff(v) {
+//                    var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
+                   var result = (v * (20 - 0)) + 0;
+                    result = result.toFixed(2);
+                    return result;
+                }
+
+                    //]]>
+            </script>
 
     </body></html>
