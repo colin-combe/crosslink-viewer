@@ -26,7 +26,7 @@ resLink.matches.push(this);this.residueLinks.push(resLink);if(typeof this.meta!=
 resLink.colour=this.meta.colour;}}}
 Match.prototype.meetsFilterCriteria=function(){if(this.xlv.ambigHidden&&this.isAmbig()){return false;}
 if(typeof this.xlv.filter=='function'){return this.xlv.filter(this);}
-else if(typeof this.xlv.cutOff!=='undefined'&&typeof this.meta.score!=='undefined'){if(this.meta.score>=this.xlv.cutOff)
+else if(typeof this.xlv.cutOff!=='undefined'&&typeof this.score!=='undefined'){if(this.score>=this.xlv.cutOff)
 return true;else
 return false;}
 else{return true;}}
