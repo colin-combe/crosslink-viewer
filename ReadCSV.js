@@ -76,7 +76,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
         //        xlv.message(this.proteins);
         for (var row = 0; row < countRows; row++) {
             xlv.addMatch(rows[row]['Protein1'], rows[row]['AbsPos1'],
-                    rows[row]['Protein2'], rows[row]['AbsPos2'], row + 1, rows[row]['Id-Score']);
+                    rows[row]['Protein2'], rows[row]['AbsPos2'], row + 1, rows[row]['ld-Score']);
         }
         xlv.init();
         new xinet.DASUtil(xlv);
