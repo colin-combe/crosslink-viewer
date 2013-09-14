@@ -33,6 +33,7 @@ this.svgElement.unsuspendRedraw(suspendID);};
 
         <script type="text/javascript" src="./controller/Refresh.js"></script>
         <script type="text/javascript" src="./controller/ToolTips.js"></script>
+        <script type="text/javascript" src="./controller/Fasta.js"></script>
         <script type="text/javascript" src="./model/Match.js"></script>
         <script type="text/javascript" src="./model/Link.js"></script>
         <script type="text/javascript" src="./model/Protein.js"></script>
@@ -108,6 +109,7 @@ this.svgElement.unsuspendRedraw(suspendID);};
                     var xlv = new xinet.Controller(targetDiv);
                     xlv.setMessageElement(messageDiv);
 					var holder = document.getElementById('networkContainer');
+					mode = 1;
 		holder.ondragover = function () { this.className = 'hover'; return false; };
 holder.ondragend = function () { this.className = ''; return false; };
 holder.ondrop = function (e) {
@@ -117,10 +119,21 @@ holder.ondrop = function (e) {
   var file = e.dataTransfer.files[0],
       reader = new FileReader();
   reader.onload = function (event) {
-				d3.text(event.target.result, "text/csv", function(text) {
+	  if(mode == 0){
+		  d3.text(event.target.result, "text/csv", function(text) {
 					xlv.readCSV(text);
 					new xinet.DASUtil(xlv);
 				});
+	  }
+	  else{
+		  d3.text(event.target.result, "text/plain", function(text) {
+					xlv.readFasta(text);
+		 
+				});
+				mode = 0;
+		 
+	  }
+				
   };
   reader.readAsDataURL(file);
 

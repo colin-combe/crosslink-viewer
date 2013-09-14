@@ -24,14 +24,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
                 var acc, name;
                 //TODO: have better way to parse accessino out of swissprot id,
                 //check for 'sp', need to do same thing in Match.js
-                if (accArray[i].indexOf('|') === -1) {
                     acc = accArray[i];
-                }
-                else {
-                    var splitOnBar = accArray[i].split('|');
-                    acc = splitOnBar [1];
-                    name = splitOnBar[2];
-                }
                 if (!xlv.proteins.has(acc)) {
                     tempStack.set(acc, 1);
                     xlv.proteins.set(acc, new Protein(acc, xlv, acc, name));
@@ -42,15 +35,16 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 
     function initProteins(xlv) {
         // This function will be executed in case of error
-        var error_response = function() {
-            alert('Bad response, Wrong URL?, No Sequence XML?');
-        };
-        // This function inits the protein
-        var response = function(res) {
+        var keys = xlv.proteins.keys();
+        var proteinCount = keys.length;
+        for (var p = 0; p < proteinCount; p++) {
+            var accession = keys[p];
+            //Asking the client to retrieve the sequence
             //this.message(res);
-            var id = res.SEQUENCE[0].id;
-            var seq = res.SEQUENCE[0].textContent;
-            var label = res.SEQUENCE[0].label;
+			var cutid = accession.replace("reverse_","");
+            var id = accession;
+            var seq = xlv.sequences.get(cutid);
+            var label = accession;
             var prot = xlv.proteins.get(id);
             prot.initProtein(seq, label);
             //            var key = '\\u0000' + seq;
@@ -60,15 +54,6 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
                 xlv.message('All sequences downloaded from DAS');
                 addCSVLinks(xlv);
             }
-        };
-        var keys = xlv.proteins.keys();
-        var proteinCount = keys.length;
-        for (var p = 0; p < proteinCount; p++) {
-            var accession = keys[p];
-            //Asking the client to retrieve the sequence
-            client.sequence({
-                segment: accession
-            }, response, error_response);
         }
     }
 
