@@ -12,8 +12,6 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 //    //so if DAS fail its left conatinig the accession no that failed
     addProteins('Protein1', this);
     addProteins('Protein2', this);
-    var server_url = 'http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/';
-    var client = JSDAS.Simple.getClient(server_url);
     initProteins(this);
 //    addCSVLinks(xlv);
     function addProteins(columnName, xlv) {
@@ -64,6 +62,5 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
                     rows[row]['Protein2'], rows[row]['AbsPos2'], row + 1, rows[row]['ld-Score']);
         }
         xlv.init();
-        new xinet.DASUtil(xlv);
     }
 };

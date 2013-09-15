@@ -122,7 +122,6 @@ holder.ondrop = function (e) {
 	  if(mode == 0){
 		  d3.text(event.target.result, "text/csv", function(text) {
 					xlv.readCSV(text);
-					new xinet.DASUtil(xlv);
 				});
 	  }
 	  else{
@@ -179,8 +178,7 @@ holder.ondrop = function (e) {
                 });
 
                 function calcCutOff(v) {
-                   // var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
-                   var result = (v * (40 - 0)) + 0;
+                    var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
                     result = result.toFixed(2);
                     return result;
                 }

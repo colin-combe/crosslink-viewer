@@ -4,13 +4,13 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions, id, m
     this.id = id;
     this.meta = meta;
     if (this.meta != undefined) {
+		this.score = meta - 0;
         if (this.xlv.scores == null) {
             this.xlv.scores = {
                 'min': this.score,
                 'max': this.score
             };
         }
-        this.score = meta - 0;
         if (this.score > this.xlv.scores.max) {
             this.xlv.scores.max = this.score
         } else if (this.score < this.xlv.scores.min) {
