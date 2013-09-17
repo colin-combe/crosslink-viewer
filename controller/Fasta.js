@@ -2,7 +2,7 @@ xinet.Controller.prototype.readFasta = function(file){
 	var line_array = file.split("\n");
 	var tempName;
 	var tempSeq;
-	for(var i = 0;i < line_array.length-1;i++){
+	for(var i = 0;i < line_array.length;i++){
 		if(line_array[i].startsWith(">")){
 			tempName = line_array[i].replace(">","");
 		}
