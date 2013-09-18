@@ -1,9 +1,9 @@
-xinet.Controller.prototype.changeAnnotations = function(choice, opt) {
+xinet.Controller.prototype.changeAnnotations = function (choice, opt) {
     var positional = true;
     if (choice !== 1) {
         positional = false;
     }
-    if (typeof opt !== 'undefined' && opt != null){
+    if (typeof opt !== 'undefined' && opt != null) {
         var group = opt.options[opt.selectedIndex].parentNode.label;
         var category = opt.options[opt.selectedIndex].value;
     }
@@ -13,11 +13,10 @@ xinet.Controller.prototype.changeAnnotations = function(choice, opt) {
         proteins[p].setAnnotations(positional, group, category);
     }
 };
-
-xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
+xinet.Controller.prototype.textFilterKeyUp = function (filterText) {
     this.textFilterRegex = new Array();
     this.textFilterRegexNOT = new Array();
-    this.fields = {//would be nice if element names weren't hard coded in here
+    this.fields = {
         names: document.getElementById('names').checked,
         notes: document.getElementById('notes').checked,
         key_text: document.getElementById('key_text').checked,
@@ -25,12 +24,7 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
     };
     if (filterText === '!') {
         this.parkAll();
-    //        this.textFilterRegexNOT[0] = new RegExp("*", 'gi');
-    }
-    else if (filterText === '') {
-    //        this.unparkAll();
-    }
-    else {
+    } else if (filterText === '') {} else {
         var filters = filterText.split(' ');
         var filterCount = filters.length;
         for (var i = 0; i < filterCount; i++) {
@@ -38,13 +32,11 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
             if (filter !== '') {
                 if (filter[0] !== '!') {
                     this.textFilterRegex.push(new RegExp(filter, 'gi'));
-                }
-                else {
+                } else {
                     this.textFilterRegexNOT.push(new RegExp(filter.substring(1), 'gi'));
                 }
             }
         }
-
         var proteins = this.proteins.values();
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
@@ -56,16 +48,11 @@ xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
             }
         }
     }
-    this.message("<p>Text filter: " + filterText
-        //            + "<br/>" + JSON.stringify(this.textFilterRegex, '\t')
-        //            + "<br/>" + JSON.stringify(this.textFilterRegexNOT, '\t')
-        + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
+    this.message("<p>Text filter: " + filterText + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
     this.checkLinks();
 };
-
-Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
+Protein.prototype.meetsTextFilter = function (filterRegex, fields) {
     var searchString = "";
-
     if (fields.names === true) {
         searchString += this.name + "," + this.accession + ",";
         if (typeof this.description !== 'undefined' && this.description !== '') {
@@ -81,22 +68,21 @@ Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
             }
         }
     }
-
     if (typeof this.processedDAS !== 'undefined') {
         if (fields.notes === true) {
-            this.processedDAS.forEach(function(k, v) {
+            this.processedDAS.forEach(function (k, v) {
                 if (typeof v.notes !== 'undefined') {
-                    v.notes.forEach(function(n) {
+                    v.notes.forEach(function (n) {
                         searchString += n.notes + ",";
                     });
                 }
             });
         }
         if (fields.key_text === true) {
-            this.processedDAS.forEach(function(k, v) {
+            this.processedDAS.forEach(function (k, v) {
                 if (typeof v.keywords !== 'undefined') {
-                    v.keywords.forEach(function(category, keyword) {
-                        keyword.forEach(function(word) {
+                    v.keywords.forEach(function (category, keyword) {
+                        keyword.forEach(function (word) {
                             searchString += word.name + ",";
                         });
                     });
@@ -104,10 +90,10 @@ Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
             });
         }
         if (fields.pos_text === true) {
-            this.processedDAS.forEach(function(k, v) {
+            this.processedDAS.forEach(function (k, v) {
                 if (typeof v.positional !== 'undefined') {
-                    v.positional.forEach(function(category, pos) {
-                        pos.forEach(function(posAnnotation) {
+                    v.positional.forEach(function (category, pos) {
+                        pos.forEach(function (posAnnotation) {
                             searchString += posAnnotation.name + ",";
                         });
                     });
@@ -115,7 +101,6 @@ Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
             });
         }
     }
-
     var regex;
     var countRegex = this.xlv.textFilterRegex.length;
     for (var r = 0; r < countRegex; r++) {
@@ -125,7 +110,6 @@ Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
             return false;
         }
     }
-    //NOTs
     countRegex = this.xlv.textFilterRegexNOT.length;
     for (var r = 0; r < countRegex; r++) {
         regex = this.xlv.textFilterRegexNOT[r];
@@ -136,8 +120,7 @@ Protein.prototype.meetsTextFilter = function(filterRegex, fields) {
     }
     return true;
 };
-
-xinet.Controller.prototype.stepOut = function() {
+xinet.Controller.prototype.stepOut = function () {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     var neighbours = [];
@@ -148,7 +131,7 @@ xinet.Controller.prototype.stepOut = function() {
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
-                if (link.intra === false && link.sc >= this.cutOff) { // TODO: temp hack for mycoplasma
+                if (link.intra === false && link.sc >= this.cutOff) {
                     neighbours.push(link.getOtherEnd(prot));
                 }
             }
@@ -160,11 +143,10 @@ xinet.Controller.prototype.stepOut = function() {
     }
     this.checkLinks();
 };
-
-xinet.Controller.prototype.stepIn = function() {
+xinet.Controller.prototype.stepIn = function () {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
-    var leaves = [];// nodes with only one connection
+    var leaves = [];
     for (var p = 0; p < proteinCount; p++) {
         var prot = proteins[p];
         if (prot.countExternalLinks() <= 1) {
@@ -175,148 +157,66 @@ xinet.Controller.prototype.stepIn = function() {
     for (var l = 0; l < leafCount; l++) {
         leaves[l].setParked(true);
     }
-//            var leaf = leaves[l];
-//            var link = leaf.externalLinks[0];
-//
-//            d3.select(leaf.labelSVG).attr("opacity", "1");
-//            d3.select(link.line).attr("opacity", "1");
-//            d3.select(link.fatLine).attr("opacity", "1");
-//            d3.select(leaf.g).attr("opacity", "1");
-//
-//            subgraph.links.remove(link.id);
-//            subgraph.nodes.remove(leaf.id);
-//            var otherEnd = link.getOtherEnd(leaf);
-//            otherEnd.removeLink(link.id);
-//
-//            d3.select(leaf.blob).transition().duration(1000)
-//            .attr("stroke", "red")
-//            .attr("stroke-width", "5");
-//
-//            d3.select(leaf.labelSVG).transition().delay(2000).duration(1000)
-//            .attr("opacity", "0");
-//            d3.select(link.line).transition().delay(2000).duration(1000)
-//            .attr("opacity", "0");
-//            d3.select(link.fatLine).transition().delay(2000).duration(1000)
-//            .attr("opacity", "0");
-//            d3.select(link.highlightLine).attr("opacity", "0");
-//            d3.select(leaf.g).transition().delay(2000).duration(1000)
-//            .attr("r", "0")
-//            .attr("transform", "translate("+otherEnd.x+","+otherEnd.y+")");
-//
-//            d3.select(leaf.blob).transition().delay(3000).duration(1).attr("opacity", "0");
-//
-//            otherEnd.nest(leaf);
-//
-//
-//        }
-//        if (leaves.length > 0) return true;
-//        else
-//            return false;
 };
-
-xinet.Controller.prototype.parkUnconnected = function() {
+xinet.Controller.prototype.parkUnconnected = function () {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
-    var unconnected = [];// nodes with only one connection
+    var unconnected = [];
     for (var p = 0; p < proteinCount; p++) {
         var prot = proteins[p];
         if (prot.countExternalLinks() === 0) {
             unconnected.push(prot);
         }
-    }
-    ;
+    };
     var unconnectedCount = unconnected.length;
     for (var u = 0; u < unconnectedCount; u++) {
         unconnected[u].setParked(true);
     }
 };
-
-xinet.Controller.prototype.exportProteins = function() {
-    //    var myJSONText = JSON.stringify(this.proteins, null, '\t');
-    //    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
-    //    xlv.message(myJSONText, true);
-
+xinet.Controller.prototype.exportProteins = function () {
     var output = "";
     var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
-        output += "xlv.addProtein('" + protein.id + "','"
-                                    + protein.name  + "','"
-                                    + protein.sequence  + "','"
-                                      + "','"
-                                    + protein.accession  +  "');\n"
+        output += "xlv.addProtein('" + protein.id + "','" + protein.name + "','" + protein.sequence + "','" + "','" + protein.accession + "');\n"
     }
-xlv.message(output);
+    xlv.message(output);
 };
-
-xinet.Controller.prototype.exportLinks = function() {
+xinet.Controller.prototype.exportLinks = function () {
     var myJSONText = JSON.stringify(this.proteinLinks, null, '\t');
-    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
+    myJSONText = myJSONText.replace(/\\u0000/gi, '');
     xlv.message(myJSONText, true);
 };
-
-xinet.Controller.prototype.setCutOff = function(cutOff) {
+xinet.Controller.prototype.setCutOff = function (cutOff) {
     this.cutOff = cutOff;
     this.checkLinks();
 };
-
-xinet.Controller.prototype.hideInternal = function(bool) {
+xinet.Controller.prototype.hideInternal = function (bool) {
     this.intraHidden = bool;
     this.checkLinks();
 };
-
-xinet.Controller.prototype.hideAmbig = function(bool) {
+xinet.Controller.prototype.hideAmbig = function (bool) {
     this.ambigHidden = bool;
     this.checkLinks();
 };
-
-//TODO:fix
-//xinet.Controller.prototype.setAnnotations = function(positional, group, category) {
-//    //    alert(group + ' - ' + category);
-//    //clear
-//
-//    };
-
-xinet.Controller.prototype.exportSVG = function(containerName) {
+xinet.Controller.prototype.exportSVG = function (containerName) {
     var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
-    //TODO: rotator hide not working
-    var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
-    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
-    //    .replace(/xmlns:svg=/gi,"xmlns=")
-    //    .replace(/svg:/gi,"")
-    .replace(/<rect .*?\/rect>/i, "");
-
+    var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "").replace(/<rect .*?\/rect>/i, "");
     var args = [];
     args.source = svgXml;
-    var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-    + svgXml;//markup_beauty(args);
-
-    //    alert("/");
-
+    var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" + svgXml;
     var xmlAsUrl;
-    //    if (this.messageElement != null) { // if running in Col's developemnt PHP version
-    //        // this will make it really open in new window, instead of download
-    //        xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    //    //       xmlAsUrl = 'data:image/svg+xml;filename=ProteinViewExport.svg,'
-    //    }
-    //    else {
     xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    //    }
     xmlAsUrl += encodeURIComponent(prettyXml);
     var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
-
-//set the message element to use (optional - mainly for debugging)
-xinet.Controller.prototype.setMessageElement = function(e) {
+xinet.Controller.prototype.setMessageElement = function (e) {
     this.messageElement = e;
 };
 
 function saveLayout() {
     var layout = xlv.getLayout();
-    //        xlv.message("layout sent:" + layout, true);
     var defaultDesc = this.currentLayoutName;
     var desc = '';
     while (desc === '' || desc === 'default') {
@@ -324,30 +224,20 @@ function saveLayout() {
     }
     if (desc != null) {
         var xmlhttp;
-        if (window.XMLHttpRequest)
-        {// code for IE7+, Firefox, Chrome, Opera, Safari
+        if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
         }
         var url = "./saveLayout.php";
-        var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
-            layout) + "&desc=" + desc;
+        var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(layout) + "&desc=" + desc;
         xmlhttp.open("POST", url, true);
-        //Send the proper header information along with the request
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        //chrome doesn't like following
-        //  xmlhttp.setRequestHeader("Content-length", params.length);
-        //    xmlhttp.setRequestHeader("Connection", "close");
-
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+        xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                //                xlv.message("response:" + xmlhttp.responseText, true)
                 xlv.message("<br>Layout saved");
                 var select = document.getElementById('load_layout');
                 var optionlist = select.options;
-                for (var option = 0; option < optionlist.length; option++ )
-                {
-                    if (optionlist[option].text == desc)
-                    {
+                for (var option = 0; option < optionlist.length; option++) {
+                    if (optionlist[option].text == desc) {
                         return;
                     }
                 }
@@ -361,7 +251,6 @@ function saveLayout() {
     }
 }
 
-
 function loadLayout(layoutDesc) {
     this.currentLayoutName = layoutDesc;
     if (layoutDesc != '') {
@@ -370,18 +259,12 @@ function loadLayout(layoutDesc) {
         var params = "sid=" + xlv.sid + "&desc=" + layoutDesc;
         xmlhttp.open("POST", url, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+        xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var response = xmlhttp.responseText;
                 xlv.message("response:" + response, true);
                 xlv.setLayout(response);
                 xlv.loadLayout();
-                //            var proteins = xlv.proteins.values();
-                //            var proteinCount = proteins.length;
-                //            for (var p = 0; p < proteinCount; p++) {
-                //                var prot = proteins[p];
-                //                prot.setAllLineCoordinates();
-                //            }
                 xlv.checkLinks();
             }
         };
@@ -484,5 +367,4 @@ function help() {
 </TABLE>\
 ";
     xlv.message(helpText, true);
-
 }
