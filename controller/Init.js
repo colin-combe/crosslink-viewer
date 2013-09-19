@@ -220,9 +220,9 @@ xinet.Controller.prototype.message = function(text, preformatted) {
     }
 };
 
-xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
+xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession) {
     var newProt = new Protein(id, this, accession, label);
-    newProt.initProtein(sequence, label, description, size);
+    newProt.initProtein(sequence, label, description);
     this.proteins.set(id, newProt);
 };
 
@@ -309,15 +309,14 @@ xinet.Controller.prototype.init = function(width, height) {
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-             prot.setPosition(0, 0);
-           prot.initStick();//needed, todo - remove
+            prot.initStick();//needed, todo - remove
             if (this.proteins.keys().length < 3) {
                 prot.toStick();
             }
             else {
                 prot.toBlob();
             }
-
+ 	    prot.setPosition(0, 0);
             //            this.proteinLower.appendChild(prot.rectDomainsColoured);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
