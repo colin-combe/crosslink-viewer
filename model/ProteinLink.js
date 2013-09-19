@@ -263,7 +263,7 @@ ProteinLink.prototype.showID = function() {
                     scores = scores + ",";
                 }
                 scores = scores + " " +
-                 ((typeof matches[j].score!== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
+                 ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
             }
 
             linkInfo += scores + "</p>";

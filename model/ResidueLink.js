@@ -1,7 +1,10 @@
+//ResidueLink.js
+// the class representing a residue-residue link
+
 ResidueLink.prototype = new xinet.Link();
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd) {
     this.id = id;
-    // this.matches = new Array(0);
+    //    this.matches = new Array(0);
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
@@ -16,7 +19,7 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd)
     this.ambig = false;
     this.tooltip = this.id;
     if (hd === true) {
-        // alert('true');
+        //     alert('true');
         this.homodimer = true;
     }
     //used to avoid some unnecessary manipulation of DOM
@@ -96,9 +99,9 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
         if (show) {
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-if (this.isSelected == false) {
-this.highlightLine.setAttribute("stroke-opacity", "0");
-}
+			if (this.isSelected == false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			}
         }
     }
     if (andAlternatives && this.ambig) {
@@ -111,9 +114,9 @@ this.highlightLine.setAttribute("stroke-opacity", "0");
                 for (var rl = 0; rl < rc; rl++) {
                     var resLink = match.residueLinks[rl];
                     if (resLink.isSelected == false) {
-resLink.showHighlight(show, false);
-resLink.proteinLink.showHighlight(show, false);
-}
+						resLink.showHighlight(show, false);
+						resLink.proteinLink.showHighlight(show, false);
+					}
                 }
             }
         }
@@ -122,14 +125,14 @@ resLink.proteinLink.showHighlight(show, false);
 
 ResidueLink.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.xlv.selected.set(this.id, this);//ok,
+        this.xlv.selected.set(this.id, this);//ok, 
         this.isSelected = true;
-this.highlightLine.setAttribute("stroke-opacity", "1");
+		this.highlightLine.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.xlv.selected.remove(this.id);
         this.isSelected = false;
-this.highlightLine.setAttribute("stroke-opacity", "0");
+		this.highlightLine.setAttribute("stroke-opacity", "0");
     }
 };
 
@@ -155,8 +158,8 @@ ResidueLink.prototype.showID = function() {
         //only same info as in tooltip but may need to print to page if on touch screen
         var fromProt = this.getFromProtein();
         var toProt = this.getToProtein();
-// linkInfo += "<p> Protein - protein interaction confidence: " +
-// + this.proteinLink.sc + "% </p>";
+//        linkInfo += "<p> Protein - protein interaction confidence: " +
+//                        + this.proteinLink.sc + "% </p>";
 
       linkInfo = "<h5>" + fromProt.name + " (" + fromProt.accession
             + "), residue " + this.fromResidue + " - "
@@ -166,10 +169,10 @@ ResidueLink.prototype.showID = function() {
             var c = matches.length;
             linkInfo += "<p>" + c + " match";
             if (c > 1){
-linkInfo += "es, scores:";
-} else {
-linkInfo += ", score:";
-}
+				linkInfo += "es, scores:";
+			} else {
+				linkInfo += ", score:";
+			}
              var scores = "";
 
             var scores = "";
@@ -181,7 +184,7 @@ linkInfo += ", score:";
                 else {
                     scores = scores + ",";
                 }
-                scores = scores + " " +
+                scores = scores + " " + 
                 ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
             }
 
@@ -231,7 +234,7 @@ ResidueLink.prototype.check = function(filter) {
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
         this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
-                    + "-" + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
+                    + "-"  + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
         if (countFilteredMatches == 1) {
             this.tooltip += ' match)';
         } else {
@@ -275,7 +278,7 @@ ResidueLink.prototype.show = function() {
             }
             if (this.intra) {
                 this.line.setAttribute("stroke-width", xinet.linkWidth); //this.xlv.z*
-                // this.highlightLine.setAttribute("stroke-width", 10);
+                //                this.highlightLine.setAttribute("stroke-width", 10);
                 this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
                 this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
             }
@@ -308,31 +311,31 @@ ResidueLink.prototype.hide = function() {
 };
 
 ResidueLink.prototype.setUpCurve = function() {
-    // alert("yup, here");
+    //    alert("yup, here");
     var pathAtt;
     var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-    // if (this.fromResidue == this.toResidue){
-    // pathAtt = "M " + x1 + " 0 L " + x1 + " 25";
-    // // this.line.setAttribute("stroke", "red");
-    // }
-    // else {
+    //    if (this.fromResidue == this.toResidue){
+    //        pathAtt = "M " + x1 + " 0 L " + x1 + " 25";
+    //    //        this.line.setAttribute("stroke", "red");
+    //    }
+    //    else {
     var x2 = this.proteinLink.fromProtein.getResXwithStickZoom(this.toResidue);
     var midY = (Math.abs(x2 - x1));
     midY = midY / 2;
     this.curveMidX = x1 + ((x2 - x1) / 2);
     pathAtt = "M " + x1 + " 0 "
     + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-    + " A " + midY + " " + midY + " 0 1 1 "
+    + " A " + midY + " " + midY + "  0 1 1 "
     + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
     + " L " + x2 + " 0 "
     ;
-    // }
+    //    }
 
     this.line.setAttribute("d", pathAtt);
     this.highlightLine.setAttribute("d", pathAtt);
     //
     if (this.homodimer === true) {
-        // alert('true');
+        //        alert('true');
         this.line.setAttribute("stroke", "red");
         this.line.setAttribute("transform", "scale (1 -1)");
         this.highlightLine.setAttribute("transform", "scale (1 -1)");
@@ -366,6 +369,6 @@ ResidueLink.prototype.toJSON = function() {
         m.push(this.matches[i].id);
     }
     return {
-    // m: m
+    //      m: m
     };
 };
