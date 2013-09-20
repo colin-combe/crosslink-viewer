@@ -1,3 +1,5 @@
+//author: Hendrik Hofstadt
+
 xinet.Controller.prototype.readFasta = function(file){
 	var line_array = file.split("\n");
 	var tempName;
