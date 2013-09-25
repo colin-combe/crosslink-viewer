@@ -316,7 +316,7 @@ xinet.Controller.prototype.init = function(width, height) {
             else {
                 prot.toBlob();
             }
- 	    prot.setPosition(0, 0);
+            prot.setPosition(0, 0);
             //            this.proteinLower.appendChild(prot.rectDomainsColoured);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
