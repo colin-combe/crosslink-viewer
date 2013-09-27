@@ -14,7 +14,7 @@ xinet.Controller.prototype.readXQuest = function(csvContents) {
 		 if (prot1.toLowerCase().indexOf("reverse") === -1 && prot2.toLowerCase().indexOf("reverse") === -1
 		 && prot1.toLowerCase().indexOf("decoy") === -1 && prot2.toLowerCase().indexOf("decoy") === -1) {
 			xlv.addMatch(prot1, rows[row]['AbsPos1'], prot2, rows[row]['AbsPos2'], 
-					row + 1, rows[row]['ld-Score']);
+					rows[row]['ld'], rows[row]['ld-Score']);
 		 }
     }
     xlv.init();
