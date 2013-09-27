@@ -1,29 +1,35 @@
-// Protein.js
-//TODO - implement start and end residues (and rename class as Segment?)
-//TODO - move link posiitons to middle of reisue letters - avoids a prob when rotated 180
-Protein.STICKHEIGHT = 20;//height of stick in pixels
-Protein.MAXSIZE = 0; // residue count of longest sequence
-Protein.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
-Protein.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
-Protein.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Protein.domainColours = d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+//		xiNET cross-link viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		authors: Lutz Fischer, Colin Combe
+//		
+//		Protein.js
+//		TODO - merge with Interactor class in interaction-viewer
+//		TODO - implement start and end residues? (and rename class as Segment?)
+//		TODO - move link positions to middle of residue letters? - avoids a prob when rotated 180
 
-//http://stackoverflow.com/questions/4179283/how-to-overload-constructor-of-an-object-in-js-javascript
+Protein.STICKHEIGHT = 20; 		// height of stick in pixels
+Protein.MAXSIZE = 0; 			// residue count of longest sequence
+Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)
+Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
+Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
+Protein.domainColours = d3.scale.category20c(); // d3.scale.ordinal().range(colorbrewer.Paired[12]);
+
 function Protein(id, xlvController, acc, name) {
-    this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.accession = acc;
+    this.id = id; // id may not be accession
     this.xlv = xlvController;
+    this.accession = acc;
     this.name = name;
-    this.tooltip = this.accession;
+    this.tooltip = this.id;
 }
 
-Protein.prototype.initProtein = function(sequence, name, description, size)
-{
+//sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
+Protein.prototype.initProtein = function(sequence, name, description) {
     if (this.name == null) {
         this.name = name;
     }
-    //check for labeling modifications in sequnce now, we're about to lose this info
-    if (/\d/.test(sequence)) {//is there a digit in the sequence
+    //check for labeling modifications in sequence now, we're about to lose this info
+    if (/\d/.test(sequence)) {//is there a digit in the sequence?
         this.labeling = '';// as in silac labelling
         if (sequence.indexOf('K4') !== -1)
             this.labeling += 'K4';
@@ -40,18 +46,14 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
         if (sequence.indexOf('R10') !== -1)
             this.labeling += 'R10';
     }
-    this.sequence = sequence.replace(/[^A-Z]/g, '');//remove modification site info from seq
-    if (typeof size !== 'undefined') {
-        this.size = size;
-    } else {
-        this.size = this.sequence.length;
-    }
-    // get the largest protein size - for scaling purposes
+    //remove modification site info from sequence
+    this.sequence = sequence.replace(/[^A-Z]/g, '');
+    this.size = this.sequence.length;
+    // keep track of largest protein size - used for initial scaling of bars
     if (Protein.MAXSIZE < this.size) {
         Protein.MAXSIZE = this.size;
     }
     //links
-   // alert('Qua?');
     this.proteinLinks = d3.map();
     this.internalLink = null;
     // layout info
@@ -65,7 +67,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
-    this.customAnnotations = null;//new Array();
+    this.customAnnotations = null;
 
     //TODO: remove need for this?
     this.rectX;
@@ -84,11 +86,10 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
 
     //add label to it - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(xinet.svgns, "text");
-    //    this.labelSVG.setAttribute("class", "proteinLabel");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
-    //    this.labelSVG.setAttribute("class", "Xlr_protein Xlr_proteinLabel");
+    //    this.labelSVG.setAttribute("class", "proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
 
@@ -96,24 +97,17 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
     }
-    else if (description !== null & description !== "") {
+    else if (description != null & description !== "") {
         this.labelText = description;
         this.name = description;
     }
-    else {
+    else if (this.accession != null & this.accession !== "") {
         this.labelText = this.accession;
     }
-    var organismCheck = this.labelText.indexOf("_CHICK");
-    if (organismCheck === -1) {
-        organismCheck = this.labelText.indexOf("_MYCPN");
-    }
-    if (organismCheck === -1) {
-        organismCheck = this.labelText.indexOf("_ECOLI");
-    }
-    if (organismCheck !== -1) {
-        this.labelText = this.labelText.substring(0, organismCheck);
-    }
-    if (this.labelText.length > 19) {
+    else {
+		this.labelText  = this.id;
+	}
+    if (this.labelText.length > 25) {
         this.labelText = this.labelText.substr(0, 16) + "...";
     }
     if (typeof this.labeling !== 'undefined') {
@@ -140,7 +134,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     this.blobHighlight.setAttribute("cx", 0);
     this.blobHighlight.setAttribute("cy", 0);
     this.blobHighlight.setAttribute("r", this.getBlobRadius());
-    //    this.blobHighlight.setAttribute("class", "Xlr_protein Xlr_blob");
     //style it
     this.blobHighlight.setAttribute("stroke-opacity", "0");
     if (xinet.highlightColour !== undefined)
@@ -158,7 +151,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size)
     this.parked.setAttribute("stroke", "none");
 
     //STICK = EVRYTHING THAT ROTATES: rectangle, annotation, intra links, outline, scale,
-    //but NOT LABEL. cannot currently be made until after all proteins (for scaling)
+    //but NOT LABEL. Cannot currently be made until after all proteins (for scaling)
     this.stick = null;//see getStick() //protein as stick,
 
     //svg groups for intra protein links

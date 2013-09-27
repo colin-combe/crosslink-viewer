@@ -29,8 +29,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
     pep2_positions = pep2_positions.toString().split(";");
 
 //identify homodimers
-    var hd = false;
-//if peptides overlap // TODO: i think theres an error here
+//var hd = false;
+//if peptides overlap its a homodimer // TODO: i think theres an error here
 //    if (typeof pep1_seq !== 'undefined' && pep1_seq != null
 //            && typeof pep2_seq !== 'undefined' && pep2_seq != null) {
 //        if (pep1_positions.length === 1 && pep2_positions.length === 1) {
@@ -75,18 +75,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
             if (jProt >= pep2_protIDs.length) {
                 jProt = pep2_protIDs.length - 1;
             }
-            //check for swissprot format sp|acession|name
-            function swissProt(id) {
-                if (id.indexOf('|') === -1) {
-                    return id;
-                }
-                else {
-                    var splitOnBar = id.split('|');
-                    return splitOnBar [1];
-                }
-            }
-            p1ID = swissProt(pep1_protIDs[iProt]);
-            p2ID = swissProt(pep2_protIDs[jProt]);
+            p1ID = pep1_protIDs[iProt];
+            p2ID = pep2_protIDs[jProt];
             // sometimes database sends out unwanted quotes marks around field
             if (p1ID[0] === "'")
                 p1ID = p1ID.substring(1, p1ID.length - 1);
@@ -153,19 +143,19 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
                 //WATCH OUT - residues need to be in correct oprder
                 if (p1ID === p2ID) {
                     if ((res1 - 0) < (res2 - 0)) {
-                        resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv, hd);
+                        resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
                     } else {
-                        resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv, hd);
+                        resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
                     }
                 }
                 //
                 else if (p1ID == link.fromProtein.id) {
                     //// yeah... watch this, refactor so don't need type conversion
-                    resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv, hd);
+                    resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
                 }
                 else {
                     //WATCH OUT - residues need to be in correct oprder
-                    resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv, hd);
+                    resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
                 }
                 link.residueLinks.set(residueLinkID, resLink);
                 if (link.residueLinks.keys().length > ProteinLink.maxNoResidueLinks) {
