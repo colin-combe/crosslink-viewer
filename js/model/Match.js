@@ -80,8 +80,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
             if (jProt >= pep2_protIDs.length) {
                 jProt = pep2_protIDs.length - 1;
             }
-            p1ID = pep1_protIDs[iProt];
-            p2ID = pep2_protIDs[jProt];
+            p1ID = pep1_protIDs[iProt].trim();
+            p2ID = pep2_protIDs[jProt].trim();
             // sometimes database sends out unwanted quotes marks around field
             if (p1ID[0] === "'")
                 p1ID = p1ID.substring(1, p1ID.length - 1);

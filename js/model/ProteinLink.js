@@ -254,7 +254,7 @@ ProteinLink.prototype.showID = function() {
 			} else {
 				linkInfo += ":</p>";
 			}
-			var scores = "<table><tr><th>Id</th><th>Score</th></tr>";
+			var scores = "<table>";//<tr><th>Id</th><th>Score</th></tr>";
 			for (var j = 0; j < c; j++) {
 			   scores += "<tr><td><p>" + matches[j].id
 						+ "</p></td><td><p>" + 

@@ -328,14 +328,7 @@ xinet.Controller.prototype.init = function(width, height) {
     //temp
 //    this.geneNames = d3.map();
 //    this.getGeneName(0);
-
-    // horizontal slider control
-    if (xlv.scores != null) {
-        var scoreSlider = document.getElementById('scoreSlider');
-        if (scoreSlider != null) {
-            scoreSlider.setAttribute('style', 'display:inline-block');
-        }
-    }
+	this.checkLinks();
     this.initMouseEvents();
 }
 

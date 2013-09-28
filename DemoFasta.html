@@ -31,7 +31,7 @@
         <script type="text/javascript" src="./js/controller/ExternalControls.js"></script>
         <script type="text/javascript" src="./js/model/Rotator.js"></script>
         <script type="text/javascript" src="./js/controller/DASUtil.js"></script>
-        <script type="text/javascript" src="./js/controller/ReadXQuest.js"></script>
+        <script type="text/javascript" src="./js/controller/ReadCSV.js"></script>
         <script type="text/javascript" src="./js/controller/Fasta.js"></script>
     </head>
     <body>
@@ -39,7 +39,7 @@
 			<div class="controls">
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
-				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection Details</button>
+				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
 				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
 				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>
@@ -58,6 +58,10 @@
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox">
 				</div>
+				
+				 <div class="controlGroup">Ambiguous&nbsp;&nbsp;
+				 <input checked="checked" id="ambig" onclick="xlv.hideAmbig(!document.getElementById('ambig').checked)" type="checkbox">
+                </div>
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -131,14 +135,11 @@
 					//must read data file after completing fasta file parse
 					d3.text('./data/result.csv', "text/csv", function(text) {
 						xlv.readXQuest(text);
-						initSlider();
 					});				
-				});				
-
-				
+				});							
 				
 				function initSlider(){
-					if (typeof xlv.scores != 'undefined'){
+					if (xlv.scores != null){
 						document.getElementById('scoreLabel1').innerHTML = xlv.scores.min.toFixed(2);
 						document.getElementById('scoreLabel2').innerHTML = xlv.scores.max.toFixed(2) + '&nbsp;&nbsp;';
 						document.getElementById('debug1').innerHTML = 'Score Cut-Off:' + xlv.scores.min.toFixed(2);
@@ -163,6 +164,7 @@
 					}
 					else {
 						//no score
+						document.getElementById('scoreSlider').setAttribute("style", "display:none;");
 					}
 				}				
                 //]]>
