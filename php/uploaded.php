@@ -18,10 +18,10 @@
 			$layout = $line['layout'];
 			echo ('<title> xiNET | ' . $filename . '</title>');
         ?>
-        <link rel="stylesheet" href="./css/xiNET.css">
-		<link rel="stylesheet" href="./css/bootstrap.css">
-		<link rel="stylesheet" href="./css/flat-ui.css" >
-		<link rel="stylesheet" href="./css/demo.css">
+        <link rel="stylesheet" href="../css/xiNET.css">
+		<link rel="stylesheet" href="../css/bootstrap.css">
+		<link rel="stylesheet" href="../css/flat-ui.css" >
+		<link rel="stylesheet" href="../css/demo.css">
         <!--libraries-->
         <script type="text/javascript" src="../lib/d3.js"></script>
         <script type="text/javascript" src="../lib/colorbrewer.js"></script>
