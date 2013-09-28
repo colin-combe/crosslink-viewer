@@ -1,7 +1,13 @@
-//ResidueLink.js
-// the class representing a residue-residue link
+//		xiNET cross-link viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		author: Colin Combe
+//		
+//		ResidueLink.js
+// 		the class representing a residue-residue link
 
 ResidueLink.prototype = new xinet.Link();
+
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd) {
     this.id = id;
     //    this.matches = new Array(0);
@@ -155,42 +161,31 @@ ResidueLink.prototype.showID = function() {
         send_match_ids(matchIDs);
     }
     else {
-        //only same info as in tooltip but may need to print to page if on touch screen
-        var fromProt = this.getFromProtein();
-        var toProt = this.getToProtein();
-//        linkInfo += "<p> Protein - protein interaction confidence: " +
-//                        + this.proteinLink.sc + "% </p>";
+		var fromProt = this.getFromProtein();
+		var toProt = this.getToProtein();
 
-      linkInfo = "<h5>" + fromProt.name + " (" + fromProt.accession
-            + "), residue " + this.fromResidue + " - "
-            + toProt.name + " (" + toProt.accession
-            + "), residue " + this.toResidue + "</h5>";
-            var matches = this.getFilteredMatches();
-            var c = matches.length;
-            linkInfo += "<p>" + c + " match";
-            if (c > 1){
-				linkInfo += "es, scores:";
-			} else {
-				linkInfo += ", score:";
-			}
-             var scores = "";
-
-            var scores = "";
-            var firstMatch = true;
-            for (var j = 0; j < c; j++) {
-                if (firstMatch === true) {
-                    firstMatch = false;
-                }
-                else {
-                    scores = scores + ",";
-                }
-                scores = scores + " " + 
-                ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
-            }
-
-            linkInfo += scores + "</p>";
-
-
+		var linkInfo = "<h5>" + fromProt.name + " [" + fromProt.id
+			+ "], residue " + this.fromResidue + " <br>to<br> "
+			+ toProt.name + " [" + toProt.id
+			+ "], residue " + this.toResidue + "</h5>";
+        
+        var matches = this.getFilteredMatches();
+        var c = matches.length;
+        linkInfo += "<p>" + c + " match";
+		if (c > 1){
+			linkInfo += "es:</p>";
+		} else {
+			linkInfo += ":</p>";
+		}
+		var scores = "<table><tr><th>Id</th><th>Score</th></tr>";
+		for (var j = 0; j < c; j++) {
+		   scores += "<tr><td><p>" + matches[j].id
+					+ "</p></td><td><p>" + 
+					((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined')
+					+ "</p></td></tr>";
+		}
+		scores += "</table><p>&nbsp;</p>";
+		linkInfo += scores;
         this.xlv.message(linkInfo);
     }
 };

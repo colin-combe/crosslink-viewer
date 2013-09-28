@@ -1,9 +1,16 @@
-//ProteinLink.js
-// the class representing a protein-protein link
+//		xiNET cross-link viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		author: Colin Combe
+//
+//		ProteinLink.js
+// 		the class representing a protein-protein link
+
+//static variable used to calculate width of the background line
+ProteinLink.maxNoResidueLinks = 0;
 
 ProteinLink.prototype = new xinet.Link();
-//used to calculate width of thivh background line
-ProteinLink.maxNoResidueLinks = 0;
+
 function ProteinLink(id, fromP, toP, xlvController) {
     this.id = id;
     this.residueLinks = d3.map();
@@ -191,11 +198,9 @@ ProteinLink.prototype.showID = function() {
         send_match_ids(matchIDs);
     }
     else {
-        var linkInfo = "<h5>" + this.fromProtein.name + " (" + this.fromProtein.accession
-        + ") - " + this.toProtein.name + " (" + this.toProtein.accession
-        + ")</h5>";
-        //        linkInfo += "<p>Protein - protein interaction confidence: " +
-        //                        + this.sc + "%";
+        var linkInfo = "<h5>" + this.fromProtein.name + " [" + this.fromProtein.id
+        + "] <br>to<br> " + this.toProtein.name + " [" + this.toProtein.id
+        + "]</h5>";
         
         //todo: remove this code duplication
         var resLinks = this.residueLinks.values();
@@ -239,34 +244,25 @@ ProteinLink.prototype.showID = function() {
         
       for (var i = 0; i < filteredResLinkCount; i ++ ){
             var rl = filteredResLinks [i];
-            linkInfo += "<h7>" + this.fromProtein.name + " (" + this.fromProtein.accession
-            + "), residue " + rl.fromResidue + " - "
-            + this.toProtein.name + " (" + this.toProtein.accession
-            + "), residue " + rl.toResidue + "</h7>";
+            linkInfo += "<h7>" + this.fromProtein.name + ", residue " + rl.fromResidue + " - "
+            + this.toProtein.name + ", residue " + rl.toResidue + "</h7>";
             var matches = rl.getFilteredMatches();
-            var c = matches.length;
-            linkInfo += "<p>" + c + " match";
-            if (c > 1){
-				linkInfo += "es, scores:";
+			var c = matches.length;
+			linkInfo += "<p>" + c + " match";
+			if (c > 1){
+				linkInfo += "es:</p>";
 			} else {
-				linkInfo += ", score:";
+				linkInfo += ":</p>";
 			}
-             var scores = "";
-
-            var scores = "";
-            var firstMatch = true;
-            for (var j = 0; j < c; j++) {
-                if (firstMatch === true) {
-                    firstMatch = false;
-                }
-                else {
-                    scores = scores + ",";
-                }
-                scores = scores + " " +
-                 ((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined');
-            }
-
-            linkInfo += scores + "</p>";
+			var scores = "<table><tr><th>Id</th><th>Score</th></tr>";
+			for (var j = 0; j < c; j++) {
+			   scores += "<tr><td><p>" + matches[j].id
+						+ "</p></td><td><p>" + 
+						((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined')
+						+ "</p></td></tr>";
+			}
+			scores += "</table><p>&nbsp;</p>";
+			linkInfo += scores;
         }
         this.xlv.message(linkInfo);
     }

@@ -1,4 +1,9 @@
-//Match.js
+//		xiNET cross-link viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		author: Colin Combe
+//		
+//		Match.js
 
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         id, score, xlvController, linkPos1, linkPos2, pep1_seq, pep2_seq) {

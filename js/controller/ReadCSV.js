@@ -74,18 +74,17 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 
     function addCSVLinks(xlv) {
         //        xlv.message(this.proteins);
-        alert("!");
-        var prot1, prot2, splitOnBar;
+       var prot1, prot2, splitOnBar;
         for (var row = 0; row < countRows; row++) {
 			var splitOnBar = rows[row]['protein1'].split('|'); 
 			prot1 = splitOnBar[1];
-			splitOnBar = rows[row]['protein2'].split('|')[1];
+			splitOnBar = rows[row]['protein2'].split('|');
 			prot2 = splitOnBar[1];
-			console.log(prot1);
-            xlv.addMatch(prot1, rows[row]['residue1'],
+			xlv.addMatch(prot1, rows[row]['residue1'],
                     prot2, rows[row]['residue2'], row + 1, rows[row]['score']);
         }
         xlv.init();
-        new xinet.DASUtil(xlv);
+        initSlider();
+		new xinet.DASUtil(xlv);
     }
 };

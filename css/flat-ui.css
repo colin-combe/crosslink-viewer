@@ -462,7 +462,9 @@ h4 {
 h5 {
   font-size: 16px;
   font-weight: 500;
+/*
   text-transform: uppercase;
+*/
 }
 h6 {
   font-size: 13px;

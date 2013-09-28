@@ -13,7 +13,9 @@ body {
 html, body, #outerDiv  {
     height: 100%;
     width: 100%;
+/*
     min-height: 700px;
+*/
 }
 
 /* ===========================================================
@@ -21,13 +23,7 @@ html, body, #outerDiv  {
  * =========================================================== */
 
 input, select, button {
-    max-width: 171px;
-    margin:2px;
-    margin-top:4px;
-}
-
-input#score_slider {
-    width: 171px;
+ margin:4px;
 }
 
 .sliderbar {
@@ -61,27 +57,10 @@ input#score_slider {
 */
     text-align: left;
     height: 60px;
-    z-index: 999999999999999;
-}
-
-.help {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.exportsvg {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.autolayout {   
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.resetzoom {
-    margin-left: 10px;
-    margin-right: 10px;
+    z-index: 20;
+    background-color:#fff;
+    margin:0px;
+    padding:0px;
 }
 
 #track1 {
@@ -104,32 +83,30 @@ input#score_slider {
 }
 
 .controlGroup {
-    position:relative;
-    display: block;
-    left: 930px;
+    display: inline-block;
     color: #7F8C8D;
-    top: -40px;
     background-color: #ECF0F1;
     border: 1px solid #2C3E50;
     padding: 10px;
     width: 90px;
+    margin:4px;
 }
 
 .outlined {
-    position: relative;
     background-color: #ECF0F1;
     border: 1px solid #2C3E50;
     padding: 5px;
     width: 420px;
     color: #7F8C8D;
-    left: 480px;
-    top: -80px;
+	margin:4px;
+	display: inline-block;
 }
 
 #debug1 {
     display:inline-block;
     width:140px;
 }
+
 .scoreLabel {
     display:inline-block;
     color: #34495e;
@@ -149,13 +126,13 @@ input#score_slider {
 /*
     height: 100%;
 */
-    width: 560px;
+    width: 460px;
     top: 100%;
     left: -10px;
 /*
     color: #fff;
 */
-    z-index: 9999999999999999999;
+    z-index: 10;
     padding: 20px;
     margin-top: 60px;
     line-height: 2;
@@ -163,18 +140,6 @@ input#score_slider {
     display: none;
     
     border-radius: 0px 20px 20px 0px;
-}
-
-.overlay-box-bg {
-    background: #2C3E50;
-    opacity: 0.9;
-    position: fixed;
-    height: 100%;
-    width: 500px;
-    margin-top: 60px;
-    top: 50%;
-    left: 231px;
-    color: #fff;
 }
 
 .overlay-box a:hover {
@@ -222,9 +187,13 @@ input#score_slider {
 	border: 0px solid #eee;
 }
 
-.overlay-box  tbody tr:hover td {color: #009;background-color:#ECF0F1;-webkit-transition: all 200ms ease;
-		-moz-transition: all 200ms ease;
-        -ms-transition: all 200ms ease;
-        -o-transition: all 200ms ease;
-		transition: all 200ms ease;}
+.overlay-box  tbody tr:hover td {
+	color: #009;
+	background-color:#ECF0F1;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
 
