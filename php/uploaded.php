@@ -150,7 +150,7 @@
                 <?php
 					if ($fasta != '') {
 						echo('xlv.readFasta("');
-						echo preg_replace('/\r\n?/', "\\n", $fasta);
+						echo preg_replace('/\r?\n?/', "\\n", $fasta);
 						echo('");');
 						echo "\n\n";
 					}
@@ -161,7 +161,7 @@
 					}
 					echo "\n\n";
 					echo('xlv.readCSV("');
-					echo preg_replace('/\r\n?/', "\\n", $csv);
+					echo preg_replace('/\r?\n?/', "\\n", $csv);
 					echo('");');
 					echo "\n\n";
 				?>
