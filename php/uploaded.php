@@ -5,6 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <?php
+			//your connection string here
+			// $connectionString = "host= dbname= user= password=";
 			include('../../uploadsConnectionString.php');
 			$dbconn = pg_connect($connectionString)
 					or die('Could not connect: ' . pg_last_error());
@@ -52,7 +54,7 @@
 			<div class="controls">
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
-				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection Details</button>
+				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
 				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 				<button class="btn btn-inverse savelayout" onclick="saveLayout()">Save Layout</button>
 				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
@@ -72,6 +74,10 @@
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox">
 				</div>
+				
+				 <div class="controlGroup">Ambiguous&nbsp;&nbsp;
+				 <input checked="checked" id="ambig" onclick="xlv.hideAmbig(!document.getElementById('ambig').checked)" type="checkbox">
+                </div>
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -197,6 +203,7 @@
 					}
 					else {
 						//no score
+						document.getElementById('scoreSlider').setAttribute("style", "display:none;");
 					}
 				}				
                 //]]>

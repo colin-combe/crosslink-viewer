@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>xiNET | Rappsilber Laboratory</title>
+		<link rel="stylesheet" href="../css/bootstrap.css">
+		<link rel="stylesheet" href="../css/flat-ui.css" >
+    </head>
+    <body>
+		<h2 class="header">Upload your own data:</h2>
+
+		<form class="fileupload"  action="./fup.php" enctype="multipart/form-data" method="POST">
+			<div class="upload-box">
+				<label for="fastaFile">FASTA file:</label>
+				<input class="file" name="upfasta" type="file" id="fastFile"/>                    
+				<label for="csvFile">CSV file:</label>
+				<input class="file" name="upfile" type="file" id="csvFile"/>                    
+				<input value="Upload" type="submit">
+			</div>
+		</form>
+	</body>
+</html>

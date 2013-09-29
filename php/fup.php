@@ -1,7 +1,9 @@
 <?php
-
+	
+	//your connection string here
+	// $connectionString = "host= dbname= user= password=";
 	include('../../uploadsConnectionString.php');
-
+	
 	//if ($_FILES["upfile"]["error"] > 0) {
 	//    echo "Error: " . $_FILES["upfile"]["error"] . "<br />";
 	//} else {

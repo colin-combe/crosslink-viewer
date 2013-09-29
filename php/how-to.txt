@@ -1,0 +1,20 @@
+The code uses a postgress database but it should be easily changed to another db.
+
+You will need to create a database table called 'upload'.
+
+The table requires following columns:
+	'rand', a random key used for URL
+	'links', csv data file as a string
+	'fileName', shown inpage title
+	'layout', used for saved layout
+	'fasta', protein sequence data as fasta file format string
+
+You will need to add a connection string for your database into these files: 
+	fup.php, handles file upload then redirects to unique URL
+	uploaded.php, displays data, needs random key as http get parameter
+	saveLayout.php, writes saved layouts into db	
+
+careful not to check your db password into github :) 
+
+example.html contains an example html form for file upload.
+ 

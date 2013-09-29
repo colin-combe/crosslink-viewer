@@ -1,4 +1,6 @@
 <?php
+	//your connection string here
+	// $connectionString = "host= dbname= user= password=";
 	include('../../uploadsConnectionString.php');
 	$id = $_POST["id"];
 	$layout = $_POST["layout"];
