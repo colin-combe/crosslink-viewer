@@ -194,7 +194,7 @@
 					reader.onload = function (event) {
 						if(mode == 0){
 						d3.text(event.target.result, "text/csv", function(text) {
-							xlv.readXQuest(text);
+							xlv.readCSV(text);
 							});
 						}
 						else{

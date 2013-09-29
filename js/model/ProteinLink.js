@@ -211,35 +211,37 @@ ProteinLink.prototype.showID = function() {
         var altProteinLinks = d3.map();
           
         for (var i = 0; i < resLinkCount; i++) {
-                var resLink = resLinks[i];
-                var resLinkMeetsCriteria = false;
-                var mCount = resLink.matches.length;
-                for (var m = 0; m < mCount; m++) {
-                    var match = resLink.matches[m];
-                    if (match.meetsFilterCriteria()) {
-                        if (resLinkMeetsCriteria === false) {
-                            resLinkMeetsCriteria = true;
-                            filteredResLinks.push(resLink);
-                        }
-                        filteredMatches.set(match.id);
-                        if (match.isAmbig()) {
-                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
-                            }
-                        }
-                        else {
-                            this.ambig = false;
-                        }
-                    }
-                }
-            }
-            var filteredResLinkCount = filteredResLinks.length;
+			var resLink = resLinks[i];
+			var resLinkMeetsCriteria = false;
+			var mCount = resLink.matches.length;
+			for (var m = 0; m < mCount; m++) {
+				var match = resLink.matches[m];
+				if (match.meetsFilterCriteria()) {
+					if (resLinkMeetsCriteria === false) {
+						resLinkMeetsCriteria = true;
+						filteredResLinks.push(resLink);
+					}
+					filteredMatches.set(match.id);
+					if (match.isAmbig()) {
+						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+						}
+					}
+					else {
+						this.ambig = false;
+					}
+				}
+			}
+        }
+		var filteredResLinkCount = filteredResLinks.length;
 
             
-		 linkInfo += "<h5>" + filteredResLinkCount
+		linkInfo += "<h5>" + filteredResLinkCount
 			+ " unique residue - residue linkage site";
-			if (filteredResLinkCount) linkInfo += "s";
-			linkInfo += ":</h5>";
+		if (filteredResLinkCount > 1){
+			 linkInfo += "s";
+		}
+		linkInfo += ":</h5>";
    
         
       for (var i = 0; i < filteredResLinkCount; i ++ ){
