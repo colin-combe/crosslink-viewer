@@ -150,7 +150,7 @@
                 <?php
 					if ($fasta != '') {
 						echo('xlv.readFasta("');
-						echo str_replace("\n", "\\n", $csv);
+						echo str_replace("\n", "\\n", $fasta);
 						echo('");');
 						echo "\n\n";
 					}
