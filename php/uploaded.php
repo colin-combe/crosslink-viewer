@@ -11,7 +11,7 @@
 			$dbconn = pg_connect($connectionString)
 					or die('Could not connect: ' . pg_last_error());
 			$uid = $_GET["uid"];
-			$query = "SELECT links, filename, layout FROM upload WHERE rand = '" . $uid . "';";
+			$query = "SELECT links, filename, layout, fasta FROM upload WHERE rand = '" . $uid . "';";
 			// echo $query;
 			$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 			$line = pg_fetch_array($result, null, PGSQL_ASSOC);
