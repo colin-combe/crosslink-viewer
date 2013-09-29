@@ -68,9 +68,12 @@
 				
 			<div class="overlay-box" id="infoPanel">
 				<div>
-					<h4>Selection Details:</h4>
 					<div id="networkCaption">
-						<p>No Selection.</p>
+						<h4>Drag'n'Drop Demo Page by Hendrik Hofstadt</h4>
+						<p>This page allows you to drag and drop the data files on to it.</p>
+						<p></p>It is convenient but does not work in all browsers.</p>
+						<p>First, drag and drop the FASTA file onto the empty space in the middle of this page.</p>
+						<p>Then drag and drop the CSV data file onto it.</p>
 					</div>
 				</div>
 			</div>
@@ -193,22 +196,23 @@
 					reader = new FileReader();
 					reader.onload = function (event) {
 						if(mode == 0){
-						d3.text(event.target.result, "text/csv", function(text) {
-							xlv.readCSV(text);
-							});
+							d3.text(event.target.result, "text/csv", function(text) {
+								xlv.readCSV(text);
+								xlv.message("<p>CSV file received.</p>");
+						});
 						}
 						else{
-						d3.text(event.target.result, "text/plain", function(text) {
-						xlv.readFasta(text);
+							d3.text(event.target.result, "text/plain", function(text) {
+								xlv.readFasta(text);
+								xlv.message("<p>OK, FASTA file received.</p><p>Now drag and drop CSV data file onto page.</p>");
 							});
-						mode = 0;					
+							mode = 0;					
 						}
 					};
 					reader.readAsDataURL(file);					
 					return false;
 				};
-				xlv.init();
-
+				
 				function initSlider(){
 					if (xlv.scores != null){
 						document.getElementById('scoreLabel1').innerHTML = xlv.scores.min.toFixed(2);

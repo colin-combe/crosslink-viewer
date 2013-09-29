@@ -98,7 +98,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
     function initProteins(xlv) {
         // This function will be executed in case of error
         var error_response = function() {
-            alert('Bad response, Wrong URL?, No Sequence XML?');
+            alert('No FASTA file and DAS sequence look up failed.');
         };
         // This function inits the protein
         var response = function(res) {

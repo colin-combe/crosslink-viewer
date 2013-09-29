@@ -84,7 +84,7 @@ xinet.DASUtil.prototype.nextDASQuery = function(prot, server) {
         }
         else {
 //            this.xlv.message("<h4>All DAS complete.</h4>");
-            updateMenus(this.xlv);
+//            updateMenus(this.xlv);
         }
     }
 };
