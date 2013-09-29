@@ -18,6 +18,7 @@
 			$csv = $line['links'];
 			$filename = $line['filename'];
 			$layout = $line['layout'];
+			$fasta = $line['fasta'];
 			echo ('<title> xiNET | ' . $filename . '</title>');
         ?>
         <link rel="stylesheet" href="../css/xiNET.css">
@@ -55,9 +56,9 @@
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
 				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
-				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
-				<button class="btn btn-inverse savelayout" onclick="saveLayout()">Save Layout</button>
-				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
+				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export</button>
+				<button class="btn btn-inverse savelayout" onclick="saveLayout()">Save</button>
+				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto</button>
 				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>
 				
 				<div class="outlined" id="scoreSlider" >
@@ -147,16 +148,21 @@
                 xlv = new xinet.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
                 <?php
-					echo('xlv.readCSV("');
-					echo str_replace("\n", "\\n", $csv);
-					echo('");');
-					echo "\n\n";
-
+					if ($fasta != '') {
+						echo('xlv.readFasta("');
+						echo str_replace("\n", "\\n", $csv);
+						echo('");');
+						echo "\n\n";
+					}
 					echo ('xlv.id="' . $uid . '";');
 					echo "\n\n";
 					if ($layout != '') {
 						echo 'xlv.setLayout(' . $layout . ');';
 					}
+					echo "\n\n";
+					echo('xlv.readCSV("');
+					echo str_replace("\n", "\\n", $csv);
+					echo('");');
 					echo "\n\n";
 				?>
 

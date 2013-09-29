@@ -279,6 +279,7 @@ xinet.Controller.prototype.hideAmbig = function(bool) {
 //    };
 
 xinet.Controller.prototype.exportSVG = function(containerName) {
+    alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
     var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
     //TODO: rotator hide not working
     var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
