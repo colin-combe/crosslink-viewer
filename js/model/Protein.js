@@ -126,7 +126,13 @@ Protein.prototype.initProtein = function(sequence, name, description) {
     this.blob.setAttribute("cy", 0);
     this.blob.setAttribute("r", this.getBlobRadius());
     //style it
-    this.blob.setAttribute("fill", "white");
+    if (this.name.indexOf("DECOY_") !== -1){
+		this.blob.setAttribute("fill", "#FB8072");
+		//this.blob.setAttribute("fill-opacity", "0.5");
+	}else{
+		this.blob.setAttribute("fill", "white");
+		
+    }
     this.blob.setAttribute("fill-opacity", "1");
     this.blob.setAttribute("stroke", "black");
     this.blob.setAttribute("stroke-width", "1");
@@ -772,10 +778,13 @@ Protein.prototype.initStick = function() {
         p.setAttribute("y", y); //svgHeight);
         p.setAttribute("width", (protein.size) * Protein.UNITS_PER_RESIDUE);
         p.setAttribute("height", Protein.STICKHEIGHT);
-        //style it
-        //        p.setAttribute("fill", "white");
         p.setAttribute("fill-opacity", "0");
         p.setAttribute("stroke", "none");
+        //style it
+        if (protein.name.indexOf("DECOY_") !== -1){
+			p.setAttribute("fill", "#FB8072");
+			p.setAttribute("fill-opacity", "1");
+        }
         //        p.appendChild(protein.protTooltip);
         protein.rect.appendChild(p);
     }

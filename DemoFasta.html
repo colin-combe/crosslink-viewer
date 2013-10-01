@@ -148,6 +148,7 @@
                 xlv.setMessageElement(messageDiv);
 				d3.text('./data/results.fasta', "text/plain", function(text) {
 					xlv.readFasta(text);
+					//hideDecoy(true);
 					//must read data file after completing fasta file parse
 					d3.text('./data/result.csv', "text/csv", function(text) {
 						xlv.readCSV(text);
@@ -237,29 +238,14 @@
            //     $('#filter').slider().on('slide', function(ev) {
            //         filtersChanged();
            //     });
-
-
-            //        
-            function hideDecoy() {
-                var cdk = $('#filter').data('slider').getValue();
-                var icp = $('#ICP_filter').data('slider').getValue();
-                //console.log(cdk);
-                var protCount = xlv.proteins.values().length;
+     
+			function hideDecoy(decoysHidden) {
+				var protCount = xlv.proteins.values().length;
                 var prots = xlv.proteins.values();
                 for (var p = 0; p < protCount; p++) {
                     var prot = prots[p];
-                    //console.log(JSON.stringify(prot));
-                    var protCDK = prot.json["Mean Log2 SILAC"];
-                    var protICP = prot.json['Chromatin ICP'];
-                    //console.log(protCDK);
-                    if ((typeof protCDK === 'undefined' ||
-                            (protCDK >= cdk[0] && protCDK <= cdk[1])) &&
-                            (typeof protCDK === 'undefined' ||
-                                    (protICP >= icp[0] && protICP <= icp[1]))) {
-                        prot.setParked(false);
-                    }
-                    else {
-                        prot.setParked(true);
+					if (prot.name.indexOf("DECOY_") !== -1) {
+                        prot.setParked(decoysHidden);
                     }
                 }
                 xlv.checkLinks();
