@@ -134,11 +134,11 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 		for (var row = 1; row < countRows; row++) {
 			prot1 = rows[row][iProt1];
 			prot2 = rows[row][iProt2];
-			//ignore mathces where protien name continas string "reverse" or "decoy" 
-			if (prot1.toLowerCase().indexOf("reverse") === -1 
-				&& prot2.toLowerCase().indexOf("reverse") === -1
-				&& prot1.toLowerCase().indexOf("decoy") === -1 
-				&& prot2.toLowerCase().indexOf("decoy") === -1) {
+			//~ //ignore mathces where protien name continas string "reverse" or "decoy" 
+			//~ if (prot1.toLowerCase().indexOf("reverse") === -1 
+				//~ && prot2.toLowerCase().indexOf("reverse") === -1
+				//~ && prot1.toLowerCase().indexOf("decoy") === -1 
+				//~ && prot2.toLowerCase().indexOf("decoy") === -1) {
 				if (iId !== -1){
 					id = rows[row][iId];
 				}
@@ -152,7 +152,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 								prot2, rows[row][iRes2], 
 								id, score);
 			}
-        }
+        //~ }
         xlv.init();
         if (typeof initSlider === "function"){
 			initSlider();

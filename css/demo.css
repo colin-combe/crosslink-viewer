@@ -33,7 +33,6 @@ input, select, button {
     box-shadow: inset 1px 1px 1px 1px #999; 
     height:15px;
     position: relative;
-    top: 5px;
     display:inline-block;
 }
 
@@ -61,6 +60,7 @@ input, select, button {
     background-color:#fff;
     margin:0px;
     padding:0px;
+    vertical-align:top;
 }
 
 #track1 {
@@ -82,24 +82,24 @@ input, select, button {
     position: relative; 
 }
 
-.controlGroup {
+.controlGroup p{
+	margin-bottom:0px;
+	margin-top:10px;
+	margin-left:9px;
+	margin-right:9px;
+}
+.controlGroup{
     display: inline-block;
     color: #7F8C8D;
     background-color: #ECF0F1;
     border: 1px solid #2C3E50;
-    padding: 10px;
-    width: 96px;
     margin:4px;
+    height:39px;
+    vertical-align:top;
 }
 
-.outlined {
-    background-color: #ECF0F1;
-    border: 1px solid #2C3E50;
-    padding: 5px;
-    width: 440px;
-    color: #7F8C8D;
-	margin:4px;
-	display: inline-block;
+#scoreSlider{
+    width: 480px;
 }
 
 #debug1 {
