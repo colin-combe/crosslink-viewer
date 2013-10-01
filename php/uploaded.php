@@ -69,15 +69,16 @@
 					<p class="scoreLabel" id="scoreLabel2"></p>
 					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
 				</div> <!-- outlined scoreSlider -->
-				
-				<div class="controlGroup">Self Links&nbsp;&nbsp;
+				<div class="controlGroup"><p>Self Links&nbsp;
 					<input checked="checked" id="internal" onclick=
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
-					type="checkbox">
+					type="checkbox"></p>
 				</div>
 				
-				 <div class="controlGroup">Ambiguous&nbsp;&nbsp;
-				 <input checked="checked" id="ambig" onclick="xlv.hideAmbig(!document.getElementById('ambig').checked)" type="checkbox">
+				 <div class="controlGroup"><p>Ambiguous&nbsp;
+					<input checked="checked" id="ambig" onclick=
+						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
+					type="checkbox"></p>
                 </div>
 			</div>
 					
@@ -262,5 +263,22 @@
 				}
 				//]]>
 		</script>
+		<script>
+           //     $('#filter').slider().on('slide', function(ev) {
+           //         filtersChanged();
+           //     });
+     
+			function hideDecoy(decoysHidden) {
+				var protCount = xlv.proteins.values().length;
+                var prots = xlv.proteins.values();
+                for (var p = 0; p < protCount; p++) {
+                    var prot = prots[p];
+					if (prot.name.indexOf("DECOY_") !== -1) {
+                        prot.setParked(decoysHidden);
+                    }
+                }
+                xlv.checkLinks();
+            }
+        </script>
 	</body>
 </html>
