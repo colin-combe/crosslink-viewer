@@ -60,6 +60,32 @@ xinet.Controller.prototype.readFasta = function(file){
 			}		
 		}
 	}	
+	for(var i = 0;i < line_array.length;i++){
+		var line = "" + line_array[i];
+		// semi-colons indicate comments, ignore them
+		if(line.indexOf(";") !== 0){
+			// greater-than indicates description line
+			if(line.indexOf(">") === 0){
+				if (tempIdentifier !== null) {
+					tempIdentifier = "reverse_" + tempIdentifier;
+					var prot = new Protein(tempIdentifier, this);
+					prot.initProtein(tempSeq.trim().split("").reverse().join(""), 
+									"DECOY_" + nameFromIdentifier(tempIdentifier), 
+									"DECOY. " + tempDescription);
+					this.proteins.set(tempIdentifier, prot);
+					tempSeq = "";
+				}
+				iFirstSpace = line.indexOf(" ");
+				if (iFirstSpace === -1 ) iFirstSpace = line.length;
+				tempIdentifier = line.substring(1, iFirstSpace).trim();
+				tempDescription = line.substring(iFirstSpace).trim();
+				console.log(tempIdentifier);
+			}
+			else{
+				tempSeq += line.trim();			
+			}		
+		}
+	}	
 	
 	
 	//there will be one protein still to be added when we get to end
