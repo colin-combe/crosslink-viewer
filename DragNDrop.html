@@ -40,11 +40,14 @@
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
 				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
-				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
-				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
-				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>
-				
-				<div class="outlined" id="scoreSlider" >
+				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export</button>
+				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto</button>
+				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>		
+<!--
+				<input type="text" class="span2" value="" data-slider-min="-2" 
+				data-slider-max="3" data-slider-step="0.01" data-slider-value="[-2,3]" id="filter" >
+-->			
+				<div class="controlGroup" id="scoreSlider" >
 					<p class="scoreLabel" id="scoreLabel1"></p>
 					<div id="track1" class="sliderbar">
 						<div class="selected" id="handle1"></div> 
@@ -52,16 +55,23 @@
 					<p class="scoreLabel" id="scoreLabel2"></p>
 					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
 				</div> <!-- outlined scoreSlider -->
-				
-				<div class="controlGroup">Self Links&nbsp;&nbsp;
+				<div class="controlGroup"><p>Self Links&nbsp;
 					<input checked="checked" id="internal" onclick=
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
-					type="checkbox">
+					type="checkbox"></p>
 				</div>
 				
-				 <div class="controlGroup">Ambiguous&nbsp;&nbsp;
-				 <input checked="checked" id="ambig" onclick="xlv.hideAmbig(!document.getElementById('ambig').checked)" type="checkbox">
+				 <div class="controlGroup"><p>Ambiguous&nbsp;
+					<input checked="checked" id="ambig" onclick=
+						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
+					type="checkbox"></p>
                 </div>
+                
+				<div class="controlGroup"><p>Decoy&nbsp;
+					<input checked="checked" id="decoy" onclick=
+						"hideDecoy(!document.getElementById('decoy').checked)" 
+					type="checkbox"></p>
+				</div>
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -243,6 +253,23 @@
 					}
 				}				
                 //]]>
+        </script>
+		<script>
+           //     $('#filter').slider().on('slide', function(ev) {
+           //         filtersChanged();
+           //     });
+     
+			function hideDecoy(decoysHidden) {
+				var protCount = xlv.proteins.values().length;
+                var prots = xlv.proteins.values();
+                for (var p = 0; p < protCount; p++) {
+                    var prot = prots[p];
+					if (prot.name.indexOf("DECOY_") !== -1) {
+                        prot.setParked(decoysHidden);
+                    }
+                }
+                xlv.checkLinks();
+            }
         </script>
 	</body>
 </html>
