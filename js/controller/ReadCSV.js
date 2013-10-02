@@ -151,8 +151,16 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 				xlv.addMatch(prot1, rows[row][iRes1], 
 								prot2, rows[row][iRes2], 
 								id, score);
-			}
+		}
         //~ }
+		var protCount = xlv.proteins.values().length;
+		var prots = xlv.proteins.values();
+		for (var p = 0; p < protCount; p++) {
+			var prot = prots[p];
+			if (prot.name.indexOf("DECOY_") !== -1 && prot.proteinLinks.keys().length === 0) {
+				xlv.proteins.remove(prot.id);
+			}
+		}       
         xlv.init();
         if (typeof initSlider === "function"){
 			initSlider();
