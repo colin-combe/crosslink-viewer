@@ -25,7 +25,7 @@ xinet.Controller.prototype.readFasta = function(file){
 				if (iFirstSpace === -1 ) iFirstSpace = line.length;
 				tempIdentifier = line.substring(1, iFirstSpace).trim();
 				tempDescription = line.substring(iFirstSpace).trim();
-				console.log(tempIdentifier);
+				//console.log(tempIdentifier);
 			}
 			else{
 				tempSeq += line.trim();			
@@ -53,7 +53,7 @@ xinet.Controller.prototype.readFasta = function(file){
 				if (iFirstSpace === -1 ) iFirstSpace = line.length;
 				tempIdentifier = line.substring(1, iFirstSpace).trim();
 				tempDescription = line.substring(iFirstSpace).trim();
-				console.log(tempIdentifier);
+				//console.log(tempIdentifier);
 			}
 			else{
 				tempSeq += line.trim();			
