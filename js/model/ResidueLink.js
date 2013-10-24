@@ -84,7 +84,6 @@ ResidueLink.prototype.initSVG = function() {
     if (this.intra === true) {
         this.setUpCurve();
     }
-    
     this.isSelected = false;
 };
 
@@ -309,32 +308,32 @@ ResidueLink.prototype.setUpCurve = function() {
     //    alert("yup, here");
     var pathAtt;
     var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-    //    if (this.fromResidue == this.toResidue){
-    //        pathAtt = "M " + x1 + " 0 L " + x1 + " 25";
-    //    //        this.line.setAttribute("stroke", "red");
-    //    }
-    //    else {
-    var x2 = this.proteinLink.fromProtein.getResXwithStickZoom(this.toResidue);
-    var midY = (Math.abs(x2 - x1));
-    midY = midY / 2;
-    this.curveMidX = x1 + ((x2 - x1) / 2);
-    pathAtt = "M " + x1 + " 0 "
-    + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-    + " A " + midY + " " + midY + "  0 1 1 "
-    + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-    + " L " + x2 + " 0 "
-    ;
-    //    }
-
-    this.line.setAttribute("d", pathAtt);
-    this.highlightLine.setAttribute("d", pathAtt);
-    //
-    if (this.homodimer === true) {
-        //        alert('true');
-        this.line.setAttribute("stroke", "red");
-        this.line.setAttribute("transform", "scale (1 -1)");
-        this.highlightLine.setAttribute("transform", "scale (1 -1)");
+	if (this.toResidue === 'n/a'){ //xQuest monolink
+		pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
+	//        this.line.setAttribute("stroke", "red");
+	}
+	else {
+		var x2 = this.proteinLink.fromProtein.getResXwithStickZoom(this.toResidue);
+		var midY = (Math.abs(x2 - x1));
+		midY = midY / 2;
+		this.curveMidX = x1 + ((x2 - x1) / 2);
+		pathAtt = "M " + x1 + " 0 "
+		+ " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
+		+ " A " + midY + " " + midY + "  0 1 1 "
+		+ x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
+		+ " L " + x2 + " 0 "
+		;
     }
+
+	this.line.setAttribute("d", pathAtt);
+	this.highlightLine.setAttribute("d", pathAtt);
+	//
+	if (this.homodimer === true) {
+		//        alert('true');
+		this.line.setAttribute("stroke", "red");
+		this.line.setAttribute("transform", "scale (1 -1)");
+		this.highlightLine.setAttribute("transform", "scale (1 -1)");
+	}	
 };
 
 ResidueLink.prototype.setLineCoord = function(from, coord) {

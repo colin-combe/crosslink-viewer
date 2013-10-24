@@ -68,29 +68,31 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
             var accArray = prots.split(/[;,]/);
             for (var i = 0; i < accArray.length; i++) {
 				var id = accArray[i].trim();
-                var acc, name;
-                if (accArray[i].indexOf('|') === -1) {
-                    acc = accArray[i].trim();
-                }
-                else {
-                    var splitOnBar = accArray[i].split('|');
-                    acc = splitOnBar [1].trim();
-                    name = splitOnBar[2].trim();
-                    var iUnderscore = name.indexOf("_");
-					if (iUnderscore !== -1) {
-						name = name.substring(0, iUnderscore).trim();
+				if (id !== '-'){
+					var acc, name;
+					if (accArray[i].indexOf('|') === -1) {
+						acc = accArray[i].trim();
 					}
-                }
-                if (!xlv.proteins.has(id)) {
-					var protein = new Protein(id, xlv, acc, name);
-                    xlv.proteins.set(id, protein);
-                    var accLookupEntry = accLookupMap.get(acc);
-                    if (typeof accLookupEntry === "undefined") {
-						accLookupMap.set(acc, [id]);
-					}else{
-						accLookupEntry.push(id);
+					else {
+						var splitOnBar = accArray[i].split('|');
+						acc = splitOnBar [1].trim();
+						name = splitOnBar[2].trim();
+						var iUnderscore = name.indexOf("_");
+						if (iUnderscore !== -1) {
+							name = name.substring(0, iUnderscore).trim();
+						}
 					}
-                }
+					if (!xlv.proteins.has(id)) {
+						var protein = new Protein(id, xlv, acc, name);
+						xlv.proteins.set(id, protein);
+						var accLookupEntry = accLookupMap.get(acc);
+						if (typeof accLookupEntry === "undefined") {
+							accLookupMap.set(acc, [id]);
+						}else{
+							accLookupEntry.push(id);
+						}
+					}
+				}
             }
         }
     }
