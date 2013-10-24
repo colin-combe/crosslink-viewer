@@ -78,7 +78,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	var res1, res2;
 	// this is a bit of a hack to deal with loop links and mono links in xQuest output
 	if (pep2_protIDs[0] === '-'){
-		if (pep2_positions[0] === 'n/a') {
+		if (pep2_positions[0] === 'n/a') { //its a monolink - i think this is a hack, it shouldn't be stored along with other cross-links 
 			res1 = (pep1_positions[0] * 1);
 			res2 = (pep2_positions[0]);
 			for (var p = 0; p < pep1_protIDs.length; p++) {
@@ -123,18 +123,46 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				resLink.matches.push(this);
 				this.residueLinks.push(resLink);				
 			}		
-		} else {
-			res1 = (pep1_positions[0] * 1);
-			res2 = (pep2_positions[0] * 1);
-			for (var p = 0; p < pep1_protIDs.length; p++) {
-				p1ID = pep1_protIDs[p].trim();
+		} 
+		else {
+			//loop to produce all alternative linkage site combinations for loop links
+			for (var i = 0; i < pep1_positions.length; i++) {
+				//must be same number of alternatives for res 2 as for res1 in loop link
+			//for (var j = 0; j < pep2_positions.length; j++) {
+				// may be more residue positions than prot ids in the arrays
+				// ( = multiple positions in one protein)
+				var iProt = i, jProt = j;
+				if (iProt >= pep1_protIDs.length) {
+					iProt = pep1_protIDs.length - 1;
+				}
+				if (jProt >= pep2_protIDs.length) {
+					jProt = pep2_protIDs.length - 1;
+				}
+				p1ID = pep1_protIDs[iProt].trim();
 				p2ID = p1ID;
+
+				// * residue numbering starts at 1 *
+				res1 = (pep1_positions[i] * 1);
+				res2 = (pep2_positions[i] * 1);
+				if (typeof linkPos1 !== 'undefined') {
+					res1 += linkPos1;
+				}
+				if (typeof linkPos2 !== 'undefined') {
+					res2 += linkPos2;
+				}
 				// we don't want two different ID's, e.g. one thats "33-66" and one thats "66-33"
 				//following puts lower protein_ID first in link_ID
 				var proteinLinkID, fromProt, toProt;
-				proteinLinkID = "" + p1ID + "-" + p2ID;
-				fromProt = this.xlv.proteins.get(p1ID);
-				toProt = this.xlv.proteins.get(p2ID);
+				//~ if (p1ID <= p2ID) { // for loop link iD's will be the same
+					proteinLinkID = "" + p1ID + "-" + p2ID;
+					fromProt = this.xlv.proteins.get(p1ID);
+					toProt = this.xlv.proteins.get(p2ID);
+				//~ }
+				//~ else {
+					//~ proteinLinkID = "" + p2ID + "-" + p1ID;
+					//~ fromProt = this.xlv.proteins.get(p2ID);
+					//~ toProt = this.xlv.proteins.get(p1ID);
+				//~ }
 				//get or create protein-protein link
 				var link = this.xlv.proteinLinks.get(proteinLinkID);
 				if (link === undefined) {
@@ -149,13 +177,21 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				}
 				// again, order id string by prot id or by residue if intra protein link
 				var residueLinkID;
+				//~ if (p1ID === p2ID) { p1ID will === p2ID for loop link
 					if ((res1 - 0) < (res2 - 0)) {
 						residueLinkID = res1 + "-" + res2;
 					}
 					else {
 						residueLinkID = res2 + "-" + res1;
 					}
-				
+				//~ }
+				//~ else if (p1ID < p2ID) {
+					//~ residueLinkID = res1 + "-" +  res2;
+				//~ }
+				//~ else {
+					//~ residueLinkID =  res2 + "-" + res1;
+				//~ }
+
 	//            if (hd === true)
 	//                residueLinkID += "_hd";
 
@@ -163,9 +199,20 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				var resLink = link.residueLinks.get(residueLinkID);
 				if (resLink === undefined) {
 					//WATCH OUT - residues need to be in correct oprder
-					if ((res1 - 0) < (res2 - 0)) {
+					if (p1ID === p2ID) {
+						if ((res1 - 0) < (res2 - 0)) {
+							resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
+						} else {
+							resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
+						}
+					}
+					//
+					else if (p1ID == link.fromProtein.id) {
+						//// yeah... watch this, refactor so don't need type conversion
 						resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
-					} else {
+					}
+					else {
+						//WATCH OUT - residues need to be in correct oprder
 						resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
 					}
 					link.residueLinks.set(residueLinkID, resLink);
@@ -178,8 +225,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 					resLink.matches = new Array(0);
 				}
 				resLink.matches.push(this);
-				this.residueLinks.push(resLink);				
-			}
+				this.residueLinks.push(resLink);
+			}			
 		}
 	}
 	else {
