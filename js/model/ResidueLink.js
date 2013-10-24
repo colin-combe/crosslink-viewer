@@ -10,7 +10,7 @@ ResidueLink.prototype = new xinet.Link();
 
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd) {
     this.id = id;
-    //    this.matches = new Array(0);
+    //    this.matches = new Array(0); //we don't initialise this here - save memory in use case where there are no matches
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
@@ -97,9 +97,9 @@ ResidueLink.prototype.getToProtein = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
-        if (typeof andAlternatives === 'undefined') {
-    andAlternatives = false;//TODO: tEMP HACK
-        }
+    if (typeof andAlternatives === 'undefined') {
+		andAlternatives = false;//TODO: tEMP HACK
+    }
     if (this.shown) {
         if (show) {
             this.highlightLine.setAttribute("stroke-opacity", "1");
@@ -118,10 +118,10 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
                 var rc = match.residueLinks.length;
                 for (var rl = 0; rl < rc; rl++) {
                     var resLink = match.residueLinks[rl];
-                    if (resLink.isSelected == false) {
+                 //   if (resLink.isSelected == false) { //not right
 						resLink.showHighlight(show, false);
 						resLink.proteinLink.showHighlight(show, false);
-					}
+				 //}
                 }
             }
         }
