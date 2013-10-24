@@ -20,7 +20,7 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 		alert("Failed to read column 'Protein2' from CSV file");
 		return;
 	}
-	//missing Residue column 
+	//missing Residue column(s) 
     if (iRes1 === -1){
 		// we could try a different sometimes used column name
 		iRes1 = headers.indexOf('AbsPos1');
@@ -37,13 +37,13 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 			return;
 		}
 	}
-	// no score? no prob, we can still proceed
+	// no score? no problem, we can still proceed
     if (iScore === -1){
 		// we could try a different sometimes used column name
 		iScore = headers.indexOf('ld-Score');
 	}
 	
-	// if a Fasta file has been added then this.proteins will not be empty
+	// if a Fasta file has been provided then this.proteins will not be empty
     var countRows = rows.length;
 	if (this.proteins.keys().length === 0) {
 		//No protein data. We will need to look up accession numbers to get sequences.
@@ -64,8 +64,8 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
 	
     function addProteins(columnIndex, xlv) {
         for (var row = 1; row < countRows; row++) {
-            var prots = rows[row][columnIndex];
-            var accArray = prots.split(';');
+            var prots = rows[row][columnIndex].replace(/(['"])/g, '');
+            var accArray = prots.split(/[;,]/);
             for (var i = 0; i < accArray.length; i++) {
 				var id = accArray[i].trim();
                 var acc, name;

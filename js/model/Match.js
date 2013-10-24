@@ -10,7 +10,6 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 
     this.xlv = xlvController;
     this.residueLinks = new Array();
-
     this.id = id;
     if (score != null){
 		this.score = score - 0;
@@ -27,11 +26,18 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			this.xlv.scores.min = this.score;
 		}
 	}
-    //semi-colon is seperator
-    pep1_protIDs = pep1_protIDs.toString().split(";");
-    pep1_positions = pep1_positions.toString().split(";");
-    pep2_protIDs = pep2_protIDs.toString().split(";");
-    pep2_positions = pep2_positions.toString().split(";");
+	
+	//lets eliminate all forms of quotation marks
+	pep1_protIDs = pep1_protIDs.replace(/(['"])/g, '');
+    pep1_positions = pep1_positions.replace(/(['"])/g, '');
+    pep2_protIDs = pep2_protIDs.replace(/(['"])/g, '');
+    pep2_positions = pep2_positions.replace(/(['"])/g, '');
+	
+    //semi-colon is seperator. OK, commas will do also
+    pep1_protIDs = pep1_protIDs.toString().split(/[;,]/);
+    pep1_positions = pep1_positions.toString().split(/[;,]/);
+    pep2_protIDs = pep2_protIDs.toString().split(/[;,]/);
+    pep2_positions = pep2_positions.toString().split(/[;,]/);
 
 //identify homodimers
 //var hd = false;
