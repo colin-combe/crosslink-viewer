@@ -23,16 +23,22 @@ xinet.Controller.prototype.readFasta = function(file){
 				}
 				iFirstSpace = line.indexOf(" ");
 				if (iFirstSpace === -1 ) iFirstSpace = line.length;
-				tempIdentifier = line.substring(1, iFirstSpace).trim();
+				tempIdentifier = line.substring(1, iFirstSpace).trim().replace(/(['"])/g, '');
 				tempDescription = line.substring(iFirstSpace).trim();
-				console.log(tempIdentifier);
+				//console.log(tempIdentifier);
 			}
 			else{
 				tempSeq += line.trim();			
 			}		
 		}
-	}
-	
+	}	
+	//there will be one protein still to be added when we get to end
+	var prot = new Protein(tempIdentifier, this);
+	prot.initProtein(tempSeq.trim(), 
+				nameFromIdentifier(tempIdentifier), 
+				tempDescription);
+	this.proteins.set(tempIdentifier, prot);
+		
 	//add reversed
 	for(var i = 0;i < line_array.length;i++){
 		var line = "" + line_array[i];
@@ -51,15 +57,15 @@ xinet.Controller.prototype.readFasta = function(file){
 				}
 				iFirstSpace = line.indexOf(" ");
 				if (iFirstSpace === -1 ) iFirstSpace = line.length;
-				tempIdentifier = line.substring(1, iFirstSpace).trim();
+				tempIdentifier = line.substring(1, iFirstSpace).trim().replace(/(['"])/g, '');
 				tempDescription = line.substring(iFirstSpace).trim();
-				console.log(tempIdentifier);
+				//console.log(tempIdentifier);
 			}
 			else{
 				tempSeq += line.trim();			
 			}		
 		}
-	}	
+	}
 	for(var i = 0;i < line_array.length;i++){
 		var line = "" + line_array[i];
 		// semi-colons indicate comments, ignore them
@@ -77,23 +83,15 @@ xinet.Controller.prototype.readFasta = function(file){
 				}
 				iFirstSpace = line.indexOf(" ");
 				if (iFirstSpace === -1 ) iFirstSpace = line.length;
-				tempIdentifier = line.substring(1, iFirstSpace).trim();
+				tempIdentifier = line.substring(1, iFirstSpace).trim().replace(/(['"])/g, '');
 				tempDescription = line.substring(iFirstSpace).trim();
-				console.log(tempIdentifier);
+		//				console.log(tempIdentifier);
 			}
 			else{
 				tempSeq += line.trim();			
 			}		
 		}
-	}	
-	
-	
-	//there will be one protein still to be added when we get to end
-	var prot = new Protein(tempIdentifier, this);
-	prot.initProtein(tempSeq.trim(), 
-				nameFromIdentifier(tempIdentifier), 
-				tempDescription);
-	this.proteins.set(tempIdentifier, prot);
+	}		
 	
 	function nameFromIdentifier(ident){
 		var name = ident;

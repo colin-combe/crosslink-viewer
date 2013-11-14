@@ -418,7 +418,11 @@ ProteinLink.prototype.dashedLine = function(dash) {
     }
     if (dash){// && !this.dashed) {
         this.dashed = true;
-        this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+        if (this.intra === true) {
+			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+		} else {
+			this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+		}
     }
     else if (!dash){// && this.dashed) {
         this.dashed = false;
