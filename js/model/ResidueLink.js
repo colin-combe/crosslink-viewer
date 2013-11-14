@@ -8,7 +8,7 @@
 
 ResidueLink.prototype = new xinet.Link();
 
-function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd) {
+function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {
     this.id = id;
     //    this.matches = new Array(0); //we don't initialise this here - save memory in use case where there are no matches
     this.xlv = xlvController;
@@ -24,9 +24,9 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, hd)
 
     this.ambig = false;
     this.tooltip = this.id;
-    if (hd === true) {
+    if (flip === true) {
         //     alert('true');
-        this.homodimer = true;
+        this.flip = true;
     }
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
@@ -57,7 +57,7 @@ ResidueLink.prototype.initSVG = function() {
         this.highlightLine.setAttribute("stroke-opacity", "0")
 
         if (typeof this.colour !== 'undefined'){
-            this.line.setAttribute("stroke", this.colour.toString());
+            this.line.setAttribute("stroke", this.colour);
         }
 
         //set the events for it
@@ -308,7 +308,7 @@ ResidueLink.prototype.setUpCurve = function() {
     //    alert("yup, here");
     var pathAtt;
     var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-	if (this.toResidue === 'n/a'){ //xQuest monolink
+	if (this.toResidue === 'n/a'){ //monolink
 		pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 	//        this.line.setAttribute("stroke", "red");
 	}
@@ -328,9 +328,9 @@ ResidueLink.prototype.setUpCurve = function() {
 	this.line.setAttribute("d", pathAtt);
 	this.highlightLine.setAttribute("d", pathAtt);
 	//
-	if (this.homodimer === true) {
+	if (this.flip === true) {
 		//        alert('true');
-		this.line.setAttribute("stroke", "red");
+		//this.line.setAttribute("stroke", "red");
 		this.line.setAttribute("transform", "scale (1 -1)");
 		this.highlightLine.setAttribute("transform", "scale (1 -1)");
 	}	

@@ -104,7 +104,9 @@ input, select, button {
 
 #debug1 {
     display:inline-block;
+/*
     width:140px;
+*/
 }
 
 .scoreLabel {

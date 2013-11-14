@@ -8,8 +8,20 @@
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         id, score, xlvController, 
         //the following attributes are optional
-        linkPos1, linkPos2, pep1_seq, pep2_seq) {
-
+        linkPos1, linkPos2, pep1_seq, pep2_seq, 
+		autovalidated, validated){
+			
+			
+	this.autovalidated = false;
+    //TODO: fix this, prob with types in xi
+    if (autovalidated !== undefined){
+        //   if (autovalidated.toLowerCase() == "t" || autovalidated.toLowerCase() == "true"){ // why toLowerCase a problem?
+        if (autovalidated == "t" || autovalidated == "true"){
+            this.autovalidated = true;
+        }
+    }
+    this.validated = validated;	
+	
     this.xlv = xlvController;
     this.residueLinks = new Array();
     this.id = id;
@@ -30,10 +42,10 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}
 	
 	//lets eliminate all forms of quotation marks
-	pep1_protIDs = pep1_protIDs.replace(/(['"])/g, '');
-    pep1_positions = pep1_positions.replace(/(['"])/g, '');
-    pep2_protIDs = pep2_protIDs.replace(/(['"])/g, '');
-    pep2_positions = pep2_positions.replace(/(['"])/g, '');
+	pep1_protIDs = pep1_protIDs.toString().replace(/(['"])/g, '');
+    pep1_positions = pep1_positions.toString().replace(/(['"])/g, '');
+    pep2_protIDs = pep2_protIDs.toString().replace(/(['"])/g, '');
+    pep2_positions = pep2_positions.toString().replace(/(['"])/g, '');
 	
     //semi-colon is seperator. OK, commas will do also
     pep1_protIDs = pep1_protIDs.toString().split(/[;,]/);
@@ -78,8 +90,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	var res1, res2;
 	
 	// this is a bit of a hack to deal with loop links and mono links in xQuest output - NEEDS TIDIED UP	
-	if (pep2_protIDs[0] === '-'){
-		if (pep2_positions[0] === 'n/a') { //its a monolink - i think this is a hack, it shouldn't be stored along with other cross-links 
+	if (pep2_protIDs[0].trim() === '-'){
+		if (pep2_positions[0].trim() === 'n/a') { //its a monolink - i think this is a hack, it shouldn't be stored along with other cross-links 
 			res2 = (pep2_positions[0]);
 			for (var i = 0; i < pep1_positions.length; i++) {
 				//must be same number of alternatives for res 2 as for res1 in loop link
@@ -125,7 +137,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				//get or create residue link
 				var resLink = link.residueLinks.get(residueLinkID);
 				if (resLink === undefined) {
-					resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
+					resLink = new ResidueLink(residueLinkID, link, res1, res2.trim(), this.xlv);
 					link.residueLinks.set(residueLinkID, resLink);
 					if (link.residueLinks.keys().length > ProteinLink.maxNoResidueLinks) {
 						ProteinLink.maxNoResidueLinks = link.residueLinks.keys().length;

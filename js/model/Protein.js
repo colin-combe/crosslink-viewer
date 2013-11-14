@@ -24,7 +24,7 @@ function Protein(id, xlvController, acc, name) {
 }
 
 //sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
-Protein.prototype.initProtein = function(sequence, name, description) {
+Protein.prototype.initProtein = function(sequence, name, description, size) {
     if (this.name == null) {
         this.name = name;
     }
@@ -49,7 +49,12 @@ Protein.prototype.initProtein = function(sequence, name, description) {
     }
     //remove modification site info from sequence
     this.sequence = sequence.replace(/[^A-Z]/g, '');
-    this.size = this.sequence.length;
+    if (typeof size != "undefined") {
+		this.size = size;
+	}
+	else {
+		this.size = this.sequence.length;
+	}
     // keep track of largest protein size - used for initial scaling of bars
     if (Protein.MAXSIZE < this.size) {
         Protein.MAXSIZE = this.size;

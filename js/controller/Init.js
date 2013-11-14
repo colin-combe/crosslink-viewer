@@ -206,7 +206,6 @@ xinet.Controller.prototype.toJSON = function() {
     };
 };
 
-
 xinet.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
@@ -220,19 +219,20 @@ xinet.Controller.prototype.message = function(text, preformatted) {
     }
 };
 
-xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession) {
+xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
     var newProt = new Protein(id, this, accession, label);
-    newProt.initProtein(sequence, label, description);
+    newProt.initProtein(sequence, label, description, size);
     this.proteins.set(id, newProt);
 };
 
 //Positions are one based
 xinet.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
         pep2_protIDs, pep2_positions,
-        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq) {
+        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated) {
     var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq);
+            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated);
     this.matches.set(id, match);
+    return match;
 };
 
 // add all matches with single call, arg is an array of arrays
