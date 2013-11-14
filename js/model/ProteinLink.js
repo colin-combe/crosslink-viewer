@@ -1,4 +1,4 @@
-//		xiNET cross-link viewer
+//		xiNET Cross-link Viewer
 //		Copyright 2013 Rappsilber Laboratory
 //
 //		author: Colin Combe

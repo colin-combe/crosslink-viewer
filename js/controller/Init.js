@@ -1,4 +1,9 @@
-//Init.js
+//		xiNET Cross-link Viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		author: Colin Combe
+//
+//		Init.js
 
 var xinet = {}; //crosslinkviewer's javascript namespace
 
@@ -24,7 +29,7 @@ xinet.Controller = function(targetDiv) {
     //xinet.Controller.prototype.setSvgElement = function(svgElement){
 
     this.panning = false;
-    // if we are dragging something at the moment - this will be the element, that is draged
+    // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
     // are we dragging at the moment?
     this.dragging = false;
@@ -206,7 +211,6 @@ xinet.Controller.prototype.toJSON = function() {
     };
 };
 
-
 xinet.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
@@ -297,7 +301,7 @@ xinet.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-    Protein.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//(((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;//TODO: fix that -350 hack
+    Protein.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//(((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
 
     this.initComplete = true;
 
@@ -376,7 +380,7 @@ xinet.Controller.prototype.setLinkColour = function(linkID, colour) {
     }
 };
 
-xinet.Controller.prototype.parkAll = function(id, label, sequence, description, accession, size) {
+xinet.Controller.prototype.parkAll = function() {
     var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
