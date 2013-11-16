@@ -10,18 +10,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         //the following attributes are optional
         linkPos1, linkPos2, pep1_seq, pep2_seq, 
 		autovalidated, validated){
-			
-			
-	this.autovalidated = false;
-    //TODO: fix this, prob with types in xi
-    if (autovalidated !== undefined){
-        //   if (autovalidated.toLowerCase() == "t" || autovalidated.toLowerCase() == "true"){ // why toLowerCase a problem?
-        if (autovalidated == "t" || autovalidated == "true"){
-            this.autovalidated = true;
-        }
-    }
-    this.validated = validated;	
-	
+				
     this.xlv = xlvController;
     this.residueLinks = new Array();
     this.id = id;
@@ -38,6 +27,36 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
 		else if (this.score < this.xlv.scores.min) {
 			this.xlv.scores.min = this.score;
+		}
+	}
+	
+	this.autovalidated = false;
+	if (typeof autovalidated !== 'undefined'){
+		if (autovalidated !== '' && autovalidated !== null){
+			if (autovalidated == "t" || autovalidated == "true" || autovalidated === true){
+				this.autovalidated = true;
+			}
+			this.xlv.autoValidatedFound = true;
+		}
+    }
+    if (typeof validated !== 'undefined'){
+		if (validated !== '' && validated !== null){
+			this.validated = validated;	
+			this.xlv.manualValidatedFound = true;
+		}
+	}
+	 if (typeof pep1_seq !== 'undefined'){
+		if (pep1_seq !== '' && pep1_seq !== null){
+			this.pep1_seq = pep1_seq.replace(/[^A-Z]/g, '');	
+			this.link1_pos = linkPos1;	
+			this.xlv.pepSeqFound = true;
+		}
+	}
+	 if (typeof pep2_seq !== 'undefined'){
+		if (pep2_seq !== '' && pep2_seq !== null){
+			this.pep2_seq = pep2_seq.replace(/[^A-Z]/g, '');;	
+			this.link2_pos = linkPos2;	
+			this.xlv.pepSeqFound = true;
 		}
 	}
 	
@@ -386,4 +405,31 @@ Match.prototype.isAmbig = function() {
         return true;
     }
     return false;
+}
+
+Match.prototype.toTableRow = function() {
+   var htmlTableRow = "<tr><td><p>" + //<td><p>" + this.id+ "</p></td>
+			((typeof this.score !== 'undefined')? this.score.toFixed(2) : 'undefined')
+			+ "</p></td>";
+			if (this.xlv.autoValidatedFound === true){
+				htmlTableRow += "<td><p>" + this.autovalidated
+					+ "</p></td>";
+			}
+			if (this.xlv.manualValidatedFound === true){
+				htmlTableRow += "<td><p>" + this.validated
+					+ "</p></td>";
+			}
+			if (this.xlv.pepSeqFound === true){
+				htmlTableRow += "<td><p>" + this.pep1_seq
+					+ "</p></td>";
+				htmlTableRow += "<td><p>" + this.link1_pos
+					+ "</p></td>";
+				htmlTableRow += "<td><p>" + this.pep2_seq
+					+ "</p></td>";
+				htmlTableRow += "<td><p>" + this.link2_pos
+					+ "</p></td>";
+				
+			}
+			htmlTableRow += "</tr>";
+			return htmlTableRow;
 }

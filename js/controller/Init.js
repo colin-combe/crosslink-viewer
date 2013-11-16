@@ -12,22 +12,22 @@ xinet.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/d
 
 xinet.linkWidth = 1.5;// default line width
 
+// highlight and selection colours are global
+// (because all instances of xiNet should use same colours for this)
+xinet.highlightColour = new RGBColor("#FDC086");
+xinet.selectedColour = new RGBColor("yellow");
+xinet.defaultSelfLinkColour = new RGBColor("#8073AC'");
+xinet.defaultInterLinkColour = new RGBColor("#E08214");
+
+
 xinet.Controller = function(targetDiv) {
     this.fields = {}; // not sure about this, used by text search
-    //see note below re gwt, two different ways to initialise
-    //    if (targetDiv != null) {// if null gwt will pass in SVG
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(xinet.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     targetDiv.appendChild(this.svgElement);
-    //        this.setSvgElement(svg);
-    //    }
-    //}
-
-    //the GWT framework wants to have access to the SVG element, it creates it and passes it in
-    //xinet.Controller.prototype.setSvgElement = function(svgElement){
-
+    
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
@@ -62,7 +62,7 @@ xinet.Controller = function(targetDiv) {
     this.container = document.createElementNS(xinet.svgns, "g");
     this.container.setAttribute("id", "container");
 
-    var useDefs = false;//show experimental magnifier using use and defs elements
+    var useDefs = false;//show magnifier using use and defs elements
     var defs;
     if (useDefs === true) {
         //for magnifier... chrome only

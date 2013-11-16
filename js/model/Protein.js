@@ -190,7 +190,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.rectHighlight.setAttribute("stroke-opacity", "0");
     if (xinet.highlightColour !== undefined)
         this.rectHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
-    this.rectHighlight.setAttribute("stroke-width", "10");
+    this.rectHighlight.setAttribute("stroke-width", "5");
     this.rectHighlight.setAttribute("fill", "none");
     //    this.rectHighlight.setAttribute("class", "pOutline Xlr_protein");
 
@@ -440,10 +440,10 @@ Protein.prototype.scale = function() {
         this.p.setAttribute("y", -Protein.STICKHEIGHT / 2); //svgHeight);
         this.p.setAttribute("width", protLength);
         this.p.setAttribute("height", Protein.STICKHEIGHT);
-        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0));
-        this.rectHighlight.setAttribute("y", -Protein.STICKHEIGHT / 2); //svgHeight);
-        this.rectHighlight.setAttribute("width", protLength);
-        this.rectHighlight.setAttribute("height", Protein.STICKHEIGHT);
+        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0) -2.5 );
+        this.rectHighlight.setAttribute("y", (-Protein.STICKHEIGHT / 2) - 2.5); //svgHeight);
+        this.rectHighlight.setAttribute("width", protLength + 5);
+        this.rectHighlight.setAttribute("height", Protein.STICKHEIGHT + 5);
         this.rectAndTicks.appendChild(this.ticks);
         this.setRotation(this.rotation);
     }
@@ -763,7 +763,7 @@ Protein.prototype.initStick = function() {
         this.upperRotator = new Rotator(this, 1, this.xlv);
         this.stick = document.createElementNS(xinet.svgns, "g");
         this.stick.appendChild(this.rectAndTicks);
-        this.stick.setAttribute("class", "stick");
+        this.stick.setAttribute("class", "protein");
         this.stick.appendChild(this.intraLinksHighlights);
         this.stick.appendChild(this.intraLinks);
         this.stick.appendChild(this.rectDomainsMouseEvents);
@@ -778,11 +778,12 @@ Protein.prototype.initStick = function() {
 
     function getBackgroundRect(protein) {
         var p = document.createElementNS(xinet.svgns, "rect");
-        p.setAttribute("class", "pBackground Xlr_protein");
+        p.setAttribute("class", "protein");
         p.setAttribute("x", protein.getResXUnzoomed(0));
-        p.setAttribute("y", y); //svgHeight);
+        p.setAttribute("y", y);
         p.setAttribute("width", (protein.size) * Protein.UNITS_PER_RESIDUE);
         p.setAttribute("height", Protein.STICKHEIGHT);
+        p.setAttribute("fill", "white");
         p.setAttribute("fill-opacity", "0");
         p.setAttribute("stroke", "none");
         //style it

@@ -128,11 +128,14 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     }
     if (this.shown) {
         if (show) {
+			this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-           if (this.isSelected == false) {
-			    this.highlightLine.setAttribute("stroke-opacity", "0");
-		   }
+			this.highlightLine.setAttribute("stroke", xinet.selectedColour.toRGB());
+			if (this.isSelected == false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			}
+			
         }
     }
     if (andAlternatives && this.ambig) {
@@ -169,13 +172,15 @@ ProteinLink.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.xlv.selected.set(this.id, this);//ok, 
         this.isSelected = true;
+        this.highlightLine.setAttribute("stroke", xinet.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.xlv.selected.remove(this.id);
         this.isSelected = false;
-		this.highlightLine.setAttribute("stroke-opacity", "0");
-    }
+        this.highlightLine.setAttribute("stroke-opacity", "0");
+        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+ }
 };
 
 //used when link clicked
@@ -256,15 +261,25 @@ ProteinLink.prototype.showID = function() {
 			} else {
 				linkInfo += ":</p>";
 			}
-			var scores = "<table><tr><th>Id</th><th>Score</th></tr>";
-			for (var j = 0; j < c; j++) {
-			   scores += "<tr><td><p>" + matches[j].id
-						+ "</p></td><td><p>" + 
-						((typeof matches[j].score !== 'undefined')? matches[j].score.toFixed(2) : 'undefined')
-						+ "</p></td></tr>";
+			var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
+			if (this.xlv.autoValidatedFound === true){
+				scoresTable += "<th>Auto</th>";
 			}
-			scores += "</table><p>&nbsp;</p>";
-			linkInfo += scores;
+			if (this.xlv.manualValidatedFound === true){
+				scoresTable += "<th>Manual</th>";
+			}
+			if (this.xlv.pepSeqFound === true){
+				scoresTable += "<th>Pep Seq.1</th>";
+				scoresTable += "<th>Link Pos.1</th>";
+				scoresTable += "<th>Pep Seq.2</th>";
+				scoresTable += "<th>Link Pos.2</th>";
+			}
+			scoresTable += "</tr>";
+			for (var j = 0; j < c; j++) {
+			   scoresTable += matches[j].toTableRow();
+			}
+			scoresTable += "</table><p>&nbsp;</p>";
+			linkInfo += scoresTable;
         }
         this.xlv.message(linkInfo);
     }

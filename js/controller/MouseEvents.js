@@ -1,7 +1,4 @@
-// highlight and selection colours are global
-// (because all instances of xiNet should use same colours for this)
-xinet.highlightColour = new RGBColor("yellow");
-xinet.selectedColour = new RGBColor("yellow");
+
 
 //static var's signifying Controller's status
 xinet.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
