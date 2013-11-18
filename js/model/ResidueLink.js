@@ -119,7 +119,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 								var fromPepStart = this.fromResidue - match.link1_pos; 
 								var fromPepEnd = match.pep1_seq.length; 
 								var toPepStart = this.toResidue - match.link2_pos; 
-								var tpPepEnd = match.pep2_seq.length;
+								var toPepEnd = match.pep2_seq.length;
 							} else {
 								var fromPepStart = this.fromResidue - match.link2_pos; 
 								var fromPepEnd = match.pep2_seq.length; 
