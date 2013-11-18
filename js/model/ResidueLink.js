@@ -103,13 +103,47 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
     if (this.shown) {
         if (show) {
 			this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "0.7");   
+            this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
+            if (this.xlv.pepSeqFound){
+				var fromPeptides = [], toPeptides = [];
+				var filteredMatches = this.getFilteredMatches();
+				var fmc = filteredMatches.length;
+				for (var m = 0; m < fmc; m++) {
+					var match = this.matches[m];
+					var rc = match.residueLinks.length;
+					for (var rl = 0; rl < rc; rl++) {
+						var resLink = match.residueLinks[rl][0];	
+						if (resLink == this){
+							var endsSwitched = match.residueLinks[rl][1];
+							if (endsSwitched === false){
+								var fromPepStart = this.fromResidue - match.link1_pos; 
+								var fromPepEnd = match.pep1_seq.length; 
+								var toPepStart = this.toResidue - match.link2_pos; 
+								var tpPepEnd = match.pep2_seq.length;
+							} else {
+								var fromPepStart = this.fromResidue - match.link2_pos; 
+								var fromPepEnd = match.pep2_seq.length; 
+								var toPepStart = this.toResidue - match.link1_pos; 
+								var toPepEnd = match.pep1_seq.length;
+							} 
+							fromPeptides.push([fromPepStart, fromPepEnd]);
+							toPeptides.push([toPepStart, toPepEnd]);
+						}	
+					}
+				}
+				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
+				this.proteinLink.toProtein.showPeptides(toPeptides);  
+			}
+			
         } else {
 			this.highlightLine.setAttribute("stroke", xinet.selectedColour.toRGB());
 			if (this.isSelected == false) {
 				this.highlightLine.setAttribute("stroke-opacity", "0");
 			}
-			
+            if (this.xlv.pepSeqFound){
+				this.proteinLink.fromProtein.removePeptides();  
+				this.proteinLink.toProtein.removePeptides();  			
+			}
         }
     }
     if (andAlternatives && this.ambig) {
@@ -120,7 +154,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
             if (match.isAmbig()) {
                 var rc = match.residueLinks.length;
                 for (var rl = 0; rl < rc; rl++) {
-                    var resLink = match.residueLinks[rl];
+                    var resLink = match.residueLinks[rl][0];
                  //   if (resLink.isSelected == false) { //not right
 						resLink.showHighlight(show, false);
 						resLink.proteinLink.showHighlight(show, false);
@@ -325,7 +359,7 @@ ResidueLink.prototype.setUpCurve = function() {
     //    alert("yup, here");
     var pathAtt;
     var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-	if (this.toResidue === 'n/a'){ //monolink
+	if (isNaN(parseFloat(this.toResidue))){ //monolink
 		pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 	//        this.line.setAttribute("stroke", "red");
 	}

@@ -753,6 +753,51 @@ Protein.prototype.toStick = function() {
 // checkLinks brings in new
 };
 
+Protein.prototype.showPeptides = function(pepBounds) {
+	if (this.form=== 1){		
+		if (typeof this.peptides === 'undefined'){
+			this.peptides = document.createElementNS(xinet.svgns, "g");
+			this.rectDomainsColoured.appendChild(this.peptides);
+		}
+		var y = -Protein.STICKHEIGHT / 2;
+		
+        var count = pepBounds.length;
+        var yIncrement = Protein.STICKHEIGHT / count;
+        for (var i = 0; i < count; i++) {
+            var pep = pepBounds[i];
+                   
+            var annotColouredRect = document.createElementNS(xinet.svgns, "rect");
+            annotColouredRect.setAttribute("class", "protein");
+
+            //make domain rect's
+            var annotX = this.getResXUnzoomed(pep[0]);
+            var annoSize = pep[1];
+            var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;
+            annotColouredRect.setAttribute("x", annotX);
+            annotColouredRect.setAttribute("y", y);
+            annotColouredRect.setAttribute("width", annoLength);
+            annotColouredRect.setAttribute("height", yIncrement);
+
+            //style 'em
+            annotColouredRect.setAttribute("fill", xinet.highlightColour.toRGB());
+            annotColouredRect.setAttribute("fill-opacity", "0.7");
+            
+            this.peptides.appendChild(annotColouredRect);
+            y += yIncrement;
+        }
+   }		
+}
+
+Protein.prototype.removePeptides = function() {
+	if (this.form === 1) {
+		//~ console.log("should remove");
+		if (this.peptides.parentNode == this.rectDomainsColoured){
+		//~ console.log("should remove2");
+			this.xlv.emptyElement(this.peptides);
+		}
+	}
+}
+
 Protein.prototype.initStick = function() {
     if (this.stick !== null) {
         //        alert("this shouldn't really happen...");
@@ -795,6 +840,9 @@ Protein.prototype.initStick = function() {
         protein.rect.appendChild(p);
     }
 };
+
+
+
 Protein.prototype.getResXUnzoomed = function(r) {
     return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
 };

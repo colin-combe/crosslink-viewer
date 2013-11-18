@@ -149,7 +149,7 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
                 if (match.isAmbig()) {
                     var mrc = match.residueLinks.length;
                     for (var mrl = 0; mrl < mrc; mrl++) {
-                        var resLink = match.residueLinks[mrl];
+                        var resLink = match.residueLinks[mrl][0];
                         if (resLink.shown === true) {
 							if (resLink.isSelected == false) {
 								resLink.showHighlight(show, false);
@@ -381,7 +381,7 @@ ProteinLink.prototype.check = function() {
                         filteredMatches.set(match.id);
                         if (match.isAmbig()) {
                             for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-                                altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+                                altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
                             }
                         }
                         else {
