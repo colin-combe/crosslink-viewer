@@ -20,7 +20,12 @@ xinet.defaultSelfLinkColour = new RGBColor("#8073AC'");
 xinet.defaultInterLinkColour = new RGBColor("#E08214");
 
 
-xinet.Controller = function(targetDiv) {
+xinet.Controller = function(targetDiv) {// could be div itself or id of div
+
+	if (typeof targetDiv === "string"){
+		targetDiv = document.getElementbyId(targetDiv);
+	}
+	
     this.fields = {}; // not sure about this, used by text search
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent

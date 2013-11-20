@@ -40,10 +40,10 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
     }
     if (typeof validated !== 'undefined'){
-		if (validated !== '' && validated !== null){
+		//if (validated !== '' && validated !== null){
 			this.validated = validated;	
 			this.xlv.manualValidatedFound = true;
-		}
+		//}
 	}
 	
 	if (typeof pep1_seq !== 'undefined'){
