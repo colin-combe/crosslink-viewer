@@ -1,7 +1,7 @@
 //authors: Hendrik Hofstadt, Colin Combe
 //see http://en.wikipedia.org/wiki/FASTA_format
 
-xinet.Controller.prototype.readFasta = function(file){
+xiNET.Controller.prototype.readFasta = function(file){
 	var line_array = file.split("\n");
 	var tempIdentifier = null;
 	var tempDescription;

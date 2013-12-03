@@ -1,4 +1,4 @@
-xinet.Controller.prototype.autoLayout = function() {
+xiNET.Controller.prototype.autoLayout = function() {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }

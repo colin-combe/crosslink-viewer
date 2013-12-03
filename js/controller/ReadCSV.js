@@ -1,4 +1,4 @@
-xinet.Controller.prototype.readCSV = function(csvContents) {
+xiNET.Controller.prototype.readCSV = function(csvContents) {
     var rows = d3.csv.parseRows(csvContents);
     
     var headers = rows[0];
@@ -167,11 +167,11 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
         if (typeof initSlider === "function"){
 			initSlider();
 		}
-		new xinet.DASUtil(xlv);
+		new xiNET.DASUtil(xlv);
     }
 };
 //~ 
-//~ xinet.Controller.prototype.readXQuest = function(csvContents) {
+//~ xiNET.Controller.prototype.readXQuest = function(csvContents) {
     //~ var rows = d3.csv.parse(csvContents);
     //~ //    var headers = rows[0];//first row is headers
     //~ //    var iProt1 = headers.indexOf('protein1');

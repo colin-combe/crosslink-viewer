@@ -127,7 +127,7 @@
                 //<![CDATA[
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
-                xlv = new xinet.Controller(targetDiv);
+                xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
 				d3.text('./data/Pol2.csv', "text/csv", function(text) {
 					xlv.readCSV(text);

@@ -5,8 +5,8 @@
 
 //function PV_setAnnotations(annotSet){
 //        alert(annotSet);
-//        var legend = document.createElementNS(xinet.svgns, 'g');
-//        var legendBG = document.createElementNS(xinet.svgns, 'rect');
+//        var legend = document.createElementNS(xiNET.svgns, 'g');
+//        var legendBG = document.createElementNS(xiNET.svgns, 'rect');
 //        legendBG.setAttribute("x", 20);
 //        legendBG.setAttribute("y", 20);//svgHeight);
 //        legendBG.setAttribute("width", 100);

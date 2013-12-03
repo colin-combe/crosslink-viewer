@@ -6,7 +6,7 @@
 //		ResidueLink.js
 // 		the class representing a residue-residue link
 
-ResidueLink.prototype = new xinet.Link();
+ResidueLink.prototype = new xiNET.Link();
 
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {
     this.id = id;
@@ -37,22 +37,22 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
 ResidueLink.prototype.initSVG = function() {
     if (typeof this.line === 'undefined') {
         if (!this.intra) {
-            this.line = document.createElementNS(xinet.svgns, "line");
-            this.line.setAttribute("stroke", xinet.defaultInterLinkColour.toRGB());
+            this.line = document.createElementNS(xiNET.svgns, "line");
+            this.line.setAttribute("stroke", xiNET.defaultInterLinkColour.toRGB());
             this.line.setAttribute("stroke-linecap", "round");
-            this.highlightLine = document.createElementNS(xinet.svgns, "line");
+            this.highlightLine = document.createElementNS(xiNET.svgns, "line");
             this.highlightLine.setAttribute("stroke-linecap", "round");
         } else {
-            this.line = document.createElementNS(xinet.svgns, "path");
-            this.line.setAttribute('stroke', xinet.defaultSelfLinkColour.toRGB());
-            this.highlightLine = document.createElementNS(xinet.svgns, "path");
+            this.line = document.createElementNS(xiNET.svgns, "path");
+            this.line.setAttribute('stroke', xiNET.defaultSelfLinkColour.toRGB());
+            this.highlightLine = document.createElementNS(xiNET.svgns, "path");
         }
 
         this.line.setAttribute("class", "link");
         this.line.setAttribute("fill", "none");
         this.highlightLine.setAttribute("class", "link");
         this.highlightLine.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlightLine.setAttribute("stroke-width", "10");
         this.highlightLine.setAttribute("stroke-opacity", "0")
 
@@ -102,7 +102,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
     }
     if (this.shown) {
         if (show) {
-			this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
             if (this.xlv.pepSeqFound){
 				var fromPeptides = [], toPeptides = [];
@@ -136,7 +136,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 			}
 			
         } else {
-			this.highlightLine.setAttribute("stroke", xinet.selectedColour.toRGB());
+			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 			if (this.isSelected == false) {
 				this.highlightLine.setAttribute("stroke-opacity", "0");
 			}
@@ -169,14 +169,14 @@ ResidueLink.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.xlv.selected.set(this.id, this);//ok, 
         this.isSelected = true;
-        this.highlightLine.setAttribute("stroke", xinet.selectedColour.toRGB());
+        this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
     }
     else if (select === false && this.isSelected === true) {
         this.xlv.selected.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
-        this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
  }
 };
 
@@ -322,13 +322,13 @@ ResidueLink.prototype.show = function() {
                 this.initSVG();
             }
             if (this.intra) {
-                this.line.setAttribute("stroke-width", xinet.linkWidth); //this.xlv.z*
+                this.line.setAttribute("stroke-width", xiNET.linkWidth); //this.xlv.z*
                 //                this.highlightLine.setAttribute("stroke-width", 10);
                 this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
                 this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
             }
             else {
-                this.line.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
+                this.line.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.proteinLink.fromProtein.setLineCoordinates(this);
                 this.proteinLink.toProtein.setLineCoordinates(this);
