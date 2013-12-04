@@ -13,20 +13,19 @@ xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/d
 xiNET.linkWidth = 1.5;// default line width
 
 // highlight and selection colours are global
-// (because all instances of xiNet should use same colours for this)
+// (because all instances of xiNET should use same colours for this)
 xiNET.highlightColour = new RGBColor("#FDC086");
 xiNET.selectedColour = new RGBColor("yellow");
 xiNET.defaultSelfLinkColour = new RGBColor("#8073AC'");
 xiNET.defaultInterLinkColour = new RGBColor("#E08214");
 
 
-xiNET.Controller = function(targetDiv) {// could be div itself or id of div
-
+xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
 	
-	//temp
+	//these attributes are used by checkboxes to hide self links or ambiguous links
 	this.intraHidden = false;
 	this.ambigHidden = false;
 	
@@ -47,8 +46,7 @@ xiNET.Controller = function(targetDiv) {// could be div itself or id of div
     // are we rotating at the moment
     this.rotating = false;
 
-    //    this.svgElement = svgElement;
-    this.svgElement.setAttribute("class", "Xlv");
+    //~ this.svgElement.setAttribute("class", "Xlv");
     // disable right click context menu (we wish to put right click to our own purposes)
     // doesn't work in Opera, Opera requires user to specify this thru options/prefs
     this.svgElement.oncontextmenu = function() {

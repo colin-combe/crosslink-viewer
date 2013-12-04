@@ -362,7 +362,7 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
         evt.cancelBubble = true;
     if (evt.preventDefault)
         evt.preventDefault();
-    evt.returnValue = false;
+    //~ evt.returnValue = false;
 };
 
 /**
