@@ -1,4 +1,4 @@
-{
+var miJson = {
 "data":[
 	{
 		"object":"interactor",
@@ -59391,4 +59391,4 @@
 		}
 	}
 	]
-}
+};
