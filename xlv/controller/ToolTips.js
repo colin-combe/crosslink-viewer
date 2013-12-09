@@ -1,4 +1,4 @@
-xinet.Controller.prototype.showTooltip = function(p)
+xiNET.Controller.prototype.showTooltip = function(p)
     {
         //TODO: if its going ot be off the right of the screen put it to left of the cursor
 //        var x = (Math.round(p.x / 10) * 10) + 0.5, y = (Math.round(p.y / 10) * 10) + 0.5;
@@ -13,7 +13,7 @@ xinet.Controller.prototype.showTooltip = function(p)
         this.tooltip_subBg.setAttributeNS(null,"y", y + 28);
     };
 
-xinet.Controller.prototype.setTooltip = function(text, colour) {
+xiNET.Controller.prototype.setTooltip = function(text, colour) {
     //TODO: format tooltips (line breaks)
     if (typeof text === 'undefined') text = "undefined";
     this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
@@ -38,7 +38,7 @@ xinet.Controller.prototype.setTooltip = function(text, colour) {
 };
 
 
-xinet.Controller.prototype.hideTooltip = function(evt){
+xiNET.Controller.prototype.hideTooltip = function(evt){
     this.tooltip.setAttributeNS(null,"visibility","hidden");
     this.tooltip_bg.setAttributeNS(null,"visibility","hidden");
     this.tooltip_subBg.setAttributeNS(null,"visibility","hidden");

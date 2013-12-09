@@ -5,7 +5,7 @@
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 //rename to sequence link?
-SequenceLink.prototype = new xinet.Link();
+SequenceLink.prototype = new xiNET.Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.xlv = xlvController;
@@ -64,9 +64,9 @@ SequenceLink.prototype.addEvidence = function(interaction) {
 };
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
-        this.glyph = document.createElementNS(xinet.svgns, "path");
-        this.uncertainGlyph = document.createElementNS(xinet.svgns, "path");
-        this.highlightGlyph = document.createElementNS(xinet.svgns, "path");
+        this.glyph = document.createElementNS(xiNET.svgns, "path");
+        this.uncertainGlyph = document.createElementNS(xiNET.svgns, "path");
+        this.highlightGlyph = document.createElementNS(xiNET.svgns, "path");
         this.glyph.setAttribute("stroke-linecap", "round");
         this.uncertainGlyph.setAttribute("stroke-linecap", "round");
         this.highlightGlyph.setAttribute("stroke-linecap", "round");
@@ -80,7 +80,7 @@ SequenceLink.prototype.initSVG = function() {
         this.uncertainGlyph.setAttribute("fill-opacity", "0.3");
         this.highlightGlyph.setAttribute("class", "link");
         this.highlightGlyph.setAttribute("fill", "none");
-        this.highlightGlyph.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlightGlyph.setAttribute("stroke-width", "10");
         this.highlightGlyph.setAttribute("stroke-opacity", "0");
         if (typeof this.colour !== 'undefined') {
@@ -258,8 +258,8 @@ SequenceLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            this.glyph.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
-            this.uncertainGlyph.setAttribute("stroke-width", this.xlv.z * xinet.linkWidth);
+            this.glyph.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
+            this.uncertainGlyph.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
             this.highlightGlyph.setAttribute("stroke-width", this.xlv.z * 10);
             this.setLinkCoordinates();
             this.xlv.res_resLinks.appendChild(this.highlightGlyph);

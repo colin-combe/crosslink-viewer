@@ -4,7 +4,7 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-xinet.Controller.prototype.checkLinks = function() {
+xiNET.Controller.prototype.checkLinks = function() {
     if (this.initComplete) {
         var suspendID = this.svgElement.suspendRedraw(5000);
         var links = this.proteinLinks.values();
@@ -17,7 +17,7 @@ xinet.Controller.prototype.checkLinks = function() {
     }
 };
 
-xinet.Controller.prototype.scale = function() {
+xiNET.Controller.prototype.scale = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
     if (this.initComplete) {
         this.z = this.container.getScreenCTM().inverse().a;
@@ -38,7 +38,7 @@ xinet.Controller.prototype.scale = function() {
             if (protLink.fromInteractor !== protLink.toInteractor) {
                 if (!protLink.fromInteractor.isParked && !protLink.toInteractor.isParked) {
                     if (protLink.fromInteractor.form === 0 && protLink.toInteractor.form === 0) {
-                        protLink.line.setAttribute("stroke-width", this.z * xinet.linkWidth);
+                        protLink.line.setAttribute("stroke-width", this.z * xiNET.linkWidth);
                         protLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                         protLink.fatLine.setAttribute("stroke-width", this.z * protLink.w);
                         if (protLink.ambig) {
@@ -51,7 +51,7 @@ xinet.Controller.prototype.scale = function() {
                         for (var rl = 0; rl < c2; rl++) {
                             var resLink = protLink.sequenceLinks.values()[rl];
                           //  if (resLink.check()) {
-                                protLink.sequenceLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xinet.linkWidth);
+                                protLink.sequenceLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xiNET.linkWidth);
                                 protLink.sequenceLinks.values()[rl].highlightGlyph.setAttribute("stroke-width", this.z * 10);
                                 if (resLink.ambig) {
                                     resLink.dashedLine(true); //rescale spacing of dashes

@@ -1,7 +1,7 @@
 //'superclass' for Interactor, SequenceLink, InteractorLink
-xinet.Link = function (){};
+xiNET.Link = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
-xinet.Link.prototype.mouseDown = function(evt) {
+xiNET.Link.prototype.mouseDown = function(evt) {
 //    //console.log("clickable mouse down");
     this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
@@ -17,7 +17,7 @@ xinet.Link.prototype.mouseDown = function(evt) {
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
-xinet.Link.prototype.mouseOver = function(evt){
+xiNET.Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.xlv.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
@@ -25,7 +25,7 @@ xinet.Link.prototype.mouseOver = function(evt){
     return false;
 }
 
-xinet.Link.prototype.mouseOut = function(evt){
+xiNET.Link.prototype.mouseOut = function(evt){
     //console.log("clickable mouse out");
     this.xlv.preventDefaultsAndStopPropagation(evt);
     //    if (this.xlv.dragElement == undefined) {

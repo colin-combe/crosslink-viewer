@@ -1,4 +1,4 @@
-xinet.Controller.prototype.readMITAB = function(mitab) {
+xiNET.Controller.prototype.readMITAB = function(mitab) {
     var rows = d3.tsv.parseRows(mitab);
     var countRows = rows.length;
 
@@ -241,7 +241,7 @@ xinet.Controller.prototype.readMITAB = function(mitab) {
 
 
         self.init();
-    //        new xinet.DASUtil(xlv);
+    //        new xiNET.DASUtil(xlv);
     }
 };
 

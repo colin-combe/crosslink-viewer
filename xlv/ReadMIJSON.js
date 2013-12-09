@@ -2,14 +2,17 @@
 //      Copyright 2013 Rappsilber Laboratory
 
 // reads our MI JSON format 
-xinet.Controller.prototype.readMIJSON = function(miJson) {
+xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(decodeURIComponent(layoutJSON));
-    //we're gonna need to keep track of what things have missing sequences 
+	
+	//we're gonna need to keep track of what things have missing sequences 
     var proteinsMissingSequence = d3.set();
+    
     // we iterate through the data twice, once for interactors and once for interactions
-    // (iteractors and interactions are missed together in 'data')
+    // (iteractors and interactions are mixed together in 'data')
     // the second iteration is in the 'addInteractions' function below
+    
     var data = miJson.data;
     var dataElementCount = data.length;
     for (var n = 0; n < dataElementCount; n++) {
@@ -38,7 +41,7 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
             }
         }
     }
-    var self = this;
+    var self = this;// the javascript bodge 
 
     //we will download missing sequences before doing second iteration to add interactions
     if (proteinsMissingSequence.values().length === 0) {//if no missing sequences
@@ -49,7 +52,6 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
         initProteinSequences();//calls addInteractions when complete
     }
     
-    var self = this; // the javascript bodge 
     function initProteinSequences() {
         var server_url = 'http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/';
         var client = JSDAS.Simple.getClient(server_url);
@@ -117,11 +119,14 @@ xinet.Controller.prototype.readMIJSON = function(miJson) {
         }
         self.init();
         self.checkLinks();
-        //    new xinet.DASUtil(this);
     }
 };
 
-xinet.Controller.prototype.addInteraction = function(interaction) {
+//~ xiNET.Controller.prototype.addInteractor = function(interaction) {
+	//~ 
+//~ }
+
+xiNET.Controller.prototype.addInteraction = function(interaction) {
     
     if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
         alert('missing interaction identifier');

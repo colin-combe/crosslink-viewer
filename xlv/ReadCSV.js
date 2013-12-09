@@ -1,4 +1,4 @@
-xinet.Controller.prototype.readCSV = function(csvContents) {
+xiNET.Controller.prototype.readCSV = function(csvContents) {
     var rows = d3.csv.parse(csvContents);
     //    var headers = rows[0];//first row is headers
     //    var iProt1 = headers.indexOf('protein1');
@@ -79,6 +79,6 @@ xinet.Controller.prototype.readCSV = function(csvContents) {
                     rows[row]['protein2'], rows[row]['residue2'], row + 1, rows[row]['score']);
         }
         xlv.init();
-        new xinet.DASUtil(xlv);
+        new xiNET.DASUtil(xlv);
     }
 };

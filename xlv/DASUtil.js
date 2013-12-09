@@ -1,4 +1,4 @@
-xinet.DASUtil = function(xlvController) {
+xiNET.DASUtil = function(xlvController) {
     this.xlv = xlvController;
     this.dasServers = [
         {
@@ -30,7 +30,7 @@ xinet.DASUtil = function(xlvController) {
     this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
 };
 
-xinet.DASUtil.prototype.lookup = function(prot, server) {
+xiNET.DASUtil.prototype.lookup = function(prot, server) {
     var accession = prot.accession;
     if (accession !== undefined && accession !== "" && accession !== "__AMBIGUOUS__") {
         var dasClient = JSDAS.Simple.getClient(server.url);
@@ -69,7 +69,7 @@ xinet.DASUtil.prototype.lookup = function(prot, server) {
     }
 };
 
-xinet.DASUtil.prototype.nextDASQuery = function(prot, server) {
+xiNET.DASUtil.prototype.nextDASQuery = function(prot, server) {
     var proteins = this.xlv.proteins.values();
     var protIndex = proteins.indexOf(prot);
     if (protIndex < proteins.length - 1) {

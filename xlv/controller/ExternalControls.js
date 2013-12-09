@@ -1,4 +1,4 @@
-xinet.Controller.prototype.changeAnnotations = function(choice, opt) {
+xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
     var positional = true;
     if (choice !== 1) {
         positional = false;
@@ -14,7 +14,7 @@ xinet.Controller.prototype.changeAnnotations = function(choice, opt) {
     }
 };
 
-xinet.Controller.prototype.textFilterKeyUp = function(filterText) {
+xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
     this.textFilterRegex = new Array();
     this.textFilterRegexNOT = new Array();
     this.fields = {//would be nice if element names weren't hard coded in here
@@ -137,7 +137,7 @@ Interactor.prototype.meetsTextFilter = function(filterRegex, fields) {
     return true;
 };
 
-xinet.Controller.prototype.stepOut = function() {
+xiNET.Controller.prototype.stepOut = function() {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     var neighbours = [];
@@ -161,7 +161,7 @@ xinet.Controller.prototype.stepOut = function() {
     this.checkLinks();
 };
 
-xinet.Controller.prototype.stepIn = function() {
+xiNET.Controller.prototype.stepIn = function() {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     var leaves = [];// nodes with only one connection
@@ -214,7 +214,7 @@ xinet.Controller.prototype.stepIn = function() {
 //            return false;
 };
 
-xinet.Controller.prototype.parkUnconnected = function() {
+xiNET.Controller.prototype.parkUnconnected = function() {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     var unconnected = [];// nodes with only one connection
@@ -231,7 +231,7 @@ xinet.Controller.prototype.parkUnconnected = function() {
     }
 };
 
-xinet.Controller.prototype.exportProteins = function() {
+xiNET.Controller.prototype.exportProteins = function() {
     //    var myJSONText = JSON.stringify(this.proteins, null, '\t');
     //    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     //    xlv.message(myJSONText, true);
@@ -250,20 +250,20 @@ xinet.Controller.prototype.exportProteins = function() {
     xlv.message(output);
 };
 
-xinet.Controller.prototype.exportLinks = function() {
+xiNET.Controller.prototype.exportLinks = function() {
     var myJSONText = JSON.stringify(this.proteinLinks, null, '\t');
     myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     xlv.message(myJSONText, true);
 };
 
 //TODO:fix
-//xinet.Controller.prototype.setAnnotations = function(positional, group, category) {
+//xiNET.Controller.prototype.setAnnotations = function(positional, group, category) {
 //    //    alert(group + ' - ' + category);
 //    //clear
 //
 //    };
 
-xinet.Controller.prototype.exportSVG = function(containerName) {
+xiNET.Controller.prototype.exportSVG = function(containerName) {
     alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
     var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
     //TODO: rotator hide not working
@@ -296,7 +296,7 @@ xinet.Controller.prototype.exportSVG = function(containerName) {
 };
 
 //set the message element to use (optional - mainly for debugging)
-xinet.Controller.prototype.setMessageElement = function(e) {
+xiNET.Controller.prototype.setMessageElement = function(e) {
     this.messageElement = e;
 };
 

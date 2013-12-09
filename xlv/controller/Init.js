@@ -1,19 +1,19 @@
 //Init.js
 
-var xinet = {}; //crosslinkviewer's javascript namespace
+var xiNET = {}; //crosslinkviewer's javascript namespace
 
-xinet.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-xinet.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
+xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
+xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
-xinet.linkWidth = 1.5;// default line width
+xiNET.linkWidth = 1.5;// default line width
 
-xinet.Controller = function(targetDiv) {
+xiNET.Controller = function(targetDiv) {
     this.fields = {}; // not sure about this, used by text search
     //see note below re gwt, two different ways to initialise
     //    if (targetDiv != null) {// if null gwt will pass in SVG
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
-    this.svgElement = document.createElementNS(xinet.svgns, "svg");
+    this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     targetDiv.appendChild(this.svgElement);
     //        this.setSvgElement(svg);
@@ -21,7 +21,7 @@ xinet.Controller = function(targetDiv) {
     //}
 
     //the GWT framework wants to have access to the SVG element, it creates it and passes it in
-    //xinet.Controller.prototype.setSvgElement = function(svgElement){
+    //xiNET.Controller.prototype.setSvgElement = function(svgElement){
 
     this.panning = false;
     // if we are dragging something at the moment - this will be the element, that is draged
@@ -44,7 +44,7 @@ xinet.Controller = function(targetDiv) {
     // background needed in some versions of chrome, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
-    var background = document.createElementNS(xinet.svgns, "rect");
+    var background = document.createElementNS(xiNET.svgns, "rect");
     background.setAttribute("id", "XlvBackground");
     background.setAttribute("x", 0);
     background.setAttribute("y", 0);
@@ -54,38 +54,38 @@ xinet.Controller = function(targetDiv) {
     background.setAttribute("fill", "#FFFFFF");
     this.svgElement.appendChild(background);
 
-    this.container = document.createElementNS(xinet.svgns, "g");
+    this.container = document.createElementNS(xiNET.svgns, "g");
     this.container.setAttribute("id", "container");
 
     var useDefs = false;//show experimental magnifier using use and defs elements
     var defs;
     if (useDefs === true) {
         //for magnifier... chrome only
-        defs = document.createElementNS(xinet.svgns, "defs");
+        defs = document.createElementNS(xiNET.svgns, "defs");
         defs.appendChild(this.container);
     }
 
-    this.p_pLinksWide = document.createElementNS(xinet.svgns, "g");
+    this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
 
-    this.proteinLower = document.createElementNS(xinet.svgns, "g");
+    this.proteinLower = document.createElementNS(xiNET.svgns, "g");
     this.proteinLower.setAttribute("id", "proteinLower");
     this.container.appendChild(this.proteinLower);
 
-    this.highlights = document.createElementNS(xinet.svgns, "g");
+    this.highlights = document.createElementNS(xiNET.svgns, "g");
     this.highlights.setAttribute("class", "highlights");//proteins also contain highlight groups
     this.container.appendChild(this.highlights);
 
-    this.p_pLinks = document.createElementNS(xinet.svgns, "g");
+    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinks.setAttribute("id", "p_pLinks");
     this.container.appendChild(this.p_pLinks);
 
-    this.res_resLinks = document.createElementNS(xinet.svgns, "g");
+    this.res_resLinks = document.createElementNS(xiNET.svgns, "g");
     this.res_resLinks.setAttribute("id", "res_resLinks");
     this.container.appendChild(this.res_resLinks);
 
-    this.proteinUpper = document.createElementNS(xinet.svgns, "g");
+    this.proteinUpper = document.createElementNS(xiNET.svgns, "g");
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
 
@@ -93,28 +93,28 @@ xinet.Controller = function(targetDiv) {
         this.svgElement.appendChild(this.container);
     }
     else {//for use/defs magnifier - test code only
-        var use = document.createElementNS(xinet.svgns, "use");
-        use.setAttributeNS(xinet.xlinkNS, "href", "#container");
+        var use = document.createElementNS(xiNET.svgns, "use");
+        use.setAttributeNS(xiNET.xlinkNS, "href", "#container");
         this.svgElement.appendChild(use);
 
-        var cp = document.createElementNS(xinet.svgns, "clipPath");
+        var cp = document.createElementNS(xiNET.svgns, "clipPath");
         cp.setAttribute('id', 'CP');
-        var c = document.createElementNS(xinet.svgns, "circle");
+        var c = document.createElementNS(xiNET.svgns, "circle");
         c.setAttribute('cx', '341');
         c.setAttribute('cy', '192');
         c.setAttribute('r', '50');
         cp.appendChild(c);
         this.svgElement.appendChild(cp);
 
-        var mag = document.createElementNS(xinet.svgns, 'g');
+        var mag = document.createElementNS(xiNET.svgns, 'g');
         mag.setAttribute('id', 'clippedI');
         mag.setAttribute('transform', 'translate(-341, -192) scale(2)');
-        var magUse = document.createElementNS(xinet.svgns, "use");
-        magUse.setAttributeNS(xinet.xlinkNS, "href", "#container");
+        var magUse = document.createElementNS(xiNET.svgns, "use");
+        magUse.setAttributeNS(xiNET.xlinkNS, "href", "#container");
         magUse.setAttribute("clip-path", "url(#CP)");
         magUse.setAttribute('opacity', '1.0');
         mag.appendChild(magUse);
-        var magFrame = document.createElementNS(xinet.svgns, "circle");
+        var magFrame = document.createElementNS(xiNET.svgns, "circle");
         magFrame.setAttribute('cx', '341');
         magFrame.setAttribute('cy', '192');
         magFrame.setAttribute('r', '50');
@@ -128,7 +128,7 @@ xinet.Controller = function(targetDiv) {
     }
     //showing title as tooltips is not part of svg spec
     //also more repsonsive if we do our own
-    this.tooltip = document.createElementNS(xinet.svgns, "text");
+    this.tooltip = document.createElementNS(xiNET.svgns, "text");
 //    this.tooltip.setAttribute('class', 'tooltip');//class conflicts with bootstrap
 //    this.tooltip.setAttribute('id', 'tooltip');
     this.tooltip.setAttribute('x', 0);
@@ -136,7 +136,7 @@ xinet.Controller = function(targetDiv) {
     var tooltipTextNode = document.createTextNode('tooltip');
     this.tooltip.appendChild(tooltipTextNode);
 
-    this.tooltip_bg = document.createElementNS(xinet.svgns, "rect");
+    this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
     this.tooltip_bg.setAttribute('id', 'tooltip_bg');
 
@@ -144,7 +144,7 @@ xinet.Controller = function(targetDiv) {
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
 
-    this.tooltip_subBg = document.createElementNS(xinet.svgns, "rect");
+    this.tooltip_subBg = document.createElementNS(xiNET.svgns, "rect");
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
@@ -159,7 +159,7 @@ xinet.Controller = function(targetDiv) {
     this.clear();
 };
 
-xinet.Controller.prototype.clear = function() {
+xiNET.Controller.prototype.clear = function() {
     this.initComplete = false;
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
@@ -182,7 +182,7 @@ xinet.Controller.prototype.clear = function() {
     this.tooltip_bg.setAttribute('visibility', 'hidden');
 
     this.resetZoom();
-    this.state = xinet.Controller.MOUSE_UP;
+    this.state = xiNET.Controller.MOUSE_UP;
     //    var suspendID = this.svgElement.suspendRedraw(5000);
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
@@ -193,13 +193,13 @@ xinet.Controller.prototype.clear = function() {
 //    this.svgElement.unsuspendRedraw(suspendID);
 };
 
-xinet.Controller.prototype.emptyElement = function(element) {
+xiNET.Controller.prototype.emptyElement = function(element) {
     while (element.lastChild) {
         element.removeChild(element.lastChild);
     }
 };
 
-xinet.Controller.prototype.toJSON = function() {
+xiNET.Controller.prototype.toJSON = function() {
     return {
         //        links: this.proteinLinks,
         proteins: this.proteins
@@ -207,7 +207,7 @@ xinet.Controller.prototype.toJSON = function() {
 };
 
 
-xinet.Controller.prototype.message = function(text, preformatted) {
+xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
             text = JSON.stringify(text, null, '\t');
@@ -220,14 +220,14 @@ xinet.Controller.prototype.message = function(text, preformatted) {
     }
 };
 
-xinet.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
+xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
     var newProt = new Interactor(id, this, accession, label);
     newProt.initProtein(sequence, label, description, size);
     this.proteins.set(id, newProt);
 };
 
 ////Positions are one based
-//xinet.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
+//xiNET.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
 //        pep2_protIDs, pep2_positions,
 //        id, meta, linkPos1, linkPos2, pep1_seq, pep2_seq) {
 //    var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
@@ -236,7 +236,7 @@ xinet.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 //};
 //
 //// add all matches with single call, arg is an array of arrays
-//xinet.Controller.prototype.addMatches = function(matches) {
+//xiNET.Controller.prototype.addMatches = function(matches) {
 //    var l = matches.length;
 //    for (var i = 0; i < l; i++) {
 //        //        alert(matches[i]);
@@ -248,7 +248,7 @@ xinet.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args
-xinet.Controller.prototype.addAnnotation = function(protName, annotName, startRes, endRes, colour) {
+xiNET.Controller.prototype.addAnnotation = function(protName, annotName, startRes, endRes, colour) {
     var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
@@ -282,7 +282,7 @@ xinet.Controller.prototype.addAnnotation = function(protName, annotName, startRe
     }
 }
 
-xinet.Controller.prototype.init = function(width, height) {
+xiNET.Controller.prototype.init = function(width, height) {
     //initial dimensions
     var containingDiv = this.svgElement.parentNode;
     if (typeof containingDiv !== 'undefined' && containingDiv != null) {
@@ -340,7 +340,7 @@ xinet.Controller.prototype.init = function(width, height) {
 }
 
 
-xinet.Controller.prototype.getGeneName = function(pi) {
+xiNET.Controller.prototype.getGeneName = function(pi) {
     var prot = this.proteins.values()[pi];
     var xmlhttp = new XMLHttpRequest();
     var url = "http://129.215.14.148/jb/uniprot/sequence.php?id=" + prot.accession + "&dat";
@@ -368,7 +368,7 @@ xinet.Controller.prototype.getGeneName = function(pi) {
     xmlhttp.send(params);
 }
 
-xinet.Controller.prototype.setLinkColour = function(linkID, colour) {
+xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
     var proteinLink = this.proteinLinks.get(linkID);
     if (typeof proteinLink !== 'undefined') {
         proteinLink.colour = new RGBColor(colour);
@@ -383,7 +383,7 @@ xinet.Controller.prototype.setLinkColour = function(linkID, colour) {
     }
 };
 
-xinet.Controller.prototype.parkAll = function(id, label, sequence, description, accession, size) {
+xiNET.Controller.prototype.parkAll = function(id, label, sequence, description, accession, size) {
     var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
@@ -393,7 +393,7 @@ xinet.Controller.prototype.parkAll = function(id, label, sequence, description, 
     }
 };
 
-xinet.Controller.prototype.resetZoom = function() {
+xiNET.Controller.prototype.resetZoom = function() {
     //    var conBBox = this.container.getBBox();
     //    var w = this.svgElement.parentNode.clientWidth;//getAttribute("viewBox");
     //    var h = this.svgElement.parentNode.clientHeight;//getAttribute("width");
@@ -409,7 +409,7 @@ xinet.Controller.prototype.resetZoom = function() {
     }
 };
 
-xinet.Controller.prototype.getLayout = function() {
+xiNET.Controller.prototype.getLayout = function() {
     var myJSONText = JSON.stringify(this, null, '\t');
     var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
     var layout = myJSONText.replace(/\\u0000/gi, '');
@@ -417,11 +417,11 @@ xinet.Controller.prototype.getLayout = function() {
     return layout;
 };
 
-xinet.Controller.prototype.setLayout = function(layoutJSON) {
+xiNET.Controller.prototype.setLayout = function(layoutJSON) {
     this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
 };
 
-xinet.Controller.prototype.loadLayout = function() {
+xiNET.Controller.prototype.loadLayout = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
     for (var prot in this.layout.proteins) {
         var protState = this.layout.proteins[prot];

@@ -7,7 +7,7 @@
 //InteractorLink.js
 // the class representing a protein-protein link
 
-InteractorLink.prototype = new xinet.Link();
+InteractorLink.prototype = new xiNET.Link();
 //used to calculate width of thivh background line
 InteractorLink.maxNoEvidences = 0;
 function InteractorLink(id, fromP, toP, xlvController) {
@@ -46,11 +46,9 @@ InteractorLink.prototype.addEvidence = function(interaction) {
         from = interaction.target
         to = interaction.source;
     }
+    
     var hasLinkedFeatures = false;
-    /*
-     * TODO: check for linked features
-     */
-    //hmmm... in fact, when LinkedFeatures implemented then one interaction may result in many sequenceLinks
+    //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
     //for time being one interaction can only result in at most one sequenceLink
     if (hasLinkedFeatures) {
         //LinkedFeatures not yet implemented in JAMI
@@ -58,7 +56,7 @@ InteractorLink.prototype.addEvidence = function(interaction) {
     //if no linked features may be able to make some assumptions about whats linked to what. 
     // If:
     // 1. it is not a product of expansion   
-    // 2. there is no more than binding site feature at each of interaction
+    // 2. there is no more than one binding site feature at each of interaction
     else if ((typeof interaction.expansion === 'undefined')
             && (typeof from.bindingSites === 'undefined'
             || from.bindingSites.length === 1)
@@ -104,9 +102,9 @@ InteractorLink.prototype.addEvidence = function(interaction) {
 
 InteractorLink.prototype.initSVG = function() {
     if (!this.intra) {
-        this.line = document.createElementNS(xinet.svgns, "line");
-        this.highlightLine = document.createElementNS(xinet.svgns, "line");
-        this.fatLine = document.createElementNS(xinet.svgns, "line");
+        this.line = document.createElementNS(xiNET.svgns, "line");
+        this.highlightLine = document.createElementNS(xiNET.svgns, "line");
+        this.fatLine = document.createElementNS(xiNET.svgns, "line");
     } else {
         function trig(radius, angleDegrees) {
 //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
@@ -125,11 +123,11 @@ InteractorLink.prototype.initSVG = function() {
         var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
                 + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
                 + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
-        this.line = document.createElementNS(xinet.svgns, "path");
+        this.line = document.createElementNS(xiNET.svgns, "path");
         this.line.setAttribute('d', path);
-        this.highlightLine = document.createElementNS(xinet.svgns, 'path');
+        this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
         this.highlightLine.setAttribute('d', path);
-        this.fatLine = document.createElementNS(xinet.svgns, 'path');
+        this.fatLine = document.createElementNS(xiNET.svgns, 'path');
         this.fatLine.setAttribute('d', path);
     }
 
@@ -140,7 +138,7 @@ InteractorLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", xinet.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");

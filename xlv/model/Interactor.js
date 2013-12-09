@@ -28,7 +28,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     if (this.name == null) {
         this.name = name;
     }
-    //check for labeling modifications in sequnce now, we're about to lose this info
+    //check for labeling modifications in sequence now, we're about to lose this info
     if (/\d/.test(sequence)) {//is there a digit in the sequence
         this.labeling = '';// as in silac labelling
         if (sequence.indexOf('K4') !== -1)
@@ -76,19 +76,19 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     this.rectX;
 
     //svg elements we always need
-    this.upperGroup = document.createElementNS(xinet.svgns, "g");
+    this.upperGroup = document.createElementNS(xiNET.svgns, "g");
     this.upperGroup.setAttribute("class", "protein");
-    this.rectDomainsColouredContainer = document.createElementNS(xinet.svgns, "g");
+    this.rectDomainsColouredContainer = document.createElementNS(xiNET.svgns, "g");
     this.rectDomainsColouredContainer.setAttribute("class", "protein");
-    this.rectDomainsColoured = document.createElementNS(xinet.svgns, "g");
+    this.rectDomainsColoured = document.createElementNS(xiNET.svgns, "g");
     this.rectDomainsColoured.setAttribute("class", "protein");
-    this.rectDomainsMouseEvents = document.createElementNS(xinet.svgns, "g");
+    this.rectDomainsMouseEvents = document.createElementNS(xiNET.svgns, "g");
     this.rectDomainsMouseEvents.setAttribute("class", "protein");
-    this.circDomains = document.createElementNS(xinet.svgns, "g");
+    this.circDomains = document.createElementNS(xiNET.svgns, "g");
     this.circDomains.setAttribute("class", "protein");
 
     //add label to it - we will move this svg element around when protein form changes
-    this.labelSVG = document.createElementNS(xinet.svgns, "text");
+    this.labelSVG = document.createElementNS(xiNET.svgns, "text");
     //    this.labelSVG.setAttribute("class", "proteinLabel");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("x", 0);
@@ -120,19 +120,19 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     //make blob
     if (this.accession.indexOf("CHEBI") !== -1) {
         var points = "0, -10  8.66,5 -8.66,5";
-        this.blob = document.createElementNS(xinet.svgns, "polygon");
+        this.blob = document.createElementNS(xiNET.svgns, "polygon");
         this.blob.setAttribute("points", points);
-        this.blobHighlight = document.createElementNS(xinet.svgns, "polygon");
+        this.blobHighlight = document.createElementNS(xiNET.svgns, "polygon");
         this.blobHighlight.setAttribute("points", points);
-        this.parked = document.createElementNS(xinet.svgns, "polygon");
+        this.parked = document.createElementNS(xiNET.svgns, "polygon");
         this.parked.setAttribute("points", points);
     }
     else {
-        this.blob = document.createElementNS(xinet.svgns, "circle");
+        this.blob = document.createElementNS(xiNET.svgns, "circle");
         this.blob.setAttribute("r", this.getBlobRadius());
-        this.blobHighlight = document.createElementNS(xinet.svgns, "circle");
+        this.blobHighlight = document.createElementNS(xiNET.svgns, "circle");
         this.blobHighlight.setAttribute("r", this.getBlobRadius());
-        this.parked = document.createElementNS(xinet.svgns, "circle");
+        this.parked = document.createElementNS(xiNET.svgns, "circle");
         this.parked.setAttribute("r", this.getBlobRadius());
     }
     this.blob.setAttribute("cx", 0);
@@ -148,8 +148,8 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     //    this.blobHighlight.setAttribute("class", "Xlr_protein Xlr_blob");
     //style it
     this.blobHighlight.setAttribute("stroke-opacity", "0");
-    if (xinet.highlightColour !== undefined)
-        this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+    if (xiNET.highlightColour !== undefined)
+        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
     this.blobHighlight.setAttribute("stroke-width", "10");
 
     //make parked blob //TODO: don't use new SVG element, change attributes of blob
@@ -165,29 +165,29 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     this.stick = null;//see getStick() //protein as stick,
 
     //svg groups for intra protein links
-    this.intraLinksHighlights = document.createElementNS(xinet.svgns, "g");
+    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
     this.intraLinksHighlights.setAttribute("class", "highlights");
-    this.intraLinks = document.createElementNS(xinet.svgns, "g");
+    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
     this.intraLinks.setAttribute("class", "intraLinks");
 
-    this.rectAndTicks = document.createElementNS(xinet.svgns, "g");
+    this.rectAndTicks = document.createElementNS(xiNET.svgns, "g");
     ////don't want to scale ticks but do want to add listener to both rect and ticks
     this.rectAndTicks.setAttribute("class", "rectAndTicks");
     // stick symbol minus label, scale labels/sequence and intra links, i.e. rectangular bits to scale
-    this.rect = document.createElementNS(xinet.svgns, "g");
+    this.rect = document.createElementNS(xiNET.svgns, "g");
     this.rect.setAttribute("class", "rect");
     this.rectAndTicks.appendChild(this.rect);
 
-    this.p = document.createElementNS(xinet.svgns, "rect");//protein stick outline
+    this.p = document.createElementNS(xiNET.svgns, "rect");//protein stick outline
     //style it
     this.p.setAttribute("fill", "none");
     this.p.setAttribute("stroke", "black");
     this.p.setAttribute("stroke-width", "0.75");
 
-    this.rectHighlight = document.createElementNS(xinet.svgns, "rect");
+    this.rectHighlight = document.createElementNS(xiNET.svgns, "rect");
     this.rectHighlight.setAttribute("stroke-opacity", "0");
-    if (xinet.highlightColour !== undefined)
-        this.rectHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+    if (xiNET.highlightColour !== undefined)
+        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
     this.rectHighlight.setAttribute("stroke-width", "10");
     this.rectHighlight.setAttribute("fill", "none");
     //    this.rectHighlight.setAttribute("class", "pOutline Xlr_protein");
@@ -196,7 +196,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     this.rectDomainsColouredContainer.appendChild(this.rectDomainsColoured);
     this.rectAndTicks.appendChild(this.p);
 
-    this.ticks = null;//document.createElementNS(xinet.svgns, "g");
+    this.ticks = null;//document.createElementNS(xiNET.svgns, "g");
     this.scaleLabels = new Array();
 
     // events
@@ -326,8 +326,8 @@ Interactor.prototype.addFeature = function(feature) {
 
 Interactor.prototype.showHighlight = function(show) {
     if (show) {
-        this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.blobHighlight.setAttribute("stroke-opacity", "1");
         this.rectHighlight.setAttribute("stroke-opacity", "1");
     } else {
@@ -337,8 +337,8 @@ Interactor.prototype.showHighlight = function(show) {
             else
                 this.rectHighlight.setAttribute("stroke-opacity", "0");
         }
-        this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+        this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
 };
 
@@ -347,11 +347,11 @@ Interactor.prototype.setSelected = function(select) {
     //        this.xlv.selectedProteins.set(this.id, this);
     //        this.isSelected = true;
     //        if (this.form !== 1) {
-    //            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     //            this.blobHighlight.setAttribute("stroke-opacity", "1");
     //        }
     //        else {
-    //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     //            this.rectHighlight.setAttribute("stroke-opacity", "1");
     //        }
     //    }
@@ -360,11 +360,11 @@ Interactor.prototype.setSelected = function(select) {
     //        this.isSelected = false;
     //        if (this.form !== 1) {
     //            this.blobHighlight.setAttribute("stroke-opacity", "0");
-    //            this.blobHighlight.setAttribute("stroke", xinet.highlightColour.toRGB());
+    //            this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
     //        }
     //        else {
     //            this.rectHighlight.setAttribute("stroke-opacity", "0");
-    //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+    //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     //        }
     //    }
 };
@@ -501,14 +501,14 @@ Interactor.prototype.scale = function() {
         // we label the end - so dont write the previous label, unless it's at least ScaleMaxScaleTextDist residues away
         //var ScaleMaxScaleTextDist = 50;
         var pixPerRes = Interactor.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
-        var scaleGroup = document.createElementNS(xinet.svgns, "g");
+        var scaleGroup = document.createElementNS(xiNET.svgns, "g");
         var tick = -1;
         var lastTickX = protein.getResXwithStickZoom(protein.size);
         var testOffset100 = 0;
         var testOffset10 = 0;
         // for juan
         //	alert (this.name + ',' + (this.name == 'Ska1Domain'))
-        //        if (xinet.sid == 682){
+        //        if (xiNET.sid == 682){
         //            testOffset10 = 7;
         //            testOffset100 = 67;
         //        }
@@ -524,7 +524,7 @@ Interactor.prototype.scale = function() {
                     ) {
                 var tx = protein.getResXwithStickZoom(res);
                 // for juan
-                //                if (xinet.sid == 682 && res == 1)
+                //                if (xiNET.sid == 682 && res == 1)
                 //                    tx =  protein.getResXwithStickZoom(res + 4);
                 //                else if (protein.name == 'Ska1Domain' && res == 1){
                 //                    tx =  protein.getResXwithStickZoom(res + 132);
@@ -535,7 +535,7 @@ Interactor.prototype.scale = function() {
                 if (tick === 0) {// && tx > 20) {
                     if ((tx + Interactor.minXDist) < lastTickX) {
                         // for juan
-                        //                        if (xinet.sid == 682 && res == 1)
+                        //                        if (xiNET.sid == 682 && res == 1)
                         //                            scaleLabelAt(res + 4, scaleGroup, tx);
                         //                        if (protein.name == 'Ska1Domain' && res == 1){
                         //                            scaleLabelAt(res + 132, scaleGroup, tx);
@@ -546,9 +546,9 @@ Interactor.prototype.scale = function() {
                 }
             }
             if (pixPerRes > 8) {
-                var seqLabelGroup = document.createElementNS(xinet.svgns, "g");
+                var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
                 seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
-                var seqLabel = document.createElementNS(xinet.svgns, "text");
+                var seqLabel = document.createElementNS(xiNET.svgns, "text");
                 //                seqLabel.setAttribute("class", "Xlr_proteinSeqLabelText");
                 seqLabel.setAttribute('font-family', 'Arial');
                 seqLabel.setAttribute('font-size', '10');
@@ -566,9 +566,9 @@ Interactor.prototype.scale = function() {
         tickAt(scaleGroup, lastTickX);
         return scaleGroup;
         function scaleLabelAt(text, group, tickX) {
-            var scaleLabelGroup = document.createElementNS(xinet.svgns, "g");
+            var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
             scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-            var scaleLabel = document.createElementNS(xinet.svgns, "text");
+            var scaleLabel = document.createElementNS(xiNET.svgns, "text");
             scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText xlv_text");
             scaleLabel.setAttribute('font-family', 'Arial');
             scaleLabel.setAttribute('font-size', '14');
@@ -576,7 +576,7 @@ Interactor.prototype.scale = function() {
             scaleLabel.setAttribute("x", 0);
             scaleLabel.setAttribute("y", Interactor.STICKHEIGHT + 3);
             // for juan
-            if (xinet.sid === 682)
+            if (xiNET.sid === 682)
                 text = text + 33;
             else if (protein.name === 'Ska1Domain') {
                 text = text + 132;
@@ -588,7 +588,7 @@ Interactor.prototype.scale = function() {
         }
 
         function tickAt(group, tickX) {
-            var mayt = document.createElementNS(xinet.svgns, "line");
+            var mayt = document.createElementNS(xiNET.svgns, "line");
             mayt.setAttribute("x1", tickX);
             mayt.setAttribute("y1", (-Interactor.STICKHEIGHT / 2) * 0.75);
             mayt.setAttribute("x2", tickX);
@@ -768,7 +768,7 @@ Interactor.prototype.toStick = function() {
         }
         this.scale();
         if (this.isSelected === true) {
-            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
             this.rectHighlight.setAttribute("stroke-opacity", "1");
         }
 
@@ -776,11 +776,11 @@ Interactor.prototype.toStick = function() {
         //        this.xlv.selectedProteins.set(this.id, this);
         //        this.isSelected = true;
         //        if (this.form !== 1) {
-        //            this.blobHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+        //            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
         //            this.blobHighlight.setAttribute("stroke-opacity", "1");
         //        }
         //        else {
-        //            this.rectHighlight.setAttribute("stroke", xinet.selectedColour.toRGB());
+        //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
         //            this.rectHighlight.setAttribute("stroke-opacity", "1");
         //        }
         //    }
@@ -805,7 +805,7 @@ Interactor.prototype.initStick = function() {
         //rotators
         this.lowerRotator = new Rotator(this, 0, this.xlv);
         this.upperRotator = new Rotator(this, 1, this.xlv);
-        this.stick = document.createElementNS(xinet.svgns, "g");
+        this.stick = document.createElementNS(xiNET.svgns, "g");
         this.stick.appendChild(this.rectAndTicks);
         this.stick.setAttribute("class", "stick");
         this.stick.appendChild(this.intraLinksHighlights);
@@ -821,7 +821,7 @@ Interactor.prototype.initStick = function() {
     }
 
     function getBackgroundRect(protein) {
-        var p = document.createElementNS(xinet.svgns, "rect");
+        var p = document.createElementNS(xiNET.svgns, "rect");
         p.setAttribute("class", "pBackground Xlr_protein");
         p.setAttribute("x", protein.getResXUnzoomed(0));
         p.setAttribute("y", y); //svgHeight);

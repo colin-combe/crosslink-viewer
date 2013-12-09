@@ -50,7 +50,7 @@ Interactor.prototype.setKeywords = function(keywords) {
         var sliceAngleDegrees = 359 / numberOfKeywords;
         for (var i = 0; i < numberOfKeywords; i++) {
             var anno = keywords[i];
-            var annotPieSlice = document.createElementNS(xinet.svgns, "path");
+            var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
             annotPieSlice.setAttribute("class", "protein");
 
             //make pie slice
@@ -114,11 +114,11 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
         });
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
-            var annotPieSlice = document.createElementNS(xinet.svgns, "path");
+            var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
             annotPieSlice.setAttribute("class", "protein");
-            var annotColouredRect = document.createElementNS(xinet.svgns, "rect");
+            var annotColouredRect = document.createElementNS(xiNET.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
-            var annotMouseEventRect = document.createElementNS(xinet.svgns, "rect");
+            var annotMouseEventRect = document.createElementNS(xiNET.svgns, "rect");
             annotMouseEventRect.setAttribute("class", "protein");
 
             //make pie slice

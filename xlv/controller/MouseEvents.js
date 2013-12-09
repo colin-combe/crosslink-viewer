@@ -1,18 +1,18 @@
 // highlight and selection colours are global
 // (because all instances of xiNet should use same colours for this)
-xinet.highlightColour = new RGBColor("yellow");
-xinet.selectedColour = new RGBColor("orange");
+xiNET.highlightColour = new RGBColor("yellow");
+xiNET.selectedColour = new RGBColor("orange");
 
 //static var's signifying Controller's status
-xinet.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
-xinet.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xinet.Controller.DRAGGING = 2;//set by mouse down on Interactor or Link
-xinet.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xinet.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+xiNET.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
+xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+xiNET.Controller.DRAGGING = 2;//set by mouse down on Interactor or Link
+xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
+xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
 //listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
-xinet.Controller.prototype.initMouseEvents = function() {
+xiNET.Controller.prototype.initMouseEvents = function() {
     //add listeners
     var self = this;
     this.svgElement.onmouseup = function(evt) {
@@ -47,7 +47,7 @@ xinet.Controller.prototype.initMouseEvents = function() {
         //        };
     }
 
-    this.marquee = document.createElementNS(xinet.svgNS, 'rect');
+    this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
     this.marquee.setAttribute('class', 'marquee');
     this.marquee.setAttribute('fill', 'red');
 }
@@ -55,7 +55,7 @@ xinet.Controller.prototype.initMouseEvents = function() {
 /**
  * Handle mousedown event.
  */
-xinet.Controller.prototype.mouseDown = function(evt) {
+xiNET.Controller.prototype.mouseDown = function(evt) {
     //prevent default, but allow propogation
     if (evt.preventDefault) {
         evt.preventDefault();
@@ -77,7 +77,7 @@ xinet.Controller.prototype.mouseDown = function(evt) {
 
     if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
 //        alert("here");
-//        this.state = xinet.Controller.SELECTING;
+//        this.state = xiNET.Controller.SELECTING;
 ////        //      marquee.style.strokeDashoffset=0;
 //               this.marquee.setAttribute('x', 100);
 //    this.marquee.setAttribute('y', 100);
@@ -93,14 +93,14 @@ xinet.Controller.prototype.mouseDown = function(evt) {
 ////            this.clearSelection();
 ////        }
     } else {
-    this.state = xinet.Controller.PANNING;
+    this.state = xiNET.Controller.PANNING;
     this.panned = false;
     }
     return false;
 };
 
 // dragging/rotation/panning/selecting
-xinet.Controller.prototype.mouseMove = function(evt) {
+xiNET.Controller.prototype.mouseMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     if (this.initComplete) { // just being cautious
         var p = this.getEventPoint(evt);// seems to be correct, see below
@@ -112,7 +112,7 @@ xinet.Controller.prototype.mouseMove = function(evt) {
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
-            if (this.state === xinet.Controller.DRAGGING) {
+            if (this.state === xiNET.Controller.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
                 if (typeof this.dragElement.x === 'undefined') { // if not a protein
@@ -154,7 +154,7 @@ xinet.Controller.prototype.mouseMove = function(evt) {
                 this.dragStart = c;
             }
 
-            else if (this.state === xinet.Controller.ROTATING) {
+            else if (this.state === xiNET.Controller.ROTATING) {
                 // Distance from mouse x and center of stick.
                 var _dx = c.x - this.dragElement.x
                 // Distance from mouse y and center of stick.
@@ -171,18 +171,18 @@ xinet.Controller.prototype.mouseMove = function(evt) {
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
                 if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = xinet.Controller.DRAGGING;
+                    this.state = xiNET.Controller.DRAGGING;
 
                 }
             }
             this.svgElement.unsuspendRedraw(suspendID);
         }
 
-//    else if (this.state === xinet.Controller.SELECTING) {
+//    else if (this.state === xiNET.Controller.SELECTING) {
 //        this.updateMarquee(this.marquee, c);
 //    }
-        else if (this.state === xinet.Controller.PANNING) {
-            xinet.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+        else if (this.state === xiNET.Controller.PANNING) {
+            xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
             this.showTooltip(p);
@@ -192,7 +192,7 @@ xinet.Controller.prototype.mouseMove = function(evt) {
 };
 
 // this ends all dragging and rotating
-xinet.Controller.prototype.mouseUp = function(evt) {
+xiNET.Controller.prototype.mouseUp = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
 
     var rightclick, middleclick; //which button has just been raised
@@ -211,7 +211,7 @@ xinet.Controller.prototype.mouseUp = function(evt) {
 //    var suspendID = this.svgElement.suspendRedraw(5000);
 
     if (this.dragElement != null) { // mouse up after mouse down on a protein or protein group
-        if (!(this.state === xinet.Controller.DRAGGING || this.state === xinet.Controller.ROTATING)) { //not dragging or rotating
+        if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
             if (rightclick) { // RIGHT click
                 if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
                     if (this.dragElement.intra) {//if internal link
@@ -242,7 +242,7 @@ xinet.Controller.prototype.mouseUp = function(evt) {
             }
             this.checkLinks();
         }
-        else if (this.state === xinet.Controller.ROTATING) {
+        else if (this.state === xiNET.Controller.ROTATING) {
             //round protein rotation to nearest 5 degrees (looks neater)
          //   this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
         }
@@ -257,11 +257,11 @@ xinet.Controller.prototype.mouseUp = function(evt) {
             link.hidden = false;
         }
         this.checkLinks();
-    } else if (this.state !== xinet.Controller.PANNING && evt.ctrlKey === false) {
+    } else if (this.state !== xiNET.Controller.PANNING && evt.ctrlKey === false) {
         this.clearSelection();
     }
 
-    if (this.state === xinet.Controller.SELECTING) {
+    if (this.state === xiNET.Controller.SELECTING) {
         clearInterval(this.marcher);
         this.svgElement.removeChild(this.marquee);
     }
@@ -270,12 +270,12 @@ xinet.Controller.prototype.mouseUp = function(evt) {
 
     this.dragElement = null;
     this.whichRotator = -1;
-    this.state = xinet.Controller.MOUSE_UP;
+    this.state = xiNET.Controller.MOUSE_UP;
     return false;
 };
 
 
-xinet.Controller.prototype.updateMarquee = function(rect, p1) {
+xiNET.Controller.prototype.updateMarquee = function(rect, p1) {
     var p0 = this.dragStart;
     var xs = [p0.x, p1.x].sort(sortByNumber),
             ys = [p0.y, p1.y].sort(sortByNumber);
@@ -293,7 +293,7 @@ function sortByNumber(a, b) {
 /**
  * Handle mouse wheel event.
  */
-xinet.Controller.prototype.mouseWheel = function(evt) {
+xiNET.Controller.prototype.mouseWheel = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     var delta;
     //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
@@ -308,12 +308,12 @@ xinet.Controller.prototype.mouseWheel = function(evt) {
     var p = this.getEventPoint(evt);// seems to be correct, see above
     var c = this.mouseToSVG(p.x, p.y);
     var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    xinet.setCTM(g, g.getCTM().multiply(k));
+    xiNET.setCTM(g, g.getCTM().multiply(k));
     this.scale();
     return false;
 };
 
-xinet.Controller.prototype.clearSelection = function() {
+xiNET.Controller.prototype.clearSelection = function() {
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     for (var p = 0; p < proteinCount; p++) {
@@ -323,7 +323,7 @@ xinet.Controller.prototype.clearSelection = function() {
 };
 
 //gets mouse position
-xinet.Controller.prototype.getEventPoint = function(evt) {
+xiNET.Controller.prototype.getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
     var obj = this.svgElement.parentNode;
     var curleft = 0, curtop = 0;
@@ -341,7 +341,7 @@ xinet.Controller.prototype.getEventPoint = function(evt) {
 };
 
 // transform the mouse-position into a position on the svg
-xinet.Controller.prototype.mouseToSVG = function(x, y) {
+xiNET.Controller.prototype.mouseToSVG = function(x, y) {
     var p = this.svgElement.createSVGPoint();
     p.x = x;
     p.y = y;
@@ -350,7 +350,7 @@ xinet.Controller.prototype.mouseToSVG = function(x, y) {
 };
 
 //stop event propogation and defaults; only do what we ask
-xinet.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
+xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
     if (evt.stopPropagation)
         evt.stopPropagation();
     if (evt.cancelBubble != null)
@@ -363,7 +363,7 @@ xinet.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
 /**
  * Sets the current transform matrix of an element.
  */
-xinet.setCTM = function(element, matrix) {
+xiNET.setCTM = function(element, matrix) {
     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
     element.setAttribute("transform", s);
 };
