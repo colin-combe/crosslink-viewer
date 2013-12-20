@@ -344,7 +344,10 @@ Protein.prototype.setRotation = function(angle) {
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation <= 90 || this.previousRotation > 270){
         for (var i = 0; i < sll; i++) {
-            this.scaleLabels[i].setAttribute("transform", "rotate(180)");
+			
+            //~ this.scaleLabels[i].setAttribute("transform", "rotate(180)");
+            this.scaleLabels[i].setAttribute("transform", "scale(-1,-1)");
+           this.scaleLabels[i].setAttribute("text-anchor", "start");
         }
         //        }
     }
@@ -353,13 +356,15 @@ Protein.prototype.setRotation = function(angle) {
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation > 90 || this.previousRotation <= 270){
         for (var j = 0; j < sll; j++) {
-            this.scaleLabels[j].setAttribute("transform", "rotate(0)");
-            //            }
-        }
+             //~ this.scaleLabels[j].setAttribute("transform", "rotate(0)");
+            this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
+            this.scaleLabels[j].setAttribute("text-anchor", "end");
+            }
+        //~ }
     }
 };
-// seting the x,y position on the svg
-// - now more accurately described as setting transform for top group (sets scale on top group also)
+
+// - now more accurately described as setting transform for svg (sets scale on top group also)
 Protein.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
@@ -372,6 +377,7 @@ Protein.prototype.setPosition = function(x, y) {
         }
     }
 };
+
 Protein.rotOffset = 20 * 0.7; // see Rotator.js
 Protein.minXDist = 30;
 Protein.prototype.switchStickScale = function(svgP) {
@@ -408,9 +414,7 @@ Protein.prototype.switchStickScale = function(svgP) {
 };
 
 Protein.prototype.scale = function() {
-    //    alert('in scale');
     var protLength = (this.size) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
-    //    this.setPosition(this.x, this.y);
     if (this.form === 1) {
         this.setRotation(this.rotation); //places label
         this.setAllLineCoordinates();
@@ -433,8 +437,9 @@ Protein.prototype.scale = function() {
             }
         }
 
-        if (this.ticks !== null)
+        if (this.ticks !== null){
             this.rectAndTicks.removeChild(this.ticks);
+		}
         this.ticks = getScaleGroup(this);
         this.p.setAttribute("x", this.getResXwithStickZoom(0));
         this.p.setAttribute("y", -Protein.STICKHEIGHT / 2); //svgHeight);
@@ -450,7 +455,7 @@ Protein.prototype.scale = function() {
 
     function getScaleGroup(protein) {
         protein.scaleLabels = new Array();
-        //options for scale interval: 1 (special case: show sequence), 10, 100, 1000
+        //options for scale interval: 1 (special case: show sequence), 10, 100, (1000?)
         //need to know number of pix for 1 em.
         // calc pix per unit
         var ScaleMajTick = 100;
@@ -464,43 +469,18 @@ Protein.prototype.scale = function() {
         var scaleGroup = document.createElementNS(xiNET.svgns, "g");
         var tick = -1;
         var lastTickX = protein.getResXwithStickZoom(protein.size);
-        var testOffset100 = 0;
-        var testOffset10 = 0;
-        // for juan
-        //	alert (this.name + ',' + (this.name == 'Ska1Domain'))
-        //        if (xiNET.sid == 682){
-        //            testOffset10 = 7;
-        //            testOffset100 = 67;
-        //        }
-        //
-        //        else if (protein.name == 'Ska1Domain'){
-        //            testOffset10 = 8;
-        //            testOffset100 = 138;
-        //        }
+        
         for (var res = 1; res <= protein.size; res++) {
             if (res === 1 ||
-                    ((res % 100 === testOffset100) && (200 * pixPerRes > Protein.minXDist)) ||
-                    ((res % 10 === testOffset10) && (20 * pixPerRes > Protein.minXDist))
+                    ((res % 100 === 0) && (200 * pixPerRes > Protein.minXDist)) ||
+                    ((res % 10 === 0) && (20 * pixPerRes > Protein.minXDist))
                     ) {
                 var tx = protein.getResXwithStickZoom(res);
-                // for juan
-                //                if (xiNET.sid == 682 && res == 1)
-                //                    tx =  protein.getResXwithStickZoom(res + 4);
-                //                else if (protein.name == 'Ska1Domain' && res == 1){
-                //                    tx =  protein.getResXwithStickZoom(res + 132);
-                //                }
                 tickAt(scaleGroup, tx);
                 tick = (tick + 1) % ScaleTicksPerLabel;
                 // does this one get a label?
                 if (tick === 0) {// && tx > 20) {
                     if ((tx + Protein.minXDist) < lastTickX) {
-                        // for juan
-                        //                        if (xiNET.sid == 682 && res == 1)
-                        //                            scaleLabelAt(res + 4, scaleGroup, tx);
-                        //                        if (protein.name == 'Ska1Domain' && res == 1){
-                        //                            scaleLabelAt(res + 132, scaleGroup, tx);
-                        //                        }
-                        //                        else
                         scaleLabelAt(res, scaleGroup, tx);
                     }
                 }
@@ -509,22 +489,25 @@ Protein.prototype.scale = function() {
                 var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
                 seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
                 var seqLabel = document.createElementNS(xiNET.svgns, "text");
-                //                seqLabel.setAttribute("class", "Xlr_proteinSeqLabelText");
                 seqLabel.setAttribute('font-family', 'Arial');
                 seqLabel.setAttribute('font-size', '10');
                 seqLabel.setAttribute("text-anchor", "end");
-                seqLabel.setAttribute("x", 0);
-                seqLabel.setAttribute("y", 0); //Protein.STICKHEIGHT + 3);
+                seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
+                seqLabel.setAttribute("y", 0);
+                
+             //   seqLabel.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
+                
+                
                 seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
                 seqLabelGroup.appendChild(seqLabel);
                 protein.scaleLabels.push(seqLabel);
                 scaleGroup.appendChild(seqLabelGroup);
             }
-            //            if (res == 1) res = 0; // means next tick will be 100 not 101
         }
         scaleLabelAt(protein.size, scaleGroup, lastTickX);
         tickAt(scaleGroup, lastTickX);
         return scaleGroup;
+        
         function scaleLabelAt(text, group, tickX) {
             var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
             scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
@@ -532,15 +515,9 @@ Protein.prototype.scale = function() {
             scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
             scaleLabel.setAttribute('font-family', 'Arial');
             scaleLabel.setAttribute('font-size', '14');
-            scaleLabel.setAttribute("text-anchor", "middle");
+            scaleLabel.setAttribute("text-anchor", "end");
             scaleLabel.setAttribute("x", 0);
             scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
-            // for juan
-            if (xiNET.sid === 682)
-                text = text + 33;
-            else if (protein.name === 'Ska1Domain') {
-                text = text + 132;
-            }
             scaleLabel.appendChild(document.createTextNode(text));
             scaleLabelGroup.appendChild(scaleLabel);
             protein.scaleLabels.push(scaleLabel);
@@ -617,7 +594,7 @@ Protein.prototype.setForm = function(form, svgP) {
                 this.fromStick();
             }
             //          console.log(JSON.stringify(svgP, null, '\t'));
-            if (svgP !== undefined && svgP !== null) {
+            if (typeof svgP !== 'undefined' && svgP !== null) {
                 this.setPosition(svgP.x, svgP.y);
             }
             this.toBlob();

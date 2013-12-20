@@ -56,7 +56,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	if (typeof pep2_seq !== 'undefined'){
 		if (pep2_seq !== '' && pep2_seq !== null){
 			this.pep2_seq = pep2_seq.replace(/[^A-Z]/g, '');;	
-			this.link2_pos = linkPos2;	
+			this.link2_pos = linkPos2;
 			this.xlv.pepSeqFound = true;
 		}
 	}
