@@ -144,12 +144,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             //               + " z");
             //
             //make domain rect's
-            var annotX = this.getResXUnzoomed(anno.start - 1);
-            // for juan
-            //            if (this.xlv.sid == 682 )annotX = this.getResXUnzoomed(anno.startRes - 34);
-            //            else if (this.name == 'Ska1Domain'){
-            //                this.getResXUnzoomed(anno.startRes - 133);
-            //            }
+            var annotX = this.getResXUnzoomed(anno.start - 0.5);
             //Ouch!! Without brackets following does string concatenation
             var annoSize = (1 + (anno.end - anno.start));
             var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;

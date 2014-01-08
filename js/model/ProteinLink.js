@@ -229,7 +229,7 @@ ProteinLink.prototype.showID = function() {
 					filteredMatches.set(match.id);
 					if (match.isAmbig()) {
 						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+							altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
 						}
 					}
 					else {
@@ -332,99 +332,71 @@ ProteinLink.prototype.check = function() {
         }
         return false;
     }
-    if (typeof this.sc !== 'undefined') {
-        if (this.sc >= this.xlv.cutOff) {
-            if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
-                this.show();
-            } else {
-                var resLinks = this.residueLinks.values();
-                var resLinkCount = resLinks.length;
-                for (var i = 0; i < resLinkCount; i++) {
-                    resLinks[i].show();
-                }
-            }
-            return true;
-        }
-        else {
-            if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
-                this.hide();
-            } else {
-                var resLinks = this.residueLinks.values();
-                var resLinkCount = resLinks.length;
-                for (var i = 0; i < resLinkCount; i++) {
-                    resLinks[i].hide();
-                }
-            }
-            return false;
-        }
-    }
-    else {
-        var resLinks = this.residueLinks.values();
-        var resLinkCount = resLinks.length;
-        if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
+	var resLinks = this.residueLinks.values();
+	var resLinkCount = resLinks.length;
+	if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
 
-            this.ambig = true;
-            var filteredResLinks = new Array();
-            var filteredMatches = d3.map();
-            var altProteinLinks = d3.map();
-            for (var i = 0; i < resLinkCount; i++) {
-                var resLink = resLinks[i];
-                var resLinkMeetsCriteria = false;
-                var mCount = resLink.matches.length;
-                for (var m = 0; m < mCount; m++) {
-                    var match = resLink.matches[m];
-                    if (match.meetsFilterCriteria()) {
-                        if (resLinkMeetsCriteria === false) {
-                            resLinkMeetsCriteria = true;
-                            filteredResLinks.push(resLink);
-                        }
-                        filteredMatches.set(match.id);
-                        if (match.isAmbig()) {
-                            for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-                                altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
-                            }
-                        }
-                        else {
-                            this.ambig = false;
-                        }
-                    }
-                }
-            }
-            var filteredResLinkCount = filteredResLinks.length;
-            if (filteredResLinkCount > 0) {
-                this.tooltip = this.id + ', ' + filteredResLinkCount + ' unique cross-link';
-                if (filteredResLinkCount > 1)
-                    this.tooltip += 's';
-                this.tooltip += ' (' + filteredMatches.keys().length;
-                if (filteredMatches.keys().length === 1) {
-                    this.tooltip += ' match)';
-                } else {
-                    this.tooltip += ' matches)';
-                }
-                this.w = filteredResLinkCount * (45 / ProteinLink.maxNoResidueLinks);
-                //acknowledge following line is a bit confusing...
-                this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
-                this.dashedLine(this.ambig);
-                this.show();
-                return true;
-            }
-            else {
-                this.hide();
-                return false;
-            }
-        }
-        else {
-            var showedResResLink = false;
-            //at least one end was in stick form
-            for (var rl = 0; rl < resLinkCount; rl++) {
-                if (resLinks[rl].check() === true) {
-                    showedResResLink = true;
-                }
-            }
-            //TODO: fix this - always returning true if one end is stick
-            return showedResResLink;
-        }
-    }
+		this.ambig = true;
+		var filteredResLinks = new Array();
+		var filteredMatches = d3.map();
+		var altProteinLinks = d3.map();
+		for (var i = 0; i < resLinkCount; i++) {
+			var resLink = resLinks[i];
+			var resLinkMeetsCriteria = false;
+			var mCount = resLink.matches.length;
+			for (var m = 0; m < mCount; m++) {
+				var match = resLink.matches[m];
+				if (match.meetsFilterCriteria()) {
+					if (resLinkMeetsCriteria === false) {
+						resLinkMeetsCriteria = true;
+						filteredResLinks.push(resLink);
+					}
+					filteredMatches.set(match.id);
+					if (match.isAmbig()) {
+						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+							altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
+						}
+					}
+					else {
+						this.ambig = false;
+					}
+				}
+			}
+		}
+		var filteredResLinkCount = filteredResLinks.length;
+		if (filteredResLinkCount > 0) {
+			this.tooltip = this.id + ', ' + filteredResLinkCount + ' unique cross-link';
+			if (filteredResLinkCount > 1)
+				this.tooltip += 's';
+			this.tooltip += ' (' + filteredMatches.keys().length;
+			if (filteredMatches.keys().length === 1) {
+				this.tooltip += ' match)';
+			} else {
+				this.tooltip += ' matches)';
+			}
+			this.w = filteredResLinkCount * (45 / ProteinLink.maxNoResidueLinks);
+			//acknowledge following line is a bit confusing...
+			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
+			this.dashedLine(this.ambig);
+			this.show();
+			return true;
+		}
+		else {
+			this.hide();
+			return false;
+		}
+	}
+	else {
+		var showedResResLink = false;
+		//at least one end was in stick form
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			if (resLinks[rl].check() === true) {
+				showedResResLink = true;
+			}
+		}
+		//TODO: fix this - always returning true if one end is stick
+		return showedResResLink;
+	}
 };
 ProteinLink.prototype.dashedLine = function(dash) {
     //TODO: oops, bit of a hack..

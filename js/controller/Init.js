@@ -14,8 +14,8 @@ xiNET.linkWidth = 1.5;// default line width
 
 // highlight and selection colours are global
 // (because all instances of xiNET should use same colours for this)
-xiNET.highlightColour = new RGBColor("#FDC086");
-xiNET.selectedColour = new RGBColor("yellow");
+xiNET.highlightColour = new RGBColor("yellow");
+xiNET.selectedColour = new RGBColor("#FDC086");
 xiNET.defaultSelfLinkColour = new RGBColor("#8073AC'");
 xiNET.defaultInterLinkColour = new RGBColor("#E08214");
 

@@ -347,7 +347,7 @@ Protein.prototype.setRotation = function(angle) {
 			
             //~ this.scaleLabels[i].setAttribute("transform", "rotate(180)");
             this.scaleLabels[i].setAttribute("transform", "scale(-1,-1)");
-           this.scaleLabels[i].setAttribute("text-anchor", "start");
+           //~ this.scaleLabels[i].setAttribute("text-anchor", "start");
         }
         //        }
     }
@@ -358,7 +358,7 @@ Protein.prototype.setRotation = function(angle) {
         for (var j = 0; j < sll; j++) {
              //~ this.scaleLabels[j].setAttribute("transform", "rotate(0)");
             this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
-            this.scaleLabels[j].setAttribute("text-anchor", "end");
+            //~ this.scaleLabels[j].setAttribute("text-anchor", "end");
             }
         //~ }
     }
@@ -441,11 +441,11 @@ Protein.prototype.scale = function() {
             this.rectAndTicks.removeChild(this.ticks);
 		}
         this.ticks = getScaleGroup(this);
-        this.p.setAttribute("x", this.getResXwithStickZoom(0));
+        this.p.setAttribute("x", this.getResXwithStickZoom(0.5));
         this.p.setAttribute("y", -Protein.STICKHEIGHT / 2); //svgHeight);
         this.p.setAttribute("width", protLength);
         this.p.setAttribute("height", Protein.STICKHEIGHT);
-        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0) -2.5 );
+        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0.5) - 2.5 );
         this.rectHighlight.setAttribute("y", (-Protein.STICKHEIGHT / 2) - 2.5); //svgHeight);
         this.rectHighlight.setAttribute("width", protLength + 5);
         this.rectHighlight.setAttribute("height", Protein.STICKHEIGHT + 5);
@@ -491,7 +491,7 @@ Protein.prototype.scale = function() {
                 var seqLabel = document.createElementNS(xiNET.svgns, "text");
                 seqLabel.setAttribute('font-family', 'Arial');
                 seqLabel.setAttribute('font-size', '10');
-                seqLabel.setAttribute("text-anchor", "end");
+                seqLabel.setAttribute("text-anchor", "middle");
                 seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
                 seqLabel.setAttribute("y", 0);
                 
@@ -515,7 +515,7 @@ Protein.prototype.scale = function() {
             scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
             scaleLabel.setAttribute('font-family', 'Arial');
             scaleLabel.setAttribute('font-size', '14');
-            scaleLabel.setAttribute("text-anchor", "end");
+            scaleLabel.setAttribute("text-anchor", "middle");
             scaleLabel.setAttribute("x", 0);
             scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
             scaleLabel.appendChild(document.createTextNode(text));
@@ -527,7 +527,7 @@ Protein.prototype.scale = function() {
         function tickAt(group, tickX) {
             var mayt = document.createElementNS(xiNET.svgns, "line");
             mayt.setAttribute("x1", tickX);
-            mayt.setAttribute("y1", (-Protein.STICKHEIGHT / 2) * 0.75);
+            mayt.setAttribute("y1", 2);//(-Protein.STICKHEIGHT / 2) * 0.75);
             mayt.setAttribute("x2", tickX);
             mayt.setAttribute("y2", ((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
             mayt.setAttribute("stroke", "black");
@@ -747,7 +747,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
             annotColouredRect.setAttribute("class", "protein");
 
             //make domain rect's
-            var annotX = this.getResXUnzoomed(pep[0]);
+            var annotX = this.getResXUnzoomed(pep[0] + 0.5);
             var annoSize = pep[1];
             var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;
             annotColouredRect.setAttribute("x", annotX);
