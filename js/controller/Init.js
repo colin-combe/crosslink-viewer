@@ -405,13 +405,13 @@ xiNET.Controller.prototype.resetZoom = function() {
     //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
-    for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
-        prot.stickZoom = 1;
-        prot.scale();
-    }
+    //~ var proteins = this.proteins.values();
+    //~ var proteinCount = proteins.length;
+    //~ for (var p = 0; p < proteinCount; p++) {
+        //~ var prot = proteins[p];
+        //~ prot.stickZoom = 1;
+        //~ prot.scale();
+    //~ }
 };
 
 xiNET.Controller.prototype.getLayout = function() {
