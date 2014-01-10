@@ -1,5 +1,5 @@
 Protein1,Protein2,Residue1,Residue2, Note, Color
-sp|Q9Y3A3|MOBL3,sp|Q9NRL3|STRN4,25,50, An unambiguous inter protein cross-link,
+sp|Q9Y3A3|MOBL3,sp|Q9NRL3|STRN4,25,25, An unambiguous inter protein cross-link,
 sp|Q9Y3A3|MOBL3,sp|Q9Y3A3|MOBL3,50,100, An unambiguous self cross-link,
 sp|Q9Y3A3|MOBL3,-,110,120, An unambiguous loop-link,
 sp|Q9Y3A3|MOBL3,-, 130, n/a, An unambiguous mono-link,

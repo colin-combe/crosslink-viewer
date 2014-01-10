@@ -1,5 +1,5 @@
 //		xiNET cross-link viewer
-//		Copyright 2013 Rappsilber Laboratory
+//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
 //		authors: Lutz Fischer, Colin Combe
 //		
@@ -29,6 +29,9 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
         this.name = name;
     }
     this.description = description;
+    
+    
+    
     //check for labeling modifications in sequence now, we're about to lose this info
     if (/\d/.test(sequence)) {//is there a digit in the sequence?
         this.labeling = '';// as in silac labelling

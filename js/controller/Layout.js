@@ -115,18 +115,18 @@ xiNET.Controller.prototype.autoLayout = function() {
                     }
                     else {
                         row++;
-                        //~ if (proteinCount < 60 || nodeCount > 1) {
+                        if (proteinCount < 60 || nodeCount > 1) {
                         row++;
-                        //~ }
+                        }
                         x = xForColumn(column);
                         y = yForRow(row);
                         var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
                         if ((lastNodeY + this.maxBlobRadius) > height) {
                             column++;
                             row = 1;
-                            //if (proteinCount < 60) {
+                            if (proteinCount < 60) {
                                 row++;
-                            //}
+                            }
                             x = xForColumn(column);
                             y = yForRow(row);
                         }
@@ -143,34 +143,27 @@ xiNET.Controller.prototype.autoLayout = function() {
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
-            var json = "{\"name\": \"ALL\",\"children\": [";
-            var pi = 0;
+            var layoutObj = {};
+            var children = [];
+            layoutObj.NAME = "ALL";
+            layoutObj.children = children;
             for (var g = 0; g < nonLinearGraphs.length; g++) {
                 var nodes = nonLinearGraphs[g].nodes.values();
                 var nodeCount = nodes.length;
                 for (var n = 0; n < nodeCount; n++) {
                     var prot = this.proteins.get(nodes[n].id);
-//                prot.fixed = false;
-                    if (pi > 0)
-                        json += ",";
-                    pi++;
-                    json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-                            + prot.proteinLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
-                    json += "}";
+                    layoutObj.children.push(prot);
                 }
             }
-            json += "]}";
-            var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
                     .size([width - this.layoutXOffset, height])
-                    //    .children(json.children);
                     .value(function(d) {
-                return d.size;
-            })
+						return d.size;
+					})
                     .sort(function comparator(a, b) {
-                return (b.ppLinkCount - 0) - (a.ppLinkCount - 0);
-            });
-            var nodes = packLayout.nodes(jsonObj);
+						return (b.proteinLinks.keys().length) - (a.proteinLinks.keys().length);
+					});
+            var nodes = packLayout.nodes(layoutObj);
             var nodeCount = nodes.length;
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
@@ -182,13 +175,14 @@ xiNET.Controller.prototype.autoLayout = function() {
             }
         }
         //do force directed layout
-        //TODO: don't create JSON string, just create object
         var gWidth = width - this.layoutXOffset;
         if (gWidth < 200) {
             gWidth = width;
         }
         var linkDistance = 60;
-        var json = "{\"nodes\":[";
+        layoutObj = {};
+        layoutObj.nodes = [];
+        layoutObj.links = [];
         var protLookUp = {};
         var pi = 0;
 
@@ -199,24 +193,23 @@ xiNET.Controller.prototype.autoLayout = function() {
                 var prot = this.proteins.get(nodes[n].id);
 //        if (prot.fixed === false) {
                 protLookUp[prot.id] = pi;
-                if (pi > 0)
-                    json += ",";
                 pi++;
-                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x - this.layoutXOffset)
-                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x - this.layoutXOffset) + ""
-                        + ",\"py\":" + prot.y + "";
-                json += "}";
+                var nodeObj = {};
+                nodeObj.id = prot.id;
+                nodeObj.x = prot.x - this.layoutXOffset;
+                nodeObj.y = prot.y;
+                nodeObj.px = prot.x - this.layoutXOffset;
+                nodeObj.py = prot.y;
+                layoutObj.nodes.push(nodeObj);
             }
 //        }
         }
-        json += "],\"links\":[";
-        var li = 0;
         for (var g = 0; g < nonLinearGraphs.length; g++) {
             var links = nonLinearGraphs[g].links.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
-//            if (link.check() === true) { //not needed due to way subgraphs init'ed
+//            if (link.check() === true) { //not needed due to way subgraphs are initialised
                 var fromProt = link.fromProtein;
                 var toProt = link.toProtein;
                 var source = protLookUp[fromProt.id];
@@ -225,12 +218,11 @@ xiNET.Controller.prototype.autoLayout = function() {
                 if (source !== target) {
 
                     if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-                        if (li > 0)
-                            json += ",";
-                        li++;
-                        json += "{\"source\":" + source + ", \"target\":" + target
-                                + ", \"id\":\"" + link.id
-                                + "\"}";
+                        var linkObj = {};
+                        linkObj.source = source;
+                        linkObj.target = target;
+                        linkObj.id = link.id;
+                        layoutObj.links.push(linkObj);
                     }
                     else {
                         alert("NOT RIGHT");
@@ -239,16 +231,13 @@ xiNET.Controller.prototype.autoLayout = function() {
                 //        } // closing unused link.check()
             }
         }
-        json += "]}";
-//        this.message(json);
-        var jsonObj = JSON.parse(json);
-        var k = Math.sqrt(jsonObj.nodes.length / ((gWidth) * height));
+        var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
 // mike suggests:
 //    .charge(-10 / k)
 //    .gravity(100 * k)
         this.force = d3.layout.force()
-                .nodes(jsonObj.nodes)
-                .links(jsonObj.links)
+                .nodes(layoutObj.nodes)
+                .links(layoutObj.links)
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
                 .charge(-30 / k)
@@ -317,7 +306,7 @@ xiNET.Controller.prototype.autoLayout = function() {
     ;
 
     function yForRow(r) {
-        return (r * 2 * self.maxBlobRadius);
+        return (r * self.maxBlobRadius);
     }
     ;
 };
