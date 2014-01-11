@@ -347,11 +347,9 @@ Protein.prototype.setRotation = function(angle) {
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation <= 90 || this.previousRotation > 270){
         for (var i = 0; i < sll; i++) {
-			
-            //~ this.scaleLabels[i].setAttribute("transform", "rotate(180)");
-            this.scaleLabels[i].setAttribute("transform", "scale(-1,-1)");
-           //~ this.scaleLabels[i].setAttribute("text-anchor", "start");
+		   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
         }
+        this.rectAndTicks.setAttribute("transform", "scale(1,-1)");
         //        }
     }
     else {
@@ -359,10 +357,10 @@ Protein.prototype.setRotation = function(angle) {
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation > 90 || this.previousRotation <= 270){
         for (var j = 0; j < sll; j++) {
-             //~ this.scaleLabels[j].setAttribute("transform", "rotate(0)");
             this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
-            //~ this.scaleLabels[j].setAttribute("text-anchor", "end");
-            }
+        }
+        this.rectAndTicks.setAttribute("transform", "scale(1,1)");
+ 
         //~ }
     }
 };
