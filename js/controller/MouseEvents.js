@@ -26,24 +26,15 @@ xiNET.Controller.prototype.initMouseEvents = function() {
     this.svgElement.onmousemove = function(evt) {
         self.mouseMove(evt);
     };
-    if (navigator.userAgent.toLowerCase().indexOf('webkit') > -1) {
-        //chrome, safari
-        //                this.svgElement.addEventListener('mousewheel', self.mouseWheel, false);
-        this.svgElement.onmousewheel = function(evt) {
-            self.mouseWheel(evt);
-        };
-    }
-    else {
-        //others
-        this.svgElement.addEventListener('DOMMouseScroll', function(evt) {
-            self.mouseWheel(evt);
-        }
-        , false);
-        //        self.svgElement.onscroll = function(evt) { //doesn't work
-        //            self.mouseWheel(evt);
-        //        };
-    }
-
+    	
+	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
+	}
+	else if (document.addEventListener) { //WC3 browsers
+		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
+	}
+    
     this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
     this.marquee.setAttribute('class', 'marquee');
     this.marquee.setAttribute('fill', 'red');

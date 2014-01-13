@@ -30,7 +30,11 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     }
     this.description = description;
     
-    
+    this.tooltip = this.name + ' [' + this.id + ']';
+    if (typeof this.description !== 'undefined' && this.description != '' 
+			&& this.description !== null){
+				this.tooltip += ' ' + this.description;
+	}  
     
     //check for labeling modifications in sequence now, we're about to lose this info
     if (/\d/.test(sequence)) {//is there a digit in the sequence?

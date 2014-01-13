@@ -1,5 +1,5 @@
 //		xiNET Cross-link Viewer
-//		Copyright 2013 Rappsilber Laboratory
+//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
 //		author: Colin Combe
 //
@@ -19,7 +19,6 @@ xiNET.selectedColour = new RGBColor("#FDC086");
 xiNET.defaultSelfLinkColour = new RGBColor("#8073AC'");
 xiNET.defaultInterLinkColour = new RGBColor("#E08214");
 
-
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
@@ -29,13 +28,15 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 	this.intraHidden = false;
 	this.ambigHidden = false;
 	
-    this.fields = {}; // not sure about this, used by text search
+    this.fields = {}; //used by text search
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+    
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     targetDiv.appendChild(this.svgElement);
     
+    //are we panning?
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
@@ -46,9 +47,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     // are we rotating at the moment
     this.rotating = false;
 
-    //~ this.svgElement.setAttribute("class", "Xlv");
     // disable right click context menu (we wish to put right click to our own purposes)
-    // doesn't work in Opera, Opera requires user to specify this thru options/prefs
     this.svgElement.oncontextmenu = function() {
         return false;
     };
