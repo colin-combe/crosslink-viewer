@@ -278,16 +278,19 @@ xiNET.Controller.prototype.hideAmbig = function(bool) {
 //
 //    };
 
-xiNET.Controller.prototype.exportSVG = function(containerName) {
-    alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
-    var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
+xiNET.Controller.prototype.exportSVG = function() {
+	//soon there will be a better way:-
+	//http://www.w3.org/TR/file-writer-api/#the-filesaver-interface
+	
+    //alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
+    var rawSVG = this.svgElement.parentNode.innerHTML;
     //TODO: rotator hide not working
     var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
     //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
     //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
     //    .replace(/xmlns:svg=/gi,"xmlns=")
     //    .replace(/svg:/gi,"")
-    .replace(/<rect .*?\/rect>/i, "");
+    .replace(/<rect .*?\/rect>/i, "");//takes out background fill
 
     var args = [];
     args.source = svgXml;
@@ -295,17 +298,9 @@ xiNET.Controller.prototype.exportSVG = function(containerName) {
     + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
     + svgXml;//markup_beauty(args);
 
-    //    alert("/");
-
     var xmlAsUrl;
-    //    if (this.messageElement != null) { // if running in Col's developemnt PHP version
-    //        // this will make it really open in new window, instead of download
-    //        xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    //    //       xmlAsUrl = 'data:image/svg+xml;filename=ProteinViewExport.svg,'
-    //    }
-    //    else {
-    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    //    }
+    xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+    //xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
     xmlAsUrl += encodeURIComponent(prettyXml);
     var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };

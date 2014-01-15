@@ -52,11 +52,11 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
         return false;
     };
 
-    // background needed in some versions of chrome, else cannot click/drag background
+    // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
     var background = document.createElementNS(xiNET.svgns, "rect");
-    background.setAttribute("id", "XlvBackground");
+    background.setAttribute("id", "background_fill");
     background.setAttribute("x", 0);
     background.setAttribute("y", 0);
     background.setAttribute("width", 2560 * 2);
@@ -68,7 +68,8 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.container = document.createElementNS(xiNET.svgns, "g");
     this.container.setAttribute("id", "container");
 
-    var useDefs = false;//show magnifier using use and defs elements
+    var useDefs = false;//show magnifier using use and defs elements - experimental
+    // see https://bugzilla.mozilla.org/show_bug.cgi?id=265895
     var defs;
     if (useDefs === true) {
         //for magnifier... chrome only
@@ -137,8 +138,8 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
         this.svgElement.appendChild(mag);
         this.svgElement.appendChild(defs);
     }
-    //showing title as tooltips is not part of svg spec
-    //also more repsonsive if we do out own
+    //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
+    //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(xiNET.svgns, "text");
   //  this.tooltip.setAttribute('class', 'tooltip');
   //  this.tooltip.setAttribute('id', 'tooltip');
