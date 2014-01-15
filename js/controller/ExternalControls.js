@@ -299,8 +299,8 @@ xiNET.Controller.prototype.exportSVG = function() {
     + svgXml;//markup_beauty(args);
 
     var xmlAsUrl;
-    xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    //xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
+    //xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
     xmlAsUrl += encodeURIComponent(prettyXml);
     var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
