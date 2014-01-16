@@ -279,30 +279,25 @@ xiNET.Controller.prototype.hideAmbig = function(bool) {
 //    };
 
 xiNET.Controller.prototype.exportSVG = function() {
-	//soon there will be a better way:-
-	//http://www.w3.org/TR/file-writer-api/#the-filesaver-interface
-	
-    //alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
-    var rawSVG = this.svgElement.parentNode.innerHTML;
-    //TODO: rotator hide not working
-    var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
     //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
     //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
     //    .replace(/xmlns:svg=/gi,"xmlns=")
     //    .replace(/svg:/gi,"")
     .replace(/<rect .*?\/rect>/i, "");//takes out background fill
-
-    var args = [];
-    args.source = svgXml;
-    var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-    + svgXml;//markup_beauty(args);
-
-    var xmlAsUrl;
-    //xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    xmlAsUrl += encodeURIComponent(prettyXml);
-    var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
+    
+    var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+	saveAs(blob, "xiNET_output.svg");
+	
+	//~ var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+    //~ + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+    //~ + svgXml;
+	//~ 
+	//~ var xmlAsUrl;
+    //~ xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+    //~ //xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
+    //~ xmlAsUrl += encodeURIComponent(xml);
+    //~ var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
 
 //set the message element to use (optional - mainly for debugging)
