@@ -4,9 +4,6 @@
 //		authors: Lutz Fischer, Colin Combe
 //		
 //		Protein.js
-//		TODO - merge with Interactor class in interaction-viewer
-//		TODO - implement start and end residues? (and rename class as Segment?)
-//		TODO - move link positions to middle of residue letters? - avoids a prob when rotated 180
 
 Protein.STICKHEIGHT = 20; 		// height of stick in pixels
 Protein.MAXSIZE = 0; 			// residue count of longest sequence
@@ -14,6 +11,7 @@ Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated
 Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
 Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
 Protein.domainColours = d3.scale.category20c(); // d3.scale.ordinal().range(colorbrewer.Paired[12]);
+Protein.transitionTime = 5000;
 
 function Protein(id, xlvController, acc, name) {
     this.id = id; // id may not be accession
@@ -80,32 +78,69 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
-    this.customAnnotations = null;
-
-    //TODO: remove need for this?
-    this.rectX;
-
-    //svg elements we always need
+    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
+	//rotators
+	this.lowerRotator = new Rotator(this, 0, this.xlv);
+	this.upperRotator = new Rotator(this, 1, this.xlv);
+    
+    var r = this.getBlobRadius();
+	
+    /*
+     * Lower group
+     * svg group for elements that appear underneath links
+     */
+    this.lowerGroup = document.createElementNS(xiNET.svgns, "g");
+    this.lowerGroup.setAttribute("class", "protein lowerGroup");
+    this.lowerRotationGroup = document.createElementNS(xiNET.svgns, "g");
+    this.lowerGroup.appendChild(this.lowerRotationGroup);
+ 	
+ 	//make highlight
+    this.highlight = document.createElementNS(xiNET.svgns, "rect");
+    //invariant attributes
+    if (xiNET.highlightColour !== undefined) {
+        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+	}
+    this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("fill", "none");   
+    //this.highlight.setAttribute("fill-opacity", 1);   
+    //attributes that may change
+    d3.select(this.highlight).attr("stroke-opacity", 0)
+		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+		.attr("x", -r - 2.5).attr("y", -r - 2.5)
+		.attr("rx", r + 2.5).attr("ry", r + 2.5);
+	this.lowerRotationGroup.appendChild(this.highlight);   
+    
+    //domains in rectangle form (shown underneath links) 
+    this.rectDomains = document.createElementNS(xiNET.svgns, "g");
+    this.rectDomains.setAttribute("opacity", "0");
+    this.lowerRotationGroup.appendChild(this.rectDomains);
+    
+    //svg groups for self links
+    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
+    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
+    this.lowerRotationGroup.appendChild(this.intraLinksHighlights);
+	this.lowerRotationGroup.appendChild(this.intraLinks);    
+ 
+     
+	/*
+     * Upper group
+     * svg group for elements that appear above links
+     */
+     
     this.upperGroup = document.createElementNS(xiNET.svgns, "g");
-    this.upperGroup.setAttribute("class", "protein");
-    this.rectDomainsColouredContainer = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsColouredContainer.setAttribute("class", "protein");
-    this.rectDomainsColoured = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsColoured.setAttribute("class", "protein");
-    this.rectDomainsMouseEvents = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsMouseEvents.setAttribute("class", "protein");
-    this.circDomains = document.createElementNS(xiNET.svgns, "g");
-    this.circDomains.setAttribute("class", "protein");
+    this.upperGroup.setAttribute("class", "protein upperGroup");
+    this.upperRotationGroup = document.createElementNS(xiNET.svgns, "g");
+    //~ this.upperRotationGroup.setAttribute("class", "protein upperRotationGroup");
+    this.upperGroup.appendChild(this.upperRotationGroup);
 
-    //add label to it - we will move this svg element around when protein form changes
+    //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(xiNET.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
-    //    this.labelSVG.setAttribute("class", "proteinLabel");
+    this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-
     //choose label text
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
@@ -127,133 +162,98 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
         this.labelText = '[' + this.labeling + '] ' + this.labelText;
     }
     this.labelTextNode = document.createTextNode(this.labelText);
-    this.labelSVG.setAttribute('class', 'xlv_text');
     this.labelSVG.appendChild(this.labelTextNode);
-    //append label
-    this.upperGroup.appendChild(this.labelSVG);
+    d3.select(this.labelSVG).attr("transform", 
+		"translate( -" + (r + 5) + " " + Protein.labelY + ")");
+    this.upperRotationGroup.appendChild(this.labelSVG);
+   	
+   	//ticks
+    this.ticks = document.createElementNS(xiNET.svgns, "g");
+    this.upperRotationGroup.appendChild(this.ticks);
+    
+	//make outline
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.outline = document.createElementNS(xiNET.svgns, "rect");
+    this.outline.setAttribute("stroke", "black");
+    this.outline.setAttribute("stroke-width", "1");
+    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
+			.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#ffffff" : "#FB8072")
+			.attr("width", r * 2).attr("height", r * 2)
+			.attr("x", -r).attr("y", -r)
+			.attr("rx", r).attr("ry", r);
+    //append outline
+    this.upperRotationGroup.appendChild(this.outline);
+    
+    //domains as pie slices - shown on top of everything
+	this.circDomains = document.createElementNS(xiNET.svgns, "g");
+    //~ this.circDomains.setAttribute("class", "protein circDomains");
+	this.circDomains.setAttribute("opacity", 1);
+	this.upperRotationGroup.appendChild(this.circDomains);
 
-    //make blob
-    this.blob = document.createElementNS(xiNET.svgns, "circle");
-    this.blob.setAttribute("cx", 0);
-    this.blob.setAttribute("cy", 0);
-    this.blob.setAttribute("r", this.getBlobRadius());
-    //style it
-    if (this.name.indexOf("DECOY_") !== -1){
-		this.blob.setAttribute("fill", "#FB8072");
-		//this.blob.setAttribute("fill-opacity", "0.5");
-	}else{
-		this.blob.setAttribute("fill", "white");
-		
-    }
-    this.blob.setAttribute("fill-opacity", "1");
-    this.blob.setAttribute("stroke", "black");
-    this.blob.setAttribute("stroke-width", "1");
-    //make blobHighlight
-    this.blobHighlight = document.createElementNS(xiNET.svgns, "circle");
-    this.blobHighlight.setAttribute("cx", 0);
-    this.blobHighlight.setAttribute("cy", 0);
-    this.blobHighlight.setAttribute("r", this.getBlobRadius());
-    //style it
-    this.blobHighlight.setAttribute("stroke-opacity", "0");
-    if (xiNET.highlightColour !== undefined)
-        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    this.blobHighlight.setAttribute("stroke-width", "10");
-
-    //make parked blob //TODO: don't use new SVG element, change attributes of blob
-    this.parked = document.createElementNS(xiNET.svgns, "circle");
-    this.parked.setAttribute("cx", 0);
-    this.parked.setAttribute("cy", 0);
-    this.parked.setAttribute("r", this.getBlobRadius());
-    this.parked.setAttribute("class", "Xlr_protein Xlr_parked");
-    this.parked.setAttribute("fill", "lightGrey");
-    this.parked.setAttribute("fill-opacity", "0.75");
-    this.parked.setAttribute("stroke", "none");
-
-    //STICK = EVRYTHING THAT ROTATES: rectangle, annotation, intra links, outline, scale,
-    //but NOT LABEL. Cannot currently be made until after all proteins (for scaling)
-    this.stick = null;//see getStick() //protein as stick,
-
-    //svg groups for intra protein links
-    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinksHighlights.setAttribute("class", "highlights");
-    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinks.setAttribute("class", "intraLinks");
-
-    this.rectAndTicks = document.createElementNS(xiNET.svgns, "g");
-    ////don't want to scale ticks but do want to add listener to both rect and ticks
-    this.rectAndTicks.setAttribute("class", "rectAndTicks");
-    // stick symbol minus label, scale labels/sequence and intra links, i.e. rectangular bits to scale
-    this.rect = document.createElementNS(xiNET.svgns, "g");
-    this.rect.setAttribute("class", "rect");
-    this.rectAndTicks.appendChild(this.rect);
-
-    this.p = document.createElementNS(xiNET.svgns, "rect");//protein stick outline
-    //style it
-    this.p.setAttribute("fill", "none");
-    this.p.setAttribute("stroke", "black");
-    this.p.setAttribute("stroke-width", "0.75");
-
-    this.rectHighlight = document.createElementNS(xiNET.svgns, "rect");
-    this.rectHighlight.setAttribute("stroke-opacity", "0");
-    if (xiNET.highlightColour !== undefined)
-        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    this.rectHighlight.setAttribute("stroke-width", "5");
-    this.rectHighlight.setAttribute("fill", "none");
-    //    this.rectHighlight.setAttribute("class", "pOutline Xlr_protein");
-
-    this.rectDomainsColouredContainer.appendChild(this.rectHighlight);
-    this.rectDomainsColouredContainer.appendChild(this.rectDomainsColoured);
-    this.rectAndTicks.appendChild(this.p);
-
-    this.ticks = null;//document.createElementNS(xiNET.svgns, "g");
     this.scaleLabels = new Array();
 
     // events
     var self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
     this.upperGroup.onmousedown = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-        if (self.xlv.force !== undefined) {
-            self.xlv.force.stop();
-        }
-        self.xlv.dragElement = self;
-        //~ if (evt.ctrlKey === false) {
-            self.xlv.clearSelection();
-            self.setSelected(true);
-        //~ } else {
-            //~ self.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        var p = self.xlv.getEventPoint(evt);
-        self.xlv.dragStart = self.xlv.mouseToSVG(p.x, p.y);
-        self.printAnnotationInfo();
-        return false;
+		self.mouseDown(evt);
     };
     this.upperGroup.onmouseover = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);
-        self.showHighlight(true);
-        self.xlv.setTooltip(self.tooltip);
-        return false;
+		self.mouseOver(evt);
     };
     this.upperGroup.onmouseout = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);
-        self.showHighlight(false);
-        self.xlv.hideTooltip();
-        return false;
-    };
+		self.mouseOut(evt);
+     };
     this.upperGroup.ondblclick = function(evt) {
-        var p = self.xlv.getEventPoint(evt);
-        var c = self.xlv.mouseToSVG(p.x, p.y);
-        if (self.form === 0) {
-            self.setForm(1, c);
-        } else {
-             self.setForm(0, c);
-        }
-        self.xlv.checkLinks();
+		self.dblClick(evt);
     };
-    
+
     this.isSelected = false;
+};
+
+Protein.prototype.mouseDown = function(evt) {
+           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        //if a force layout exists then stop it
+        if (this.xlv.force !== undefined) {
+            this.xlv.force.stop();
+        }
+        this.xlv.dragElement = this;
+        //~ if (evt.ctrlKey === false) {
+            this.xlv.clearSelection();
+            this.setSelected(true);
+        //~ } else {
+            //~ this.setSelected(!this.isSelected);
+        //~ }
+        //store start location
+        var p = this.xlv.getEventPoint(evt);
+        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        this.printAnnotationInfo();
+        return false;
+};
+
+Protein.prototype.mouseOver = function(evt) {
+        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.showHighlight(true);
+        this.xlv.setTooltip(this.tooltip);
+        return false;
+};
+
+Protein.prototype.mouseOut = function(evt) {
+        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.showHighlight(false);
+        this.xlv.hideTooltip();
+        return false;
+};
+
+Protein.prototype.dblClick = function(evt) {
+        var p = this.xlv.getEventPoint(evt);
+        var c = this.xlv.mouseToSVG(p.x, p.y);
+        if (this.form === 0) {
+            this.setForm(1, c);
+        } else {
+            this.setForm(0, c);
+        }
+        //this.xlv.checkLinks();
 };
 
 Protein.prototype.getBlobRadius = function() {
@@ -293,19 +293,13 @@ Protein.prototype.addLink = function(link) {
 
 Protein.prototype.showHighlight = function(show) {
     if (show) {
-        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.blobHighlight.setAttribute("stroke-opacity", "1");
-        this.rectHighlight.setAttribute("stroke-opacity", "1");
+        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlight.setAttribute("stroke-opacity", "1");
     } else {
         if (this.isSelected == false) {
-            if (this.form !== 1)
-                this.blobHighlight.setAttribute("stroke-opacity", "0");
-            else
-                this.rectHighlight.setAttribute("stroke-opacity", "0");
+                this.highlight.setAttribute("stroke-opacity", "0");
         }
-        this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
 };
 
@@ -313,68 +307,57 @@ Protein.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.xlv.selected.set(this.id, this);
         this.isSelected = true;
-        if (this.form !== 1) {
-            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-            this.blobHighlight.setAttribute("stroke-opacity", "1");
-        }
-        else {
-            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-            this.rectHighlight.setAttribute("stroke-opacity", "1");
-        }
+		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.xlv.selected.remove(this.id);
         this.isSelected = false;
-        if (this.form !== 1) {
-            this.blobHighlight.setAttribute("stroke-opacity", "0");
-            this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        }
-        else {
-            this.rectHighlight.setAttribute("stroke-opacity", "0");
-            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        }
+		this.highlight.setAttribute("stroke-opacity", "0");
+		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
     }
 };
+
 Protein.prototype.setRotation = function(angle) {
-    this.previousRotation = this.rotation;
+    // this.previousRotation = this.rotation;
     this.rotation = angle % 360;
-    if (this.rotation < 0)
+    if (this.rotation < 0) {
         this.rotation += 360;
-    //    this.xlv.message(this.rotation);
-    this.rectHighlight.setAttribute("transform", "rotate(" + this.rotation + ")");
-    this.stick.setAttribute("transform", "rotate(" + this.rotation + ")");
-    this.rectDomainsColoured.setAttribute("transform", "rotate(" + this.rotation + ") scale(" + (this.stickZoom) + " 1 )");
+	}
+    this.upperRotationGroup.setAttribute("transform", "rotate(" + this.rotation + ")");
+    this.lowerRotationGroup.setAttribute("transform", "rotate(" + this.rotation + ")");
     var sll = this.scaleLabels.length;
     if (this.rotation > 90 && this.rotation <= 270) {
 
-        this.labelSVG.setAttribute("transform", " rotate(" + (this.rotation - 180) + ")" +
+        this.labelSVG.setAttribute("transform", " rotate(" + (- 180) + ")" +
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation <= 90 || this.previousRotation > 270){
         for (var i = 0; i < sll; i++) {
 		   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
         }
-        this.rectAndTicks.setAttribute("transform", "scale(1,-1)");
+        this.ticks.setAttribute("transform", "scale(1,-1)");
         //        }
     }
     else {
-        this.labelSVG.setAttribute("transform", " rotate(" + this.rotation + ")" +
+        this.labelSVG.setAttribute("transform", " rotate(" + 0 + ")" +
                 "translate( -" + (((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Protein.labelY + ")");
         //        if (this.previousRotation > 90 || this.previousRotation <= 270){
         for (var j = 0; j < sll; j++) {
             this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
         }
-        this.rectAndTicks.setAttribute("transform", "scale(1,1)");
+        this.ticks.setAttribute("transform", "scale(1,1)");
  
-        //~ }
+        // }
     }
 };
 
-// - now more accurately described as setting transform for svg (sets scale on top group also)
+// more accurately described as setting transform for top svg elements (sets scale also)
 Protein.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    this.rectDomainsColouredContainer.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+    //~ this.rectDomainsContainer.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+    this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
     if (this.internalLink != null) {
         if (typeof this.internalLink.fatLine !== 'undefined') {
             this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
@@ -391,7 +374,6 @@ Protein.prototype.switchStickScale = function(svgP) {
         //        this.xlv.stickUnderMouse = null;
     }
     if (this.form === 0) {
-        this.fromBlob();
         this.toStick();
     }
     else {
@@ -421,18 +403,12 @@ Protein.prototype.switchStickScale = function(svgP) {
 Protein.prototype.scale = function() {
     var protLength = (this.size) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
-        this.setRotation(this.rotation); //places label
         this.setAllLineCoordinates();
-        this.rect.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
-        //        this.rectDomainsColoured.setAttribute("transform",
-        //            " scale("+(this.stickZoom) + " 1 )");
-        this.rectDomainsMouseEvents.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
         //place rotators
-        this.lowerRotator.svg.setAttribute("transform", "translate(" + (this.getResXwithStickZoom(0) - Protein.rotOffset) + " 0)");
-        this.upperRotator.svg.setAttribute("transform", "translate("
-                + (this.getResXwithStickZoom(this.size) + Protein.rotOffset) + " 0)");
+        this.lowerRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
+        this.upperRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
         //internal links
         if (this.internalLink != null) {
             var resLinks = this.internalLink.residueLinks.values();
@@ -443,18 +419,11 @@ Protein.prototype.scale = function() {
         }
 
         if (this.ticks !== null){
-            this.rectAndTicks.removeChild(this.ticks);
+            this.lowerRotationGroup.removeChild(this.ticks);
 		}
         this.ticks = getScaleGroup(this);
-        this.p.setAttribute("x", this.getResXwithStickZoom(0.5));
-        this.p.setAttribute("y", -Protein.STICKHEIGHT / 2); //svgHeight);
-        this.p.setAttribute("width", protLength);
-        this.p.setAttribute("height", Protein.STICKHEIGHT);
-        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0.5) - 2.5 );
-        this.rectHighlight.setAttribute("y", (-Protein.STICKHEIGHT / 2) - 2.5); //svgHeight);
-        this.rectHighlight.setAttribute("width", protLength + 5);
-        this.rectHighlight.setAttribute("height", Protein.STICKHEIGHT + 5);
-        this.rectAndTicks.appendChild(this.ticks);
+        
+        this.lowerRotationGroup.appendChild(this.ticks);
         this.setRotation(this.rotation);
     }
 
@@ -555,7 +524,7 @@ Protein.prototype.toggleFlipped = function() {
 
 Protein.prototype.setParked = function(bool, svgP) {
     if (this.isParked === true && bool == false) {
-        this.fromParked();
+        this.isParked = false;
         if (this.form === 0) {
             this.toBlob();
         }
@@ -566,14 +535,10 @@ Protein.prototype.setParked = function(bool, svgP) {
         this.setAllLineCoordinates();
     }
     else if (this.isParked === false && bool == true) {
-        if (this.form === 0) {
-            this.fromBlob();
-        }
-        else {
-            this.fromStick();
-            if (svgP !== undefined && svgP !== null) {
-                this.setPosition(svgP.x, svgP.y);
-            }
+        if (this.form === 1) {
+            //~ if (svgP !== undefined && svgP !== null) {
+                //~ this.setPosition(svgP.x, svgP.y);
+            //~ }
         }
         this.toParked();
     }
@@ -589,76 +554,73 @@ Protein.prototype.setForm = function(form, svgP) {
     else
     {
         if (form == 1) {
-            if (this.form === 0) {
-                this.fromBlob();
-            }
             this.toStick();
         }
         else {
-            if (this.form === 1) {
-                this.fromStick();
-            }
-            //          console.log(JSON.stringify(svgP, null, '\t'));
-            if (typeof svgP !== 'undefined' && svgP !== null) {
-                this.setPosition(svgP.x, svgP.y);
-            }
+            //~ if (typeof svgP !== 'undefined' && svgP !== null) {
+                //~ this.setPosition(svgP.x, svgP.y);
+            //~ }
             this.toBlob();
             //TODO: temp
             this.xlv.stickUnderMouse = null;
         }
-        this.scale();
-        this.setAllLineCoordinates();
     }
 };
 
-Protein.prototype.fromBlob = function() {
-    this.upperGroup.removeChild(this.circDomains);
-    this.upperGroup.removeChild(this.blob);
-    //following causes prob for use/defs
-    this.upperGroup.removeChild(this.blobHighlight);
-};
-
-Protein.prototype.fromParked = function() {
-    this.isParked = false;
-    this.upperGroup.removeChild(this.parked);
-};
-
-Protein.prototype.toBlob = function() {
+Protein.prototype.toBlob = function(svgP) {
     this.form = 0;
-    if (this.isParked === false) {
-        //following causes prob for use/defs
-        this.upperGroup.appendChild(this.blobHighlight);
-        this.upperGroup.appendChild(this.blob);
-        this.upperGroup.appendChild(this.circDomains);
-        this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Protein.labelY + ")");
-        var links = this.proteinLinks.values();
-        var c = links.length;
-        for (var l = 0; l < c; l++) {
-            var link = links[l];
-            if ((link.getFromProtein() === this && link.getToProtein().form === 0) ||
-                    (link.getToProtein() === this && link.getFromProtein().form === 0))
-            {
-                // swap links
-                //out with the old
-                //would it  be better if checkLinks did this? no, slower
-                for (var rl in link.residueLinks) {
-                    var resLink = link.residueLinks[rl];
-                    //TODO: !fix this issue to do with iterating residueLinks!
-                    if (resLink.shown) {
-                        resLink.hide();
-                    }
-                }
-                //in with the new
-                //// done by setAllLineCoordinates
-            }
-        }
-    }
+	var r = this.getBlobRadius();
+	d3.select(this.outline).transition().attr("stroke-opacity", 1).attr("fill-opacity", 1)
+		.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#ffffff" : "#FB8072")
+		.attr("width", r * 2).attr("height", r * 2)
+		.attr("x", -r).attr("y", -r)
+		.attr("rx", r).attr("ry", r)
+		.duration(Protein.transitionTime);
+							
+	d3.select(this.highlight).transition()
+		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+		.attr("x", -r - 2.5).attr("y", -r - 2.5)
+		.attr("rx", r + 2.5).attr("ry", r + 2.5)
+		.duration(Protein.transitionTime);
+		  
+	d3.select(this.labelSVG).transition().attr("transform", 
+		"translate( -" + (this.getBlobRadius() + 5) + " " + Protein.labelY + ")")
+		.duration(Protein.transitionTime);
+	
+	d3.select(this.upperRotationGroup).transition().attr("transform", 
+		"rotate(0)")
+		.duration(Protein.transitionTime);
+	
+	d3.select(this.lowerRotationGroup).transition().attr("transform", 
+		"rotate(0)")
+		.duration(Protein.transitionTime);
+	
+	var links = this.proteinLinks.values();
+	var c = links.length;
+	for (var l = 0; l < c; l++) {
+		var link = links[l];
+		if ((link.getFromProtein() === this && link.getToProtein().form === 0) ||
+				(link.getToProtein() === this && link.getFromProtein().form === 0))
+		{
+			// swap links
+			//out with the old
+			//would it  be better if checkLinks did this? no, slower
+			for (var rl in link.residueLinks) {
+				var resLink = link.residueLinks[rl];
+				//TODO: !fix this issue to do with iterating residueLinks!
+				if (resLink.shown) {
+					resLink.hide();
+				}
+			}
+		}
+	}
+	
+	//~ this.xlv.checkLinks();
 };
 
-Protein.prototype.toParked = function() {
+Protein.prototype.toParked = function(svgP) {
     this.isParked = true;
-    this.upperGroup.appendChild(this.parked);
-    this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Protein.labelY + ")");
+     
     var c = this.proteinLinks.values().length;
     for (var l = 0; l < c; l++) {
         var link = this.proteinLinks.values()[l];
@@ -670,76 +632,213 @@ Protein.prototype.toParked = function() {
                 resLink.hide();
             }
         }
-    }
-};
-
-Protein.prototype.fromStick = function() {
-    this.xlv.proteinLower.removeChild(this.rectDomainsColouredContainer);
-    //    this.xlv.proteinLower.removeChild(this.rectHighlight);
-    this.upperGroup.removeChild(this.stick);
-//    this.upperGroup.removeChild(this.rectDomainsMouseEvents);
+    }   
+     
+    var r = this.getBlobRadius();
+	d3.select(this.outline).transition().attr("stroke-opacity", 0).attr("fill-opacity", 1)
+		.attr("fill", "#EEEEEE")
+		.attr("fill-opacity", 1)
+		.attr("width", r * 2).attr("height", r * 2)
+		.attr("x", -r).attr("y", -r)
+		.attr("rx", r).attr("ry", r)
+		.duration(Protein.transitionTime);
+							
+	d3.select(this.highlight).transition()
+		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+		.attr("x", -r - 2.5).attr("y", -r - 2.5)
+		.attr("rx", r + 2.5).attr("ry", r + 2.5)
+		.duration(Protein.transitionTime);
+		  
+	d3.select(this.labelSVG).transition().attr("transform", 
+		"translate( -" + (this.getBlobRadius() + 5) + " " + Protein.labelY + ")")
+		.duration(Protein.transitionTime);
+	
+	d3.select(this.upperRotationGroup).transition().attr("transform", 
+		"rotate(0)")
+		.duration(Protein.transitionTime);							
+	
+	d3.select(this.lowerRotationGroup).transition().attr("transform", 
+		"rotate(0)")
+		.duration(Protein.transitionTime);							
 };
 
 Protein.prototype.toStick = function() {
-    //    if (this.accession === 'P75489') {
-    //           alert('P75489');
-    //    }
     this.form = 1;
-    if (this.isParked === false) {
-        if (this.stick === null)
-            this.initStick();
-        //    this.xlv.proteinLower.appendChild(this.rectHighlight);
+    
+    //remove prot-prot links - would it  be better if checkLinks did this? - think not
+	var c = this.proteinLinks.values().length;
+	for (var l = 0; l < c; l++) {
+		var link = this.proteinLinks.values()[l];
+		//out with the old
+		if (link.shown) {
+			link.hide();
+		}
+	}
+    
+    var protLength = (this.size) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
+    this.currentLength = 0;
+	this.xlv.checkLinks();
+	
+	var self = this;
+	var cubicInOut = d3.ease('cubic-in-out');
+	d3.timer(function(elapsed) {
+	  return update(elapsed / Protein.transitionTime);
+	});
+ 		
+	var r = self.getBlobRadius();
+	
+	var lengthInterpol = d3.interpolate((2 * r), protLength);
+	var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);	
+	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10));
 
-        this.xlv.proteinLower.appendChild(this.rectDomainsColouredContainer);
-        //    this.stick.setAttribute("transform","rotate(" + this.rotation + ")");
-        this.setRotation(this.rotation);
-        this.upperGroup.appendChild(this.stick);
-        //    this.upperGroup.appendChild(this.rectDomainsMouseEvents);
-        if (this.internalLink != null) {
-            var intraResLinks = this.internalLink.residueLinks.values();
-            var rlCount = intraResLinks.length;
-            if (typeof intraResLinks[0].line === 'undefined') {
-                for (var irl = 0; irl < rlCount; irl++) {
-                    intraResLinks[irl].initSVG();
-                }
-            }
-        }
-        this.scale();
-        if (this.isSelected === true) {
-            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-            this.rectHighlight.setAttribute("stroke-opacity", "1");
-        }
+	function update(interp) {
+		var rot = rotationInterpol(cubicInOut(interp));
+		self.rotation = rot % 360;
+		if (self.rotation < 0) {
+			self.rotation += 360;
+		}
+		self.upperRotationGroup.setAttribute("transform", "rotate(" + self.rotation + ")");
+		self.lowerRotationGroup.setAttribute("transform", "rotate(" + self.rotation + ")");
+		var labelTransform = "";
+		var sll = self.scaleLabels.length;
+		if (self.rotation > 90 && self.rotation <= 270) {
+			labelTransform = " rotate(" + (- 180) + ")";
+			for (var i = 0; i < sll; i++) {
+			   self.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
+			}
+		}
+		else {
+			labelTransform = " rotate(" + 0 + ")";
+			for (var j = 0; j < sll; j++) {
+				self.scaleLabels[j].setAttribute("transform", "scale(1,1)");
+			}
+		}
+		labelTransform += " translate( " + labelTranslateInterpol(cubicInOut(interp)) 
+						+ " " + Protein.labelY + ")";  
+		d3.select(self.labelSVG).attr("transform", labelTransform);  
+		var currentLength = lengthInterpol(cubicInOut(interp));
+		self.currentLength = currentLength;
+		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2));
+		self.stickZoom = currentLength / ((self.size)  * (Protein.UNITS_PER_RESIDUE));	
+		
+		
+				
+		self.setAllLineCoordinates();
+		
+		if (interp ===  1){ // finished - tidy up
+			//place rotators
+			self.upperRotationGroup.appendChild(self.lowerRotator.svg);
+			self.upperRotationGroup.appendChild(self.upperRotator.svg);  
+			self.lowerRotator.svg.setAttribute("transform", 
+				"translate(" + (self.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
+			self.upperRotator.svg.setAttribute("transform", 
+				"translate(" + (self.getResXwithStickZoom(self.size + 0.5) + Protein.rotOffset) + " 0)");
+			return true;
+		} else if (interp > 1){
+			return update(1);
+		} else {
+			return false;
+		}
+	}
+	
+	d3.select(this.outline).transition().attr("stroke-opacity", 1).attr("fill-opacity", 0)
+		.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#FFFFFF" : "#FB8072")
+		.attr("height", Protein.STICKHEIGHT)
+		//~ .attr("x", this.getResXwithStickZoom(0.5))
+		.attr("y",  -Protein.STICKHEIGHT / 2)
+		.attr("rx", 0).attr("ry", 0)
+		.duration(Protein.transitionTime);		
 
-        //        if (select && this.isSelected === false) {
-        //        this.xlv.selectedProteins.set(this.id, this);
-        //        this.isSelected = true;
-        //        if (this.form !== 1) {
-        //            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        //            this.blobHighlight.setAttribute("stroke-opacity", "1");
-        //        }
-        //        else {
-        //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        //            this.rectHighlight.setAttribute("stroke-opacity", "1");
-        //        }
-        //    }
-        //would it  be better if checkLinks did this? - think not
-        var c = this.proteinLinks.values().length;
-        for (var l = 0; l < c; l++) {
-            var link = this.proteinLinks.values()[l];
-            //out with the old
-            if (link.shown) {
-                link.hide();
-            }
-        }
-    }
-// checkLinks brings in new
+	d3.select(this.highlight).transition()
+		.attr("width", protLength + 5).attr("height", Protein.STICKHEIGHT + 5)
+		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Protein.STICKHEIGHT / 2) - 2.5)
+		.attr("rx", 0).attr("ry", 0)
+		.duration(Protein.transitionTime);		   
+	
+	var links = this.proteinLinks.values();
+	var c = links.length;
+	for (var l = 0; l < c; l++) {
+		var link = links[l];
+		var resLinks = link.residueLinks.values();
+		var resLinkCount = resLinks.length;
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			var residueLink = resLinks[rl];
+			
+			if (residueLink.shown) {
+				if (residueLink.intra === true) {
+					var fromCoord = this.getResidueCoordinates(residueLink.fromResidue);
+					if (isNaN(parseFloat(residueLink.toResidue))){ //monolink
+						pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
+						//        this.line.setAttribute("stroke", "red");
+					}
+					else {
+						var toCoord = this.getResidueCoordinates(residueLink.toResidue);
+
+
+						var intraR = this.getBlobRadius() + 7;
+						var radius = 45;
+						var arcStart = Protein.trig(intraR, 25 + radius);
+						var arcEnd = Protein.trig(intraR, -25 + radius);
+						var cp1 = Protein.trig(intraR, 40 + radius);
+						var cp2 = Protein.trig(intraR, -40 + radius);
+						var aggPath = 'M 0,0 ' 
+							+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
+							+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
+							+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
+						d3.select(residueLink.line).attr("d",aggPath);
+						
+						var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
+						var x2 = this.getResXwithStickZoom(residueLink.toResidue);
+						var midY = (Math.abs(x2 - x1));
+						midY = midY / 2;
+						this.curveMidX = x1 + ((x2 - x1) / 2);
+						var path = "M " + x1 + ",0 "
+							+ 'Q ' + x1 + "," + (-((Protein.STICKHEIGHT / 2) + 3)) 
+									+ ' ' + x1 + "," + (-((Protein.STICKHEIGHT / 2) + 3))
+							+ " A " + midY + "," + midY + "  0 0 1 "
+								+ x2  + (-((Protein.STICKHEIGHT / 2) + 3))
+							+ ' Q '+ x2 + ",0" 
+								+ ' ' + x2 + ",0";
+						
+						d3.select(residueLink.line).transition().attr("d",path)
+							.duration(Protein.transitionTime);
+						
+					}
+				}
+			}
+		}
+	}	
+	
+	if (typeof this.annotations !== 'undefined') {
+		var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
+		var annots = this.annotations;
+		var ca = annots.length;
+		for (var a = 0; a < ca; a++) {
+			var anno = annots[a].anno;
+			var pieSlice = annots[a].pieSlice;
+			var rectDomain = annots[a].rect;
+
+			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+						
+
+			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
+				.duration(Protein.transitionTime);
+			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
+				.duration(Protein.transitionTime);
+		}
+	}
+
+	d3.select(this.circDomains).transition().attr("opacity", 0)
+		.duration(Protein.transitionTime);
+	d3.select(this.rectDomains).transition().attr("opacity", 1)
+		.duration(Protein.transitionTime);
 };
 
 Protein.prototype.showPeptides = function(pepBounds) {
 	if (this.form=== 1){		
 		if (typeof this.peptides === 'undefined'){
 			this.peptides = document.createElementNS(xiNET.svgns, "g");
-			this.rectDomainsColoured.appendChild(this.peptides);
+			//~ this.rectDomains.appendChild(this.peptides);
 		}
 		var y = -Protein.STICKHEIGHT / 2;
 		
@@ -773,64 +872,23 @@ Protein.prototype.showPeptides = function(pepBounds) {
 Protein.prototype.removePeptides = function() {
 	if (this.form === 1) {
 		//~ console.log("should remove");
-		if (this.peptides.parentNode == this.rectDomainsColoured){
+		if (this.peptides.parentNode == this.rectDomains){
 		//~ console.log("should remove2");
 			this.xlv.emptyElement(this.peptides);
 		}
 	}
 }
 
-Protein.prototype.initStick = function() {
-    if (this.stick !== null) {
-        //        alert("this shouldn't really happen...");
-    }
-    else {
-        //rotators
-        this.lowerRotator = new Rotator(this, 0, this.xlv);
-        this.upperRotator = new Rotator(this, 1, this.xlv);
-        this.stick = document.createElementNS(xiNET.svgns, "g");
-        this.stick.appendChild(this.rectAndTicks);
-        this.stick.setAttribute("class", "protein");
-        this.stick.appendChild(this.intraLinksHighlights);
-        this.stick.appendChild(this.intraLinks);
-        this.stick.appendChild(this.rectDomainsMouseEvents);
-        var protLength = this.size * Protein.UNITS_PER_RESIDUE;
-        this.rectX = -(protLength / 2);
-        var y = -Protein.STICKHEIGHT / 2;
-        getBackgroundRect(this);
-        this.rectAndTicks.appendChild(this.rect);
-        this.stick.appendChild(this.lowerRotator.svg);
-        this.stick.appendChild(this.upperRotator.svg);
-    }
-
-    function getBackgroundRect(protein) {
-        var p = document.createElementNS(xiNET.svgns, "rect");
-        p.setAttribute("class", "protein");
-        p.setAttribute("x", protein.getResXUnzoomed(0));
-        p.setAttribute("y", y);
-        p.setAttribute("width", (protein.size) * Protein.UNITS_PER_RESIDUE);
-        p.setAttribute("height", Protein.STICKHEIGHT);
-        p.setAttribute("fill", "white");
-        p.setAttribute("fill-opacity", "0");
-        p.setAttribute("stroke", "none");
-        //style it
-        if (protein.name.indexOf("DECOY_") !== -1){
-			p.setAttribute("fill", "#FB8072");
-			p.setAttribute("fill-opacity", "1");
-        }
-        //        p.appendChild(protein.protTooltip);
-        protein.rect.appendChild(p);
-    }
-};
-
-
-
 Protein.prototype.getResXUnzoomed = function(r) {
-    return (Protein.UNITS_PER_RESIDUE * r) + this.rectX;
-};
+	var protLength = (this.size) * Protein.UNITS_PER_RESIDUE ;// * this.stickZoom;
+	var rectX = -(protLength / 2);
+    return (Protein.UNITS_PER_RESIDUE * r) + rectX;
+ };
+
 Protein.prototype.getResXwithStickZoom = function(r) {
     return this.getResXUnzoomed(r) * this.stickZoom;
-};
+ };
+
 //calculate the  coordinates of a residue (relative to this.xlv.container)
 Protein.prototype.getResidueCoordinates = function(r) {
     if (Protein.UNITS_PER_RESIDUE === undefined)
@@ -852,6 +910,7 @@ Protein.prototype.getResidueCoordinates = function(r) {
     y = y + this.y;
     return [x, y];
 };
+
 // update all lines (e.g after a move)
 Protein.prototype.setAllLineCoordinates = function() {
     var links = this.proteinLinks.values();
@@ -871,6 +930,7 @@ Protein.prototype.setAllLineCoordinates = function() {
         }
     }
 };
+
 // update the links(lines) to fit to the protein
 Protein.prototype.setLineCoordinates = function(link) {
     //a defensive check
@@ -929,6 +989,7 @@ Protein.prototype.setLineCoordinates = function(link) {
         }
     }
 };
+
 Protein.prototype.countExternalLinks = function() {
     if (this.isParked) {
         return 0;
@@ -946,6 +1007,7 @@ Protein.prototype.countExternalLinks = function() {
     }
     return countExternal;
 };
+
 Protein.prototype.getSubgraph = function(subgraphs) {
     //u r here
     if (this.subgraph == null) { // don't check for undefined here
@@ -965,6 +1027,7 @@ Protein.prototype.getSubgraph = function(subgraphs) {
     //    if (this.subgraph.nodes.keys().length > 1) {alert(this.subgraph.nodes.keys());}
     return this.subgraph;
 };
+
 Protein.prototype.addConnectedNodes = function(subgraph) {
     var count = this.proteinLinks.values().length;
     for (var i = 0; i < count; i++) {
@@ -990,208 +1053,4 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
         }
     }
     return subgraph;
-};
-
-
-Protein.prototype.printAnnotationInfo = function() {
-    var self = this;
-    var message = "";
-    //heading, including PDB link
-    message += "<h5>" + highlightRegex(this.name, this.xlv.fields.names)
-            + " &nbsp;&nbsp;[" + highlightRegex(this.id, self.xlv.fields.names) + "] </h5><p>";
-    if (this.processedDAS) {
-        //do UniProt first
-        var uniprot = this.processedDAS.get('UniProt');
-        if (typeof uniprot !== 'undefined') {
-            message += "<a href='" + uniprot.href + "' target='_blank'>"
-                    + highlightRegex(uniprot.name, self.xlv.fields.names) + "</a>. ";
-            message += "Segment start: " + uniprot.start + ", stop: " + uniprot.stop + ". ";
-
-        }
-    }
-    if (typeof this.accession !== "undefined") {
-		message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-				+ this.accession + "' target='_blank'>PDB</a></p>";
-	}
-    //non DAS info -
-    //original FASTA file info
-    if (typeof this.description !== 'undefined' && this.description !== '') {
-        message += "<p>FASTA: " + highlightRegex(this.description, self.xlv.fields.names) + "</p>";
-    }
-    if (typeof this.geneName !== 'undefined') {
-        message += "<p>Gene names: " + highlightRegex(this.geneName, self.xlv.fields.names) + "</p>";
-    }
-    //TODO: print custom domain annotation info
-
-    if (this.processedDAS) {
-        //do UniProt first
-        var uniprot = this.processedDAS.get('UniProt');
-        if (uniprot) {
-            message += "<p>" + highlightRegex(uniprot.full, self.xlv.fields.names) + "</p>";
-            printProcessedDAS(uniprot, 'UniProt');
-        }
-        //and the others
-        this.processedDAS.forEach(
-                function(serverName, processed) {
-                    if (serverName !== 'UniProt') { // done UniProt already
-                        printProcessedDAS(processed, serverName);
-                    }
-                }
-        );
-        //        message += '<pre>' +
-        //        JSON.stringify(this.processedDAS, null, '\t').replace(/\\u0000/gi, '')
-        //        + '</pre>';
-    }
-
-    xlv.message(message);
-
-    function printProcessedDAS(processed, serverName) {
-        message += "<h6>" + serverName + "</h6>";
-        //notes
-        if (processed.notes) {
-            message += "<h7>Notes:</h7>";
-            processed.notes.forEach(function(n) {
-                printNotes(n);
-            });
-        }
-        //keywords
-        if (processed.keywords) {
-            message += "<h7>Keywords:</h7><br/>";
-            var keywordString = "";
-            var keywords = processed.keywords;
-            var categories = keywords.keys();
-            var catCount = categories.length;
-            for (var c = 0; c < catCount; c++) {
-                var category = categories[c];
-                keywordString += '<h8>' + category + ':</h8> ';
-                var keywordArray = keywords.get(category);
-                var keywordCount = keywordArray.length;
-                for (var k = 0; k < keywordCount; k++) {
-                    var keyword = keywordArray[k];
-                    if (k > 0) {
-                        keywordString += ', ';
-                    }
-                    if (keyword.link) {
-                        keywordString += "<a href='" + keyword.link
-                                + "'  target='_blank' >"
-                                + highlightRegex(keyword.name, self.xlv.fields.key_text) + "</a>";
-                    }
-                    else {
-                        keywordString += "<span  target='_blank' >"
-                                + highlightRegex(keyword.name, self.xlv.fields.key_text) + "</span>";
-                    }
-                }
-                keywordString += '</p>';
-            }
-            message += keywordString;
-        }
-        //positional features
-        if (processed.positional) {
-            processed.positional.forEach(
-                    function(category, features) {
-                        message += "<h7>Positional features: " + category + "</h7>";
-                        message += "<table><tr><th>Name</th><th>Start</th><th>End</th><th>Notes</th></tr>";
-                        for (var i = 0; i < features.length; i++) {
-                            var anno = features[i];
-                            message += "<tr>"
-                                    + "<td><p>" + highlightRegex(anno.name, self.xlv.fields.pos_text)
-                                    + "</p></td><td><p>" + anno.start
-                                    + "</p></td><td><p>" + anno.end
-                                    + "</p></td><td>";
-                            if (anno.notes !== undefined) {
-                                message += "<p>" + anno.notes;
-                                var links = anno.links;
-                                if (links !== undefined && links !== null) {
-                                    var linkString = "";
-                                    for (var l = 0; l < links.length; l++) {
-                                        linkString += " <a href='" + links[l].href + "' target='_blank'>"
-                                                + links[l].textContent + "</a>";
-                                    }
-                                    message += linkString;
-                                }
-                                message += "</p>";
-                            }
-                            message += "</td></tr>";
-                        }
-                        message += "</table><p>&nbsp;</p>";
-                    }
-            );
-        }
-       
-        //        if (processed.html) {
-        //            message += processed.html;
-        //        }
-    }
-    function printNotes(n) {
-        message += "<p>" + highlightRegex(n.notes, self.xlv.fields.notes);
-        var links = n.links;
-        if (links !== undefined && links !== null) {
-            var linkString = "";
-            for (var l = 0; l < links.length; l++) {
-                linkString += " <a href='" + links[l].href + "' target='_blank'>"
-                        + links[l].textContent + "</a>";
-            }
-            message += linkString;
-        }
-        message += "</p>";
-    }
-
-    function highlightRegex(annotationText, doIt) {
-        if (doIt === true) {
-            var regex;
-            var countRegex = self.xlv.textFilterRegex.length;
-            var matches = new Array();
-            var NOTs = new Array();
-            //matches
-            for (var r = 0; r < countRegex; r++) {
-                regex = self.xlv.textFilterRegex[r];
-                regex.lastIndex = 0;
-                var result = regex.exec(annotationText);
-                while (result != null) {
-                    var match = result[0];
-                    matches.push({start: (regex.lastIndex - match.length), stop: regex.lastIndex});
-                    result = regex.exec(annotationText);
-                }
-            }
-
-            var openSpan = "<span class='highlight'>";
-            var closeSpan = "</span>";
-            var highlightSpanTagLength = openSpan.length + closeSpan.length;
-            for (var i = 0; i < matches.length; i++) {
-                var match = matches[i];
-                annotationText = insert((i * highlightSpanTagLength) + match.start, openSpan, annotationText);
-                annotationText = insert((i * highlightSpanTagLength) + openSpan.length + match.stop, closeSpan, annotationText);
-            }
-
-            //NOTs
-            countRegex = self.xlv.textFilterRegexNOT.length;
-            for (var r = 0; r < countRegex; r++) {
-                regex =  new RegExp(">[^<]+(" + self.xlv.textFilterRegexNOT[r].source + ")", "gi");
-                regex.lastIndex = 0;
-                result = regex.exec(">" + annotationText);
-                //console.log("in regex loop");
-                while (result != null) {
-                     var match = result[1];
-                    NOTs.push({start: (regex.lastIndex - match.length - 1), stop: regex.lastIndex - 1});
-                    result = regex.exec(">" + annotationText);
-            //console.log(JSON.stringify(NOTs));
-                       }
-            }
-            var openSpanNOT = "<span class='NOT'>";
-            var highlightSpanNotTagLength = openSpanNOT.length + closeSpan.length;
-
-            for (var i = 0; i < NOTs.length; i++) {
-                //console.log("in insert loop");
-                var match = NOTs[i];
-                annotationText = insert((i * highlightSpanNotTagLength) + match.start, openSpanNOT, annotationText);
-                annotationText = insert((i * highlightSpanNotTagLength) + openSpanNOT.length + match.stop, closeSpan, annotationText);
-            }
-
-        }
-        return annotationText;
-    }
-    function insert(index, string, target) {
-        return target.substring(0, index) + string + target.substring(index, target.length);
-    }
-    ;
 };

@@ -80,7 +80,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
-
+ 
     this.proteinLower = document.createElementNS(xiNET.svgns, "g");
     this.proteinLower.setAttribute("id", "proteinLower");
     this.container.appendChild(this.proteinLower);
@@ -321,7 +321,7 @@ xiNET.Controller.prototype.init = function(width, height) {
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-            prot.initStick();//needed, todo - remove
+            //~ prot.initStick();//needed, todo - remove
             if (this.proteins.keys().length < 3) {
                 prot.toStick();
             }
@@ -329,7 +329,7 @@ xiNET.Controller.prototype.init = function(width, height) {
                 prot.toBlob();
             }
             prot.setPosition(0, 0);
-            //            this.proteinLower.appendChild(prot.rectDomainsColoured);
+            this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
         this.autoLayout(width, height);

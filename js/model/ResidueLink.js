@@ -1,5 +1,5 @@
 //		xiNET cross-link viewer
-//		Copyright 2013 Rappsilber Laboratory
+//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
 //		author: Colin Combe
 //		
@@ -10,7 +10,8 @@ ResidueLink.prototype = new xiNET.Link();
 
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {
     this.id = id;
-    //    this.matches = new Array(0); //we don't initialise this here - save memory in use case where there are no matches
+    //    this.matches = new Array(0); //we don't initialise this here 
+    // (save some memory in use case where there is no match info, only link info)
     this.xlv = xlvController;
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
@@ -25,13 +26,13 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     this.ambig = false;
     this.tooltip = this.id;
     if (flip === true) {
-        //     alert('true');
         this.flip = true;
     }
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
-    this.curveMidX = null;
+    
+    this.curveMidX = null; // used by self links
 }
 
 ResidueLink.prototype.initSVG = function() {

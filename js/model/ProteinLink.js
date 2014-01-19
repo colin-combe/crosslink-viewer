@@ -434,10 +434,10 @@ ProteinLink.prototype.show = function() {
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
 
-                this.fromProtein.upperGroup.appendChild(this.highlightLine);
-                this.fromProtein.upperGroup.appendChild(this.line);
-                this.fromProtein.upperGroup.appendChild(this.fromProtein.blob);
-                this.fromProtein.upperGroup.appendChild(this.fromProtein.circDomains);
+                this.fromProtein.lowerGroup.appendChild(this.highlightLine);
+                this.fromProtein.lowerGroup.appendChild(this.line);
+                //~ this.fromProtein.upperGroup.appendChild(this.fromProtein.blob);
+                //~ this.fromProtein.upperGroup.appendChild(this.fromProtein.circDomains);
             }
             else {
                 this.line.setAttribute("stroke-width", this.xlv.z * 1);
@@ -468,8 +468,8 @@ ProteinLink.prototype.hide = function() {
             if (ProteinLink.maxNoResidueLinks > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.fromProtein.upperGroup.removeChild(this.highlightLine);
-            this.fromProtein.upperGroup.removeChild(this.line);
+            this.fromProtein.lowerGroup.removeChild(this.highlightLine);
+            this.fromProtein.lowerGroup.removeChild(this.line);
         } else {
             if (ProteinLink.maxNoResidueLinks > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
