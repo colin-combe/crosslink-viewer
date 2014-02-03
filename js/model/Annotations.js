@@ -120,10 +120,13 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             var annotColouredRect = document.createElementNS(xiNET.svgns, "path");
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-            
-            annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-            annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-
+            if (this.form === 0) {
+				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+			} else {
+				annotPieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+				annotColouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+			}
             annotPieSlice.setAttribute("stroke", "none");
             annotColouredRect.setAttribute("stroke", "none");
             
@@ -147,9 +150,9 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
                 c = anno.colour;
             }
             annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotPieSlice.setAttribute("fill-opacity", "0.85");
+            annotPieSlice.setAttribute("fill-opacity", "0.75");
             annotColouredRect.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "0.85");
+            annotColouredRect.setAttribute("fill-opacity", "0.75");
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
@@ -222,7 +225,7 @@ Protein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
 Protein.prototype.getAnnotationRectPath = function(annotation) {
 	//domain as rectangle path
 	var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
-	var annotX = this.getResXUnzoomed(annotation.start - 0.5);
+	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
 	//~ //Ouch!! Without brackets following may do string concatenation
 	var annotSize = (1 + (annotation.end - annotation.start));
 	var annotLength = annotSize * Protein.UNITS_PER_RESIDUE;

@@ -179,7 +179,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                 var _dy = c.y - this.dragElement.y;
                 //see http://en.wikipedia.org/wiki/Atan2#Motivation
                 var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                if (this.whichRotator === 0) {
+                if (this.whichRotator === 1) {
                     centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
                 }
                 var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
@@ -228,12 +228,12 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 		else if (evt.button)
 			middleclick = (evt.button === 1);
 
-		var p = this.getEventPoint(evt);// seems to be correct, see above
+		var p = this.getEventPoint(evt);// seems to be correct, see below
 		var c = this.mouseToSVG(p.x, p.y);
 
 	//    var suspendID = this.svgElement.suspendRedraw(5000);
 
-		if (this.dragElement != null) { // mouse up after mouse down on a protein or protein group
+		if (this.dragElement != null) { 
 			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (rightclick) { // RIGHT click
 					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
@@ -261,6 +261,12 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 						this.dragElement.showID();
 					} else if (evt.shiftKey) { //if shift key
 						this.dragElement.switchStickScale(c);
+					} else {
+						if (this.dragElement.form === 0) {
+							this.dragElement.setForm(1, c);
+						} else {
+							this.dragElement.setForm(0, c);
+						}
 					}
 				}
 				//~ this.checkLinks();

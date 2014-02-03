@@ -44,15 +44,7 @@ ProteinLink.prototype.initSVG = function() {
                 y: -(radius * Math.sin(radians))
             };
         }
-        var intraR = this.fromProtein.getBlobRadius() + 7;
-        var r = 45;
-        var arcStart = trig(intraR, 25 + r);
-        var arcEnd = trig(intraR, -25 + r);
-        var cp1 = trig(intraR, 40 + r);
-        var cp2 = trig(intraR, -40 + r);
-        var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
-        + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
-        + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
+        var path = this.fromProtein.getAggregateSelfLinkPath();
         this.line = document.createElementNS(xiNET.svgns, "path");
         this.line.setAttribute('d', path);
         this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
