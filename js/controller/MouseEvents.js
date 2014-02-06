@@ -10,7 +10,9 @@ xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElemen
 xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
 xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
 xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on Rotator, drag?
+xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on Rotator, drag?
+xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
 //listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
