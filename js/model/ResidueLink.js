@@ -243,6 +243,7 @@ ResidueLink.prototype.showID = function() {
 
 ResidueLink.prototype.getFilteredMatches = function() {
     this.ambig = true;
+    this.hd = false;
     var filteredMatches = new Array();
     var count = this.matches.length;
     for (var i = 0; i < count; i++) {
@@ -252,6 +253,9 @@ ResidueLink.prototype.getFilteredMatches = function() {
             if (match.isAmbig() === false) {
                 this.ambig = false;
             }
+            if (match.hd === true) {
+                this.hd = true;
+            }            
         }
     }
     return filteredMatches;
@@ -288,6 +292,14 @@ ResidueLink.prototype.check = function(filter) {
         }
         this.show();
         this.dashedLine(this.ambig);
+        if (this.intra === true){
+			if (this.hd === true) {
+			this.line.setAttribute("stroke", "#e31a1c");			
+			}
+			else {
+				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
+			}
+		}
         return true;
     }
     else {

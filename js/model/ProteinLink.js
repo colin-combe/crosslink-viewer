@@ -326,6 +326,7 @@ ProteinLink.prototype.check = function() {
     }
 	var resLinks = this.residueLinks.values();
 	var resLinkCount = resLinks.length;
+	this.hd = false;
 	if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
 
 		this.ambig = true;
@@ -339,6 +340,9 @@ ProteinLink.prototype.check = function() {
 			for (var m = 0; m < mCount; m++) {
 				var match = resLink.matches[m];
 				if (match.meetsFilterCriteria()) {
+					if (match.hd === true) {
+						this.hd = true;
+					}
 					if (resLinkMeetsCriteria === false) {
 						resLinkMeetsCriteria = true;
 						filteredResLinks.push(resLink);
@@ -370,6 +374,12 @@ ProteinLink.prototype.check = function() {
 			//acknowledge following line is a bit confusing...
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
+			if (this.hd) {
+				this.line.setAttribute("stroke", "#e31a1c");			
+			}
+			else {
+				this.line.setAttribute("stroke", "black");	
+			}
 			this.show();
 			return true;
 		}
@@ -386,7 +396,7 @@ ProteinLink.prototype.check = function() {
 				showedResResLink = true;
 			}
 		}
-		//TODO: fix this - always returning true if one end is stick
+		//fix this? - always returning true if one end is stick
 		return showedResResLink;
 	}
 };

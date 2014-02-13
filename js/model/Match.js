@@ -159,41 +159,40 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}
 	
 		//~ //identify homodimers - not working?
-	//~ this.hd = false;
-	//~ //if peptides overlap its a homodimer:
-    //~ //if both peptide sequnces defined
-    //~ if (typeof pep1_seq !== 'undefined' && pep1_seq != null
-            //~ && typeof pep2_seq !== 'undefined' && pep2_seq != null) {
-		//~ //if not ambiguous
-        //~ if (pep1_positions.length === 1 && pep2_positions.length === 1) {
-			//~ //if self link
-            //~ if (p1ID === p2ID) {
-//~ 
-                //~ var pep1length;
+	this.hd = false;
+	//if peptides overlap its a homodimer:
+    //if both peptide sequnces defined
+    if (typeof pep1_seq !== 'undefined' && pep1_seq != null
+            && typeof pep2_seq !== 'undefined' && pep2_seq != null) {
+		//if not ambiguous
+        if (pep1_positions.length === 1 && pep2_positions.length === 1) {
+			//if self link
+            if (p1ID === p2ID) {
+                var pep1length;
                 //~ if (typeof pep1_seq === "string")
-                    //~ pep1length = pep1_seq.replace(/[^A-Z]/g, '').length;
+                    pep1length = pep1_seq.replace(/[^A-Z]/g, '').length;
                 //~ else
                     //~ pep1length = pep1_seq;
-                //~ var pep2length;
+                var pep2length;
                 //~ if (typeof pep2_seq === "string")
-                    //~ pep2length = pep2_seq.replace(/[^A-Z]/g, '').length;
+                    pep2length = pep2_seq.replace(/[^A-Z]/g, '').length;
                 //~ else
                     //~ pep2length = pep2_seq;
-//~ 
-//~ //                alert(pep1length);
-                //~ var pep1_start = (pep1_positions[0] - 0 + 1);
-                //~ var pep2_start = (pep2_positions[0] - 0 + 1);
-                //~ var pep1_end = pep1_start  + (pep1length - 0);
-                //~ var pep2_end = pep2_start + (pep2length - 0);
-                //~ if ((pep1_start >= pep2_start && pep1_start <= pep2_end)
-                        //~ || (pep2_start >= pep1_start && pep2_start <= pep1_end)) {
-//~ //                    alert('hd');
-                    //~ this.hd = true;
-                //~ }
-//~ 
-            //~ }//end if self link
-        //~ }
-    //~ }
+
+//                alert(pep1length);
+                var pep1_start = (pep1_positions[0] - 0 + 1);
+                var pep2_start = (pep2_positions[0] - 0 + 1);
+                var pep1_end = pep1_start  + (pep1length - 0);
+                var pep2_end = pep2_start + (pep2length - 0);
+                if ((pep1_start >= pep2_start && pep1_start <= pep2_end)
+                        || (pep2_start >= pep1_start && pep2_start <= pep1_end)) {
+                   //console.log("here");
+                    this.hd = true;
+                }
+
+            }//end if self link
+        }
+    }
 	
 }
 	
