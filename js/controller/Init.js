@@ -423,7 +423,7 @@ xiNET.Controller.prototype.getLayout = function() {
 };
 
 xiNET.Controller.prototype.setLayout = function(layoutJSON) {
-    this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
+    //this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
 };
 
 xiNET.Controller.prototype.loadLayout = function() {
@@ -433,15 +433,15 @@ xiNET.Controller.prototype.loadLayout = function() {
         var protein = this.proteins.get(prot);
         if (protein !== undefined) {
             protein.setPosition(protState["x"], protState["y"]);
-            protein.initStick();
+            //~ protein.toStick();
             if (typeof protState.annot !== 'undefined' && protState.annot != null) {
                 if (protState.annot.length > 0) {
                     protein.customAnnotations = protState.annot;
                     protein.setPositionalFeatures(protein.customAnnotations);
                 }
             }
-            if (typeof protState["form"] !== 'undefined') {
-                protein.setForm(protState["form"] - 0);
+            if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
+                protein.toStick();
             }
             else {
                 protein.toBlob();

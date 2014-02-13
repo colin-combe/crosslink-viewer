@@ -52,6 +52,7 @@ MouseoverControls.prototype.makeGroup = function(lowerOrUpper){
     
     var arrow4 =  MouseoverControls.makeTriangle([25, -10],[25, 10]);
     arrow4.setAttribute("opacity", "0");
+    this.scaleArrows[lowerOrUpper + 2] = arrow4;
     this.scaleArrows[lowerOrUpper + 2].setAttribute("opacity", "0");
     this.scaleArrows[lowerOrUpper + 2].setAttribute("fill", "none");
     scaleArrowGroup.appendChild(arrow4);
