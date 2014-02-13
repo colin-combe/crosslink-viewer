@@ -1,0 +1,941 @@
+ <!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>xiNET | Rappsilber Laboratory</title>
+		<link rel="stylesheet" href="/xiNET_web/crosslink-viewer/css/xiNET.css">
+		<link rel="stylesheet" href="/xiNET_web/crosslink-viewer/css/bootstrap.css">
+		<link rel="stylesheet" href="/xiNET_web/crosslink-viewer/css/flat-ui.css" >
+		<link rel="stylesheet" href="/xiNET_web/crosslink-viewer/css/demo.css">
+        <!--libraries-->
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/d3.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/colorbrewer.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/jsdas.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/rgbcolor.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/prototype.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/lib/slider.js"></script>
+        <!--xiNET-->
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/Init.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/MouseEvents.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/Layout.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/Refresh.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/ToolTips.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/MouseoverControls.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/Match.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/Link.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/Protein.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/Protein_printAnnotationInfo.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/Annotations.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/ProteinLink.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/model/ResidueLink.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/ExternalControls.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/DASUtil.js"></script>
+        <script type="text/javascript" src="/xiNET_web/crosslink-viewer/js/controller/ReadCSV.js"></script>
+    </head>
+    <body>
+	<div id="outerDiv">
+			<div class="controls">
+				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
+				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
+				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export</button>
+				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto</button>
+				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset</button>		
+				<button class="btn btn-inverse saveLayout" onclick="xlv.saveLayout();">Save</button>		
+				
+				<div class="controlGroup">
+                    <p class="scoreLabel">A&nbsp;<input checked="checked" id="manualA" onclick="PV.hideA = (!document.getElementById('manualA').checked); xlv.checkLinks();" type="checkbox"/></p>
+                    <p class="scoreLabel">B&nbsp;<input checked="checked" id="manualB" onclick="PV.hideB = (!document.getElementById('manualB').checked); xlv.checkLinks();" type="checkbox"/></p>
+                    <p class="scoreLabel">C&nbsp;<input checked="checked" id="manualC" onclick="PV.hideC = (!document.getElementById('manualC').checked); xlv.checkLinks();" type="checkbox"/></p>
+                    <p class="scoreLabel">?&nbsp;<input checked="checked" id="manualQ" onclick="PV.hideQ = (!document.getElementById('manualQ').checked); xlv.checkLinks();" type="checkbox"/></p>
+                </div>
+				
+				<div class="controlGroup" id="scoreSlider" style="width:500px">
+					<p class="scoreLabel">Auto&nbsp;<input checked="checked" id="autoTrue" onclick="PV.hideAUTOTRUE = (!document.getElementById('autoTrue').checked); xlv.checkLinks();" type="checkbox"/></p>
+					<p class="scoreLabel" id="scoreLabel1"></p>
+					<div id="track1" class="sliderbar">
+						<div class="selected" id="handle1"></div> 
+					</div>
+					<p class="scoreLabel" id="scoreLabel2"></p>
+					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
+				</div>
+				
+				<div class="controlGroup"><p>Self&nbsp;
+					<input checked="checked" id="internal" onclick=
+						"xlv.hideInternal(!document.getElementById('internal').checked)" 
+					type="checkbox"></p>
+				</div>
+				
+				 <div class="controlGroup"><p>Ambig.&nbsp;
+					<input checked="checked" id="ambig" onclick=
+						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
+					type="checkbox"></p>
+                </div>
+			</div>
+<!--
+						<button type="button" id="linkInfo" onclick="PV_linkInfo()">
+                            Link summary
+                        </button>
+                        <button type="button" id="linkInfo" onclick="PV_residueInfo()">
+							Residue summary
+                        </button>
+-->					
+			<div id="networkContainer"></div>
+				
+			<div class="overlay-box" id="infoPanel">
+				<div>
+					<h4>Selection Details:</h4>
+					<div id="networkCaption">
+						<p>No Selection.</p>
+					</div>
+				</div>
+			</div>
+			<div class="overlay-box" id="helpPanel">
+				<div>
+					<h4>Help:</h4>	
+					<table class="hor-minimalist-a"  bordercolor="#eee" >
+						<tr>
+							<td>Toggle the proteins between a bar and a circle</td>
+							<td>Double-click on protein</td>
+						</tr>
+						<tr>
+							<td>Zoom</td>
+							<td>Mouse wheel</td>
+						</tr>
+						<tr>
+							<td>Pan</td>
+							<td>Click and drag on background</td>
+						</tr>
+						<tr>
+							<td>Move protein</td>
+							<td>Click and drag on protein</td>
+						</tr>
+						<tr>
+							<td>Expand bar <br>(increases bar length until sequence is visible)</td>
+							<td>Shift_left-click on protein</td>
+						</tr>
+						<tr>
+							<td>Rotate bar</td>
+							<td>Click and drag on handles that appear at end of bar</td>
+						</tr>
+						<tr>
+							<td>Hide/show protein (and all links to it)</td>
+							<td>Right-click on protein</td>
+						</tr>
+						<tr>
+							<td>Hide/show links between two specific proteins</td>
+							<td>Right click on any link between those proteins</td>
+						</tr>
+						<tr>
+							<td>'Flip' side of bar on which internal links are shown</td>
+							<td>Right-click on internal link</td>
+						</tr>
+					</table> 
+					<p>&nbsp;</p>
+					<p>Tip: To change the size of proteins in relation to the size of
+						 the page press Ctrl/- or Ctrl/+. 
+						 (This zooms the browser, on a Mac its Cmd/- or Cmd/+.) 
+					</p>
+				</div>
+			</div>	
+		</div>
+
+            <script type="text/javascript">//<![CDATA[
+	var targetDiv = document.getElementById('networkContainer');
+	var messageDiv = document.getElementById('networkCaption');
+	xlv = new xiNET.Controller(targetDiv);
+	xlv.setMessageElement(messageDiv);
+	xlv.cutOff = 0;
+    //
+    //    jQuery.noConflict();
+    //
+    PV = {};
+    PV.hideA = false;
+    PV.hideB = false;
+    PV.hideC = false;
+    PV.hideQ = false;
+    PV.hideAUTOTRUE = false;
+    
+    xlv.filter = function (match) {
+		var vChar = match.validated.toUpperCase()[0];
+		if (vChar == 'A' && !PV.hideA) return true;
+		else if (vChar == 'B' && !PV.hideB) return true;
+		else if (vChar == 'C' && !PV.hideC) return true;
+		else if (vChar == '?' && !PV.hideQ) return true;
+		else{
+			if (match.autovalidated){
+				if (!PV.hideAUTOTRUE && (match.score >= xlv.cutOff))  return true;
+			}
+		//        else {
+		//            if (!PV.hideAUTOFALSE && (this.score >= PV.cutOff))  return true;
+		//            }
+		//            }
+		}
+		return false;
+	}
+	
+xlv.sid = "1559";//SELECT has_protein.peptide_id, has_protein.protein_id, peptide_position INTO TEMPORARY tempHasProtein109_150_73_254_1392314656 FROM has_protein, tempMatchedPeptides109_150_73_254_1392314656 WHERE tempMatchedPeptides109_150_73_254_1392314656.peptide_id = has_protein.peptide_id GROUP BY  has_protein.peptide_id, has_protein.protein_id, peptide_position;
+//SELECT t1.layout AS l  FROM layouts AS t1  LEFT OUTER JOIN layouts AS t2  ON (t1.search_id = t2.search_id AND t1.time &lt; t2.time)  WHERE t1.search_id = 1559 AND t2.search_id IS NULL;
+xlv.addProtein (595291,'SKA2','MEAEVDKLELMFQKAESDLDYIQYRLEYEIKTNHPDSASEKNPVTLLKELSVIKSRYQTLYARFKPVAVEQKESKSRICcmATVKKTMNMIQKLQKQTDLELSPLTKEEKTAAEQFKFHMPDL','SKA2_HUMAN Spindle and kinetochore-associated protein 2 OS=Homo sapiens GN=SKA2 PE=1 SV=1','Q8WVK7','121');
+xlv.addProtein (595292,'SKA1','MASSDLEQLCcmSHVNEKIGNIKKTLSLRNCcmGQEPTLKTVLNKIGDEIIVINELLNKLELEIQYQEQTNNSLKELCcmESLEEDYKDIEHLKENVPSHLPQVTVTQSCcmVKGSDLDPEEPIKVEEPEPVKKPPKEQRSIKEMPFITCcmDEFNGVPSYMKSRLTYNQINDVIKEINKAVISKYKILHQPKKSMNSVTRNLYHRFIDEETKDTKGRYFIVEADIKEFTTLKADKKFHVLLNILRHCcmRRLSEVRGGGLTRYVIT','SKA1_HUMAN Spindle and kinetochore-associated protein 1 OS=Homo sapiens GN=SKA1 PE=1 SV=1','Q96BD8','255');
+xlv.addProtein (595293,'REV','TIVYRTLGGGRVESLRRCcmHRLINLLVHFKKDAKLTTFEKIDAEVIFYRGKTDKTEEDIFRHYLNRTVSNMSKKPQHLIKYKSIVAKNIEKIVDNIQNYTLRSKMYSPVGNFEDCcmTIFPMEKISRQEKPPKKVPEPEEVKIPEEPDLDSGKVCcmSQTVTVQPLHSPVNEKLHEIDKYDEELSECcmLEKLSNNTQEQYQIELELKNLLENIVIIEDGIKNLVTKLTPEQGCcmNRLSLTKKINGIKENVHSCcmLQELDSSAM','SKA1_HUMAN Spindle and kinetochore-associated protein 1 OS=Homo sapiens GN=SKA1 PE=1 SV=1','REV_Q96BD8','255');
+xlv.addProtein (595294,'REV','LDPMHFKFQEAATKEEKTLPSLELDTQKQLKQIMNMTKKVTACcmIRSKSEKQEVAVPKFRAYLTQYRSKIVSLEKLLTVPNKESASDPHNTKIEYELRYQIYDLDSEAKQFMLELKDVEAEM','SKA2_HUMAN Spindle and kinetochore-associated protein 2 OS=Homo sapiens GN=SKA2 PE=1 SV=1','REV_Q8WVK7','121');
+xlv.addProtein (595295,'SKA3','MDPIRSFCcmGKLRSLASTLDCcmETARLQRALDGEESDFEDYPMRILYDLHSEVQTLKDDVNILLDKARLENQEGIDFIKATKVLMEKNSMDIMKIREYFQKYGYSPRVKKNSVHEQEAINSDPELSNCcmENFQKTDVKDDLSDPPVASSCcmISEKSPRSPQLSDFGLERYIVSQVLPNPPQAVNNYKEEPVIVTPPTKQSLVKVLKTPKCcmALKMDDFECcmVTPKLEHFGISEYTMCcmLNEDYTMGLKNARNNKSEEAIDTESRLNDNVFATPSPIIQQLEKSDAEYTNSPLVPTFCcmTPGLKIPSTKNSIALVSTNYPLSKTNSSSNDLEVEDRTSLVLNSDTCcmFENLTDPSSPTISSYENLLRTPTPPEVTKIPEDILQLLSKYNSNLATPIAIKAVPPSKRFLKHGQNIRDVSNKEN','SKA3_HUMAN Spindle and kinetochore-associated protein 3 OS=Homo sapiens GN=SKA3 PE=1 SV=2','Q8IX90','412');
+xlv.addProtein (595296,'TBB2B','MREIVHIQAGQCcmGNQIGAKFWEVISDEHGIDPTGSYHGDSDLQLERINVYYNEATGNKYVPRAILVDLEPGTMDSVRSGPFGQIFRPDNFVFGQSGAGNNWAKGHYTEGAELVDSVLDVVRKESESCcmDCcmLQGFQLTHSLGGGTGSGMGTLLISKIREEYPDRIMNTFSVMPSPKVSDTVVEPYNATLSVHQLVENTDETYCcmIDNEALYDICcmFRTLKLTTPTYGDLNHLVSATMSGVTTCcmLRFPGQLNADLRKLAVNMVPFPRLHFFMPGFAPLTSRGSQQYRALTVPELTQQMFDSKNMMAACcmDPRHGRYLTVAAIFRGRMSMKEVDEQMLNVQNKNSSYFVEWIPNNVKTAVCcmDIPPRGLKMSATFIGNSTAIQELFKRISEQFTAMFRRKAFLHWYTGEGMDEMEFTEAESNMNDLVSEYQQYQDATADEQGEFEEEEGEDEA','TBB2B_BOVIN Tubulin beta-2B chain OS=Bos taurus GN=TUBB2B PE=1 SV=2','Q6B856','445');
+xlv.addProtein (595297,'','MREIVHIQAGQCcmGNQIGAKFWEVISDEHGIDPSGNYVGDSDLQLERISVYYNEASSHKYVPRAILVDLEPGTMDSVRSGAFGHLFRPDNFIFGQSGAGNNWAKGHYTEGAELVDSVLDVVRKECcmENCcmDCcmLQGFQLTHSLGGGTGSGMGTLLISKVREEYPDRIMNTFSVVPSPKVSDTVVEPYNATLSIHQLVENTDETYCcmIDNEALYDICcmFRTLKLATPTYGDLNHLVSATMSGVTTSLRFPGQLNADLRKLAVNMVPFPRLHFFMPGFAPLTARGSQQYRALTVPELTQQMFDAKNMMAACcmDPRHGRYLTVATVFRGRMSMKEVDEQMLAIQSKNSSYFVEWIPNNVKVAVCcmDIPPRGLKMSSTFIGNSTAIQELFKRISEQFTAMFRRKAFLHWYTGEGMDEMEFTEAESNMNDLVSEYQQYQDATAEEEGEMYEDDEEESEAQGPK','ref|NP_001070595.1| tubulin beta-3 chain [Bos taurus]','116004471','450');
+xlv.addProtein (595299,'REV','NEKNSVDRINQGHKLFRKSPPVAKIAIPTALNSNYKSLLQLIDEPIKTVEPPTPTRLLNEYSSITPSSPDTLNEFCcmTDSNLVLSTRDEVELDNSSSNTKSLPYNTSVLAISNKTSPIKLGPTCcmFTPVLPSNTYEADSKELQQIIPSPTAFVNDNLRSETDIAEESKNNRANKLGMTYDENLCcmMTYESIGFHELKPTVCcmEFDDMKLACcmKPTKLVKVLSQKTPPTVIVPEEKYNNVAQPPNPLVQSVIYRELGFDSLQPSRPSKESICcmSSAVPPDSLDDKVDTKQFNECcmNSLEPDSNIAEQEHVSNKKVRPSYGYKQFYERIKMIDMSNKEMLVKTAKIFDIGEQNELRAKDLLINVDDKLTQVESHLDYLIRMPYDEFDSEEGDLARQLRATECcmDLTSALSRLKGCcmFSRIPDM','SKA3_HUMAN Spindle and kinetochore-associated protein 3 OS=Homo sapiens GN=SKA3 PE=1 SV=2','REV_Q8IX90','412');
+xlv.addProtein (595300,'TBA1B','MRECcmISIHVGQAGVQIGNACcmWELYCcmLEHGIQPDGQMPSDKTIGGGDDSFNTFFSETGAGKHVPRAVFVDLEPTVIDEVRTGTYRQLFHPEQLITGKEDAANNYARGHYTIGKEIIDLVLDRIRKLADQCcmTGLQGFLVFHSFGGGTGSGFTSLLMERLSVDYGKKSKLEFSIYPAPQVSTAVVEPYNSILTTHTTLEHSDCcmAFMVDNEAIYDICcmRRNLDIERPTYTNLNRLISQIVSSITASLRFDGALNVDLTEFQTNLVPYPRIHFPLATYAPVISAEKAYHEQLSVAEITNACcmFEPANQMVKCcmDPRHGKYMACcmCcmLLYRGDVVPKDVNAAIATIKTKRSIQFVDWCcmPTGFKVGINYQPPTVVPGGDLAKVQRAVCcmMLSNTTAIAEAWARLDHKFDLMYAKRAFVHWYVGEGMEEGEFSEAREDMAALEKDYEEVGVDSVEGEGEEEGEEY','TBA1B_BOVIN Tubulin alpha-1B chain OS=Bos taurus PE=1 SV=2','P81947','451');
+xlv.addProtein (595301,'REV','YEEGEEEGEGEVSDVGVEEYDKELAAMDERAESFEGEEMGEGVYWHVFARKAYMLDFKHDLRAWAEAIATTNSLMCcmVARQVKALDGGPVVTPPQYNIGVKFGTPCcmWDVFQISRKTKITAIAANVDKPVVDGRYLLCcmCcmAMYKGHRPDCcmKVMQNAPEFCcmANTIEAVSLQEHYAKEASIVPAYTALPFHIRPYPVLNTQFETLDVNLAGDFRLSATISSVIQSILRNLNTYTPREIDLNRRCcmIDYIAENDVMFACcmDSHELTTHTTLISNYPEVVATSVQPAPYISFELKSKKGYDVSLREMLLSTFGSGTGGGFSHFVLFGQLGTCcmQDALKRIRDLVLDIIEKGITYHGRAYNNAADEKGTILQEPHFLQRYTGTRVEDIVTPELDVFVARPVHKGAGTESFFTNFSDDGGGITKDSPMQGDPQIGHELCcmYLEWCcmANGIQVGAQGVHISICcmERM','TBA1B_BOVIN Tubulin alpha-1B chain OS=Bos taurus PE=1 SV=2','REV_P81947','451');
+xlv.addProtein (595302,'REV','KPGQAESEEEDDEYMEGEEEATADQYQQYESVLDNMNSEAETFEMEDMGEGTYWHLFAKRRFMATFQESIRKFLEQIATSNGIFTSSMKLGRPPIDCcmVAVKVNNPIWEVFYSSNKSQIALMQEDVEKMSMRGRFVTAVTLYRGHRPDCcmAAMMNKADFMQQTLEPVTLARYQQSGRATLPAFGPMFFHLRPFPVMNVALKRLDANLQGPFRLSTTVGSMTASVLHNLDGYTPTALKLTRFCcmIDYLAENDICcmYTEDTNEVLQHISLTANYPEVVTDSVKPSPVVSFTNMIRDPYEERVKSILLTGMGSGTGGGLSHTLQFGQLCcmDCcmNECcmEKRVVDLVSDVLEAGETYHGKAWNNGAGSQGFIFNDPRFLHGFAGSRVSDMTGPELDVLIARPVYKHSSAENYYVSIRELQLDSDGVYNGSPDIGHEDSIVEWFKAGIQNGCcmQGAQIHVIERM','ref|NP_001070595.1| tubulin beta-3 chain [Bos taurus]','REV_116004471','450');
+xlv.addProtein (595303,'REV','AEDEGEEEEFEGQEDATADQYQQYESVLDNMNSEAETFEMEDMGEGTYWHLFAKRRFMATFQESIRKFLEQIATSNGIFTASMKLGRPPIDCcmVATKVNNPIWEVFYSSNKNQVNLMQEDVEKMSMRGRFIAAVTLYRGHRPDCcmAAMMNKSDFMQQTLEPVTLARYQQSGRSTLPAFGPMFFHLRPFPVMNVALKRLDANLQGPFRLCcmTTVGSMTASVLHNLDGYTPTTLKLTRFCcmIDYLAENDICcmYTEDTNEVLQHVSLTANYPEVVTDSVKPSPMVSFTNMIRDPYEERIKSILLTGMGSGTGGGLSHTLQFGQLCcmDCcmSESEKRVVDLVSDVLEAGETYHGKAWNNGAGSQGFVFNDPRFIQGFPGSRVSDMTGPELDVLIARPVYKNGTAENYYVNIRELQLDSDGHYSGTPDIGHEDSIVEWFKAGIQNGCcmQGAQIHVIERM','TBB2B_BOVIN Tubulin beta-2B chain OS=Bos taurus GN=TUBB2B PE=1 SV=2','REV_Q6B856','445')
+
+xlv.addMatch("595292",[155],"595292",[155],105668554,16.121405005758536,8,2,"LTYNQINDVIK","LTYNQINDVIK",'t','A','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669540,14.076265317920171,8,10,"GHYTEGAELVDSVLDVVR","FIDEETKDTKGR",'t','A','f');
+xlv.addMatch("595292",[196],"595300",[112],105667773,12.903735273568381,7,1,"FIDEETKDTK","EIIDLVLDR",'t','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669509,12.22013558952423,8,10,"GHYTEGAELVDSVLDVVR","FIDEETKDTKGR",'t','A','f');
+xlv.addMatch("595300",[112],"595292",[223],105670922,12.10013651460346,1,3,"EIIDLVLDR","ADKK",'f','B','f');
+xlv.addMatch("595292",[196],"595297,595296",[103,103],105669520,11.926373984387777,9,8,"FIDEETKDTKGR","GHYTEGAELVDSVLDVVR",'t','A','f');
+xlv.addMatch("595292",[196],"595300",[112],105667774,11.802225877509864,7,1,"FIDEETKDTK","EIIDLVLDR",'t','B','f');
+xlv.addMatch("595292",[196],"595300",[422],105667809,11.680432266427825,10,2,"FIDEETKDTKGR","EDMAALEK",'t','B','f');
+xlv.addMatch("595300",[402],"595292",[223],105668841,11.64585088127479,12,3,"AFVHWYVGEGMEEGEFSEAR","ADKK",'f','C','f');
+xlv.addMatch("595292",[177],"595300",[422],105666243,11.491635925753842,6,1,"ILHQPKK","EDMoxAALEK",'f','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105669192,11.430114494006848,8,6,"GHYTEGAELVDSVLDVVR","EFTTLKADKK",'t','A','f');
+xlv.addMatch("595292",[177],"595300",[422],105666233,11.426481090737836,6,1,"ILHQPKK","EDMAALEK",'t','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669522,11.406848913360593,8,10,"GHYTEGAELVDSVLDVVR","FIDEETKDTKGR",'t','B','f');
+xlv.addMatch("595292",[196],"595300",[422],105667921,11.406067371371567,10,2,"FIDEETKDTKGR","EDMoxAALEK",'t','B','f');
+xlv.addMatch("595292",[196],"595296",[154],105667766,11.348028344116848,6,7,"FIDEETKDTK","IREEYPDR",'t','B','f');
+xlv.addMatch("595292",[196],"595300",[112],105667775,11.2500573628709,6,1,"FIDEETKDTK","EIIDLVLDR",'t','B','f');
+xlv.addMatch("595292",[82],"595292",[175],105670583,11.141458101734974,1,1,"DIEHLK","YK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669518,11.045325470961629,8,7,"GHYTEGAELVDSVLDVVR","FIDEETKDTKGR",'t','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669233,10.95172511791143,8,7,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'f','C','f');
+xlv.addMatch("595300",[422],"595292",[223],105670658,10.761697766294466,1,3,"EDMAALEK","ADKK",'f','B','f');
+xlv.addMatch("595292",[217],"595297",[154],105667670,10.626541790609112,6,3,"EFTTLKADKK","VREEYPDR",'t','C','f');
+xlv.addMatch("595292",[196],"595296",[154],105668406,10.62261508457825,9,4,"FIDEETKDTKGR","IREEYPDR",'t','C','f');
+xlv.addMatch("595295",[314],"595292",[177],105667797,10.584236115933296,9,6,"TNSSSNDLEVEDR","ILHQPKK",'t','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668101,10.570853696008065,11,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','B','f');
+xlv.addMatch("595292",[155],"595292",[71],105668691,10.55044940152342,8,5,"LTYNQINDVIK","ELCcmESLEEDYK",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105669184,10.51380646766718,8,3,"GHYTEGAELVDSVLDVVR","EFTTLKADKK",'t','C','f');
+xlv.addMatch("595292",[125],"595300",[422],105666258,10.49356682076222,4,2,"KPPKEQR","EDMAALEK",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105669187,10.39994849719127,8,3,"GHYTEGAELVDSVLDVVR","EFTTLKADKK",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669246,10.35493895985002,8,6,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'t','C','f');
+xlv.addMatch("595292",[155],"595292",[71],105668694,10.277677752522198,8,5,"LTYNQINDVIK","ELCcmESLEEDYK",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105669189,10.262362274303957,8,6,"GHYTEGAELVDSVLDVVR","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595300",[402],"595292",[223],105668873,10.256431553631387,12,3,"AFVHWYVGEGMoxEEGEFSEAR","ADKK",'f','B','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668095,10.217242489477272,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','C','f');
+xlv.addMatch("595292",[217],"595296,595297",[156,156],105667088,10.187903344565772,8,3,"EFTTLKADKK","EEYPDR",'f','R','t');
+xlv.addMatch("595296",[154],"595292",[196],105668391,10.169977220933019,3,10,"IREEYPDR","FIDEETKDTKGR",'t','B','f');
+xlv.addMatch("595292",[217],"595296,595297",[156,156],105666475,10.158287574164742,6,1,"EFTTLKADK","EEYPDR",'f','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668105,10.107036625528343,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595292",[175],"595300",[422],105666783,10.103513823583429,1,1,"YKILHQPK","EDMAALEK",'f','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668115,10.0656700492757,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595295",[66],"595291",[72],105666739,10.041317703616821,5,2,"LENQEGIDFIK","ESKSR",'f','R','t');
+xlv.addMatch("595292",[196],"595296",[154],105667763,10.03843905882152,6,7,"FIDEETKDTK","IREEYPDR",'t','B','f');
+xlv.addMatch("595292",[177],"595296,595297",[156,156],105666026,10.021738487905166,6,1,"ILHQPKK","EEYPDR",'f','C','f');
+xlv.addMatch("595292",[196],"595300",[422],105667897,9.964066636629184,10,2,"FIDEETKDTKGR","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[177],"595300",[422],105666232,9.959828333007254,6,1,"ILHQPKK","EDMAALEK",'f','R','t');
+xlv.addMatch("595292",[217],"595296,595297",[156,156],105666483,9.924808867517354,6,1,"EFTTLKADK","EEYPDR",'f','C','f');
+xlv.addMatch("595292",[177],"595300",[422],105666249,9.884311296942212,6,1,"ILHQPKK","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[166],105668331,9.862224536154624,4,1,"GHYTEGAELVDSVLDVVR","EINK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668099,9.859802976569835,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595292",[183],"595300",[422],105666303,9.828962699488748,1,1,"KSMNSVTR","EDMAALEK",'f','C','f');
+xlv.addMatch("595295",[66],"595291",[72],105666740,9.740161111290845,5,3,"LENQEGIDFIK","ESKSR",'f','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668109,9.704605899725053,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595300",[422],"595292",[223],105670795,9.70297410049084,1,3,"EDMoxAALEK","ADKK",'f','C','f');
+xlv.addMatch("595292",[196],"595296",[154],105667760,9.610680594011493,6,3,"FIDEETKDTK","IREEYPDR",'t','C','f');
+xlv.addMatch("595300",[402],"595292",[223],105668844,9.556887519041261,12,3,"AFVHWYVGEGMEEGEFSEAR","ADKK",'f','C','f');
+xlv.addMatch("595292",[196],"595300",[422],105667908,9.475812194272658,6,2,"FIDEETKDTKGR","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[196],"595300",[422],105667891,9.44237122348408,7,2,"FIDEETKDTKGR","EDMoxAALEK",'f','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669230,9.434826316321153,5,6,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669257,9.388977045695379,8,7,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'f','R','t');
+xlv.addMatch("595292",[106],"595300",[422],105669567,9.370247393470104,19,2,"GSDLDPEEPIKVEEPEPVKKPPK","EDMAALEK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668117,9.320787555642736,8,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','C','f');
+xlv.addMatch("595292",[106],"595292",[177],105668959,9.300034223481692,8,6,"GSDLDPEEPIKVEEPEPVK","ILHQPKK",'f','R','t');
+xlv.addMatch("595292",[183],"595300",[422],105666462,9.278578145557251,1,1,"KSMoxNSVTR","EDMAALEK",'f','C','f');
+xlv.addMatch("595292",[155],"595292",[155],105668569,9.248602954590215,8,3,"LTYNQINDVIK","LTYNQINDVIK",'f','R','t');
+xlv.addMatch("595297,595296",[2,2],"595291",[72],105670744,9.181239764066138,1,2,"EIVHIQAGQCcmGNQIGAK","ESK",'f','R','t');
+xlv.addMatch("595292",[175],"595300",[422],105666821,9.107532889216106,1,1,"YKILHQPK","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595295",[396],"595300",[422],105667184,9.10743329156155,3,1,"FLKHGQNIR","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[135],"595300",[336],105668509,9.105600452606046,1,2,"EMoxPFITCcmDEFNGVPSYMoxK","TKR",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669531,9.097822998200634,4,4,"GHYTEGAELVDSVLDVVR","FIDEETKDTKGR",'t','C','f');
+xlv.addMatch("595292",[183],"595296",[154],105667104,9.090787423075493,1,3,"KSMNSVTR","IREEYPDR",'t','B','f');
+xlv.addMatch("595292",[217],"595296",[154],105667705,9.062354698595037,6,4,"EFTTLKADKK","IREEYPDR",'t','C','f');
+xlv.addMatch("595292",[196],"595296,595297",[156,156],105667672,9.018644841843761,10,2,"FIDEETKDTKGR","EEYPDR",'f','R','t');
+xlv.addMatch("595292",[217],"595300",[422],105667261,8.968729592493556,6,2,"EFTTLKADKK","EDMAALEK",'f','R','t');
+xlv.addMatch("595292",[196],"595296",[154],105668398,8.966674362924891,10,7,"FIDEETKDTKGR","IREEYPDR",'f','R','t');
+xlv.addMatch("595292",[117],"595292",[217],105667295,8.880212819405555,2,3,"VEEPEPVKKPPK","EFTTLK",'f','R','t');
+xlv.addMatch("595295",[314],"595292",[177],105667799,8.79535441462789,9,6,"TNSSSNDLEVEDR","ILHQPKK",'t','C','f');
+xlv.addMatch("595292",[217],"595300",[422],105667277,8.760063225893251,6,2,"EFTTLKADKK","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105668969,8.746450882949478,8,6,"GHYTEGAELVDSVLDVVR","EFTTLKADK",'t','C','f');
+xlv.addMatch("595292",[41],"595295",[389],105667553,8.70761360570619,3,5,"IGDEIIVINELLNK","AVPPSK",'f','R','t');
+xlv.addMatch("595292",[196],"595297",[154],105667726,8.693194958634171,6,4,"FIDEETKDTK","VREEYPDR",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668107,8.690076379180184,11,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668090,8.630386939515343,11,3,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595300",[112],"595292",[223],105665910,8.565203447880076,1,3,"EIIDLVLDR","ADKK",'f','C','f');
+xlv.addMatch("595300",[402],"595292",[223],105668864,8.521009518493653,12,3,"AFVHWYVGEGMoxEEGEFSEAR","ADKK",'f','B','f');
+xlv.addMatch("595292",[183],"595297",[154],105667078,8.492805210917288,1,3,"KSMNSVTR","VREEYPDR",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669239,8.484268983631484,5,7,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'t','C','f');
+xlv.addMatch("595292",[125],"595300",[422],105666248,8.479719011328626,4,1,"KPPKEQR","EDMAALEK",'t','C','f');
+xlv.addMatch("595292",[183],"595300",[422],105666295,8.41690059342265,1,1,"KSMNSVTR","EDMAALEK",'f','C','f');
+xlv.addMatch("595292",[183],"595297",[154],105667079,8.392882524734326,1,3,"KSMNSVTR","VREEYPDR",'t','B','f');
+xlv.addMatch("595297",[162],"595296",[154],105668087,8.385435125195704,6,7,"IMoxNTFSVVPSPK","IREEYPDR",'f','R','t');
+xlv.addMatch("595292",[217],"595296,595297",[156,156],105667080,8.385281078945027,8,3,"EFTTLKADKK","EEYPDR",'f','R','t');
+xlv.addMatch("595295",[247],"595292",[177],105667114,8.348427322797168,8,6,"SEEAIDTESR","ILHQPKK",'f','R','t');
+xlv.addMatch("595297,595296",[2,2],"595291",[72],105670868,8.335464400045355,1,2,"EIVHIQAGQCcmGNQIGAK","ESK",'f','R','t');
+xlv.addMatch("595300",[422],"595292",[177],105666242,8.335366452982662,2,6,"EDMoxAALEK","ILHQPKK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595295",[0],105669556,8.30490483153614,8,6,"GHYTEGAELVDSVLDVVR","MoxDPIRSFCcmGKLR",'f','R','t');
+xlv.addMatch("595292",[82],"595292",[175],105670867,8.28053030545621,1,1,"DIEHLK","YK",'f','R','t');
+xlv.addMatch("595292",[196],"595296",[154],105667764,8.231068161692198,6,7,"FIDEETKDTK","IREEYPDR",'f','C','f');
+xlv.addMatch("595292",[208],"595296,595297",[156,156],105668996,8.17554357155142,17,3,"YFIVEADIKEFTTLKADKK","EEYPDR",'f','R','t');
+xlv.addMatch("595292",[135],"595292",[223],105668583,8.168883248495822,1,3,"EMoxPFITCcmDEFNGVPSYMoxK","ADKK",'f','R','t');
+xlv.addMatch("595297",[162],"595296",[154],105668082,8.13003498868531,6,4,"IMoxNTFSVVPSPK","IREEYPDR",'f','R','t');
+xlv.addMatch("595292",[135],"595300",[336],105668502,8.118610199265223,1,2,"EMoxPFITCcmDEFNGVPSYMoxK","TKR",'f','R','t');
+xlv.addMatch("595296",[154],"595292",[183],105667129,8.08090281916901,4,1,"IREEYPDR","KSMoxNSVTR",'t','C','f');
+xlv.addMatch("595292",[217],"595303,595302",[284,289],105666478,7.986054351430139,6,1,"EFTTLKADK","DPYEER",'f','R','t');
+xlv.addMatch("595296",[154],"595292",[217],105667692,7.9850608247295,3,6,"IREEYPDR","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595297",[154],"595292",[217],105667671,7.9385508513643135,4,6,"VREEYPDR","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595292",[125],"595300",[422],105666259,7.923564805371552,4,2,"KPPKEQR","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[196],"595296,595297",[156,156],105667684,7.921456444057671,10,2,"FIDEETKDTKGR","EEYPDR",'f','R','t');
+xlv.addMatch("595295",[314],"595292",[177],105667798,7.867536336971613,12,6,"TNSSSNDLEVEDR","ILHQPKK",'f','C','f');
+xlv.addMatch("595292",[196],"595296",[154],105667769,7.860233292172401,6,7,"FIDEETKDTK","IREEYPDR",'f','C','f');
+xlv.addMatch("595295",[396],"595300",[422],105667183,7.8500917933658725,3,2,"FLKHGQNIR","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[196],"595296",[154],105667770,7.829077135293102,6,4,"FIDEETKDTK","IREEYPDR",'f','C','f');
+xlv.addMatch("595292",[183],"595300",[422],105666489,7.740979551865548,1,1,"KSMoxNSVTR","EDMoxAALEK",'f','C','f');
+xlv.addMatch("595292",[196],"595300",[112],105668414,7.6620272752396925,10,1,"FIDEETKDTKGR","EIIDLVLDR",'t','C','f');
+xlv.addMatch("595292",[117],"595292",[217],105667292,7.633707957662535,2,3,"VEEPEPVKKPPK","EFTTLK",'f','R','t');
+xlv.addMatch("595296,595297",[156,156],"595292",[217],105667084,7.62244259914128,2,6,"EEYPDR","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595292",[196],"595297",[154],105667739,7.602036972505289,6,4,"FIDEETKDTK","VREEYPDR",'t','C','f');
+xlv.addMatch("595297,595296",[103,103],"595292",[223],105668111,7.576259180847368,12,2,"GHYTEGAELVDSVLDVVR","ADKK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105668973,7.5396939503935885,8,6,"GHYTEGAELVDSVLDVVR","EFTTLKADK",'f','R','t');
+xlv.addMatch("595292",[41],"595299",[18],105667549,7.529095002420535,4,1,"IGDEIIVINELLNK","SPPVAK",'f','R','t');
+xlv.addMatch("595303,595302",[284,289],"595292",[217],105667086,7.491432420536489,1,6,"DPYEER","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595291",[83],"595292",[203],105665942,7.458403354544761,2,1,"KTMNMoxIQK","DTK",'f','R','t');
+xlv.addMatch("595292",[166],"595292",[175],105670826,7.445202686555388,1,1,"EINKAVISK","YK",'f','R','t');
+xlv.addMatch("595297,595296",[103,103],"595292",[217],105669195,7.441393778152511,8,9,"GHYTEGAELVDSVLDVVR","EFTTLKADKK",'f','R','t');
+xlv.addMatch("595292",[217],"595300",[422],105667280,7.4379465821409125,6,2,"EFTTLKADKK","EDMoxAALEK",'f','R','t');
+xlv.addMatch("595292",[135],"595296,595297",[213,213],105668437,7.411874404264938,8,1,"EMoxPFITCcmDEFNGVPSYMoxK","TLK",'f','R','t');
+xlv.addMatch("595300",[422],"595292",[183],105666447,7.311400639246794,2,2,"EDMoxAALEK","KSMNSVTR",'f','R','t');
+xlv.addMatch("595295",[27],"595292",[16],105668303,7.136138680204167,11,5,"ALDGEESDFEDYPMR","IGNIKK",'f','R','t');
+xlv.addMatch("595292",[183],"595300",[422],105666457,7.122282069502989,2,2,"KSMoxNSVTR","EDMAALEK",'f','C','f');
+xlv.addMatch("595292",[208],"595302,595303",[60,55],105668510,7.059588097417297,1,8,"YFIVEADIK","RFMATFQESIRK",'f','R','t');
+xlv.addMatch("595292",[135],"595296,595297",[213,213],105668436,7.025978966939631,8,1,"EMoxPFITCcmDEFNGVPSYMoxK","TLK",'f','R','t');
+xlv.addMatch("595292",[135],"595296,595297",[213,213],105668442,7.002470943810138,8,1,"EMoxPFITCcmDEFNGVPSYMoxK","TLK",'f','R','t');
+xlv.addMatch("595295",[183],"595292",[175],105670904,6.974343522338792,2,1,"EEPVIVTPPTK","YK",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669223,6.921670472510554,5,9,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'f','','');
+xlv.addMatch("595292",[41],"595299",[18],105667543,6.910437993151108,3,1,"IGDEIIVINELLNK","SPPVAK",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[166],105668333,6.895783265773635,3,1,"GHYTEGAELVDSVLDVVR","EINK",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[203],105668421,6.871929508243245,8,3,"GHYTEGAELVDSVLDVVR","DTKGR",'f','','');
+xlv.addMatch("595292",[183],"595300",[422],105666449,6.853884748177167,1,1,"KSMoxNSVTR","EDMAALEK",'f','','');
+xlv.addMatch("595292",[196],"595297",[154],105668381,6.829173854709872,10,4,"FIDEETKDTKGR","VREEYPDR",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595295",[0],105669558,6.77145972362657,8,10,"GHYTEGAELVDSVLDVVR","MoxDPIRSFCcmGKLR",'f','','');
+xlv.addMatch("595296",[154],"595292",[217],105667691,6.738575049071936,3,6,"IREEYPDR","EFTTLKADKK",'f','','');
+xlv.addMatch("595292",[196],"595296",[154],105667758,6.723915175210135,6,4,"FIDEETKDTK","IREEYPDR",'f','','');
+xlv.addMatch("595292",[177],"595296",[154],105666802,6.699172236823752,6,4,"ILHQPKK","IREEYPDR",'f','','');
+xlv.addMatch("595292",[155],"595296,595297",[380,380],105668928,6.641535812972774,3,3,"LTYNQINDVIK","ISEQFTAMFRRK",'f','','');
+xlv.addMatch("595292",[0],"595293",[30],105667578,6.575870154672006,4,1,"MoxASSDLEQLCcmSHVNEK","DAK",'f','','');
+xlv.addMatch("595292",[155],"595292",[245],105666546,6.539119807333357,8,5,"LTYNQINDVIK","GGGLTR",'f','','');
+xlv.addMatch("595296",[154],"595292",[183],105667128,6.498141851312427,3,1,"IREEYPDR","KSMoxNSVTR",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[166],105668328,6.473236878682776,4,1,"GHYTEGAELVDSVLDVVR","EINK",'f','','');
+xlv.addMatch("595297,595296",[2,2],"595292",[203],105670608,6.452422688705508,1,2,"EIVHIQAGQCcmGNQIGAK","DTK",'f','','');
+xlv.addMatch("595292",[71],"595301",[231],105667518,6.352153041027326,10,3,"ELCcmESLEEDYK","EIDLNR",'f','','');
+xlv.addMatch("595292",[196],"595297",[154],105667720,6.321119124916642,6,4,"FIDEETKDTK","VREEYPDR",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[196],105669238,6.25425972083876,4,5,"GHYTEGAELVDSVLDVVR","FIDEETKDTK",'f','','');
+xlv.addMatch("595292",[0],"595299",[0],105667683,6.1674131345875445,11,2,"MoxASSDLEQLCcmSHVNEK","NEK",'f','','');
+xlv.addMatch("595296,595297",[103,103],"595295",[0],105670961,6.1503556057257995,3,2,"GHYTEGAELVDSVLDVVRK","MDPIRSFCcmGKLR",'f','','');
+xlv.addMatch("595292",[196],"595297",[154],105667730,6.146102375241374,5,5,"FIDEETKDTK","VREEYPDR",'f','','');
+xlv.addMatch("595300",[422],"595292",[183],105666482,6.0749125927708185,1,1,"EDMoxAALEK","KSMoxNSVTR",'f','','');
+xlv.addMatch("595292",[217],"595292",[166],105670898,6.061824349933205,4,1,"EFTTLK","EINK",'f','','');
+xlv.addMatch("595300",[422],"595292",[183],105666460,5.913040942065888,2,2,"EDMoxAALEK","KSMNSVTR",'f','','');
+xlv.addMatch("595292",[196],"595296,595297",[156,156],105667687,5.863187502164411,10,2,"FIDEETKDTKGR","EEYPDR",'f','','');
+xlv.addMatch("595296",[46],"595299",[0],105667747,5.720928918883053,9,2,"INVYYNEATGNKYVPR","NEK",'f','','');
+xlv.addMatch("595296",[154],"595293",[0],105666136,5.7061231440643505,3,1,"IREEYPDR","TIVYR",'f','','');
+xlv.addMatch("595292",[82],"595296,595297",[297,297],105669733,5.68477090653427,11,7,"DIEHLKENVPSHLPQVTVTQSCcmVK","NMMAACcmDPRHGR",'f','','');
+xlv.addMatch("595292",[196],"595295",[80],105667242,5.674257815601967,10,4,"FIDEETKDTKGR","VLMoxEK",'f','','');
+xlv.addMatch("595291",[83],"595292",[203],105670523,5.650196229827399,2,1,"KTMNMoxIQK","DTK",'f','','');
+xlv.addMatch("595292",[177],"595300",[422],105666246,5.636983541407425,6,2,"ILHQPKK","EDMoxAALEK",'f','','');
+xlv.addMatch("595296",[46],"595295",[295],105666788,5.63503129277049,7,4,"INVYYNEATGNK","IPSTK",'f','','');
+xlv.addMatch("595296",[154],"595292",[223],105670809,5.505955271558117,4,3,"IREEYPDR","ADKK",'f','','');
+xlv.addMatch("595296,595297",[103,103],"595300",[304],105669740,5.472719986551726,3,2,"GHYTEGAELVDSVLDVVRK","CcmDPRHGKYMACcmCcmLLYR",'f','','');
+xlv.addMatch("595292",[88],"595294",[91],105669663,5.471954814741414,15,4,"ENVPSHLPQVTVTQSCcmVK","IEYELRYQIYDLDSEAK",'f','','');
+xlv.addMatch("595292",[196],"595296",[154],105667767,5.455914297060756,6,7,"FIDEETKDTK","IREEYPDR",'f','','');
+xlv.addMatch("595300",[422],"595295",[194],105666291,5.448345890532751,1,5,"EDMAALEK","QSLVKVLK",'f','','');
+xlv.addMatch("595293",[90],"595292",[166],105666467,5.370831764091486,9,1,"IVDNIQNYTLR","EINK",'f','','');
+xlv.addMatch("595292",[183],"595296",[154],105667107,5.344991579647133,1,7,"KSMNSVTR","IREEYPDR",'f','','');
+xlv.addMatch("595292",[208],"595296,595297",[156,156],105668998,5.321144079730795,12,2,"YFIVEADIKEFTTLKADKK","EEYPDR",'f','','');
+xlv.addMatch("595296,595297",[103,103],"595299",[0],105668351,5.301938074860266,12,2,"GHYTEGAELVDSVLDVVRK","NEK",'f','','');
+xlv.addMatch("595292",[196],"595297",[154],105667740,5.270721767359665,6,4,"FIDEETKDTK","VREEYPDR",'f','','');
+xlv.addMatch("595301",[100],"595295",[1],105667661,5.261843810577573,3,1,"FGTPCcmWDVFQISRK","DPIR",'f','','');
+xlv.addMatch("595292",[208],"595299",[0],105667605,5.250476740863835,12,2,"YFIVEADIKEFTTLK","NEK",'f','','');
+xlv.addMatch("595296,595297",[103,103],"595299",[0],105668352,5.222840414417264,12,2,"GHYTEGAELVDSVLDVVRK","NEK",'f','','');
+xlv.addMatch("595297,595296",[103,103],"595292",[166],105668324,5.213857364820947,4,1,"GHYTEGAELVDSVLDVVR","EINK",'f','','');
+xlv.addMatch("595296",[216],"595296",[324],105669794,5.206304164544881,2,1,"LTTPTYGDLNHLVSATMoxSGVTTCcmLR","EVDEQMoxLNVQNK",'f','','');
+xlv.addMatch("595300",[394],"595291",[83],105666558,5.150677952387704,2,1,"FDLMYAK","KTMNMIQK",'f','','');
+xlv.addMatch("595292",[196],"595297",[154],105667722,5.150344467827943,6,7,"FIDEETKDTK","VREEYPDR",'f','','');
+xlv.addMatch("595294",[68],"595292",[175],105670495,5.092772057570596,5,1,"IVSLEK","YK",'f','','');
+xlv.addMatch("595300",[390],"595300",[390],105667216,5.092139339103134,11,6,"LDHKFDLMYAKR","LDHKFDLMYAKR",'f','','');
+xlv.addMatch("595292",[36],"595300",[320],105667564,5.068108724721199,1,2,"TVLNK","GDVVPKDVNAAIATIK",'f','','');
+   // synchFilters();
+
+
+    xlv.init();
+
+    function PV_savePVLayout() {
+        var layout = PV_getPVLayout();
+        var dateString = getDateString();
+        PV.message("layout sent:" + layout, true);
+        var defaultDesc = "Layout for search " + PV.sid + ", " + dateString;
+        var desc = prompt("Enter description of layout:", defaultDesc);
+
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        var url = "saveLayout.php";
+        var params = "sid=" + PV.sid + "&layout=" + encodeURIComponent(layout) + "&desc=" + desc;
+        xmlhttp.open("POST", url, true);
+
+        //Send the proper header information along with the request
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        //chrome doesn't like following
+        //  xmlhttp.setRequestHeader("Content-length", params.length);
+        //    xmlhttp.setRequestHeader("Connection", "close");
+
+        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                PV.message("response:" + xmlhttp.responseText, true);
+            }
+        }
+        xmlhttp.send(params);
+
+        function getDateString() {
+            var d_names = new Array("Sunday", "Monday", "Tuesday",
+                    "Wednesday", "Thursday", "Friday", "Saturday");
+            var m_names = new Array("January", "February", "March",
+                    "April", "May", "June", "July", "August", "September",
+                    "October", "November", "December");
+            var d = new Date();
+            var curr_day = d.getDay();
+            var curr_date = d.getDate();
+            var sup = "";
+            if (curr_date == 1 || curr_date == 21 || curr_date == 31) {
+                sup = "st";
+            }
+            else if (curr_date == 2 || curr_date == 22) {
+                sup = "nd";
+            }
+            else if (curr_date == 3 || curr_date == 23) {
+                sup = "rd";
+            }
+            else {
+                sup = "th";
+            }
+            var curr_month = d.getMonth();
+            var curr_year = d.getFullYear();
+            var curr_hour = d.getHours();
+            if (curr_hour < 12) {
+                a_p = "AM";
+            }
+            else {
+                a_p = "PM";
+            }
+            if (curr_hour == 0) {
+                curr_hour = 12;
+            }
+            if (curr_hour > 12) {
+                curr_hour = curr_hour - 12;
+            }
+            var curr_min = d.getMinutes();
+            curr_min = curr_min + "";
+            if (curr_min.length == 1) {
+                curr_min = "0" + curr_min;
+            }
+            return d_names[curr_day] + " " + curr_date + sup + " " + m_names[curr_month]
+                    + " " + curr_year + ", " + curr_hour + ":" + curr_min + " " + a_p;
+        }
+    }
+
+    function PV_linkInfo() {
+
+        if (PV.set1 !== undefined) {
+            var set1Links = [];
+            var set2Links = [];
+            var set3Links = [];
+            var nonuniqueLinks = [];
+
+            var links = XiPV.proteinLinks.values();
+            var lc = links.length;
+            for (var l = 0; l < lc; l++) {
+                var link = links[l];
+                message += "<u>" + link.fromProtein.name + " - " + link.toProtein.name + "</u><br/>"
+                //inter protein res links
+                var c2 = link.residueLinks.values().length;
+                var lcount = 0;
+                for (var rl = 0; rl < c2; rl++) {
+                    var set1 = false;
+                    var set2 = false;
+                    var set3 = false;
+
+                    var resLink = link.residueLinks.values()[rl];
+                    var count = resLink.matches.length;
+                    for (var i = 0; i < count; i++) {
+                        var match = resLink.matches[i];
+                        if (match.search_id == PV.set1)
+                            set1 = true;
+                        else if (match.search_id == PV.set2)
+                            set2 = true;
+                        else if (match.search_id == PV.set3)
+                            set3 = true;
+                    }
+                    if (set1 && !set2 && !set3)
+                        set1Links.push(resLink);
+                    else
+                    if (!set1 && set2 && !set3)
+                        set2Links.push(resLink);
+                    else
+                    if (!set1 && !set2 && set3)
+                        set3Links.push(resLink);
+                    else
+                        nonuniqueLinks.push(resLink);
+                }
+            }
+
+            set1Links.sort(function(a, b) {
+                var result = (a.fromResidue - 0) - (b.fromResidue - 0);
+                if (result === 0) {
+                    result = (a.toResidue - 0) - (b.toResidue - 0)
+                }
+                return result;
+            });
+            set2Links.sort(function(a, b) {
+                var result = (a.fromResidue - 0) - (b.fromResidue - 0);
+                if (result === 0) {
+                    result = (a.toResidue - 0) - (b.toResidue - 0)
+                }
+                return result;
+            });
+
+            set3Links.sort(function(a, b) {
+                var result = (a.fromResidue - 0) - (b.fromResidue - 0);
+                if (result === 0) {
+                    result = (a.toResidue - 0) - (b.toResidue - 0)
+                }
+                return result;
+            });
+
+            nonuniqueLinks.sort(function(a, b) {
+                var result = (a.fromResidue - 0) - (b.fromResidue - 0);
+                if (result === 0) {
+                    result = (a.toResidue - 0) - (b.toResidue - 0)
+                }
+                return result;
+            });
+
+            var message = "<br/><strong>Search ID: " + PV.set1 + " only (" + set1Links.length + " links)</strong><br/><br/>";
+            var c2 = set1Links.length;
+            for (var rl = 0; rl < c2; rl++) {
+                var resLink = set1Links[rl];
+                message += resLink.fromProtein.name.substring(0, 4) + ", <strong>" + resLink.fromResidue + "</strong> (" + link.fromProtein.sequence[resLink.fromResidue - 1]
+                        + ") - "
+                        + resLink.toProtein.name.substring(0, 4) + ", <strong>" + resLink.toResidue + "</strong> (" + link.toProtein.sequence[resLink.toResidue - 1] + "), " + "";
+
+                message += resLink.matches[0].pep1Seq + " to " + resLink.matches[0].pep2Seq + "</br>";
+
+
+            }
+
+            message += "<br/><strong>Search ID: " + PV.set2 + " only (" + set2Links.length + " links)</strong><br/><br/>";
+            var c2 = set2Links.length;
+            for (var rl = 0; rl < c2; rl++) {
+                var resLink = set2Links[rl];
+                message += resLink.fromProtein.name.substring(0, 4) + ", <strong>" + resLink.fromResidue + "</strong> (" + link.fromProtein.sequence[resLink.fromResidue - 1]
+                        + ") - "
+                        + resLink.toProtein.name.substring(0, 4) + ", <strong>" + resLink.toResidue + "</strong> (" + link.toProtein.sequence[resLink.toResidue - 1] + "), " + "";
+
+                message += resLink.matches[0].pep1Seq + " to " + resLink.matches[0].pep2Seq + "</br>";
+            }
+
+            message += "<br/><strong>Search ID: " + PV.set3 + " only (" + set3Links.length + " links)</strong><br/><br/>";
+            var c2 = set3Links.length;
+            for (var rl = 0; rl < c2; rl++) {
+                var resLink = set3Links[rl];
+                message += resLink.fromProtein.name.substring(0, 4) + ", <strong>" + resLink.fromResidue + "</strong> (" + link.fromProtein.sequence[resLink.fromResidue - 1]
+                        + ") - "
+                        + resLink.toProtein.name.substring(0, 4) + ", <strong>" + resLink.toResidue + "</strong> (" + link.toProtein.sequence[resLink.toResidue - 1] + "), " + "";
+
+                message += resLink.matches[0].pep1Seq + " to " + resLink.matches[0].pep2Seq + "</br>";
+            }
+
+
+
+            message += "<br/><strong>Non-unique - multiple searches (" + nonuniqueLinks.length + " links)</strong><br/><br/>";
+            var c2 = nonuniqueLinks.length;
+            for (var rl = 0; rl < c2; rl++) {
+                var resLink = nonuniqueLinks[rl];
+                message += resLink.fromProtein.name.substring(0, 4) + ", <strong>" + resLink.fromResidue + "</strong> (" + link.fromProtein.sequence[resLink.fromResidue - 1]
+                        + ") - "
+                        + resLink.toProtein.name.substring(0, 4) + ", <strong>" + resLink.toResidue + "</strong> (" + link.toProtein.sequence[resLink.toResidue - 1] + "), " + "";
+
+                message += resLink.matches[0].pep1Seq + " to " + resLink.matches[0].pep2Seq + "</br>";
+            }
+            PV.message(message);
+        }
+        else
+        {
+            var message = "Search ID: " + PV.sid + "<br/><br/>CUTOFF:" + PV.cutOff + "<br/><br/>";
+            var links = XiPV.proteinLinks.values();
+            var lc = links.length;
+            for (var l = 0; l < lc; l++) {
+                var link = links[l];
+                //            if (link.fromProt != link.toProt){
+                message += "<u>" + link.fromProtein.name + " - " + link.toProtein.name + "</u><br/><br/>"
+                            +"FromProtein, FromResidue, FromAA, ToProtein, ToResidue, ToAA, HighestScore, NumberMatches, Distance<br/>";
+                //inter protein res links
+                var c2 = link.residueLinks.values().length;
+                var lcount = 0;
+                for (var rl = 0; rl < c2; rl++) {
+                    var resLink = link.residueLinks.values()[rl];
+                    var matchFound = false;
+
+                    var scans = "[scan numbers:";
+                    var count = resLink.matches.length;
+
+                    var highestScore = 0;
+                    var noMatches = 0;
+                    var d;
+                    if (typeof XiPV.shortestDists !== 'undefined') {d = XiPV.shortestDists[resLink.id];}
+                    for (var i = 0; i < count; i++) {
+                        var match = resLink.matches[i];
+                        if (match.check()) {
+                            noMatches++;
+                            
+                            if (match.score > highestScore) {
+                                highestScore = match.score;
+                            }
+                            
+                            if (matchFound)
+                                scans += ", ";
+                            else
+                                matchFound = true;
+                            scans += match.scan_no;
+                        }
+                    }
+                    if (matchFound) {
+                        message += link.fromProtein.name + ", " + resLink.fromResidue + ", " + link.fromProtein.sequence[resLink.fromResidue - 1]
+                                + ", "
+                                + link.toProtein.name + ", " + resLink.toResidue + ", " + link.toProtein.sequence[resLink.toResidue - 1] + ", " + highestScore + ", " + noMatches + ", " + d + "<br/>";
+                        lcount++;
+                    }
+                }
+                message += "<br/><br/>(" + lcount + " unique links)<br/><br/>";
+                //            }
+            }
+            PV.message(message);
+        }
+        /*        function appendLinkSummary(link){
+         var aboveSevenMatchFound = false;
+         var scans = "[scan numbers:";
+         var count = link.matches.length;
+         for (var i=0; i < count; i++) {
+         var match = link.matches[i];
+         //                if (match.score > 7.0) {
+         if (aboveSevenMatchFound) scans += ", ";
+         else aboveSevenMatchFound = true;
+         scans += match.scan_no;
+         //                }
+         }
+         if (aboveSevenMatchFound){
+         message += link.id + " " + scans + "]<br/>";
+         intraCount++;
+         }
+         }*/
+    }
+
+    function PV_residueInfo() {
+        var message = "<h2>Summary of linked residues (currently ignores score cut-off)</h2>";
+        var resTypes = {};
+        var resPairTypes = {};
+
+        var prots = XiPV.proteins.values();
+        var proteinCount = prots.length;
+        for (var p = 0; p < proteinCount; p++) {
+            var protein = prots[p];
+            //            var intraCount = 0;
+
+            var proteinSelfLink = XiPV.proteinLinks.get(protein.id + "-" + protein.id);
+            if (proteinSelfLink != undefined) {
+                //        alert("in");
+                var internalLinks = proteinSelfLink.residueLinks.values();
+                var iLinkCount = internalLinks.length;
+                for (var l = 0; l < iLinkCount; l++) {
+
+                    //                    intraCount++;
+                    var intLink = internalLinks[l];
+                    var res1 = protein.sequence[intLink.fromResidue - 1];
+                    var res2 = protein.sequence[intLink.toResidue - 1];
+                    if (res2 < res1) {
+                        var temp = res1;
+                        res1 = res2;
+                        res2 = temp;
+                    }
+                    var resPairKey = res1 + '-' + res2;
+                    var resPairCount = resPairTypes[resPairKey];
+                    if (resPairCount == undefined) {
+                        resPairCount = {key: resPairKey, lnkCnt: 0, links: {}};
+                        resPairTypes[resPairKey] = resPairCount;
+                    }
+                    resPairCount["lnkCnt"]++;
+                    //                    addLinkSummary(intLink, resPairCount["links"]);
+
+                    var res1Count = resTypes[res1];
+                    if (res1Count == undefined) {
+                        res1Count = {key: res1, lnkCnt: 0, links: {}};
+                        resTypes[res1] = res1Count;
+                    }
+                    res1Count["lnkCnt"]++;
+                    //                    addLinkSummary(intLink, res1Count["links"]);
+
+                    var res2Count = resTypes[res2];
+                    if (res2Count == undefined) {
+                        res2Count = {key: res2, lnkCnt: 0, links: {}};
+                        resTypes[res2] = res2Count;
+                    }
+
+                    res2Count["lnkCnt"]++;
+                    //                    addLinkSummary(intLink, res2Count["links"]);
+                }
+            }
+        }
+
+
+
+        var links = XiPV.proteinLinks.values();
+        var linkCount = links.length;
+        for (var l = 0; l < linkCount; l++) {
+            var link = links[l];
+            if (link.fromProtein != link.toProtein) {
+                //                            message += "<u>Inter protein links:"+link.id+"</u><br/><br/>"
+                //inter protein res links
+                var c2 = link.residueLinks.values().length;
+                var interCount = 0;
+                for (var rl = 0; rl < c2; rl++) {
+                    var resLink = link.residueLinks.values()[rl];
+                    var res1 = resLink.fromProtein.sequence[resLink.fromResidue - 1];
+                    var res2 = resLink.toProtein.sequence[resLink.toResidue - 1];
+                    if (res2 < res1) {
+                        var temp = res1;
+                        res1 = res2;
+                        res2 = temp;
+                    }
+                    var resPairKey = res1 + '-' + res2;
+                    var resPairCount = resPairTypes[resPairKey];
+                    if (resPairCount == undefined) {
+                        resPairCount = {key: resPairKey, lnkCnt: 0, links: {}};
+                        resPairTypes[resPairKey] = resPairCount;
+                    }
+                    resPairCount["lnkCnt"]++;
+                    //                                    addLinkSummary(intLink, resPairCount["links"]);
+
+                    var res1Count = resTypes[res1];
+                    if (res1Count == undefined) {
+                        res1Count = {key: res1, lnkCnt: 0, links: {}};
+                        resTypes[res1] = res1Count;
+                    }
+                    res1Count["lnkCnt"]++;
+                    //                addLinkSummary(resLink, res1Count["links"]);
+
+                    var res2Count = resTypes[res2];
+                    if (res2Count == undefined) {
+                        res2Count = {key: res2, lnkCnt: 0, links: {}};
+                        resTypes[res2] = res2Count;
+                    }
+
+                    res2Count["lnkCnt"]++;
+                    //                addLinkSummary(resLink, res2Count["links"]);}
+                    //                            message += " (" + interCount + " unique links)<br/>";
+                }
+            }
+        }
+
+        //            message += "<u>"+ protein.name + " <b>(" + intraCount + " unique internal links)</b></u><br/><br/> ";
+        //            var table1 = "<table><tr><th>Residue Pairs</th><th>#Unique links</th>"
+        //                + "<th>Links</th><th>Details</th></tr>\n";
+        //            message += getTableFromResTypeObj(resPairTypes, table1);// + '<pre>' + JSON.stringify(resTypes, null, '\t') + '</pre>';
+
+        message += getTableFromResTypeObj(resPairTypes);
+        message += '<br/>';
+        message += getTableFromResTypeObj(resTypes);// + '<pre>' + JSON.stringify(resTypes, null, '\t') + '</pre>';
+
+
+        PV.message(message);
+        //
+        function addLinkSummary(link, linkInfo) {
+            var mCount = link.matches.length;
+            var summary = link.id + " (" + mCount + " matches), scans: ";
+
+            var lnkMatches = new Array();
+            for (var i = 0; i < mCount; i++) {
+                var match = link.matches[i];
+                lnkMatches.push({scan_no: match.scan_no,
+                    score: roundNumber(match.score, 3),
+                    auto: match.autovalidated,
+                    val: match.validated});
+            }
+            lnkMatches.sort(function(a, b) {
+                return b["score"] - a["score"]
+            });
+            linkInfo[link.id] = lnkMatches;
+        }
+        //
+        function getTableFromResTypeObj(resTypes) {
+            var sortable = toArray(resTypes);
+            sortable.sort(function(a, b) {
+                return b["lnkCnt"] - a["lnkCnt"]
+            });
+            //
+            var table = "<table><tr><th>Residue</th><th>#occurences in unique links</th></tr>\n";
+
+            //
+            for (var i = 0; i < sortable.length; i++) {
+                var resPairRowCount = 0;
+                var resPair = sortable[i];
+                var uLnkCount = resPair.lnkCnt;
+                table += "<tr><td>"
+                        + resPair.key + "</td>"
+                        + "<td>"
+                        + resPair.lnkCnt + "</td></tr>";
+                //                var first = true;
+                //                var rCnt = 0;
+                //                for (var lnk in resPair["links"]){
+                //                    rCnt++;
+                //                    var linkDetails = resPair["links"][lnk];
+                //                    if (!first) table += "<tr>";
+                //                    else first = false;
+                //                    table += "<td>"+lnk+"</td><td>";
+                //                    var summary = "<b>" + linkDetails.length + " matches.</b> Scans[score]:"
+                //                    for (var l = 0; l < linkDetails.length; l++){
+                //                        var m = linkDetails[l];
+                //                        summary += " #" + m.scan_no + " [" + m.score + "] ";
+                //                    }
+                //                    table += summary + "</td></tr>";
+                //                }
+                //                for (var thisCodeIsTerrible = 0; thisCodeIsTerrible < (uLnkCount - rCnt); thisCodeIsTerrible++){
+                //                    table += "<tr><td></td><td></td></tr>";
+                //                }
+                //                table += "</td></tr>";
+            }
+            table += "</table>";
+            return table;// + '<pre>' + JSON.stringify(sortable, null, '\t') + '</pre>';
+        }
+        //
+        function toArray(obj) {
+            var arr = new Array();
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    arr.push(obj[key]);
+                }
+            }
+            return arr;
+        }
+    }
+
+
+    //]]></script>
+            
+            
+		<script type="text/javascript">
+                //<![CDATA[			
+                
+                //~ document.onkeypress = function (e) {
+					//e = e || window.event;
+					//alert(e.keyCode);
+					//~ xlv.exportSVG('networkSVG');
+				//~ };
+                
+                
+				function initSlider(){
+					if (xlv.scores != null){
+						document.getElementById('scoreLabel1').innerHTML = (xlv.scores.min - 0.01).toFixed(2);
+						document.getElementById('scoreLabel2').innerHTML = (xlv.scores.max + 0.01).toFixed(2) + '&nbsp;&nbsp;';
+						document.getElementById('debug1').innerHTML = 'Cut-Off:' + (xlv.scores.min - 0.01).toFixed(2);
+						new Control.Slider('handle1', 'track1', {
+							sliderValue: 0,
+							onSlide: function(v) {
+								var cut = calcCutOff(v);
+								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
+								xlv.setCutOff(cut);
+							},
+							onChange: function(v) {
+								var cut = calcCutOff(v);
+								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
+								xlv.setCutOff(cut);
+							}
+						});
+						function calcCutOff(v) {
+							var result = (v * (xlv.scores.max - xlv.scores.min + 0.02)) + xlv.scores.min - 0.01;
+							return result;
+						}
+					}
+					else {
+						//no score
+						document.getElementById('scoreSlider').setAttribute("style", "display:none;");
+					}
+				}
+				
+				initSlider();				
+                //]]>
+        </script>
+		<script type="text/javascript">
+				//<![CDATA[
+				helpShown = false;
+				infoShown = false;
+				function toggleHelpPanel() {
+					if (helpShown){
+						hideHelpPanel();
+					}
+					else {
+						showHelpPanel();
+					}
+				}
+				
+				function toggleInfoPanel() {
+					if (infoShown){
+						hideInfoPanel();
+					}
+					else {
+						showInfoPanel();
+					}
+				}
+				
+				function showHelpPanel() {
+						helpShown = true;
+						d3.select("#helpPanel").style('display','block');
+						d3.select("#helpPanel").transition().style("top", "0%").duration(700);
+						d3.select(".help").attr('class', "btn help");
+				}
+				function hideHelpPanel() {
+						helpShown = false;
+						d3.select("#helpPanel").transition().style("top", "100%").duration(700);
+						d3.select("#helpPanel").transition().style('display','none').delay(700);;
+						d3.select(".help").attr('class', "btn btn-inverse help");
+				}
+				function showInfoPanel() {
+						infoShown = true;
+						d3.select("#infoPanel").style('display','block');
+						d3.select("#infoPanel").transition().style("top", "0%").duration(700);
+						d3.select(".info").attr('class', "btn info");	
+				}
+				function hideInfoPanel() {
+						infoShown = false;
+						d3.select("#infoPanel").transition().style("top", "100%").duration(700);
+						d3.select("#infoPanel").transition().style('display','none').delay(700);;
+						d3.select(".info").attr('class', "btn btn-inverse info");
+				}
+				//]]>
+		</script>
+    </body>
+</html>

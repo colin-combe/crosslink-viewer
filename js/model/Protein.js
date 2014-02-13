@@ -355,16 +355,24 @@ Protein.prototype.setRotation = function(angle) {
 Protein.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
-    this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
-    if (this.internalLink != null) {
-        if (typeof this.internalLink.fatLine !== 'undefined') {
-            this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
-                    + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
-        }
-    }
+    if (this.form === 1 && this.isParked === false){
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+    } 
+    else {
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") ");
+		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") ");
+		if (this.internalLink != null) {
+			if (typeof this.internalLink.fatLine !== 'undefined') {
+				this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+			}
+		}
+	}
 };
 
 Protein.rotOffset = 0;//20 * 0.7; // see Rotator.js
@@ -439,7 +447,9 @@ Protein.prototype.scale = function() {
             for (var l = 0; l < iLinkCount; l++) {
 				var residueLink = resLinks[l];
                // resLinks[l].setUpCurve();
-               d3.select(residueLink.line).attr("d",this.getResidueLinkPath(residueLink));
+               var path = this.getResidueLinkPath(residueLink);
+               d3.select(residueLink.line).attr("d", path);
+               d3.select(residueLink.highlightLine).attr("d", path);
             }
         }
 
@@ -816,7 +826,10 @@ Protein.prototype.toStick = function() {
 			link.hide();
 		}
 	}
-    
+	
+	//place rotators
+	this.mouseoverControls.add();
+			   
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
@@ -914,8 +927,6 @@ Protein.prototype.toStick = function() {
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
-			//place rotators
-			self.mouseoverControls.add();
 			//~ self.upperGroup.appendChild(self.lowerRotator.svg);
 			//~ self.upperGroup.appendChild(self.upperRotator.svg);  
 			//~ self.lowerRotator.svg.setAttribute("transform", 
@@ -972,7 +983,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 	if (this.form=== 1){		
 		if (typeof this.peptides === 'undefined'){
 			this.peptides = document.createElementNS(xiNET.svgns, "g");
-			//~ this.rectDomains.appendChild(this.peptides);
+			this.rectDomains.appendChild(this.peptides);
 		}
 		var y = -Protein.STICKHEIGHT / 2;
 		
