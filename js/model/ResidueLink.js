@@ -295,9 +295,13 @@ ResidueLink.prototype.check = function(filter) {
         if (this.intra === true){
 			if (this.hd === true) {
 			this.line.setAttribute("stroke", "#e31a1c");			
+			this.line.setAttribute("transform", "scale(1, -1)");			
+			this.highlightLine.setAttribute("transform", "scale(1, -1)");			
 			}
 			else {
 				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
+				this.line.setAttribute("transform", "scale(1, 1)");			
+				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
 			}
 		}
         return true;

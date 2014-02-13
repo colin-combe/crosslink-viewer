@@ -180,10 +180,10 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
                     //~ pep2length = pep2_seq;
 
 //                alert(pep1length);
-                var pep1_start = (pep1_positions[0] - 0 + 1);
-                var pep2_start = (pep2_positions[0] - 0 + 1);
-                var pep1_end = pep1_start  + (pep1length - 0);
-                var pep2_end = pep2_start + (pep2length - 0);
+                var pep1_start = (pep1_positions[0] - 0);
+                var pep2_start = (pep2_positions[0] - 0);
+                var pep1_end = pep1_start  + (pep1length - 1);
+                var pep2_end = pep2_start + (pep2length - 1);
                 if ((pep1_start >= pep2_start && pep1_start <= pep2_end)
                         || (pep2_start >= pep1_start && pep2_start <= pep1_end)) {
                    //console.log("here");
