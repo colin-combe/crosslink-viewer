@@ -150,9 +150,9 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
                 c = anno.colour;
             }
             annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotPieSlice.setAttribute("fill-opacity", "0.75");
+            annotPieSlice.setAttribute("fill-opacity", "0.65");
             annotColouredRect.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "0.75");
+            annotColouredRect.setAttribute("fill-opacity", "0.65");
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;

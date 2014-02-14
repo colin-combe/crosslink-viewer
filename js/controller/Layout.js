@@ -24,26 +24,26 @@ xiNET.Controller.prototype.autoLayout = function() {
         this.subgraphs.length = 0;
         var prots = this.proteins.values();
         var proteinCount = prots.length;
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = prots[p];
-            var park = true;
-            for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-				var protLink = prot.proteinLinks.values()[ppl];
-				if (protLink.getFilteredMatches().length > 0){
-					if (this.intraHidden === false || 
-						(this.intraHidden === true && protLink.intra != true)) {
-							park = false;
-						}
-				}
-			}
-			//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+        //~ for (var p = 0; p < proteinCount; p++) {
+            //~ var prot = prots[p];
+            //~ var park = true;
+            //~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
 				//~ var protLink = prot.proteinLinks.values()[ppl];
 				//~ if (protLink.getFilteredMatches().length > 0){
-					//~ park = false;
+					//~ if (this.intraHidden === false || 
+						//~ (this.intraHidden === true && protLink.intra != true)) {
+							//~ park = false;
+						//~ }
 				//~ }
 			//~ }
-			prot.setParked(park);
-        }
+			//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+				//~ // var protLink = prot.proteinLinks.values()[ppl];
+				//~ // if (protLink.getFilteredMatches().length > 0){
+					//~ // park = false;
+				//~ // }
+			//~ // }
+			//~ prot.setParked(park);
+        //~ }
         for (var p = 0; p < proteinCount; p++) {
             prots[p].subgraph = null;
         }

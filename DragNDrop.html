@@ -25,11 +25,12 @@
         <script type="text/javascript" src="./js/model/Match.js"></script>
         <script type="text/javascript" src="./js/model/Link.js"></script>
         <script type="text/javascript" src="./js/model/Protein.js"></script>
+        <script type="text/javascript" src="./js/model/Protein_printAnnotationInfo.js"></script>
         <script type="text/javascript" src="./js/model/Annotations.js"></script>
         <script type="text/javascript" src="./js/model/ProteinLink.js"></script>
         <script type="text/javascript" src="./js/model/ResidueLink.js"></script>
         <script type="text/javascript" src="./js/controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="./js/model/Rotator.js"></script>
+        <script type="text/javascript" src="./js/controller/Rotator.js"></script>
         <script type="text/javascript" src="./js/controller/DASUtil.js"></script>
         <script type="text/javascript" src="./js/controller/ReadCSV.js"></script>
         <script type="text/javascript" src="./js/controller/Fasta.js"></script>
@@ -81,7 +82,7 @@
 					<div id="networkCaption">
 						<h4>Drag'n'Drop Demo Page by Hendrik Hofstadt</h4>
 						<p>This page allows you to drag and drop the data files on to it.</p>
-						<p></p>It is convenient but does not work in all browsers.</p>
+						<p></p>It is convenient but does not work in all browsers. It is likely not to work in Chrome.</p>
 						<p>First, drag and drop the FASTA file onto the empty space in the middle of this page.</p>
 						<p>Then drag and drop the CSV data file onto it.</p>
 					</div>
@@ -93,7 +94,7 @@
 					<table class="hor-minimalist-a"  bordercolor="#eee" >
 						<tr>
 							<td>Toggle the proteins between a bar and a circle</td>
-							<td>Double-click on protein</td>
+							<td>Click on protein</td>
 						</tr>
 						<tr>
 							<td>Zoom</td>

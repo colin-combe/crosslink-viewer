@@ -141,7 +141,6 @@ MouseoverControls.makeTriangle = function(p1, p2){
 // http://stackoverflow.com/questions/786472/rotate-a-point-by-an-angle
 //~ p'x = cos(theta) * (px-ox) - sin(theta) * (py-oy) + ox
 //~ p'y = sin(theta) * (px-ox) + cos(theta) * (py-oy) + oy
-//ok, lets use arrays with x in cell 0 and y in cell 1
 MouseoverControls.rotatePointAboutPoint = function(p, o, theta) {
 	theta = (theta / 360) * Math.PI * 2;
 	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
