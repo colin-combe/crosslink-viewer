@@ -375,7 +375,7 @@ ProteinLink.prototype.check = function() {
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
 			if (this.hd) {
-				this.line.setAttribute("stroke", "#e31a1c");			
+				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 				this.line.setAttribute("stroke-width", "2");			
 			}
 			else {

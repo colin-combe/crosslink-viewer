@@ -294,7 +294,7 @@ ResidueLink.prototype.check = function(filter) {
         this.dashedLine(this.ambig);
         if (this.intra === true){
 			if (this.hd === true) {
-			this.line.setAttribute("stroke", "#e31a1c");			
+			this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 			this.line.setAttribute("transform", "scale(1, -1)");			
 			this.highlightLine.setAttribute("transform", "scale(1, -1)");			
 			}

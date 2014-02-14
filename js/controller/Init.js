@@ -15,9 +15,10 @@ xiNET.linkWidth = 1.5;// default line width
 // highlight and selection colours are global
 // (because all instances of xiNET should use same colours for this)
 xiNET.highlightColour = new RGBColor("yellow");
-xiNET.selectedColour = new RGBColor("#FDC086");
-xiNET.defaultSelfLinkColour = new RGBColor("#8073AC'");
-xiNET.defaultInterLinkColour = new RGBColor("#E08214");
+xiNET.selectedColour = new RGBColor("yellow");
+xiNET.defaultSelfLinkColour = new RGBColor("#8dd3c7");//#8073AC'");//"#beaed4");//
+xiNET.defaultInterLinkColour = new RGBColor("#bebada");//#E08214");//#fdc086");
+xiNET.homodimerLinkColour = new RGBColor("#e41a1c");
 
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
 	if (typeof targetDiv === "string"){
@@ -89,13 +90,13 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.highlights.setAttribute("class", "highlights");//proteins also contain highlight groups
     this.container.appendChild(this.highlights);
 
-    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
-    this.p_pLinks.setAttribute("id", "p_pLinks");
-    this.container.appendChild(this.p_pLinks);
-
     this.res_resLinks = document.createElementNS(xiNET.svgns, "g");
     this.res_resLinks.setAttribute("id", "res_resLinks");
     this.container.appendChild(this.res_resLinks);
+
+    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
+    this.p_pLinks.setAttribute("id", "p_pLinks");
+    this.container.appendChild(this.p_pLinks);
 
     this.proteinUpper = document.createElementNS(xiNET.svgns, "g");
     this.proteinUpper.setAttribute("id", "proteinUpper");

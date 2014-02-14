@@ -440,7 +440,7 @@ Protein.prototype.scale = function() {
         this.lowerRotator.svg.setAttribute("transform", 
 			"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform", 
-			"translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
+			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Protein.rotOffset) + " 0)");
         
         //internal links
         if (this.internalLink != null) {
@@ -835,7 +835,7 @@ Protein.prototype.toStick = function() {
 	this.lowerRotator.svg.setAttribute("transform", 
 		"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
 	this.upperRotator.svg.setAttribute("transform", 
-		"translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
+		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Protein.rotOffset) + " 0)");
    //remove prot-prot links - would it be better if checkLinks did this? - think not
 	var c = this.proteinLinks.values().length;
 	for (var l = 0; l < c; l++) {
