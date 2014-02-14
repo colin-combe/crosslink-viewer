@@ -80,8 +80,9 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     //annotation scheme
     this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
 	//rotators
-	this.mouseoverControls = new MouseoverControls(this, this.xlv);
-	//~ this.upperRotator = new Rotator(this, 1, this.xlv);
+	//~ this.mouseoverControls = new MouseoverControls(this, this.xlv);
+	this.lowerRotator = new Rotator(this, 0, this.xlv);
+	this.upperRotator = new Rotator(this, 1, this.xlv);
     
     var r = this.getBlobRadius();
 	
@@ -375,7 +376,7 @@ Protein.prototype.setPosition = function(x, y) {
 	}
 };
 
-Protein.rotOffset = 0;//20 * 0.7; // see Rotator.js
+Protein.rotOffset = 25 * 0.7; // see Rotator.js
 Protein.minXDist = 30;
 Protein.prototype.switchStickScale = function(svgP) {//TODO: yeah... the following is a mess
     if (this.isParked) {
@@ -434,11 +435,11 @@ Protein.prototype.scale = function() {
 			//.attr("rx", 0).attr("ry", 0)
 		
 		//place rotators
-		this.mouseoverControls.place();
-        //~ this.lowerRotator.svg.setAttribute("transform", 
-			//~ "translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
-        //~ this.upperRotator.svg.setAttribute("transform", 
-			//~ "translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
+		//this.mouseoverControls.place();
+        this.lowerRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
+        this.upperRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
         
         //internal links
         if (this.internalLink != null) {
@@ -619,8 +620,10 @@ Protein.prototype.toBlob = function(svgP) {
 		.duration(Protein.transitionTime);
 };
 
-Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles
-    this.mouseoverControls.remove();
+Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
+    //this.mouseoverControls.remove();
+	this.upperGroup.removeChild(this.lowerRotator.svg);
+	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
@@ -677,8 +680,8 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		}
 	}	
 	
+	var self = this;
 	if (typeof this.annotations !== 'undefined') {
-		var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
@@ -687,13 +690,16 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 			var rectDomain = annots[a].rect;
 
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
-				.duration(Protein.transitionTime);
+				.duration(Protein.transitionTime).each("end", 
+					function () {
+						d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));
+					}
+				);
 			d3.select(rectDomain).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Protein.transitionTime);
 		}
 	}
 
-	var self = this;
 	var originalStickZoom = this.stickZoom;
 	var originalRotation = this.rotation;
 	var cubicInOut = d3.ease('cubic-in-out');
@@ -757,14 +763,21 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 								pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 								//        this.line.setAttribute("stroke", "red");
 							}
-							else {
-								pieSlice.setAttribute("d", self.getAnnotationPieSliceArcPath(anno));
-							}
 						}
 					}
 			}
 			self.stickZoom = originalStickZoom;
 			self.rotation = originalRotation;
+			//~ pieSlice.setAttribute("d", self.getAnnotationPieSliceArcPath(anno));
+			//~ if (typeof self.annotations !== 'undefined') {
+				//~ var annots = self.annotations;
+				//~ var ca = annots.length;
+				//~ for (var a = 0; a < ca; a++) {
+					//~ var anno = annots[a].anno;
+					//~ var pieSlice = annots[a].pieSlice;
+					//~ pieSlice.setAttribute("d", self.getAnnotationPieSliceArcPath(anno));
+				//~ }
+			//~ }
 			return true;
 		} else if (interp > 1){
 			return update(1);
@@ -828,7 +841,13 @@ Protein.prototype.toStick = function() {
 	}
 	
 	//place rotators
-	this.mouseoverControls.add();
+	//~ this.mouseoverControls.add();
+	this.upperGroup.appendChild(this.lowerRotator.svg);
+	this.upperGroup.appendChild(this.upperRotator.svg);  
+	this.lowerRotator.svg.setAttribute("transform", 
+		"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
+	this.upperRotator.svg.setAttribute("transform", 
+		"translate(" + (this.getResXwithStickZoom(this.size + 0.5) + Protein.rotOffset) + " 0)");
 			   
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();

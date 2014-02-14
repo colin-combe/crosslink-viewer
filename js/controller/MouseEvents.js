@@ -181,7 +181,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                 var _dy = c.y - this.dragElement.y;
                 //see http://en.wikipedia.org/wiki/Atan2#Motivation
                 var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                if (this.whichRotator === 1) {
+                if (this.whichRotator === 0) {
                     centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
                 }
                 var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));

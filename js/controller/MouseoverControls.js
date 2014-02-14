@@ -1,5 +1,7 @@
 // MouseoverControls.js
 
+//NOT CURRENTLY USED
+
 function MouseoverControls(protein, xlvController) {
     var self = this;
     this.xlv = xlvController;
