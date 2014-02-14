@@ -988,19 +988,31 @@ Protein.prototype.getAggregateSelfLinkPath = function() {
 Protein.prototype.getResidueLinkPath = function(residueLink) {					
 	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
-		pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
-		return pathAtt;
+		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
+		//~ return pathAtt;
+		var height = 23;
+		var radius = 5;
+			return "M " + x1 + ",0 "
+			+ 'Q ' + x1 + "," + height 
+					+ ' ' + x1 + "," + height
+			+ " A " + radius + "," + radius + "  0 0 1 "
+				+ x1 + "," + 13
+			+ ' Q '+ x1 + ",18" 
+				+ ' ' + x1 + ",18";
 	}
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
-		var midY = (Math.abs(x2 - x1));
-		midY = midY / 2;
+		var radius = (Math.abs(x2 - x1)) / 2;
 		this.curveMidX = x1 + ((x2 - x1) / 2);
+		var height = -((Protein.STICKHEIGHT / 2) + 3);
+		if (radius < 5){
+			height = -23 + radius;
+		}
 		return "M " + x1 + ",0 "
-			+ 'Q ' + x1 + "," + (-((Protein.STICKHEIGHT / 2) + 3)) 
-					+ ' ' + x1 + "," + (-((Protein.STICKHEIGHT / 2) + 3))
-			+ " A " + midY + "," + midY + "  0 0 1 "
-				+ x2  + (-((Protein.STICKHEIGHT / 2) + 3))
+			+ 'Q ' + x1 + "," + height 
+					+ ' ' + x1 + "," + height
+			+ " A " + radius + "," + radius + "  0 0 1 "
+				+ x2  + "," + height
 			+ ' Q '+ x2 + ",0" 
 				+ ' ' + x2 + ",0";
 	}

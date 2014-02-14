@@ -376,9 +376,11 @@ ProteinLink.prototype.check = function() {
 			this.dashedLine(this.ambig);
 			if (this.hd) {
 				this.line.setAttribute("stroke", "#e31a1c");			
+				this.line.setAttribute("stroke-width", "2");			
 			}
 			else {
 				this.line.setAttribute("stroke", "black");	
+				this.line.setAttribute("stroke-width", "1");			
 			}
 			this.show();
 			return true;
