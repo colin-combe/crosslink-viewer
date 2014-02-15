@@ -28,6 +28,7 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.dashed = false;
     //layout stuff
     this.hidden = false;
+    this.initSVG();
 }
 
 ProteinLink.prototype.initSVG = function() {
@@ -374,13 +375,15 @@ ProteinLink.prototype.check = function() {
 			//acknowledge following line is a bit confusing...
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
-			if (this.hd) {
-				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
-				this.line.setAttribute("stroke-width", "2");			
-			}
-			else {
-				this.line.setAttribute("stroke", "black");	
-				this.line.setAttribute("stroke-width", "1");			
+			if (this.intra) {
+				if (this.hd) {
+					this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
+					this.line.setAttribute("stroke-width", "2");			
+				}
+				else {
+					this.line.setAttribute("stroke", "black");	
+					this.line.setAttribute("stroke-width", "1");			
+				}
 			}
 			this.show();
 			return true;
@@ -404,9 +407,9 @@ ProteinLink.prototype.check = function() {
 };
 ProteinLink.prototype.dashedLine = function(dash) {
     //TODO: oops, bit of a hack..
-    if (typeof this.line === 'undefined'){
-        this.initSVG();
-    }
+    //~ if (typeof this.line === 'undefined'){
+        //~ this.initSVG();
+    //~ }
     if (dash){// && !this.dashed) {
         this.dashed = true;
         if (this.intra === true) {
@@ -425,9 +428,9 @@ ProteinLink.prototype.show = function() {
         // TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
+            //~ if (typeof this.line === 'undefined') {
+                //~ this.initSVG();
+            //~ }
             if (this.intra) {
                 //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
 

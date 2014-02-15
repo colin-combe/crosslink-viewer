@@ -177,7 +177,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
+			.attr("fill", this.isDecoy()? "#FB8072":"#ffffff")
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("x", -r).attr("y", -r)
 			.attr("rx", r).attr("ry", r);
@@ -261,10 +261,10 @@ Protein.prototype.getBlobRadius = function() {
 };
 
 Protein.prototype.isDecoy = function() {
-    if (this.name.indexOf("DECOY_") === -1 || this.name === "REV") {
-		return true;
-	} else {
+    if (this.name.indexOf("DECOY_") === -1 && this.name !== "REV") {
 		return false;
+	} else {
+		return true;
 	}
 };
 
@@ -536,9 +536,10 @@ Protein.prototype.scale = function() {
             var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
             scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
             var scaleLabel = document.createElementNS(xiNET.svgns, "text");
-            scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
+            //~ scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
+            scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
             scaleLabel.setAttribute('font-family', 'Arial');
-            scaleLabel.setAttribute('font-size', '14');
+            scaleLabel.setAttribute('font-size', '16');
             scaleLabel.setAttribute("text-anchor", "middle");
             scaleLabel.setAttribute("x", 0);
             scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
@@ -585,6 +586,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 			this.setAllLineCoordinates();
 		}
 		else if (this.isParked === false && bool == true) {
+			this.isParked = true;
 			this.toParked(svgP);
 		}
 	}
@@ -593,10 +595,8 @@ Protein.prototype.setParked = function(bool, svgP) {
 Protein.prototype.setForm = function(form, svgP) {
     if (this.busy !== true) {
 		if (this.isParked) {
-			this.form = form;
+			//~ this.form = form;
 			this.setParked(false);
-			//TODO: temp
-			this.xlv.stickUnderMouse = null;
 		}
 		else
 		{
@@ -605,8 +605,6 @@ Protein.prototype.setForm = function(form, svgP) {
 			}
 			else {
 				this.toBlob(svgP);
-				//TODO: temp
-				this.xlv.stickUnderMouse = null;
 			}
 		}
 	}
@@ -616,21 +614,32 @@ Protein.prototype.toBlob = function(svgP) {
 	if (this.form === 1){
 		this.toCircle(svgP);
 		var r = this.getBlobRadius();
+		
+		var self = this;
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
+			.attr("fill", this.isDecoy()? "#FB8072" : "#ffffff")
 			.attr("x", -r).attr("y", -r)
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("rx", r).attr("ry", r)
-			.duration(Protein.transitionTime);	
+			.duration(Protein.transitionTime);
+			//~ .each("end", 
+					//~ function () {
+						//~ self.form = 0;
+						//~ self.xlv.checkLinks();
+					//~ }
+				//~ );
 		d3.select(this.rectDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
 			.duration(Protein.transitionTime);
 	}
-	else {
+	else {//from parked
 		d3.select(this.outline).transition()
-			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
-			.duration(Protein.transitionTime);	
+			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+			.attr("fill", this.isDecoy()? "#FB8072" : "#ffffff")
+			.duration(Protein.transitionTime);
+		this.xlv.checkLinks();	
+		//~ this.form = 0;	
 	}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(1, 1)")
@@ -639,9 +648,9 @@ Protein.prototype.toBlob = function(svgP) {
 
 Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
    this.busy = true;
-     //this.mouseoverControls.remove();
-	this.upperGroup.removeChild(this.lowerRotator.svg);
-	this.upperGroup.removeChild(this.upperRotator.svg);  
+		 //this.mouseoverControls.remove();
+		this.upperGroup.removeChild(this.lowerRotator.svg);
+		this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
@@ -743,17 +752,18 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
-			self.form = 0;	
 			//~ if (self.ticks !== null){
 				//~ self.lowerRotationGroup.removeChild(self.ticks);
 			//~ }
 			//remove res -res links
+			//~ self.form = 0;
 			var links = self.proteinLinks.values();
 			var c = links.length;
 			for (var l = 0; l < c; l++) {
 				var link = links[l];
 				if ((link.getFromProtein() === self && link.getToProtein().form === 0) ||
-						(link.getToProtein() === self && link.getFromProtein().form === 0))
+						(link.getToProtein() === self && link.getFromProtein().form === 0) ||
+						(link.getToProtein() == link.getFromProtein()))
 				{
 					// swap links
 					//out with the old
@@ -768,22 +778,23 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 				}
 			}
 			//bring in new 
-			self.xlv.checkLinks();
-			if (this.internalLink != null) {
-				var resLinks = this.internalLink.residueLinks.values();
-				var resLinkCount = resLinks.length;
-				for (var rl = 0; rl < resLinkCount; rl++) {
-					var residueLink = resLinks[rl];
-					
-						if (residueLink.intra === true) {
-							var fromCoord = this.getResidueCoordinates(residueLink.fromResidue);
-							if (isNaN(parseFloat(residueLink.toResidue))){ //monolink
-								pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
-								//        this.line.setAttribute("stroke", "red");
-							}
-						}
-					}
-			}
+						self.form = 0;
+						self.xlv.checkLinks();
+			//~ if (this.internalLink != null) {
+				//~ var resLinks = this.internalLink.residueLinks.values();
+				//~ var resLinkCount = resLinks.length;
+				//~ for (var rl = 0; rl < resLinkCount; rl++) {
+					//~ var residueLink = resLinks[rl];
+					//~ 
+						//~ if (residueLink.intra === true) {
+							//~ var fromCoord = this.getResidueCoordinates(residueLink.fromResidue);
+							//~ if (isNaN(parseFloat(residueLink.toResidue))){ //monolink
+								//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
+								//~ //        this.line.setAttribute("stroke", "red");
+							//~ }
+						//~ }
+					//~ }
+			//~ }
 			self.stickZoom = originalStickZoom;
 			self.rotation = originalRotation;
 			self.busy = false;
@@ -796,9 +807,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 	}
 };
 
-Protein.prototype.toParked = function(svgP) {
-	this.isParked = true;
-    
+Protein.prototype.toParked = function(svgP) {   
     var c = this.proteinLinks.values().length;
     for (var l = 0; l < c; l++) {
         var link = this.proteinLinks.values()[l];
@@ -857,7 +866,6 @@ Protein.prototype.toStick = function() {
 			link.hide();
 		}
 	}
-	
 			   
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
@@ -875,8 +883,9 @@ Protein.prototype.toStick = function() {
 		.attr("transform", "scale(" + this.stickZoom + ", 1)")
 		.duration(Protein.transitionTime);
 				
-	d3.select(this.outline).transition().attr("stroke-opacity", 1).attr("fill-opacity", 0)
-		.attr("fill", this.isDecoy()? "#FFFFFF" : "#FB8072")
+	d3.select(this.outline).transition().attr("stroke-opacity", 1)
+	.attr("fill-opacity",  this.isDecoy()? 1 : 0)
+		.attr("fill", this.isDecoy()? "#FB8072" : "#FFFFFF")
 		.attr("height", Protein.STICKHEIGHT)
 		//~ .attr("x", this.getResXwithStickZoom(0.5))
 		.attr("y",  -Protein.STICKHEIGHT / 2)

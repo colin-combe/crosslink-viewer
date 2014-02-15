@@ -424,7 +424,7 @@ xiNET.Controller.prototype.getLayout = function() {
 };
 
 xiNET.Controller.prototype.setLayout = function(layoutJSON) {
-    //this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
+    this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
 };
 
 xiNET.Controller.prototype.loadLayout = function() {
@@ -469,7 +469,7 @@ xiNET.Controller.prototype.loadLayout = function() {
             if (protState["processedDAS"]) {
                 protein.processedDAS = d3.map(protState["processedDAS"]);
             }
-            //            this.proteinLower.appendChild(protein.rectDomains);
+            this.proteinLower.appendChild(protein.lowerGroup);
             this.proteinUpper.appendChild(protein.upperGroup);
         }
     }
@@ -479,11 +479,11 @@ xiNET.Controller.prototype.loadLayout = function() {
     var proteinCount = proteins.length;
     for (var p = 0; p < proteinCount; p++) {
         prot = proteins[p];
-        if (prot.form == null) {
-            prot.initStick();
+        if (prot.x == null) {
+            //~ prot.initStick();
             prot.toBlob();
             prot.setPosition(20, 20);
-            //            this.proteinLower.appendChild(prot.rectDomains);
+            this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
     }
