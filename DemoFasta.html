@@ -151,7 +151,7 @@
 					xlv.readFasta(text);
 					//hideDecoy(true);
 					//must read data file after completing fasta file parse
-					d3.text('./data/result.csv', "text/csv", function(text) {
+					d3.text('./data/results.csv', "text/csv", function(text) {
 						xlv.readCSV(text);
 					});				
 				});							
@@ -245,7 +245,7 @@
                 var prots = xlv.proteins.values();
                 for (var p = 0; p < protCount; p++) {
                     var prot = prots[p];
-					if (prot.name.indexOf("DECOY_") !== -1) {
+					if (prot.isDecoy()) {
                         prot.setParked(decoysHidden);
                     }
                 }

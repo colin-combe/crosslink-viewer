@@ -24,6 +24,7 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
     if (typeof colour !== 'undefined' && colour != null){
         this.tooltip_bg.setAttribute('fill', colour);
         this.tooltip_bg.setAttribute('stroke', colour);
+        this.tooltip_bg.setAttribute('fill-opacity', '0.5');
     } else {
         this.tooltip_bg.setAttribute('fill','white');
         this.tooltip_bg.setAttribute('stroke','grey');

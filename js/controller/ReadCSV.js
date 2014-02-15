@@ -150,9 +150,21 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 				if (iScore !== -1){
 					score = rows[row][iScore];
 				} 
-				xlv.addMatch(prot1, rows[row][iRes1], 
-								prot2, rows[row][iRes2], 
-								id, score);
+				var xQuestIdRegex = /(.*)-(.*)-a(\d*)-b(\d*)/;
+				//~ console.log(id);
+				var m = xQuestIdRegex.exec(id);
+				//~ console.log(m);
+				if (m !== null){
+					var pep1_seq = m[1], pep2_seq = m[2],
+						linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
+					xlv.addMatch(prot1, rows[row][iRes1] - linkPos1, 
+									prot2, rows[row][iRes2] - linkPos2, 
+									id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
+				} else {
+					xlv.addMatch(prot1, rows[row][iRes1], 
+									prot2, rows[row][iRes2], 
+									id, score);
+				}
 		}
         //~ }
 		var protCount = xlv.proteins.values().length;

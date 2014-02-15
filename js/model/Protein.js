@@ -10,7 +10,11 @@ Protein.MAXSIZE = 0; 			// residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)
 Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
 Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
-Protein.domainColours = d3.scale.category20c(); // d3.scale.ordinal().range(colorbrewer.Paired[12]);
+Protein.domainColours = d3.scale.category20c(); //
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[12]);
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
 Protein.transitionTime = 650;
 
 function Protein(id, xinetController, acc, name) {
@@ -173,7 +177,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#ffffff" : "#FB8072")
+			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("x", -r).attr("y", -r)
 			.attr("rx", r).attr("ry", r);
@@ -254,6 +258,14 @@ Protein.prototype.mouseOut = function(evt) {
 
 Protein.prototype.getBlobRadius = function() {
     return Math.sqrt(this.size / Math.PI);
+};
+
+Protein.prototype.isDecoy = function() {
+    if (this.name.indexOf("DECOY_") === -1 || this.name === "REV") {
+		return true;
+	} else {
+		return false;
+	}
 };
 
 //only output the info needed to reproduce the layout
@@ -606,7 +618,7 @@ Protein.prototype.toBlob = function(svgP) {
 		var r = this.getBlobRadius();
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#ffffff" : "#FB8072")
+			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
 			.attr("x", -r).attr("y", -r)
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("rx", r).attr("ry", r)
@@ -617,7 +629,7 @@ Protein.prototype.toBlob = function(svgP) {
 	}
 	else {
 		d3.select(this.outline).transition()
-			.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#ffffff" : "#FB8072")
+			.attr("fill", this.isDecoy()? "#ffffff" : "#FB8072")
 			.duration(Protein.transitionTime);	
 	}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
@@ -864,7 +876,7 @@ Protein.prototype.toStick = function() {
 		.duration(Protein.transitionTime);
 				
 	d3.select(this.outline).transition().attr("stroke-opacity", 1).attr("fill-opacity", 0)
-		.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#FFFFFF" : "#FB8072")
+		.attr("fill", this.isDecoy()? "#FFFFFF" : "#FB8072")
 		.attr("height", Protein.STICKHEIGHT)
 		//~ .attr("x", this.getResXwithStickZoom(0.5))
 		.attr("y",  -Protein.STICKHEIGHT / 2)
