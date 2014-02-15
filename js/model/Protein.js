@@ -778,8 +778,8 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 				}
 			}
 			//bring in new 
-						self.form = 0;
-						self.xlv.checkLinks();
+			self.form = 0;
+			self.xlv.checkLinks();
 			//~ if (this.internalLink != null) {
 				//~ var resLinks = this.internalLink.residueLinks.values();
 				//~ var resLinkCount = resLinks.length;
@@ -849,7 +849,8 @@ Protein.prototype.toParked = function(svgP) {
 Protein.prototype.toStick = function() {
 	this.busy = true;
     this.form = 1; 
- 	//place rotators
+   
+    //place rotators
 	//~ this.mouseoverControls.add();
 	this.upperGroup.appendChild(this.lowerRotator.svg);
 	this.upperGroup.appendChild(this.upperRotator.svg);  
@@ -866,16 +867,23 @@ Protein.prototype.toStick = function() {
 			link.hide();
 		}
 	}
-			   
+	
+ 			   
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
-	var lengthInterpol = d3.interpolate((2 * r), protLength);
+	
+ 	var lengthInterpol = d3.interpolate((2 * r), protLength);
 	var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
 	var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);	
 	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+  
+    var origStickZoom = this.stickZoom;	
+	this.stickZoom = 0;
     this.xlv.checkLinks();
+	this.stickZoom = origStickZoom;
 
+ 	
 	d3.select(this.circDomains).transition().attr("opacity", 0)
 		.attr("transform", "scale(" + this.stickZoom + ", 1)")
 		.duration(Protein.transitionTime);
@@ -944,7 +952,7 @@ Protein.prototype.toStick = function() {
 				.duration(Protein.transitionTime);
 		}
 	}
-
+	
 	var self = this;
 	var cubicInOut = d3.ease('cubic-in-out');
 	d3.timer(function(elapsed) {
