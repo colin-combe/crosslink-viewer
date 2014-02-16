@@ -833,7 +833,7 @@ Protein.prototype.toStick = function() {
 		.duration(Protein.transitionTime);
 				
 	d3.select(this.outline).transition().attr("stroke-opacity", 1)
-	.attr("fill-opacity",  this.isDecoy()? 1 : 0)
+	.attr("fill-opacity",  0)
 		.attr("fill", "#FFFFFF")
 		.attr("height", Protein.STICKHEIGHT)
 		.attr("y",  -Protein.STICKHEIGHT / 2)
@@ -937,23 +937,23 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
 		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 		//~ return pathAtt;
-		var height = 26;
+		var height = 28;
 		var radius = 5;
 			return "M " + x1 + ",0 "
 			+ 'Q ' + x1 + "," + height 
 					+ ' ' + x1 + "," + height
 			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ x1 + "," + 16
-			+ ' Q '+ x1 + ",18" 
-				+ ' ' + x1 + ",18";
+				+ x1 + "," + 18
+			+ ' Q '+ x1 + ",23" 
+				+ ' ' + x1 + ",23";
 	}
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
 		var radius = (Math.abs(x2 - x1)) / 2;
 		this.curveMidX = x1 + ((x2 - x1) / 2);
 		var height = -((Protein.STICKHEIGHT / 2) + 3);
-		if (radius < 13){
-			height = -26 + radius;
+		if (radius < 15){
+			height = -28 + radius;
 		}
 		return "M " + x1 + ",0 "
 			+ 'Q ' + x1 + "," + height 

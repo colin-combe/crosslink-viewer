@@ -57,7 +57,7 @@ ProteinLink.prototype.initSVG = function() {
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
-    this.line.setAttribute("stroke-width", "1");
+    this.line.setAttribute("stroke-width", xiNET.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
