@@ -942,14 +942,14 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 		//~ return pathAtt;
 		var height = 28;
-		var radius = 5;
+		var radius = 7;
 			return "M " + x1 + ",0 "
 			+ 'Q ' + x1 + "," + height 
 					+ ' ' + x1 + "," + height
 			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ x1 + "," + 18
-			+ ' Q '+ x1 + ",23" 
-				+ ' ' + x1 + ",23";
+				+ (x1 - radius) + "," + (height - (radius))
+			+ ' Q '+ (x1 - radius) + "," + (height - (radius)) 
+				+ ' ' + (x1 - radius) + "," + (height - (radius));
 	}
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
