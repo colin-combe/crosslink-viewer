@@ -156,9 +156,18 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 				//~ console.log(m);
 				if (m !== null){
 					var pep1_seq = m[1], pep2_seq = m[2],
-						linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
-					xlv.addMatch(prot1, rows[row][iRes1] - linkPos1, 
-									prot2, rows[row][iRes2] - linkPos2, 
+					linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
+					var peptidePositions1 = rows[row][iRes1].toString().split(/[;,]/);
+					for (var pp = 0; pp < peptidePositions1.length; pp++){
+						peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1;
+					}
+					var peptidePositions2 = rows[row][iRes2].toString().split(/[;,]/);
+					for (pp = 0; pp < peptidePositions2.length; pp++){
+						peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2;
+					}
+					
+					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
+									prot2, peptidePositions2.join(';'), 
 									id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
 				} else {
 					xlv.addMatch(prot1, rows[row][iRes1], 

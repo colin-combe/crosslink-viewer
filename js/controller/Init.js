@@ -10,14 +10,14 @@ var xiNET = {}; //crosslinkviewer's javascript namespace
 xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
-xiNET.linkWidth = 1;// default line width
+xiNET.linkWidth = 1.2;// default line width
 
 // highlight and selection colours are global
 // (because all instances of xiNET should use same colours for this)
 xiNET.highlightColour = new RGBColor("#fdc086");//"yellow");
 xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
-xiNET.defaultSelfLinkColour = new RGBColor("#1b9e77");//"#beaed4");//("#d8b365");//"#8dd3c7");//#8073AC'");//
-xiNET.defaultInterLinkColour = new RGBColor("#7570b3");//"#fdc086");//"#5ab4ac");//"#bebada");//#E08214");//
+xiNET.defaultSelfLinkColour = new RGBColor("#35978f");//"#8c510a");//"#d8b365");//("#1b9e77");//"#beaed4");//"#8dd3c7");//#8073AC'");//
+xiNET.defaultInterLinkColour = new RGBColor("#9970ab");//"#01665e");//"#5ab4ac");//"#7570b3");//"#fdc086");//"#bebada");//#E08214");//
 xiNET.homodimerLinkColour = new RGBColor("#a50f15");//"#e41a1c");
 
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div

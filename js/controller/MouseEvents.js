@@ -215,7 +215,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 // this ends all dragging and rotating
 xiNET.Controller.prototype.mouseUp = function(evt) {
 	var time = new Date().getTime();
-	console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
+	//console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
 	this.preventDefaultsAndStopPropagation(evt);
 	//eliminate some spurious mouse up events
 	if ((time - this.lastMouseUp) > 150){
