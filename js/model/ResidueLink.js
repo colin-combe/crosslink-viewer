@@ -302,7 +302,7 @@ ResidueLink.prototype.check = function(filter) {
 			else {
 				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
 				this.line.setAttribute("transform", "scale(1, 1)");			
-				this.line.setAttribute("stroke-width", "1");			
+				this.line.setAttribute("stroke-width", xiNET.linkWidth);			
 				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
 			}
 		}

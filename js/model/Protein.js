@@ -118,8 +118,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.rectDomains.setAttribute("opacity", "0");
     this.lowerGroup.appendChild(this.rectDomains);
     
- 
-     
 	/*
      * Upper group
      * svg group for elements that appear above links
@@ -205,9 +203,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
      };
-    //~ this.upperGroup.ondblclick = function(evt) {
-		//~ self.dblClick(evt);
-    //~ };
 
     this.isSelected = false;
 };
@@ -245,17 +240,6 @@ Protein.prototype.mouseOut = function(evt) {
         this.xlv.hideTooltip();
         return false;
 };
-
-//~ Protein.prototype.dblClick = function(evt) {
-        //~ var p = this.xlv.getEventPoint(evt);
-        //~ var c = this.xlv.mouseToSVG(p.x, p.y);
-        //~ if (this.form === 0) {
-            //~ this.setForm(1, c);
-        //~ } else {
-            //~ this.setForm(0, c);
-        //~ }
-        //~ //this.xlv.checkLinks();
-//~ };
 
 Protein.prototype.getBlobRadius = function() {
     return Math.sqrt(this.size / Math.PI);
@@ -395,7 +379,6 @@ Protein.minXDist = 30;
 Protein.prototype.switchStickScale = function(svgP) {//TODO: yeah... the following is a mess
     if (this.isParked) {
         this.toggleParked();
-        //        this.xlv.stickUnderMouse = null;
     }
     if (this.form === 0) {
         this.toStick();
@@ -434,20 +417,15 @@ Protein.prototype.scale = function() {
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
-		//~ console.log(this.rectDomains.getAttribute("transform"));
 		
-		d3.select(this.outline).attr("width", protLength)//.attr("stroke-opacity", 1).attr("fill-opacity", 0)
-			//.attr("fill", (this.name.indexOf("DECOY_") === -1)? "#FFFFFF" : "#FB8072")
-			//.attr("height", Protein.STICKHEIGHT)
+		d3.select(this.outline)
+			.attr("width", protLength)
 			.attr("x", this.getResXwithStickZoom(0.5));
-			//.attr("y",  -Protein.STICKHEIGHT / 2)
-			//.attr("rx", 0).attr("ry", 0)
-
+			
 		d3.select(this.highlight)
-			.attr("width", protLength + 5)//.attr("height", Protein.STICKHEIGHT + 5)
-			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);//.attr("y", (-Protein.STICKHEIGHT / 2) - 2.5)
-			//.attr("rx", 0).attr("ry", 0)
-		
+			.attr("width", protLength + 5)
+			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
+			
 		//place rotators
 		//this.mouseoverControls.place();
         this.lowerRotator.svg.setAttribute("transform", 
@@ -477,89 +455,83 @@ Protein.prototype.scale = function() {
     }
 };
 
+function getScaleGroup(protein) {
+	protein.scaleLabels = new Array();
+	//options for scale interval: 1 (special case: show sequence), 10, 100, (1000?)
+	//need to know number of pix for 1 em.
+	// calc pix per unit
+	var ScaleMajTick = 100;
+	// every ScaleMinTick paint a small tick
+	//var  ScaleMinTick 	  = 20;
+	// every ScaleTicksPerLabel "big" ticks write a label
+	var ScaleTicksPerLabel = 2; // varies with scale?
+	// we label the end - so dont write the previous label, unless it's at least ScaleMaxScaleTextDist residues away
+	//var ScaleMaxScaleTextDist = 50;
+	var pixPerRes = Protein.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
+	var scaleGroup = document.createElementNS(xiNET.svgns, "g");
+	var tick = -1;
+	var lastTickX = protein.getResXwithStickZoom(protein.size);
+	
+	for (var res = 1; res <= protein.size; res++) {
+		if (res === 1 ||
+				((res % 100 === 0) && (200 * pixPerRes > Protein.minXDist)) ||
+				((res % 10 === 0) && (20 * pixPerRes > Protein.minXDist))
+				) {
+			var tx = protein.getResXwithStickZoom(res);
+			tickAt(scaleGroup, tx);
+			tick = (tick + 1) % ScaleTicksPerLabel;
+			// does this one get a label?
+			if (tick === 0) {// && tx > 20) {
+				if ((tx + Protein.minXDist) < lastTickX) {
+					scaleLabelAt(res, scaleGroup, tx);
+				}
+			}
+		}
+		if (pixPerRes > 8) {
+			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
+			seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
+			var seqLabel = document.createElementNS(xiNET.svgns, "text");
+			seqLabel.setAttribute('font-family', 'Arial');
+			seqLabel.setAttribute('font-size', '10');
+			seqLabel.setAttribute("text-anchor", "middle");
+			seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
+			seqLabel.setAttribute("y", 0);
+			seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
+			seqLabelGroup.appendChild(seqLabel);
+			protein.scaleLabels.push(seqLabel);
+			scaleGroup.appendChild(seqLabelGroup);
+		}
+	}
+	scaleLabelAt(protein.size, scaleGroup, lastTickX);
+	tickAt(scaleGroup, lastTickX);
+	return scaleGroup;
+	
+	function scaleLabelAt(text, group, tickX) {
+		var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
+		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
+		var scaleLabel = document.createElementNS(xiNET.svgns, "text");
+		scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
+		scaleLabel.setAttribute('font-family', 'Arial');
+		scaleLabel.setAttribute('font-size', '14');
+		scaleLabel.setAttribute("text-anchor", "middle");
+		scaleLabel.setAttribute("x", 0);
+		scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
+		scaleLabel.appendChild(document.createTextNode(text));
+		scaleLabelGroup.appendChild(scaleLabel);
+		protein.scaleLabels.push(scaleLabel);
+		group.appendChild(scaleLabelGroup);
+	}
 
-    function getScaleGroup(protein) {
-        protein.scaleLabels = new Array();
-        //options for scale interval: 1 (special case: show sequence), 10, 100, (1000?)
-        //need to know number of pix for 1 em.
-        // calc pix per unit
-        var ScaleMajTick = 100;
-        // every ScaleMinTick paint a small tick
-        //var  ScaleMinTick 	  = 20;
-        // every ScaleTicksPerLabel "big" ticks write a label
-        var ScaleTicksPerLabel = 2; // varies with scale?
-        // we label the end - so dont write the previous label, unless it's at least ScaleMaxScaleTextDist residues away
-        //var ScaleMaxScaleTextDist = 50;
-        var pixPerRes = Protein.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
-        var scaleGroup = document.createElementNS(xiNET.svgns, "g");
-        var tick = -1;
-        var lastTickX = protein.getResXwithStickZoom(protein.size);
-        
-        for (var res = 1; res <= protein.size; res++) {
-            if (res === 1 ||
-                    ((res % 100 === 0) && (200 * pixPerRes > Protein.minXDist)) ||
-                    ((res % 10 === 0) && (20 * pixPerRes > Protein.minXDist))
-                    ) {
-                var tx = protein.getResXwithStickZoom(res);
-                tickAt(scaleGroup, tx);
-                tick = (tick + 1) % ScaleTicksPerLabel;
-                // does this one get a label?
-                if (tick === 0) {// && tx > 20) {
-                    if ((tx + Protein.minXDist) < lastTickX) {
-                        scaleLabelAt(res, scaleGroup, tx);
-                    }
-                }
-            }
-            if (pixPerRes > 8) {
-                var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
-                seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
-                var seqLabel = document.createElementNS(xiNET.svgns, "text");
-                seqLabel.setAttribute('font-family', 'Arial');
-                seqLabel.setAttribute('font-size', '10');
-                seqLabel.setAttribute("text-anchor", "middle");
-                seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
-                seqLabel.setAttribute("y", 0);
-                
-             //   seqLabel.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
-                
-                
-                seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
-                seqLabelGroup.appendChild(seqLabel);
-                protein.scaleLabels.push(seqLabel);
-                scaleGroup.appendChild(seqLabelGroup);
-            }
-        }
-        scaleLabelAt(protein.size, scaleGroup, lastTickX);
-        tickAt(scaleGroup, lastTickX);
-        return scaleGroup;
-        
-        function scaleLabelAt(text, group, tickX) {
-            var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
-            scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-            var scaleLabel = document.createElementNS(xiNET.svgns, "text");
-            //~ scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText");
-            scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
-            scaleLabel.setAttribute('font-family', 'Arial');
-            scaleLabel.setAttribute('font-size', '14');
-            scaleLabel.setAttribute("text-anchor", "middle");
-            scaleLabel.setAttribute("x", 0);
-            scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
-            scaleLabel.appendChild(document.createTextNode(text));
-            scaleLabelGroup.appendChild(scaleLabel);
-            protein.scaleLabels.push(scaleLabel);
-            group.appendChild(scaleLabelGroup);
-        }
-
-        function tickAt(group, tickX) {
-            var mayt = document.createElementNS(xiNET.svgns, "line");
-            mayt.setAttribute("x1", tickX);
-            mayt.setAttribute("y1", 2);//(-Protein.STICKHEIGHT / 2) * 0.75);
-            mayt.setAttribute("x2", tickX);
-            mayt.setAttribute("y2", ((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
-            mayt.setAttribute("stroke", "black");
-            group.appendChild(mayt);
-        }
-    };
+	function tickAt(group, tickX) {
+		var mayt = document.createElementNS(xiNET.svgns, "line");
+		mayt.setAttribute("x1", tickX);
+		mayt.setAttribute("y1", 2);//(-Protein.STICKHEIGHT / 2) * 0.75);
+		mayt.setAttribute("x2", tickX);
+		mayt.setAttribute("y2", ((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
+		mayt.setAttribute("stroke", "black");
+		group.appendChild(mayt);
+	}
+};
 
 Protein.prototype.toggleFlipped = function() {
     this.isFlipped = !this.isFlipped;
@@ -596,7 +568,6 @@ Protein.prototype.setParked = function(bool, svgP) {
 Protein.prototype.setForm = function(form, svgP) {
     if (this.busy !== true) {
 		if (this.isParked) {
-			//~ this.form = form;
 			this.setParked(false);
 		}
 		else
@@ -619,17 +590,12 @@ Protein.prototype.toBlob = function(svgP) {
 		var self = this;
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", this.isDecoy()? "#FB8072" : "#ffffff")
+			.attr("fill", "#ffffff")
 			.attr("x", -r).attr("y", -r)
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("rx", r).attr("ry", r)
 			.duration(Protein.transitionTime);
-			//~ .each("end", 
-					//~ function () {
-						//~ self.form = 0;
-						//~ self.xlv.checkLinks();
-					//~ }
-				//~ );
+
 		d3.select(this.rectDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
 			.duration(Protein.transitionTime);
@@ -637,11 +603,10 @@ Protein.prototype.toBlob = function(svgP) {
 	else {//from parked
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", this.isDecoy()? "#FB8072" : "#ffffff")
+			.attr("fill", "#ffffff")
 			.duration(Protein.transitionTime);
 		this.xlv.checkLinks();	
-		//~ this.form = 0;	
-	}
+		}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(1, 1)")
 		.duration(Protein.transitionTime);
@@ -649,9 +614,9 @@ Protein.prototype.toBlob = function(svgP) {
 
 Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
    this.busy = true;
-		 //this.mouseoverControls.remove();
-		this.upperGroup.removeChild(this.lowerRotator.svg);
-		this.upperGroup.removeChild(this.upperRotator.svg);  
+	 //this.mouseoverControls.remove();
+	this.upperGroup.removeChild(this.lowerRotator.svg);
+	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
@@ -703,6 +668,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
+			//TODO: structure of this is not ideal...
 			var anno = annots[a].anno;
 			var pieSlice = annots[a].pieSlice;
 			var rectDomain = annots[a].rect;
@@ -710,7 +676,14 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Protein.transitionTime).each("end", 
 					function () {
-					//	d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));
+						//d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));//mistake - this doesn't work 
+						//this is a mess...
+						for (var b = 0; b < ca; b++) {
+							var annoB = annots[b];
+							if (this === annoB.pieSlice){
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+							}
+						}
 					}
 				);
 			d3.select(rectDomain).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
@@ -781,12 +754,12 @@ Protein.prototype.toParked = function(svgP) {
         var link = this.proteinLinks.values()[l];
         //out with the old (i.e. all links)
         link.hide();
-        for (var rl in link.residueLinks) {
-            var resLink = link.residueLinks[rl];
-            if (resLink.shown) {//TODO: fix fact this line is required, prob is with for...in loop (when certain libs loaded)
-                resLink.hide();
-            }
-        }
+		var resLinks = link.residueLinks.values();
+		var resLinkCount = resLinks.length; 
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			var resLink = resLinks[rl];
+				resLink.hide();
+		}
     }       
     
     if (this.form === 1){
@@ -861,9 +834,8 @@ Protein.prototype.toStick = function() {
 				
 	d3.select(this.outline).transition().attr("stroke-opacity", 1)
 	.attr("fill-opacity",  this.isDecoy()? 1 : 0)
-		.attr("fill", this.isDecoy()? "#FB8072" : "#FFFFFF")
+		.attr("fill", "#FFFFFF")
 		.attr("height", Protein.STICKHEIGHT)
-		//~ .attr("x", this.getResXwithStickZoom(0.5))
 		.attr("y",  -Protein.STICKHEIGHT / 2)
 		.attr("rx", 0).attr("ry", 0)
 		.duration(Protein.transitionTime);		
@@ -880,15 +852,13 @@ Protein.prototype.toStick = function() {
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
 			
-			if (residueLink.shown) {
-				if (residueLink.intra === true) {
-						d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
-						d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
-							.duration(Protein.transitionTime);					
-						d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
-						d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
-							.duration(Protein.transitionTime);					
-				}
+			if (residueLink.intra === true && residueLink.shown) {
+				d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
+				d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
+					.duration(Protein.transitionTime);					
+				d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
+				d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
+					.duration(Protein.transitionTime);					
 			}
 		}
 	}	
@@ -929,7 +899,6 @@ Protein.prototype.toStick = function() {
 	 
 		var currentLength = lengthInterpol(cubicInOut(interp));
 		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2));
-		//~ self.stickZoom = currentLength / (self.size  * Protein.UNITS_PER_RESIDUE);
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setAllLineCoordinates();
 		
@@ -968,13 +937,13 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
 		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 		//~ return pathAtt;
-		var height = 23;
+		var height = 26;
 		var radius = 5;
 			return "M " + x1 + ",0 "
 			+ 'Q ' + x1 + "," + height 
 					+ ' ' + x1 + "," + height
 			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ x1 + "," + 13
+				+ x1 + "," + 16
 			+ ' Q '+ x1 + ",18" 
 				+ ' ' + x1 + ",18";
 	}
@@ -983,8 +952,8 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		var radius = (Math.abs(x2 - x1)) / 2;
 		this.curveMidX = x1 + ((x2 - x1) / 2);
 		var height = -((Protein.STICKHEIGHT / 2) + 3);
-		if (radius < 5){
-			height = -23 + radius;
+		if (radius < 13){
+			height = -26 + radius;
 		}
 		return "M " + x1 + ",0 "
 			+ 'Q ' + x1 + "," + height 
@@ -1033,9 +1002,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 
 Protein.prototype.removePeptides = function() {
 	if (this.form === 1) {
-		//~ console.log("should remove");
 		if (this.peptides.parentNode == this.rectDomains){
-		//~ console.log("should remove2");
 			this.xlv.emptyElement(this.peptides);
 		}
 	}
@@ -1047,11 +1014,6 @@ Protein.prototype.getResXwithStickZoom = function(r) {
 
 //calculate the  coordinates of a residue (relative to this.xlv.container)
 Protein.prototype.getResidueCoordinates = function(r) {
-    //~ if (Protein.UNITS_PER_RESIDUE === undefined)
-        //~ alert("Error: Protein.UNITS_PER_RESIDUE is undefined");
-    //~ if (r === undefined)
-        //~ alert("Error: residue number is undefined");
-        
     //~ var x = this.getResXwithStickZoom(r) * this.xlv.z;
     var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.xlv.z;
     var y = 0;
@@ -1063,14 +1025,6 @@ Protein.prototype.getResidueCoordinates = function(r) {
             x = l * Math.cos(rotRad + a);
             y = l * Math.sin(rotRad + a);
         }        
-        //~ //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		 //~ if (this.rotation !== 0) {
-			 //~ var radians = (this.rotation / 360) * Math.PI * 2;
-		//~ // return {
-			//~ x = (x * Math.cos(radians));
-			//~ y = (x * Math.sin(radians));
-		//~ // };
-		 //~ }
     }
     x = x + this.x;
     y = y + this.y;
