@@ -57,7 +57,7 @@ ProteinLink.prototype.initSVG = function() {
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
-    this.line.setAttribute("stroke-width", xiNET.linkWidth);
+    this.line.setAttribute("stroke-width", 1);
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
@@ -378,11 +378,11 @@ ProteinLink.prototype.check = function() {
 			if (this.intra) {
 				if (this.hd) {
 					this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
-					this.line.setAttribute("stroke-width", "2");			
+					this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
 				}
 				else {
 					this.line.setAttribute("stroke", "black");	
-					this.line.setAttribute("stroke-width", "1");			
+					this.line.setAttribute("stroke-width", 1);			
 				}
 			}
 			this.show();
@@ -425,7 +425,7 @@ ProteinLink.prototype.dashedLine = function(dash) {
 };
 ProteinLink.prototype.show = function() {
     if (this.xlv.initComplete) {
-        // TODO: check how some of this compares to whats in Refresh.js, scale()
+        // TODO?: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
             //~ if (typeof this.line === 'undefined') {
@@ -440,11 +440,15 @@ ProteinLink.prototype.show = function() {
                         + " scale(" + (this.xlv.z) + ")");
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
+				this.line.setAttribute("transform", "translate(" + this.fromProtein.x
+						+ " " + this.fromProtein.y + ")" + " scale(" + (this.xlv.z) + ")");
+				this.highlightLine.setAttribute("transform", "translate(" + this.fromProtein.x
+						+ " " + this.fromProtein.y + ")" + " scale(" + (this.xlv.z) + ")");
 
-                this.fromProtein.lowerGroup.appendChild(this.highlightLine);
-                this.fromProtein.lowerGroup.appendChild(this.line);
-                //~ this.fromProtein.upperGroup.appendChild(this.fromProtein.blob);
-                //~ this.fromProtein.upperGroup.appendChild(this.fromProtein.circDomains);
+                //~ this.fromProtein.lowerGroup.appendChild(this.highlightLine);
+                //~ this.fromProtein.lowerGroup.appendChild(this.line);
+                this.xlv.highlights.appendChild(this.highlightLine);
+                this.xlv.p_pLinks.appendChild(this.line);
             }
             else {
                 this.line.setAttribute("stroke-width", this.xlv.z * 1);
@@ -475,8 +479,8 @@ ProteinLink.prototype.hide = function() {
             if (ProteinLink.maxNoResidueLinks > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.fromProtein.lowerGroup.removeChild(this.highlightLine);
-            this.fromProtein.lowerGroup.removeChild(this.line);
+            this.xlv.highlights.removeChild(this.highlightLine);
+            this.xlv.p_pLinks.removeChild(this.line);
         } else {
             if (ProteinLink.maxNoResidueLinks > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);

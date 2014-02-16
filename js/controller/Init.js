@@ -11,6 +11,7 @@ xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
 xiNET.linkWidth = 1.2;// default line width
+xiNET.homodimerLinkWidth = 2;// default line width
 
 // highlight and selection colours are global
 // (because all instances of xiNET should use same colours for this)

@@ -33,6 +33,8 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     this.dashed = false;
     
     this.curveMidX = null; // used by self links
+    
+    //~ this.initSVG();
 }
 
 ResidueLink.prototype.initSVG = function() {
@@ -296,7 +298,7 @@ ResidueLink.prototype.check = function(filter) {
 			if (this.hd === true) {
 				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 				this.line.setAttribute("transform", "scale(1, -1)");			
-				this.line.setAttribute("stroke-width", "2");			
+				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
 				this.highlightLine.setAttribute("transform", "scale(1, -1)");			
 			}
 			else {
@@ -341,8 +343,8 @@ ResidueLink.prototype.show = function() {
                 this.initSVG();
             }
             if (this.intra) {
-                this.line.setAttribute("stroke-width", xiNET.linkWidth); //this.xlv.z*
-                //                this.highlightLine.setAttribute("stroke-width", 10);
+                this.line.setAttribute("stroke-width", xiNET.linkWidth);
+                this.line.setAttribute("d", this.proteinLink.fromProtein.getResidueLinkPath(this));
                 this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
                 this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
             }

@@ -370,6 +370,10 @@ Protein.prototype.setPosition = function(x, y) {
 				this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
 						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
 			}
+				this.internalLink.line.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
 		}
 	}
 };
