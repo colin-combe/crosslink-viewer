@@ -941,15 +941,19 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
 		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 		//~ return pathAtt;
-		var height = 28;
+		var height = 26;
 		var radius = 7;
-			return "M " + x1 + ",0 "
-			+ 'Q ' + x1 + "," + height 
-					+ ' ' + x1 + "," + height
-			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ (x1 - radius) + "," + (height - (radius))
-			+ ' Q '+ (x1 - radius) + "," + (height - (radius)) 
-				+ ' ' + (x1 - radius) + "," + (height - (radius));
+		//hacky...
+		residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+		
+		var p1 = [x1, height];
+		var p3 = [x1, 18];
+		var p2 = Protein.rotatePointAboutPoint(p1, p3, 60);
+		
+		return "M " + x1 + ",0 "
+			+ "L " + p1[0] + "," + p1[1] 
+			+ " L " +  p2[0] + "," + p2[1]
+			+ ' L ' + p3[0] + "," + p3[1];
 	}
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);

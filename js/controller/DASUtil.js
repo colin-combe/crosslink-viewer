@@ -1,11 +1,11 @@
 xiNET.DASUtil = function(xlvController) {
     this.xlv = xlvController;
     this.dasServers = [
-        {
-            "name": "SuperFamily 1.75",
-            "url": "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features"
-        }
-        ,
+        //~ {
+            //~ "name": "SuperFamily 1.75",
+            //~ "url": "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features"
+        //~ }
+        //~ ,
         {
             "name": "UniProt",
             "url": "http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/features"
@@ -236,7 +236,7 @@ Protein.prototype.processDAS = function(serverName, das) {
                                 //for InterPro and Pfam swap category and method
                                 addPositionalFeature(method);
                             }
-                        }
+                        } 
                         else if (serverName === 'InterPro') {
                             if (
                                     method === 'GENE3D'
@@ -328,9 +328,9 @@ Protein.prototype.processDAS = function(serverName, das) {
             }
             this.processedDAS.set(serverName, processed);
             //temp
-            if (serverName === 'SuperFamily 1.75' && processed.positional) {
+            if (serverName === 'UniProt' && processed.positional) {
                 if (this.customAnnotations === undefined || this.customAnnotations === null) {
-                    this.setPositionalFeatures(processed.positional.get('miscellaneous'));
+                    this.setPositionalFeatures(processed.positional.get('Region'));
                 }
             }
         }
