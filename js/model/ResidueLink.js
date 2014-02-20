@@ -317,7 +317,7 @@ ResidueLink.prototype.check = function(filter) {
 };
 
 ResidueLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line !== 'undefined') {
+    if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.toResidue))) {
         if (dash) {// && !this.dashed){
             if (this.intra) {
                 this.dashed = true;

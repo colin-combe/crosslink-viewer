@@ -617,8 +617,8 @@ Protein.prototype.toBlob = function(svgP) {
 };
 
 Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
-   this.busy = true;
-	 //this.mouseoverControls.remove();
+	this.busy = true;
+	//this.mouseoverControls.remove();
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
@@ -660,9 +660,15 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
 			if (residueLink.intra === true && residueLink.shown) {
-						d3.select(residueLink.line).attr("d",this.getResidueLinkPath(residueLink));
-						d3.select(residueLink.line).transition().attr("d",this.getAggregateSelfLinkPath())
+						var selectLine = d3.select(residueLink.line);
+						if (isNaN(parseFloat(residueLink.toResidue))) {
+							selectLine.attr("fill", "none");
+							selectLine.attr("d", "M 0,0 L 0,0");
+						} else {
+							selectLine.attr("d",this.getResidueLinkPath(residueLink));
+							selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
 							.duration(Protein.transitionTime);					
+						}
 			}
 		}
 	}	
@@ -943,9 +949,9 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		//~ return pathAtt;
 		var height = 26;
 		var radius = 7;
-		//hacky...
-		residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
-		
+		if (residueLink.ambig === false){
+			residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+		}
 		var p1 = [x1, height];
 		var p3 = [x1, 18];
 		var p2 = Protein.rotatePointAboutPoint(p1, p3, 60);
