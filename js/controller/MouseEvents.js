@@ -375,11 +375,26 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
         top += element.offsetTop  || 0;
         left += element.offsetLeft || 0;
         element = element.offsetParent;
-    } while(element);
+   } while(element);
+	top += getScrollTop();
     p.x = evt.pageX - left;
     p.y = evt.pageY - top;
     return p;
 };
+
+
+function getScrollTop(){
+    if(typeof pageYOffset!= 'undefined'){
+        //most browsers except IE before #9
+        return pageYOffset;
+    }
+    else{
+        var B= document.body; //IE 'quirks'
+        var D= document.documentElement; //IE with doctype
+        D= (D.clientHeight)? D: B;
+        return D.scrollTop;
+    }
+}
 
 // transform the mouse-position into a position on the svg
 xiNET.Controller.prototype.mouseToSVG = function(x, y) {
