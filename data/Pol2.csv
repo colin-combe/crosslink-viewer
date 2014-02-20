@@ -1,4 +1,4 @@
-Score,Protein1,Protein2,Residue1,Residue2
+Score,Protein1,Protein2,Position1,Position2
 13.0693503606,sp|P08518|Rpb2,sp|P08518|Rpb2,218,228
 12.7988395582,sp|P08518|Rpb2,sp|P08518|Rpb2,218,228
 12.5775042526,sp|P08518|Rpb2,sp|P08518|Rpb2,228,507

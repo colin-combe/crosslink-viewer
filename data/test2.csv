@@ -1,5 +1,5 @@
-Protein1,Protein2,Residue1,Residue2
-A,-, 5, n/a
+Protein1,Protein2,Position1,Position2,PepSeq1,LinkPosition1,PepSeq2,LinkPosition2
+A,-, 5, n/a, DUCK, 1, ,,
 A,-,"10, 15", n/a
 B,-,5, 10
 B;C,-, 15;5, 20;10

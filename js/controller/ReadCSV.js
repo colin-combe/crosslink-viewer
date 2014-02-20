@@ -4,12 +4,20 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
     var headers = rows[0];
     console.log(headers.toString());
     
+    //~ if (headers.indexOf('Position1') === -1 && headers.indexOf('AsbPos1') !== -1){
+		//~ this.readXQuest(csvContents);
+	//~ }
+    
     var iProt1 = headers.indexOf('Protein1');
-    var iRes1 = headers.indexOf('Residue1');
+    var iRes1 = headers.indexOf('Position1');
     var iProt2 = headers.indexOf('Protein2');
-    var iRes2 = headers.indexOf('Residue2');
+    var iRes2 = headers.indexOf('Position2');
     var iScore = headers.indexOf('Score');    
     var iId = headers.indexOf('Id');
+    var iLinkPosition1 = headers.indexOf('LinkPosition1');
+    var iPepSeq1 = headers.indexOf('PepSeq1');
+    var iLinkPosition2 = headers.indexOf('LinkPosition2');
+    var iPepSeq2 = headers.indexOf('PepSeq2');
     
     //missing Protein column
     if (iProt1 === -1){
@@ -25,7 +33,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 		// we could try a different sometimes used column name
 		iRes1 = headers.indexOf('AbsPos1');
 		if (iRes1 === -1){
-			alert("Failed to read column 'Residue1' from CSV file");
+			alert("Failed to read column 'Positon1' from CSV file");
 			return;
 		}
 	}
@@ -33,7 +41,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 		// we could try a different sometimes used column name
 		iRes2 = headers.indexOf('AbsPos2');
 		if (iRes2 === -1){
-			alert("Failed to read column 'Residue1' from CSV file");
+			alert("Failed to read column 'Position2' from CSV file");
 			return;
 		}
 	}
@@ -159,20 +167,21 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 					linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
 					var peptidePositions1 = rows[row][iRes1].toString().split(/[;,]/);
 					for (var pp = 0; pp < peptidePositions1.length; pp++){
-						peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1;
+						peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1 + 1;
 					}
 					var peptidePositions2 = rows[row][iRes2].toString().split(/[;,]/);
 					for (pp = 0; pp < peptidePositions2.length; pp++){
-						peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2;
+						peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2 + 1;
 					}
 					
 					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
 									prot2, peptidePositions2.join(';'), 
-									id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
+									row + 1, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
 				} else {
-					xlv.addMatch(prot1, rows[row][iRes1], 
-									prot2, rows[row][iRes2], 
-									id, score);
+					var m = rows[row];
+					xlv.addMatch(prot1, m[iRes1], prot2, m[iRes2], id, score,
+						m[iLinkPosition1], m[iLinkPosition2],
+						m[iPepSeq1],m[iPepSeq2]);
 				}
 		}
         //~ }

@@ -118,6 +118,9 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     this.rectDomains.setAttribute("opacity", "0");
     this.lowerGroup.appendChild(this.rectDomains);
     
+    this.peptides = document.createElementNS(xiNET.svgns, "g");
+	this.lowerGroup.appendChild(this.peptides);
+	
 	/*
      * Upper group
      * svg group for elements that appear above links
@@ -421,6 +424,7 @@ Protein.prototype.scale = function() {
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		
 		d3.select(this.outline)
 			.attr("width", protLength)
@@ -981,10 +985,6 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 
 Protein.prototype.showPeptides = function(pepBounds) {
 	if (this.form=== 1){		
-		if (typeof this.peptides === 'undefined'){
-			this.peptides = document.createElementNS(xiNET.svgns, "g");
-			this.rectDomains.appendChild(this.peptides);
-		}
 		var y = -Protein.STICKHEIGHT / 2;
 		
         var count = pepBounds.length;
@@ -996,30 +996,32 @@ Protein.prototype.showPeptides = function(pepBounds) {
             annotColouredRect.setAttribute("class", "protein");
 
             //make domain rect's
-            var annotX = ((pep[0] + 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
             var annoSize = pep[1];
-            var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;
-            annotColouredRect.setAttribute("x", annotX);
-            annotColouredRect.setAttribute("y", y);
-            annotColouredRect.setAttribute("width", annoLength);
-            annotColouredRect.setAttribute("height", yIncrement);
+            if (annoSize > 0){
+				var annotX = ((pep[0] + 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+				var annoLength = annoSize * Protein.UNITS_PER_RESIDUE;
+				annotColouredRect.setAttribute("x", annotX);
+				annotColouredRect.setAttribute("y", y);
+				annotColouredRect.setAttribute("width", annoLength);
+				annotColouredRect.setAttribute("height", yIncrement);
 
-            //style 'em
-            annotColouredRect.setAttribute("fill", xiNET.highlightColour.toRGB());
-            annotColouredRect.setAttribute("fill-opacity", "0.7");
-            
-            this.peptides.appendChild(annotColouredRect);
+				//style 'em
+				annotColouredRect.setAttribute("fill", xiNET.highlightColour.toRGB());
+				annotColouredRect.setAttribute("fill-opacity", "0.7");
+				
+				this.peptides.appendChild(annotColouredRect);
+			}
             y += yIncrement;
         }
    }		
 }
 
 Protein.prototype.removePeptides = function() {
-	if (this.form === 1) {
-		if (this.peptides.parentNode == this.rectDomains){
+	//~ if (this.form === 1) {
+		//~ if (this.peptides.parentNode == this.rectDomains){
 			this.xlv.emptyElement(this.peptides);
-		}
-	}
+		//~ }
+	//~ }
 }
 
 Protein.prototype.getResXwithStickZoom = function(r) {

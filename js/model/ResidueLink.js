@@ -107,7 +107,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
         if (show) {
 			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
-            if (this.xlv.pepSeqFound){
+            //~ if (this.xlv.pepSeqFound){
 				var fromPeptides = [], toPeptides = [];
 				var filteredMatches = this.getFilteredMatches();
 				var fmc = filteredMatches.length;
@@ -119,24 +119,26 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 						if (resLink == this){
 							var endsSwitched = match.residueLinks[rl][1];
 							if (endsSwitched === false){
-								var fromPepStart = this.fromResidue - match.link1_pos; 
-								var fromPepEnd = match.pep1_seq.length; 
-								var toPepStart = this.toResidue - match.link2_pos; 
-								var toPepEnd = match.pep2_seq.length;
+								var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
+								var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
+								var toPepStart = (this.toResidue - match.linkPos2); 
+								var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
 							} else {
-								var fromPepStart = this.fromResidue - match.link2_pos; 
-								var fromPepEnd = match.pep2_seq.length; 
-								var toPepStart = this.toResidue - match.link1_pos; 
-								var toPepEnd = match.pep1_seq.length;
+								var fromPepStart = (this.fromResidue - match.linkPos2); 
+								var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
+								var toPepStart = (this.toResidue - match.linkPos1); 
+								var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
 							} 
-							fromPeptides.push([fromPepStart, fromPepEnd]);
-							toPeptides.push([toPepStart, toPepEnd]);
+							fromPeptides.push([fromPepStart, fromPepLength]);
+							//~ if (!isNaN(parseFloat(this.toResidue))){
+								toPeptides.push([toPepStart, toPepLength]);
+							//~ }
 						}	
 					}
 				}
 				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
 				this.proteinLink.toProtein.showPeptides(toPeptides);  
-			}
+			//~ }
 			
         } else {
 			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
@@ -219,7 +221,7 @@ ResidueLink.prototype.showID = function() {
 			linkInfo += ":</p>";
 		}
 		
-		var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
+		var scoresTable = "<table><tr><th>Score</th><th>Id</th>";
 		if (this.xlv.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}

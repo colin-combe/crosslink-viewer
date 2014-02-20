@@ -8,7 +8,7 @@
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         id, score, xlvController, 
         //the following attributes are optional
-        linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected){
+        linkPos1, linkPos2, pepSeq1, pepSeq2, autovalidated, validated, rejected){
 				
     this.xlv = xlvController;
     this.residueLinks = new Array();
@@ -46,17 +46,17 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		//}
 	}
 	
-	if (typeof pep1_seq !== 'undefined'){
-		if (pep1_seq !== '' && pep1_seq !== null){
-			this.pep1_seq = pep1_seq.replace(/[^A-Z]/g, '');	
-			this.link1_pos = linkPos1;	
+	if (typeof pepSeq1 !== 'undefined'){
+		if (pepSeq1 !== '' && pepSeq1 !== null){
+			this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
+			this.linkPos1 = parseInt(linkPos1);	
 			this.xlv.pepSeqFound = true;
 		}
 	}
-	if (typeof pep2_seq !== 'undefined'){
-		if (pep2_seq !== '' && pep2_seq !== null){
-			this.pep2_seq = pep2_seq.replace(/[^A-Z]/g, '');;	
-			this.link2_pos = linkPos2;
+	if (typeof pepSeq2 !== 'undefined'){
+		if (pepSeq2 !== '' && pepSeq2 !== null){
+			this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');;	
+			this.linkPos2 = parseInt(linkPos2);
 			this.xlv.pepSeqFound = true;
 		}
 	}
@@ -90,8 +90,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 
 				// * residue numbering starts at 1 *
 				res1 = (pep1_positions[i] * 1);
-				if (typeof linkPos1 !== 'undefined') {
-					res1 += linkPos1;
+				if (typeof this.linkPos1 !== 'undefined') {
+					res1 += this.linkPos1 - 1;
 				}
 				
 				this.associateWithLink(p1ID, p2ID, res1, res2);		
@@ -117,11 +117,11 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				// * residue numbering starts at 1 *
 				res1 = (pep1_positions[i] * 1);
 				res2 = (pep2_positions[i] * 1);
-				if (typeof linkPos1 !== 'undefined') {
-					res1 += linkPos1;
+				if (typeof this.linkPos1 !== 'undefined') {
+					res1 += this.linkPos1 - 1;
 				}
-				if (typeof linkPos2 !== 'undefined') {
-					res2 += linkPos2;
+				if (typeof this.linkPos2 !== 'undefined') {
+					res2 += this.linkPos2 - 1;
 				}
 				this.associateWithLink(p1ID, p2ID, res1, res2);				
 			}			
@@ -146,11 +146,11 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				// * residue numbering starts at 1 *
 				res1 = (pep1_positions[i] * 1);
 				res2 = (pep2_positions[j] * 1);
-				if (typeof linkPos1 !== 'undefined') {
-					res1 += linkPos1;
+				if (typeof this.linkPos1 !== 'undefined') {
+					res1 += this.linkPos1 - 1;
 				}
-				if (typeof linkPos2 !== 'undefined') {
-					res2 += linkPos2;
+				if (typeof this.linkPos2 !== 'undefined') {
+					res2 += this.linkPos2 - 1;
 				}
 				
 				this.associateWithLink(p1ID, p2ID, res1, res2);			
@@ -304,7 +304,7 @@ Match.prototype.isAmbig = function() {
 }
 
 Match.prototype.toTableRow = function() {
-   var htmlTableRow = "<tr><td><p>" + //<td><p>" + this.id+ "</p></td>
+   var htmlTableRow = "<tr><td><p>" + this.id+ "</p></td>" +
 			((typeof this.score !== 'undefined')? this.score.toFixed(2) : 'undefined')
 			+ "</p></td>";
 			if (this.xlv.autoValidatedFound === true){
@@ -316,13 +316,13 @@ Match.prototype.toTableRow = function() {
 					+ "</p></td>";
 			}
 			if (this.xlv.pepSeqFound === true){
-				htmlTableRow += "<td><p>" + this.pep1_seq
+				htmlTableRow += "<td><p>" + this.pepSeq1
 					+ "</p></td>";
-				htmlTableRow += "<td><p>" + this.link1_pos
+				htmlTableRow += "<td><p>" + this.linkPos1
 					+ "</p></td>";
-				htmlTableRow += "<td><p>" + this.pep2_seq
+				htmlTableRow += "<td><p>" + this.pepSeq2
 					+ "</p></td>";
-				htmlTableRow += "<td><p>" + this.link2_pos
+				htmlTableRow += "<td><p>" + this.linkPos2
 					+ "</p></td>";			
 			}
 			htmlTableRow += "</tr>";

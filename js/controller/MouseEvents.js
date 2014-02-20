@@ -376,6 +376,7 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
         left += element.offsetLeft || 0;
         element = element.offsetParent;
    } while(element);
+   //TODO: should do equivalent for horizontal scroll also
 	top += getScrollTop();
     p.x = evt.pageX - left;
     p.y = evt.pageY - top;
