@@ -1,11 +1,12 @@
-Protein1,Protein2,Position1,Position2,PepSeq1,LinkPosition1,PepSeq2,LinkPosition2
-A, n/a, 26, n/a
-A, n/a, 2, n/a, HIKER, 3, ,,
-"A;A", n/a,"10, 17", n/a, "SKIER", 2
-B-1,n/a,2, 2, KAYAKER, 1, KAYAKER, 5 
-B-1;B-2,n/a, 12;13,12;13 , LOOKALIKE, 4, , 8 
-D, E, 5, 10 
-D, D, 5, 15
-E, E, 15, 15
-D, E;E, 20, 20;25
-D;E,D;E,20;25, 30;35
+"Protein1","Position1","LinkPosition1","PepSeq1","Protein2","Position2","LinkPosition2","PepSeq2"
+"A",2,3," HIKER"," n/a"," n/a",," "
+"A;A","7,14",2,"SKIER"," n/a"," n/a",,
+"A",20,,," n/a"," n/a",,
+"B-1",2,1," KAYAKER","n/a",2,5,
+"B-1;B-2"," 12;14",4," LOOKALIKE","n/a","12;14 ",8," "
+"B-2",5,," ","n/a",8,,
+"C-1",2,1," KNITTER"," C-2",2,3,"  BIKER"
+"C-1",9,4," BEAKER"," C-1",15,4,"HACKER"
+"C-1;C-2","21;24",3,"BAKER","C-1;C-2"," 28;31",2,"SKIDIVER"
+"C-2",7,4,"BOOKMARKER","C-2",14,8,"KERPLUNKER"
+"C-2",40,,," C-2",40,,

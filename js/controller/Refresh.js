@@ -29,7 +29,7 @@ xiNET.Controller.prototype.scale = function() {
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var protLink = links[l];
-            if (protLink.fromProtein !== protLink.toProtein) {
+            if (protLink.fromProtein !== protLink.toProtein && protLink.toProtein !== null) {
                 if (!protLink.fromProtein.isParked && !protLink.toProtein.isParked) {
                     if (protLink.fromProtein.form === 0 && protLink.toProtein.form === 0) {
                         protLink.line.setAttribute("stroke-width", this.z * xiNET.linkWidth);

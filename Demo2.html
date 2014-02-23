@@ -128,6 +128,15 @@
 
 		<script type="text/javascript">
                 //<![CDATA[
+                
+                            
+						document.onkeypress = function (e) {
+									//~ //e = e || window.event;
+									//~ //alert(e.keyCode);
+									xlv.exportSVG('networkSVG');
+						};
+                                
+                                
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
