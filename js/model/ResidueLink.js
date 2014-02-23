@@ -39,16 +39,16 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
 
 ResidueLink.prototype.initSVG = function() {
     if (typeof this.line === 'undefined') {
-        if (!this.intra) {
+        if (this.intra || this.proteinLink.toProtein === null) {
+            this.line = document.createElementNS(xiNET.svgns, "path");
+            this.line.setAttribute('stroke', xiNET.defaultSelfLinkColour.toRGB());
+            this.highlightLine = document.createElementNS(xiNET.svgns, "path");
+        } else {
             this.line = document.createElementNS(xiNET.svgns, "line");
             this.line.setAttribute("stroke", xiNET.defaultInterLinkColour.toRGB());
             this.line.setAttribute("stroke-linecap", "round");
             this.highlightLine = document.createElementNS(xiNET.svgns, "line");
             this.highlightLine.setAttribute("stroke-linecap", "round");
-        } else {
-            this.line = document.createElementNS(xiNET.svgns, "path");
-            this.line.setAttribute('stroke', xiNET.defaultSelfLinkColour.toRGB());
-            this.highlightLine = document.createElementNS(xiNET.svgns, "path");
         }
 
         this.line.setAttribute("class", "link");
@@ -107,48 +107,45 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
         if (show) {
 			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
-            //~ if (this.xlv.pepSeqFound){
-				var fromPeptides = [], toPeptides = [];
-				var filteredMatches = this.getFilteredMatches();
-				var fmc = filteredMatches.length;
-				for (var m = 0; m < fmc; m++) {
-					var match = this.matches[m];
-					var rc = match.residueLinks.length;
-					for (var rl = 0; rl < rc; rl++) {
-						var resLink = match.residueLinks[rl][0];	
-						if (resLink == this){
-							var endsSwitched = match.residueLinks[rl][1];
-							if (endsSwitched === false){
-								var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
-								var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
-								var toPepStart = (this.toResidue - match.linkPos2); 
-								var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
-							} else {
-								var fromPepStart = (this.fromResidue - match.linkPos2); 
-								var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
-								var toPepStart = (this.toResidue - match.linkPos1); 
-								var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
-							} 
-							fromPeptides.push([fromPepStart, fromPepLength]);
-							//~ if (!isNaN(parseFloat(this.toResidue))){
-								toPeptides.push([toPepStart, toPepLength]);
-							//~ }
-						}	
-					}
+			var fromPeptides = [], toPeptides = [];
+			var filteredMatches = this.getFilteredMatches();
+			var fmc = filteredMatches.length;
+			for (var m = 0; m < fmc; m++) {
+				var match = this.matches[m];
+				var rc = match.residueLinks.length;
+				for (var rl = 0; rl < rc; rl++) {
+					var resLink = match.residueLinks[rl][0];	
+					if (resLink == this){
+						var endsSwitched = match.residueLinks[rl][1];
+						if (endsSwitched === false){
+							var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
+							var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
+							var toPepStart = (this.toResidue - match.linkPos2); 
+							var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
+						} else {
+							var fromPepStart = (this.fromResidue - match.linkPos2); 
+							var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
+							var toPepStart = (this.toResidue - match.linkPos1); 
+							var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
+						} 
+						fromPeptides.push([fromPepStart, fromPepLength]);
+						toPeptides.push([toPepStart, toPepLength]);
+					}	
 				}
-				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
+			}
+			this.proteinLink.fromProtein.showPeptides(fromPeptides);  
+			if (this.proteinLink.toProtein !== null) {
 				this.proteinLink.toProtein.showPeptides(toPeptides);  
-			//~ }
-			
+			}			
         } else {
 			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 			if (this.isSelected == false) {
 				this.highlightLine.setAttribute("stroke-opacity", "0");
 			}
-            if (this.xlv.pepSeqFound){
-				this.proteinLink.fromProtein.removePeptides();  
-				this.proteinLink.toProtein.removePeptides();  			
-			}
+           	this.proteinLink.fromProtein.removePeptides();  
+			if (this.proteinLink.toProtein !== null) {
+					this.proteinLink.toProtein.removePeptides();  	
+			}		
         }
     }
     if (andAlternatives && this.ambig) {
@@ -209,7 +206,7 @@ ResidueLink.prototype.showID = function() {
 
 		var linkInfo = "<h5>" + fromProt.name + " [" + fromProt.id
 			+ "], residue " + this.fromResidue + " <br>to<br> "
-			+ toProt.name + " [" + toProt.id
+			+ ((toProt)?toProt.name:"null") + " [" + ((toProt)?toProt.id:"")
 			+ "], residue " + this.toResidue + "</h5>";
         
         var matches = this.getFilteredMatches();
@@ -221,19 +218,17 @@ ResidueLink.prototype.showID = function() {
 			linkInfo += ":</p>";
 		}
 		
-		var scoresTable = "<table><tr><th>Score</th><th>Id</th>";
+		var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>";
 		if (this.xlv.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}
 		if (this.xlv.manualValidatedFound === true){
 			scoresTable += "<th>Manual</th>";
 		}
-		if (this.xlv.pepSeqFound === true){
-			scoresTable += "<th>Pep Seq.1</th>";
-			scoresTable += "<th>Link Pos.1</th>";
-			scoresTable += "<th>Pep Seq.2</th>";
-			scoresTable += "<th>Link Pos.2</th>";
-		}
+		scoresTable += "<th>Pep Seq.1</th>";
+		scoresTable += "<th>Link Pos.1</th>";
+		scoresTable += "<th>Pep Seq.2</th>";
+		scoresTable += "<th>Link Pos.2</th>";
 		scoresTable += "</tr>";
 		for (var j = 0; j < c; j++) {
 			scoresTable += matches[j].toTableRow();
@@ -288,7 +283,8 @@ ResidueLink.prototype.check = function(filter) {
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
         this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
-                    + "-"  + this.proteinLink.toProtein.labelText + '_' + this.toResidue + ' (' + countFilteredMatches;
+                    + "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null') 
+                    + '_' + this.toResidue + ' (' + countFilteredMatches;
         if (countFilteredMatches == 1) {
             this.tooltip += ' match)';
         } else {
@@ -344,7 +340,7 @@ ResidueLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            if (this.intra) {
+            if (this.intra || this.proteinLink.toProtein === null) {
                 this.line.setAttribute("stroke-width", xiNET.linkWidth);
                 this.line.setAttribute("d", this.proteinLink.fromProtein.getResidueLinkPath(this));
                 this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
@@ -366,7 +362,7 @@ ResidueLink.prototype.hide = function() {
     if (this.xlv.initComplete) {
         if (this.shown) {
             this.shown = false;
-            if (this.intra) {
+            if (this.intra || this.proteinLink.toProtein === null) {
                 this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
                 this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
             }
@@ -425,7 +421,7 @@ ResidueLink.prototype.setLineCoord = function(from, coord) {
     }
 };
 
-// used by hover highlight
+// used by hover highlight?
 ResidueLink.prototype.leastAmbiguousMatches = function() {// yes: plural
     //var leastAmbigMatches
     };

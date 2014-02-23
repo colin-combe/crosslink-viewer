@@ -133,8 +133,8 @@ xiNET.Controller.prototype.autoLayout = function() {
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
-                    this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
-                    p.setAllLineCoordinates();//TODO: check this is needed
+                    //~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
+                    p.setAllLineCoordinates();
                 }
             }
         }

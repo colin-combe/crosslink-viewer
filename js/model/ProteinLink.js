@@ -261,12 +261,10 @@ ProteinLink.prototype.showID = function() {
 			if (this.xlv.manualValidatedFound === true){
 				scoresTable += "<th>Manual</th>";
 			}
-			if (this.xlv.pepSeqFound === true){
-				scoresTable += "<th>Pep Seq.1</th>";
-				scoresTable += "<th>Link Pos.1</th>";
-				scoresTable += "<th>Pep Seq.2</th>";
-				scoresTable += "<th>Link Pos.2</th>";
-			}
+			scoresTable += "<th>Pep Seq.1</th>";
+			scoresTable += "<th>Link Pos.1</th>";
+			scoresTable += "<th>Pep Seq.2</th>";
+			scoresTable += "<th>Link Pos.2</th>";
 			scoresTable += "</tr>";
 			for (var j = 0; j < c; j++) {
 			   scoresTable += matches[j].toTableRow();
@@ -297,12 +295,13 @@ ProteinLink.prototype.getFilteredMatches = function() {
 };
 
 ProteinLink.prototype.check = function() {
-    if (this.fromProtein.isParked || this.toProtein.isParked) {
+	//currently no represntation of monolinks at proteinLink level (hence || this.toProtein === null)
+	if (this.fromProtein.isParked || (this.toProtein !== null && this.toProtein.isParked)) {
         this.hide();
         return false;
     }
     if (this.xlv.intraHidden && this.intra) {
-        if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
+        if (this.fromProtein.form === 0) {
             this.hide();
         } else {
             var resLinks = this.residueLinks.values();
@@ -314,7 +313,7 @@ ProteinLink.prototype.check = function() {
         return false;
     }
     if (this.hidden) {
-        if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
+        if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
             this.hide();
         } else {
             var resLinks = this.residueLinks.values();
@@ -328,7 +327,7 @@ ProteinLink.prototype.check = function() {
 	var resLinks = this.residueLinks.values();
 	var resLinkCount = resLinks.length;
 	this.hd = false;
-	if (this.fromProtein.form === 0 && this.toProtein.form === 0) {
+	if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
 
 		this.ambig = true;
 		var filteredResLinks = new Array();
@@ -394,15 +393,17 @@ ProteinLink.prototype.check = function() {
 		}
 	}
 	else {
-		var showedResResLink = false;
-		//at least one end was in stick form
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			if (resLinks[rl].check() === true) {
-				showedResResLink = true;
+		if (!(this.toProtein === null && this.fromProtein.form === 0)){
+			var showedResResLink = false;
+			//at least one end was in stick form
+			for (var rl = 0; rl < resLinkCount; rl++) {
+				if (resLinks[rl].check() === true) {
+					showedResResLink = true;
+				}
 			}
+			//fix this? - always returning true if one end is stick
+			return showedResResLink;
 		}
-		//fix this? - always returning true if one end is stick
-		return showedResResLink;
 	}
 };
 ProteinLink.prototype.dashedLine = function(dash) {

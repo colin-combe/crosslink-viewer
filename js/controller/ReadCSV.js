@@ -4,10 +4,6 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
     var headers = rows[0];
     console.log(headers.toString());
     
-    //~ if (headers.indexOf('Position1') === -1 && headers.indexOf('AsbPos1') !== -1){
-		//~ this.readXQuest(csvContents);
-	//~ }
-    
     var iProt1 = headers.indexOf('Protein1');
     var iRes1 = headers.indexOf('Position1');
     var iProt2 = headers.indexOf('Protein2');
@@ -56,7 +52,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 	if (this.proteins.keys().length === 0) {
 		//No protein data. We will need to look up accession numbers to get sequences.
 		
-		//We are likely going to encounter things like proteins with 
+		//We are going to encounter things like proteins with 
 		//differnt ids/names but the same accession number.		
 		var accLookupMap = d3.map();
 		//The following server is not returning results for protein isoforms.
@@ -76,7 +72,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
             var accArray = prots.split(/[;,]/);
             for (var i = 0; i < accArray.length; i++) {
 				var id = accArray[i].trim();
-				if (id !== '-'){
+				if (id.trim() !== '-' && id.trim() !== 'n/a'){
 					var acc, name;
 					if (accArray[i].indexOf('|') === -1) {
 						acc = accArray[i].trim();
@@ -144,11 +140,6 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 		for (var row = 1; row < countRows; row++) {
 			prot1 = rows[row][iProt1];
 			prot2 = rows[row][iProt2];
-			//~ //ignore mathces where protien name continas string "reverse" or "decoy" 
-			//~ if (prot1.toLowerCase().indexOf("reverse") === -1 
-				//~ && prot2.toLowerCase().indexOf("reverse") === -1
-				//~ && prot1.toLowerCase().indexOf("decoy") === -1 
-				//~ && prot2.toLowerCase().indexOf("decoy") === -1) {
 				if (iId !== -1){
 					id = rows[row][iId];
 				}
@@ -184,12 +175,11 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 						m[iPepSeq1],m[iPepSeq2]);
 				}
 		}
-        //~ }
 		var protCount = xlv.proteins.values().length;
 		var prots = xlv.proteins.values();
 		for (var p = 0; p < protCount; p++) {
 			var prot = prots[p];
-			if (/*prot.name.indexOf("DECOY_") !== -1 &&*/ prot.proteinLinks.keys().length === 0) {
+			if (prot.proteinLinks.keys().length === 0) {
 				xlv.proteins.remove(prot.id);
 			}
 		}       
@@ -200,28 +190,3 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 		new xiNET.DASUtil(xlv);
     }
 };
-//~ 
-//~ xiNET.Controller.prototype.readXQuest = function(csvContents) {
-    //~ var rows = d3.csv.parse(csvContents);
-    //~ //    var headers = rows[0];//first row is headers
-    //~ //    var iProt1 = headers.indexOf('protein1');
-    //~ //    var iRes1 = headers.indexOf('residue1');
-    //~ //    var iProt2 = headers.indexOf('protein2');
-    //~ //    var iRes2 = headers.indexOf('residue2');
-    //~ //    var iDescription = headers.indexOf('description');
-    //~ var countRows = rows.length;
-    //~ var prot1, prot2;
-    //~ for (var row = 0; row < countRows; row++) {
-		 //~ prot1 = rows[row]['Protein1'].trim();
-		 //~ prot2 = rows[row]['Protein2'].trim();
-		 //~ if (prot1.toLowerCase().indexOf("reverse") === -1 && prot2.toLowerCase().indexOf("reverse") === -1
-		 //~ && prot1.toLowerCase().indexOf("decoy") === -1 && prot2.toLowerCase().indexOf("decoy") === -1) {
-			//~ xlv.addMatch(prot1, rows[row]['AbsPos1'], prot2, rows[row]['AbsPos2'], 
-					//~ rows[row]['Id'], rows[row]['ld-Score']);
-		 //~ }
-    //~ }
-    //~ xlv.init();
-	//~ if (typeof initSlider === "function"){
-		//~ initSlider();
-	//~ }
-//~ };
