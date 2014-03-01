@@ -504,7 +504,7 @@ function getScaleGroup(protein) {
 				((res % 10 === 0) && (20 * pixPerRes > Protein.minXDist))
 				) {
 			var tx = protein.getResXwithStickZoom(res);
-			if (pixPerRes > 8) {
+			if (pixPerRes >= 8 || res !== 1) {
 				tickAt(scaleGroup, tx);
 			}
 			tick = (tick + 1) % ScaleTicksPerLabel;
