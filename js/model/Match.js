@@ -142,9 +142,9 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			pep2_positions = pep2_positions.toString().replace(/(['"])/g, '');
 			pep2_positions = pep2_positions.split(/[;,]/);	
 			var pep2PosCount = pep2_positions.length;
-			for (var i2 = 0; i2 < pep1PosCount; i2++ ){
+			for (var i2 = 0; i2 < pep2PosCount; i2++ ){
 				pep2_positions[i2] = parseInt(pep2_positions[i2]);
-				if (isNaN(pep1_positions[i2]) || pep1_positions[i2] < 1) {
+				if (isNaN(pep2_positions[i2]) || pep2_positions[i2] < 1) {
 					throw { name: 'FatalError', message: 'Absurd non-numerical position or position < 1. Match id:' + this.id  };
 				}
 			}			
@@ -227,7 +227,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 
 				// * residue numbering starts at 1 *
 				res1 = pep1_positions[i] - 0;
-				res2 = pep2_positions[j] - 0;
+				res2 = pep2_positions[j] - 0;// U R HERE
 				if (typeof this.linkPos1 != 'undefined') {
 					res1 += (this.linkPos1 - 1);
 				}
@@ -359,7 +359,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){
 		resLink.matches = new Array(0);
 	}
 	resLink.matches.push(this);
-	//TODO: do something about this  - its horrible. Perhaps really swap around alpha and beta peptides in match attributes?
+	//TODO: do something about this  - its horrible.
 	this.residueLinks.push([resLink, endsReversedInResLinkId]);	
 }
 
@@ -391,8 +391,8 @@ Match.prototype.isAmbig = function() {
 }
 
 Match.prototype.toTableRow = function() {
-   var htmlTableRow = "<tr><td><p>";// + this.id+ "</p></td>" +
-			((typeof this.score !== 'undefined')? this.score.toFixed(2) : 'undefined')
+   var htmlTableRow = "<tr><td><p>" +// + this.id+ "</p></td>" +
+			((typeof this.score !== 'undefined')? this.score.toFixed(4) : 'undefined')
 			+ "</p></td>";
 			if (this.xlv.autoValidatedFound === true){
 				htmlTableRow += "<td><p>" + this.autovalidated

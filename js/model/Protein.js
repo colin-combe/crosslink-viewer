@@ -519,11 +519,11 @@ function getScaleGroup(protein) {
 			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
 			seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
 			var seqLabel = document.createElementNS(xiNET.svgns, "text");
-			seqLabel.setAttribute('font-family', 'Arial');
-			seqLabel.setAttribute('font-size', '10');
+			seqLabel.setAttribute('font-family', "'Courier New', monospace");
+			seqLabel.setAttribute('font-size', '10px');
 			seqLabel.setAttribute("text-anchor", "middle");
 			seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
-			seqLabel.setAttribute("y", 0);
+			seqLabel.setAttribute("y", 3);
 			seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
 			seqLabelGroup.appendChild(seqLabel);
 			protein.scaleLabels.push(seqLabel);
@@ -541,7 +541,7 @@ function getScaleGroup(protein) {
 		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
 		var scaleLabel = document.createElementNS(xiNET.svgns, "text");
 		scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
-		scaleLabel.setAttribute('font-family', 'Arial');
+		scaleLabel.setAttribute('font-family', "'Courier New', monospace");
 		scaleLabel.setAttribute('font-size', '14');
 		scaleLabel.setAttribute("text-anchor", "middle");
 		scaleLabel.setAttribute("x", 0);
@@ -557,7 +557,7 @@ function getScaleGroup(protein) {
 		mayt.setAttribute("x1", tickX);
 		mayt.setAttribute("y1", 2);//(-Protein.STICKHEIGHT / 2) * 0.75);
 		mayt.setAttribute("x2", tickX);
-		mayt.setAttribute("y2", ((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
+		mayt.setAttribute("y2", 5);//((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
 		mayt.setAttribute("stroke", "black");
 		group.appendChild(mayt);
 	}
@@ -1083,19 +1083,62 @@ Protein.prototype.getResidueCoordinates = function(r) {
     //~ var x = this.getResXwithStickZoom(r) * this.xlv.z;
     var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.xlv.z;
     var y = 0;
-    if (x !== 0) {
-        var l = Math.abs(x);
-        var a = Math.acos(x / l);
-        var rotRad = (this.rotation / 360) * Math.PI * 2;
-        if (this.rotation !== 0) {
-            x = l * Math.cos(rotRad + a);
-            y = l * Math.sin(rotRad + a);
-        }        
-    }
-    x = x + this.x;
-    y = y + this.y;
+    if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8) {//if sequence shown
+		y = 5;
+	}
+
+	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],this.rotation);
+
+    x = rotated[0] + this.x;
+    y = rotated[1] + this.y;
     return [x, y];
 };
+
+Protein.rotatePointAboutPoint = function(p, o, theta) {
+	theta = (theta / 360) * Math.PI * 2;
+	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
+	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
+	return [rx, ry];
+}
+
+//~ 
+        //~ var deltaX = fMid[0] - tMid[0];
+        //~ var deltaY = fMid[1] - tMid[1];
+        //~ var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
+        //~ //todo: tidy up trig code so eveything is always in radian
+        //~ var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
+        //~ if (abmpDeg < 0) {
+            //~ abmpDeg += 360;
+        //~ }
+//~ 
+//~ //out is value we use to decide which side of bat the link glyph is drawn
+//~ //first for 'from' interactor
+        //~ var out = (abmpDeg - fromInteractor.rotation);
+        //~ if (out < 0) {
+            //~ out += 360;
+        //~ }
+        //~ var fyOffset = 10;
+        //~ if (out < 180) {
+            //~ fyOffset = -10;
+        //~ }
+        //~ var fRotRad = (this.interactorLink.fromInteractor.rotation / 360) * Math.PI * 2;
+        //~ if (out > 180) {
+            //~ fRotRad = fRotRad - Math.PI;
+        //~ }
+//~ //now for 'to' interactor
+        //~ out = (abmpDeg - this.interactorLink.toInteractor.rotation);
+        //~ if (out < 0) {
+            //~ out += 360;
+        //~ }
+        //~ var tyOffset = 10;
+        //~ if (out > 180) {
+            //~ tyOffset = -10;
+        //~ }
+        //~ var tRotRad = (toInteractor.rotation / 360) * Math.PI * 2;
+        //~ if (out < 180) {
+            //~ tRotRad = tRotRad - Math.PI;
+        //~ }
+
 
 // update all lines (e.g after a move)
 Protein.prototype.setAllLineCoordinates = function() {
@@ -1246,9 +1289,4 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
     return subgraph;
 };
 
-Protein.rotatePointAboutPoint = function(p, o, theta) {
-	theta = (theta / 360) * Math.PI * 2;
-	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
-	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
-	return [rx, ry];
-}
+
