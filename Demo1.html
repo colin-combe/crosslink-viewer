@@ -16,6 +16,8 @@
         <script type="text/javascript" src="./lib/rgbcolor.js"></script>
         <script type="text/javascript" src="./lib/prototype.js"></script>
         <script type="text/javascript" src="./lib/slider.js"></script>
+        <script type="text/javascript" src="./lib/FileSaver.js"></script>
+        <script type="text/javascript" src="./lib/Blob.js"></script>
         <!--xiNET-->
         <script type="text/javascript" src="./js/controller/Init.js"></script>
         <script type="text/javascript" src="./js/controller/MouseEvents.js"></script>
@@ -126,6 +128,15 @@
 
 		<script type="text/javascript">
                 //<![CDATA[
+                
+                
+                            
+                            document.onkeypress = function (e) {
+                                        //~ //e = e || window.event;
+                                        //~ //alert(e.keyCode);
+                                        xlv.exportSVG('networkSVG');
+                                };
+                                
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
