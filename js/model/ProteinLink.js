@@ -454,8 +454,8 @@ ProteinLink.prototype.show = function() {
             else {
                 this.line.setAttribute("stroke-width", this.xlv.z * 1);
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.fromProtein.setLineCoordinates(this);
-                this.toProtein.setLineCoordinates(this);
+                this.setLineCoordinates(this.fromProtein);
+                this.setLineCoordinates(this.toProtein);
                 if (ProteinLink.maxNoResidueLinks > 1) {
                     this.xlv.p_pLinksWide.appendChild(this.fatLine);
                 }
@@ -491,6 +491,43 @@ ProteinLink.prototype.hide = function() {
         }
     }
 };
+
+ProteinLink.prototype.setLineCoordinates = function(interactor) {
+	//a defensive check
+    if (interactor.x == null || interactor.y == null) {
+        return;
+    }
+	//if not thiser modified pep
+	if (this.getToProtein() !== null){
+		//don't waste time changing DOM if this not visible
+		if (this.shown) {
+			if (this.getFromProtein() === interactor) {
+						this.line.setAttribute("x1", interactor.x);
+						this.line.setAttribute("y1", interactor.y);
+						//                    if (moveHighlight == false){
+						this.highlightLine.setAttribute("x1", interactor.x);
+						this.highlightLine.setAttribute("y1", interactor.y);
+						//                    }
+						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
+						this.fatLine.setAttribute("x1", interactor.x);
+						this.fatLine.setAttribute("y1", interactor.y);
+			}
+			else if (this.getToProtein() === interactor) {
+						this.line.setAttribute("x2", interactor.x);
+						this.line.setAttribute("y2", interactor.y);
+						//                    if (moveHighlight == false){
+						this.highlightLine.setAttribute("x2", interactor.x);
+						this.highlightLine.setAttribute("y2", interactor.y);
+						//                    }
+						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
+						this.fatLine.setAttribute("x2", interactor.x);
+						this.fatLine.setAttribute("y2", interactor.y);
+						//                    }
+			}
+		}
+	}
+}
+
 ProteinLink.prototype.getOtherEnd = function(protein) {
     if (this.fromProtein === protein) {
         return this.toProtein;
@@ -499,6 +536,7 @@ ProteinLink.prototype.getOtherEnd = function(protein) {
         return this.fromProtein;
     }
 };
+
 ProteinLink.prototype.toJSON = function() {
     return {
         //    id : this.id,

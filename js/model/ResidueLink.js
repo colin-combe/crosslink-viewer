@@ -349,8 +349,8 @@ ResidueLink.prototype.show = function() {
             else {
                 this.line.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.proteinLink.fromProtein.setLineCoordinates(this);
-                this.proteinLink.toProtein.setLineCoordinates(this);
+                this.setLineCoordinates(this.proteinLink.fromProtein);
+                this.setLineCoordinates(this.proteinLink.toProtein);
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.res_resLinks.appendChild(this.line);
             }
@@ -374,52 +374,102 @@ ResidueLink.prototype.hide = function() {
     }
 };
 
-//~ ResidueLink.prototype.setUpCurve = function() {
-    //~ //    alert("yup, here");
-    //~ var pathAtt;
-    //~ var x1 = this.proteinLink.fromProtein.getResXwithStickZoom(this.fromResidue);
-	//~ if (isNaN(parseFloat(this.toResidue))){ //monolink
-		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
-	//~ //        this.line.setAttribute("stroke", "red");
-	//~ }
-	//~ else {
-		//~ var x2 = this.proteinLink.fromProtein.getResXwithStickZoom(this.toResidue);
-		//~ var midY = (Math.abs(x2 - x1));
-		//~ midY = midY / 2;
-		//~ this.curveMidX = x1 + ((x2 - x1) / 2);
-		//~ pathAtt = "M " + x1 + " 0 "
-		//~ + " L " + x1 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-		//~ + " A " + midY + " " + midY + "  0 1 1 "
-		//~ + x2 + " " + (-((Protein.STICKHEIGHT / 2) + 3))
-		//~ + " L " + x2 + " 0 "
-		//~ ;
-    //~ }
-//~ 
-	//~ this.line.setAttribute("d", pathAtt);
-	//~ this.highlightLine.setAttribute("d", pathAtt);
-	//~ //
-	//~ if (this.flip === true) {
-		//~ //        alert('true');
-		//~ //this.line.setAttribute("stroke", "red");
-		//~ this.line.setAttribute("transform", "scale (1 -1)");
-		//~ this.highlightLine.setAttribute("transform", "scale (1 -1)");
-	//~ }	
-//~ };
+ResidueLink.prototype.setLineCoordinates = function(interactor) {
+	//a defensive check
+    if (interactor.x == null || interactor.y == null) {
+        return;
+    }
+	//non self, not linker modified pep's links only 
+	if (this.getToProtein() !== null){
+		//don't waste time changing DOM if link not visible
+		if (this.shown) {
+			var x, y;
+			if (this.getFromProtein() === interactor) {
+				if (interactor.form === 0) {
+						x = interactor.x;
+						y = interactor.y;
+				}
+				else //if (this.form == 1)
+				{
+					var coord = this.getResidueCoordinates(this.fromResidue, interactor);
+					x = coord[0];
+					y = coord[1];
+				}
+				this.line.setAttribute("x1", x);
+				this.line.setAttribute("y1", y);
+				this.highlightLine.setAttribute("x1", x);
+				this.highlightLine.setAttribute("y1", y);				
+			}
+			else if (this.getToProtein() === interactor) {
+				if (interactor.form === 0) {
+						x = interactor.x;
+						y = interactor.y;
+				}
+				else //if (this.form == 1)
+				{
+					var coord = this.getResidueCoordinates(this.toResidue, interactor);
+					x = coord[0];
+					y = coord[1];
+				}
+				this.line.setAttribute("x2", x);
+				this.line.setAttribute("y2", y);
+				this.highlightLine.setAttribute("x2", x);
+				this.highlightLine.setAttribute("y2", y);			
+			}
+		}
+	}
+}
 
-ResidueLink.prototype.setLineCoord = function(from, coord) {
-    if (from) {
-        this.line.setAttribute("x1", coord[0]);
-        this.line.setAttribute("y1", coord[1]);
-        this.highlightLine.setAttribute("x1", coord[0]);
-        this.highlightLine.setAttribute("y1", coord[1]);
-    }
-    else {
-        this.line.setAttribute("x2", coord[0]);
-        this.line.setAttribute("y2", coord[1]);
-        this.highlightLine.setAttribute("x2", coord[0]);
-        this.highlightLine.setAttribute("y2", coord[1]);
-    }
+//calculate the  coordinates of a residue (relative to this.xlv.container)
+ResidueLink.prototype.getResidueCoordinates = function(r, interactor) {
+    var x = interactor.getResXwithStickZoom(r) * this.xlv.z;
+    //var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.xlv.z;
+    var y = 0;
+    if (Protein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
+			//~ y = 10 * this.xlv.z;
+		var from = this.getFromProtein(), to = this.getToProtein();
+		var deltaX = from.x - to.x;
+		var deltaY = from.y - to.y;
+		var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
+		//todo: tidy up trig code so eveything is always in radians?
+		var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
+		if (abmpDeg < 0) {
+			abmpDeg += 360;
+		}
+		
+		var out;//'out' is value we use to decide which side of letter the line is drawn
+		if (interactor === from) {
+				out = (abmpDeg - from.rotation);
+				if (out < 0) {
+					out += 360;
+				}
+				var fyOffset = 5;
+				if (out < 180) {
+					fyOffset = -5;
+				}
+				
+				y = fyOffset * this.xlv.z;
+		}
+		else { // interactor === to
+				out = (abmpDeg - to.rotation);
+				if (out < 0) {
+					out += 360;
+				}
+				var tyOffset = 5;
+				if (out > 180) {
+					tyOffset = -5;
+				}
+				y = tyOffset * this.xlv.z;
+		}
+	}
+
+	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],interactor.rotation);
+
+    x = rotated[0] + interactor.x;
+    y = rotated[1] + interactor.y;
+    return [x, y];
 };
+
 
 // used by hover highlight?
 ResidueLink.prototype.leastAmbiguousMatches = function() {// yes: plural

@@ -483,16 +483,8 @@ Protein.prototype.scale = function() {
 
 function getScaleGroup(protein) {
 	protein.scaleLabels = new Array();
-	//options for scale interval: 1 (special case: show sequence), 10, 100, (1000?)
-	//need to know number of pix for 1 em.
-	// calc pix per unit
 	var ScaleMajTick = 100;
-	// every ScaleMinTick paint a small tick
-	//var  ScaleMinTick 	  = 20;
-	// every ScaleTicksPerLabel "big" ticks write a label
 	var ScaleTicksPerLabel = 2; // varies with scale?
-	// we label the end - so dont write the previous label, unless it's at least ScaleMaxScaleTextDist residues away
-	//var ScaleMaxScaleTextDist = 50;
 	var pixPerRes = Protein.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
 	var scaleGroup = document.createElementNS(xiNET.svgns, "g");
 	var tick = -1;
@@ -694,7 +686,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		}
 	}	
 	
-	   //linker modified peptides
+	//linker modified peptides
 	if (this.linkerModifications != null) {
 		var mods = this.linkerModifications.residueLinks.values();
 		var iModCount = mods.length;
@@ -765,20 +757,18 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 			var c = links.length;
 			for (var l = 0; l < c; l++) {
 				var link = links[l];
-				//~ if (link.toProtein !== null) {
-					if (link.toProtein === null || (link.getFromProtein() === self && link.getToProtein().form === 0) ||
-							(link.getToProtein() === self && link.getFromProtein().form === 0) ||
-							(link.getToProtein() == link.getFromProtein()))
-					{
-						// swap links - out with the old
-						var resLinks = link.residueLinks.values();
-						var resLinkCount = resLinks.length; 
-						for (var rl = 0; rl < resLinkCount; rl++) {
-							var resLink = resLinks[rl];
-								resLink.hide();
-						}
+				if (link.toProtein === null || (link.getFromProtein() === self && link.getToProtein().form === 0) ||
+						(link.getToProtein() === self && link.getFromProtein().form === 0) ||
+						(link.getToProtein() == link.getFromProtein()))
+				{
+					// swap links - out with the old
+					var resLinks = link.residueLinks.values();
+					var resLinkCount = resLinks.length; 
+					for (var rl = 0; rl < resLinkCount; rl++) {
+						var resLink = resLinks[rl];
+							resLink.hide();
 					}
-				//~ }
+				}
 			}
 			//bring in new 
 			self.form = 0;
@@ -998,6 +988,10 @@ Protein.prototype.getAggregateSelfLinkPath = function() {
 
 Protein.prototype.getResidueLinkPath = function(residueLink) {					
 	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
+	var baseLine = 0;// http://www.youtube.com/watch?v=Bac2wHZoT2Y
+	if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8){
+		baseLine = -5;
+	}
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
 		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
 		//~ return pathAtt;
@@ -1010,7 +1004,7 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		var p3 = [x1, 18];
 		var p2 = Protein.rotatePointAboutPoint(p1, p3, 60);
 		
-		return "M " + x1 + ",0 "
+		return "M " + x1 + "," + baseLine + " "
 			+ "L " + p1[0] + "," + p1[1] 
 			+ " L " +  p2[0] + "," + p2[1]
 			+ ' L ' + p3[0] + "," + p3[1];
@@ -1023,13 +1017,17 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		if (radius < 15){
 			height = -28 + radius;
 		}
-		return "M " + x1 + ",0 "
+		if (residueLink.hd){
+			//~ alert|("hd");
+			radius = radius + 5;
+		}
+		return "M " + x1 + "," + baseLine + " "
 			+ 'Q ' + x1 + "," + height 
 					+ ' ' + x1 + "," + height
 			+ " A " + radius + "," + radius + "  0 0 1 "
 				+ x2  + "," + height
-			+ ' Q '+ x2 + ",0" 
-				+ ' ' + x2 + ",0";
+			+ ' Q '+ x2 + "," + baseLine + " " 
+				+ ' ' + x2 + "," + baseLine + " ";
 	}
 }
 
@@ -1067,32 +1065,12 @@ Protein.prototype.showPeptides = function(pepBounds) {
 }
 
 Protein.prototype.removePeptides = function() {
-	//~ if (this.form === 1) {
-		//~ if (this.peptides.parentNode == this.rectDomains){
-			this.xlv.emptyElement(this.peptides);
-		//~ }
-	//~ }
+	this.xlv.emptyElement(this.peptides);
 }
 
 Protein.prototype.getResXwithStickZoom = function(r) {
     return (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
  };
-
-//calculate the  coordinates of a residue (relative to this.xlv.container)
-Protein.prototype.getResidueCoordinates = function(r) {
-    //~ var x = this.getResXwithStickZoom(r) * this.xlv.z;
-    var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.xlv.z;
-    var y = 0;
-    if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8) {//if sequence shown
-		y = 5;
-	}
-
-	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],this.rotation);
-
-    x = rotated[0] + this.x;
-    y = rotated[1] + this.y;
-    return [x, y];
-};
 
 Protein.rotatePointAboutPoint = function(p, o, theta) {
 	theta = (theta / 360) * Math.PI * 2;
@@ -1100,45 +1078,6 @@ Protein.rotatePointAboutPoint = function(p, o, theta) {
 	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
 	return [rx, ry];
 }
-
-//~ 
-        //~ var deltaX = fMid[0] - tMid[0];
-        //~ var deltaY = fMid[1] - tMid[1];
-        //~ var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
-        //~ //todo: tidy up trig code so eveything is always in radian
-        //~ var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
-        //~ if (abmpDeg < 0) {
-            //~ abmpDeg += 360;
-        //~ }
-//~ 
-//~ //out is value we use to decide which side of bat the link glyph is drawn
-//~ //first for 'from' interactor
-        //~ var out = (abmpDeg - fromInteractor.rotation);
-        //~ if (out < 0) {
-            //~ out += 360;
-        //~ }
-        //~ var fyOffset = 10;
-        //~ if (out < 180) {
-            //~ fyOffset = -10;
-        //~ }
-        //~ var fRotRad = (this.interactorLink.fromInteractor.rotation / 360) * Math.PI * 2;
-        //~ if (out > 180) {
-            //~ fRotRad = fRotRad - Math.PI;
-        //~ }
-//~ //now for 'to' interactor
-        //~ out = (abmpDeg - this.interactorLink.toInteractor.rotation);
-        //~ if (out < 0) {
-            //~ out += 360;
-        //~ }
-        //~ var tyOffset = 10;
-        //~ if (out > 180) {
-            //~ tyOffset = -10;
-        //~ }
-        //~ var tRotRad = (toInteractor.rotation / 360) * Math.PI * 2;
-        //~ if (out < 180) {
-            //~ tRotRad = tRotRad - Math.PI;
-        //~ }
-
 
 // update all lines (e.g after a move)
 Protein.prototype.setAllLineCoordinates = function() {
@@ -1148,79 +1087,21 @@ Protein.prototype.setAllLineCoordinates = function() {
         var link = links[l];
         if (link.getToProtein() !== null && 
 			link.getFromProtein().form === 0 && link.getToProtein().form === 0) {
-            this.setLineCoordinates(link);
+             link.setLineCoordinates(this);
         }
         else {
             var resLinks = link.residueLinks.values();
             var resLinkCount = resLinks.length;
             for (var rl = 0; rl < resLinkCount; rl++) {
                 var residueLink = resLinks[rl];
-                this.setLineCoordinates(residueLink);
+                residueLink.setLineCoordinates(this);
+                var otherEnd = residueLink.proteinLink.getOtherEnd(this);
+                if (otherEnd && otherEnd.form === 1	&& otherEnd.stickZoom * Protein.UNITS_PER_RESIDUE > 8){
+					residueLink.setLineCoordinates(otherEnd);
+				}
             }
         }
     }
-};
-
-// update the links(lines) to fit to the protein - inter links only
-Protein.prototype.setLineCoordinates = function(link) {
-    //a defensive check
-    if (this.x == null || this.y == null) {
-        return;
-    }
-	//non self, not linker modified pep's links only 
-	if (link.getToProtein() !== null){
-		//don't waste time changing DOM if link not visible
-		if (link.shown) {
-			if (link.getFromProtein() === this) {
-				if (this.form === 0) {
-					if (link.getToProtein().form === 0) {
-						link.line.setAttribute("x1", this.x);
-						link.line.setAttribute("y1", this.y);
-						//                    if (moveHighlight == false){
-						link.highlightLine.setAttribute("x1", this.x);
-						link.highlightLine.setAttribute("y1", this.y);
-						//                    }
-						//                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-						link.fatLine.setAttribute("x1", this.x);
-						link.fatLine.setAttribute("y1", this.y);
-						//                    }
-					}
-					else {
-						link.setLineCoord(true, [this.x, this.y]);
-					}
-				}
-				else //if (this.form == 1)
-				{
-					var coord = this.getResidueCoordinates(link.fromResidue);
-					link.setLineCoord(true, coord);
-				}
-			}
-			else if (link.getToProtein() === this) {
-				if (this.form === 0) {
-					if (link.getFromProtein().form === 0) {
-						link.line.setAttribute("x2", this.x);
-						link.line.setAttribute("y2", this.y);
-						//                    if (moveHighlight == false){
-						link.highlightLine.setAttribute("x2", this.x);
-						link.highlightLine.setAttribute("y2", this.y);
-						//                    }
-						//                    if ( link.fatLine.getAttribute("stroke-width") > this.xlv.linkWidth){
-						link.fatLine.setAttribute("x2", this.x);
-						link.fatLine.setAttribute("y2", this.y);
-						//                    }
-					}
-					else {
-						link.setLineCoord(false, [this.x, this.y]);
-					}
-				}
-				else //if (this.form == 1)
-				{
-					var coord = this.getResidueCoordinates(link.toResidue);
-					link.setLineCoord(false, coord);
-				}
-			}
-		}
-	}
 };
 
 Protein.prototype.countExternalLinks = function() {
@@ -1251,12 +1132,8 @@ Protein.prototype.getSubgraph = function(subgraphs) {
         if (this.isParked === false) {
             this.subgraph = this.addConnectedNodes(subgraph);
         }
-        //        else {
-        //            this.subgraph = subgraph;
-        //        }
-        this.xlv.subgraphs.push(subgraph); //TODO: fix this
+        this.xlv.subgraphs.push(subgraph); 
     }
-    //    if (this.subgraph.nodes.keys().length > 1) {alert(this.subgraph.nodes.keys());}
     return this.subgraph;
 };
 
@@ -1277,8 +1154,6 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
                 if (otherEnd !== null) {
 					if (!subgraph.nodes.has(otherEnd.id)) {
 						subgraph.nodes.set(otherEnd.id, otherEnd);
-						//                  console.log(otherEnd.id);
-						//            console.log(JSON.stringify(subgraph.nodes.keys()));
 						otherEnd.subgraph = subgraph;
 						otherEnd.addConnectedNodes(subgraph);
 					}
@@ -1288,5 +1163,3 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
     }
     return subgraph;
 };
-
-

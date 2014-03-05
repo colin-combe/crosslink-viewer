@@ -76,7 +76,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}	
 	
 	if (typeof pep1_protIDs  != 'undefined' && pep1_protIDs){
-		//~ pep1_protIDs = pep1_protIDs.trim();
+		pep1_protIDs = pep1_protIDs.toString().trim();
 		if (pep1_protIDs !== '' && pep1_protIDs !== '-' && pep1_protIDs !== 'n/a'){
 			// eliminate all forms of quotation mark
 			pep1_protIDs = pep1_protIDs.toString().replace(/(['"])/g, '');
@@ -95,7 +95,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}
 
 	if (typeof pep2_protIDs  != 'undefined' && pep2_protIDs){
-		//~ pep2_protIDs = pep2_protIDs.trim();
+		pep2_protIDs = pep2_protIDs.toString().trim();
 		if (pep2_protIDs !== '' && pep2_protIDs !== '-' && pep2_protIDs !== 'n/a'){
 			// eliminate all forms of quotation mark
 			pep2_protIDs = pep2_protIDs.toString().replace(/(['"])/g, '');
@@ -114,7 +114,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}
 	
 	if (typeof pep1_positions  != 'undefined' && pep1_positions){
-		//~ pep1_positions = pep1_positions.trim();
+		pep1_positions = pep1_positions.toString().trim();
 		if (pep1_positions !== '' && pep1_positions !== '-' && pep1_positions !== 'n/a'){
 			// eliminate all forms of quotation mark
 			pep1_positions = pep1_positions.toString().replace(/(['"])/g, '');
@@ -136,7 +136,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	}
 
 	if (typeof pep2_positions  != 'undefined' && pep2_positions){
-		//~ pep2_positions = pep2_positions.trim();
+		pep2_positions = pep2_positions.toString().trim();
 		if (pep2_positions !== '' && pep2_positions !== '-' && pep2_positions !== 'n/a'){
 			// eliminate all forms of quotation mark
 			pep2_positions = pep2_positions.toString().replace(/(['"])/g, '');

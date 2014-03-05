@@ -254,12 +254,6 @@ xiNET.Controller.prototype.autoLayout = function() {
                 protein.setPosition(nx + self.layoutXOffset, ny);
                 protein.setAllLineCoordinates();
             }
-//            var forceLinks = self.force.links();
-//            for (var l = 0; l < forceLinkCount; l++) {
-//                var link = self.proteinLinks.get(forceLinks[l].id);
-//                link.fromProtein.setLineCoordinates(link);
-//                link.toProtein.setLineCoordinates(link);
-//            }
         });
         this.force.start();
     }
