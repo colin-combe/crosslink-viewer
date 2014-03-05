@@ -9,11 +9,12 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         id, score, xlvController, 
         //the following attributes are optional
         linkPos1, linkPos2, pepSeq1, pepSeq2, autovalidated, validated, rejected){
-	//TODO this.type = //mono/loop/cross-link 			
-    this.xlv = xlvController;
+	this.xlv = xlvController;
     this.residueLinks = new Array();
     this.id = id.toString().trim();
   	
+  	this.type; //0 = mono, 1 = loop, 2 = cross-link 			
+    
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     
@@ -157,6 +158,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		pep2_positions = null;
 	}
 
+	//TODO - type
+
 	// the protein IDs and residue numers we eventually want to get
 	var p1ID, p2ID, res1, res2;
 	
@@ -242,6 +245,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	
 	//identify homodimers: if peptides overlap its a homodimer
 	this.hd = false;
+	this.overlap = [];
 	//if self link
     if (p1ID === p2ID) {
 		//if unambiguous cross-link
@@ -256,14 +260,22 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				var pep2_start = pep2_positions[0];
 				var pep1_end = pep1_start  + (pep1length - 1);
 				var pep2_end = pep2_start + (pep2length - 1);
-				if ((pep1_start >= pep2_start && pep1_start <= pep2_end)
-						|| (pep2_start >= pep1_start && pep2_start <= pep1_end)) {
+				if (pep1_start >= pep2_start && pep1_start <= pep2_end){
 				   //console.log("here");
 					this.hd = true;
+					this.overlap[0] = pep1_start - 1;
+					this.overlap[1] = pep2_end;					
+				}
+				else if (pep2_start >= pep1_start && pep2_start <= pep1_end){
+					this.hd = true;
+					this.overlap[0] = pep2_start - 1;
+					this.overlap[1] = pep1_end;					
 				}
 			}
 			else if (res1 === res2) {
 				this.hd = true;
+				this.overlap[0] = res1 -1;
+				this.overlap[1] = res2;
 			}
 		}//end if self link
     }	

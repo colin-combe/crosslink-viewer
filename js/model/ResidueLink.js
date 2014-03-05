@@ -114,6 +114,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 				var match = this.matches[m];
 				var rc = match.residueLinks.length;
 				for (var rl = 0; rl < rc; rl++) {
+					//TODO - yes, fix this hack, its the 'ends switched' problem, see Match.js
 					var resLink = match.residueLinks[rl][0];	
 					if (resLink == this){
 						var endsSwitched = match.residueLinks[rl][1];
@@ -128,8 +129,10 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 							var toPepStart = (this.toResidue - match.linkPos1); 
 							var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
 						} 
-						fromPeptides.push([fromPepStart, fromPepLength]);
-						toPeptides.push([toPepStart, toPepLength]);
+						
+						fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+						toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
+						
 					}	
 				}
 			}

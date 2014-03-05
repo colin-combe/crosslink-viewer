@@ -636,6 +636,7 @@ Protein.prototype.toBlob = function(svgP) {
 
 Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
 	this.busy = true;
+	this.removePeptides();
 	//this.mouseoverControls.remove();
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
@@ -1073,10 +1074,28 @@ Protein.prototype.showPeptides = function(pepBounds) {
 
 				//style 'em
 				annotColouredRect.setAttribute("fill", xiNET.highlightColour.toRGB());
-				annotColouredRect.setAttribute("fill-opacity", "0.7");
+				//annotColouredRect.setAttribute("fill-opacity", "0.7");
 				
 				this.peptides.appendChild(annotColouredRect);
 			}
+			
+			if (pep[2]){//homodimer like
+				//~ alert("yup");
+				annotColouredRect = document.createElementNS(xiNET.svgns, "rect");
+				annotColouredRect.setAttribute("class", "protein");
+				var annotX = ((pep[2] + 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+				var annoLength = (pep[3] - pep[2]) * Protein.UNITS_PER_RESIDUE;
+				annotColouredRect.setAttribute("x", annotX);
+				annotColouredRect.setAttribute("y", y);
+				annotColouredRect.setAttribute("width", annoLength);
+				annotColouredRect.setAttribute("height", yIncrement);
+
+				//style 'em
+				annotColouredRect.setAttribute("fill", xiNET.homodimerLinkColour.toRGB());
+				annotColouredRect.setAttribute("fill-opacity", "0.5");
+				
+				this.peptides.appendChild(annotColouredRect);		}
+			
             y += yIncrement;
         }
    }		
