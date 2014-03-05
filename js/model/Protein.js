@@ -537,7 +537,7 @@ function getScaleGroup(protein) {
 		scaleLabel.setAttribute('font-size', '14');
 		scaleLabel.setAttribute("text-anchor", "middle");
 		scaleLabel.setAttribute("x", 0);
-		scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 3);
+		scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 4);
 		scaleLabel.appendChild(document.createTextNode(text));
 		scaleLabelGroup.appendChild(scaleLabel);
 		protein.scaleLabels.push(scaleLabel);
@@ -547,9 +547,9 @@ function getScaleGroup(protein) {
 	function tickAt(group, tickX) {
 		var mayt = document.createElementNS(xiNET.svgns, "line");
 		mayt.setAttribute("x1", tickX);
-		mayt.setAttribute("y1", 2);//(-Protein.STICKHEIGHT / 2) * 0.75);
+		mayt.setAttribute("y1", 5);//(-Protein.STICKHEIGHT / 2) * 0.75);
 		mayt.setAttribute("x2", tickX);
-		mayt.setAttribute("y2", 5);//((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
+		mayt.setAttribute("y2", 10);//((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
 		mayt.setAttribute("stroke", "black");
 		group.appendChild(mayt);
 	}
@@ -953,7 +953,7 @@ Protein.prototype.toStick = function() {
 		self.setRotation(rot);
 	 
 		var currentLength = lengthInterpol(cubicInOut(interp));
-		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2));
+		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Protein.UNITS_PER_RESIDUE * self.stickZoom));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setAllLineCoordinates();
 		
@@ -987,7 +987,7 @@ Protein.prototype.getAggregateSelfLinkPath = function() {
 		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
-Protein.prototype.getResidueLinkPath = function(residueLink) {					
+Protein.prototype.getResidueLinkPath = function(residueLink) {//TODO: could be tidied up				
 	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
 	var baseLine = 0;
 	if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8){
@@ -1004,11 +1004,28 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		var p1 = [x1, height];
 		var p3 = [x1, 18];
 		var p2 = Protein.rotatePointAboutPoint(p1, p3, 60);
-		
+		baseLine = baseLine * -1;
 		return "M " + x1 + "," + baseLine + " "
 			+ "L " + p1[0] + "," + p1[1] 
 			+ " L " +  p2[0] + "," + p2[1]
 			+ ' L ' + p3[0] + "," + p3[1];
+	}
+	else if (residueLink.intraMolecular === true){
+		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
+		var radius = (Math.abs(x2 - x1)) / 2;
+		var height = -((Protein.STICKHEIGHT / 2) + 3);
+		if (radius < 15){
+			height = -28 + radius;
+		}
+		var curveMidX = x1 + ((x2 - x1) / 2);
+		//U R HERE
+		return "M " + x1 + "," + baseLine + " "
+			+ 'Q ' + x1 + "," + height 
+					+ ' ' + x1 + "," + height
+			+ " A " + radius + "," + radius + "  0 0 1 "
+				+ x2  + "," + height
+			+ ' Q '+ x2 + "," + baseLine + " " 
+				+ ' ' + x2 + "," + baseLine + " ";		
 	}
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);

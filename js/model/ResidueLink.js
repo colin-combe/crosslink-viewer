@@ -246,6 +246,7 @@ ResidueLink.prototype.showID = function() {
 ResidueLink.prototype.getFilteredMatches = function() {
     this.ambig = true;
     this.hd = false;
+    this.intraMolecular = false; //i.e. type 1, loop link, intra peptide, internally linked peptide, etc 
     var filteredMatches = new Array();
     var count = this.matches.length;
     for (var i = 0; i < count; i++) {
@@ -258,6 +259,9 @@ ResidueLink.prototype.getFilteredMatches = function() {
             if (match.hd === true) {
                 this.hd = true;
             }            
+            if (match.type === 1){
+				this.intraMolecular = true;
+			}
         }
     }
     return filteredMatches;

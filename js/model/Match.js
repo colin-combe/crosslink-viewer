@@ -158,57 +158,64 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		pep2_positions = null;
 	}
 
-	//TODO - type
+	//U R HERE
+	if (pep2_protIDs === null && (pep2_positions === null && typeof this.linkPos2 == 'undefined')){
+		this.type = 0;
+	}
+	else if (pep2_protIDs === null){
+		this.type = 1;
+	}
+	else {
+		this.type = 2;
+	}
 
 	// the protein IDs and residue numers we eventually want to get
 	var p1ID, p2ID, res1, res2;
 	
-	if (pep2_protIDs === null){
-		if (pep2_positions === null) { //its a linker modified peptide (mono-link) 
-			for (var i = 0; i < pep1_positions.length; i++) {
-				var iProt = i, jProt = j;
-				if (iProt >= pep1_protIDs.length) {
-					iProt = pep1_protIDs.length - 1;
-				}
-				p1ID = pep1_protIDs[iProt];
-				res1 = pep1_positions[i];
-				if (typeof this.linkPos1 != 'undefined') {
-					// * residue numbering starts at 1 *
-					res1 += this.linkPos1 - 1;
-				}
-				this.associateWithLink(p1ID, null, res1, null);		
-			}		
-		} 
-		else {// its an internally linked peptide (loop-link)
-			//loop to produce all alternative linkage site combinations for loop links
-			for (var i = 0; i < pep1_positions.length; i++) {
-				//must be same number of alternatives for res 2 as for res1 in loop link
-				
-				// we allow following, though its not documented
-				// may be more residue positions than prot ids in the arrays
-				// ( = multiple positions in one protein)
-				var iProt = i;
-				if (iProt >= pep1_protIDs.length) {
-					iProt = pep1_protIDs.length - 1;
-				}
-				//~ if (jProt >= pep2_protIDs.length) {
-					//~ jProt = pep2_protIDs.length - 1;
-				//~ }
-				p1ID = pep1_protIDs[iProt];
-				//~ p2ID = p1ID;
-
+	if (this.type === 0) { //its a linker modified peptide (mono-link) 
+		for (var i = 0; i < pep1_positions.length; i++) {
+			var iProt = i, jProt = j;
+			if (iProt >= pep1_protIDs.length) {
+				iProt = pep1_protIDs.length - 1;
+			}
+			p1ID = pep1_protIDs[iProt];
+			res1 = pep1_positions[i];
+			if (typeof this.linkPos1 != 'undefined') {
 				// * residue numbering starts at 1 *
-				res1 = pep1_positions[i];
-				res2 = pep2_positions[i];
-				if (typeof this.linkPos1 != 'undefined') {
-					res1 += this.linkPos1 - 1;
-				}
-				if (typeof this.linkPos1 != 'undefined') {
-					res2 += this.linkPos2 - 1;
-				}
-				this.associateWithLink(p1ID, null, res1, res2);				
-			}			
-		}
+				res1 += this.linkPos1 - 1;
+			}
+			this.associateWithLink(p1ID, null, res1, null);		
+		}		
+	} 
+	else if (this.type === 1){// its an internally linked peptide (loop-link)
+		//loop to produce all alternative linkage site combinations for loop links
+		for (var i = 0; i < pep1_positions.length; i++) {
+			//must be same number of alternatives for res 2 as for res1 in loop link
+			
+			// we allow following, though its not documented
+			// may be more residue positions than prot ids in the arrays
+			// ( = multiple positions in one protein)
+			var iProt = i;
+			if (iProt >= pep1_protIDs.length) {
+				iProt = pep1_protIDs.length - 1;
+			}
+			//~ if (jProt >= pep2_protIDs.length) {
+				//~ jProt = pep2_protIDs.length - 1;
+			//~ }
+			p1ID = pep1_protIDs[iProt];
+			//~ p2ID = p1ID;
+
+			// * residue numbering starts at 1 *
+			res1 = pep1_positions[i];
+			res2 = (pep2_positions)? pep2_positions[i] : pep1_positions[i];
+			if (typeof this.linkPos1 != 'undefined') {
+				res1 += this.linkPos1 - 1;
+			}
+			if (typeof this.linkPos1 != 'undefined') {
+				res2 += this.linkPos2 - 1;
+			}
+			this.associateWithLink(p1ID, null, res1, res2);				
+		}			
 	}
 	else { //its cross-linked peptides
 		//loop to produce all alternative linkage site combinations 
