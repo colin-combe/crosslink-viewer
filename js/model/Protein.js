@@ -975,11 +975,11 @@ Protein.prototype.toStick = function() {
 
 Protein.prototype.getAggregateSelfLinkPath = function() {
 	var intraR = this.getBlobRadius() + 7;
-	var radius = 45;
-	var arcStart = Protein.trig(intraR, 25 + radius);
-	var arcEnd = Protein.trig(intraR, -25 + radius);
-	var cp1 = Protein.trig(intraR, 40 + radius);
-	var cp2 = Protein.trig(intraR, -40 + radius);
+	var sectorSize = 45;
+	var arcStart = Protein.trig(intraR, 25 + sectorSize);
+	var arcEnd = Protein.trig(intraR, -25 + sectorSize);
+	var cp1 = Protein.trig(intraR, 40 + sectorSize);
+	var cp2 = Protein.trig(intraR, -40 + sectorSize);
 	return 'M 0,0 ' 
 		+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
 		+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
@@ -988,7 +988,7 @@ Protein.prototype.getAggregateSelfLinkPath = function() {
 
 Protein.prototype.getResidueLinkPath = function(residueLink) {					
 	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
-	var baseLine = 0;// http://www.youtube.com/watch?v=Bac2wHZoT2Y
+	var baseLine = 0;
 	if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8){
 		baseLine = -5;
 	}
@@ -1012,14 +1012,32 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 	else {	
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
 		var radius = (Math.abs(x2 - x1)) / 2;
-		this.curveMidX = x1 + ((x2 - x1) / 2);
 		var height = -((Protein.STICKHEIGHT / 2) + 3);
 		if (radius < 15){
 			height = -28 + radius;
 		}
 		if (residueLink.hd){
-			//~ alert|("hd");
-			radius = radius + 5;
+			//radius = radius + 5;
+			//~ var intraR = this.getBlobRadius() + 7;
+			//~ var radius = 45;
+			var curveMidX = x1 + ((x2 - x1) / 2);
+			var arcStart = [ curveMidX, height - radius];//Protein.trig(intraR, 25 + radius);
+			var arcEnd =  [ curveMidX, height - radius];//Protein.trig(intraR, -25 + radius);
+			var cp1 = Protein.trig(height - radius, -70);
+			cp1.x += x1;
+			
+			var cp2 = Protein.trig(height - radius,  -110);
+			cp2.x += x2;
+			//~ return 'M 0,0 ' 
+				//~ + 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
+				//~ + ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
+				//~ + ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
+			return "M " + x1 + "," + baseLine + " "
+						+ 'Q '  + cp1.x + ',' + -cp1.y + ' ' + arcStart[0] + "," + arcStart[1]
+						+ " A " + radius + "," + radius + "  0 0 1 "
+							+ arcEnd[0]  + "," + arcEnd[1]
+						+ ' Q '+ cp2.x + ',' + -cp2.y +  " " 
+						+ ' ' + x2 + "," + baseLine + " ";
 		}
 		return "M " + x1 + "," + baseLine + " "
 			+ 'Q ' + x1 + "," + height 
