@@ -197,7 +197,7 @@ ProteinLink.prototype.showID = function() {
     }
     else {
         var linkInfo = "<h5>" + this.fromProtein.name + " [" + this.fromProtein.id
-        + "] <br>to<br> " + this.toProtein.name + " [" + this.toProtein.id
+        + "] to " + this.toProtein.name + " [" + this.toProtein.id
         + "]</h5>";
         
         //todo: remove this code duplication
@@ -239,39 +239,52 @@ ProteinLink.prototype.showID = function() {
 		if (filteredResLinkCount > 1){
 			 linkInfo += "s";
 		}
-		linkInfo += ":</h5>";
+		linkInfo += "</h5>";
    
-        
+		var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
+		if (this.xlv.autoValidatedFound === true){
+			scoresTable += "<th>Auto</th>";
+		}
+		if (this.xlv.manualValidatedFound === true){
+			scoresTable += "<th>Manual</th>";
+		}
+		scoresTable += "<th>Pep Seq.1</th>";
+		scoresTable += "<th>Link Pos.1</th>";
+		scoresTable += "<th>Pep Seq.2</th>";
+		scoresTable += "<th>Link Pos.2</th>";
+		scoresTable += "</tr>";    
       for (var i = 0; i < filteredResLinkCount; i ++ ){
             var rl = filteredResLinks [i];
-            linkInfo += "<h7>" + this.fromProtein.name + ", residue " + rl.fromResidue + " - "
-            + this.toProtein.name + ", residue " + rl.toResidue + "</h7>";
+            //~ linkInfo += "<h7>" + this.fromProtein.name + ", residue " + rl.fromResidue + " - "
+            //~ + this.toProtein.name + ", residue " + rl.toResidue + "</h7>";
             var matches = rl.getFilteredMatches();
 			var c = matches.length;
-			linkInfo += "<p>" + c + " match";
-			if (c > 1){
-				linkInfo += "es:</p>";
-			} else {
-				linkInfo += ":</p>";
-			}
-			var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
-			if (this.xlv.autoValidatedFound === true){
-				scoresTable += "<th>Auto</th>";
-			}
-			if (this.xlv.manualValidatedFound === true){
-				scoresTable += "<th>Manual</th>";
-			}
-			scoresTable += "<th>Pep Seq.1</th>";
-			scoresTable += "<th>Link Pos.1</th>";
-			scoresTable += "<th>Pep Seq.2</th>";
-			scoresTable += "<th>Link Pos.2</th>";
-			scoresTable += "</tr>";
+			//~ linkInfo += "<p>" + c + " match";
+			//~ if (c > 1){
+				//~ linkInfo += "es:</p>";
+			//~ } else {
+				//~ linkInfo += ":</p>";
+			//~ }
+			//~ var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
+			//~ if (this.xlv.autoValidatedFound === true){
+				//~ scoresTable += "<th>Auto</th>";
+			//~ }
+			//~ if (this.xlv.manualValidatedFound === true){
+				//~ scoresTable += "<th>Manual</th>";
+			//~ }
+			//~ scoresTable += "<th>Pep Seq.1</th>";
+			//~ scoresTable += "<th>Link Pos.1</th>";
+			//~ scoresTable += "<th>Pep Seq.2</th>";
+			//~ scoresTable += "<th>Link Pos.2</th>";
+			//~ scoresTable += "</tr>";
 			for (var j = 0; j < c; j++) {
 			   scoresTable += matches[j].toTableRow();
 			}
-			scoresTable += "</table><p>&nbsp;</p>";
-			linkInfo += scoresTable;
+			//~ scoresTable += "</table><p>&nbsp;</p>";
+			//~ linkInfo += scoresTable;
         }
+        			scoresTable += "</table>";//<p>&nbsp;</p>";
+			linkInfo += scoresTable;
         this.xlv.message(linkInfo);
     }
 };

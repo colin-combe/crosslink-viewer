@@ -47,6 +47,16 @@ input, select, button {
     overflow: hidden;
 }
 
+#infoButton {
+	float:right;
+	color: black;
+	background: #ffff99;
+	width: 120px;
+	position: fixed;
+	z-index: 20;
+	right:20px;
+}
+
 .controls {
     position: fixed;
     top: 0px;
@@ -113,22 +123,29 @@ input, select, button {
     display:inline-block;
     color: #34495e;
 }
-		
+
+.info{
+   background: rgba(189, 195, 199, 0.95);
+    position: fixed;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    clear: both;
+    height:60px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 8px;
+    z-index: 15;
+ }	
 		
 /* ===========================================================
     OVERLAY STYLES
  * =========================================================== */
 
-.overlay-box {
-/*background-color: #BDC3C7;
-    background: transparent;
-*/
+.overlay {
     background: rgba(189, 195, 199, 0.95);
-    position: relative;
-/*
-    height: 100%;
-*/
-    width: 460px;
+    position: fixed;
+    width: 500px;
     top: 100%;
     left: -10px;
 /*

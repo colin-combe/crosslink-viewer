@@ -41,9 +41,8 @@
 			<div class="controls">
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
-				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
-				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export</button>
-				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto</button>
+				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export Graphic</button>
+				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
 				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>		
 				<div class="controlGroup" id="scoreSlider" >
 					<p class="scoreLabel" id="scoreLabel1"></p>
@@ -53,7 +52,7 @@
 					<p class="scoreLabel" id="scoreLabel2"></p>
 					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
 				</div> <!-- outlined scoreSlider -->
-				<div class="controlGroup"><p>Self Links&nbsp;
+				<div class="controlGroup"><p>Self-links&nbsp;
 					<input checked="checked" id="internal" onclick=
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox"></p>
@@ -68,20 +67,10 @@
 					
 			<div id="networkContainer"></div>
 				
-			<div class="overlay-box" id="infoPanel">
-				<div>
-					<h4>Selection Details:</h4>
-					<div id="networkCaption">
-						<p>No Selection.</p>
-					</div>
-				</div>
-			</div>
-			<div class="overlay-box" id="helpPanel">
-				<div>
-					<h4>Help:</h4>	
+			<div class="overlay overlay-box" id="helpPanel">
 					<table class="hor-minimalist-a"  bordercolor="#eee" >
 						<tr>
-							<td>Toggle the proteins between a bar and a circle</td>
+							<td>Toggle between circle and bar</td>
 							<td>Click on protein</td>
 						</tr>
 						<tr>
@@ -97,24 +86,24 @@
 							<td>Click and drag on protein</td>
 						</tr>
 						<tr>
-							<td>Expand bar <br>(increases bar length until sequence is visible)</td>
+							<td>Expand bar</td>
 							<td>Shift_left-click on protein</td>
 						</tr>
 						<tr>
 							<td>Rotate bar</td>
-							<td>Click and drag on handles that appear at end of bar</td>
+							<td>Hover over end of bar; drag handle</td>
 						</tr>
 						<tr>
-							<td>Hide/show protein (and all links to it)</td>
+							<td>Hide/show protein (and links to it)</td>
 							<td>Right-click on protein</td>
 						</tr>
 						<tr>
-							<td>Hide/show links between two specific proteins</td>
-							<td>Right click on any link between those proteins</td>
+							<td>Hide/show links between proteins</td>
+							<td>Right click on link</td>
 						</tr>
 						<tr>
-							<td>'Flip' side of bar on which internal links are shown</td>
-							<td>Right-click on internal link</td>
+							<td>Flip side for self-links</td>
+							<td>Right-click on self-link</td>
 						</tr>
 					</table> 
 					<p>&nbsp;</p>
@@ -124,6 +113,17 @@
 					</p>
 				</div>
 			</div>	
+	
+			<div class="info overlay-box"  id="infoPanel">
+				<div>
+					<button class="btn btn-inverse" id="infoButton" onclick="toggleInfoPanel()">Show More&#x25B2</button>
+		
+					<div id="networkCaption">
+						<h5>No Selection.</h5>
+					</div>
+				</div>
+			</div>	
+				
 		</div>
 
 		<script type="text/javascript">
@@ -207,20 +207,24 @@
 				function hideHelpPanel() {
 						helpShown = false;
 						d3.select("#helpPanel").transition().style("top", "100%").duration(700);
-						d3.select("#helpPanel").transition().style('display','none').delay(700);;
+						//~ d3.select("#helpPanel").transition().style('display','none').delay(700);;
 						d3.select(".help").attr('class', "btn btn-inverse help");
 				}
 				function showInfoPanel() {
 						infoShown = true;
-						d3.select("#infoPanel").style('display','block');
-						d3.select("#infoPanel").transition().style("top", "0%").duration(700);
-						d3.select(".info").attr('class', "btn info");	
+						d3.select("#infoPanel").transition().style("height", "300px").duration(700)
+						.each("end", 
+							function () {
+								d3.select("#infoButton").html("Show Less&#x25BC;");
+							});
 				}
 				function hideInfoPanel() {
 						infoShown = false;
-						d3.select("#infoPanel").transition().style("top", "100%").duration(700);
-						d3.select("#infoPanel").transition().style('display','none').delay(700);;
-						d3.select(".info").attr('class', "btn btn-inverse info");
+						d3.select("#infoPanel").transition().style("height", "60px").duration(700)
+						.each("end", 
+							function () {
+								d3.select("#infoButton").html("Show More&#x25B2;");
+							});
 				}
 				//]]>
 		</script>
