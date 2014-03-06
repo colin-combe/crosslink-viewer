@@ -179,6 +179,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
     }
 };
 
+//TODO: remove this, use rotateAboutPoint instead
 Protein.trig = function(radius, angleDegrees) {
 		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
 		var radians = (angleDegrees / 360) * Math.PI * 2;

@@ -158,7 +158,6 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		pep2_positions = null;
 	}
 
-	//U R HERE
 	if (pep2_protIDs === null && (pep2_positions === null && typeof this.linkPos2 == 'undefined')){
 		this.type = 0;
 	}
@@ -255,9 +254,9 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	this.overlap = [];
 	//if self link
     if (p1ID === p2ID) {
-		//if unambiguous cross-link
-        if (pep1_positions && pep2_positions 
-			&& pep1_positions.length === 1 && pep2_positions.length === 1) {
+		//if /*unambiguous*/ cross-link
+        if (pep1_positions && pep2_positions ){
+			//~ && pep1_positions.length === 1 && pep2_positions.length === 1) {
 			//if both peptide sequnces defined
 			if (typeof this.pepSeq1 !== 'undefined'	&& typeof this.pepSeq2 !== 'undefined') {
 			

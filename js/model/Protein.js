@@ -990,80 +990,94 @@ Protein.prototype.getAggregateSelfLinkPath = function() {
 Protein.prototype.getResidueLinkPath = function(residueLink) {//TODO: could be tidied up				
 	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
 	var baseLine = 0;
-	if (Protein.UNITS_PER_RESIDUE * this.stickZoom > 8){
+	if (Protein.UNITS_PER_RESIDUE * this.stickZoom >= 8){
 		baseLine = -5;
 	}
 	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
-		//~ pathAtt = "M " + x1 + " 0 L " + x1 + " 20";
-		//~ return pathAtt;
-		var height = 26;
-		var radius = 7;
 		if (residueLink.ambig === false){
 			residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
 		}
-		var p1 = [x1, height];
+		var p1 = [x1, 26];
 		var p3 = [x1, 18];
 		var p2 = Protein.rotatePointAboutPoint(p1, p3, 60);
 		baseLine = baseLine * -1;
-		return "M " + x1 + "," + baseLine + " "
-			+ "L " + p1[0] + "," + p1[1] 
+		return "M " + x1 + "," + baseLine 
+			+ " L " + p1[0] + "," + p1[1] 
 			+ " L " +  p2[0] + "," + p2[1]
-			+ ' L ' + p3[0] + "," + p3[1];
+			+ " L " + p3[0] + "," + p3[1];
 	}
-	else if (residueLink.intraMolecular === true){
+	else {
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
-		var radius = (Math.abs(x2 - x1)) / 2;
+		var height, cp1, cp2, arcStart, arcEnd, arcRadius;
+		arcRadius = (Math.abs(x2 - x1)) / 2;
 		var height = -((Protein.STICKHEIGHT / 2) + 3);
-		if (radius < 15){
-			height = -28 + radius;
+		if (arcRadius < 15){
+			height = -28 + arcRadius;
 		}
-		var curveMidX = x1 + ((x2 - x1) / 2);
-		//U R HERE
-		return "M " + x1 + "," + baseLine + " "
-			+ 'Q ' + x1 + "," + height 
-					+ ' ' + x1 + "," + height
-			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ x2  + "," + height
-			+ ' Q '+ x2 + "," + baseLine + " " 
-				+ ' ' + x2 + "," + baseLine + " ";		
-	}
-	else {	
-		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
-		var radius = (Math.abs(x2 - x1)) / 2;
-		var height = -((Protein.STICKHEIGHT / 2) + 3);
-		if (radius < 15){
-			height = -28 + radius;
-		}
-		if (residueLink.hd){
-			//radius = radius + 5;
-			//~ var intraR = this.getBlobRadius() + 7;
-			//~ var radius = 45;
-			var curveMidX = x1 + ((x2 - x1) / 2);
-			var arcStart = [ curveMidX, height - radius];//Protein.trig(intraR, 25 + radius);
-			var arcEnd =  [ curveMidX, height - radius];//Protein.trig(intraR, -25 + radius);
-			var cp1 = Protein.trig(height - radius, -70);
-			cp1.x += x1;
+		
+		var angle;
+		if (residueLink.intraMolecular === true){
+			//~ angle = 20;
+			//~ cp1 = [x1, height];
+			//~ cp2 = [x2, baseLine];
+			//~ arcStart = [x1, height];
+			//~ arcEnd =  [x2, height];
 			
-			var cp2 = Protein.trig(height - radius,  -110);
-			cp2.x += x2;
-			//~ return 'M 0,0 ' 
-				//~ + 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
-				//~ + ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
-				//~ + ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
-			return "M " + x1 + "," + baseLine + " "
-						+ 'Q '  + cp1.x + ',' + -cp1.y + ' ' + arcStart[0] + "," + arcStart[1]
-						+ " A " + radius + "," + radius + "  0 0 1 "
-							+ arcEnd[0]  + "," + arcEnd[1]
-						+ ' Q '+ cp2.x + ',' + -cp2.y +  " " 
-						+ ' ' + x2 + "," + baseLine + " ";
+			var start = [x1, baseLine];
+			var end = [x2, baseLine];
+		
+			var curveMidX = x1 + ((x2 - x1) / 2);
+			arcStart = [ curveMidX, height - arcRadius];
+			arcEnd =  [ curveMidX, height - arcRadius];
+			cp1 = [ curveMidX, height - arcRadius];
+			cp2 =  [ curveMidX, height - arcRadius];
+			//~ cp1 = Protein.rotatePointAboutPoint([x1, height - arcRadius], start, 10);
+			//~ cp2 = Protein.rotatePointAboutPoint([x2, height - arcRadius], end, -10);
 		}
-		return "M " + x1 + "," + baseLine + " "
-			+ 'Q ' + x1 + "," + height 
-					+ ' ' + x1 + "," + height
-			+ " A " + radius + "," + radius + "  0 0 1 "
-				+ x2  + "," + height
-			+ ' Q '+ x2 + "," + baseLine + " " 
-				+ ' ' + x2 + "," + baseLine + " ";
+		else if (residueLink.hd){	
+			//~ angle = -20;		
+			var start = [x1, baseLine];
+			var end = [x2, baseLine];
+		
+			var curveMidX = x1 + ((x2 - x1) / 2);
+			arcStart = [ curveMidX, height - arcRadius];
+			arcEnd =  [ curveMidX, height - arcRadius];
+			//~ arcStart = Protein.rotatePointAboutPoint([x1, height - arcRadius], start, -10);
+			//~ arcEnd = Protein.rotatePointAboutPoint([x2, height - arcRadius], end, 10);
+			cp1 = Protein.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
+			cp2 = Protein.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
+			//~ cp1 = Protein.trig(height - arcRadius, -70);
+			//~ cp1.x += x1;
+			//~ cp1.y *= -1;
+			//~ cp1= [cp1.x, cp1.y];
+			//~ cp2 = Protein.trig(height - arcRadius,  -110);
+			//~ cp2.x += x2;
+			//~ cp2.y *= -1;
+			//~ cp2 = [cp2.x, cp2.y];
+		}
+		else {	
+			//~ angle = 0;
+			cp1 = [x1, height];
+			cp2 = [x2, baseLine];
+			arcStart = [x1, height];
+			arcEnd =  [x2, height];
+		}		
+			//~ arcStart = [ x1, height];
+			//~ arcEnd =  [ x2, height];
+			//~ var start = [x1, baseLine];
+			//~ var end = [x2, baseLine];
+			//~ arcStart = Protein.rotatePointAboutPoint(arcStart, start,   angle);
+			//~ arcEnd = Protein.rotatePointAboutPoint(arcEnd, end, - angle);
+			//~ cp1 = Protein.rotatePointAboutPoint(arcStart, start, 2 *  angle);
+			//~ cp2 = Protein.rotatePointAboutPoint(arcEnd, end, -2 * angle);
+			//~ arcRadius = Math.abs(arcEnd[0] - arcStart[0]) / 2;
+		 return " M " + x1 + "," + baseLine //"M " + cp1[0] + ',' + cp1[1]  
+			 
+			+ " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
+			+ " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
+			+ " Q "+ cp2[0] + ',' + cp2[1] +  " "  + x2 + "," + baseLine + " ";
+		//~ + " L "+ cp2[0] + ',' + cp2[1];
+	
 	}
 }
 
@@ -1098,6 +1112,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 			
 			if (pep[2]){//homodimer like
 				//~ alert("yup");
+				//TODO: eliminate duplication
 				annotColouredRect = document.createElementNS(xiNET.svgns, "rect");
 				annotColouredRect.setAttribute("class", "protein");
 				var annotX = ((pep[2] + 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
