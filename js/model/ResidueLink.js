@@ -302,15 +302,15 @@ ResidueLink.prototype.check = function(filter) {
         if (this.intra === true){
 			if (this.hd === true) {
 				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
-				//~ this.line.setAttribute("transform", "scale(1, -1)");			
+				this.line.setAttribute("transform", "scale(1, -1)");			
 				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
-				//~ this.highlightLine.setAttribute("transform", "scale(1, -1)");			
+				this.highlightLine.setAttribute("transform", "scale(1, -1)");			
 			}
 			else {
 				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
-				//~ this.line.setAttribute("transform", "scale(1, 1)");			
+				this.line.setAttribute("transform", "scale(1, 1)");			
 				this.line.setAttribute("stroke-width", xiNET.linkWidth);			
-				//~ this.highlightLine.setAttribute("transform", "scale(1, 1)");			
+				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
 			}
 		}
         return true;
