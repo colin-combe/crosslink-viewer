@@ -10,8 +10,8 @@ Protein.MAXSIZE = 0; 			// residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)
 Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
 Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
-Protein.domainColours = d3.scale.category20c(); //
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[12]);
+//~ Protein.domainColours = d3.scale.category20c(); //
+Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
 //~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
 //~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 //~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
@@ -331,7 +331,7 @@ Protein.prototype.setRotation = function(angle) {
 	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
 	var labelTransform = d3.transform(transformToContainingGroup);
 	var sll = this.scaleLabels.length;
-	if (this.rotation > 90 && this.rotation <= 270) {
+	if (this.rotation >= 90 && this.rotation < 270) {
 			var k = svg.createSVGMatrix()
 						.translate(Math.abs(labelTransform.translate[0]), -Protein.labelY)
 						.rotate(180, 0, 0);

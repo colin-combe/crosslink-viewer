@@ -208,7 +208,7 @@ ResidueLink.prototype.showID = function() {
 		var toProt = this.getToProtein();
 
 		var linkInfo = "<h5>" + fromProt.name + " [" + fromProt.id
-			+ "], residue " + this.fromResidue + " <br>to<br> "
+			+ "], residue " + this.fromResidue + " to "
 			+ ((toProt)?toProt.name:"null") + " [" + ((toProt)?toProt.id:"")
 			+ "], residue " + this.toResidue + "</h5>";
         
