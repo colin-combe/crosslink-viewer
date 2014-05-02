@@ -262,12 +262,13 @@ xiNET.Controller.prototype.addMatches = function(matches) {
 
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args
-xiNET.Controller.prototype.addAnnotation = function(protName, annotName, startRes, endRes, colour) {
-    var prots = this.proteins.values();
-    var protCount = prots.length;
-    for (var p = 0; p < protCount; p++) {
-        var protein = prots[p];
-        if (protein.name == protName) {
+xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
+    var protein = this.proteins.get(protId);
+    
+    //~ var protCount = prots.length;
+    //~ for (var p = 0; p < protCount; p++) {
+        //~ var protein = prots[p];
+        //~ if (protein.name == protName) {
 
             //lets just check a few things here...
             // we're using human (starts at 1) numbering
@@ -292,7 +293,28 @@ xiNET.Controller.prototype.addAnnotation = function(protName, annotName, startRe
             }
             protein.customAnnotations.push(annotation);
             protein.setPositionalFeatures(protein.customAnnotations);
-        }
+        //~ }
+    //~ }
+}
+
+// add all matches with single call, arg is an array of arrays
+xiNET.Controller.prototype.addAnnotations = function(annotations) {
+    var rows = d3.csv.parseRows(annotations);
+    
+    var headers = rows[0];
+    //~ console.log(headers.toString());
+    
+    var iProtId = headers.indexOf('ProteinId');
+    var iAnnotName = headers.indexOf('AnnotName');
+    var iStartRes = headers.indexOf('StartRes');
+    var iEndRes = headers.indexOf('EndRes');
+    var iColour = headers.indexOf('Color');    
+        
+    var l = rows.length;
+    for (var i = 1; i < l; i++) {
+        //        alert(matches[i]);
+        this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
+							rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
     }
 }
 

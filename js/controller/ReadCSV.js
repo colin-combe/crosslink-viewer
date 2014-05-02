@@ -1,4 +1,4 @@
-xiNET.Controller.prototype.readCSV = function(csvContents) {
+xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var rows = d3.csv.parseRows(csvContents);
     
     var headers = rows[0];
@@ -184,6 +184,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
 			}
 		}       
         xlv.init();
+        xlv.addAnnotations(manualAnnotations);
         if (typeof initSlider === "function"){
 			initSlider();
 		}

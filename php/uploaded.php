@@ -11,7 +11,7 @@
 			$dbconn = pg_connect($connectionString)
 					or die('Could not connect: ' . pg_last_error());
 			$uid = $_GET["uid"];
-			$query = "SELECT links, filename, layout, fasta FROM upload WHERE rand = '" . $uid . "';";
+			$query = "SELECT links, filename, layout, fasta, annot FROM upload WHERE rand = '" . $uid . "';";
 			// echo $query;
 			$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 			$line = pg_fetch_array($result, null, PGSQL_ASSOC);
@@ -19,6 +19,7 @@
 			$filename = $line['filename'];
 			$layout = $line['layout'];
 			$fasta = $line['fasta'];
+			$annot = $line['annot'];
 			echo ('<title> xiNET | ' . $filename . '</title>');
         ?>
         <link rel="stylesheet" href="../css/xiNET.css">
@@ -29,7 +30,9 @@
         <script type="text/javascript" src="../lib/d3.js"></script>
         <script type="text/javascript" src="../lib/colorbrewer.js"></script>
         <script type="text/javascript" src="../lib/jsdas.js"></script>
-        <script type="text/javascript" src="../lib/rgbcolor.js"></script>
+        <script type="text/javascript" src="../lib/Blob.js"></script>
+       	<script type="text/javascript" src="../lib/FileSaver.js"></script>
+        <script type="text/javascript" src="../lib/rgbcolor.js"></script>             
         <script type="text/javascript" src="../lib/prototype.js"></script>
         <script type="text/javascript" src="../lib/slider.js"></script>
         <!--xiNET-->
@@ -41,11 +44,12 @@
         <script type="text/javascript" src="../js/model/Match.js"></script>
         <script type="text/javascript" src="../js/model/Link.js"></script>
         <script type="text/javascript" src="../js/model/Protein.js"></script>
+       	<script type="text/javascript" src="../js/model/Protein_printAnnotationInfo.js"></script>
         <script type="text/javascript" src="../js/model/Annotations.js"></script>
         <script type="text/javascript" src="../js/model/ProteinLink.js"></script>
         <script type="text/javascript" src="../js/model/ResidueLink.js"></script>
         <script type="text/javascript" src="../js/controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="../js/model/Rotator.js"></script>
+        <script type="text/javascript" src="../js/controller/Rotator.js"></script>
         <script type="text/javascript" src="../js/controller/DASUtil.js"></script>
         <script type="text/javascript" src="../js/controller/ReadCSV.js"></script>
         <script type="text/javascript" src="../js/controller/Fasta.js"></script>
@@ -55,13 +59,11 @@
 			<div class="controls">
 
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
-				<button class="btn btn-inverse info" onclick="toggleInfoPanel()">Selection</button>
-				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export</button>
-				<button class="btn btn-inverse savelayout" onclick="saveLayout()">Save</button>
-				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto</button>
-				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>
-				
-				<div class="outlined" id="scoreSlider" >
+				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export Graphic</button>
+				<button class="btn btn-inverse savelayout" onclick="saveLayout()">Save Layout</button>
+				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
+				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>				
+				<div class="controlGroup" id="scoreSlider" >
 					<p class="scoreLabel" id="scoreLabel1"></p>
 					<div id="track1" class="sliderbar">
 						<div class="selected" id="handle1"></div> 
@@ -69,7 +71,7 @@
 					<p class="scoreLabel" id="scoreLabel2"></p>
 					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
 				</div> <!-- outlined scoreSlider -->
-				<div class="controlGroup"><p>Self Links&nbsp;
+				<div class="controlGroup"><p>Self-links&nbsp;
 					<input checked="checked" id="internal" onclick=
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox"></p>
@@ -80,25 +82,21 @@
 						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
 					type="checkbox"></p>
                 </div>
+                
+				<div class="controlGroup"><p>Decoy&nbsp;
+					<input checked="checked" id="decoy" onclick=
+						"hideDecoy(!document.getElementById('decoy').checked)" 
+					type="checkbox"></p>
+				</div>
 			</div>
 					
 			<div id="networkContainer"></div>
 				
-			<div class="overlay-box" id="infoPanel">
-				<div>
-					<h4>Selection Details:</h4>
-					<div id="networkCaption">
-						<p>No Selection.</p>
-					</div>
-				</div>
-			</div>
-			<div class="overlay-box" id="helpPanel">
-				<div>
-					<h4>Help:</h4>	
+			<div class="overlay overlay-box" id="helpPanel">
 					<table class="hor-minimalist-a"  bordercolor="#eee" >
 						<tr>
-							<td>Toggle the proteins between a bar and a circle</td>
-							<td>Double-click on protein</td>
+							<td>Toggle between circle and bar</td>
+							<td>Click on protein</td>
 						</tr>
 						<tr>
 							<td>Zoom</td>
@@ -113,24 +111,24 @@
 							<td>Click and drag on protein</td>
 						</tr>
 						<tr>
-							<td>Expand bar <br>(increases bar length until sequence is visible)</td>
+							<td>Expand bar</td>
 							<td>Shift_left-click on protein</td>
 						</tr>
 						<tr>
 							<td>Rotate bar</td>
-							<td>Click and drag on handles that appear at end of bar</td>
+							<td>Hover over end of bar; drag handle</td>
 						</tr>
 						<tr>
-							<td>Hide/show protein (and all links to it)</td>
+							<td>Hide/show protein (and links to it)</td>
 							<td>Right-click on protein</td>
 						</tr>
 						<tr>
-							<td>Hide/show links between two specific proteins</td>
-							<td>Right click on any link between those proteins</td>
+							<td>Hide/show links between proteins</td>
+							<td>Right click on link</td>
 						</tr>
 						<tr>
-							<td>'Flip' side of bar on which internal links are shown</td>
-							<td>Right-click on internal link</td>
+							<td>Flip side for self-links</td>
+							<td>Right-click on self-link</td>
 						</tr>
 					</table> 
 					<p>&nbsp;</p>
@@ -140,13 +138,24 @@
 					</p>
 				</div>
 			</div>	
+	
+			<div class="info overlay-box"  id="infoPanel">
+				<div>
+					<button class="btn btn-inverse" id="infoButton" onclick="toggleInfoPanel()">Show More&#x25B2</button>
+		
+					<div id="networkCaption">
+						<h5>No Selection.</h5>
+					</div>
+				</div>
+			</div>	
+				
 		</div>
 
 		<script type="text/javascript">
                 //<![CDATA[
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
-                xlv = new xinet.Controller(targetDiv);
+                xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
                 <?php
 					if ($fasta != '') {
@@ -163,6 +172,8 @@
 					echo "\n\n";
 					echo('xlv.readCSV("');
 					echo preg_replace('/\r\n|\r|\n|\\n/', "\\n", $csv);
+					echo ('","');
+					echo preg_replace('/\r\n|\r|\n|\\n/', "\\n", $annot);
 					echo('");');
 					echo "\n\n";
 				?>
@@ -246,39 +257,41 @@
 				function hideHelpPanel() {
 						helpShown = false;
 						d3.select("#helpPanel").transition().style("top", "100%").duration(700);
-						d3.select("#helpPanel").transition().style('display','none').delay(700);;
+						//~ d3.select("#helpPanel").transition().style('display','none').delay(700);;
 						d3.select(".help").attr('class', "btn btn-inverse help");
 				}
 				function showInfoPanel() {
 						infoShown = true;
-						d3.select("#infoPanel").style('display','block');
-						d3.select("#infoPanel").transition().style("top", "0%").duration(700);
-						d3.select(".info").attr('class', "btn info");	
+						d3.select("#infoPanel").transition().style("height", "300px").duration(700)
+						.each("end", 
+							function () {
+								d3.select("#infoButton").html("Show Less&#x25BC;");
+							});
 				}
 				function hideInfoPanel() {
 						infoShown = false;
-						d3.select("#infoPanel").transition().style("top", "100%").duration(700);
-						d3.select("#infoPanel").transition().style('display','none').delay(700);;
-						d3.select(".info").attr('class', "btn btn-inverse info");
+						d3.select("#infoPanel").transition().style("height", "60px").duration(700)
+						.each("end", 
+							function () {
+								d3.select("#infoButton").html("Show More&#x25B2;");
+							});
 				}
 				//]]>
 		</script>
 		<script>
-           //     $('#filter').slider().on('slide', function(ev) {
-           //         filtersChanged();
-           //     });
-     
+     		//<![CDATA[
 			function hideDecoy(decoysHidden) {
 				var protCount = xlv.proteins.values().length;
                 var prots = xlv.proteins.values();
                 for (var p = 0; p < protCount; p++) {
                     var prot = prots[p];
-					if (prot.name.indexOf("DECOY_") !== -1) {
+					if (prot.isDecoy()) {
                         prot.setParked(decoysHidden);
                     }
                 }
                 xlv.checkLinks();
             }
+			//]]>
         </script>
 	</body>
 </html>

@@ -1,0 +1,12 @@
+ProteinId,AnnotName,StartRes,EndRes,Color 	
+sp|P41896|Tfg2,Dimerization domain,55,144, 0xD53E4F
+sp|P41896|Tfg2,Dimerization domain,192,226, 0xD53E4F
+sp|P41896|Tfg2,Linker,227,291, 0xF46D43
+sp|P41896|Tfg2,WH domain,292,354, 0xFDAE61
+sp|P41896|Tfg2,Insertion,145,191, 0xFEE08B
+sp|P41895|Tfg1,N-terminal domain,1,97, 0x5E4FA2
+sp|P41895|Tfg1,Dimerization domain,98,167, 0x3288BD
+sp|P41895|Tfg1,Dimerization domain,305,400, 0x3288BD
+sp|P41895|Tfg1,Charged region,401,510, 0x66C2A5
+sp|P41895|Tfg1,WH domain,673,728, 0xABDDA4
+sp|P41895|Tfg1,Insertion,168,304, 0xE6F598

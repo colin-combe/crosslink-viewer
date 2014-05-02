@@ -328,16 +328,16 @@ Protein.prototype.processDAS = function(serverName, das) {
             }
             this.processedDAS.set(serverName, processed);
             //temp
-            if (serverName === 'UniProt' && processed.positional) {
-                if (this.customAnnotations === undefined || this.customAnnotations === null) {
-                    this.setPositionalFeatures(processed.positional.get('Secondary structure'));
-                }
-            }
-           //~ if (serverName === 'SuperFamily 1.75' && processed.positional) {
+            //~ if (serverName === 'UniProt' && processed.positional) {
                 //~ if (this.customAnnotations === undefined || this.customAnnotations === null) {
-                    //~ this.setPositionalFeatures(processed.positional.get('miscellaneous'));
+                    //~ this.setPositionalFeatures(processed.positional.get('Secondary structure'));
                 //~ }
             //~ }
+           if (serverName === 'SuperFamily 1.75' && processed.positional) {
+                if (this.customAnnotations === undefined || this.customAnnotations === null) {
+                    this.setPositionalFeatures(processed.positional.get('miscellaneous'));
+                }
+            }
         }
 
     }

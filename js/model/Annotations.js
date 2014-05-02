@@ -107,6 +107,10 @@ Protein.prototype.setKeywords = function(keywords) {
 
 Protein.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
+    
+    if (this.circDomains) this.xlv.emptyElement(this.circDomains);
+    if (this.rectDomains) this.xlv.emptyElement(this.rectDomains);
+    
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Protein.STICKHEIGHT / 2;
         //draw longest regions first
@@ -116,11 +120,14 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
         
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
+            anno.start = anno.start - 0;
+            anno.end = anno.end - 0;
             var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
             var annotColouredRect = document.createElementNS(xiNET.svgns, "path");
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-            if (this.form === 0) {
+            alert(this.form);
+            if (this.form === 0) { // ** UR HERE **
 				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
 				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 			} else {

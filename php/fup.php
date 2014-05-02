@@ -25,12 +25,14 @@
 		$fileName =  $_FILES["upfile"]["name"];
 		//echo $fileName;
 		$fastaData = addslashes(file_get_contents($_FILES['upfasta']['tmp_name']));
-		//echo $linkData;
+		//echo $fastaData;
+		$annotData = addslashes(file_get_contents($_FILES['upannot']['tmp_name']));
+		//echo $annotData;
 		
 		$dbconn = pg_connect($connectionString)
 				or die('Could not connect: ' . pg_last_error());
-		$query = "INSERT INTO upload (rand, links, fileName, fasta) "
-				. "VALUES ('".$rand."','".$linkData."','".$fileName."','".$fastaData."');";
+		$query = "INSERT INTO upload (rand, links, fileName, fasta, annot) "
+				. "VALUES ('".$rand."','".$linkData."','".$fileName."','".$fastaData."','".$annotData."');";
 		//echo $query;
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		// Free resultset
