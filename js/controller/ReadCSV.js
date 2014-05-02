@@ -184,10 +184,14 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 			}
 		}       
         xlv.init();
-        xlv.addAnnotations(manualAnnotations);
         if (typeof initSlider === "function"){
 			initSlider();
 		}
-		new xiNET.DASUtil(xlv);
+		if (manualAnnotations){
+			xlv.addAnnotations(manualAnnotations);
+		}
+		else {
+			new xiNET.DASUtil(xlv);
+		}
     }
 };
