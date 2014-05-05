@@ -29,16 +29,22 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		// we could try a different sometimes used column name
 		iRes1 = headers.indexOf('AbsPos1');
 		if (iRes1 === -1){
-			alert("Failed to read column 'Positon1' from CSV file");
-			return;
+			iRes1 = headers.indexOf('Residue1');
+			if (iRes1 === -1){		
+				alert("Failed to read column 'Positon1' from CSV file");
+				return;
+			}
 		}
 	}
     if (iRes2 === -1){
 		// we could try a different sometimes used column name
 		iRes2 = headers.indexOf('AbsPos2');
 		if (iRes2 === -1){
-			alert("Failed to read column 'Position2' from CSV file");
-			return;
+			iRes2 = headers.indexOf('Residue2');
+			if (iRes2 === -1){
+				alert("Failed to read column 'Position2' from CSV file");
+				return;
+			}
 		}
 	}
 	// no score? no problem, we can still proceed

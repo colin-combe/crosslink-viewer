@@ -126,7 +126,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             var annotColouredRect = document.createElementNS(xiNET.svgns, "path");
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-            alert(this.form);
+           // alert(this.form);
             if (this.form === 0) { // ** UR HERE **
 				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
 				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
