@@ -170,9 +170,9 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
 		"translate( -" + (r + 5) + " " + Protein.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
    	
-   	//ticks
-    this.ticks = null;//document.createElementNS(xiNET.svgns, "g");
-    
+   	//ticks (and animo acid letters)
+    this.ticks = document.createElementNS(xiNET.svgns, "g");
+     
 	//make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
 	this.outline = document.createElementNS(xiNET.svgns, "rect");
@@ -336,18 +336,18 @@ Protein.prototype.setRotation = function(angle) {
 						.translate(Math.abs(labelTransform.translate[0]), -Protein.labelY)
 						.rotate(180, 0, 0);
 			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.ticks !== null && this.form ===1){
-			for (var i = 0; i < sll; i++) {
-				   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
-				}
-				this.ticks.setAttribute("transform", "scale(1,-1)");
+			if (this.form ===1){
+				for (var i = 0; i < sll; i++) {
+					   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
+					}
+					this.ticks.setAttribute("transform", "scale(1,-1)");
 			}
 	}
     else {
     		var k = svg.createSVGMatrix()
 						.translate(-(Math.abs(labelTransform.translate[0])), Protein.labelY);
 			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.ticks !== null && this.form ===1){
+			if (this.form ===1){
 				for (var j = 0; j < sll; j++) {
 					this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
 				}
@@ -471,39 +471,36 @@ Protein.prototype.scale = function() {
 				}
             }
         }
-
-        if (this.ticks !== null){
-            this.upperGroup.removeChild(this.ticks);
-		}
-        this.ticks = getScaleGroup(this);
-        this.upperGroup.appendChild(this.ticks);
+        this.setScaleGroup();
         this.setRotation(this.rotation); // places ticks and rotators
     }
 };
 
-function getScaleGroup(protein) {
-	protein.scaleLabels = new Array();
+Protein.prototype.setScaleGroup = function() {
+	this.xlv.emptyElement(this.ticks);
+	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
+    
+    this.scaleLabels = new Array();
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
-	var pixPerRes = Protein.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
-	var scaleGroup = document.createElementNS(xiNET.svgns, "g");
+	var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
 	var tick = -1;
-	var lastTickX = protein.getResXwithStickZoom(protein.size);
+	var lastTickX = this.getResXwithStickZoom(this.size);
 	
-	for (var res = 1; res <= protein.size; res++) {
+	for (var res = 1; res <= this.size; res++) {
 		if (res === 1 ||
 				((res % 100 === 0) && (200 * pixPerRes > Protein.minXDist)) ||
 				((res % 10 === 0) && (20 * pixPerRes > Protein.minXDist))
 				) {
-			var tx = protein.getResXwithStickZoom(res);
+			var tx = this.getResXwithStickZoom(res);
 			if (pixPerRes >= 8 || res !== 1) {
-				tickAt(scaleGroup, tx);
+				tickAt(this, tx);
 			}
 			tick = (tick + 1) % ScaleTicksPerLabel;
 			// does this one get a label?
 			if (tick === 0) {// && tx > 20) {
 				if ((tx + Protein.minXDist) < lastTickX) {
-					scaleLabelAt(res, scaleGroup, tx);
+					scaleLabelAt(this, res, tx);
 				}
 			}
 		}
@@ -518,17 +515,16 @@ function getScaleGroup(protein) {
 			seqLabel.setAttribute("y", 3);
 			seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
 			seqLabelGroup.appendChild(seqLabel);
-			protein.scaleLabels.push(seqLabel);
+			this.scaleLabels.push(seqLabel);
 			scaleGroup.appendChild(seqLabelGroup);
 		}
 	}
-	scaleLabelAt(protein.size, scaleGroup, lastTickX);
+	scaleLabelAt(this, this.size, lastTickX);
 	if (pixPerRes > 8) {
-		tickAt(scaleGroup, lastTickX);
+		tickAt(this, lastTickX);
 	}
-	return scaleGroup;
 	
-	function scaleLabelAt(text, group, tickX) {
+	function scaleLabelAt(self, text, tickX) {
 		var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
 		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
 		var scaleLabel = document.createElementNS(xiNET.svgns, "text");
@@ -540,18 +536,18 @@ function getScaleGroup(protein) {
 		scaleLabel.setAttribute("y", Protein.STICKHEIGHT + 4);
 		scaleLabel.appendChild(document.createTextNode(text));
 		scaleLabelGroup.appendChild(scaleLabel);
-		protein.scaleLabels.push(scaleLabel);
-		group.appendChild(scaleLabelGroup);
+		self.scaleLabels.push(scaleLabel);
+		self.ticks.appendChild(scaleLabelGroup);
 	}
 
-	function tickAt(group, tickX) {
-		var mayt = document.createElementNS(xiNET.svgns, "line");
-		mayt.setAttribute("x1", tickX);
-		mayt.setAttribute("y1", 5);//(-Protein.STICKHEIGHT / 2) * 0.75);
-		mayt.setAttribute("x2", tickX);
-		mayt.setAttribute("y2", 10);//((-Protein.STICKHEIGHT / 2) + Protein.STICKHEIGHT) * 0.75);
-		mayt.setAttribute("stroke", "black");
-		group.appendChild(mayt);
+	function tickAt(self, tickX) {
+		var tick = document.createElementNS(xiNET.svgns, "line");
+		tick.setAttribute("x1", tickX);
+		tick.setAttribute("y1", 5);
+		tick.setAttribute("x2", tickX);
+		tick.setAttribute("y2", 10);
+		tick.setAttribute("stroke", "black");
+		self.ticks.appendChild(tick);
 	}
 };
 
@@ -655,7 +651,13 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		yInterpol = d3.interpolate(this.y, svgP.y);
 	}	
 	
-	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4);
+	var self = this;
+	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4)
+				.each("end", 
+					function () {
+						self.upperGroup.removeChild(self.ticks);
+					}
+				);
 	
 	d3.select(this.highlight).transition()
 		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
@@ -967,9 +969,8 @@ Protein.prototype.toStick = function() {
 		}
 	}
 
-    this.ticks = getScaleGroup(this);
-    d3.select(this.ticks).attr("opacity", 0);
-    this.upperGroup.appendChild(this.ticks);
+	d3.select(this.ticks).attr("opacity", 0);
+    this.setScaleGroup();
     d3.select(this.ticks).transition().attr("opacity", 1)
 		.delay(Protein.transitionTime * 0.8).duration(Protein.transitionTime / 2);
 };
