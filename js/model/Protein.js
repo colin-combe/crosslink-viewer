@@ -684,6 +684,10 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 						var selectLine = d3.select(residueLink.line);
 						selectLine.attr("d",this.getResidueLinkPath(residueLink));
 						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							.duration(Protein.transitionTime);	
+						var highlightLine = d3.select(residueLink.highlightLine);
+						highlightLine.attr("d",this.getResidueLinkPath(residueLink));
+						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
 							.duration(Protein.transitionTime);					
 			}
 		}

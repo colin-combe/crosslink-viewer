@@ -100,74 +100,76 @@ ResidueLink.prototype.getToProtein = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-		andAlternatives = false;
-    }
-    if (this.shown) {
-        if (show) {
-			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
-			var fromPeptides = [], toPeptides = [];
-			var filteredMatches = this.getFilteredMatches();
-			var fmc = filteredMatches.length;
-			for (var m = 0; m < fmc; m++) {
+	if (!this.proteinLink.fromProtein.busy && !this.proteinLink.toProtein.busy) { 
+		if (typeof andAlternatives === 'undefined') {
+			andAlternatives = false;
+		}
+		if (this.shown) {
+			if (show) {
+				this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+				this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
+				var fromPeptides = [], toPeptides = [];
+				var filteredMatches = this.getFilteredMatches();
+				var fmc = filteredMatches.length;
+				for (var m = 0; m < fmc; m++) {
+					var match = this.matches[m];
+					var rc = match.residueLinks.length;
+					for (var rl = 0; rl < rc; rl++) {
+						//TODO - yes, fix this hack, its the 'ends switched' problem, see Match.js
+						var resLink = match.residueLinks[rl][0];	
+						if (resLink == this){
+							var endsSwitched = match.residueLinks[rl][1];
+							if (endsSwitched === false){
+								var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
+								var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
+								var toPepStart = (this.toResidue - match.linkPos2); 
+								var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
+							} else {
+								var fromPepStart = (this.fromResidue - match.linkPos2); 
+								var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
+								var toPepStart = (this.toResidue - match.linkPos1); 
+								var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
+							} 
+							
+							fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+							toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
+							
+						}	
+					}
+				}
+				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
+				if (this.proteinLink.toProtein !== null) {
+					this.proteinLink.toProtein.showPeptides(toPeptides);  
+				}			
+			} else {
+				this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+				if (this.isSelected == false) {
+					this.highlightLine.setAttribute("stroke-opacity", "0");
+				}
+				this.proteinLink.fromProtein.removePeptides();  
+				if (this.proteinLink.toProtein !== null) {
+						this.proteinLink.toProtein.removePeptides();  	
+				}		
+			}
+		}
+		if (andAlternatives && this.ambig) {
+			//TODO: we want to highlight smallest possible set of alternatives?
+			var mc = this.matches.length;
+			for (var m = 0; m < mc; m++) {
 				var match = this.matches[m];
-				var rc = match.residueLinks.length;
-				for (var rl = 0; rl < rc; rl++) {
-					//TODO - yes, fix this hack, its the 'ends switched' problem, see Match.js
-					var resLink = match.residueLinks[rl][0];	
-					if (resLink == this){
-						var endsSwitched = match.residueLinks[rl][1];
-						if (endsSwitched === false){
-							var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
-							var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
-							var toPepStart = (this.toResidue - match.linkPos2); 
-							var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
-						} else {
-							var fromPepStart = (this.fromResidue - match.linkPos2); 
-							var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
-							var toPepStart = (this.toResidue - match.linkPos1); 
-							var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
-						} 
-						
-						fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
-						toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
-						
-					}	
+				if (match.isAmbig()) {
+					var rc = match.residueLinks.length;
+					for (var rl = 0; rl < rc; rl++) {
+						var resLink = match.residueLinks[rl][0];
+					 //   if (resLink.isSelected == false) { //not right
+							resLink.showHighlight(show, false);
+							resLink.proteinLink.showHighlight(show, false);
+					 //}
+					}
 				}
 			}
-			this.proteinLink.fromProtein.showPeptides(fromPeptides);  
-			if (this.proteinLink.toProtein !== null) {
-				this.proteinLink.toProtein.showPeptides(toPeptides);  
-			}			
-        } else {
-			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			if (this.isSelected == false) {
-				this.highlightLine.setAttribute("stroke-opacity", "0");
-			}
-           	this.proteinLink.fromProtein.removePeptides();  
-			if (this.proteinLink.toProtein !== null) {
-					this.proteinLink.toProtein.removePeptides();  	
-			}		
-        }
-    }
-    if (andAlternatives && this.ambig) {
-        //TODO: we want to highlight smallest possible set of alternatives?
-        var mc = this.matches.length;
-        for (var m = 0; m < mc; m++) {
-            var match = this.matches[m];
-            if (match.isAmbig()) {
-                var rc = match.residueLinks.length;
-                for (var rl = 0; rl < rc; rl++) {
-                    var resLink = match.residueLinks[rl][0];
-                 //   if (resLink.isSelected == false) { //not right
-						resLink.showHighlight(show, false);
-						resLink.proteinLink.showHighlight(show, false);
-				 //}
-                }
-            }
-        }
-    }
+		}
+	}
 };
 
 ResidueLink.prototype.setSelected = function(select) {
