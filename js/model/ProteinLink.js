@@ -75,7 +75,6 @@ ProteinLink.prototype.initSVG = function() {
     this.line.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    //TODO: problem here for big data sets - temp hack, remove some mouse listeners
     this.line.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
@@ -86,11 +85,9 @@ ProteinLink.prototype.initSVG = function() {
         self.mouseDown(evt);
     };
     this.highlightLine.onmouseover = function(evt) {
-        //        this.xlv.setTooltip(this.tooltip);
         self.mouseOver(evt);
     };
     this.highlightLine.onmouseout = function(evt) {
-        //         this.xlv.hideTooltip();
         self.mouseOut(evt);
     };
     this.fatLine.onmousedown = function(evt) {
@@ -117,7 +114,7 @@ ProteinLink.prototype.getToProtein = function() {
 };
 ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false;//TODO: tEMP HACK
+        andAlternatives = false;
     }
     if (this.shown) {
         if (show) {
@@ -308,7 +305,7 @@ ProteinLink.prototype.getFilteredMatches = function() {
 };
 
 ProteinLink.prototype.check = function() {
-	//currently no represntation of monolinks at proteinLink level (hence || this.toProtein === null)
+	//currently no representation of monolinks at proteinLink level (hence checks for this.toProtein !== null)
 	if (this.fromProtein.isParked || (this.toProtein !== null && this.toProtein.isParked)) {
         this.hide();
         return false;
@@ -414,13 +411,12 @@ ProteinLink.prototype.check = function() {
 					showedResResLink = true;
 				}
 			}
-			//fix this? - always returning true if one end is stick
-			return showedResResLink;
+			return showedResResLink; //is this most sensible thing to return? Or false becuase ProteinLink was not shown? 
 		}
 	}
 };
+
 ProteinLink.prototype.dashedLine = function(dash) {
-    //TODO: oops, bit of a hack..
     //~ if (typeof this.line === 'undefined'){
         //~ this.initSVG();
     //~ }
@@ -510,7 +506,7 @@ ProteinLink.prototype.setLineCoordinates = function(interactor) {
     if (interactor.x == null || interactor.y == null) {
         return;
     }
-	//if not thiser modified pep
+	//if not linker modified pep
 	if (this.getToProtein() !== null){
 		//don't waste time changing DOM if this not visible
 		if (this.shown) {

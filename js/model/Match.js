@@ -8,10 +8,12 @@
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
         id, score, xlvController, 
         //the following attributes are optional
-        linkPos1, linkPos2, pepSeq1, pepSeq2, autovalidated, validated, rejected){
+        linkPos1, linkPos2, pepSeq1, pepSeq2, autovalidated, validated, rejected, dataSetId){
 	this.xlv = xlvController;
     this.residueLinks = new Array();
     this.id = id.toString().trim();
+  	//for comparison of different data sets (for mathieu)
+  	this.dataSetId = dataSetId;
   	
   	this.type; //0 = mono, 1 = loop, 2 = cross-link 			
     

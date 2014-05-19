@@ -289,6 +289,10 @@ ResidueLink.prototype.check = function(filter) {
         }
     }
     var filteredMatches = this.getFilteredMatches();
+    
+    //mathieu - filteredMatches is an array of Match objects, 
+    // you can check aMatch.dataSetId to find out which data set each match belongs to
+    
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
         this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue

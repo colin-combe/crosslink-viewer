@@ -242,9 +242,9 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 //Positions are one based
 xiNET.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
         pep2_protIDs, pep2_positions,
-        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected) {
+        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId) { //dataSetId param added for mathieu
     var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected);
+            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, datasSetId);
     this.matches.set(id, match);
     return match;
 };
