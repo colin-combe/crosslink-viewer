@@ -273,8 +273,8 @@ Protein.prototype.toJSON = function() {
         form: this.form,
         stickZoom: this.stickZoom,
         parked: this.isParked,
-        flipped: this.isFlipped,
-        annot: this.customAnnotations
+        flipped: this.isFlipped//,
+        //annot: this.customAnnotations
     };
 };
 

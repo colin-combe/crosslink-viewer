@@ -264,37 +264,40 @@ xiNET.Controller.prototype.addMatches = function(matches) {
 //TODO: make start and end res last args
 xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
     var protein = this.proteins.get(protId);
-    
-    //~ var protCount = prots.length;
-    //~ for (var p = 0; p < protCount; p++) {
-        //~ var protein = prots[p];
-        //~ if (protein.name == protName) {
+	//lets just check a few things here...
+	// we're using human (starts at 1) numbering
+	if (startRes == null && endRes == null) {
+		startRes = 1;
+		endRes = protein.size;
+	}
+	else if (startRes == null)
+		startRes = endRes;
+	else if (endRes == null)
+		endRes = startRes;
 
-            //lets just check a few things here...
-            // we're using human (starts at 1) numbering
-            if (startRes == null && endRes == null) {
-                startRes = 1;
-                endRes = protein.size;
-            }
-            else if (startRes == null)
-                startRes = endRes;
-            else if (endRes == null)
-                endRes = startRes;
+	if (startRes > endRes) {
+		var temp = startRes;
+		startRes = endRes;
+		endRes = temp;
+	}
 
-            if (startRes > endRes) {
-                var temp = startRes;
-                startRes = endRes;
-                endRes = temp;
-            }
+	var annotation = new Annotation(annotName, startRes, endRes, colour);
+	if (protein.customAnnotations == null) {
+		protein.customAnnotations = new Array();
+	}
+	protein.customAnnotations.push(annotation);
+	protein.setPositionalFeatures(protein.customAnnotations);
+}
 
-            var annotation = new Annotation(annotName, startRes, endRes, colour);
-            if (protein.customAnnotations == null) {
-                protein.customAnnotations = new Array();
-            }
-            protein.customAnnotations.push(annotation);
-            protein.setPositionalFeatures(protein.customAnnotations);
-        //~ }
-    //~ }
+xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
+    var protein = this.proteins.get(protId);  
+    var protCount = prots.length;
+    for (var p = 0; p < protCount; p++) {
+        var protein = prots[p];
+        if (protein.name == protName) {
+            this.addAnnotation(protein.id, annotName, startRes, endRes, colour);
+        }
+    }
 }
 
 // add all matches with single call, arg is an array of arrays
@@ -457,13 +460,13 @@ xiNET.Controller.prototype.loadLayout = function() {
         var protein = this.proteins.get(prot);
         if (protein !== undefined) {
             protein.setPosition(protState["x"], protState["y"]);
-            //~ protein.toStick();
-            if (typeof protState.annot !== 'undefined' && protState.annot != null) {
-                if (protState.annot.length > 0) {
-                    protein.customAnnotations = protState.annot;
-                    protein.setPositionalFeatures(protein.customAnnotations);
-                }
-            }
+            // protein.toStick();
+            //~ if (typeof protState.annot !== 'undefined' && protState.annot != null) {
+                //~ if (protState.annot.length > 0) {
+                    //~ protein.customAnnotations = protState.annot;
+                    //~ protein.setPositionalFeatures(protein.customAnnotations);
+                //~ }
+            //~ }
             if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
                 protein.toStick();
             }
@@ -489,9 +492,9 @@ xiNET.Controller.prototype.loadLayout = function() {
             if (protState["flipped"]) { //TODO: fix this
                 protein.toggleFlipped(); // change to setFlipped(protState["flipped"])
             }
-            if (protState["processedDAS"]) {
-                protein.processedDAS = d3.map(protState["processedDAS"]);
-            }
+            //~ if (protState["processedDAS"]) {
+                //~ protein.processedDAS = d3.map(protState["processedDAS"]);
+            //~ }
             this.proteinLower.appendChild(protein.lowerGroup);
             this.proteinUpper.appendChild(protein.upperGroup);
         }
