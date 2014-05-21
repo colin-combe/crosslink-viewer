@@ -290,7 +290,7 @@ xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes,
 }
 
 xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
-    var protein = this.proteins.get(protId);  
+    var prots = this.proteins.values(); 
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
