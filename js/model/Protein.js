@@ -505,18 +505,19 @@ Protein.prototype.setScaleGroup = function() {
 			}
 		}
 		if (pixPerRes > 8) {
+			alert("!!");
 			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
-			seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
+			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
 			var seqLabel = document.createElementNS(xiNET.svgns, "text");
 			seqLabel.setAttribute('font-family', "'Courier New', monospace");
 			seqLabel.setAttribute('font-size', '10px');
 			seqLabel.setAttribute("text-anchor", "middle");
 			seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
 			seqLabel.setAttribute("y", 3);
-			seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
+			seqLabel.appendChild(document.createTextNode(this.sequence[res - 1]));
 			seqLabelGroup.appendChild(seqLabel);
 			this.scaleLabels.push(seqLabel);
-			scaleGroup.appendChild(seqLabelGroup);
+			this.ticks.appendChild(seqLabelGroup);
 		}
 	}
 	scaleLabelAt(this, this.size, lastTickX);
