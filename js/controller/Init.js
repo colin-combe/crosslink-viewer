@@ -467,24 +467,27 @@ xiNET.Controller.prototype.loadLayout = function() {
                     //~ protein.setPositionalFeatures(protein.customAnnotations);
                 //~ }
             //~ }
+            
+            //~ if (protState["form"] === 1) {
+                if (typeof protState["stickZoom"] !== 'undefined') {
+                    protein.stickZoom = protState["stickZoom"];
+                    //~ protein.scale();
+                }
+                //~ protein.setRotation(protein.rotation);
+            //~ }
+            
+            if (typeof protState['rot'] !== 'undefined') {
+                protein.rotation = protState["rot"];
+            }
+
             if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
                 protein.toStick();
             }
             else {
                 protein.toBlob();
             }
-            if (typeof protState['rot'] !== 'undefined') {
-                protein.rotation = protState["rot"];
-            }
-
-            if (protState["form"] === 1) {
-                if (typeof protState["stickZoom"] !== 'undefined' && protState["stickZoom"] !== 1) {
-                    protein.stickZoom = protState["stickZoom"];
-                    protein.scale();
-                }
-                protein.setRotation(protein.rotation);
-            }
-            protein.setAllLineCoordinates();// watch out for this
+            
+			protein.setAllLineCoordinates();// watch out for this
 
             if (typeof protState["parked"] !== 'undefined') {
                 protein.setParked(protState["parked"]);
