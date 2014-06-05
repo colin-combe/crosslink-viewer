@@ -505,7 +505,6 @@ Protein.prototype.setScaleGroup = function() {
 			}
 		}
 		if (pixPerRes > 8) {
-			alert("!!");
 			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
 			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
 			var seqLabel = document.createElementNS(xiNET.svgns, "text");
