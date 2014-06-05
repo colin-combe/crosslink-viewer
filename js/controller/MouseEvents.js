@@ -288,7 +288,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 				link.hidden = false;
 			}
 			this.checkLinks();
-		} else if (this.state !== xiNET.Controller.PANNING && evt.ctrlKey === false) {
+		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
 			this.clearSelection();
 		}
 
