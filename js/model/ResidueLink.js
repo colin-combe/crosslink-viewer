@@ -100,7 +100,7 @@ ResidueLink.prototype.getToProtein = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
-	if (!this.proteinLink.fromProtein.busy && !this.proteinLink.toProtein.busy) { 
+	if (!this.proteinLink.fromProtein.busy && (!this.proteinLink.toProtein || !this.proteinLink.toProtein.busy)) { 
 		if (typeof andAlternatives === 'undefined') {
 			andAlternatives = false;
 		}
