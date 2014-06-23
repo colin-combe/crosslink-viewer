@@ -1025,6 +1025,7 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		
 		var angle;
 		if (residueLink.intraMolecular === true){
+			
 			var curveMidX = x1 + ((x2 - x1) / 2);
 			arcStart = [ curveMidX, height - arcRadius];
 			arcEnd =  [ curveMidX, height - arcRadius];

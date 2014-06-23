@@ -112,30 +112,15 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 				var filteredMatches = this.getFilteredMatches();
 				var fmc = filteredMatches.length;
 				for (var m = 0; m < fmc; m++) {
-					var match = this.matches[m];
-					var rc = match.residueLinks.length;
-					for (var rl = 0; rl < rc; rl++) {
-						//TODO - yes, fix this hack, its the 'ends switched' problem, see Match.js
-						var resLink = match.residueLinks[rl][0];	
-						if (resLink == this){
-							var endsSwitched = match.residueLinks[rl][1];
-							if (endsSwitched === false){
-								var fromPepStart = (this.fromResidue - match.linkPos1);//yes.. do not add 1, want start of residue letter 
-								var fromPepLength = (match.pepSeq1)? match.pepSeq1.length : 0; 
-								var toPepStart = (this.toResidue - match.linkPos2); 
-								var toPepLength = (match.pepSeq2)? match.pepSeq2.length : 0;
-							} else {
-								var fromPepStart = (this.fromResidue - match.linkPos2); 
-								var fromPepLength = (match.pepSeq2)? match.pepSeq2.length : 0; 
-								var toPepStart = (this.toResidue - match.linkPos1); 
-								var toPepLength = (match.pepSeq1)? match.pepSeq1.length : 0;
-							} 
+					var match = filteredMatches[m][0];
 							
-							fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
-							toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
-							
-						}	
-					}
+					var fromPepStart = filteredMatches[m][1] - 1;
+					var fromPepLength = filteredMatches[m][2];
+					var toPepStart = filteredMatches[m][3] - 1;
+					var toPepLength = filteredMatches[m][4];
+					
+					fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+					toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 				}
 				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
 				if (this.proteinLink.toProtein !== null) {
@@ -156,11 +141,11 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 			//TODO: we want to highlight smallest possible set of alternatives?
 			var mc = this.matches.length;
 			for (var m = 0; m < mc; m++) {
-				var match = this.matches[m];
+				var match = this.matches[m][0];
 				if (match.isAmbig()) {
 					var rc = match.residueLinks.length;
 					for (var rl = 0; rl < rc; rl++) {
-						var resLink = match.residueLinks[rl][0];
+						var resLink = match.residueLinks[rl];
 					 //   if (resLink.isSelected == false) { //not right
 							resLink.showHighlight(show, false);
 							resLink.proteinLink.showHighlight(show, false);
@@ -236,7 +221,7 @@ ResidueLink.prototype.showID = function() {
 		scoresTable += "<th>Link Pos.2</th>";
 		scoresTable += "</tr>";
 		for (var j = 0; j < c; j++) {
-			scoresTable += matches[j].toTableRow();
+			scoresTable += matches[j][0].toTableRow();
 		}
 		scoresTable += "</table><p>&nbsp;</p>";
 		
@@ -252,9 +237,9 @@ ResidueLink.prototype.getFilteredMatches = function() {
     var filteredMatches = new Array();
     var count = this.matches.length;
     for (var i = 0; i < count; i++) {
-        var match = this.matches[i];
+        var match = this.matches[i][0];
         if (match.meetsFilterCriteria()) {
-            filteredMatches.push(match);
+            filteredMatches.push(this.matches[i]);
             if (match.isAmbig() === false) {
                 this.ambig = false;
             }

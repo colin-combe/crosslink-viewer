@@ -135,11 +135,11 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
             var resLink = this.residueLinks.values()[rl];
             var mc = resLink.matches.length;
             for (var m = 0; m < mc; m++) {
-                var match = resLink.matches[m];
+                var match = resLink.matches[m][0];
                 if (match.isAmbig()) {
                     var mrc = match.residueLinks.length;
                     for (var mrl = 0; mrl < mrc; mrl++) {
-                        var resLink = match.residueLinks[mrl][0];
+                        var resLink = match.residueLinks[mrl];
                         if (resLink.shown === true) {
 							if (resLink.isSelected == false) {
 								resLink.showHighlight(show, false);
@@ -210,7 +210,7 @@ ProteinLink.prototype.showID = function() {
 			var resLinkMeetsCriteria = false;
 			var mCount = resLink.matches.length;
 			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m];
+				var match = resLink.matches[m][0];
 				if (match.meetsFilterCriteria()) {
 					if (resLinkMeetsCriteria === false) {
 						resLinkMeetsCriteria = true;
@@ -219,7 +219,7 @@ ProteinLink.prototype.showID = function() {
 					filteredMatches.set(match.id);
 					if (match.isAmbig()) {
 						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
+							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
 						}
 					}
 					else {
@@ -275,7 +275,7 @@ ProteinLink.prototype.showID = function() {
 			//~ scoresTable += "<th>Link Pos.2</th>";
 			//~ scoresTable += "</tr>";
 			for (var j = 0; j < c; j++) {
-			   scoresTable += matches[j].toTableRow();
+			   scoresTable += matches[j][0].toTableRow();
 			}
 			//~ scoresTable += "</table><p>&nbsp;</p>";
 			//~ linkInfo += scoresTable;
@@ -348,7 +348,7 @@ ProteinLink.prototype.check = function() {
 			var resLinkMeetsCriteria = false;
 			var mCount = resLink.matches.length;
 			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m];
+				var match = resLink.matches[m][0];
 				if (match.meetsFilterCriteria()) {
 					if (match.hd === true) {
 						this.hd = true;
@@ -360,7 +360,7 @@ ProteinLink.prototype.check = function() {
 					filteredMatches.set(match.id);
 					if (match.isAmbig()) {
 						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl][0].proteinLink.id);
+							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
 						}
 					}
 					else {

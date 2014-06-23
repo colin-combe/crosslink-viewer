@@ -5,25 +5,28 @@
 //		
 //		Match.js
 
+// TODO: for historical reasons the order of the parameters 
+// to this function is not that logical - should reorder them.
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-        id, score, xlvController, 
-        //the following attributes are optional
-        linkPos1, linkPos2, pepSeq1, pepSeq2, autovalidated, validated, rejected, dataSetId){
-	this.xlv = xlvController;
-    this.residueLinks = new Array();
-    this.id = id.toString().trim();
-  	//for comparison of different data sets (for mathieu)
+        id, score, xlvController, linkPos1, linkPos2, 
+        //the following attributes are optional (also pep1_positions, pep2_positions and score in preceeding)
+         pepSeq1, pepSeq2, autovalidated, validated, rejected, dataSetId){
+	
+	this.id = id.toString().trim();
+  	this.residueLinks = new Array();//if the match is ambiguous it will relate to many residueLinks
+    this.xlv = xlvController;//reference to controlling xiNET.Controller object 
+    
+    //for comparison of different data sets (for mathieu)
   	this.dataSetId = dataSetId;
   	
-  	this.type; //0 = mono, 1 = loop, 2 = cross-link 			
-    
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
     
+    //score - leaves this.score undefined if !isNaN(parseInt(score)) 
     if (typeof score != 'undefined' && score){
 		score = parseFloat(score);
 		if (!isNaN(score)){
-			this.score = parseFloat(score);
+			this.score = score;
 			if (this.xlv.scores == null){
 					this.xlv.scores = {
 						'min':this.score,
@@ -39,6 +42,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
 	}
 	
+	//autovalidated - an attribute used internally by Rappsilber Lab, 
+	// but, hey, its another attribute you can filter on if you want  
 	if (typeof autovalidated != 'undefined' && autovalidated){
 		autovalidated = autovalidated.trim();
 		if (autovalidated !== ''){
@@ -50,6 +55,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			this.xlv.autoValidatedFound = true;
 		}
     }
+    
+    // used in Rappsilber Lab to record manual validation status
     if (typeof validated != 'undefined' && validated){
 		validated = validated.trim();
 		if (validated !== ''){
@@ -57,110 +64,116 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			this.xlv.manualValidatedFound = true;
 		}
 	}
-	if (typeof linkPos1 != 'undefined' && linkPos1) {
-		linkPos1 = parseInt(linkPos1);
-		if (!isNaN(linkPos1)){
-			this.linkPos1 = linkPos1;	
+	
+	//protein IDs
+	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
+	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
+
+	//tidy up IDs, leaves protIDs null if empty, 'n/a' or '-'
+	// forbidden characters are ,;'"
+	function sanitiseProteinIDs(protIDs){
+		if (typeof protIDs  != 'undefined' && protIDs){
+			protIDs = protIDs.toString().trim();
+			if (protIDs !== '' && protIDs !== '-' && protIDs !== 'n/a'){
+				// eliminate all forms of quotation mark
+				// - sooner or later their going to screw up javascript, prob whilst trying to generate>parse JSON
+				protIDs = protIDs.toString().replace(/(['"])/g, '');
+				protIDs = protIDs.split(/[;,]/);			
+				var protIDCount = protIDs.length
+				for (var p2 = 0; p2 < protIDCount; p2++ ){
+					protIDs[p2] = protIDs[p2].trim();
+				}		
+			}
+			else {
+				protIDs = null;
+			}
+		}
+		else {
+			protIDs = null;
+		}		
+		return protIDs;
+	}
+
+	//~ if (typeof linkPos1 != 'undefined' && linkPos1) {
+		//~ linkPos1 = parseInt(linkPos1);
+		//~ if (!isNaN(linkPos1)){
+			//~ this.linkPos1 = linkPos1;	
 			if (typeof pepSeq1 != 'undefined' && pepSeq1){
 				//TODO: collect modification info from lower case letters in peptide sequence
 				this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
 			}
-		}
+			else {
+				this.pepSeq1 = "";
+			}
+		//~ }
+	//~ }
+//~ 
+	//~ if (typeof linkPos2 != 'undefined' && linkPos2) {
+		//~ linkPos2 = parseInt(linkPos2);
+		//~ if (!isNaN(linkPos2)){
+			//~ this.linkPos2 = linkPos2;	
+			if (typeof pepSeq2 !== 'undefined' && pepSeq2){
+				this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
+			}
+			else {
+				this.pepSeq2 = "";
+			}
+		//~ }
+	//~ }	
+	
+	pep1_positions = sanitisePositions(pep1_positions);
+	pep2_positions = sanitisePositions(pep2_positions);
+	linkPos1 = sanitisePositions(linkPos1);
+	linkPos2 = sanitisePositions(linkPos2);
+	
+	
+	//following deals with situation where peptide position/sequence info not supplied
+	if (pep1_positions === null){
+		pep1_positions = linkPos1;
+		linkPos1 = null;
+	//~ }
+	//~ if (pep2_positions === null) {
+		pep2_positions = linkPos2;
+		linkPos2 = null;
 	}
 
-	if (typeof linkPos2 != 'undefined' && linkPos2) {
-		linkPos2 = parseInt(linkPos2);
-		if (!isNaN(linkPos2)){
-			this.linkPos2 = linkPos2;	
-			if (typeof pepSeq2 !== 'undefined' && pepSeq2){
-				this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');;	
+	// tidy up postions (peptide and link positions), 
+	// leaves positions null if empty, 'n/a' or '-'
+	// forbidden characters are ,;'"
+	function sanitisePositions(positions){
+		if (typeof positions  != 'undefined' && positions){
+			positions = positions.toString().trim();
+			if (positions !== '' && positions !== '-' && positions !== 'n/a'){
+				// eliminate all forms of quotation mark 
+				positions = positions.toString().replace(/(['"])/g, '');
+				//; or , as seperator
+				positions = positions.split(/[;,]/);	
+				var posCount = positions.length;
+				for (var i2 = 0; i2 < posCount; i2++ ){
+					var pos = parseInt(positions[i2]);
+					if (isNaN(pos)) {
+						console.debug('Absurd non-numerical position. Match id:' 
+							 + this.id + ". So-called 'position':" + positions[i2]);
+					}
+					else {
+						positions[i2] = pos;
+					}
+				}			
+			}
+			else {
+				positions = null;
 			}
 		}
-	}	
-	
-	if (typeof pep1_protIDs  != 'undefined' && pep1_protIDs){
-		pep1_protIDs = pep1_protIDs.toString().trim();
-		if (pep1_protIDs !== '' && pep1_protIDs !== '-' && pep1_protIDs !== 'n/a'){
-			// eliminate all forms of quotation mark
-			pep1_protIDs = pep1_protIDs.toString().replace(/(['"])/g, '');
-			pep1_protIDs = pep1_protIDs.split(/[;,]/);			
-			var pep1ProtIDCount = pep1_protIDs.length
-			for (var p1 = 0; p1 < pep1ProtIDCount; p1++ ){
-				pep1_protIDs[p1] = pep1_protIDs[p1].trim();
-			}			
-		}
 		else {
-			pep1_protIDs = null;
-		}
-	}
-	else {
-		pep1_protIDs = null;
-	}
-
-	if (typeof pep2_protIDs  != 'undefined' && pep2_protIDs){
-		pep2_protIDs = pep2_protIDs.toString().trim();
-		if (pep2_protIDs !== '' && pep2_protIDs !== '-' && pep2_protIDs !== 'n/a'){
-			// eliminate all forms of quotation mark
-			pep2_protIDs = pep2_protIDs.toString().replace(/(['"])/g, '');
-			pep2_protIDs = pep2_protIDs.split(/[;,]/);			
-			var pep2ProtIDCount = pep2_protIDs.length
-			for (var p2 = 0; p2 < pep2ProtIDCount; p2++ ){
-				pep2_protIDs[p2] = pep2_protIDs[p2].trim();
-			}		
-		}
-		else {
-			pep2_protIDs = null;
-		}
-	}
-	else {
-		pep2_protIDs = null;
+			positions = null;
+		}	
+		return positions;
 	}
 	
-	if (typeof pep1_positions  != 'undefined' && pep1_positions){
-		pep1_positions = pep1_positions.toString().trim();
-		if (pep1_positions !== '' && pep1_positions !== '-' && pep1_positions !== 'n/a'){
-			// eliminate all forms of quotation mark
-			pep1_positions = pep1_positions.toString().replace(/(['"])/g, '');
-			pep1_positions = pep1_positions.split(/[;,]/);
-			var pep1PosCount = pep1_positions.length;
-			for (var i1 = 0; i1 < pep1PosCount; i1++ ){
-				pep1_positions[i1] = parseInt(pep1_positions[i1]);
-				if (isNaN(pep1_positions[i1]) || pep1_positions[i1] < 1) {
-					throw { name: 'FatalError', message: 'Absurd non-numerical position or position < 1. Match id:' + this.id };
-				}
-			}			
-		}
-		else {
-			pep1_positions = null;
-		}
-	}
-	else {
-		pep1_positions = null;
-	}
-
-	if (typeof pep2_positions  != 'undefined' && pep2_positions){
-		pep2_positions = pep2_positions.toString().trim();
-		if (pep2_positions !== '' && pep2_positions !== '-' && pep2_positions !== 'n/a'){
-			// eliminate all forms of quotation mark
-			pep2_positions = pep2_positions.toString().replace(/(['"])/g, '');
-			pep2_positions = pep2_positions.split(/[;,]/);	
-			var pep2PosCount = pep2_positions.length;
-			for (var i2 = 0; i2 < pep2PosCount; i2++ ){
-				pep2_positions[i2] = parseInt(pep2_positions[i2]);
-				if (isNaN(pep2_positions[i2]) || pep2_positions[i2] < 1) {
-					throw { name: 'FatalError', message: 'Absurd non-numerical position or position < 1. Match id:' + this.id  };
-				}
-			}			
-		}
-		else {
-			pep2_positions = null;
-		}
-	}
-	else {
-		pep2_positions = null;
-	}
-
-	if (pep2_protIDs === null && (pep2_positions === null && typeof this.linkPos2 == 'undefined')){
+	//product type
+  	//0 = linker modified peptide (mono-link), 
+  	// 1 = internally linked peptide (loop-link), 2 = cross-link 			
+	if (pep2_protIDs === null && (pep2_positions === null && linkPos2 === null)){
 		this.type = 0;
 	}
 	else if (pep2_protIDs === null){
@@ -175,17 +188,16 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	
 	if (this.type === 0) { //its a linker modified peptide (mono-link) 
 		for (var i = 0; i < pep1_positions.length; i++) {
-			var iProt = i, jProt = j;
+			var iProt = i;
 			if (iProt >= pep1_protIDs.length) {
 				iProt = pep1_protIDs.length - 1;
 			}
 			p1ID = pep1_protIDs[iProt];
 			res1 = pep1_positions[i];
-			if (typeof this.linkPos1 != 'undefined') {
-				// * residue numbering starts at 1 *
-				res1 += this.linkPos1 - 1;
+			if (linkPos1 !== null){
+				res1 += linkPos1[0] - 1;
 			}
-			this.associateWithLink(p1ID, null, res1, null);		
+			this.associateWithLink(p1ID, null, res1, null, pep1_positions[i], this.pepSeq1.length, null, null);		
 		}		
 	} 
 	else if (this.type === 1){// its an internally linked peptide (loop-link)
@@ -209,44 +221,46 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			// * residue numbering starts at 1 *
 			res1 = pep1_positions[i];
 			res2 = (pep2_positions)? pep2_positions[i] : pep1_positions[i];
-			if (typeof this.linkPos1 != 'undefined') {
-				res1 += this.linkPos1 - 1;
+			if (linkPos1 !== null) {
+				res1 += linkPos1[0] - 1;
 			}
-			if (typeof this.linkPos1 != 'undefined') {
-				res2 += this.linkPos2 - 1;
+			if (linkPos2 !== null) {
+				res2 += linkPos2[0] - 1;
 			}
-			this.associateWithLink(p1ID, null, res1, res2);				
-		}			
+			this.associateWithLink(p1ID, null, res1, res2, pep1_positions[i], this.pepSeq1.length, null, null);				
+		}		
 	}
 	else { //its cross-linked peptides
 		//loop to produce all alternative linkage site combinations 
 		//(position1 count * position2 count alternative)
-		for (var i = 0; i < pep1_positions.length; i++) {
-			for (var j = 0; j < pep2_positions.length; j++) {
-				// allowed, but undocumneted:
-				// may be more residue positions than prot ids in the arrays
-				// ( = multiple positions in one protein, we use the last protein id encountered)
-				var iProt = i, jProt = j;
-				if (iProt >= pep1_protIDs.length) {
-					iProt = pep1_protIDs.length - 1;
-				}
-				if (jProt >= pep2_protIDs.length) {
-					jProt = pep2_protIDs.length - 1;
-				}
-				p1ID = pep1_protIDs[iProt].trim();
-				p2ID = pep2_protIDs[jProt].trim();
+		if (pep1_positions !== null) {
+			for (var i = 0; i < pep1_positions.length; i++) {
+				for (var j = 0; j < pep2_positions.length; j++) {
+					// allowed, but undocumneted:
+					// may be more residue positions than prot ids in the arrays
+					// ( = multiple positions in one protein, we use the last protein id encountered)
+					var iProt = i, jProt = j;
+					if (iProt >= pep1_protIDs.length) {
+						iProt = pep1_protIDs.length - 1;
+					}
+					if (jProt >= pep2_protIDs.length) {
+						jProt = pep2_protIDs.length - 1;
+					}
+					p1ID = pep1_protIDs[iProt].trim();
+					p2ID = pep2_protIDs[jProt].trim();
 
-				// * residue numbering starts at 1 *
-				res1 = pep1_positions[i] - 0;
-				res2 = pep2_positions[j] - 0;// U R HERE
-				if (typeof this.linkPos1 != 'undefined') {
-					res1 += (this.linkPos1 - 1);
+					// * residue numbering starts at 1 *
+					res1 = pep1_positions[i] - 0;
+					res2 = pep2_positions[j] - 0;
+					if (linkPos1 !== null) {
+						res1 += (linkPos1 - 1);
+					}
+					if (linkPos2 !== null) {
+						res2 += (linkPos2 - 1);
+					}
+					
+					this.associateWithLink(p1ID, p2ID, res1, res2, pep1_positions[i] - 0, this.pepSeq1.length, pep2_positions[j], this.pepSeq2.length);			
 				}
-				if (typeof this.linkPos2 != 'undefined') {
-					res2 += (this.linkPos2 - 1);
-				}
-				
-				this.associateWithLink(p1ID, p2ID, res1, res2);			
 			}
 		}
 	}
@@ -256,11 +270,13 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	this.overlap = [];
 	//if self link
     if (p1ID === p2ID) {
-		//if /*unambiguous*/ cross-link
+		//if /*unambiguous?*/ cross-link
         if (pep1_positions && pep2_positions ){
-			//~ && pep1_positions.length === 1 && pep2_positions.length === 1) {
+			//TODO: there could be some problems here to do with ambiguity - overlap may occur in different places
+			//putting unambniguous condition back in for time being
+			//&& pep1_positions.length === 1 && pep2_positions.length === 1) {
 			//if both peptide sequnces defined
-			if (typeof this.pepSeq1 !== 'undefined'	&& typeof this.pepSeq2 !== 'undefined') {
+			if (this.pepSeq1 !== ''	&& this.pepSeq2 !== '') {
 			
 				var pep1length = this.pepSeq1.length;
 				var pep2length = this.pepSeq2.length;
@@ -289,11 +305,13 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
     }	
 }
 	
-Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){	
+Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //following params may be undefined :-
+			pep1_start, pep1_length, pep2_start, pep2_length){	
 	// we don't want two different ID's, e.g. one thats "33-66" and one thats "66-33"
 	//following puts lower protein_ID first in link_ID
 	var proteinLinkID, fromProt, toProt;
-	//watch out for following - its a bit trixy 
+	
+	//TODO: tidy up following
 	if (p2ID === null) { //its  a loop link or mono link
 		fromProt = this.xlv.proteins.get(p1ID);
 		if (res2 === null){// its a monolink
@@ -316,6 +334,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){
 		toProt = this.xlv.proteins.get(p1ID);
 
 	}
+	
 	//get or create protein-protein link
 	var link = this.xlv.proteinLinks.get(proteinLinkID);
 	if (link === undefined) {
@@ -330,7 +349,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){
 			toProt.addLink(link);
 		}
 	}
-	// again, order id string by prot id or by residue if intra protein link
+	// again, order id string by prot id or by residue if self-link
 	var endsReversedInResLinkId = false;
 	var residueLinkID;
 	if (p1ID === p2ID || p2ID === null) {
@@ -355,7 +374,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){
 	if (resLink === undefined) {
 		//WATCH OUT - residues need to be in correct order
 		if (p1ID === p2ID) {
-			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {
+			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake?
 				resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
 			} else {
 				resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
@@ -378,12 +397,13 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2){
 	if (typeof resLink.matches === 'undefined' || resLink.matches == null){
 		resLink.matches = new Array(0);
 	}
-	resLink.matches.push(this);
-	//TODO: do something about this  - its horrible.
-	this.residueLinks.push([resLink, endsReversedInResLinkId]);	
+	if (endsReversedInResLinkId === false) {
+		resLink.matches.push([this, pep1_start, pep1_length, pep2_start, pep2_length]);
+	} else {
+		resLink.matches.push([this, pep2_start, pep2_length, pep1_start, pep1_length]);
+	}	
+	this.residueLinks.push(resLink);	
 }
-
-
 
 Match.prototype.meetsFilterCriteria = function() {
     if (this.xlv.ambigHidden && this.isAmbig()) {
