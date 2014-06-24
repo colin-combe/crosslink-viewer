@@ -236,19 +236,29 @@ ProteinLink.prototype.showID = function() {
 		if (filteredResLinkCount > 1){
 			 linkInfo += "s";
 		}
-		linkInfo += "</h5>";
+		linkInfo += ". " + filteredMatches.values().length + " matches.</h5>";
    
-		var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
+		var scoresTable = "<table><tr>";
+		
+		scoresTable += "<th>Id</th>";
+		scoresTable += "<th>Protein1</th>";
+		scoresTable += "<th>PepPos1</th>";
+		scoresTable += "<th>PepSeq1</th>";
+		scoresTable += "<th>LinkPos1</th>";
+		scoresTable += "<th>Protein2</th>";
+		scoresTable += "<th>PepPos2</th>";
+		scoresTable += "<th>PepSeq2</th>";
+		scoresTable += "<th>LinkPos2</th>";
+		
+		scoresTable += "<th>Score</th>";
+		
 		if (this.xlv.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}
 		if (this.xlv.manualValidatedFound === true){
 			scoresTable += "<th>Manual</th>";
 		}
-		scoresTable += "<th>Pep Seq.1</th>";
-		scoresTable += "<th>Link Pos.1</th>";
-		scoresTable += "<th>Pep Seq.2</th>";
-		scoresTable += "<th>Link Pos.2</th>";
+		
 		scoresTable += "</tr>";    
       for (var i = 0; i < filteredResLinkCount; i ++ ){
             var rl = filteredResLinks [i];

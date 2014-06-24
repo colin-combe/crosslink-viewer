@@ -94,49 +94,36 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		return protIDs;
 	}
 
-	//~ if (typeof linkPos1 != 'undefined' && linkPos1) {
-		//~ linkPos1 = parseInt(linkPos1);
-		//~ if (!isNaN(linkPos1)){
-			//~ this.linkPos1 = linkPos1;	
-			if (typeof pepSeq1 != 'undefined' && pepSeq1){
-				//TODO: collect modification info from lower case letters in peptide sequence
-				this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
-			}
-			else {
-				this.pepSeq1 = "";
-			}
-		//~ }
-	//~ }
-//~ 
-	//~ if (typeof linkPos2 != 'undefined' && linkPos2) {
-		//~ linkPos2 = parseInt(linkPos2);
-		//~ if (!isNaN(linkPos2)){
-			//~ this.linkPos2 = linkPos2;	
-			if (typeof pepSeq2 !== 'undefined' && pepSeq2){
-				this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
-			}
-			else {
-				this.pepSeq2 = "";
-			}
-		//~ }
-	//~ }	
+	if (typeof pepSeq1 != 'undefined'){
+		pepSeq1 = pepSeq1.trim();
+		if (pepSeq1){
+			this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
+		}
+		else{
+			this.pepSeq1 = null;
+		}	
+	}
+	else {
+		this.pepSeq1 = null;
+	}
+
+	if (typeof pepSeq2 !== 'undefined'){
+		pepSeq2 = pepSeq2.trim();
+		if (pepSeq2){
+			this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
+		} else {
+			this.pepSeq2 = null;
+		}
+	}
+	else {
+		this.pepSeq2 = null;
+	}
 	
 	pep1_positions = sanitisePositions(pep1_positions);
 	pep2_positions = sanitisePositions(pep2_positions);
 	linkPos1 = sanitisePositions(linkPos1);
 	linkPos2 = sanitisePositions(linkPos2);
 	
-	
-	//following deals with situation where peptide position/sequence info not supplied
-	if (pep1_positions === null){
-		pep1_positions = linkPos1;
-		linkPos1 = null;
-	//~ }
-	//~ if (pep2_positions === null) {
-		pep2_positions = linkPos2;
-		linkPos2 = null;
-	}
-
 	// tidy up postions (peptide and link positions), 
 	// leaves positions null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
@@ -183,59 +170,123 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		this.type = 2;
 	}
 
-	// the protein IDs and residue numers we eventually want to get
+	// the protein IDs and residue numers we eventually want to get:-
 	var p1ID, p2ID, res1, res2;
+	//used along the way:-
+	var iProt, jProt;
 	
 	if (this.type === 0) { //its a linker modified peptide (mono-link) 
-		for (var i = 0; i < pep1_positions.length; i++) {
-			var iProt = i;
-			if (iProt >= pep1_protIDs.length) {
-				iProt = pep1_protIDs.length - 1;
-			}
-			p1ID = pep1_protIDs[iProt];
-			res1 = pep1_positions[i];
-			if (linkPos1 !== null){
+		if (pep1_positions !== null) { 
+			for (var i = 0; i < pep1_positions.length; i++) {
+				iProt = i;
+				if (iProt >= pep1_protIDs.length) {
+					iProt = pep1_protIDs.length - 1;
+				}
+				p1ID = pep1_protIDs[iProt];
+				res1 = pep1_positions[i];
 				res1 += linkPos1[0] - 1;
-			}
-			this.associateWithLink(p1ID, null, res1, null, pep1_positions[i], this.pepSeq1.length, null, null);		
-		}		
+				this.associateWithLink(p1ID, null, res1, null, pep1_positions[i], this.pepSeq1.length, null, null);		
+			}		
+		}
+		else {
+			for (var i = 0; i < linkPos1.length; i++) {
+				iProt = i;
+				if (iProt >= pep1_protIDs.length) {
+					iProt = pep1_protIDs.length - 1;
+				}
+				p1ID = pep1_protIDs[iProt];
+				res1 = linkPos1[i];
+				this.associateWithLink(p1ID, null, res1, null, null, null, null, null);		
+			}		
+		}
 	} 
 	else if (this.type === 1){// its an internally linked peptide (loop-link)
-		//loop to produce all alternative linkage site combinations for loop links
-		for (var i = 0; i < pep1_positions.length; i++) {
-			//must be same number of alternatives for res 2 as for res1 in loop link
-			
-			// we allow following, though its not documented
-			// may be more residue positions than prot ids in the arrays
-			// ( = multiple positions in one protein)
-			var iProt = i;
-			if (iProt >= pep1_protIDs.length) {
-				iProt = pep1_protIDs.length - 1;
-			}
-			//~ if (jProt >= pep2_protIDs.length) {
-				//~ jProt = pep2_protIDs.length - 1;
-			//~ }
-			p1ID = pep1_protIDs[iProt];
-			//~ p2ID = p1ID;
+		if (pep1_positions !== null) { 
+			//loop to produce all alternative linkage site combinations for loop links
+			for (var i = 0; i < pep1_positions.length; i++) {
+				//must be same number of alternatives for res 2 as for res1 in loop link
+				
+				// we allow following, though its not documented
+				// may be more residue positions than prot ids in the arrays
+				// ( = multiple positions in one protein)
+				var iProt = i;
+				if (iProt >= pep1_protIDs.length) {
+					iProt = pep1_protIDs.length - 1;
+				}
+				p1ID = pep1_protIDs[iProt];
 
-			// * residue numbering starts at 1 *
-			res1 = pep1_positions[i];
-			res2 = (pep2_positions)? pep2_positions[i] : pep1_positions[i];
-			if (linkPos1 !== null) {
-				res1 += linkPos1[0] - 1;
-			}
-			if (linkPos2 !== null) {
-				res2 += linkPos2[0] - 1;
-			}
-			this.associateWithLink(p1ID, null, res1, res2, pep1_positions[i], this.pepSeq1.length, null, null);				
-		}		
+				// * residue numbering starts at 1 *
+				res1 = pep1_positions[i];
+				res2 = (pep2_positions)? pep2_positions[i] : pep1_positions[i];
+				if (linkPos1 !== null) {
+					res1 += linkPos1[0] - 1;
+				}
+				if (linkPos2 !== null) {
+					res2 += linkPos2[0] - 1;
+				}
+				this.associateWithLink(p1ID, null, res1, res2, pep1_positions[i], this.pepSeq1.length, null, null);				
+			}		
+		}
+		else {
+			for (var i = 0; i < linkPos1.length; i++) {
+				//must be same number of alternatives for res 2 as for res1 in loop link
+				
+				// we allow following, though its not documented
+				// may be more residue positions than prot ids in the arrays
+				// ( = multiple positions in one protein)
+				var iProt = i;
+				if (iProt >= pep1_protIDs.length) {
+					iProt = pep1_protIDs.length - 1;
+				}
+				p1ID = pep1_protIDs[iProt];
+
+				// * residue numbering starts at 1 *
+				res1 = linkPos1[0];
+				res2 = linkPos2[0];
+				this.associateWithLink(p1ID, null, res1, res2, null, null, null, null);				
+			}		
+		}
 	}
 	else { //its cross-linked peptides
-		//loop to produce all alternative linkage site combinations 
-		//(position1 count * position2 count alternative)
-		if (pep1_positions !== null) {
-			for (var i = 0; i < pep1_positions.length; i++) {
-				for (var j = 0; j < pep2_positions.length; j++) {
+		if (pep1_positions !== null) { 
+			//loop to produce all alternative linkage site combinations 
+			//(position1 count * position2 count alternative)
+			if (pep1_positions !== null) {
+				for (var i = 0; i < pep1_positions.length; i++) {
+					for (var j = 0; j < pep2_positions.length; j++) {
+						// allowed, but undocumneted:
+						// may be more residue positions than prot ids in the arrays
+						// ( = multiple positions in one protein, we use the last protein id encountered)
+						var iProt = i, jProt = j;
+						if (iProt >= pep1_protIDs.length) {
+							iProt = pep1_protIDs.length - 1;
+						}
+						if (jProt >= pep2_protIDs.length) {
+							jProt = pep2_protIDs.length - 1;
+						}
+						p1ID = pep1_protIDs[iProt];
+						p2ID = pep2_protIDs[jProt];
+
+						// * residue numbering starts at 1 *
+						res1 = pep1_positions[i] - 0;
+						res2 = pep2_positions[j] - 0;
+						if (linkPos1 !== null) {
+							res1 += (linkPos1 - 1);
+						}
+						if (linkPos2 !== null) {
+							res2 += (linkPos2 - 1);
+						}
+						
+						this.associateWithLink(p1ID, p2ID, res1, res2, pep1_positions[i] - 0, this.pepSeq1.length, pep2_positions[j], this.pepSeq2.length);			
+					}
+				}
+			}
+		}
+		else {
+			//loop to produce all alternative linkage site combinations 
+			//(position1 count * position2 count alternative)
+			for (var i = 0; i < linkPos1.length; i++) {
+				for (var j = 0; j < linkPos2.length; j++) {
 					// allowed, but undocumneted:
 					// may be more residue positions than prot ids in the arrays
 					// ( = multiple positions in one protein, we use the last protein id encountered)
@@ -246,37 +297,29 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 					if (jProt >= pep2_protIDs.length) {
 						jProt = pep2_protIDs.length - 1;
 					}
-					p1ID = pep1_protIDs[iProt].trim();
-					p2ID = pep2_protIDs[jProt].trim();
+					p1ID = pep1_protIDs[iProt];
+					p2ID = pep2_protIDs[jProt];
 
 					// * residue numbering starts at 1 *
-					res1 = pep1_positions[i] - 0;
-					res2 = pep2_positions[j] - 0;
-					if (linkPos1 !== null) {
-						res1 += (linkPos1 - 1);
-					}
-					if (linkPos2 !== null) {
-						res2 += (linkPos2 - 1);
-					}
-					
-					this.associateWithLink(p1ID, p2ID, res1, res2, pep1_positions[i] - 0, this.pepSeq1.length, pep2_positions[j], this.pepSeq2.length);			
+					res1 = linkPos1[i] - 0;
+					res2 = linkPos2[j] - 0;				
+					this.associateWithLink(p1ID, p2ID, res1, res2, null, null, null, null);			
 				}
 			}
 		}
 	}
 	
-	//identify homodimers: if peptides overlap its a homodimer
-	this.hd = false;
-	this.overlap = [];
+	//identify homodimers: if peptides overlap its a homodimer, this bit of code is not quite finished
+	this.hd = false;//not that simple - single match may possibly be both homodimer link and inter protein link (if ambiguous)
+	this.overlap = [];//again, not that simple - see note below
 	//if self link
     if (p1ID === p2ID) {
 		//if /*unambiguous?*/ cross-link
-        if (pep1_positions && pep2_positions ){
-			//TODO: there could be some problems here to do with ambiguity - overlap may occur in different places
-			//putting unambniguous condition back in for time being
+       // if (pep1_positions && pep2_positions ){
+			//TODO: there is some problems here to do with ambiguity - overlap may occur in different places
 			//&& pep1_positions.length === 1 && pep2_positions.length === 1) {
 			//if both peptide sequnces defined
-			if (this.pepSeq1 !== ''	&& this.pepSeq2 !== '') {
+			if (this.pepSeq1 && this.pepSeq2) {
 			
 				var pep1length = this.pepSeq1.length;
 				var pep2length = this.pepSeq2.length;
@@ -301,11 +344,20 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				this.overlap[0] = res1 -1;
 				this.overlap[1] = res2;
 			}
-		}//end if self link
-    }	
+		//}
+    }
+    
+    //non of following are strictly necesssary, 
+    //burns some memory for convenience when making table of matches
+ 	this.protein1 = pep1_protIDs;
+	this.pepPos1 = pep1_positions;
+	this.linkPos1 = linkPos1;
+	this.protein2 = pep2_protIDs;
+	this.pepPos2 = pep2_positions;
+	this.linkPos2  = linkPos2; 
 }
 	
-Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //following params may be undefined :-
+Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //following params may be null :-
 			pep1_start, pep1_length, pep2_start, pep2_length){	
 	// we don't want two different ID's, e.g. one thats "33-66" and one thats "66-33"
 	//following puts lower protein_ID first in link_ID
@@ -431,25 +483,41 @@ Match.prototype.isAmbig = function() {
 }
 
 Match.prototype.toTableRow = function() {
-   var htmlTableRow = "<tr><td><p>" +// + this.id+ "</p></td>" +
-			((typeof this.score !== 'undefined')? this.score.toFixed(4) : 'undefined')
+   var htmlTableRow = "<tr>";
+
+	htmlTableRow += "<td><p>" + this.id
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.protein1
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.pepPos1
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.pepSeq1
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.linkPos1
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.protein2
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.pepPos2
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.pepSeq2
+		+ "</p></td>";
+	htmlTableRow += "<td><p>" + this.linkPos2
+		+ "</p></td>";			
+		
+	htmlTableRow += "<td><p>" + 
+	((typeof this.score !== 'undefined')? this.score.toFixed(4) : 'undefined')
+	+ "</p></td>";
+	
+	if (this.xlv.autoValidatedFound === true){
+		htmlTableRow += "<td><p>" + this.autovalidated
 			+ "</p></td>";
-			if (this.xlv.autoValidatedFound === true){
-				htmlTableRow += "<td><p>" + this.autovalidated
-					+ "</p></td>";
-			}
-			if (this.xlv.manualValidatedFound === true){
-				htmlTableRow += "<td><p>" + this.validated
-					+ "</p></td>";
-			}
-			htmlTableRow += "<td><p>" + this.pepSeq1
-				+ "</p></td>";
-			htmlTableRow += "<td><p>" + this.linkPos1
-				+ "</p></td>";
-			htmlTableRow += "<td><p>" + this.pepSeq2
-				+ "</p></td>";
-			htmlTableRow += "<td><p>" + this.linkPos2
-				+ "</p></td>";			
-			htmlTableRow += "</tr>";
-			return htmlTableRow;
+	}
+	
+	if (this.xlv.manualValidatedFound === true){
+		htmlTableRow += "<td><p>" + this.validated
+			+ "</p></td>";
+	}
+	
+	htmlTableRow += "</tr>";
+	return htmlTableRow;
 }

@@ -1,4 +1,4 @@
-"Protein1","Position1","LinkPosition1","PepSeq1","Protein2","Position2","LinkPosition2","PepSeq2"
+"Protein1","PepPos1","LinkPos1","PepSeq1","Protein2","PepPos2","LinkPos2","PepSeq2"
 "A",2,3," HIKER"," n/a"," n/a",," "
 "A;A","7,14",2,"SKIER"," n/a"," n/a",,
 "A",,20,," n/a"," n/a",,

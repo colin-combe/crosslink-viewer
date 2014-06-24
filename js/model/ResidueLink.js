@@ -208,21 +208,32 @@ ResidueLink.prototype.showID = function() {
 			linkInfo += ":</p>";
 		}
 		
-		var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>";
+		var scoresTable = "<table><tr>";
+		
+		scoresTable += "<th>Id</th>";
+		scoresTable += "<th>Protein1</th>";
+		scoresTable += "<th>PepPos1</th>";
+		scoresTable += "<th>PepSeq1</th>";
+		scoresTable += "<th>LinkPos1</th>";
+		scoresTable += "<th>Protein2</th>";
+		scoresTable += "<th>PepPos2</th>";
+		scoresTable += "<th>PepSeq2</th>";
+		scoresTable += "<th>LinkPos2</th>";
+		
+		scoresTable += "<th>Score</th>";
+		
 		if (this.xlv.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}
 		if (this.xlv.manualValidatedFound === true){
 			scoresTable += "<th>Manual</th>";
 		}
-		scoresTable += "<th>Pep Seq.1</th>";
-		scoresTable += "<th>Link Pos.1</th>";
-		scoresTable += "<th>Pep Seq.2</th>";
-		scoresTable += "<th>Link Pos.2</th>";
+		
 		scoresTable += "</tr>";
 		for (var j = 0; j < c; j++) {
 			scoresTable += matches[j][0].toTableRow();
 		}
+		
 		scoresTable += "</table><p>&nbsp;</p>";
 		
 		linkInfo += scoresTable;

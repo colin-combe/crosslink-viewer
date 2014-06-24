@@ -5,14 +5,14 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     console.log(headers.toString());
     
     var iProt1 = headers.indexOf('Protein1');
-    var iRes1 = headers.indexOf('Position1');
+    var iRes1 = headers.indexOf('PepPos1');
     var iProt2 = headers.indexOf('Protein2');
-    var iRes2 = headers.indexOf('Position2');
+    var iRes2 = headers.indexOf('PepPos2');
     var iScore = headers.indexOf('Score');    
     var iId = headers.indexOf('Id');
-    var iLinkPosition1 = headers.indexOf('LinkPosition1');
+    var iLinkPosition1 = headers.indexOf('LinkPos1');
     var iPepSeq1 = headers.indexOf('PepSeq1');
-    var iLinkPosition2 = headers.indexOf('LinkPosition2');
+    var iLinkPosition2 = headers.indexOf('LinkPos2');
     var iPepSeq2 = headers.indexOf('PepSeq2');
     
     //missing Protein column
@@ -25,24 +25,24 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		return;
 	}
 	//missing Residue column(s) 
-    if (iRes1 === -1){
+    if (iLinkPosition1 === -1){
 		// we could try a different sometimes used column name
-		iRes1 = headers.indexOf('AbsPos1');
-		if (iRes1 === -1){
-			iRes1 = headers.indexOf('Residue1');
-			if (iRes1 === -1){		
-				alert("Failed to read column 'Positon1' from CSV file");
+		iLinkPosition1 = headers.indexOf('AbsPos1');
+		if (iLinkPosition1 === -1){
+			iLinkPosition1 = headers.indexOf('Residue1');//backwards compatibility
+			if (iLinkPosition1 === -1){		
+				alert("Failed to read column 'LinkPos1' from CSV file");
 				return;
 			}
 		}
 	}
-    if (iRes2 === -1){
+    if (iLinkPosition2 === -1){
 		// we could try a different sometimes used column name
-		iRes2 = headers.indexOf('AbsPos2');
-		if (iRes2 === -1){
-			iRes2 = headers.indexOf('Residue2');
-			if (iRes2 === -1){
-				alert("Failed to read column 'Position2' from CSV file");
+		iLinkPosition2 = headers.indexOf('AbsPos2');
+		if (iLinkPosition2 === -1){
+			iLinkPosition2 = headers.indexOf('Residue2');//backwards compatibility
+			if (iLinkPosition2 === -1){
+				alert("Failed to read column 'LinkPos2' from CSV file");
 				return;
 			}
 		}
@@ -162,18 +162,18 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 				if (m !== null){
 					var pep1_seq = m[1], pep2_seq = m[2],
 					linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
-					var peptidePositions1 = rows[row][iRes1].toString().split(/[;,]/);
+					var peptidePositions1 = rows[row][iLinkPosition1].toString().split(/[;,]/);
 					for (var pp = 0; pp < peptidePositions1.length; pp++){
 						peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1 + 1;
 					}
-					var peptidePositions2 = rows[row][iRes2].toString().split(/[;,]/);
+					var peptidePositions2 = rows[row][iLinkPosition2].toString().split(/[;,]/);
 					for (pp = 0; pp < peptidePositions2.length; pp++){
 						peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2 + 1;
 					}
 					
 					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
 									prot2, peptidePositions2.join(';'), 
-									row + 1, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
+									id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
 				} else {
 					var m = rows[row];
 					xlv.addMatch(prot1, m[iRes1], prot2, m[iRes2], id, score,
