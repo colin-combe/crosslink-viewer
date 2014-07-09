@@ -44,28 +44,32 @@
 	<div id="outerDiv">
 			<div class="controls">
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
-				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export Graphic</button>
-				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
-				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>		
+				<button class="btn btn-inverse exportsvg" onclick="myCrosslinkNetwork.exportSVG('networkSVG');">Export Graphic</button>
+				<button class="btn btn-inverse autolayout" onclick="myCrosslinkNetwork.autoLayout();">Auto Layout</button>
+				<button class="btn btn-inverse resetzoom" onclick="myCrosslinkNetwork.resetZoom();">Reset Zoom</button>		
+<!--
 				<div class="controlGroup" id="scoreSlider" >
 					<p class="scoreLabel" id="scoreLabel1"></p>
 					<div id="track1" class="sliderbar">
 						<div class="selected" id="handle1"></div> 
-					</div> <!-- track1 sliderbar -->
+					</div> 
 					<p class="scoreLabel" id="scoreLabel2"></p>
 					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
-				</div> <!-- outlined scoreSlider -->
+				</div> 
+-->
 				<div class="controlGroup"><p>Self-links&nbsp;
 					<input checked="checked" id="internal" onclick=
-						"xlv.hideInternal(!document.getElementById('internal').checked)" 
+						"myCrosslinkNetwork.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox"></p>
 				</div>
 				
+<!--
 				 <div class="controlGroup"><p>Ambiguous&nbsp;
 					<input checked="checked" id="ambig" onclick=
 						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
 					type="checkbox"></p>
                 </div>
+-->
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -137,8 +141,7 @@
 			myCrosslinkNetwork = new xiNET.Controller(targetDiv);
 			myCrosslinkNetwork.setMessageElement(messageDiv);
 			myCrosslinkNetwork.readMIJSON(miJson);
-			myCrosslinkNetwork.init();
-
+		
 			//]]>
         </script>
         

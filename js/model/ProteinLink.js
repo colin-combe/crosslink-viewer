@@ -208,24 +208,29 @@ ProteinLink.prototype.showID = function() {
         for (var i = 0; i < resLinkCount; i++) {
 			var resLink = resLinks[i];
 			var resLinkMeetsCriteria = false;
-			var mCount = resLink.matches.length;
-			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m][0];
-				if (match.meetsFilterCriteria()) {
-					if (resLinkMeetsCriteria === false) {
-						resLinkMeetsCriteria = true;
-						filteredResLinks.push(resLink);
-					}
-					filteredMatches.set(match.id);
-					if (match.isAmbig()) {
-						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+			if (resLink.matches) {
+				var mCount = resLink.matches.length;
+				for (var m = 0; m < mCount; m++) {
+					var match = resLink.matches[m][0];
+					if (match.meetsFilterCriteria()) {
+						if (resLinkMeetsCriteria === false) {
+							resLinkMeetsCriteria = true;
+							filteredResLinks.push(resLink);
+						}
+						filteredMatches.set(match.id);
+						if (match.isAmbig()) {
+							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+							}
+						}
+						else {
+							this.ambig = false;
 						}
 					}
-					else {
-						this.ambig = false;
-					}
 				}
+			}
+			else {
+				filteredResLinks.push(resLink);
 			}
         }
 		var filteredResLinkCount = filteredResLinks.length;
@@ -356,27 +361,32 @@ ProteinLink.prototype.check = function() {
 		for (var i = 0; i < resLinkCount; i++) {
 			var resLink = resLinks[i];
 			var resLinkMeetsCriteria = false;
-			var mCount = resLink.matches.length;
-			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m][0];
-				if (match.meetsFilterCriteria()) {
-					if (match.hd === true) {
-						this.hd = true;
-					}
-					if (resLinkMeetsCriteria === false) {
-						resLinkMeetsCriteria = true;
-						filteredResLinks.push(resLink);
-					}
-					filteredMatches.set(match.id);
-					if (match.isAmbig()) {
-						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+			if (resLink.matches){
+				var mCount = resLink.matches.length;
+				for (var m = 0; m < mCount; m++) {
+					var match = resLink.matches[m][0];
+					if (match.meetsFilterCriteria()) {
+						if (match.hd === true) {
+							this.hd = true;
+						}
+						if (resLinkMeetsCriteria === false) {
+							resLinkMeetsCriteria = true;
+							filteredResLinks.push(resLink);
+						}
+						filteredMatches.set(match.id);
+						if (match.isAmbig()) {
+							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+							}
+						}
+						else {
+							this.ambig = false;
 						}
 					}
-					else {
-						this.ambig = false;
-					}
 				}
+			}
+			else {
+				filteredResLinks.push(resLink);
 			}
 		}
 		var filteredResLinkCount = filteredResLinks.length;

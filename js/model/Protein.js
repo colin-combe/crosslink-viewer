@@ -421,9 +421,9 @@ Protein.prototype.scale = function() {
     var protLength = (this.size) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
+		var k = this.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
 			.translate((-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-		this.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");

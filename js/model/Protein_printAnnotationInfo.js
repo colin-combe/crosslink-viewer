@@ -55,7 +55,7 @@ Protein.prototype.printAnnotationInfo = function() {
         //        + '</pre>';
     }
 
-    xlv.message(message);
+    this.xlv.message(message);
 
     function printProcessedDAS(processed, serverName) {
         message += "<h6>" + serverName + "</h6>";

@@ -284,7 +284,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
 		else {
 			//loop to produce all alternative linkage site combinations 
-			//(position1 count * position2 count alternative)
+			//(position1 count * position2 count alternatives)
 			for (var i = 0; i < linkPos1.length; i++) {
 				for (var j = 0; j < linkPos2.length; j++) {
 					// allowed, but undocumneted:
@@ -426,7 +426,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	if (resLink === undefined) {
 		//WATCH OUT - residues need to be in correct order
 		if (p1ID === p2ID) {
-			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake?
+			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake? Already dealt with?
 				resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
 			} else {
 				resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
