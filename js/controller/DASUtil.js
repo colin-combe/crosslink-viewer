@@ -28,7 +28,9 @@ xiNET.DASUtil = function(xlvController) {
     ];
     //use sequential AJAX requests to download DAS annotations for all proteins
     //(issuing lots of AJAX request at once would clog things up)
-    this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
+    if (this.xlv.proteins.values()[0]) { //avoid crash if no proteins
+		this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
+	}
 };
 
 xiNET.DASUtil.prototype.lookup = function(prot, server) {

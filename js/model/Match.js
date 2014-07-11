@@ -94,7 +94,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		return protIDs;
 	}
 
-	if (typeof pepSeq1 != 'undefined'){
+	if (typeof pepSeq1 != 'undefined' && pepSeq1 != null){
 		pepSeq1 = pepSeq1.trim();
 		if (pepSeq1){
 			this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
@@ -107,7 +107,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		this.pepSeq1 = null;
 	}
 
-	if (typeof pepSeq2 !== 'undefined'){
+	if (typeof pepSeq2 !== 'undefined' && pepSeq2 != null){
 		pepSeq2 = pepSeq2.trim();
 		if (pepSeq2){
 			this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
