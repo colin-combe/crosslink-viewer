@@ -1024,7 +1024,7 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 		var end = [x2, baseLine];
 		
 		var angle;
-		if (false){//residueLink.intraMolecular === true){
+		if (residueLink.intraMolecular === true){
 			
 			var curveMidX = x1 + ((x2 - x1) / 2);
 			arcStart = [ curveMidX, height - arcRadius];
@@ -1032,12 +1032,12 @@ Protein.prototype.getResidueLinkPath = function(residueLink) {
 			cp1 = [ curveMidX, height - arcRadius];
 			cp2 =  [ curveMidX, height - arcRadius];
 			//flip
-			start[1] = start[1] * -1;
-			cp1[1] = cp1[1] * -1;
-			arcStart[1] = arcStart[1] * -1;
-			arcEnd[1] = arcEnd[1] * -1;
-			cp2[1] = cp2[1] * -1;
-			end[1] = end[1] * -1;
+			//~ start[1] = start[1] * -1;
+			//~ cp1[1] = cp1[1] * -1;
+			//~ arcStart[1] = arcStart[1] * -1;
+			//~ arcEnd[1] = arcEnd[1] * -1;
+			//~ cp2[1] = cp2[1] * -1;
+			//~ end[1] = end[1] * -1;
 		}
 		else if (residueLink.hd){	
 			var curveMidX = x1 + ((x2 - x1) / 2);
