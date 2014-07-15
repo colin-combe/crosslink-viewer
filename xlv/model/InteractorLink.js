@@ -4,7 +4,7 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-//InteractorLink.js
+// InteractorLink.js
 // the class representing a protein-protein link
 
 InteractorLink.prototype = new xiNET.Link();
