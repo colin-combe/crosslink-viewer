@@ -166,6 +166,7 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 		for (ef = 0; ef < efCount; ef++){
 			experimentalFeature = interaction.target.experimentalFeatures[ef];
 			targetInteractor.experimentalFeatures.set(experimentalFeature.id, experimentalFeature);
+			if (experimentalFeature.id === 4003678) {console.debug("*"+targetInteractor.id)};
 			//self.features.set(experimentalFeature.id, targetInteractor.id);
 		}		
 	}
