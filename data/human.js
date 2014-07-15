@@ -25,7 +25,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20139580",
+				"id":"25177291",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -38,7 +38,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22371673",
+				"id":"33343564",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -70,11 +70,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23308230",
+				"id":"12719455",
 				"name":"bad binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["26990240"]
+				"linkedFeatures":["597951"]
 				}]
 		},
 		"target":{
@@ -84,11 +84,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26990240",
+				"id":"597951",
 				"name":"bcl2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23308230"]
+				"linkedFeatures":["12719455"]
 				}]
 		}
 	},
@@ -117,11 +117,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2598996",
+				"id":"16998848",
 				"name":"bad binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27014487"]
+				"linkedFeatures":["17212561"]
 				}]
 		},
 		"target":{
@@ -131,11 +131,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"27014487",
+				"id":"17212561",
 				"name":"bcl2l1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2598996"]
+				"linkedFeatures":["16998848"]
 				}]
 		}
 	},
@@ -164,11 +164,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7468818",
+				"id":"18770083",
 				"name":"bcl2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1294072"]
+				"linkedFeatures":["23580925"]
 				}]
 		},
 		"target":{
@@ -178,11 +178,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1294072",
+				"id":"23580925",
 				"name":"bid binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7468818"]
+				"linkedFeatures":["18770083"]
 				}]
 		}
 	},
@@ -211,11 +211,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6203793",
+				"id":"13218448",
 				"name":"bcl2l1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13542168"]
+				"linkedFeatures":["32123152"]
 				}]
 		},
 		"target":{
@@ -225,11 +225,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13542168",
+				"id":"32123152",
 				"name":"bcl2l11 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6203793"]
+				"linkedFeatures":["13218448"]
 				}]
 		}
 	},
@@ -258,11 +258,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3515930",
+				"id":"3013438",
 				"name":"bbc3 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2886825"]
+				"linkedFeatures":["13229832"]
 				}]
 		},
 		"target":{
@@ -272,11 +272,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2886825",
+				"id":"13229832",
 				"name":"bcl2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3515930"]
+				"linkedFeatures":["3013438"]
 				}]
 		}
 	},
@@ -297,11 +297,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"32722486",
+				"id":"22135589",
 				"name":"bcl2l1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9686967"]
+				"linkedFeatures":["14865053"]
 				}]
 		},
 		"target":{
@@ -311,11 +311,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9686967",
+				"id":"14865053",
 				"name":"bbc3 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["32722486"]
+				"linkedFeatures":["22135589"]
 				}]
 		}
 	},
@@ -398,11 +398,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2761673",
+				"id":"24201748",
 				"name":"bcl2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9658939"]
+				"linkedFeatures":["11957535"]
 				}]
 		},
 		"target":{
@@ -412,11 +412,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9658939",
+				"id":"11957535",
 				"name":"bcl2l11 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2761673"]
+				"linkedFeatures":["24201748"]
 				}]
 		}
 	},
@@ -437,11 +437,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1449509",
+				"id":"12803105",
 				"name":"bid binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1382243"]
+				"linkedFeatures":["30774153"]
 				}]
 		},
 		"target":{
@@ -451,11 +451,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1382243",
+				"id":"30774153",
 				"name":"bcl2l11 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1449509"]
+				"linkedFeatures":["12803105"]
 				}]
 		}
 	},
@@ -484,7 +484,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"11694844",
+				"id":"13188519",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -497,7 +497,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26940752",
+				"id":"32424504",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -537,11 +537,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9729160",
+				"id":"1124363",
 				"name":"xrcc6 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["375-503"],
-				"linkedFeatures":["7258453"]
+				"linkedFeatures":["6035813"]
 				}]
 		},
 		"target":{
@@ -551,11 +551,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7258453",
+				"id":"6035813",
 				"name":"xrcc5 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["379-483"],
-				"linkedFeatures":["9729160"]
+				"linkedFeatures":["1124363"]
 				}]
 		}
 	},
@@ -584,7 +584,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22462984",
+				"id":"8875120",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -597,7 +597,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14463346",
+				"id":"14700598",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -629,7 +629,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17160906",
+				"id":"11670773",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -642,7 +642,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23010013",
+				"id":"25039467",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -674,7 +674,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14471688",
+				"id":"32200069",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -687,7 +687,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23145596",
+				"id":"20689042",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -804,11 +804,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"11514582",
+				"id":"29713075",
 				"name":"pfkl binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17176985"]
+				"linkedFeatures":["30601561"]
 				}]
 		},
 		"target":{
@@ -818,11 +818,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17176985",
+				"id":"30601561",
 				"name":"pfkm binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["11514582"]
+				"linkedFeatures":["29713075"]
 				}]
 		}
 	},
@@ -843,11 +843,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24814310",
+				"id":"31663005",
 				"name":"pfkl binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6086954"]
+				"linkedFeatures":["20390033"]
 				}]
 		},
 		"target":{
@@ -857,11 +857,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6086954",
+				"id":"20390033",
 				"name":"pfkm binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24814310"]
+				"linkedFeatures":["31663005"]
 				}]
 		}
 	},
@@ -882,11 +882,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"29535593",
+				"id":"3871825",
 				"name":"pfkl binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["446875"]
+				"linkedFeatures":["11719419"]
 				}]
 		},
 		"target":{
@@ -896,11 +896,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"446875",
+				"id":"11719419",
 				"name":"pfkm binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29535593"]
+				"linkedFeatures":["3871825"]
 				}]
 		}
 	},
@@ -937,11 +937,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"27990317",
+				"id":"3774616",
 				"name":"cdk1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["133215"]
+				"linkedFeatures":["22095711"]
 				}]
 		},
 		"target":{
@@ -951,11 +951,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"133215",
+				"id":"22095711",
 				"name":"ccna1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27990317"]
+				"linkedFeatures":["3774616"]
 				}]
 		}
 	},
@@ -984,11 +984,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24360134",
+				"id":"15732287",
 				"name":"cdk1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23162990"]
+				"linkedFeatures":["3635389"]
 				}]
 		},
 		"target":{
@@ -998,11 +998,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23162990",
+				"id":"3635389",
 				"name":"ccna2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24360134"]
+				"linkedFeatures":["15732287"]
 				}]
 		}
 	},
@@ -1031,11 +1031,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1863026",
+				"id":"30925902",
 				"name":"cdk2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5600293"]
+				"linkedFeatures":["13496343"]
 				}]
 		},
 		"target":{
@@ -1045,11 +1045,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5600293",
+				"id":"13496343",
 				"name":"ccna1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1863026"]
+				"linkedFeatures":["30925902"]
 				}]
 		}
 	},
@@ -1070,11 +1070,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3953501",
+				"id":"5091555",
 				"name":"cdk2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["8729633"]
+				"linkedFeatures":["9969364"]
 				}]
 		},
 		"target":{
@@ -1084,11 +1084,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8729633",
+				"id":"9969364",
 				"name":"ccna2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3953501"]
+				"linkedFeatures":["5091555"]
 				}]
 		}
 	},
@@ -1117,11 +1117,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"18975699",
+				"id":"17836293",
 				"name":"cdk1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23263068"]
+				"linkedFeatures":["32844463"]
 				}]
 		},
 		"target":{
@@ -1131,11 +1131,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23263068",
+				"id":"32844463",
 				"name":"ccnb1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18975699"]
+				"linkedFeatures":["17836293"]
 				}]
 		}
 	},
@@ -1164,11 +1164,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6147646",
+				"id":"12934055",
 				"name":"ccnb2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9394443"]
+				"linkedFeatures":["17062494"]
 				}]
 		},
 		"target":{
@@ -1178,11 +1178,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9394443",
+				"id":"17062494",
 				"name":"cdk1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6147646"]
+				"linkedFeatures":["12934055"]
 				}]
 		}
 	},
@@ -1211,11 +1211,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"18815458",
+				"id":"13170898",
 				"name":"cdk2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14436110"]
+				"linkedFeatures":["4706439"]
 				}]
 		},
 		"target":{
@@ -1225,11 +1225,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14436110",
+				"id":"4706439",
 				"name":"ccnb3 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18815458"]
+				"linkedFeatures":["13170898"]
 				}]
 		}
 	},
@@ -1266,11 +1266,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"29165401",
+				"id":"13339054",
 				"name":"cdk4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19756381"]
+				"linkedFeatures":["12329944"]
 				}]
 		},
 		"target":{
@@ -1280,11 +1280,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19756381",
+				"id":"12329944",
 				"name":"ccnd1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29165401"]
+				"linkedFeatures":["13339054"]
 				}]
 		}
 	},
@@ -1313,11 +1313,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24390981",
+				"id":"30756819",
 				"name":"ccnd2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4732355"]
+				"linkedFeatures":["23836940"]
 				}]
 		},
 		"target":{
@@ -1327,11 +1327,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4732355",
+				"id":"23836940",
 				"name":"cdk4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24390981"]
+				"linkedFeatures":["30756819"]
 				}]
 		}
 	},
@@ -1360,11 +1360,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12697711",
+				"id":"21098410",
 				"name":"cdk4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4251860"]
+				"linkedFeatures":["31306696"]
 				}]
 		},
 		"target":{
@@ -1374,11 +1374,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4251860",
+				"id":"31306696",
 				"name":"ccnd2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12697711"]
+				"linkedFeatures":["21098410"]
 				}]
 		}
 	},
@@ -1461,11 +1461,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23637930",
+				"id":"4597765",
 				"name":"cdk2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["31777913"]
+				"linkedFeatures":["32334452"]
 				}]
 		},
 		"target":{
@@ -1475,11 +1475,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31777913",
+				"id":"32334452",
 				"name":"ccne1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23637930"]
+				"linkedFeatures":["4597765"]
 				}]
 		}
 	},
@@ -1508,11 +1508,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5491471",
+				"id":"31111928",
 				"name":"cdk2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20471179"]
+				"linkedFeatures":["19466323"]
 				}]
 		},
 		"target":{
@@ -1522,11 +1522,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20471179",
+				"id":"19466323",
 				"name":"ccne2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5491471"]
+				"linkedFeatures":["31111928"]
 				}]
 		}
 	},
@@ -1595,11 +1595,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25530861",
+				"id":"14787216",
 				"name":"prim2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-420"],
-				"linkedFeatures":["3114589"]
+				"linkedFeatures":["24630216"]
 				}]
 		},
 		"target":{
@@ -1609,18 +1609,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1999709",
+				"id":"32577857",
 				"name":"pola2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1275-1462"],
-				"linkedFeatures":["21125372"]
+				"linkedFeatures":["28378010"]
 				},
 				{
-				"id":"14694719",
+				"id":"6531762",
 				"name":"prim2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1279-1462"],
-				"linkedFeatures":["13539109"]
+				"linkedFeatures":["22783478"]
 				}]
 		}
 	},
@@ -1650,11 +1650,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25530861",
+				"id":"14787216",
 				"name":"prim2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-420"],
-				"linkedFeatures":["3114589"]
+				"linkedFeatures":["24630216"]
 				}]
 		},
 		"target":{
@@ -1664,11 +1664,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21125372",
+				"id":"28378010",
 				"name":"pola1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-598"],
-				"linkedFeatures":["1999709"]
+				"linkedFeatures":["32577857"]
 				}]
 		}
 	},
@@ -1698,11 +1698,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25530861",
+				"id":"14787216",
 				"name":"prim2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-420"],
-				"linkedFeatures":["3114589"]
+				"linkedFeatures":["24630216"]
 				}]
 		},
 		"target":{
@@ -1712,18 +1712,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13539109",
+				"id":"22783478",
 				"name":"pola1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-509"],
-				"linkedFeatures":["14694719"]
+				"linkedFeatures":["6531762"]
 				},
 				{
-				"id":"3114589",
+				"id":"24630216",
 				"name":"prim1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-509"],
-				"linkedFeatures":["25530861"]
+				"linkedFeatures":["14787216"]
 				}]
 		}
 	},
@@ -2259,11 +2259,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19214807",
+				"id":"32297149",
 				"name":"pdha1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["15414921"]
+				"linkedFeatures":["8148849"]
 				}]
 		},
 		"target":{
@@ -2297,11 +2297,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19214807",
+				"id":"32297149",
 				"name":"pdha1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["15414921"]
+				"linkedFeatures":["8148849"]
 				}]
 		},
 		"target":{
@@ -2337,11 +2337,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19214807",
+				"id":"32297149",
 				"name":"pdha1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["15414921"]
+				"linkedFeatures":["8148849"]
 				}]
 		},
 		"target":{
@@ -2351,11 +2351,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15414921",
+				"id":"8148849",
 				"name":"pdhb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19214807"]
+				"linkedFeatures":["32297149"]
 				}]
 		}
 	},
@@ -2560,11 +2560,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4821813",
+				"id":"22071366",
 				"name":"ndc80",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-642"],
-				"linkedFeatures":["6273605"]
+				"linkedFeatures":["9204087"]
 				}]
 		},
 		"target":{
@@ -2574,11 +2574,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12458929",
+				"id":"7171891",
 				"name":"spc24",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17575412"]
+				"linkedFeatures":["10460752"]
 				}]
 		}
 	},
@@ -2608,11 +2608,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4821813",
+				"id":"22071366",
 				"name":"ndc80",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-642"],
-				"linkedFeatures":["6273605"]
+				"linkedFeatures":["9204087"]
 				}]
 		},
 		"target":{
@@ -2622,11 +2622,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17575412",
+				"id":"10460752",
 				"name":"spc25",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-224"],
-				"linkedFeatures":["12458929"]
+				"linkedFeatures":["7171891"]
 				}]
 		}
 	},
@@ -2656,11 +2656,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4821813",
+				"id":"22071366",
 				"name":"ndc80",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-642"],
-				"linkedFeatures":["6273605"]
+				"linkedFeatures":["9204087"]
 				}]
 		},
 		"target":{
@@ -2670,11 +2670,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6273605",
+				"id":"9204087",
 				"name":"nuf2",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-462"],
-				"linkedFeatures":["4821813"]
+				"linkedFeatures":["22071366"]
 				}]
 		}
 	},
@@ -3337,18 +3337,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"10296542",
+				"id":"22200202",
 				"name":"rbbp4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13791932"]
+				"linkedFeatures":["27069718"]
 				},
 				{
-				"id":"6991015",
+				"id":"29776287",
 				"name":"caf1b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23938746"]
+				"linkedFeatures":["19273275"]
 				}]
 		},
 		"target":{
@@ -3358,18 +3358,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20879235",
+				"id":"25014635",
 				"name":"caf1b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5060830"]
+				"linkedFeatures":["17500778"]
 				},
 				{
-				"id":"13791932",
+				"id":"27069718",
 				"name":"caf1a binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10296542"]
+				"linkedFeatures":["22200202"]
 				}]
 		}
 	},
@@ -3399,18 +3399,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"10296542",
+				"id":"22200202",
 				"name":"rbbp4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13791932"]
+				"linkedFeatures":["27069718"]
 				},
 				{
-				"id":"6991015",
+				"id":"29776287",
 				"name":"caf1b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23938746"]
+				"linkedFeatures":["19273275"]
 				}]
 		},
 		"target":{
@@ -3420,18 +3420,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23938746",
+				"id":"19273275",
 				"name":"caf1a binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6991015"]
+				"linkedFeatures":["29776287"]
 				},
 				{
-				"id":"5060830",
+				"id":"17500778",
 				"name":"rbbp4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20879235"]
+				"linkedFeatures":["25014635"]
 				}]
 		}
 	},
@@ -3569,11 +3569,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30450716",
+				"id":"30994209",
 				"name":"col4a2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12994014"]
+				"linkedFeatures":["20669850"]
 				}]
 		},
 		"target":{
@@ -3583,11 +3583,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12994014",
+				"id":"20669850",
 				"name":"col4a1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30450716"]
+				"linkedFeatures":["30994209"]
 				}]
 		}
 	},
@@ -3624,11 +3624,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"18152569",
+				"id":"9144857",
 				"name":"col4a6 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13344711"]
+				"linkedFeatures":["18322039"]
 				}]
 		},
 		"target":{
@@ -3638,11 +3638,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13344711",
+				"id":"18322039",
 				"name":"col4a5 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18152569"]
+				"linkedFeatures":["9144857"]
 				}]
 		}
 	},
@@ -3964,11 +3964,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6743322",
+				"id":"9491879",
 				"name":"col8a2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["21698668"]
+				"linkedFeatures":["12246739"]
 				}]
 		},
 		"target":{
@@ -3978,11 +3978,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21698668",
+				"id":"12246739",
 				"name":"col8a1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6743322"]
+				"linkedFeatures":["9491879"]
 				}]
 		}
 	},
@@ -4216,11 +4216,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19960713",
+				"id":"8061570",
 				"name":"col5a2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2497926"]
+				"linkedFeatures":["31572159"]
 				}]
 		},
 		"target":{
@@ -4230,11 +4230,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2497926",
+				"id":"31572159",
 				"name":"col11a1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19960713"]
+				"linkedFeatures":["8061570"]
 				}]
 		}
 	},
@@ -5349,11 +5349,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6048132",
+				"id":"3497840",
 				"name":"lamb1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14582669"]
+				"linkedFeatures":["845699"]
 				}]
 		}
 	},
@@ -5381,11 +5381,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14582669",
+				"id":"845699",
 				"name":"lamc1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6048132"]
+				"linkedFeatures":["3497840"]
 				}]
 		}
 	},
@@ -5988,11 +5988,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9353759",
+				"id":"20139414",
 				"name":"ita2b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6123382"]
+				"linkedFeatures":["19576459"]
 				}]
 		},
 		"target":{
@@ -6002,11 +6002,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6123382",
+				"id":"19576459",
 				"name":"itb3 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9353759"]
+				"linkedFeatures":["20139414"]
 				}]
 		}
 	},
@@ -7503,17 +7503,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7930397",
+				"id":"3995122",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"7979324",
+				"id":"3602568",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0442","name":"sufficient binding region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["25003227"]
+				"linkedFeatures":["16166126"]
 				}]
 		},
 		"target":{
@@ -7523,18 +7523,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"27087337",
+				"id":"13854408",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["89-189"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"25003227",
+				"id":"16166126",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7979324"]
+				"linkedFeatures":["3602568"]
 				}]
 		}
 	},
@@ -7555,7 +7555,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23900529",
+				"id":"16846685",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["89-181"],
@@ -7569,7 +7569,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16095859",
+				"id":"9940336",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["89-181"],
@@ -7602,11 +7602,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7285210",
+				"id":"33280490",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["89-181"],
-				"linkedFeatures":["2413188"],
+				"linkedFeatures":["26374459"],
 				"InterPro":"IPR000072"
 				}]
 		},
@@ -7617,11 +7617,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2413188",
+				"id":"26374459",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["83-182"],
-				"linkedFeatures":["7285210"],
+				"linkedFeatures":["33280490"],
 				"InterPro":"IPR000072"
 				}]
 		}
@@ -7644,11 +7644,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24707120",
+				"id":"21500342",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16480800"]
+				"linkedFeatures":["8585448"]
 				}]
 		},
 		"target":{
@@ -7658,11 +7658,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"975346",
+				"id":"11570679",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18083978"],
+				"linkedFeatures":["20480683"],
 				"InterPro":"IPR000072"
 				}]
 		}
@@ -7693,11 +7693,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24707120",
+				"id":"21500342",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16480800"]
+				"linkedFeatures":["8585448"]
 				}]
 		},
 		"target":{
@@ -7707,11 +7707,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16480800",
+				"id":"8585448",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24707120"]
+				"linkedFeatures":["21500342"]
 				}]
 		}
 	},
@@ -7733,11 +7733,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24707120",
+				"id":"21500342",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16480800"]
+				"linkedFeatures":["8585448"]
 				}]
 		},
 		"target":{
@@ -7747,11 +7747,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"18083978",
+				"id":"20480683",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["975346"]
+				"linkedFeatures":["11570679"]
 				}]
 		}
 	},
@@ -7773,18 +7773,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1387775",
+				"id":"17485601",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4004983"]
+				"linkedFeatures":["10794606"]
 				},
 				{
-				"id":"1570275",
+				"id":"29686097",
 				"name":"pdgfc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["17831011"]
+				"linkedFeatures":["13399122"]
 				}]
 		},
 		"target":{
@@ -7794,18 +7794,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4004983",
+				"id":"10794606",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1387775"]
+				"linkedFeatures":["17485601"]
 				},
 				{
-				"id":"11176127",
+				"id":"15258810",
 				"name":"pdgfc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["33013561"]
+				"linkedFeatures":["31856485"]
 				}]
 		}
 	},
@@ -7835,18 +7835,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1387775",
+				"id":"17485601",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4004983"]
+				"linkedFeatures":["10794606"]
 				},
 				{
-				"id":"1570275",
+				"id":"29686097",
 				"name":"pdgfc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["17831011"]
+				"linkedFeatures":["13399122"]
 				}]
 		},
 		"target":{
@@ -7856,23 +7856,23 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33013561",
+				"id":"31856485",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
-				"linkedFeatures":["11176127"],
+				"linkedFeatures":["15258810"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"17831011",
+				"id":"13399122",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
-				"linkedFeatures":["1570275"],
+				"linkedFeatures":["29686097"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"2835059",
+				"id":"17433742",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
@@ -7898,24 +7898,24 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1551073",
+				"id":"11614574",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["30652569"]
+				"linkedFeatures":["20019354"]
 				},
 				{
-				"id":"16539754",
+				"id":"15001048",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"18743262",
+				"id":"28182256",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["8998277"]
+				"linkedFeatures":["4824154"]
 				}]
 		},
 		"target":{
@@ -7925,18 +7925,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4228928",
+				"id":"12057007",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7307003"]
+				"linkedFeatures":["6906097"]
 				},
 				{
-				"id":"8998277",
+				"id":"4824154",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18743262"]
+				"linkedFeatures":["28182256"]
 				}]
 		}
 	},
@@ -7958,24 +7958,24 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1551073",
+				"id":"11614574",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["30652569"]
+				"linkedFeatures":["20019354"]
 				},
 				{
-				"id":"16539754",
+				"id":"15001048",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"18743262",
+				"id":"28182256",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["8998277"]
+				"linkedFeatures":["4824154"]
 				}]
 		},
 		"target":{
@@ -7985,18 +7985,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7307003",
+				"id":"6906097",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4228928"]
+				"linkedFeatures":["12057007"]
 				},
 				{
-				"id":"30652569",
+				"id":"20019354",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1551073"]
+				"linkedFeatures":["11614574"]
 				}]
 		}
 	},
@@ -8017,17 +8017,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33141718",
+				"id":"5993883",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"9298454",
+				"id":"8792016",
 				"name":"pdgfc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["16128465"]
+				"linkedFeatures":["27250460"]
 				}]
 		},
 		"target":{
@@ -8037,15 +8037,15 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16128465",
+				"id":"27250460",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
-				"linkedFeatures":["9298454"],
+				"linkedFeatures":["8792016"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"18410210",
+				"id":"14046680",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
@@ -8071,21 +8071,21 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14989495",
+				"id":"27137506",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["1769489"]
+				"linkedFeatures":["28231951"]
 				},
 				{
-				"id":"10588277",
+				"id":"1182230",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["18034219"]
+				"linkedFeatures":["5521127"]
 				},
 				{
-				"id":"3948273",
+				"id":"15584405",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -8098,18 +8098,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21526196",
+				"id":"1203229",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6893667"]
+				"linkedFeatures":["22907263"]
 				},
 				{
-				"id":"1769489",
+				"id":"28231951",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14989495"]
+				"linkedFeatures":["27137506"]
 				}]
 		}
 	},
@@ -8131,21 +8131,21 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14989495",
+				"id":"27137506",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["1769489"]
+				"linkedFeatures":["28231951"]
 				},
 				{
-				"id":"10588277",
+				"id":"1182230",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["18034219"]
+				"linkedFeatures":["5521127"]
 				},
 				{
-				"id":"3948273",
+				"id":"15584405",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -8158,18 +8158,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6893667",
+				"id":"22907263",
 				"name":"pdgfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["21526196"]
+				"linkedFeatures":["1203229"]
 				},
 				{
-				"id":"18034219",
+				"id":"5521127",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10588277"]
+				"linkedFeatures":["1182230"]
 				}]
 		}
 	},
@@ -8198,7 +8198,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31975189",
+				"id":"32374498",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -8211,7 +8211,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"32780121",
+				"id":"33076410",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -8235,7 +8235,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5276208",
+				"id":"18959477",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["83-182"],
@@ -8249,7 +8249,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26428532",
+				"id":"19044865",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["83-182"],
@@ -8274,7 +8274,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24328499",
+				"id":"11333011",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["230-345"],
@@ -8288,7 +8288,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"28343932",
+				"id":"18972276",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["230-345"],
@@ -8313,15 +8313,15 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4196342",
+				"id":"32835531",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
-				"linkedFeatures":["30070212"],
+				"linkedFeatures":["30585566"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"26757169",
+				"id":"31269708",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["235-345"],
@@ -8335,17 +8335,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"11243241",
+				"id":"20471242",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"30070212",
+				"id":"30585566",
 				"name":"pdgfc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["4196342"]
+				"linkedFeatures":["32835531"]
 				}]
 		}
 	},
@@ -8366,14 +8366,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20152598",
+				"id":"26586813",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["6289165"]
+				"linkedFeatures":["210323"]
 				},
 				{
-				"id":"5540656",
+				"id":"11696958",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -8386,14 +8386,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6289165",
+				"id":"210323",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20152598"]
+				"linkedFeatures":["26586813"]
 				},
 				{
-				"id":"8263463",
+				"id":"28916056",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["83-182"],
@@ -8418,18 +8418,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2232071",
+				"id":"23320277",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["83-182"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"572317",
+				"id":"28131537",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22374775"]
+				"linkedFeatures":["24798325"]
 				}]
 		},
 		"target":{
@@ -8439,17 +8439,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8338357",
+				"id":"5852798",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"22374775",
+				"id":"24798325",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["572317"]
+				"linkedFeatures":["28131537"]
 				}]
 		}
 	},
@@ -8471,18 +8471,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19458394",
+				"id":"19949758",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["15748281"]
+				"linkedFeatures":["19699893"]
 				},
 				{
-				"id":"4012667",
+				"id":"14534391",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30045927"]
+				"linkedFeatures":["3255457"]
 				}]
 		},
 		"target":{
@@ -8492,18 +8492,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30045927",
+				"id":"3255457",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4012667"]
+				"linkedFeatures":["14534391"]
 				},
 				{
-				"id":"21251307",
+				"id":"20754007",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["17350322"]
+				"linkedFeatures":["14277009"]
 				}]
 		}
 	},
@@ -8525,18 +8525,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19458394",
+				"id":"19949758",
 				"name":"pdgfb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["15748281"]
+				"linkedFeatures":["19699893"]
 				},
 				{
-				"id":"4012667",
+				"id":"14534391",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30045927"]
+				"linkedFeatures":["3255457"]
 				}]
 		},
 		"target":{
@@ -8546,25 +8546,25 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15748281",
+				"id":"19699893",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19458394"]
+				"linkedFeatures":["19949758"]
 				},
 				{
-				"id":"18864454",
+				"id":"5958697",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["83-182"],
 				"InterPro":"IPR000072"
 				},
 				{
-				"id":"17350322",
+				"id":"14277009",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["21251307"]
+				"linkedFeatures":["20754007"]
 				}]
 		}
 	},
@@ -8585,14 +8585,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"32607878",
+				"id":"21404628",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-247"],
-				"linkedFeatures":["29627891"]
+				"linkedFeatures":["10533510"]
 				},
 				{
-				"id":"8209933",
+				"id":"3530975",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-247"]
@@ -8605,17 +8605,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8524075",
+				"id":"20865278",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"29627891",
+				"id":"10533510",
 				"name":"pdgfd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["32607878"]
+				"linkedFeatures":["21404628"]
 				}]
 		}
 	},
@@ -8637,18 +8637,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20268625",
+				"id":"5364979",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10194747"]
+				"linkedFeatures":["8458804"]
 				},
 				{
-				"id":"14198348",
+				"id":"30560698",
 				"name":"pdgfd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["26071095"]
+				"linkedFeatures":["15973506"]
 				}]
 		},
 		"target":{
@@ -8658,24 +8658,24 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23137357",
+				"id":"31266557",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-247"],
-				"linkedFeatures":["7253922"]
+				"linkedFeatures":["1071807"]
 				},
 				{
-				"id":"13424583",
+				"id":"28691008",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-247"]
 				},
 				{
-				"id":"26071095",
+				"id":"15973506",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-247"],
-				"linkedFeatures":["14198348"]
+				"linkedFeatures":["30560698"]
 				}]
 		}
 	},
@@ -8697,18 +8697,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20268625",
+				"id":"5364979",
 				"name":"pdgf receptor alpha binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10194747"]
+				"linkedFeatures":["8458804"]
 				},
 				{
-				"id":"14198348",
+				"id":"30560698",
 				"name":"pdgfd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-529"],
-				"linkedFeatures":["26071095"]
+				"linkedFeatures":["15973506"]
 				}]
 		},
 		"target":{
@@ -8718,18 +8718,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"10194747",
+				"id":"8458804",
 				"name":"pdgf receptor beta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20268625"]
+				"linkedFeatures":["5364979"]
 				},
 				{
-				"id":"7253922",
+				"id":"1071807",
 				"name":"pdgfd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["1-524"],
-				"linkedFeatures":["23137357"]
+				"linkedFeatures":["31266557"]
 				}]
 		}
 	},
@@ -9637,11 +9637,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6973958",
+				"id":"32583840",
 				"name":"cys-26",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["26-26"],
-				"linkedFeatures":["5697203"]
+				"linkedFeatures":["28277823"]
 				}]
 		},
 		"target":{
@@ -9677,11 +9677,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6973958",
+				"id":"32583840",
 				"name":"cys-26",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["26-26"],
-				"linkedFeatures":["5697203"]
+				"linkedFeatures":["28277823"]
 				}]
 		},
 		"target":{
@@ -9691,11 +9691,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5697203",
+				"id":"28277823",
 				"name":"cys-31",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["31-31"],
-				"linkedFeatures":["6973958"]
+				"linkedFeatures":["32583840"]
 				}]
 		}
 	},
@@ -9973,11 +9973,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22108974",
+				"id":"408614",
 				"name":"nfyc binding region",
 				"type":{"id":"MI:0442","name":"sufficient binding region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3760141"]
+				"linkedFeatures":["22477150"]
 				}]
 		},
 		"target":{
@@ -9987,18 +9987,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13699875",
+				"id":"17674749",
 				"name":"nfyb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["27-120"],
-				"linkedFeatures":["3290524"]
+				"linkedFeatures":["2121135"]
 				},
 				{
-				"id":"3760141",
+				"id":"22477150",
 				"name":"nyfa binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22108974"]
+				"linkedFeatures":["408614"]
 				}]
 		}
 	},
@@ -10028,11 +10028,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22108974",
+				"id":"408614",
 				"name":"nfyc binding region",
 				"type":{"id":"MI:0442","name":"sufficient binding region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3760141"]
+				"linkedFeatures":["22477150"]
 				}]
 		},
 		"target":{
@@ -10042,11 +10042,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3290524",
+				"id":"2121135",
 				"name":"nfyc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["51-143"],
-				"linkedFeatures":["13699875"]
+				"linkedFeatures":["17674749"]
 				}]
 		}
 	},
@@ -10115,7 +10115,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4507567",
+				"id":"15122045",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["40-134"]
@@ -10128,7 +10128,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26327155",
+				"id":"14950081",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["40-134"]
@@ -10168,11 +10168,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31769432",
+				"id":"10424930",
 				"name":"ube2i binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["96-96"],
-				"linkedFeatures":["30738433"]
+				"linkedFeatures":["24119361"]
 				}]
 		},
 		"target":{
@@ -10182,11 +10182,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30738433",
+				"id":"24119361",
 				"name":"sumo1 binding site (lys14\/cys93)",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["14-14","93-93"],
-				"linkedFeatures":["31769432"]
+				"linkedFeatures":["10424930"]
 				}]
 		}
 	},
@@ -10215,11 +10215,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16808862",
+				"id":"3013301",
 				"name":"sumo4 binding site (lys14\/cys93)",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["14-14","93-93"],
-				"linkedFeatures":["11783646"]
+				"linkedFeatures":["10914931"]
 				}]
 		},
 		"target":{
@@ -10229,11 +10229,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"11783646",
+				"id":"10914931",
 				"name":"ube2i binding site (gly93)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["93-93"],
-				"linkedFeatures":["16808862"]
+				"linkedFeatures":["3013301"]
 				}]
 		}
 	},
@@ -10262,11 +10262,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9484951",
+				"id":"5170385",
 				"name":"sumo3 binding site (lys14\/cys93)",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["14-14","93-93"],
-				"linkedFeatures":["30035813"]
+				"linkedFeatures":["26242852"]
 				}]
 		},
 		"target":{
@@ -10276,11 +10276,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30035813",
+				"id":"26242852",
 				"name":"ube2i binding site (gly92)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["92-92"],
-				"linkedFeatures":["9484951"]
+				"linkedFeatures":["5170385"]
 				}]
 		}
 	},
@@ -10309,11 +10309,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19034318",
+				"id":"24171116",
 				"name":"ube2i binding site (gly93)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["93-93"],
-				"linkedFeatures":["1829137"]
+				"linkedFeatures":["441728"]
 				}]
 		},
 		"target":{
@@ -10323,11 +10323,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1829137",
+				"id":"441728",
 				"name":"sumo2 binding site (lys14\/cys93)",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["14-14","93-93"],
-				"linkedFeatures":["19034318"]
+				"linkedFeatures":["24171116"]
 				}]
 		}
 	},
@@ -10365,11 +10365,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6452689",
+				"id":"8601168",
 				"name":"obfc1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["700-1217"],
-				"linkedFeatures":["2422475"]
+				"linkedFeatures":["7343364"]
 				}]
 		},
 		"target":{
@@ -10379,18 +10379,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2422475",
+				"id":"7343364",
 				"name":"ctc1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6452689"]
+				"linkedFeatures":["8601168"]
 				},
 				{
-				"id":"13021307",
+				"id":"6729989",
 				"name":"ten1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7103185"]
+				"linkedFeatures":["32497739"]
 				}]
 		}
 	},
@@ -10420,11 +10420,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6452689",
+				"id":"8601168",
 				"name":"obfc1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["700-1217"],
-				"linkedFeatures":["2422475"]
+				"linkedFeatures":["7343364"]
 				}]
 		},
 		"target":{
@@ -10434,11 +10434,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7103185",
+				"id":"32497739",
 				"name":"obfc1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13021307"]
+				"linkedFeatures":["6729989"]
 				}]
 		}
 	},
@@ -10474,14 +10474,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30118615",
+				"id":"24012589",
 				"name":"co-factor binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["155-341"],
-				"linkedFeatures":["1406115"]
+				"linkedFeatures":["20436937"]
 				},
 				{
-				"id":"10266242",
+				"id":"20440669",
 				"name":"dimerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["155-341"]
@@ -10494,11 +10494,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1406115",
+				"id":"20436937",
 				"name":"sting binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30118615"]
+				"linkedFeatures":["24012589"]
 				}]
 		}
 	},
@@ -10527,11 +10527,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7853686",
+				"id":"16058680",
 				"name":"pmm1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27320132"]
+				"linkedFeatures":["19953541"]
 				}]
 		},
 		"target":{
@@ -10541,17 +10541,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"10622542",
+				"id":"16170597",
 				"name":"dimerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"27320132",
+				"id":"19953541",
 				"name":"mg2+ binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7853686"]
+				"linkedFeatures":["16058680"]
 				}]
 		}
 	},
@@ -10586,11 +10586,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23485499",
+				"id":"21892005",
 				"name":"gmpr2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20010603"]
+				"linkedFeatures":["14588154"]
 				}]
 		},
 		"target":{
@@ -10600,17 +10600,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2140194",
+				"id":"872656",
 				"name":"tetramerization region",
 				"type":{"id":"MI:0442","name":"sufficient binding region"},
 				"sequenceData":["10-341"]
 				},
 				{
-				"id":"20010603",
+				"id":"14588154",
 				"name":"nadph binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23485499"]
+				"linkedFeatures":["21892005"]
 				}]
 		}
 	},
@@ -10647,11 +10647,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33455194",
+				"id":"3457320",
 				"name":"fnta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9844552"]
+				"linkedFeatures":["24471494"]
 				}]
 		},
 		"target":{
@@ -10661,11 +10661,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9844552",
+				"id":"24471494",
 				"name":"pggt1b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["33455194"]
+				"linkedFeatures":["3457320"]
 				}]
 		}
 	},
@@ -10703,18 +10703,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"487914",
+				"id":"15730502",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13093920"]
+				"linkedFeatures":["7178296"]
 				},
 				{
-				"id":"19561616",
+				"id":"17453644",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5771285"]
+				"linkedFeatures":["10562643"]
 				}]
 		},
 		"target":{
@@ -10724,18 +10724,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25689589",
+				"id":"23399642",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20058585"]
+				"linkedFeatures":["19853630"]
 				},
 				{
-				"id":"5771285",
+				"id":"10562643",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19561616"]
+				"linkedFeatures":["17453644"]
 				}]
 		}
 	},
@@ -10764,18 +10764,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"487914",
+				"id":"15730502",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13093920"]
+				"linkedFeatures":["7178296"]
 				},
 				{
-				"id":"19561616",
+				"id":"17453644",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5771285"]
+				"linkedFeatures":["10562643"]
 				}]
 		},
 		"target":{
@@ -10785,18 +10785,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13093920",
+				"id":"7178296",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["487914"]
+				"linkedFeatures":["15730502"]
 				},
 				{
-				"id":"20058585",
+				"id":"19853630",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25689589"]
+				"linkedFeatures":["23399642"]
 				}]
 		}
 	},
@@ -10817,11 +10817,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3264937",
+				"id":"14691171",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12309318"]
+				"linkedFeatures":["21005445"]
 				}]
 		},
 		"target":{
@@ -10831,17 +10831,17 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19642583",
+				"id":"12344398",
 				"name":"tetramerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
 				},
 				{
-				"id":"12309318",
+				"id":"21005445",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3264937"]
+				"linkedFeatures":["14691171"]
 				}]
 		}
 	},
@@ -10951,13 +10951,13 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24394295",
+				"id":"5256306",
 				"name":"sumo1 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"]
 				},
 				{
-				"id":"26870281",
+				"id":"27480726",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -10970,7 +10970,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33278150",
+				"id":"25361887",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -10995,13 +10995,13 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24394295",
+				"id":"5256306",
 				"name":"sumo1 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"]
 				},
 				{
-				"id":"26870281",
+				"id":"27480726",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -11014,7 +11014,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20609440",
+				"id":"15290826",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["96-96"]
@@ -11039,18 +11039,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"466159",
+				"id":"33077172",
 				"name":"sumo3 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["16555599"]
+				"linkedFeatures":["31765623"]
 				},
 				{
-				"id":"16615509",
+				"id":"262396",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16877314"]
+				"linkedFeatures":["14471587"]
 				}]
 		},
 		"target":{
@@ -11060,11 +11060,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16555599",
+				"id":"31765623",
 				"name":"uba2 binding region (gly92)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["92-92"],
-				"linkedFeatures":["466159"]
+				"linkedFeatures":["33077172"]
 				}]
 		}
 	},
@@ -11086,18 +11086,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"466159",
+				"id":"33077172",
 				"name":"sumo3 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["16555599"]
+				"linkedFeatures":["31765623"]
 				},
 				{
-				"id":"16615509",
+				"id":"262396",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16877314"]
+				"linkedFeatures":["14471587"]
 				}]
 		},
 		"target":{
@@ -11107,11 +11107,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"16877314",
+				"id":"14471587",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["16615509"]
+				"linkedFeatures":["262396"]
 				}]
 		}
 	},
@@ -11133,18 +11133,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21407035",
+				"id":"21444675",
 				"name":"sumo1 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["17431426"]
+				"linkedFeatures":["12512699"]
 				},
 				{
-				"id":"6245044",
+				"id":"15308947",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2203340"]
+				"linkedFeatures":["2101165"]
 				}]
 		},
 		"target":{
@@ -11154,11 +11154,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17431426",
+				"id":"12512699",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["96-96"],
-				"linkedFeatures":["21407035"]
+				"linkedFeatures":["21444675"]
 				}]
 		}
 	},
@@ -11180,18 +11180,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21407035",
+				"id":"21444675",
 				"name":"sumo1 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["17431426"]
+				"linkedFeatures":["12512699"]
 				},
 				{
-				"id":"6245044",
+				"id":"15308947",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2203340"]
+				"linkedFeatures":["2101165"]
 				}]
 		},
 		"target":{
@@ -11201,11 +11201,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2203340",
+				"id":"2101165",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6245044"]
+				"linkedFeatures":["15308947"]
 				}]
 		}
 	},
@@ -11227,18 +11227,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21012132",
+				"id":"15032676",
 				"name":"sumo2 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["24070036"]
+				"linkedFeatures":["22870010"]
 				},
 				{
-				"id":"12879592",
+				"id":"10245466",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7674880"]
+				"linkedFeatures":["27763115"]
 				}]
 		},
 		"target":{
@@ -11248,11 +11248,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24070036",
+				"id":"22870010",
 				"name":"uba2 binding region (gly92)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["92-92"],
-				"linkedFeatures":["21012132"]
+				"linkedFeatures":["15032676"]
 				}]
 		}
 	},
@@ -11274,18 +11274,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21012132",
+				"id":"15032676",
 				"name":"sumo2 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"],
-				"linkedFeatures":["24070036"]
+				"linkedFeatures":["22870010"]
 				},
 				{
-				"id":"12879592",
+				"id":"10245466",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7674880"]
+				"linkedFeatures":["27763115"]
 				}]
 		},
 		"target":{
@@ -11295,11 +11295,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7674880",
+				"id":"27763115",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12879592"]
+				"linkedFeatures":["10245466"]
 				}]
 		}
 	},
@@ -11321,13 +11321,13 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8482641",
+				"id":"6749458",
 				"name":"sumo4 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"]
 				},
 				{
-				"id":"28531246",
+				"id":"24162599",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -11340,7 +11340,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31834747",
+				"id":"25077072",
 				"name":"uba2 binding region (gly93)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["93-93"]
@@ -11365,13 +11365,13 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8482641",
+				"id":"6749458",
 				"name":"sumo4 binding region (cys173)",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["173-173"]
 				},
 				{
-				"id":"28531246",
+				"id":"24162599",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -11384,7 +11384,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21175888",
+				"id":"26698611",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -11408,11 +11408,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24853706",
+				"id":"146129",
 				"name":"sae1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30671864"]
+				"linkedFeatures":["6518406"]
 				}]
 		},
 		"target":{
@@ -11422,11 +11422,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30671864",
+				"id":"6518406",
 				"name":"uba2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24853706"]
+				"linkedFeatures":["146129"]
 				}]
 		}
 	},
@@ -11464,11 +11464,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5294115",
+				"id":"33190472",
 				"name":"atp4b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25401068"]
+				"linkedFeatures":["23399776"]
 				}]
 		},
 		"target":{
@@ -11478,11 +11478,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25401068",
+				"id":"23399776",
 				"name":"atp4a binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5294115"]
+				"linkedFeatures":["33190472"]
 				}]
 		}
 	},
@@ -11510,11 +11510,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5294115",
+				"id":"33190472",
 				"name":"atp4b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25401068"]
+				"linkedFeatures":["23399776"]
 				}]
 		},
 		"target":{
@@ -11541,11 +11541,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"2717778",
+				"id":"22103404",
 				"name":"itga4 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10126570"]
+				"linkedFeatures":["10806609"]
 				}]
 		},
 		"target":{
@@ -11555,11 +11555,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"10126570",
+				"id":"10806609",
 				"name":"itbg7 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2717778"]
+				"linkedFeatures":["22103404"]
 				}]
 		}
 	},
@@ -11860,11 +11860,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9198984",
+				"id":"30091826",
 				"name":"fntb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22063026"]
+				"linkedFeatures":["20923602"]
 				}]
 		},
 		"target":{
@@ -11874,11 +11874,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22063026",
+				"id":"20923602",
 				"name":"fnta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9198984"]
+				"linkedFeatures":["30091826"]
 				}]
 		}
 	},
@@ -12075,11 +12075,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3257475",
+				"id":"12535031",
 				"name":"gabr2 binding region",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["21116101"]
+				"linkedFeatures":["21553311"]
 				}]
 		},
 		"target":{
@@ -12089,11 +12089,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21116101",
+				"id":"21553311",
 				"name":"gabr1 binding region",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3257475"]
+				"linkedFeatures":["12535031"]
 				}]
 		}
 	},
@@ -12186,11 +12186,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26638941",
+				"id":"26409695",
 				"name":"rabggta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3897520"]
+				"linkedFeatures":["9721777"]
 				}]
 		},
 		"target":{
@@ -12200,11 +12200,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3897520",
+				"id":"9721777",
 				"name":"rabggtb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["26638941"]
+				"linkedFeatures":["26409695"]
 				}]
 		}
 	},
@@ -12226,18 +12226,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7373446",
+				"id":"17384060",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["8998269"]
+				"linkedFeatures":["15459495"]
 				},
 				{
-				"id":"4095785",
+				"id":"15774538",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17720333"]
+				"linkedFeatures":["9104874"]
 				}]
 		},
 		"target":{
@@ -12247,18 +12247,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17720333",
+				"id":"9104874",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4095785"]
+				"linkedFeatures":["15774538"]
 				},
 				{
-				"id":"30058121",
+				"id":"17422175",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24880565"]
+				"linkedFeatures":["18528031"]
 				}]
 		}
 	},
@@ -12288,18 +12288,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7373446",
+				"id":"17384060",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["8998269"]
+				"linkedFeatures":["15459495"]
 				},
 				{
-				"id":"4095785",
+				"id":"15774538",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17720333"]
+				"linkedFeatures":["9104874"]
 				}]
 		},
 		"target":{
@@ -12309,18 +12309,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8998269",
+				"id":"15459495",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7373446"]
+				"linkedFeatures":["17384060"]
 				},
 				{
-				"id":"24880565",
+				"id":"18528031",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30058121"]
+				"linkedFeatures":["17422175"]
 				}]
 		}
 	},
@@ -12350,18 +12350,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12337170",
+				"id":"15504483",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17997240"]
+				"linkedFeatures":["140120"]
 				},
 				{
-				"id":"19968287",
+				"id":"6200256",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29136100"]
+				"linkedFeatures":["21204410"]
 				}]
 		},
 		"target":{
@@ -12371,18 +12371,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"30610953",
+				"id":"913308",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["21748754"]
+				"linkedFeatures":["15597916"]
 				},
 				{
-				"id":"29136100",
+				"id":"21204410",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19968287"]
+				"linkedFeatures":["6200256"]
 				}]
 		}
 	},
@@ -12404,18 +12404,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12337170",
+				"id":"15504483",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17997240"]
+				"linkedFeatures":["140120"]
 				},
 				{
-				"id":"19968287",
+				"id":"6200256",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29136100"]
+				"linkedFeatures":["21204410"]
 				}]
 		},
 		"target":{
@@ -12425,18 +12425,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17997240",
+				"id":"140120",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12337170"]
+				"linkedFeatures":["15504483"]
 				},
 				{
-				"id":"21748754",
+				"id":"15597916",
 				"name":"hbb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30610953"]
+				"linkedFeatures":["913308"]
 				}]
 		}
 	},
@@ -12466,18 +12466,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22887962",
+				"id":"26960741",
 				"name":"hbd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9980094"]
+				"linkedFeatures":["10131035"]
 				},
 				{
-				"id":"30400880",
+				"id":"17121295",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14256434"]
+				"linkedFeatures":["28357889"]
 				}]
 		},
 		"target":{
@@ -12487,18 +12487,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"9980094",
+				"id":"10131035",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22887962"]
+				"linkedFeatures":["26960741"]
 				},
 				{
-				"id":"29255262",
+				"id":"3895870",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20107333"]
+				"linkedFeatures":["13190288"]
 				}]
 		}
 	},
@@ -12520,18 +12520,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22887962",
+				"id":"26960741",
 				"name":"hbd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["9980094"]
+				"linkedFeatures":["10131035"]
 				},
 				{
-				"id":"30400880",
+				"id":"17121295",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14256434"]
+				"linkedFeatures":["28357889"]
 				}]
 		},
 		"target":{
@@ -12541,18 +12541,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14256434",
+				"id":"28357889",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["30400880"]
+				"linkedFeatures":["17121295"]
 				},
 				{
-				"id":"20107333",
+				"id":"13190288",
 				"name":"hbd binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29255262"]
+				"linkedFeatures":["3895870"]
 				}]
 		}
 	},
@@ -12574,18 +12574,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17276972",
+				"id":"28600868",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27583937"]
+				"linkedFeatures":["27552138"]
 				},
 				{
-				"id":"15199488",
+				"id":"17623557",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7920400"]
+				"linkedFeatures":["14156099"]
 				}]
 		},
 		"target":{
@@ -12595,18 +12595,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"7743460",
+				"id":"20648092",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20255488"]
+				"linkedFeatures":["12555327"]
 				},
 				{
-				"id":"7920400",
+				"id":"14156099",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["15199488"]
+				"linkedFeatures":["17623557"]
 				}]
 		}
 	},
@@ -12636,18 +12636,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17276972",
+				"id":"28600868",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27583937"]
+				"linkedFeatures":["27552138"]
 				},
 				{
-				"id":"15199488",
+				"id":"17623557",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7920400"]
+				"linkedFeatures":["14156099"]
 				}]
 		},
 		"target":{
@@ -12657,18 +12657,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"27583937",
+				"id":"27552138",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17276972"]
+				"linkedFeatures":["28600868"]
 				},
 				{
-				"id":"20255488",
+				"id":"12555327",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7743460"]
+				"linkedFeatures":["20648092"]
 				}]
 		}
 	},
@@ -12690,18 +12690,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24290616",
+				"id":"27124388",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29168579"]
+				"linkedFeatures":["9087468"]
 				},
 				{
-				"id":"6067253",
+				"id":"26862856",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["410511"]
+				"linkedFeatures":["9138442"]
 				}]
 		},
 		"target":{
@@ -12711,18 +12711,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"20806122",
+				"id":"11163440",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17770663"]
+				"linkedFeatures":["21117884"]
 				},
 				{
-				"id":"29168579",
+				"id":"9087468",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24290616"]
+				"linkedFeatures":["27124388"]
 				}]
 		}
 	},
@@ -12752,18 +12752,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24290616",
+				"id":"27124388",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["29168579"]
+				"linkedFeatures":["9087468"]
 				},
 				{
-				"id":"6067253",
+				"id":"26862856",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["410511"]
+				"linkedFeatures":["9138442"]
 				}]
 		},
 		"target":{
@@ -12773,18 +12773,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17770663",
+				"id":"21117884",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["20806122"]
+				"linkedFeatures":["11163440"]
 				},
 				{
-				"id":"410511",
+				"id":"9138442",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6067253"]
+				"linkedFeatures":["26862856"]
 				}]
 		}
 	},
@@ -12806,18 +12806,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3536048",
+				"id":"23065308",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5475710"]
+				"linkedFeatures":["4286193"]
 				},
 				{
-				"id":"24019649",
+				"id":"30244429",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4882144"]
+				"linkedFeatures":["2029384"]
 				}]
 		},
 		"target":{
@@ -12827,18 +12827,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5475710",
+				"id":"4286193",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3536048"]
+				"linkedFeatures":["23065308"]
 				},
 				{
-				"id":"13611945",
+				"id":"16566597",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1848122"]
+				"linkedFeatures":["121273"]
 				}]
 		}
 	},
@@ -12860,18 +12860,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3536048",
+				"id":"23065308",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5475710"]
+				"linkedFeatures":["4286193"]
 				},
 				{
-				"id":"24019649",
+				"id":"30244429",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4882144"]
+				"linkedFeatures":["2029384"]
 				}]
 		},
 		"target":{
@@ -12881,18 +12881,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1848122",
+				"id":"121273",
 				"name":"hbg1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13611945"]
+				"linkedFeatures":["16566597"]
 				},
 				{
-				"id":"4882144",
+				"id":"2029384",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24019649"]
+				"linkedFeatures":["30244429"]
 				}]
 		}
 	},
@@ -12914,18 +12914,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23552625",
+				"id":"24978320",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7334517"]
+				"linkedFeatures":["11136713"]
 				},
 				{
-				"id":"25814296",
+				"id":"8115095",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2083333"]
+				"linkedFeatures":["25193494"]
 				}]
 		},
 		"target":{
@@ -12935,18 +12935,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17308585",
+				"id":"3683537",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22020898"]
+				"linkedFeatures":["1289852"]
 				},
 				{
-				"id":"7334517",
+				"id":"11136713",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["23552625"]
+				"linkedFeatures":["24978320"]
 				}]
 		}
 	},
@@ -12968,18 +12968,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"23552625",
+				"id":"24978320",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7334517"]
+				"linkedFeatures":["11136713"]
 				},
 				{
-				"id":"25814296",
+				"id":"8115095",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["2083333"]
+				"linkedFeatures":["25193494"]
 				}]
 		},
 		"target":{
@@ -12989,18 +12989,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22020898",
+				"id":"1289852",
 				"name":"hbe binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17308585"]
+				"linkedFeatures":["3683537"]
 				},
 				{
-				"id":"2083333",
+				"id":"25193494",
 				"name":"hbz binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25814296"]
+				"linkedFeatures":["8115095"]
 				}]
 		}
 	},
@@ -13045,18 +13045,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33418874",
+				"id":"2382916",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3390411"]
+				"linkedFeatures":["19232117"]
 				},
 				{
-				"id":"7221884",
+				"id":"4351315",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["11825213"]
+				"linkedFeatures":["17448375"]
 				}]
 		},
 		"target":{
@@ -13066,18 +13066,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3390411",
+				"id":"19232117",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["33418874"]
+				"linkedFeatures":["2382916"]
 				},
 				{
-				"id":"3463701",
+				"id":"22664341",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["31045786"]
+				"linkedFeatures":["9673865"]
 				}]
 		}
 	},
@@ -13099,18 +13099,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"33418874",
+				"id":"2382916",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3390411"]
+				"linkedFeatures":["19232117"]
 				},
 				{
-				"id":"7221884",
+				"id":"4351315",
 				"name":"heme binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["11825213"]
+				"linkedFeatures":["17448375"]
 				}]
 		},
 		"target":{
@@ -13120,18 +13120,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"11825213",
+				"id":"17448375",
 				"name":"hba binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["7221884"]
+				"linkedFeatures":["4351315"]
 				},
 				{
-				"id":"31045786",
+				"id":"9673865",
 				"name":"hbg2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3463701"]
+				"linkedFeatures":["22664341"]
 				}]
 		}
 	},
@@ -13167,11 +13167,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15124489",
+				"id":"17436332",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22470381"]
+				"linkedFeatures":["21585282"]
 				}]
 		},
 		"target":{
@@ -13181,25 +13181,25 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22470381",
+				"id":"21585282",
 				"name":"copper binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["15124489"]
+				"linkedFeatures":["17436332"]
 				},
 				{
-				"id":"4567785",
+				"id":"26882733",
 				"name":"zinc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["31784687"]
+				"linkedFeatures":["7676315"]
 				},
 				{
-				"id":"18687722",
+				"id":"32595171",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["147-147"],
-				"linkedFeatures":["15062381"]
+				"linkedFeatures":["17396863"]
 				}]
 		}
 	},
@@ -13221,11 +13221,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15124489",
+				"id":"17436332",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22470381"]
+				"linkedFeatures":["21585282"]
 				}]
 		},
 		"target":{
@@ -13235,25 +13235,25 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"18804677",
+				"id":"29320802",
 				"name":"zinc binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["1024083"]
+				"linkedFeatures":["14346322"]
 				},
 				{
-				"id":"15062381",
+				"id":"17396863",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["57-57"],
-				"linkedFeatures":["18687722"]
+				"linkedFeatures":["32595171"]
 				},
 				{
-				"id":"31900895",
+				"id":"30053701",
 				"name":"copper binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25635634"]
+				"linkedFeatures":["17704065"]
 				}]
 		}
 	},
@@ -13281,11 +13281,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15124489",
+				"id":"17436332",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22470381"]
+				"linkedFeatures":["21585282"]
 				}]
 		},
 		"target":{
@@ -13295,11 +13295,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31784687",
+				"id":"7676315",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4567785"]
+				"linkedFeatures":["26882733"]
 				}]
 		}
 	},
@@ -13321,11 +13321,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15124489",
+				"id":"17436332",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22470381"]
+				"linkedFeatures":["21585282"]
 				}]
 		},
 		"target":{
@@ -13335,11 +13335,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"25635634",
+				"id":"17704065",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["31900895"]
+				"linkedFeatures":["30053701"]
 				}]
 		}
 	},
@@ -13361,11 +13361,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"15124489",
+				"id":"17436332",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["22470381"]
+				"linkedFeatures":["21585282"]
 				}]
 		},
 		"target":{
@@ -13375,11 +13375,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"1024083",
+				"id":"14346322",
 				"name":"sod1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["18804677"]
+				"linkedFeatures":["29320802"]
 				}]
 		}
 	},
@@ -13414,14 +13414,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"19199473",
+				"id":"25078352",
 				"name":"plp binding site",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["405-405"],
-				"linkedFeatures":["26131839"]
+				"linkedFeatures":["14644796"]
 				},
 				{
-				"id":"3869646",
+				"id":"13344048",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["90-594"],
@@ -13435,11 +13435,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26131839",
+				"id":"14644796",
 				"name":"gad1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["19199473"]
+				"linkedFeatures":["25078352"]
 				}]
 		}
 	},
@@ -13468,11 +13468,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"8666892",
+				"id":"29152349",
 				"name":"gad2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4678780"]
+				"linkedFeatures":["1724836"]
 				}]
 		},
 		"target":{
@@ -13482,14 +13482,14 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4678780",
+				"id":"1724836",
 				"name":"plp binding site",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["396-396"],
-				"linkedFeatures":["8666892"]
+				"linkedFeatures":["29152349"]
 				},
 				{
-				"id":"18233663",
+				"id":"31856454",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:1125","name":"direct binding region"},
 				"sequenceData":["84-585"],
@@ -13522,7 +13522,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"550929",
+				"id":"16917977",
 				"name":"tetramerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -13535,7 +13535,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"32002522",
+				"id":"198822",
 				"name":"tetramerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -13567,7 +13567,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"22413258",
+				"id":"19722304",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -13580,7 +13580,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17577688",
+				"id":"22085762",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"]
@@ -13610,11 +13610,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14992216",
+				"id":"16275322",
 				"name":"fructofuranose binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["13959510"]
+				"linkedFeatures":["3621498"]
 				}]
 		},
 		"target":{
@@ -13624,11 +13624,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"13959510",
+				"id":"3621498",
 				"name":"pkm2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["14992216"]
+				"linkedFeatures":["16275322"]
 				}]
 		}
 	},
@@ -13650,18 +13650,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4897185",
+				"id":"32336425",
 				"name":"gad1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["102-585"],
-				"linkedFeatures":["31532624"]
+				"linkedFeatures":["30719545"]
 				},
 				{
-				"id":"10114907",
+				"id":"1358638",
 				"name":"plp binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["396-396"],
-				"linkedFeatures":["14500545"]
+				"linkedFeatures":["17621944"]
 				}]
 		},
 		"target":{
@@ -13671,11 +13671,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"14500545",
+				"id":"17621944",
 				"name":"gad2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["10114907"]
+				"linkedFeatures":["1358638"]
 				}]
 		}
 	},
@@ -13697,18 +13697,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4897185",
+				"id":"32336425",
 				"name":"gad1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["102-585"],
-				"linkedFeatures":["31532624"]
+				"linkedFeatures":["30719545"]
 				},
 				{
-				"id":"10114907",
+				"id":"1358638",
 				"name":"plp binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["396-396"],
-				"linkedFeatures":["14500545"]
+				"linkedFeatures":["17621944"]
 				}]
 		},
 		"target":{
@@ -13718,11 +13718,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4832917",
+				"id":"20603992",
 				"name":"gad1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["25122959"]
+				"linkedFeatures":["9558616"]
 				}]
 		}
 	},
@@ -13744,18 +13744,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"4897185",
+				"id":"32336425",
 				"name":"gad1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["102-585"],
-				"linkedFeatures":["31532624"]
+				"linkedFeatures":["30719545"]
 				},
 				{
-				"id":"10114907",
+				"id":"1358638",
 				"name":"plp binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["396-396"],
-				"linkedFeatures":["14500545"]
+				"linkedFeatures":["17621944"]
 				}]
 		},
 		"target":{
@@ -13765,18 +13765,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"31532624",
+				"id":"30719545",
 				"name":"gad2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["4897185"]
+				"linkedFeatures":["32336425"]
 				},
 				{
-				"id":"25122959",
+				"id":"9558616",
 				"name":"plp binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["405-405"],
-				"linkedFeatures":["4832917"]
+				"linkedFeatures":["20603992"]
 				}]
 		}
 	},
@@ -13813,11 +13813,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"26161869",
+				"id":"26602656",
 				"name":"kcnh2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["5260286"]
+				"linkedFeatures":["31599974"]
 				}]
 		},
 		"target":{
@@ -13827,11 +13827,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"5260286",
+				"id":"31599974",
 				"name":"kcne2 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["26161869"]
+				"linkedFeatures":["26602656"]
 				}]
 		}
 	},
@@ -13860,11 +13860,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"27265035",
+				"id":"1227487",
 				"name":"kcnh2 bindingregion",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["24123217"]
+				"linkedFeatures":["27963012"]
 				}]
 		},
 		"target":{
@@ -13874,11 +13874,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"24123217",
+				"id":"27963012",
 				"name":"kcne1 binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["27265035"]
+				"linkedFeatures":["1227487"]
 				}]
 		}
 	},
@@ -13907,7 +13907,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"718006",
+				"id":"10974350",
 				"name":"tetramerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["44-64","189-371"]
@@ -13920,7 +13920,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"21496001",
+				"id":"30756707",
 				"name":"tetramerization region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["44-64","189-371"]
@@ -13952,7 +13952,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"2725933",
+				"id":"21956394",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["192-285"],
@@ -13966,7 +13966,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"12970715",
+				"id":"23041182",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["192-285"],
@@ -13999,11 +13999,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"29231015",
+				"id":"1452907",
 				"name":"usf1 binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["227-321"],
-				"linkedFeatures":["15237249"],
+				"linkedFeatures":["24945350"],
 				"InterPro":"IPR011598"
 				}]
 		},
@@ -14014,11 +14014,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"15237249",
+				"id":"24945350",
 				"name":"usf2 binding site",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["192-285"],
-				"linkedFeatures":["29231015"],
+				"linkedFeatures":["1452907"],
 				"InterPro":"IPR011598"
 				}]
 		}
@@ -14040,7 +14040,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"5029280",
+				"id":"27429226",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["227-321"],
@@ -14054,7 +14054,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0815","name":"confirmation by molecular weight"}],
 			"bindingSites":[
 				{
-				"id":"3495053",
+				"id":"32228173",
 				"name":"dimerisation domain",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["227-321"],

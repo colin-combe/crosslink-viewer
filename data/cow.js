@@ -72,11 +72,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"12408153",
+				"id":"31676092",
 				"name":"fnta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["3041616"]
+				"linkedFeatures":["5467995"]
 				}]
 		},
 		"target":{
@@ -86,11 +86,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"3041616",
+				"id":"5467995",
 				"name":"fntb binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["12408153"]
+				"linkedFeatures":["31676092"]
 				}]
 		}
 	},
@@ -119,11 +119,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"17054118",
+				"id":"28566908",
 				"name":"pggt1b binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["6604791"]
+				"linkedFeatures":["27215438"]
 				}]
 		},
 		"target":{
@@ -133,11 +133,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"bindingSites":[
 				{
-				"id":"6604791",
+				"id":"27215438",
 				"name":"fnta binding region",
 				"type":{"id":"MI:0117","name":"binding-associated region"},
 				"sequenceData":["?-?"],
-				"linkedFeatures":["17054118"]
+				"linkedFeatures":["28566908"]
 				}]
 		}
 	}
