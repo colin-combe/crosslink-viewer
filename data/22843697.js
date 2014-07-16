@@ -2,6 +2,7 @@ var miJson = {
 "data":[
 	{
 		"object":"interactor",
+		"sequence":"MDGEDIPDFSSLKEETAYWKELSLKYKQSFQEARDELVEFQEGSRELEAELEAQLVQAEQRNRDLQADNQRLKYEVEALKEKLEHQYAQSYKQVSVLEDDLSQTRAIKEQLHKYVRELEQANDDLERAKRATIVSLEDFEQRLNQAIERNAFLESELDEKESLLVSVQRLKDEARDLRQELAVRERQQEVTRKSAPSSPTLDCEKMDSAVQASLSLPATPVGKGTENTFPSPKAIPNGFGTSPLTPSARISALNIVGDLLRKVGALESKLAACRNFAKDQASRKSYISGNVNCGVLNGNGTKFSRSGHTSFFDKGAVNGFDPAPPPPGLGSSRPSSAPGMLPLSV",
 		"type":{"id":"MI:0326","name":"protein"},
 		"organism":{"taxid":"9606","common":"human","scientific":"Homo sapiens"},
 		"identifier":{"db":"uniprotkb","id":"Q9GZM8"},
@@ -25,7 +26,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"6109217",
+				"id":"33283106",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -38,7 +39,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"1060852",
+				"id":"508872",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -47,6 +48,7 @@ var miJson = {
 	},
 	{
 		"object":"interactor",
+		"sequence":"MEDSGKTFSSEEEEANYWKDLAMTYKQRAENTQEELREFQEGSREYEAELETQLQQIETRNRDLLSENNRLRMELETIKEKFEVQHSEGYRQISALEDDLAQTKAIKDQLQKYIRELEQANDDLERAKRATIMSLEDFEQRLNQAIERNAFLESELDEKENLLESVQRLKDEARDLRQELAVQQKQEKPRTPMPSSVEAERTDTAVQATGSVPSTPIAHRGPSSSLNTPGSFRRGLDDSTGGTPLTPAARISALNIVGDLLRKVGALESKLASCRNLVYDQSPNRTGGPASGRSSKNRDGGERRPSSTSVPLGDKGLGKRLEFGKPPSHMSSSPLPSAQGVVKMLL",
 		"type":{"id":"MI:0326","name":"protein"},
 		"organism":{"taxid":"9606","common":"human","scientific":"Homo sapiens"},
 		"identifier":{"db":"uniprotkb","id":"Q9NXR1"},
@@ -70,7 +72,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"12337230",
+				"id":"17332007",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -83,7 +85,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"19001721",
+				"id":"13033086",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -109,59 +111,59 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"24398803",
+				"id":"33098950",
 				"name":"lys-20",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["20-20"],
-				"linkedFeatures":["1969002"]
+				"linkedFeatures":["28686303"]
 				},
 				{
-				"id":"8356131",
+				"id":"20623910",
 				"name":"lys-25",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["25-25"],
-				"linkedFeatures":["16201639"]
+				"linkedFeatures":["8779536"]
 				},
 				{
-				"id":"6744512",
+				"id":"18834883",
 				"name":"ser-90",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["90-90"],
-				"linkedFeatures":["8156646"]
+				"linkedFeatures":["5378795"]
 				},
 				{
-				"id":"18909897",
+				"id":"5771475",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"24616443",
+				"id":"28882394",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["2422688"]
+				"linkedFeatures":["27991800"]
 				},
 				{
-				"id":"16599097",
+				"id":"25058784",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["9479700"]
+				"linkedFeatures":["21312104"]
 				},
 				{
-				"id":"8875626",
+				"id":"32529916",
 				"name":"lys-80",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["80-80"],
-				"linkedFeatures":["23196274"]
+				"linkedFeatures":["27943930"]
 				},
 				{
-				"id":"24387373",
+				"id":"25811435",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["11207603"]
+				"linkedFeatures":["21105531"]
 				}]
 		},
 		"target":{
@@ -171,59 +173,59 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"11207603",
+				"id":"21105531",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["24387373"]
+				"linkedFeatures":["25811435"]
 				},
 				{
-				"id":"16201639",
+				"id":"8779536",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["8356131"]
+				"linkedFeatures":["20623910"]
 				},
 				{
-				"id":"8156646",
+				"id":"5378795",
 				"name":"ser-95",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["95-95"],
-				"linkedFeatures":["6744512"]
+				"linkedFeatures":["18834883"]
 				},
 				{
-				"id":"2422688",
+				"id":"27991800",
 				"name":"tyr-114",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["114-114"],
-				"linkedFeatures":["24616443"]
+				"linkedFeatures":["28882394"]
 				},
 				{
-				"id":"25167659",
+				"id":"16774241",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"23196274",
+				"id":"27943930",
 				"name":"lys-82",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["82-82"],
-				"linkedFeatures":["8875626"]
+				"linkedFeatures":["32529916"]
 				},
 				{
-				"id":"9479700",
+				"id":"21312104",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["16599097"]
+				"linkedFeatures":["25058784"]
 				},
 				{
-				"id":"1969002",
+				"id":"28686303",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["24398803"]
+				"linkedFeatures":["33098950"]
 				}]
 		}
 	},
@@ -247,45 +249,45 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"25217668",
+				"id":"12280348",
 				"name":"tyr-114",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["114-114"],
-				"linkedFeatures":["7328811"]
+				"linkedFeatures":["2498225"]
 				},
 				{
-				"id":"30575012",
+				"id":"11078677",
 				"name":"ser-95",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["95-95"],
-				"linkedFeatures":["21666042"]
+				"linkedFeatures":["5787035"]
 				},
 				{
-				"id":"8476463",
+				"id":"21955192",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["25365361"]
+				"linkedFeatures":["2832603"]
 				},
 				{
-				"id":"6568692",
+				"id":"27376693",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"5933356",
+				"id":"21712083",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["31701856"]
+				"linkedFeatures":["10531150"]
 				},
 				{
-				"id":"2268312",
+				"id":"30979258",
 				"name":"lys-82",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["82-82"],
-				"linkedFeatures":["5686888"]
+				"linkedFeatures":["4274144"]
 				}]
 		},
 		"target":{
@@ -295,59 +297,59 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"16504587",
+				"id":"29061639",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["31660764"]
+				"linkedFeatures":["20666788"]
 				},
 				{
-				"id":"21666042",
+				"id":"5787035",
 				"name":"ser-90",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["90-90"],
-				"linkedFeatures":["30575012"]
+				"linkedFeatures":["11078677"]
 				},
 				{
-				"id":"7328811",
+				"id":"2498225",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["25217668"]
+				"linkedFeatures":["12280348"]
 				},
 				{
-				"id":"25365361",
+				"id":"2832603",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["8476463"]
+				"linkedFeatures":["21955192"]
 				},
 				{
-				"id":"5686888",
+				"id":"4274144",
 				"name":"lys-80",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["80-80"],
-				"linkedFeatures":["2268312"]
+				"linkedFeatures":["30979258"]
 				},
 				{
-				"id":"16285230",
+				"id":"24788324",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"31701856",
+				"id":"10531150",
 				"name":"lys-20",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["20-20"],
-				"linkedFeatures":["5933356"]
+				"linkedFeatures":["21712083"]
 				},
 				{
-				"id":"2362852",
+				"id":"5534212",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["17570505"]
+				"linkedFeatures":["625865"]
 				}]
 		}
 	},
@@ -371,45 +373,45 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"25217668",
+				"id":"12280348",
 				"name":"tyr-114",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["114-114"],
-				"linkedFeatures":["7328811"]
+				"linkedFeatures":["2498225"]
 				},
 				{
-				"id":"30575012",
+				"id":"11078677",
 				"name":"ser-95",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["95-95"],
-				"linkedFeatures":["21666042"]
+				"linkedFeatures":["5787035"]
 				},
 				{
-				"id":"8476463",
+				"id":"21955192",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["25365361"]
+				"linkedFeatures":["2832603"]
 				},
 				{
-				"id":"6568692",
+				"id":"27376693",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"5933356",
+				"id":"21712083",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["31701856"]
+				"linkedFeatures":["10531150"]
 				},
 				{
-				"id":"2268312",
+				"id":"30979258",
 				"name":"lys-82",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["82-82"],
-				"linkedFeatures":["5686888"]
+				"linkedFeatures":["4274144"]
 				}]
 		},
 		"target":{
@@ -419,45 +421,45 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"28486839",
+				"id":"16377156",
 				"name":"tyr-114",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["114-114"],
-				"linkedFeatures":["23675660"]
+				"linkedFeatures":["3871080"]
 				},
 				{
-				"id":"28377067",
+				"id":"32764716",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"24232991",
+				"id":"14814010",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["194815"]
+				"linkedFeatures":["5187048"]
 				},
 				{
-				"id":"19476327",
+				"id":"4310894",
 				"name":"lys-82",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["82-82"],
-				"linkedFeatures":["15156224"]
+				"linkedFeatures":["9185732"]
 				},
 				{
-				"id":"18964625",
+				"id":"663779",
 				"name":"ser-95",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["95-95"],
-				"linkedFeatures":["4903743"]
+				"linkedFeatures":["16071688"]
 				},
 				{
-				"id":"7527849",
+				"id":"3684842",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["20351662"]
+				"linkedFeatures":["23223512"]
 				}]
 		}
 	},
@@ -481,45 +483,45 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"25217668",
+				"id":"12280348",
 				"name":"tyr-114",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["114-114"],
-				"linkedFeatures":["7328811"]
+				"linkedFeatures":["2498225"]
 				},
 				{
-				"id":"30575012",
+				"id":"11078677",
 				"name":"ser-95",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["95-95"],
-				"linkedFeatures":["21666042"]
+				"linkedFeatures":["5787035"]
 				},
 				{
-				"id":"8476463",
+				"id":"21955192",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["25365361"]
+				"linkedFeatures":["2832603"]
 				},
 				{
-				"id":"6568692",
+				"id":"27376693",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"5933356",
+				"id":"21712083",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["31701856"]
+				"linkedFeatures":["10531150"]
 				},
 				{
-				"id":"2268312",
+				"id":"30979258",
 				"name":"lys-82",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["82-82"],
-				"linkedFeatures":["5686888"]
+				"linkedFeatures":["4274144"]
 				}]
 		},
 		"target":{
@@ -529,59 +531,59 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"31660764",
+				"id":"20666788",
 				"name":"lys-29",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["29-29"],
-				"linkedFeatures":["16504587"]
+				"linkedFeatures":["29061639"]
 				},
 				{
-				"id":"15156224",
+				"id":"9185732",
 				"name":"lys-80",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["80-80"],
-				"linkedFeatures":["19476327"]
+				"linkedFeatures":["4310894"]
 				},
 				{
-				"id":"194815",
+				"id":"5187048",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["24232991"]
+				"linkedFeatures":["14814010"]
 				},
 				{
-				"id":"30071147",
+				"id":"12420432",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"4903743",
+				"id":"16071688",
 				"name":"ser-90",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["90-90"],
-				"linkedFeatures":["18964625"]
+				"linkedFeatures":["663779"]
 				},
 				{
-				"id":"23675660",
+				"id":"3871080",
 				"name":"lys-27",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["27-27"],
-				"linkedFeatures":["28486839"]
+				"linkedFeatures":["16377156"]
 				},
 				{
-				"id":"17570505",
+				"id":"625865",
 				"name":"lys-113",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["113-113"],
-				"linkedFeatures":["2362852"]
+				"linkedFeatures":["5534212"]
 				},
 				{
-				"id":"20351662",
+				"id":"23223512",
 				"name":"lys-29",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["29-29"],
-				"linkedFeatures":["7527849"]
+				"linkedFeatures":["3684842"]
 				}]
 		}
 	},
@@ -605,38 +607,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"8925422",
+				"id":"32416703",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"21273128",
+				"id":"4229371",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["14993441"]
+				"linkedFeatures":["14761695"]
 				},
 				{
-				"id":"989188",
+				"id":"31906648",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["15850963"]
+				"linkedFeatures":["21655918"]
 				},
 				{
-				"id":"18512484",
+				"id":"6105585",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["22640460"]
+				"linkedFeatures":["7121439"]
 				},
 				{
-				"id":"10956193",
+				"id":"1380565",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["27579532"]
+				"linkedFeatures":["17054220"]
 				}]
 		},
 		"target":{
@@ -646,73 +648,73 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"8283759",
+				"id":"8330659",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["7811027"]
+				"linkedFeatures":["24311330"]
 				},
 				{
-				"id":"14993441",
+				"id":"14761695",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["21273128"]
+				"linkedFeatures":["4229371"]
 				},
 				{
-				"id":"15850963",
+				"id":"21655918",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["989188"]
+				"linkedFeatures":["31906648"]
 				},
 				{
-				"id":"14997067",
+				"id":"8217641",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"28381140",
+				"id":"3858905",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["25577463"]
+				"linkedFeatures":["29460831"]
 				},
 				{
-				"id":"27579532",
+				"id":"17054220",
 				"name":"lys-170",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["170-170"],
-				"linkedFeatures":["10956193"]
+				"linkedFeatures":["1380565"]
 				},
 				{
-				"id":"22640460",
+				"id":"7121439",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["18512484"]
+				"linkedFeatures":["6105585"]
 				},
 				{
-				"id":"14592489",
+				"id":"18999022",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["6622137"]
+				"linkedFeatures":["12597182"]
 				},
 				{
-				"id":"31775330",
+				"id":"25926747",
 				"name":"lys-81",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["81-81"],
-				"linkedFeatures":["29188904"]
+				"linkedFeatures":["12986231"]
 				},
 				{
-				"id":"12126784",
+				"id":"21562467",
 				"name":"lys-79",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["79-79"],
-				"linkedFeatures":["5243804"]
+				"linkedFeatures":["12520063"]
 				}]
 		}
 	},
@@ -736,38 +738,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"8925422",
+				"id":"32416703",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"21273128",
+				"id":"4229371",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["14993441"]
+				"linkedFeatures":["14761695"]
 				},
 				{
-				"id":"989188",
+				"id":"31906648",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["15850963"]
+				"linkedFeatures":["21655918"]
 				},
 				{
-				"id":"18512484",
+				"id":"6105585",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["22640460"]
+				"linkedFeatures":["7121439"]
 				},
 				{
-				"id":"10956193",
+				"id":"1380565",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["27579532"]
+				"linkedFeatures":["17054220"]
 				}]
 		},
 		"target":{
@@ -777,73 +779,73 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"18683577",
+				"id":"4870047",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["12519623"]
+				"linkedFeatures":["11635287"]
 				},
 				{
-				"id":"7811027",
+				"id":"24311330",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["8283759"]
+				"linkedFeatures":["8330659"]
 				},
 				{
-				"id":"29188904",
+				"id":"12986231",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["31775330"]
+				"linkedFeatures":["25926747"]
 				},
 				{
-				"id":"31018107",
+				"id":"32607616",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["19680331"]
+				"linkedFeatures":["25234962"]
 				},
 				{
-				"id":"21303066",
+				"id":"29546523",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"14844140",
+				"id":"16381527",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["8259701"]
+				"linkedFeatures":["10222199"]
 				},
 				{
-				"id":"6116152",
+				"id":"5821013",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["16956201"]
+				"linkedFeatures":["22611487"]
 				},
 				{
-				"id":"6622137",
+				"id":"12597182",
 				"name":"lys-112",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["112-112"],
-				"linkedFeatures":["14592489"]
+				"linkedFeatures":["18999022"]
 				},
 				{
-				"id":"25577463",
+				"id":"29460831",
 				"name":"lys-26",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["26-26"],
-				"linkedFeatures":["28381140"]
+				"linkedFeatures":["3858905"]
 				},
 				{
-				"id":"5243804",
+				"id":"12520063",
 				"name":"lys-81",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["81-81"],
-				"linkedFeatures":["12126784"]
+				"linkedFeatures":["21562467"]
 				}]
 		}
 	},
@@ -867,38 +869,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"8925422",
+				"id":"32416703",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"21273128",
+				"id":"4229371",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["14993441"]
+				"linkedFeatures":["14761695"]
 				},
 				{
-				"id":"989188",
+				"id":"31906648",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["15850963"]
+				"linkedFeatures":["21655918"]
 				},
 				{
-				"id":"18512484",
+				"id":"6105585",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["22640460"]
+				"linkedFeatures":["7121439"]
 				},
 				{
-				"id":"10956193",
+				"id":"1380565",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["27579532"]
+				"linkedFeatures":["17054220"]
 				}]
 		},
 		"target":{
@@ -908,38 +910,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"16956201",
+				"id":"22611487",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["6116152"]
+				"linkedFeatures":["5821013"]
 				},
 				{
-				"id":"8259701",
+				"id":"10222199",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["14844140"]
+				"linkedFeatures":["16381527"]
 				},
 				{
-				"id":"5095908",
+				"id":"27334754",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"12519623",
+				"id":"11635287",
 				"name":"lys-170",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["170-170"],
-				"linkedFeatures":["18683577"]
+				"linkedFeatures":["4870047"]
 				},
 				{
-				"id":"19680331",
+				"id":"25234962",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["31018107"]
+				"linkedFeatures":["32607616"]
 				}]
 		}
 	},
@@ -962,38 +964,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"16016907",
+				"id":"21493734",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["22511499"]
+				"linkedFeatures":["31739368"]
 				},
 				{
-				"id":"24544119",
+				"id":"28766901",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["28385890"]
+				"linkedFeatures":["33054065"]
 				},
 				{
-				"id":"4753457",
+				"id":"12506339",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"31804726",
+				"id":"9079461",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["19938875"]
+				"linkedFeatures":["26501157"]
 				},
 				{
-				"id":"4564624",
+				"id":"3424467",
 				"name":"lys-270",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["270-270"],
-				"linkedFeatures":["12204314"]
+				"linkedFeatures":["9168116"]
 				}]
 		},
 		"target":{
@@ -1003,38 +1005,38 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"33222624",
+				"id":"6585231",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
 				},
 				{
-				"id":"28385890",
+				"id":"33054065",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["24544119"]
+				"linkedFeatures":["28766901"]
 				},
 				{
-				"id":"12204314",
+				"id":"9168116",
 				"name":"lys-170",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["170-170"],
-				"linkedFeatures":["4564624"]
+				"linkedFeatures":["3424467"]
 				},
 				{
-				"id":"19938875",
+				"id":"26501157",
 				"name":"lys-315",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["315-315"],
-				"linkedFeatures":["31804726"]
+				"linkedFeatures":["9079461"]
 				},
 				{
-				"id":"22511499",
+				"id":"31739368",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["16016907"]
+				"linkedFeatures":["21493734"]
 				}]
 		}
 	},
@@ -1057,18 +1059,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"26898337",
+				"id":"15476751",
 				"name":"lys-107",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["107-107"],
-				"linkedFeatures":["1497550"]
+				"linkedFeatures":["3809131"]
 				},
 				{
-				"id":"3499912",
+				"id":"31772114",
 				"name":"lys-170",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["170-170"],
-				"linkedFeatures":["2104341"]
+				"linkedFeatures":["8691499"]
 				}]
 		},
 		"target":{
@@ -1078,18 +1080,18 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"1497550",
+				"id":"3809131",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["26898337"]
+				"linkedFeatures":["15476751"]
 				},
 				{
-				"id":"2104341",
+				"id":"8691499",
 				"name":"lys-17",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["17-17"],
-				"linkedFeatures":["3499912"]
+				"linkedFeatures":["31772114"]
 				}]
 		}
 	},
@@ -1112,11 +1114,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"1296016",
+				"id":"15590193",
 				"name":"ser-196",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["196-196"],
-				"linkedFeatures":["5320594"]
+				"linkedFeatures":["31381159"]
 				}]
 		},
 		"target":{
@@ -1126,11 +1128,11 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"5320594",
+				"id":"31381159",
 				"name":"lys-108",
 				"type":{"id":"MI:0912","name":"spdp cross linker"},
 				"sequenceData":["108-108"],
-				"linkedFeatures":["1296016"]
+				"linkedFeatures":["15590193"]
 				}]
 		}
 	},
@@ -1152,7 +1154,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"664745",
+				"id":"14588149",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1165,7 +1167,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"32310138",
+				"id":"795449",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1190,7 +1192,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"25130481",
+				"id":"14459493",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1203,7 +1205,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],
 			"experimentalFeatures":[
 				{
-				"id":"18361405",
+				"id":"19506621",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1228,7 +1230,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"27899335",
+				"id":"15920889",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1241,7 +1243,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"14498673",
+				"id":"19352334",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1266,7 +1268,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"6922544",
+				"id":"11575141",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
@@ -1279,7 +1281,7 @@ var miJson = {
 			"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],
 			"experimentalFeatures":[
 				{
-				"id":"13995499",
+				"id":"28357563",
 				"name":"n-terminal",
 				"type":{"id":"MI:0521","name":"his tag"},
 				"sequenceData":["n-n"]
