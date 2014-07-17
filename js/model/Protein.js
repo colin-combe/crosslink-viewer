@@ -865,7 +865,7 @@ Protein.prototype.toStick = function() {
   
     var origStickZoom = this.stickZoom;	
 	this.stickZoom = 0;
-    //? this.xlv.checkLinks();
+    this.xlv.checkLinks();
 	this.stickZoom = origStickZoom;
 
  	
