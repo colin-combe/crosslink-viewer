@@ -38,21 +38,21 @@ xiNET.Controller.prototype.initMouseEvents = function() {
     this.svgElement.ontouchstart = function(evt) {
         //~ self.mouseDown(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-		alert("touch start");
+		this.message("touch start");
     };
     //touchmove
     this.svgElement.ontouchmove = function(evt) {
-        self.mouseMove(evt);
-         self.preventDefaultsAndStopPropagation(evt);
-		alert("touch move");
+        //~ self.mouseMove(evt);
+         //~ self.preventDefaultsAndStopPropagation(evt);
+		this.message("touch move");
    
     };//touchend
     this.svgElement.ontouchend = function(evt) {
         //~ self.mouseUp(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-         alert("touch end");
+         this.message("touch end");
     };
-    
+    //also touch enter, touch leave, touch cancel 
     
 	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
