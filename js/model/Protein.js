@@ -601,7 +601,7 @@ Protein.prototype.setForm = function(form, svgP) {
 };
 
 Protein.prototype.toBlob = function(svgP) {
-	if (this.form === 1){
+	if (this.form === 1){ //this is causing from parked it below to run when tool opens 
 		this.toCircle(svgP);
 		var r = this.getBlobRadius();
 		
@@ -623,8 +623,8 @@ Protein.prototype.toBlob = function(svgP) {
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
 			.attr("fill", "#ffffff")
 			.duration(Protein.transitionTime);
-		this.xlv.checkLinks();	
-		}
+		this.xlv.checkLinks();	//TODO: ? check need for this, if possible remove
+	}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(1, 1)")
 		.duration(Protein.transitionTime);
@@ -865,7 +865,7 @@ Protein.prototype.toStick = function() {
   
     var origStickZoom = this.stickZoom;	
 	this.stickZoom = 0;
-    this.xlv.checkLinks();
+    //? this.xlv.checkLinks();
 	this.stickZoom = origStickZoom;
 
  	
