@@ -34,22 +34,24 @@ xiNET.Controller.prototype.initMouseEvents = function() {
         self.hideTooltip(evt);
     };
     	
-    //~ //touchstart
-    //~ this.svgElement.ontouchstart = function(evt) {
+    //touchstart
+    this.svgElement.ontouchstart = function(evt) {
         //~ self.mouseDown(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-   //~ 
-    //~ };
-    //~ //touchmove
-    //~ this.svgElement.ontouchmove = function(evt) {
-        //~ self.mouseMove(evt);
-         //~ self.preventDefaultsAndStopPropagation(evt);
-   //~ 
-    //~ };//touchend
-    //~ this.svgElement.ontouchend = function(evt) {
+		alert("touch start");
+    };
+    //touchmove
+    this.svgElement.ontouchmove = function(evt) {
+        self.mouseMove(evt);
+         self.preventDefaultsAndStopPropagation(evt);
+		alert("touch move");
+   
+    };//touchend
+    this.svgElement.ontouchend = function(evt) {
         //~ self.mouseUp(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-    //~ };
+         alert("touch end");
+    };
     
     
 	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x

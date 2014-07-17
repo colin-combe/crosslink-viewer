@@ -852,11 +852,9 @@ Protein.prototype.toStick = function() {
 			link.hide();
 		}
 	}
-	
- 			   
+	 			   
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
-	
 	
  	var lengthInterpol = d3.interpolate((2 * r), protLength);
 	var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
@@ -867,7 +865,6 @@ Protein.prototype.toStick = function() {
 	this.stickZoom = 0;
     this.xlv.checkLinks();
 	this.stickZoom = origStickZoom;
-
  	
 	d3.select(this.circDomains).transition().attr("opacity", 0)
 		.attr("transform", "scale(" + this.stickZoom + ", 1)")
