@@ -38,19 +38,34 @@ xiNET.Controller.prototype.initMouseEvents = function() {
     this.svgElement.ontouchstart = function(evt) {
         //~ self.mouseDown(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-		this.message("touch start");
+		self.message("touch start");
     };
     //touchmove
     this.svgElement.ontouchmove = function(evt) {
         //~ self.mouseMove(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-		this.message("touch move");
+		self.message("touch move");
    
     };//touchend
     this.svgElement.ontouchend = function(evt) {
         //~ self.mouseUp(evt);
          //~ self.preventDefaultsAndStopPropagation(evt);
-         this.message("touch end");
+         self.message("touch end");
+    };
+    this.svgElement.ontouchenter = function(evt) {
+        //~ self.mouseUp(evt);
+         //~ self.preventDefaultsAndStopPropagation(evt);
+         self.message("touch enter");
+    };
+    this.svgElement.ontouchleave = function(evt) {
+        //~ self.mouseUp(evt);
+         //~ self.preventDefaultsAndStopPropagation(evt);
+         self.message("touch leave");
+    };
+    this.svgElement.ontouchcancel = function(evt) {
+        //~ self.mouseUp(evt);
+         //~ self.preventDefaultsAndStopPropagation(evt);
+         self.message("touch cancel");
     };
     //also touch enter, touch leave, touch cancel 
     
