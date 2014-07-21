@@ -623,7 +623,7 @@ Protein.prototype.toBlob = function(svgP) {
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
 			.attr("fill", "#ffffff")
 			.duration(Protein.transitionTime);
-		this.xlv.checkLinks();	//TODO: ? check need for this, if possible remove
+		this.checkLinks();
 	}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(1, 1)")
@@ -779,7 +779,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 			}
 			//bring in new 
 			self.form = 0;
-			self.xlv.checkLinks();
+			self.checkLinks();
 			self.stickZoom = originalStickZoom;
 			self.rotation = originalRotation;
 			self.busy = false;
@@ -863,7 +863,7 @@ Protein.prototype.toStick = function() {
   
     var origStickZoom = this.stickZoom;	
 	this.stickZoom = 0;
-    this.xlv.checkLinks();
+    this.checkLinks();
 	this.stickZoom = origStickZoom;
  	
 	d3.select(this.circDomains).transition().attr("opacity", 0)
@@ -1122,6 +1122,14 @@ Protein.rotatePointAboutPoint = function(p, o, theta) {
 	return [rx, ry];
 }
 
+Protein.prototype.checkLinks = function() {
+    var links = this.proteinLinks.values();
+    var c = links.length;
+    for (var l = 0; l < c; l++) {
+        links[l].check();
+    }
+}
+
 // update all lines (e.g after a move)
 Protein.prototype.setAllLineCoordinates = function() {
     var links = this.proteinLinks.values();
@@ -1181,18 +1189,20 @@ Protein.prototype.getSubgraph = function(subgraphs) {
 };
 
 Protein.prototype.addConnectedNodes = function(subgraph) {
-    var count = this.proteinLinks.values().length;
-    for (var i = 0; i < count; i++) {
-        var externalLink = this.proteinLinks.values()[i];
-        if (externalLink.check() === true) {
-            if (!subgraph.links.has(externalLink.id)) {
-                subgraph.links.set(externalLink.id, externalLink);
+    var links = this.proteinLinks.values();
+    var c = links.length;
+    for (var l = 0; l < c; l++) {
+		var link = links[l];
+		//visible, non-self links only
+        if (link.fromProtein !== link.toProtein && link.check() === true) {
+            if (!subgraph.links.has(link.id)) {
+                subgraph.links.set(link.id, link);
                 var otherEnd;
-                if (externalLink.getFromProtein() === this) {
-                    otherEnd = externalLink.getToProtein();
+                if (link.getFromProtein() === this) {
+                    otherEnd = link.getToProtein();
                 }
                 else {
-                    otherEnd = externalLink.getFromProtein();
+                    otherEnd = link.getFromProtein();
                 }
                 if (otherEnd !== null) {
 					if (!subgraph.nodes.has(otherEnd.id)) {

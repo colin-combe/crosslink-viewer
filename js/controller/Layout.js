@@ -1,9 +1,9 @@
-xiNET.Controller.prototype.autoLayout = function() {
+xiNET.Controller.prototype.autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
-    var width = this.svgElement.parentNode.clientWidth;
-    var height = this.svgElement.parentNode.clientHeight;
+    if (!width) width = this.svgElement.parentNode.clientWidth;
+    if (!height) height = this.svgElement.parentNode.clientHeight;
 	
 	var self = this;
 	//Init subgraphs

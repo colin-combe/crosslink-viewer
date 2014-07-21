@@ -352,7 +352,6 @@ xiNET.Controller.prototype.init = function(width, height) {
 		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-            prot.setPosition(0, 0);
             if (this.proteins.keys().length < 3) {
                 prot.toStick();
             }
@@ -364,14 +363,17 @@ xiNET.Controller.prototype.init = function(width, height) {
         }
         this.autoLayout(width, height);
     }
-//    this.message('#proteins: ' + this.proteins.values().length +
-//            '\n#protein - protein links: ' + this.proteinLinks.values().length);
+    this.message('Proteins: ' + this.proteins.values().length +
+            '. Protein-protein links: ' + this.proteinLinks.values().length);
 
     //temp
-//    this.geneNames = d3.map();
-//    this.getGeneName(0);
-	this.checkLinks();
+	//    this.geneNames = d3.map();
+	//    this.getGeneName(0);
+	//this.checkLinks();
     this.initMouseEvents();
+    if (typeof this.initTouchEvents === 'function'){
+		this.initTouchEvents();
+	}
 }
 
 
