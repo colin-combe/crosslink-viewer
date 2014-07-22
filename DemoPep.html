@@ -4,6 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">       
         <title>xiNET | Rappsilber Laboratory</title>
 		<link rel="stylesheet" href="./css/xiNET.css">
 		<link rel="stylesheet" href="./css/bootstrap.css">
@@ -16,11 +17,10 @@
         <script type="text/javascript" src="./lib/Blob.js"></script>
         <script type="text/javascript" src="./lib/FileSaver.js"></script>
         <script type="text/javascript" src="./lib/rgbcolor.js"></script>
-        <script type="text/javascript" src="./lib/prototype.js"></script>
-        <script type="text/javascript" src="./lib/slider.js"></script>
         <!--xiNET-->
         <script type="text/javascript" src="./js/controller/Init.js"></script>
         <script type="text/javascript" src="./js/controller/MouseEvents.js"></script>
+        <script type="text/javascript" src="./js/controller/TouchEvents.js"></script>
         <script type="text/javascript" src="./js/controller/Layout.js"></script>
         <script type="text/javascript" src="./js/controller/Refresh.js"></script>
         <script type="text/javascript" src="./js/controller/ToolTips.js"></script>
@@ -39,29 +39,33 @@
     <body>
 	<div id="outerDiv">
 			<div class="controls">
+<!--
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
 				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export Graphic</button>
+-->
 				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
 				<button class="btn btn-inverse resetzoom" onclick="xlv.resetZoom();">Reset Zoom</button>		
-				<div class="controlGroup" id="scoreSlider" >
-					<p class="scoreLabel" id="scoreLabel1"></p>
-					<div id="track1" class="sliderbar">
-						<div class="selected" id="handle1"></div> 
-					</div> <!-- track1 sliderbar -->
-					<p class="scoreLabel" id="scoreLabel2"></p>
-					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
-				</div> <!-- outlined scoreSlider -->
+
 				<div class="controlGroup"><p>Self-links&nbsp;
 					<input checked="checked" id="internal" onclick=
 						"xlv.hideInternal(!document.getElementById('internal').checked)" 
 					type="checkbox"></p>
 				</div>
+
+				<div class="controlGroup" id="scoreSlider" >
+					<p class="scoreLabel" id="scoreLabel1"></p>
+					<input id="slide" type="range" min="1" max="100" step="1" value="0" oninput="sliderChanged()">
+					<p class="scoreLabel" id="scoreLabel2"></p>
+					<p id="cutoffLabel">&nbsp;&nbsp;Score Cut-off:</p>
+				</div> <!-- outlined scoreSlider -->
 				
+<!--
 				 <div class="controlGroup"><p>Ambiguous&nbsp;
 					<input checked="checked" id="ambig" onclick=
 						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
 					type="checkbox"></p>
                 </div>
+-->
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -126,66 +130,14 @@
 		</div>
 
 		<script type="text/javascript">
-                //<![CDATA[
-                
-                
-                            
-                            document.onkeypress = function (e) {
-                                        //~ //e = e || window.event;
-                                        //~ //alert(e.keyCode);
-                                        xlv.exportSVG('networkSVG');
-                                };
-
-            
+    //<![CDATA[
 	var targetDiv = document.getElementById('networkContainer');
 	var messageDiv = document.getElementById('networkCaption');
 	xlv = new xiNET.Controller(targetDiv);
 	xlv.setMessageElement(messageDiv);
 	xlv.cutOff = 0;
-    //
-    //    jQuery.noConflict();
-    //
-    // horizontal slider control
-    new Control.Slider('handle1', 'track1', {sliderValue: 0,
-        onSlide: function(v) {
-            $('debug1').innerHTML = 'cut-off: ' + roundNumber(v * 15, 1);
-            xlv.setCutOff(roundNumber(v * 15, 1));
-        },
-        onChange: function(v) {
-            $('debug1').innerHTML = 'cut-off: ' + roundNumber(v * 15, 1);
-            xlv.setCutOff(roundNumber(v * 15, 1));
-        }
-    });
-    function roundNumber(num, dec) {
-        var result = Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
-        return result;
-    }
-    PV = {};
-    PV.hideA = false;
-    PV.hideB = false;
-    PV.hideC = false;
-    PV.hideQ = false;
-    PV.hideAUTOTRUE = false;
-    
-    xlv.filter = function (match) {
-		if (typeof match.validated !== 'undefined') {
-			var vChar = match.validated.toUpperCase()[0];
-			if (vChar == 'A' && !PV.hideA) return true;
-			else if (vChar == 'B' && !PV.hideB) return true;
-			else if (vChar == 'C' && !PV.hideC) return true;
-			else if (vChar == '?' && !PV.hideQ) return true;
-		}
-		if (match.autovalidated){
-			if (!PV.hideAUTOTRUE && (match.score >= xlv.cutOff))  return true;
-		}
-		//        else {
-		//            if (!PV.hideAUTOFALSE && (this.score >= PV.cutOff))  return true;
-		//            }
-		return false;
-	}
 	
-xlv.sid = "1633";//SELECT has_protein.peptide_id, has_protein.protein_id, peptide_position INTO TEMPORARY tempHasProtein81_132_152_120_1384432966 FROM has_protein, tempMatchedPeptides81_132_152_120_1384432966 WHERE tempMatchedPeptides81_132_152_120_1384432966.peptide_id = has_protein.peptide_id GROUP BY  has_protein.peptide_id, has_protein.protein_id, peptide_position;
-//SELECT t1.layout AS l  FROM layouts AS t1  LEFT OUTER JOIN layouts AS t2  ON (t1.search_id = t2.search_id AND t1.time &lt; t2.time)  WHERE t1.search_id = 1633 AND t2.search_id IS NULL;
+xlv.sid = "1633";
 xlv.addProtein (15401,'','MSSGSAGAPALSNNSTNSVAKEKSGNISGDEYLSQEEEVFDGNDIENNETKVYEESLDLDLERSNRQVWLVRLPMFLAEKWRDRNNLHGQELGKIRINKDGSKITLLLNENDNDSIPHEYDLELTKKVVENEYVFTEQNLKKYQQRKKELEADPEKQRQAYLKKQEREEELKKKQQQQKRRNNRKKFNHRVMTDRDGRDRYIPYVKTIPKKTAIVGTVCcmHECcmQVMPSMNDPNYHKIVEQRRNIVKLNNKERITTLDETVGVTMSHTGMSMRSDNSNFLKVGREKAKSNIKSIRMPKKEILDYLFKLFDEYDYWSLKGLKERTRQPEAHLKECcmLDKVATLVKKGPYAFKYTLRPEYKKLKEEERKATLGELADEQTGSAGDNAQGDAEADLEDEIEMEDVV','Tfg2','P41896','400');
 xlv.addProtein (15402,'','MSDLANSEKYYDEDPYGFEDESAPITAEDSWAVISAFFREKGLVSQQLDSFNQFVDYTLQDIICcmEDSTLILEQLAQHTTESDNISRKYEISFGKIYVTKPMVNESDGVTHALYPQEARLRNLTYSSGLFVDVKKRTYEAIDVPGRELKYELIAEESEDDSESGKVFIGRLPIMLRSKNCcmYLSEATESDLYKLKECcmPFDMGGYFIINGSEKVLIAQERSAGNIVQVFKKAAPSPISHVAEIRSALEKGSRFISTLQVKLYGREGSSARTIKATLPYIKQDIPIVIIFRALGIIPDGEILEHICcmYDVNDWQMLEMLKPCcmVEDGFVIQDRETALDFIGRRGTALGIKKEKRIQYAKDILQKEFLPHITQLEGFESRKAFFLGYMINRLLLCcmALDRKDQDDRDHFGKKRLDLAGPLLAQLFKTLFKKLTKDIFRYMQRTVEEAHDFNMKLAINAKTITSGLKYALATGNWGEQKKAMSSRAGVSQVLNRYTYSSTLSHLRRTNTPIGRDGKLAKPRQLHNTHWGLVCcmPAETPEGQACcmGLVKNLSLMSCcmISVGTDPMPIITFLSEWGMEPLEDYVPHQSPDATRVFVNGVWHGVHRNPARLMETLRTLRRKGDINPEVSMIRDIREKELKIFTDAGRVYRPLFIVEDDESLGHKELKVRKGHIAKLMATEYQDIEGGFEDVEEYTWSSLLNEGLVEYIDAEEEESILIAMQPEDLEPAEANEENDLDVDPAKRIRVSHHATTFTHCcmEIHPSMILGVAASIIPFPDHNQSPRNTYQSAMGKQAMGVFLTNYNVRMDTMANILYYPQKPLGTTRAMEYLKFRELPAGQNAIVAIACcmYSGYNQEDSMIMNQSSIDRGLFRSLFFRSYMDQEKKYGMSITETFEKPQRTNTLRMKHGTYDKLDDDGLIAPGVRVSGEDVIIGKTTPISPDEEELGQRTAYHSKRDASTPLRSTENGIVDQVLVTTNQDGLKFVKVRVRTTKIPQIGDKFASRHGQKGTIGITYRREDMPFTAEGIVPDLIINPHAIPSRMTVAHLIECcmLLSKVAALSGNEGDASPFTDITVEGISKLLREHGYQSRGFEVMYNGHTGKKLMAQIFFGPTYYQRLRHMVDDKIHARARGPMQVLTRQPVEGRSRDGGLRFGEMERDCcmMIAHGAASFLKERLMEASDAFRVHICcmGICcmGLMTVIAKLNHNQFECcmKGCcmDNKIDIYQIHIPYAAKLLFQELMAMNITPRLYTDRSRDF','Rpb2','P08518','1224');
 xlv.addProtein (15403,'','MSRRNPPGSRNGGGPTNASPFIKRDRMRRNFLRMRMGQNGSNSSSPGVPNGDNSRGSLVKKDDPEYAEEREKMLLQIGVEADAGRSNVKVKDEDPNEYNEFPLRAIPKEDLENMRTHLLKFQSKKKINPVTDFHLPVRLHRKDTRNLQFQLTRAEIVQRQKEISEYKKKAEQERSTPNSGGMNKSGTVSLNNTVKDGSQTPTVDSVTKDNTANGVNSSIPTVTGSSVPPASPTTVSAVESNGLSNGSTSAANGLDGNASTANLANGRPLVTKLEDAGPAEDPTKVGMVKYDGKEVTNEPEFEEGTMDPLADVAPDGGGRAKRGNLRRKTRQLKVLDENAKKLRFEEFYPWVMEDFDGYNTWVGSYEAGNSDSYVLLSVEDDGSFTMIPADKVYKFTARNKYATLTIDEAEKRMDKKSGEVPRWLMKHLDNIGTTTTRYDRTRRKLKAVADQQAMDEDDRDDNSEVELDYDEEFADDEEAPIIDGNEQENKESEQRIKKEMLQANAMGLRDEEAPSENEEDELFGEKKIDEDGERIKKALQKTELAALYSSDENEINPYLSESDIENKENESPVKKEEDSDTLSKSKRSSPKKQQKKATNAHVHKEPTLRVKSIKNCcmVIILKGDKKILKSFPEGEWNPQTTKAVDSSNNASNTVPSPIKQEEGLNSTVAEREETPAPTITEKDIIEAIGDGKVNIKEFGKFIRRKYPGAENKKLMFAIVKKLCcmRKVGNDHMELKKE','Tfg1','P41895','735');
@@ -717,37 +669,16 @@ xlv.addMatch("15403",[704],"15403",[713],2631081,6.203792353099303,8,7,"KYPGAENK
 xlv.addMatch("15401",[343],"15402",[858],2613115,6.18837587791913,6,7,"GPYAFKYTLRPEYK","SYMDQEKK",'t','','');
 xlv.addMatch("15401",[85],"15401",[97],2594059,5.748796756502067,10,3,"NNLHGQELGKIR","INKDGSK",'t','','');
 
-   // synchFilters();
-
-
     xlv.init();
 
-         </script>        
+        </script>        
 		<script type="text/javascript">
                 //<![CDATA[			
 				function initSlider(){
 					if (xlv.scores != null){
 						document.getElementById('scoreLabel1').innerHTML = xlv.scores.min.toFixed(2);
 						document.getElementById('scoreLabel2').innerHTML = xlv.scores.max.toFixed(2) + '&nbsp;&nbsp;';
-						document.getElementById('debug1').innerHTML = 'Cut-Off:' + xlv.scores.min.toFixed(2);
-						new Control.Slider('handle1', 'track1', {
-							sliderValue: 0,
-							onSlide: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut;
-								xlv.setCutOff(cut);
-							},
-							onChange: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut;
-								xlv.setCutOff(cut);
-							}
-						});
-						function calcCutOff(v) {
-							var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
-							result = result.toFixed(2);
-							return result;
-						}
+						document.getElementById('cutoffLabel').innerHTML = 'Cut-off:&nbsp;' + xlv.scores.min.toFixed(2);
 					}
 					else {
 						//no score
@@ -756,6 +687,21 @@ xlv.addMatch("15401",[85],"15401",[97],2594059,5.748796756502067,10,3,"NNLHGQELG
 				}
 				
 				initSlider();				
+				
+				function sliderChanged(){
+					var slide = document.getElementById('slide');
+					var cut = calcCutOff(slide.value / 100.0);
+					var cutoffLabel = document.getElementById("cutoffLabel");
+					cutoffLabel.innerHTML = 'Cut-off: ' + cut;
+					xlv.setCutOff(cut);
+				}
+				
+				function calcCutOff(v) {
+					var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
+					result = result.toFixed(2);
+					return result;
+				}				
+				
                 //]]>
         </script>
 		<script type="text/javascript">

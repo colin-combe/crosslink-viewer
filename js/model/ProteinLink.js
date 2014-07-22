@@ -17,7 +17,7 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.xlv = xlvController;
     this.fromProtein = fromP; //its the object. not the ID number
     this.toProtein = toP; //its the object. not the ID number
-    this.intra = false;
+    this.intra = false;// TODO: remove this
     if (this.fromProtein === this.toProtein) {
         this.intra = true;
     }

@@ -112,7 +112,7 @@ input, select, button {
     width: 480px;
 }
 
-#debug1 {
+#cutoffLabel {
     display:inline-block;
 /*
     width:140px;

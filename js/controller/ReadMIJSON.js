@@ -112,7 +112,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         var proteins = self.proteins.values();
         var proteinCount = proteins.length;
         
-        //self.features = d3.map();       
+        self.features = d3.map();       
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
@@ -156,7 +156,9 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 		for (var ef = 0; ef < efCount; ef++){
 			var experimentalFeature = interaction.source.experimentalFeatures[ef];
 			sourceInteractor.experimentalFeatures.set(experimentalFeature.id, experimentalFeature);
-			//self.features.set(experimentalFeature.id, sourceInteractor.id);
+			this.features.set(experimentalFeature.id, 
+				{interactor:sourceInteractor.id,
+				 feature:experimentalFeature});
 		}
 		
 		if (!targetInteractor.experimentalFeatures){
@@ -166,7 +168,9 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 		for (ef = 0; ef < efCount; ef++){
 			experimentalFeature = interaction.target.experimentalFeatures[ef];
 			targetInteractor.experimentalFeatures.set(experimentalFeature.id, experimentalFeature);
-			//self.features.set(experimentalFeature.id, targetInteractor.id);
+			this.features.set(experimentalFeature.id, 
+				{interactor:targetInteractor.id,
+				 feature:experimentalFeature});
 		}		
 	}
 };
@@ -193,35 +197,11 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
     if (typeof sourceInteractor === 'undefined') {
         alert("Fail - no interactor with id " + interaction.source.identifier.id);
     }
-    var targetInteractor = this.proteins.get(interaction.target.identifier.id);
-    if (typeof targetInteractor === 'undefined') {
-        alert("Fail - no interactor with id " + interaction.target.identifier.id);
-    }
     
     if (interaction.experiment.detmethod.id !== "MI:0030"){ //ignore everything but crosslinking studies
 			console.debug("Ignored experiment: " + interaction.experiment.detmethod.name);
 	}
 	else {
-		// these links are undirected and should have same ID regardless of which way round 
-		// source and target are
-		var linkID, fromInteractor, toInteractor;
-		if (interaction.source.identifier.id < interaction.target.identifier.id) {
-			linkID = interaction.source.identifier.id + '-' + interaction.target.identifier.id;
-			fromInteractor = sourceInteractor;
-			toInteractor = targetInteractor; 
-		} else {
-			linkID = interaction.target.identifier.id + '-' + interaction.source.identifier.id;
-			fromInteractor = targetInteractor;
-			toInteractor = sourceInteractor; 
-		}
-		var link = this.proteinLinks.get(linkID);
-		if (typeof link === 'undefined') {
-			link = new ProteinLink(linkID, fromInteractor, toInteractor, this);
-			this.proteinLinks.set(linkID, link);
-			console.debug("new ProteinLink: " + linkID);
-			fromInteractor.addLink(link);
-			toInteractor.addLink(link);
-		}
 		
 		var sequenceDataRegex = /(.*)-(.*)/;
 		
@@ -240,9 +220,46 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 			var sourceResidue = sm[1] - 0;
 		
 			if (sourceExperimentalFeature.linkedFeatures) {
+				//~ var targetSeqData = targetInteractor.experimentalFeatures
+							//~ .get(sourceExperimentalFeature.linkedFeatures[0])
+							//~ .sequenceData[0];
+							
+				var target = this.features.get(sourceExperimentalFeature.linkedFeatures[0]); 
+		
+				var targetInteractor = this.proteins.get(target.interactor);
+				if (typeof targetInteractor === 'undefined') {
+					alert("Fail - no interactor with id " + target.interactor);
+				}
+				
+				var linkID, fromInteractor, toInteractor;	
+				// these links are undirected and should have same ID regardless of which way round 
+				// source and target are
+				if (interaction.source.identifier.id < interaction.target.identifier.id) {
+					linkID = interaction.source.identifier.id + '-' + interaction.target.identifier.id;
+					fromInteractor = sourceInteractor;
+					toInteractor = targetInteractor; 
+				} else {
+					linkID = interaction.target.identifier.id + '-' + interaction.source.identifier.id;
+					fromInteractor = targetInteractor;
+					toInteractor = sourceInteractor; 
+				}
+				
+				var link = this.proteinLinks.get(linkID);
+				if (typeof link === 'undefined') {
+					link = new ProteinLink(linkID, fromInteractor, toInteractor, this);
+					this.proteinLinks.set(linkID, link);
+					console.debug("new ProteinLink: " + linkID);
+					fromInteractor.addLink(link);
+					toInteractor.addLink(link);
+				}
+				
+							
 				var targetSeqData = targetInteractor.experimentalFeatures
 							.get(sourceExperimentalFeature.linkedFeatures[0])
 							.sequenceData[0];
+							
+				
+							
 				var tm = sequenceDataRegex.exec(targetSeqData);
 				if (tm[1] != tm[2]) {
 					console.debug("FAIL: cross-link to range?" + targetSeqData);

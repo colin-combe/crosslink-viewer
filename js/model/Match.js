@@ -71,14 +71,16 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 
 	//tidy up IDs, leaves protIDs null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
+	var eliminateQuotes = /(['"])/g;
+	var split = /[;,]/;
 	function sanitiseProteinIDs(protIDs){
-		if (typeof protIDs  != 'undefined' && protIDs){
+		if (protIDs){
 			protIDs = protIDs.toString().trim();
 			if (protIDs !== '' && protIDs !== '-' && protIDs !== 'n/a'){
 				// eliminate all forms of quotation mark
 				// - sooner or later their going to screw up javascript, prob whilst trying to generate>parse JSON
-				protIDs = protIDs.toString().replace(/(['"])/g, '');
-				protIDs = protIDs.split(/[;,]/);			
+				protIDs = protIDs.replace(eliminateQuotes, '');
+				protIDs = protIDs.split(split);			
 				var protIDCount = protIDs.length
 				for (var p2 = 0; p2 < protIDCount; p2++ ){
 					protIDs[p2] = protIDs[p2].trim();
@@ -128,13 +130,13 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	// leaves positions null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
 	function sanitisePositions(positions){
-		if (typeof positions  != 'undefined' && positions){
+		if (positions){
 			positions = positions.toString().trim();
 			if (positions !== '' && positions !== '-' && positions !== 'n/a'){
 				// eliminate all forms of quotation mark 
-				positions = positions.toString().replace(/(['"])/g, '');
+				positions = positions.toString().replace(eliminateQuotes, '');
 				//; or , as seperator
-				positions = positions.split(/[;,]/);	
+				positions = positions.split(split);	
 				var posCount = positions.length;
 				for (var i2 = 0; i2 < posCount; i2++ ){
 					var pos = parseInt(positions[i2]);
