@@ -74,6 +74,10 @@ ResidueLink.prototype.initSVG = function() {
         this.line.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
+        this.line.ontouchstart = function(evt) {
+			self.touchStart(evt);
+		};
+
         this.highlightLine.onmousedown = function(evt) {
             self.mouseDown(evt);
         };
@@ -83,6 +87,9 @@ ResidueLink.prototype.initSVG = function() {
         this.highlightLine.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
+        this.highlightLine.ontouchstart = function(evt) {
+			self.touchStart(evt);
+		};
     }
     if (this.intra === true) {
         //~ this.setUpCurve();

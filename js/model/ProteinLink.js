@@ -81,6 +81,10 @@ ProteinLink.prototype.initSVG = function() {
     this.line.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.line.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -90,6 +94,10 @@ ProteinLink.prototype.initSVG = function() {
     this.highlightLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.highlightLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.fatLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -101,6 +109,9 @@ ProteinLink.prototype.initSVG = function() {
     };
     this.fatLine.onmouseout = function(evt) {
         self.mouseOut(evt);
+    };
+    this.fatLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
     };
     
     this.isSelected = false;

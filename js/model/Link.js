@@ -41,4 +41,20 @@ xiNET.Link.prototype.mouseOut = function(evt){
     return false;
 }
 
+xiNET.Link.prototype.touchStart = function(evt) {
+//    //console.log("clickable mouse down");
+    this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    //if a force layout exists then stop it
+    if (this.xlv.force !== undefined){
+        this.xlv.force.stop();
+    }
+    this.xlv.dragElement = this;
+            this.xlv.clearSelection();
+            this.setSelected(true);
+    //store start location
+    var p = this.xlv.getTouchEventPoint(evt);// seems to be correct, see above
+    this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+    return false;
+}
+
 

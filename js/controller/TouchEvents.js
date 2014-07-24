@@ -3,16 +3,9 @@
 //
 //		author: Colin Combe
 //
-//		MouseEvents.js
+//		TouchEvents.js
 
-//static var's signifying Controller's status
-xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
-xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on Rotator, drag?
-xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on Rotator, drag?
-xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+//static var's signifying Controller's status Are declared in MouseEvents.js
 
 //listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
@@ -21,21 +14,19 @@ xiNET.Controller.prototype.initTouchEvents = function() {
     var self = this;
     //touchstart
     this.svgElement.ontouchstart = function(evt) {
+ 		self.message("touch start");
         self.touchStart(evt);
-        self.preventDefaultsAndStopPropagation(evt);
-		self.message("touch start");
     };
     //touchmove
     this.svgElement.ontouchmove = function(evt) {
+ 		//~ self.message("touch move");
+		//~ console.debug("move");
         self.touchMove(evt);
-        //~ self.preventDefaultsAndStopPropagation(evt);
-		self.message("touch move");
-   
-    };//touchend
+    };
+    //touchend
     this.svgElement.ontouchend = function(evt) {
-        //~ self.touchEnd(evt);
-         self.preventDefaultsAndStopPropagation(evt);
-         self.message("touch end");
+        self.message("touch end");
+        self.touchEnd(evt);
     };
     //not used yet
     this.svgElement.ontouchenter = function(evt) {
@@ -50,6 +41,13 @@ xiNET.Controller.prototype.initTouchEvents = function() {
          self.preventDefaultsAndStopPropagation(evt);
          self.message("touch cancel");
     };
+    
+    this.svgElement.ongesturechange = function(evt) {
+         //~ self.preventDefaultsAndStopPropagation(evt);
+         self.message("touch gesture change");
+         self.gestureChange();
+    };
+    
         
     //for pinch gestures, e.g. to zoom	
     // gesturestart, 
@@ -64,267 +62,186 @@ xiNET.Controller.prototype.initTouchEvents = function() {
  */
 xiNET.Controller.prototype.touchStart = function(evt) {
     //prevent default, but allow propogation
-    //~ evt.preventDefault();
+    evt.preventDefault();
     //~ //evt.returnValue = false;
     //~ this.preventDefaultsAndStopPropagation(evt);
     
     //stop force layout
-    //~ if (typeof this.force !== 'undefined' && this.force != null) {
-        //~ this.force.stop();
-    //~ }
-    //~ var p = this.getTouchEventPoint(evt);// seems to be correct, see below
-    //~ this.dragStart = this.mouseToSVG(p.x, p.y);	
-    //~ this.state = xiNET.Controller.PANNING;
+    if (typeof this.force !== 'undefined' && this.force != null) {
+        this.force.stop();
+    }
+    
+    var p = this.getTouchEventPoint(evt);// seems to be correct, see below
+	this.dragStart = this.mouseToSVG(p.x, p.y);	
+    this.state = xiNET.Controller.PANNING;
     //~ this.panned = false;
 };
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.touchMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-    //~ this.message(this.dragStart);
-    //~ if (this.initComplete) { // just being cautious
-        //~ var p = this.getTouchEventPoint(evt);// seems to be correct, see below
-        //~ var c = this.mouseToSVG(p.x, p.y);
-//~ 
-        //~ if (this.dragElement != null) { //dragging or rotating
-            //~ this.hideTooltip();
-            //~ // var suspendID = this.svgElement.suspendRedraw(5000);
-            //~ var dx = this.dragStart.x - c.x;
-            //~ var dy = this.dragStart.y - c.y;
-//~ 
-            //~ if (this.state === xiNET.Controller.DRAGGING) {
-                //~ // we are currently dragging things around
-                //~ var ox, oy, nx, ny;
-                //~ if (typeof this.dragElement.x === 'undefined') { // if not a protein
-                    //~ //its a link - drag whole connected subgraph
-                    //~ var prot;
-                    //~ if (this.dragElement.fromProtein)
-                        //~ prot = this.dragElement.fromProtein;
-                    //~ else
-                        //~ prot = this.dragElement.proteinLink.fromProtein;
-                    //~ var prots = this.proteins.values();
-                    //~ var protCount = prots.length;
-                    //~ for (var p = 0; p < protCount; p++) {
-                        //~ prots[p].subgraph = null;
-                    //~ }
-                    //~ var subgraph = prot.getSubgraph();
-                    //~ var nodes = subgraph.nodes.values();
-                    //~ var nodeCount = nodes.length;
-                    //~ for (var i = 0; i < nodeCount; i++) {
-                        //~ var protein = nodes[i];
-                        //~ ox = protein.x;
-                        //~ oy = protein.y;
-                        //~ nx = ox - dx;
-                        //~ ny = oy - dy;
-                        //~ protein.setPosition(nx, ny);
-                        //~ protein.setAllLineCoordinates();
-                    //~ }
-                    //~ for (i = 0; i < nodeCount; i++) {
-                        //~ nodes[i].setAllLineCoordinates();
-                    //~ }
-                //~ } else {
-                    //~ //its a protein - drag it TODO: DRAG SELECTED
-                    //~ ox = this.dragElement.x;
-                    //~ oy = this.dragElement.y;
-                    //~ nx = ox - dx;
-                    //~ ny = oy - dy;
-                    //~ this.dragElement.setPosition(nx, ny);
-                    //~ this.dragElement.setAllLineCoordinates();
-                //~ }
-                //~ this.dragStart = c;
-            //~ }
-//~ 
-            //~ else if (this.state === xiNET.Controller.ROTATING) {
-                //~ // Distance from mouse x and center of stick.
-                //~ var _dx = c.x - this.dragElement.x
-                //~ // Distance from mouse y and center of stick.
-                //~ var _dy = c.y - this.dragElement.y;
-                //~ //see http://en.wikipedia.org/wiki/Atan2#Motivation
-                //~ var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                //~ if (this.whichRotator === 0) {
-                    //~ centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-                //~ }
-                //~ var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-                //~ this.dragElement.setRotation(centreToMouseAngleDegrees);
-                //~ this.dragElement.setAllLineCoordinates();
-            //~ }
-            //~ else { //not dragging or rotating yet, maybe we should start
-                //~ // don't start dragging just on a click - we need to move the mouse a bit first
-                //~ if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    //~ this.state = xiNET.Controller.DRAGGING;
-//~ 
-                //~ }
-            //~ }
-            //~ // this.svgElement.unsuspendRedraw(suspendID);
-        //~ }
-//~ 
-//~ //    else if (this.state === xiNET.Controller.SELECTING) {
-//~ //        this.updateMarquee(this.marquee, c);
-//~ //    }
-        //~ else 
-        //~ 
+    this.message(this.dragStart);
+    if (this.initComplete) { // just being cautious
+        var p = this.getTouchEventPoint(evt);// seems to be correct, see below
+        var c = this.mouseToSVG(p.x, p.y);
+
+        if (this.dragElement != null) { //dragging or rotating
+            this.hideTooltip();
+            // var suspendID = this.svgElement.suspendRedraw(5000);
+            var dx = this.dragStart.x - c.x;
+            var dy = this.dragStart.y - c.y;
+
+            if (this.state === xiNET.Controller.DRAGGING) {
+                // we are currently dragging things around
+                var ox, oy, nx, ny;
+                if (typeof this.dragElement.x === 'undefined') { // if not a protein
+                    //its a link - drag whole connected subgraph
+                    var prot;
+                    if (this.dragElement.fromProtein)
+                        prot = this.dragElement.fromProtein;
+                    else
+                        prot = this.dragElement.proteinLink.fromProtein;
+                    var prots = this.proteins.values();
+                    var protCount = prots.length;
+                    for (var p = 0; p < protCount; p++) {
+                        prots[p].subgraph = null;
+                    }
+                    var subgraph = prot.getSubgraph();
+                    var nodes = subgraph.nodes.values();
+                    var nodeCount = nodes.length;
+                    for (var i = 0; i < nodeCount; i++) {
+                        var protein = nodes[i];
+                        ox = protein.x;
+                        oy = protein.y;
+                        nx = ox - dx;
+                        ny = oy - dy;
+                        protein.setPosition(nx, ny);
+                        protein.setAllLineCoordinates();
+                    }
+                    for (i = 0; i < nodeCount; i++) {
+                        nodes[i].setAllLineCoordinates();
+                    }
+                } else {
+                    //its a protein - drag it TODO: DRAG SELECTED
+                    ox = this.dragElement.x;
+                    oy = this.dragElement.y;
+                    nx = ox - dx;
+                    ny = oy - dy;
+                    this.dragElement.setPosition(nx, ny);
+                    this.dragElement.setAllLineCoordinates();
+                }
+                this.dragStart = c;
+            }
+
+            else if (this.state === xiNET.Controller.ROTATING) {
+                // Distance from mouse x and center of stick.
+                var _dx = c.x - this.dragElement.x
+                // Distance from mouse y and center of stick.
+                var _dy = c.y - this.dragElement.y;
+                //see http://en.wikipedia.org/wiki/Atan2#Motivation
+                var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+                if (this.whichRotator === 0) {
+                    centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+                }
+                var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+                this.dragElement.setRotation(centreToMouseAngleDegrees);
+                this.dragElement.setAllLineCoordinates();
+            }
+            else { //not dragging or rotating yet, maybe we should start
+                // don't start dragging just on a click - we need to move the mouse a bit first
+                if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+                    this.state = xiNET.Controller.DRAGGING;
+
+                }
+            }
+            // this.svgElement.unsuspendRedraw(suspendID);
+        }
+
+//    else if (this.state === xiNET.Controller.SELECTING) {
+//        this.updateMarquee(this.marquee, c);
+//    }
+        else 
+        {
         
-        if (this.state === xiNET.Controller.PANNING) {
-            xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-        }
-        else {
-           // this.showTooltip(p);
-        }
-    //~ }
+        //~ if (this.state === xiNET.Controller.PANNING) {
+            xiNET.setCTM(this.container, this.container.getCTM()
+				.translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+        //~ }
+        //~ else {
+           //~ // this.showTooltip(p);
+        //~ }
+		}
+    }
     return false;
 };
 
 
 // this ends all dragging and rotating
 xiNET.Controller.prototype.touchEnd = function(evt) {
-	var time = new Date().getTime();
-	//console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
 	this.preventDefaultsAndStopPropagation(evt);
-	//eliminate some spurious mouse up events
-	if ((time - this.lastMouseUp) > 150){
-	
-		var rightclick, middleclick; //which button has just been raised
-		if (evt.which)
-			rightclick = (evt.which === 3);
-		else if (evt.button)
-			rightclick = (evt.button === 2);
-		if (evt.which)
-			middleclick = (evt.which === 2);
-		else if (evt.button)
-			middleclick = (evt.button === 1);
-
-		var p = this.getEventPoint(evt);// seems to be correct, see below
-		var c = this.mouseToSVG(p.x, p.y);
-
 	//    var suspendID = this.svgElement.suspendRedraw(5000);
-
-		if (this.dragElement != null) { 
-			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
-				if (rightclick) { // RIGHT click
-					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-						if (this.dragElement.intra) {//if internal link
-							if (this.dragElement.proteinLink)
-								this.dragElement.proteinLink.fromProtein.toggleFlipped();
-						} else {
-							if (this.dragElement.hidden !== undefined) {//if ProteinLink
-								this.dragElement.hidden = true;
-							} else {//its a residue link
-								this.dragElement.proteinLink.hidden = true;
-							}
-							this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-							this.checkLinks();
-						}
-					} else {//right click on protein
-						this.dragElement.setParked(!this.dragElement.isParked, c);
-					}
-				}
-				else if (middleclick) {
-					//can't be used? problem with IE (scroll thingy)
-				}
-				else { //left click; show matches for link, toggle form for protein, switch stick scale
-					if (typeof this.dragElement.x === 'undefined') { //if not protein
-						this.dragElement.showID();
-					} else if (evt.shiftKey) { //if shift key
-						this.dragElement.switchStickScale(c);
+	if (this.dragElement != null) { 
+		if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
+				if (typeof this.dragElement.x === 'undefined') { //if not protein
+					this.dragElement.showID();
+				} else {
+					if (this.dragElement.form === 0) {
+						this.dragElement.setForm(1);
 					} else {
-						if (this.dragElement.form === 0) {
-							this.dragElement.setForm(1, c);
-						} else {
-							this.dragElement.setForm(0, c);
-						}
+						this.dragElement.setForm(0);
 					}
 				}
-				//~ this.checkLinks();
-			}
-			else if (this.state === xiNET.Controller.ROTATING) {
-				//round protein rotation to nearest 5 degrees (looks neater)
-				this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
-			}
-			else {
-			} //end of protein drag; do nothing
+			//~ this.checkLinks();
 		}
-		else if (rightclick) { //right click on background; show all hidden links
-			var links = this.proteinLinks.values();
-			var linkCount = links.length;
-			for (var l = 0; l < linkCount; l++) {
-				var link = links[l];
-				link.hidden = false;
-			}
-			this.checkLinks();
-		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-			this.clearSelection();
+		else if (this.state === xiNET.Controller.ROTATING) {
+			//round protein rotation to nearest 5 degrees (looks neater)
+			this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
 		}
+		else {
+		} //end of protein drag; do nothing
+	}
+	else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+		this.clearSelection();
+	}
 
-		if (this.state === xiNET.Controller.SELECTING) {
-			clearInterval(this.marcher);
-			this.svgElement.removeChild(this.marquee);
-		}
+	if (this.state === xiNET.Controller.SELECTING) {
+		clearInterval(this.marcher);
+		this.svgElement.removeChild(this.marquee);
 	}
 	//    this.svgElement.unsuspendRedraw(suspendID);
+			
+	//this.message("nulling...");
 
-		this.dragElement = null;
-		this.whichRotator = -1;
-		this.state = xiNET.Controller.MOUSE_UP;
+	this.dragElement = null;
+	this.whichRotator = -1;
+	this.state = xiNET.Controller.MOUSE_UP;
 
 	this.lastMouseUp = time;
     return false;
 };
 
-
-//~ xiNET.Controller.prototype.updateMarquee = function(rect, p1) {
-    //~ var p0 = this.dragStart;
-    //~ var xs = [p0.x, p1.x].sort(sortByNumber),
-            //~ ys = [p0.y, p1.y].sort(sortByNumber);
-    //~ rect.setAttribute('x', xs[0]);
-    //~ rect.setAttribute('y', ys[0]);
-    //~ rect.setAttribute('width', xs[1] - xs[0]);
-    //~ rect.setAttribute('height', ys[1] - ys[0]);
-//~ }
-//~ 
-//~ 
-//~ function sortByNumber(a, b) {
-    //~ return a - b
-//~ }
-
-//~ /**
- //~ * Handle mouse wheel event.
- //~ */
-//~ xiNET.Controller.prototype.mouseWheel = function(evt) {
-    //~ this.preventDefaultsAndStopPropagation(evt);
-    //~ var delta;
-    //~ //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
+/**
+ * Handle gesture change event.
+ */
+xiNET.Controller.prototype.gestureChange = function(evt) {
+    this.preventDefaultsAndStopPropagation(evt);
+    var delta = evt.scale;
+    //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
     //~ if (evt.wheelDelta) {
         //~ delta = evt.wheelDelta / 3600; // Chrome/Safari
     //~ }
     //~ else {
         //~ delta = evt.detail / -90; // Mozilla
     //~ }
-    //~ var z = 1 + delta;
-    //~ var g = this.container;
-    //~ var p = this.getEventPoint(evt);// seems to be correct, see above
-    //~ var c = this.mouseToSVG(p.x, p.y);
-    //~ var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    //~ xiNET.setCTM(g, g.getCTM().multiply(k));
-    //~ this.scale();
-    //~ return false;
-//~ };
-//~ 
-//~ xiNET.Controller.prototype.clearSelection = function() {
-    //~ // var proteins = this.proteins.values();
-    //~ // var proteinCount = proteins.length;
-    //~ // for (var p = 0; p < proteinCount; p++) {
-        //~ // var prot = proteins[p];
-        //~ // prot.setSelected(false);
-    //~ // }
-//~ 
-	//~ var things = this.selected.values();
-    //~ var count = things.length;
-    //~ for (var t = 0; t < count; t++) {
-        //~ var thing = things[t];
-        //~ thing.setSelected(false);
-    //~ }
-//~ 
-//~ };
+    var z = 1 + delta;
+    var g = this.container;
+    var p = this.getTouchEventPoint(evt);// seems to be correct, see above
+    var c = this.mouseToSVG(p.x, p.y);
+    var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
+    xiNET.setCTM(g, g.getCTM().multiply(k));
+    this.scale();
+    return false;
+};
 
 //gets mouse position
 xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
@@ -341,49 +258,10 @@ xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
    } while(element);
    //TODO: should do equivalent for horizontal scroll also
 	top += getScrollTop();
-    p.x = evt.touches[0].pageX - left;
-    p.y = evt.touch[0].pageY - top;
-    return p;
-};
-//~ 
-//~ 
-//~ function getScrollTop(){
-    //~ if(typeof pageYOffset!= 'undefined'){
-        //~ //most browsers except IE before #9
-        //~ return pageYOffset;
-    //~ }
-    //~ else{
-        //~ var B= document.body; //IE 'quirks'
-        //~ var D= document.documentElement; //IE with doctype
-        //~ D= (D.clientHeight)? D: B;
-        //~ return D.scrollTop;
-    //~ }
-//~ }
-
-// transform the mouse-position into a position on the svg
-//~ xiNET.Controller.prototype.mouseToSVG = function(x, y) {
-    //~ var p = this.svgElement.createSVGPoint();
-    //~ p.x = x;
-    //~ p.y = y;
-    //~ var p = p.matrixTransform(this.container.getCTM().inverse());
-    //~ return p;
-//~ };
-
-//stop event propogation and defaults; only do what we ask
-//~ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
-    //~ if (evt.stopPropagation)
-        //~ evt.stopPropagation();
-    //~ if (evt.cancelBubble != null)
-        //~ evt.cancelBubble = true;
-    //~ if (evt.preventDefault)
-        //~ evt.preventDefault();
-   // evt.returnValue = false;
-//~ };
-
-/**
- * Sets the current transform matrix of an element.
- */
-xiNET.setCTM = function(element, matrix) {
-    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-    element.setAttribute("transform", s);
+ //~ this.message("?");//this.dragStart);
+       p.x = evt.touches[0].pageX - left;
+    p.y = evt.touches[0].pageY - top;
+ //~ var help = left;////evt.touches[0].pageX;//.toString();
+  //~ this.message(JSON.stringify(help, null, '\t'));//this.dragStart);
+   return p;
 };

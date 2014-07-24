@@ -205,8 +205,29 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-     };
-
+    };
+     
+    this.upperGroup.ontouchstart = function(evt) {
+		self.xlv.message("protein touch start");
+		self.touchStart(evt);
+    };
+    //~ this.upperGroup.ontouchmove = function(evt) {};
+	//~ this.upperGroup.ontouchend = function(evt) {
+		//~ self.xlv.message("protein touch end");
+		//~ self.mouseOut(evt);
+    //~ };
+    //~ this.upperGroup.ontouchenter = function(evt) {
+        //~ self.message("protein touch enter");
+    	//~ self.touchStart(evt);
+    //~ };
+    //~ this.upperGroup.ontouchleave = function(evt) {
+        //~ self.message("protein touch leave");
+    	//~ self.mouseOut(evt);
+    //~ };
+    //~ this.upperGroup.ontouchcancel = function(evt) {
+        //~ self.message("protein touch cancel");
+    	//~ self.mouseOut(evt);
+    //~ };
     this.isSelected = false;
 };
 
@@ -225,6 +246,26 @@ Protein.prototype.mouseDown = function(evt) {
         //~ }
         //store start location
         var p = this.xlv.getEventPoint(evt);
+        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        this.printAnnotationInfo();
+        return false;
+};
+
+Protein.prototype.touchStart = function(evt) {
+           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        //if a force layout exists then stop it
+        if (this.xlv.force !== undefined) {
+            this.xlv.force.stop();
+        }
+        this.xlv.dragElement = this;
+        //~ if (evt.ctrlKey === false) {
+            this.xlv.clearSelection();
+            this.setSelected(true);
+        //~ } else {
+            //~ this.setSelected(!this.isSelected);
+        //~ }
+        //store start location
+        var p = this.xlv.getTouchEventPoint(evt);
         this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
         this.printAnnotationInfo();
         return false;
@@ -291,11 +332,11 @@ Protein.prototype.addLink = function(link) {
 };
 
 Protein.prototype.showHighlight = function(show) {
-    if (show) {
+    if (show === true) {
         this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     } else {
-        if (this.isSelected == false) {
+		if (this.isSelected == false) {
                 this.highlight.setAttribute("stroke-opacity", "0");
         }
         this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
