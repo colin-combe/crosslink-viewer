@@ -64,22 +64,21 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			this.xlv.manualValidatedFound = true;
 		}
 	}
-	
-	//protein IDs
-	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
-	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
-
+		
 	//tidy up IDs, leaves protIDs null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
 	var eliminateQuotes = /(['"])/g;
-	var split = /[;,]/;
+	var split = /[;,]/g;
+	var capitalsOnly = /[^A-Z]/g;
 	function sanitiseProteinIDs(protIDs){
 		if (protIDs){
 			protIDs = protIDs.toString().trim();
 			if (protIDs !== '' && protIDs !== '-' && protIDs !== 'n/a'){
 				// eliminate all forms of quotation mark
-				// - sooner or later their going to screw up javascript, prob whilst trying to generate>parse JSON
+				// - sooner or later they're going to screw up javascript, prob whilst trying to generate>parse JSON
+				eliminateQuotes.lastIndex = 0;
 				protIDs = protIDs.replace(eliminateQuotes, '');
+				split.lastIndex = 0;
 				protIDs = protIDs.split(split);			
 				var protIDCount = protIDs.length
 				for (var p2 = 0; p2 < protIDCount; p2++ ){
@@ -96,10 +95,16 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		return protIDs;
 	}
 
+	//protein IDs
+	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
+	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
+
+
 	if (typeof pepSeq1 != 'undefined' && pepSeq1 != null){
 		pepSeq1 = pepSeq1.trim();
 		if (pepSeq1){
-			this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
+			capitalsOnly.lastindex = 0;
+			this.pepSeq1 = pepSeq1.replace(capitalsOnly, '');	
 		}
 		else{
 			this.pepSeq1 = null;
@@ -112,7 +117,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	if (typeof pepSeq2 !== 'undefined' && pepSeq2 != null){
 		pepSeq2 = pepSeq2.trim();
 		if (pepSeq2){
-			this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
+			capitalsOnly.lastindex = 0;
+			this.pepSeq2 = pepSeq2.replace(capitalsOnly, '');
 		} else {
 			this.pepSeq2 = null;
 		}
@@ -134,8 +140,10 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			positions = positions.toString().trim();
 			if (positions !== '' && positions !== '-' && positions !== 'n/a'){
 				// eliminate all forms of quotation mark 
+				eliminateQuotes.lastIndex = 0;
 				positions = positions.toString().replace(eliminateQuotes, '');
 				//; or , as seperator
+				split.lastIndex = 0;
 				positions = positions.split(split);	
 				var posCount = positions.length;
 				for (var i2 = 0; i2 < posCount; i2++ ){
