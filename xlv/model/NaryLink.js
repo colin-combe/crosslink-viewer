@@ -101,8 +101,9 @@ NaryLink.prototype.initSVG = function() {
 
 	this.line = document.createElementNS(xiNET.svgns, "rect");
 	this.line.setAttribute('fill', NaryLink.naryColours(this.id));
-	this.line.setAttribute('opacity', 0.6);
-	this.line.setAttribute('radius', 10);
+	this.line.setAttribute('opacity', 0.4);
+	this.line.setAttribute('rx', '30');
+	this.line.setAttribute('ry', '30');
 	
 	//~ this.highlightLine = document.createElementNS(xiNET.svgns, "line");
 	//~ this.fatLine = document.createElementNS(xiNET.svgns, "line");
@@ -204,7 +205,7 @@ NaryLink.prototype.showID = function() {
     //~ "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
             //~ + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
             //~ + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
+    linkInfo += "<pre>" + JSON.stringify(this, null, '\t') + "</pre>";
     this.xlv.message(linkInfo);
 };
 
@@ -430,10 +431,10 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 			}
 		}
 		
-		this.line.setAttribute('x',westerly.x);
-		this.line.setAttribute('y',northerly.y);
-		this.line.setAttribute('width',easterly.x - westerly.x);
-		this.line.setAttribute('height',southerly.y - northerly.y);
+		this.line.setAttribute('x',westerly.x - 20);
+		this.line.setAttribute('y',northerly.y - 20);
+		this.line.setAttribute('width',(easterly.x - westerly.x) + 40);
+		this.line.setAttribute('height',(southerly.y - northerly.y) + 40);
     }
 };
 

@@ -25,7 +25,7 @@ function BinaryLink(id, xlvController) {
     this.hidden = false;
     this.evidenceCount = 0;
     
-    this.isBinary;
+    this.isBinary = true;
 }
 
 BinaryLink.prototype.addEvidence = function(interaction) {

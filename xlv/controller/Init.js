@@ -207,7 +207,7 @@ xiNET.Controller.prototype.emptyElement = function(element) {
 xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
-            text = JSON.stringify(text, null, '\t');
+            text = JSON.stringify(text, null, ' ');
             text = text.replace(/\\u0000/gi, '');
             preformatted = true;
         }

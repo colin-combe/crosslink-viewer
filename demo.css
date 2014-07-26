@@ -73,19 +73,26 @@ input#score_slider{
 div#networkContainer{
     clear: both;
     border: 1px solid black;
-    height:80%;
+    position:absolute;
+    bottom:0px;
+    top:35px;
+    width:65%;
     overflow: hidden;
     margin: 8px;
-}
+   margin-right:35%;
+ }
 div#networkCaption{
     /*clear: both;*/
     /*border: 1px solid black;*/
     /*top:95%;*/
-    /*overflow: hidden;*/
-    /*position:absolute;*/
-    /*    margin: 8px;*/
-    /*margin-left:228px;*/
+    overflow: scroll;
+    position:absolute;
+        margin: 0px;
+    margin-left:67%;
     line-height: 1;
+    top:0px;
+    max-height:100%;
+max-width:33%;
 
 }
 table {

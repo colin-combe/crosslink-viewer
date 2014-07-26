@@ -946,7 +946,7 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
     for (var i = 0; i < count; i++) {
         var externalLink = this.interactions.values()[i];
         if (externalLink.isBinary) {
-			if (externalLink.check() === true) {
+			//~ if (externalLink.check() === true) {
 				if (!subgraph.links.has(externalLink.id)) {
 					subgraph.links.set(externalLink.id, externalLink);
 					var otherEnd;
@@ -964,7 +964,7 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
 						otherEnd.addConnectedNodes(subgraph);
 					}
 				}
-			}
+			//~ }
 		}
     }
     return subgraph;

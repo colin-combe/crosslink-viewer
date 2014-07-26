@@ -46,7 +46,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //we will download missing sequences before doing second iteration to add interactions
     //~ if (interactorsMissingSequence.values().length === 0) {//if no missing sequences
         addInteractions();
-		this.message(this);
+		//this.message(this);
     //~ }
     //~ else {
         //~ this.message(interactorsMissingSequence);

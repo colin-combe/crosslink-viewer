@@ -33,104 +33,104 @@ xiNET.Controller.prototype.autoLayout = function() {
             prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
         }
         //sort subgraphs by decreasing size
-        this.subgraphs.sort(function(a, b) {
-            return b.nodes.values().length - a.nodes.values().length;
-        });
-        //Sort subgraphs into linear and non-linear sets
-        var linearGraphs = [];
-        var nonLinearGraphs = [];
-        var graphCount = this.subgraphs.length;
-        for (var g = 0; g < graphCount; g++) {
-            var graph = this.subgraphs[g];
-            var nodes = graph.nodes.values();
-            var nodeCount = nodes.length;
-            var isLinear = true;
-            if (nodeCount === 1) {
-                isLinear = true;
-            }
-            else {
-                var endFound = false;
-                for (var n = 0; n < nodeCount; n++) {
-                    if (nodes[n].countExternalLinks() > 2) {
-                        isLinear = false;
-                        break;
-                    }
-                    else if (nodes[n].countExternalLinks() < 2) {
-                        endFound = true;
-                    }
-                }
-                //check not circular
-                if (!endFound) {
-                    isLinear = false;
-                }
-            }
-            if (isLinear === true) {
-                linearGraphs.push(graph);
-            } else {
-                nonLinearGraphs.push(graph);
-            }
-        }
-        //Grid layout linear graphs
-        var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
-        var singleCount = 0;
+        //~ this.subgraphs.sort(function(a, b) {
+            //~ return b.nodes.values().length - a.nodes.values().length;
+        //~ });
+        //~ //Sort subgraphs into linear and non-linear sets
+        //~ var linearGraphs = [];
+        //~ var nonLinearGraphs = [];
+        //~ var graphCount = this.subgraphs.length;
+        //~ for (var g = 0; g < graphCount; g++) {
+            //~ var graph = this.subgraphs[g];
+            //~ var nodes = graph.nodes.values();
+            //~ var nodeCount = nodes.length;
+            //~ var isLinear = true;
+            //~ if (nodeCount === 1) {
+                //~ isLinear = true;
+            //~ }
+            //~ else {
+                //~ var endFound = false;
+                //~ for (var n = 0; n < nodeCount; n++) {
+                    //~ if (nodes[n].countExternalLinks() > 2) {
+                        //~ isLinear = false;
+                        //~ break;
+                    //~ }
+                    //~ else if (nodes[n].countExternalLinks() < 2) {
+                        //~ endFound = true;
+                    //~ }
+                //~ }
+                //~ //check not circular
+                //~ if (!endFound) {
+                    //~ isLinear = false;
+                //~ }
+            //~ }
+            //~ if (false){//isLinear === true) {//TEMP
+                //~ linearGraphs.push(graph);
+            //~ } else {
+                //~ nonLinearGraphs.push(graph);
+            //~ }
+        //~ }
+        //~ //Grid layout linear graphs
+        //~ var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
+        //~ var singleCount = 0;
         var yOffset = 0;
-        if (linearGraphs.length > 0) {
-            yOffset = yForRow(4);
-            for (var g = 0; g < linearGraphs.length; g++) {
-                var nodes = linearGraphs[g].nodes.keys(); //
-                var nodeCount = nodes.length;
-
-                if (nodeCount > 2) {
-                    nodes = reorderedNodes(linearGraphs[g]);
-
-                }
-                for (var n = 0; n < nodeCount; n++) {
-                    var p = this.interactors.get(nodes[n]);
-                    var x, y;
-                    if (p.isParked === true) {
-                        parkedRow++;
-                        x = xForColumn(parkedColumn);
-                        y = yForRow(parkedRow);
-                        if (y > height) {
-                            parkedColumn--;
-                            parkedRow = 1;
-                            x = xForColumn(parkedColumn);
-                            y = yForRow(parkedRow);
-                        }
-                    }
-                    else {
-                        x = xForColumn(column);
-                        y = yForRow(row);
-                        var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
-                        if ((lastNodeY + this.maxBlobRadius) > height) {
-                            column++;
-                            row = 1;
-                            if (proteinCount < 60) {
-                                row++;
-                            }
-                            x = xForColumn(column);
-                            y = yForRow(row);
-                        }
-                        row++;
-                        if (proteinCount < 60 || nodeCount > 1) {
-                            row++;
-                        }
-                    }
-                    p.setPosition(x, y);
-//                p.fixed = true;
-                    this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
-                    p.setAllLineCoordinates();//TODO: check this is needed
-                }
-                if (nodeCount === 1){
-                    singleCount++;
-                }
-                if (nodeCount > 1 || singleCount % 3 === 0) {
-                    column++;
-                    row = 1;
-                }
-
-            }
-        }
+        //~ if (linearGraphs.length > 0) {
+            //~ yOffset = yForRow(4);
+            //~ for (var g = 0; g < linearGraphs.length; g++) {
+                //~ var nodes = linearGraphs[g].nodes.keys(); //
+                //~ var nodeCount = nodes.length;
+//~ 
+                //~ if (nodeCount > 2) {
+                    //~ nodes = reorderedNodes(linearGraphs[g]);
+//~ 
+                //~ }
+                //~ for (var n = 0; n < nodeCount; n++) {
+                    //~ var p = this.interactors.get(nodes[n]);
+                    //~ var x, y;
+                    //~ if (p.isParked === true) {
+                        //~ parkedRow++;
+                        //~ x = xForColumn(parkedColumn);
+                        //~ y = yForRow(parkedRow);
+                        //~ if (y > height) {
+                            //~ parkedColumn--;
+                            //~ parkedRow = 1;
+                            //~ x = xForColumn(parkedColumn);
+                            //~ y = yForRow(parkedRow);
+                        //~ }
+                    //~ }
+                    //~ else {
+                        //~ x = xForColumn(column);
+                        //~ y = yForRow(row);
+                        //~ var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
+                        //~ if ((lastNodeY + this.maxBlobRadius) > height) {
+                            //~ column++;
+                            //~ row = 1;
+                            //~ if (proteinCount < 60) {
+                                //~ row++;
+                            //~ }
+                            //~ x = xForColumn(column);
+                            //~ y = yForRow(row);
+                        //~ }
+                        //~ row++;
+                        //~ if (proteinCount < 60 || nodeCount > 1) {
+                            //~ row++;
+                        //~ }
+                    //~ }
+                    //~ p.setPosition(x, y);
+//~ //                p.fixed = true;
+                    //~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
+                    //~ p.setAllLineCoordinates();//TODO: check this is needed
+                //~ }
+                //~ if (nodeCount === 1){
+                    //~ singleCount++;
+                //~ }
+                //~ if (nodeCount > 1 || singleCount % 3 === 0) {
+                    //~ column++;
+                    //~ row = 1;
+                //~ }
+//~ 
+            //~ }
+        //~ }
         //remember edge of gridded interactors
         //this.layoutXOffset = xForColumn(column + 0.5);
         //if force is null choose nice starting points for nodes
@@ -138,8 +138,8 @@ xiNET.Controller.prototype.autoLayout = function() {
             //Get starting position for force layout by using d3 packed circles layout
             var json = "{\"name\": \"ALL\",\"children\": [";
             var pi = 0;
-            for (var g = 0; g < nonLinearGraphs.length; g++) {
-                var nodes = nonLinearGraphs[g].nodes.values();
+            //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
+                var nodes = this.interactors.values();
                 var nodeCount = nodes.length;
                 for (var n = 0; n < nodeCount; n++) {
                     var prot = this.interactors.get(nodes[n].id);
@@ -152,7 +152,7 @@ xiNET.Controller.prototype.autoLayout = function() {
                             + prot.interactions.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
-            }
+            //~ }
             json += "]}";
             var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
@@ -199,8 +199,8 @@ xiNET.Controller.prototype.autoLayout = function() {
 //             }
 //         }
          var nodesInPlay = 0;
-        for (var g = 0; g < nonLinearGraphs.length; g++) {
-            var nodes = nonLinearGraphs[g].nodes.values();
+        //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
+            var nodes = this.interactors.values();
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
                 nodesInPlay++;
@@ -215,39 +215,61 @@ xiNET.Controller.prototype.autoLayout = function() {
                         + ",\"radius\":" + prot.getBlobRadius()
                  + "}";
             }
-        }
+        //~ }
         json += "],\"links\":[";
         var li = 0;
-        for (var g = 0; g < nonLinearGraphs.length; g++) {
-            var links = nonLinearGraphs[g].links.values();
+        //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
+            var links = this.interactions.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
 //            if (link.check() === true) { //not needed due to way subgraphs init'ed
-                var fromProt = link.fromInteractor;
-                var toProt = link.toInteractor;
-                var source = protLookUp[fromProt.id];
-                var target = protLookUp[toProt.id];
+               if (link.isBinary === true){
+					var fromProt = link.fromInteractor;
+					var toProt = link.toInteractor;
+					var source = protLookUp[fromProt.id];
+					var target = protLookUp[toProt.id];
 
-                if (source !== target) {
+					if (source !== target) {
 
-                    if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-                        if (li > 0)
-                            json += ",";
-                        li++;
-                        json += "{\"source\":" + source + ", \"target\":" + target
-                                + ", \"id\":\"" + link.id
-                                + "\"}";
-                    }
-                    else {
-                        alert("NOT RIGHT");
-                    }
-                }
+						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+							if (li > 0)
+								json += ",";
+							li++;
+							json += "{\"source\":" + source + ", \"target\":" + target
+									+ ", \"id\":\"" + link.id
+									+ "\"}";
+						}
+						else {
+							alert("NOT RIGHT");
+						}
+					}
+				} else {
+					for (var i = 0; i < link.evidences.length; i++) {
+					var participants = link.evidences[i].participants;
+					var participantCount = participants.length; 
+					//TODO: if evidence.check() ==== true
+					var fakeHub = this.interactors.get(participants[0].interactorRef);
+					var fromProt = fakeHub;
+					var source = protLookUp[fromProt.id];
+					for (var p = 1; p < participantCount; p++){
+						var participant = this.interactors.get(participants[p].interactorRef);
+						var toProt = participant;
+						var target = protLookUp[toProt.id];
+						if (li > 0)
+							json += ",";
+						li++;
+						json += "{\"source\":" + source + ", \"target\":" + target
+								+ ", \"id\":\"" + link.id
+								+ "\"}";						
+					}
+				}
+			}
                 //        } // closing unused link.check()
             }
-        }
+        //~ }
         json += "]}";
-//        this.message(json);
+        this.message(json);
         var jsonObj = JSON.parse(json);
         var k = Math.sqrt(nodesInPlay / ((width) * (height - yOffset)));
 // mike suggests:
@@ -256,7 +278,7 @@ xiNET.Controller.prototype.autoLayout = function() {
         this.force = d3.layout.force()
                 .nodes(jsonObj.nodes)
                 .links(jsonObj.links)
-                .gravity(40 * k)
+                .gravity(80 * k)//was 40
                 .linkDistance(linkDistance)
                 .charge(function(n){
                             var chrg = -15 / k  * (n.radius / 8);
