@@ -166,7 +166,7 @@ xiNET.Controller = function(targetDiv) {
 xiNET.Controller.prototype.clear = function() {
     this.initComplete = false;
     this.interactors = d3.map();
-    this.interactions = d3.map();
+    this.links = d3.map();
     this.matches = d3.map();
     this.subgraphs = new Array();
     this.layoutXOffset = 0;
@@ -320,7 +320,7 @@ xiNET.Controller.prototype.init = function(width, height) {
         this.autoLayout(width, height);
     }
 //    this.message('#interactors: ' + this.interactors.values().length +
-//            '\n#protein - protein links: ' + this.interactions.values().length);
+//            '\n#protein - protein links: ' + this.links.values().length);
 
     //temp
 //    this.geneNames = d3.map();
@@ -366,7 +366,7 @@ xiNET.Controller.prototype.getGeneName = function(pi) {
 }
 
 xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
-    var proteinLink = this.interactions.get(linkID);
+    var proteinLink = this.links.get(linkID);
     if (typeof proteinLink !== 'undefined') {
         proteinLink.colour = new RGBColor(colour);
         proteinLink.colourSpecified = true;
@@ -482,7 +482,7 @@ xiNET.Controller.prototype.loadLayout = function() {
     // layout info for links (hidden / specified colour)
     for (var l in this.layout.links) {
         var linkState = this.layout.links[l];
-        var link = this.interactions.get(l);
+        var link = this.links.get(l);
         if (link !== undefined) {
             if (typeof linkState.hidden !== 'undefined')
                 link.hidden = linkState.hidden;

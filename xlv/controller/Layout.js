@@ -149,7 +149,7 @@ xiNET.Controller.prototype.autoLayout = function() {
                     }
                     pi++;
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-                            + prot.interactions.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
+                            + prot.links.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
             //~ }
@@ -219,7 +219,7 @@ xiNET.Controller.prototype.autoLayout = function() {
         json += "],\"links\":[";
         var li = 0;
         //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
-            var links = this.interactions.values();
+            var links = this.links.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
@@ -269,7 +269,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             }
         //~ }
         json += "]}";
-        this.message(json);
+        //~ this.message(json);
         var jsonObj = JSON.parse(json);
         var k = Math.sqrt(nodesInPlay / ((width) * (height - yOffset)));
 // mike suggests:
@@ -322,8 +322,8 @@ xiNET.Controller.prototype.autoLayout = function() {
 
         function appendNode(currentNode) {
             reorderedNodes.push(currentNode.id);
-            for (var l = 0; l < currentNode.interactions.values().length; l++) {
-                var link = currentNode.interactions.values()[l];
+            for (var l = 0; l < currentNode.links.values().length; l++) {
+                var link = currentNode.links.values()[l];
                 if (link.check() === true) {
                     var nextNode = link.getOtherEnd(currentNode);
                     if (reorderedNodes.indexOf(nextNode.id) === -1) {

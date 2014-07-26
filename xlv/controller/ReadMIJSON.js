@@ -9,8 +9,8 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
 	//we're gonna need to keep track of what things have missing sequences 
     //var interactorsMissingSequence = d3.set();
     
-    // we iterate through the data twice, once for interactors and once for interactions
-    // (iteractors and interactions are mixed together in 'data')
+    // we iterate through the data twice, once for interactors and once for links
+    // (iteractors and links are mixed together in 'data')
     // the second iteration is in the 'addInteractions' function below
     
     var data = miJson.data;
@@ -43,10 +43,10 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     }
     var self = this;// the javascript bodge 
 
-    //we will download missing sequences before doing second iteration to add interactions
+    //we will download missing sequences before doing second iteration to add links
     //~ if (interactorsMissingSequence.values().length === 0) {//if no missing sequences
         addInteractions();
-		//this.message(this);
+		this.message(this.features);
     //~ }
     //~ else {
         //~ this.message(interactorsMissingSequence);
@@ -61,6 +61,13 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         for (var p = 0; p < proteinCount; p++) {
             interactors[p].initStick();
         }
+        self.features = d3.map();       
+        for (var l = 0; l < dataElementCount; l++) {
+            var interaction = data[l];
+            if (interaction.object === 'interaction') {
+                self.addFeatures(interaction);
+            }
+        }
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
@@ -74,6 +81,29 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         self.init();
         self.checkLinks();
     }
+};
+
+xiNET.Controller.prototype.addFeatures = function(interaction) {
+    var participantCount = interaction.participants.length;
+    var pIDs = d3.set();
+    for (var pi = 0; pi < participantCount; pi++) {
+		var participant = interaction.participants[pi];
+		var pID = participant.interactorRef;
+		var interactor = this.interactors.get(pID);
+		if (typeof interactor === 'undefined') {
+			alert("Fail - no interactor with id " + pID);
+		}
+		if (participant.bindingSites) {
+			var efCount = participant.bindingSites.length;
+			for (var ef = 0; ef < efCount; ef++){
+				var experimentalFeature = participant.bindingSites[ef];
+				interactor.experimentalFeatures.set(experimentalFeature.id, experimentalFeature);
+				this.features.set(experimentalFeature.id, 
+					{interactor:interactor.id,
+					 feature:experimentalFeature});
+			}	
+		}		
+	}	
 };
 
 xiNET.Controller.prototype.addInteraction = function(interaction) {
@@ -117,7 +147,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 		}
 	}
 	
-    var link = this.interactions.get(linkID);
+    var link = this.links.get(linkID);
     if (typeof link === 'undefined') {
 		if (participantCount === 1) {
 			link = new UnaryLink(linkID, this);
@@ -126,19 +156,19 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 		} else {
 			link = new NaryLink(linkID, this);
 		}
-        this.interactions.set(linkID, link);
+        this.links.set(linkID, link);
 		for (pi = 0; pi < participantCount; pi++) {
 			this.interactors.get(participants[pi].interactorRef).addLink(link);
 		}
 	}
-    //all other initialisation to do with interactions takes place within Links 
+    //all other initialisation to do with links takes place within Links 
     link.addEvidence(interaction);
 };
 
 xiNET.Controller.prototype.toJSON = function() {
     return {
-        //interactors: this.interactors,
-		interactions: this.interactions,
+        interactors: this.interactors,
+		links: this.links,
     };
 };
 

@@ -35,6 +35,57 @@ NaryLink.prototype.addEvidence = function(interaction) {
     
     this.evidences.push(interaction);
     
+    
+    
+    //~ for (var pi = 0; pi < interaction.participants.length; pi++){
+		//~ var sourceID = interaction.participants[pi].interactorRef;
+		//~ var sourceInteractor = this.xlv.interactors.get(sourceID);
+		//~ var bindingSites = interaction.participants[pi].bindingSites;
+		//~ if (bindingSites){
+			//~ var bsCount = bindingSites.length;
+			//~ for (var bsi = 0; bsi < bsCount; bsi++){
+//~ 
+				//~ var bindingSite = bindingSites[bsi];
+				//~ if (bindingSite.linkedFeatures){
+					//~ for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
+						//~ var target = this.xlv.features.get(bindingSite.linkedFeatures[fi]); 
+						//~ var targetInteractor = this.xlv.interactors.get(target.interactor);
+						//~ var linkID, fromInteractor, toInteractor;	
+						//~ // these links are undirected and should have same ID regardless of which way round 
+						//~ // source and target are
+						//~ if (sourceID < target.interactor) {
+							//~ linkID = sourceID + '-' + target.interactor;
+							//~ fromInteractor = sourceInteractor;
+							//~ toInteractor = targetInteractor; 
+						//~ } else {
+							//~ linkID = target.interactor + '-' + sourceID;
+							//~ fromInteractor = targetInteractor;
+							//~ toInteractor = sourceInteractor; 
+						//~ }
+						//~ 
+					//~ }
+										//~ 
+					//~ var link = this.xlv.links.get(linkID);
+					//~ if (typeof link === 'undefined') {
+						//~ if (fromInteractor === toInteractor){
+							//~ link = new UnaryLink(linkID, this);
+						//~ }else {
+							//~ link = new BinaryLink(linkID, this);
+						//~ }
+						//~ this.xlv.links.set(linkID, link);
+						//~ fromInteractor.addLink(link);
+						//~ toInteractor.addLink(link);
+					//~ }
+					//~ link.addEvidence(interaction);
+				//~ }
+			//~ }
+		//~ }
+	//~ }			
+	
+    
+    
+    
+    
     //~ this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
     //~ this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
     //this.intra = false;
@@ -199,15 +250,7 @@ NaryLink.prototype.showHighlight = function(show, andAlternatives) {
 //    }
 };
 
-//used when link clicked
-NaryLink.prototype.showID = function() {
-    var linkInfo = this.id;
-    //~ "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-            //~ + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
-            //~ + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this, null, '\t') + "</pre>";
-    this.xlv.message(linkInfo);
-};
+
 
 NaryLink.prototype.getFilteredEvidences = function() {
     var seqLinks = this.sequenceLinks.values();
@@ -342,38 +385,21 @@ NaryLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            //~ if (this.intra) {
-//this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-//~ 
-                //~ if (this.fatLineShown) {
-                    //~ this.fatLine.setAttribute("transform", "translate(" +
-                            //~ this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
-                            //~ + " scale(" + (this.xlv.z) + ")");
-                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
-                //~ }
-//~ 
-                //~ this.fromInteractor.upperGroup.appendChild(this.highlightLine);
-                //~ this.fromInteractor.upperGroup.appendChild(this.line);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
-            //~ }
-            //~ else {
-                this.line.setAttribute("stroke-width", this.xlv.z * 1);
-                //~ this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.setLinkCoordinates();
-                //~ if (this.fatLineShown) {
-                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
-                //~ }
-                //~ this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.naryLinks.appendChild(this.line);
-            //~ }
-        if (this.fatLineShown) {
-            if (this.intra) {
-                this.fatLine.setAttribute("stroke-width", this.w);
-            } else {
-                this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
-            }
-        }
+			this.line.setAttribute("stroke-width", this.xlv.z * 1);
+			//~ this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+			this.setLinkCoordinates();
+			//~ if (this.fatLineShown) {
+				//~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
+			//~ }
+			//~ this.xlv.highlights.appendChild(this.highlightLine);
+			this.xlv.naryLinks.appendChild(this.line);
+			if (this.fatLineShown) {
+				if (this.intra) {
+					this.fatLine.setAttribute("stroke-width", this.w);
+				} else {
+					this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
+				}
+			}
 		}
     }
 };
@@ -436,10 +462,4 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 		this.line.setAttribute('width',(easterly.x - westerly.x) + 40);
 		this.line.setAttribute('height',(southerly.y - northerly.y) + 40);
     }
-};
-
-NaryLink.prototype.toJSON = function() {
-    return {
-        evidences: this.evidences
-    };
 };

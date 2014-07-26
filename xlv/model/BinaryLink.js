@@ -224,15 +224,6 @@ BinaryLink.prototype.showHighlight = function(show, andAlternatives) {
 //    }
 };
 
-//used when link clicked
-BinaryLink.prototype.showID = function() {
-    var linkInfo = "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-            + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
-            + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
-    this.xlv.message(linkInfo);
-};
-
 BinaryLink.prototype.getFilteredEvidences = function() {
     var seqLinks = this.sequenceLinks.values();
     var seqLinkCount = seqLinks.length;
@@ -454,10 +445,4 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
             }
         }
     }
-};
-
-BinaryLink.prototype.toJSON = function() {
-    return {
-        //~ evidences: this.evidences
-    };
 };

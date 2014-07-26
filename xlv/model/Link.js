@@ -6,10 +6,11 @@
 
 // 'superclass' for SequenceLink, BinaryLink
 // terminology? could this class be renamed to Interaction?
-// or a 'Link' is a graphical rperesentation of one or many interactions
+// or a 'Link' is a graphical rperesentation of one or many links
 // i.e. 'link' is a glyph, 'interaction' is biology?
 
 xiNET.Link = function (){};
+xiNET.Link.maxNoEvidences = 0;
 
 // event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Link.prototype.mouseDown = function(evt) {
@@ -66,4 +67,19 @@ xiNET.Link.prototype.mouseOut = function(evt){
     return false;
 }
 
+//used when link clicked
+xiNET.Link.prototype.showID = function() {
+    var linkInfo = this.id;
+    //~ "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
+            //~ + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
+            //~ + ")</strong></p>";
+    linkInfo += "<pre>" + JSON.stringify(this, null, ' ') + "</pre>";
+    this.xlv.message(linkInfo);
+};
+
+xiNET.Link.prototype.toJSON = function() {
+    return {
+        evidences: this.evidences
+    };
+};
 

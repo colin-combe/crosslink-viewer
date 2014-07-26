@@ -250,7 +250,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
         } //end of protein drag; do nothing
     }
     else if (rightclick) { //right click on background; show all hidden links
-        var links = this.interactions.values();
+        var links = this.links.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var link = links[l];

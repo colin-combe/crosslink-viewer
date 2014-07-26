@@ -144,7 +144,7 @@ xiNET.Controller.prototype.stepOut = function() {
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];
         if (prot.isParked === false) {
-            var links = prot.interactions.values();
+            var links = prot.links.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
@@ -251,7 +251,7 @@ xiNET.Controller.prototype.exportProteins = function() {
 };
 
 xiNET.Controller.prototype.exportLinks = function() {
-    var myJSONText = JSON.stringify(this.interactions, null, '\t');
+    var myJSONText = JSON.stringify(this.links, null, '\t');
     myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     xlv.message(myJSONText, true);
 };

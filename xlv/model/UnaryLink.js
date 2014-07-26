@@ -5,11 +5,10 @@
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 // UnaryLink.js
-// the class representing an Unary interaction
+// the class representing a self-link
 
 UnaryLink.prototype = new xiNET.Link();
-//used to calculate width of thivh background line
-UnaryLink.maxNoEvidences = 0;
+
 function UnaryLink(id, xlvController) {
     this.id = id;
     this.evidences = new Array();
@@ -23,27 +22,18 @@ function UnaryLink(id, xlvController) {
     this.fatLineShown = false;
     //layout stuff
     this.hidden = false;
-    this.evidenceCount = 0;
 }
 
 UnaryLink.prototype.addEvidence = function(interaction) {
-    this.evidenceCount++;
-    if (this.evidenceCount > UnaryLink.maxNoEvidences) {
-        UnaryLink.maxNoEvidences = this.evidenceCount;
-    }
-    
     this.evidences.push(interaction);
+    if (this.evidences.length > xiNET.Link.maxNoEvidences) {
+        xiNET.Link.maxNoEvidences = this.evidences.length;
+    }
+    var participant = interaction.participants[0];
     
-    var participants = interaction.participants;
-    
-    if (participants.length === 2) {//TEMP
-    
-    this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
-    this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
-    //~ this.intra = false;
-    //~ if (this.fromInteractor === this.toInteractor) {
-        //~ this.intra = true;
-    //~ }
+    this.fromInteractor = this.xlv.interactors.get(participant.interactorRef);//its the object. not the ID number
+    this.toInteractor = this.fromInteractor; 
+    //TODO tidy...
     var from = this.fromInteractor;
     var to = this.toInteractor
        
@@ -98,41 +88,33 @@ UnaryLink.prototype.addEvidence = function(interaction) {
         }
         sequenceLink.addEvidence(interaction);
     }
-    
-	}//end if participants.length === 2
 };
 
 UnaryLink.prototype.initSVG = function() {
-    if (!this.intra) {
-        this.line = document.createElementNS(xiNET.svgns, "line");
-        this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-        this.fatLine = document.createElementNS(xiNET.svgns, "line");
-    } else {
-        function trig(radius, angleDegrees) {
-//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-            var radians = (angleDegrees / 360) * Math.PI * 2;
-            return {
-                x: (radius * Math.cos(radians)),
-                y: -(radius * Math.sin(radians))
-            };
-        }
-        var intraR = this.fromInteractor.getBlobRadius() + 7;
-        var r = 45;
-        var arcStart = trig(intraR, 15 + r);
-        var arcEnd = trig(intraR, -35 + r);
-        var cp1 = trig(intraR, 30 + r);
-        var cp2 = trig(intraR, -50 + r);
-        var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
-                + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
-                + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
-        this.line = document.createElementNS(xiNET.svgns, "path");
-        this.line.setAttribute('d', path);
-        this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-        this.highlightLine.setAttribute('d', path);
-        this.fatLine = document.createElementNS(xiNET.svgns, 'path');
-        this.fatLine.setAttribute('d', path);
-    }
-
+	function trig(radius, angleDegrees) {
+		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		var radians = (angleDegrees / 360) * Math.PI * 2;
+		return {
+			x: (radius * Math.cos(radians)),
+			y: -(radius * Math.sin(radians))
+		};
+	}
+	var intraR = this.fromInteractor.getBlobRadius() + 7;
+	var r = 45;
+	var arcStart = trig(intraR, 15 + r);
+	var arcEnd = trig(intraR, -35 + r);
+	var cp1 = trig(intraR, 30 + r);
+	var cp2 = trig(intraR, -50 + r);
+	var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
+			+ ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
+			+ ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
+	this.line = document.createElementNS(xiNET.svgns, "path");
+	this.line.setAttribute('d', path);
+	this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+	this.highlightLine.setAttribute('d', path);
+	this.fatLine = document.createElementNS(xiNET.svgns, 'path');
+	this.fatLine.setAttribute('d', path);
+    
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
@@ -185,6 +167,7 @@ UnaryLink.prototype.initSVG = function() {
         self.mouseOut(evt);
     };
 };
+
 UnaryLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false; //TODO: tEMP HACK
@@ -220,15 +203,6 @@ UnaryLink.prototype.showHighlight = function(show, andAlternatives) {
 //            }
 //        }
 //    }
-};
-
-//used when link clicked
-UnaryLink.prototype.showID = function() {
-    var linkInfo = "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-            + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
-            + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
-    this.xlv.message(linkInfo);
 };
 
 UnaryLink.prototype.getFilteredEvidences = function() {
@@ -363,45 +337,29 @@ UnaryLink.prototype.dashedLine = function(dash) {
 
 UnaryLink.prototype.show = function() {
     if (this.xlv.initComplete) {
-// TODO: check how some of this compares to whats in Refresh.js, scale()
+		// resembles Refresh.js, scale() function
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            //~ if (this.intra) {
-//this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-//~ 
-                //~ if (this.fatLineShown) {
-                    //~ this.fatLine.setAttribute("transform", "translate(" +
-                            //~ this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
-                            //~ + " scale(" + (this.xlv.z) + ")");
-                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
-                //~ }
-//~ 
-                //~ this.fromInteractor.upperGroup.appendChild(this.highlightLine);
-                //~ this.fromInteractor.upperGroup.appendChild(this.line);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
-            //~ }
-            //~ else {
-                this.line.setAttribute("stroke-width", this.xlv.z * 1);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.setLinkCoordinates(this.fromInteractor);
-                this.setLinkCoordinates(this.toInteractor);
-                if (this.fatLineShown) {
-                    this.xlv.p_pLinksWide.appendChild(this.fatLine);
-                }
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.p_pLinks.appendChild(this.line);
-            //~ }
-        if (this.fatLineShown) {
-            if (this.intra) {
-                this.fatLine.setAttribute("stroke-width", this.w);
-            } else {
-                this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
-            }
-        }
+			if (this.fatLineShown) {
+				this.fatLine.setAttribute("transform", "translate(" +
+						this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
+						+ " scale(" + (this.xlv.z) + ")");
+				this.xlv.p_pLinksWide.appendChild(this.fatLine);
+			}
+			this.fromInteractor.upperGroup.appendChild(this.highlightLine);
+			this.fromInteractor.upperGroup.appendChild(this.line);
+			this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
+			this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
+			if (this.fatLineShown) {
+				if (this.intra) {
+					this.fatLine.setAttribute("stroke-width", this.w);
+				} else {
+					this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
+				}
+			}
 		}
     }
 };
@@ -409,53 +367,27 @@ UnaryLink.prototype.show = function() {
 UnaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        if (this.intra) {
-           if (this.fatLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
-            }
-            this.fromInteractor.upperGroup.removeChild(this.highlightLine);
-            this.fromInteractor.upperGroup.removeChild(this.line);
-        } else {
-            if (this.fatLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
-            }
-            this.xlv.highlights.removeChild(this.highlightLine);
-            this.xlv.p_pLinks.removeChild(this.line);
-        }
-    }
+		if (this.fatLineShown) {
+			this.xlv.p_pLinksWide.removeChild(this.fatLine);
+		}
+		this.fromInteractor.upperGroup.removeChild(this.highlightLine);
+		this.fromInteractor.upperGroup.removeChild(this.line);
+	}
 };
 
-UnaryLink.prototype.getOtherEnd = function(protein) {
+UnaryLink.prototype.getOtherEnd = function(protein) {//this makes no sense :)
     return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
 
 UnaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
-        if (this.fromInteractor === interactor) {
-            this.line.setAttribute("x1", interactor.x);
-            this.line.setAttribute("y1", interactor.y);
-            this.highlightLine.setAttribute("x1", interactor.x);
-            this.highlightLine.setAttribute("y1", interactor.y);
-            if (this.fatLineShown) {
-                this.fatLine.setAttribute("x1", interactor.x);
-                this.fatLine.setAttribute("y1", interactor.y);
-            }
-        }
-        else {
-            this.line.setAttribute("x2", interactor.x);
-            this.line.setAttribute("y2", interactor.y);
-            this.highlightLine.setAttribute("x2", interactor.x);
-            this.highlightLine.setAttribute("y2", interactor.y);
-            if (this.fatLineShown) {
-                this.fatLine.setAttribute("x2", interactor.x);
-                this.fatLine.setAttribute("y2", interactor.y);
-            }
-        }
+		this.line.setAttribute("x1", interactor.x);
+		this.line.setAttribute("y1", interactor.y);
+		this.highlightLine.setAttribute("x1", interactor.x);
+		this.highlightLine.setAttribute("y1", interactor.y);
+		if (this.fatLineShown) {
+			this.fatLine.setAttribute("x1", interactor.x);
+			this.fatLine.setAttribute("y1", interactor.y);
+		}
     }
-};
-
-UnaryLink.prototype.toJSON = function() {
-    return {
-        evidences: this.evidences
-    };
 };

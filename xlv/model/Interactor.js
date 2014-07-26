@@ -14,7 +14,8 @@ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.
 function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.xlv = xlvController;
-    this.json = json;    
+    this.json = json;  
+    this.experimentalFeatures = d3.map();  
 }
 
 Interactor.prototype.toJSON = function() {
@@ -63,7 +64,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
         Interactor.MAXSIZE = this.size;
     }
     //links
-    this.interactions = d3.map();
+    this.links = d3.map();
     this.internalLink = null;
     // layout info
     this.x = null;
@@ -287,8 +288,8 @@ Interactor.prototype.getBlobRadius = function() {
 //~ };
 
 Interactor.prototype.addLink = function(link) {
-    if (!this.interactions.has(link.id)) {
-        this.interactions.set(link.id, link);
+    if (!this.links.has(link.id)) {
+        this.links.set(link.id, link);
     }
     if (link.intra) {
         this.internalLink = link;
@@ -697,7 +698,7 @@ Interactor.prototype.toBlob = function() {
         this.upperGroup.appendChild(this.blob);
         this.upperGroup.appendChild(this.circDomains);
         this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
-        var links = this.interactions.values();
+        var links = this.links.values();
         var c = links.length;
         for (var l = 0; l < c; l++) {
             var link = links[l];
@@ -727,9 +728,9 @@ Interactor.prototype.toParked = function() {
     this.isParked = true;
     this.upperGroup.appendChild(this.parked);
     this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
-    var c = this.interactions.values().length;
+    var c = this.links.values().length;
     for (var l = 0; l < c; l++) {
-        var link = this.interactions.values()[l];
+        var link = this.links.values()[l];
         //out with the old (i.e. all links)
         link.hide();
         for (var rl in link.sequenceLinks) {
@@ -791,9 +792,9 @@ Interactor.prototype.toStick = function() {
         //        }
         //    }
         //would it  be better if checkLinks did this? - think not
-        var c = this.interactions.values().length;
+        var c = this.links.values().length;
         for (var l = 0; l < c; l++) {
-            var link = this.interactions.values()[l];
+            var link = this.links.values()[l];
             //out with the old
             if (link.shown) {
                 link.hide();
@@ -883,7 +884,7 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
 
 // update all lines (e.g after a move)
 Interactor.prototype.setAllLineCoordinates = function() {
-    var links = this.interactions.values();
+    var links = this.links.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
@@ -909,9 +910,9 @@ Interactor.prototype.countExternalLinks = function() {
         return 0;
     }
     var countExternal = 0;
-    var c = this.interactions.keys().length;
+    var c = this.links.keys().length;
     for (var l = 0; l < c; l++) {
-        var link = this.interactions.values()[l];
+        var link = this.links.values()[l];
         if (!link.intra)
         {
             if (link.check() === true) {
@@ -942,30 +943,30 @@ Interactor.prototype.getSubgraph = function(subgraphs) {
     return this.subgraph;
 };
 Interactor.prototype.addConnectedNodes = function(subgraph) {
-    var count = this.interactions.values().length;
-    for (var i = 0; i < count; i++) {
-        var externalLink = this.interactions.values()[i];
-        if (externalLink.isBinary) {
-			//~ if (externalLink.check() === true) {
-				if (!subgraph.links.has(externalLink.id)) {
-					subgraph.links.set(externalLink.id, externalLink);
-					var otherEnd;
-					if (externalLink.fromInteractor === this) {
-						otherEnd = externalLink.toInteractor;
-					}
-					else {
-						otherEnd = externalLink.fromInteractor;
-					}
-					if (!subgraph.nodes.has(otherEnd.id)) {
-						subgraph.nodes.set(otherEnd.id, otherEnd);
-						//                  console.log(otherEnd.id);
-						//            console.log(JSON.stringify(subgraph.nodes.keys()));
-						otherEnd.subgraph = subgraph;
-						otherEnd.addConnectedNodes(subgraph);
-					}
-				}
-			//~ }
-		}
-    }
+    //~ var count = this.links.values().length;
+    //~ for (var i = 0; i < count; i++) {
+        //~ var externalLink = this.links.values()[i];
+        //~ if (externalLink.isBinary) {
+			//if (externalLink.check() === true) {
+				//~ if (!subgraph.links.has(externalLink.id)) {
+					//~ subgraph.links.set(externalLink.id, externalLink);
+					//~ var otherEnd;
+					//~ if (externalLink.fromInteractor === this) {
+						//~ otherEnd = externalLink.toInteractor;
+					//~ }
+					//~ else {
+						//~ otherEnd = externalLink.fromInteractor;
+					//~ }
+					//~ if (!subgraph.nodes.has(otherEnd.id)) {
+						//~ subgraph.nodes.set(otherEnd.id, otherEnd);
+						//~ //                  console.log(otherEnd.id);
+						//~ //            console.log(JSON.stringify(subgraph.nodes.keys()));
+						//~ otherEnd.subgraph = subgraph;
+						//~ otherEnd.addConnectedNodes(subgraph);
+					//~ }
+				//~ }
+			//}
+		//~ }
+    //~ }
     return subgraph;
 };

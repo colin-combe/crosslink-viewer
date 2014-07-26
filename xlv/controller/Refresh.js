@@ -7,7 +7,7 @@
 xiNET.Controller.prototype.checkLinks = function() {
     if (this.initComplete) {
         var suspendID = this.svgElement.suspendRedraw(5000);
-        var links = this.interactions.values();
+        var links = this.links.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var link = links[l];
@@ -31,7 +31,7 @@ xiNET.Controller.prototype.scale = function() {
                 prot.setAllLineCoordinates();
         }
 
-        var links = this.interactions.values();
+        var links = this.links.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var protLink = links[l];
