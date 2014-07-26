@@ -117,31 +117,31 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                 var ox, oy, nx, ny;
                 if (typeof this.dragElement.x === 'undefined') { // if not a protein
                     //its a link - drag whole connected subgraph
-                    var prot;
-                    if (this.dragElement.fromInteractor)
-                        prot = this.dragElement.fromInteractor;
-                    else
-                        prot = this.dragElement.interactorLink.fromInteractor;
-                    var prots = this.interactors.values();
-                    var protCount = prots.length;
-                    for (var p = 0; p < protCount; p++) {
-                        prots[p].subgraph = null;
-                    }
-                    var subgraph = prot.getSubgraph();
-                    var nodes = subgraph.nodes.values();
-                    var nodeCount = nodes.length;
-                    for (var i = 0; i < nodeCount; i++) {
-                        var protein = nodes[i];
-                        ox = protein.x;
-                        oy = protein.y;
-                        nx = ox - dx;
-                        ny = oy - dy;
-                        protein.setPosition(nx, ny);
-                        protein.setAllLineCoordinates();
-                    }
-                    for (i = 0; i < nodeCount; i++) {
-                        nodes[i].setAllLineCoordinates();
-                    }
+                    //~ var prot;
+                    //~ if (this.dragElement.fromInteractor)
+                        //~ prot = this.dragElement.fromInteractor;
+                    //~ else
+                        //~ prot = this.dragElement.interactorLink.fromInteractor;
+                    //~ var prots = this.interactors.values();
+                    //~ var protCount = prots.length;
+                    //~ for (var p = 0; p < protCount; p++) {
+                        //~ prots[p].subgraph = null;
+                    //~ }
+                    //~ var subgraph = prot.getSubgraph();
+                    //~ var nodes = subgraph.nodes.values();
+                    //~ var nodeCount = nodes.length;
+                    //~ for (var i = 0; i < nodeCount; i++) {
+                        //~ var protein = nodes[i];
+                        //~ ox = protein.x;
+                        //~ oy = protein.y;
+                        //~ nx = ox - dx;
+                        //~ ny = oy - dy;
+                        //~ protein.setPosition(nx, ny);
+                        //~ protein.setAllLineCoordinates();
+                    //~ }
+                    //~ for (i = 0; i < nodeCount; i++) {
+                        //~ nodes[i].setAllLineCoordinates();
+                    //~ }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
                     ox = this.dragElement.x;
@@ -218,7 +218,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                         if (this.dragElement.proteinLink)
                             this.dragElement.proteinLink.fromProtein.toggleFlipped();
                     } else {
-                        if (this.dragElement.hidden !== undefined) {//if InteractorLink
+                        if (this.dragElement.hidden !== undefined) {//if BinaryLink
                             this.dragElement.hidden = true;
                         } else {//its a residue link
                             this.dragElement.proteinLink.hidden = true;

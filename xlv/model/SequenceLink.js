@@ -224,11 +224,11 @@ SequenceLink.prototype.check = function(filter) {
 //            //fatLine
 //            if (evidCount > 1) {
 //                this.fatLineShown = true
-//                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
+//                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
 //            }
 //            else {
 ////                this.fatLineShown = false;
-//                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);//hack
+//                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
 //            }
 //            //ambig?
 //            this.dashedLine(this.ambig);

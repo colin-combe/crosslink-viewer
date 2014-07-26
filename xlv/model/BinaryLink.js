@@ -24,6 +24,8 @@ function BinaryLink(id, xlvController) {
     //layout stuff
     this.hidden = false;
     this.evidenceCount = 0;
+    
+    this.isBinary;
 }
 
 BinaryLink.prototype.addEvidence = function(interaction) {
@@ -456,6 +458,6 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 
 BinaryLink.prototype.toJSON = function() {
     return {
-        evidences: this.evidences
+        //~ evidences: this.evidences
     };
 };

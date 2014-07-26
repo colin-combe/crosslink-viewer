@@ -4,13 +4,13 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-// BinaryLink.js
-// the class representing an n-ary interaction
+// UnaryLink.js
+// the class representing an Unary interaction
 
-BinaryLink.prototype = new xiNET.Link();
+UnaryLink.prototype = new xiNET.Link();
 //used to calculate width of thivh background line
-BinaryLink.maxNoEvidences = 0;
-function BinaryLink(id, xlvController) {
+UnaryLink.maxNoEvidences = 0;
+function UnaryLink(id, xlvController) {
     this.id = id;
     this.evidences = new Array();
     this.sequenceLinks = d3.map();
@@ -26,10 +26,10 @@ function BinaryLink(id, xlvController) {
     this.evidenceCount = 0;
 }
 
-BinaryLink.prototype.addEvidence = function(interaction) {
+UnaryLink.prototype.addEvidence = function(interaction) {
     this.evidenceCount++;
-    if (this.evidenceCount > BinaryLink.maxNoEvidences) {
-        BinaryLink.maxNoEvidences = this.evidenceCount;
+    if (this.evidenceCount > UnaryLink.maxNoEvidences) {
+        UnaryLink.maxNoEvidences = this.evidenceCount;
     }
     
     this.evidences.push(interaction);
@@ -102,7 +102,7 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 	}//end if participants.length === 2
 };
 
-BinaryLink.prototype.initSVG = function() {
+UnaryLink.prototype.initSVG = function() {
     if (!this.intra) {
         this.line = document.createElementNS(xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(xiNET.svgns, "line");
@@ -185,7 +185,7 @@ BinaryLink.prototype.initSVG = function() {
         self.mouseOut(evt);
     };
 };
-BinaryLink.prototype.showHighlight = function(show, andAlternatives) {
+UnaryLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false; //TODO: tEMP HACK
     }
@@ -223,7 +223,7 @@ BinaryLink.prototype.showHighlight = function(show, andAlternatives) {
 };
 
 //used when link clicked
-BinaryLink.prototype.showID = function() {
+UnaryLink.prototype.showID = function() {
     var linkInfo = "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
             + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
             + ")</strong></p>";
@@ -231,7 +231,7 @@ BinaryLink.prototype.showID = function() {
     this.xlv.message(linkInfo);
 };
 
-BinaryLink.prototype.getFilteredEvidences = function() {
+UnaryLink.prototype.getFilteredEvidences = function() {
     var seqLinks = this.sequenceLinks.values();
     var seqLinkCount = seqLinks.length;
     // use map to eliminate duplicates 
@@ -248,7 +248,7 @@ BinaryLink.prototype.getFilteredEvidences = function() {
     return filteredEvids.values();
 };
 
-BinaryLink.prototype.check = function() {
+UnaryLink.prototype.check = function() {
 	
 	//if (participants.length !== 2) {//TEMP
 	if (!this.fromInteractor) {//TEMP
@@ -317,11 +317,11 @@ BinaryLink.prototype.check = function() {
             //~ //fatLine
             //~ if (evidCount > 1) {
                 //~ this.fatLineShown = true
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
+                //~ this.w = evidCount * (45 / UnaryLink.maxNoEvidences);
             //~ }
             //~ else {
 //~ //                this.fatLineShown = false;//hack
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
+                //~ this.w = evidCount * (45 / UnaryLink.maxNoEvidences);//hack
             //~ }
             //~ //ambig?
             //~ this.dashedLine(this.ambig);
@@ -347,7 +347,7 @@ BinaryLink.prototype.check = function() {
     }
 };
 
-BinaryLink.prototype.dashedLine = function(dash) {
+UnaryLink.prototype.dashedLine = function(dash) {
     if (typeof this.line === 'undefined') {
         this.initSVG();
     }
@@ -361,7 +361,7 @@ BinaryLink.prototype.dashedLine = function(dash) {
     }
 };
 
-BinaryLink.prototype.show = function() {
+UnaryLink.prototype.show = function() {
     if (this.xlv.initComplete) {
 // TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
@@ -406,7 +406,7 @@ BinaryLink.prototype.show = function() {
     }
 };
 
-BinaryLink.prototype.hide = function() {
+UnaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         if (this.intra) {
@@ -425,11 +425,11 @@ BinaryLink.prototype.hide = function() {
     }
 };
 
-BinaryLink.prototype.getOtherEnd = function(protein) {
+UnaryLink.prototype.getOtherEnd = function(protein) {
     return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
 
-BinaryLink.prototype.setLinkCoordinates = function(interactor) {
+UnaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
         if (this.fromInteractor === interactor) {
             this.line.setAttribute("x1", interactor.x);
@@ -454,7 +454,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     }
 };
 
-BinaryLink.prototype.toJSON = function() {
+UnaryLink.prototype.toJSON = function() {
     return {
         evidences: this.evidences
     };

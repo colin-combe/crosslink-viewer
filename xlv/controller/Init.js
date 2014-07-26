@@ -65,7 +65,11 @@ xiNET.Controller = function(targetDiv) {
         defs.appendChild(this.container);
     }
 
-    this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
+    this.naryLinks = document.createElementNS(xiNET.svgns, "g");
+    this.naryLinks.setAttribute("id", "naryLinks");
+    this.container.appendChild(this.naryLinks);
+	
+	this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
 
@@ -184,6 +188,7 @@ xiNET.Controller.prototype.clear = function() {
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
     //    var suspendID = this.svgElement.suspendRedraw(5000);
+    this.emptyElement(this.naryLinks);
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);

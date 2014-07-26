@@ -102,32 +102,42 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
     
     var linkID = "";
     var participantCount = participants.length;
+    var pIDs = d3.set();
     for (var pi = 0; pi < participantCount; pi++) {
 		var pID = participants[pi].interactorRef;
-		if (typeof this.interactors.get(pID) === 'undefined') {
-			alert("Fail - no interactor with id " + pID);
+		if (pIDs.has(pID) === false){
+			pIDs.add(pID);
+			if (typeof this.interactors.get(pID) === 'undefined') {
+				alert("Fail - no interactor with id " + pID);
+			}
+			if (pi > 0) {
+				linkID += "-"; 
+			}
+			linkID += pID;
 		}
-		if (pi > 0) {
-			linkID += "-"; 
-		}
-		linkID += pID;
 	}
 	
     var link = this.interactions.get(linkID);
     if (typeof link === 'undefined') {
-        link = new InteractorLink(linkID, this);
+		if (participantCount === 1) {
+			link = new UnaryLink(linkID, this);
+		} else if (participantCount === 2) {
+			link = new BinaryLink(linkID, this);
+		} else {
+			link = new NaryLink(linkID, this);
+		}
         this.interactions.set(linkID, link);
 		for (pi = 0; pi < participantCount; pi++) {
 			this.interactors.get(participants[pi].interactorRef).addLink(link);
 		}
 	}
-    //all other initialisation to do with interactions takes place within InteractorLink 
+    //all other initialisation to do with interactions takes place within Links 
     link.addEvidence(interaction);
 };
 
 xiNET.Controller.prototype.toJSON = function() {
     return {
-        interactors: this.interactors,
+        //interactors: this.interactors,
 		interactions: this.interactions,
     };
 };

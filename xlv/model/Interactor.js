@@ -26,7 +26,7 @@ Interactor.prototype.toJSON = function() {
 Interactor.prototype.initProtein = function(sequence, name, description, size)
 {
     this.accession = this.json.identifier.id;
-    this.name = this.json.label;
+    this.name = this.json.label.substring(0, this.json.label.indexOf('_'));
     this.organism = this.json.organism;
 
     this.description = description;
@@ -898,6 +898,8 @@ Interactor.prototype.setAllLineCoordinates = function() {
 					resLinks[rl].setLinkCoordinates(this);
 				}
 			}
+		} else {
+			link.setLinkCoordinates(this);
 		}
     }
 };
@@ -943,25 +945,27 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
     var count = this.interactions.values().length;
     for (var i = 0; i < count; i++) {
         var externalLink = this.interactions.values()[i];
-        if (externalLink.check() === true) {
-            if (!subgraph.links.has(externalLink.id)) {
-                subgraph.links.set(externalLink.id, externalLink);
-                var otherEnd;
-                if (externalLink.fromInteractor === this) {
-                    otherEnd = externalLink.toInteractor;
-                }
-                else {
-                    otherEnd = externalLink.fromInteractor;
-                }
-                if (!subgraph.nodes.has(otherEnd.id)) {
-                    subgraph.nodes.set(otherEnd.id, otherEnd);
-                    //                  console.log(otherEnd.id);
-                    //            console.log(JSON.stringify(subgraph.nodes.keys()));
-                    otherEnd.subgraph = subgraph;
-                    otherEnd.addConnectedNodes(subgraph);
-                }
-            }
-        }
+        if (externalLink.isBinary) {
+			if (externalLink.check() === true) {
+				if (!subgraph.links.has(externalLink.id)) {
+					subgraph.links.set(externalLink.id, externalLink);
+					var otherEnd;
+					if (externalLink.fromInteractor === this) {
+						otherEnd = externalLink.toInteractor;
+					}
+					else {
+						otherEnd = externalLink.fromInteractor;
+					}
+					if (!subgraph.nodes.has(otherEnd.id)) {
+						subgraph.nodes.set(otherEnd.id, otherEnd);
+						//                  console.log(otherEnd.id);
+						//            console.log(JSON.stringify(subgraph.nodes.keys()));
+						otherEnd.subgraph = subgraph;
+						otherEnd.addConnectedNodes(subgraph);
+					}
+				}
+			}
+		}
     }
     return subgraph;
 };

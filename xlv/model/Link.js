@@ -4,7 +4,7 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-// 'superclass' for SequenceLink, InteractorLink
+// 'superclass' for SequenceLink, BinaryLink
 // terminology? could this class be renamed to Interaction?
 // or a 'Link' is a graphical rperesentation of one or many interactions
 // i.e. 'link' is a glyph, 'interaction' is biology?
