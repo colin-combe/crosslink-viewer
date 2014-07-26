@@ -5,16 +5,16 @@ xiNET.Controller.prototype.autoLayout = function() {
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
-    var proteinCount = this.proteins.keys().length;
+    var proteinCount = this.interactors.keys().length;
     if (proteinCount === 1) {
-        var protein = this.proteins.values()[0];
+        var protein = this.interactors.values()[0];
         protein.setPosition(width / 2, height / 4 * 3);
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = this.proteins.values()[0];
+        var p1 = this.interactors.values()[0];
         p1.setPosition(width / 2, height / 2);
-        var p2 = this.proteins.values()[1];
+        var p2 = this.interactors.values()[1];
         p2.setPosition(width / 2, height - 32);
         return;
     }
@@ -23,7 +23,7 @@ xiNET.Controller.prototype.autoLayout = function() {
         //Init subgraphs
         //clear subgraphs
         this.subgraphs.length = 0;
-        var prots = this.proteins.values();
+        var prots = this.interactors.values();
         var proteinCount = prots.length;
         for (var p = 0; p < proteinCount; p++) {
             prots[p].subgraph = null;
@@ -85,7 +85,7 @@ xiNET.Controller.prototype.autoLayout = function() {
 
                 }
                 for (var n = 0; n < nodeCount; n++) {
-                    var p = this.proteins.get(nodes[n]);
+                    var p = this.interactors.get(nodes[n]);
                     var x, y;
                     if (p.isParked === true) {
                         parkedRow++;
@@ -131,7 +131,7 @@ xiNET.Controller.prototype.autoLayout = function() {
 
             }
         }
-        //remember edge of gridded proteins
+        //remember edge of gridded interactors
         //this.layoutXOffset = xForColumn(column + 0.5);
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
@@ -142,14 +142,14 @@ xiNET.Controller.prototype.autoLayout = function() {
                 var nodes = nonLinearGraphs[g].nodes.values();
                 var nodeCount = nodes.length;
                 for (var n = 0; n < nodeCount; n++) {
-                    var prot = this.proteins.get(nodes[n].id);
+                    var prot = this.interactors.get(nodes[n].id);
 //                prot.fixed = false;
                     if (pi > 0){
                         json += ",";
                     }
                     pi++;
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-                            + prot.proteinLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
+                            + prot.interactions.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
             }
@@ -168,7 +168,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             var nodeCount = nodes.length;
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = this.proteins.get(node.id);
+                var protein = this.interactors.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx + this.layoutXOffset, ny);
@@ -186,7 +186,7 @@ xiNET.Controller.prototype.autoLayout = function() {
 //             var nodes = linearGraphs[g].nodes.values();
 //             var nodeCount = nodes.length;
 //             for (var n = 0; n < nodeCount; n++) {
-//                 var prot = this.proteins.get(nodes[n].id);
+//                 var prot = this.interactors.get(nodes[n].id);
 //                 protLookUp[prot.id] = pi;
 //                 if (pi > 0)
 //                     json += ",";
@@ -204,7 +204,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
                 nodesInPlay++;
-                var prot = this.proteins.get(nodes[n].id);
+                var prot = this.interactors.get(nodes[n].id);
                 protLookUp[prot.id] = pi;
                 if (pi > 0)
                     json += ",";
@@ -269,7 +269,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             var nodes = self.force.nodes();
             for (var n = 0; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = self.proteins.get(node.id);
+                var protein = self.interactors.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx, ny + yOffset);
@@ -300,8 +300,8 @@ xiNET.Controller.prototype.autoLayout = function() {
 
         function appendNode(currentNode) {
             reorderedNodes.push(currentNode.id);
-            for (var l = 0; l < currentNode.proteinLinks.values().length; l++) {
-                var link = currentNode.proteinLinks.values()[l];
+            for (var l = 0; l < currentNode.interactions.values().length; l++) {
+                var link = currentNode.interactions.values()[l];
                 if (link.check() === true) {
                     var nextNode = link.getOtherEnd(currentNode);
                     if (reorderedNodes.indexOf(nextNode.id) === -1) {

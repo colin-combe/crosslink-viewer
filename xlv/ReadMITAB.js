@@ -2,7 +2,7 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
     var rows = d3.tsv.parseRows(mitab);
     var countRows = rows.length;
 
-    //we're going to need to know when all proteins have been init'ed from DAS
+    //we're going to need to know when all interactors have been init'ed from DAS
     //if DAS fails tempStack is left containig the accession number that failed
     var tempStack = d3.map();
 
@@ -38,9 +38,9 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
 
             var organism = new MiTabData(rows[row][organismIndex]);
 
-            if (!self.proteins.has(acc)) {
+            if (!self.interactors.has(acc)) {
                 var interactor = new Interactor(acc, self, acc, label, organism);
-                self.proteins.set(acc, interactor);
+                self.interactors.set(acc, interactor);
                 if (accDb === "uniprotkb") {
                     tempStack.set(acc, alias);
                 }
@@ -62,7 +62,7 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
             var id = res.SEQUENCE[0].id;
             var seq = res.SEQUENCE[0].textContent;
             var label = res.SEQUENCE[0].label;
-            var prot = self.proteins.get(id);
+            var prot = self.interactors.get(id);
             prot.initProtein(seq, label, tempStack.get(id));
             //            var key = '\\u0000' + seq;
             tempStack.remove(id);
@@ -71,10 +71,10 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
             if (tempStack.keys().length === 0) {
                 self.message('<p>All sequences downloaded from DAS</p>');
                 Interactor.UNITS_PER_RESIDUE = (((/*width - 350*/1024) * 0.5) - Interactor.LABELMAXLENGTH) / Interactor.MAXSIZE;//TODO: fix that -350 hack
-                var proteins = self.proteins.values();
-                var proteinCount = proteins.length;
+                var interactors = self.interactors.values();
+                var proteinCount = interactors.length;
                 for (var p = 0; p < proteinCount; p++) {
-                    proteins[p].initStick();
+                    interactors[p].initStick();
                 }
                 addCSVLinks();
             }
@@ -91,7 +91,7 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
     }
 
     function addCSVLinks() {
-        //        xlv.message(this.proteins);
+        //        xlv.message(this.interactors);
         var interactions = new Array();
         for (var row = 0; row < countRows; row++) {
 
@@ -232,10 +232,10 @@ xiNET.Controller.prototype.readMITAB = function(mitab) {
             self.addInteraction(interaction);
         }
         self.message(interactions);
-        var proteins = self.proteins.values();
-        var proteinCount = proteins.length;
+        var interactors = self.interactors.values();
+        var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
+            var prot = interactors[p];
             prot.setPositionalFeatures(prot.customAnnotations);
         }
 

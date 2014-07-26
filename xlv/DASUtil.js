@@ -25,9 +25,9 @@ xiNET.DASUtil = function(xlvController) {
         //            "url": "http://www.ebi.ac.uk/das-srv/interpro/das/InterPro/features"
         //        }
     ];
-    //use sequential AJAX requests to download DAS annotations for all proteins
+    //use sequential AJAX requests to download DAS annotations for all interactors
     //(issuing lots of AJAX request at once would clog things up)
-    this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
+    this.lookup(this.xlv.interactors.values()[0], this.dasServers[0]);
 };
 
 xiNET.DASUtil.prototype.lookup = function(prot, server) {
@@ -70,16 +70,16 @@ xiNET.DASUtil.prototype.lookup = function(prot, server) {
 };
 
 xiNET.DASUtil.prototype.nextDASQuery = function(prot, server) {
-    var proteins = this.xlv.proteins.values();
-    var protIndex = proteins.indexOf(prot);
-    if (protIndex < proteins.length - 1) {
-        this.lookup(proteins[protIndex + 1], server);
+    var interactors = this.xlv.interactors.values();
+    var protIndex = interactors.indexOf(prot);
+    if (protIndex < interactors.length - 1) {
+        this.lookup(interactors[protIndex + 1], server);
     }
     else {
         this.xlv.message("<p>" + server.name + " DAS complete.</p>");
         var serverIndex = this.dasServers.indexOf(server);
         if (serverIndex < this.dasServers.length - 1) {
-            this.lookup(this.xlv.proteins.values()[0], this.dasServers[serverIndex + 1]);
+            this.lookup(this.xlv.interactors.values()[0], this.dasServers[serverIndex + 1]);
         }
         else {
             this.xlv.message("<h4>All DAS complete.</h4>");
@@ -561,7 +561,7 @@ function updateMenus(xlv) {
     // roll up positional features
     var allPos = new Array();
     var customAnnot = false;
-    var prots = xlv.proteins.values();
+    var prots = xlv.interactors.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         if (this.customAnnotations !== undefined && this.customAnnotations !== null) {
@@ -591,7 +591,7 @@ function updateMenus(xlv) {
         return d.category;
     })
             .rollup(function(d) {
-        return (d.length + " annotated proteins");
+        return (d.length + " annotated interactors");
     })
             .map(allPos);
     message += '<pre>' + JSON.stringify(nestedPos, null, '\t') + '</pre>';
@@ -656,7 +656,7 @@ function updateMenus(xlv) {
             return d.category;
         })
                 .rollup(function(d) {
-            return (d.length + " annotated proteins");
+            return (d.length + " annotated interactors");
         })
                 .map(allKey);
         message += '<pre>' + JSON.stringify(nestedKeywords, null, '\t') + '</pre>';

@@ -17,6 +17,12 @@ function Interactor(id, xlvController, json) {
     this.json = json;    
 }
 
+Interactor.prototype.toJSON = function() {
+    return {
+        interactor: this.json
+    };
+};
+
 Interactor.prototype.initProtein = function(sequence, name, description, size)
 {
     this.accession = this.json.identifier.id;
@@ -57,7 +63,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
         Interactor.MAXSIZE = this.size;
     }
     //links
-    this.proteinLinks = d3.map();
+    this.interactions = d3.map();
     this.internalLink = null;
     // layout info
     this.x = null;
@@ -161,7 +167,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     this.parked.setAttribute("stroke", "none");
 
     //STICK = EVRYTHING THAT ROTATES: rectangle, annotation, intra links, outline, scale,
-    //but NOT LABEL. cannot currently be made until after all proteins (for scaling)
+    //but NOT LABEL. cannot currently be made until after all interactors (for scaling)
     this.stick = null;//see getStick() //protein as stick,
 
     //svg groups for intra protein links
@@ -259,30 +265,30 @@ Interactor.prototype.getBlobRadius = function() {
 };
 
 //only output the info needed to reproduce the layout
-Interactor.prototype.toJSON = function() {
-    return {
-        //for saved proteins
-        //        name: this.name,
-        //        accession: this.accession,
-        //        description: this.description,
-        //        sequence: this.sequence,
-        //        processedDAS: this.processedDAS,
-        //for saved layout
-        //        name: this.name,
-        x: this.x,
-        y: this.y,
-        rot: this.rotation,
-        form: this.form,
-        stickZoom: this.stickZoom,
-        parked: this.isParked,
-        flipped: this.isFlipped,
-        annot: this.customAnnotations
-    };
-};
+//~ Interactor.prototype.toJSON = function() {
+    //~ return {
+        //~ //for saved interactors
+        //~ //        name: this.name,
+        //~ //        accession: this.accession,
+        //~ //        description: this.description,
+        //~ //        sequence: this.sequence,
+        //~ //        processedDAS: this.processedDAS,
+        //~ //for saved layout
+        //~ //        name: this.name,
+        //~ x: this.x,
+        //~ y: this.y,
+        //~ rot: this.rotation,
+        //~ form: this.form,
+        //~ stickZoom: this.stickZoom,
+        //~ parked: this.isParked,
+        //~ flipped: this.isFlipped,
+        //~ annot: this.customAnnotations
+    //~ };
+//~ };
 
 Interactor.prototype.addLink = function(link) {
-    if (!this.proteinLinks.has(link.id)) {
-        this.proteinLinks.set(link.id, link);
+    if (!this.interactions.has(link.id)) {
+        this.interactions.set(link.id, link);
     }
     if (link.intra) {
         this.internalLink = link;
@@ -691,7 +697,7 @@ Interactor.prototype.toBlob = function() {
         this.upperGroup.appendChild(this.blob);
         this.upperGroup.appendChild(this.circDomains);
         this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
-        var links = this.proteinLinks.values();
+        var links = this.interactions.values();
         var c = links.length;
         for (var l = 0; l < c; l++) {
             var link = links[l];
@@ -721,9 +727,9 @@ Interactor.prototype.toParked = function() {
     this.isParked = true;
     this.upperGroup.appendChild(this.parked);
     this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
-    var c = this.proteinLinks.values().length;
+    var c = this.interactions.values().length;
     for (var l = 0; l < c; l++) {
-        var link = this.proteinLinks.values()[l];
+        var link = this.interactions.values()[l];
         //out with the old (i.e. all links)
         link.hide();
         for (var rl in link.sequenceLinks) {
@@ -785,9 +791,9 @@ Interactor.prototype.toStick = function() {
         //        }
         //    }
         //would it  be better if checkLinks did this? - think not
-        var c = this.proteinLinks.values().length;
+        var c = this.interactions.values().length;
         for (var l = 0; l < c; l++) {
-            var link = this.proteinLinks.values()[l];
+            var link = this.interactions.values()[l];
             //out with the old
             if (link.shown) {
                 link.hide();
@@ -877,20 +883,22 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
 
 // update all lines (e.g after a move)
 Interactor.prototype.setAllLineCoordinates = function() {
-    var links = this.proteinLinks.values();
+    var links = this.interactions.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-            link.setLinkCoordinates(this);
-        }
-        else {
-            var resLinks = link.sequenceLinks.values();
-            var resLinkCount = resLinks.length;
-            for (var rl = 0; rl < resLinkCount; rl++) {
-                resLinks[rl].setLinkCoordinates(this);
-            }
-        }
+        if (link.fromInteractor){//TEMP
+			if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
+				link.setLinkCoordinates(this);
+			}
+			else {
+				var resLinks = link.sequenceLinks.values();
+				var resLinkCount = resLinks.length;
+				for (var rl = 0; rl < resLinkCount; rl++) {
+					resLinks[rl].setLinkCoordinates(this);
+				}
+			}
+		}
     }
 };
 
@@ -899,9 +907,9 @@ Interactor.prototype.countExternalLinks = function() {
         return 0;
     }
     var countExternal = 0;
-    var c = this.proteinLinks.keys().length;
+    var c = this.interactions.keys().length;
     for (var l = 0; l < c; l++) {
-        var link = this.proteinLinks.values()[l];
+        var link = this.interactions.values()[l];
         if (!link.intra)
         {
             if (link.check() === true) {
@@ -932,9 +940,9 @@ Interactor.prototype.getSubgraph = function(subgraphs) {
     return this.subgraph;
 };
 Interactor.prototype.addConnectedNodes = function(subgraph) {
-    var count = this.proteinLinks.values().length;
+    var count = this.interactions.values().length;
     for (var i = 0; i < count; i++) {
-        var externalLink = this.proteinLinks.values()[i];
+        var externalLink = this.interactions.values()[i];
         if (externalLink.check() === true) {
             if (!subgraph.links.has(externalLink.id)) {
                 subgraph.links.set(externalLink.id, externalLink);

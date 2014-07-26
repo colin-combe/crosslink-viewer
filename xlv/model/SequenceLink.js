@@ -37,14 +37,14 @@ function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController)
 
 SequenceLink.prototype.addEvidence = function(interaction) {
     this.evidences.push(interaction);
-    var from, to;
-    if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
-        from = interaction.source;
-        to = interaction.target;
-    } else {
-        from = interaction.target
-        to = interaction.source;
-    }
+    var from = this.interactorLink.fromInteractor, to = this.interactorLink.toInteractor;
+    //~ if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
+        //~ from = interaction.source;
+        //~ to = interaction.target;
+    //~ } else {
+        //~ from = interaction.target
+        //~ to = interaction.source;
+    //~ }
 
     if (typeof from.bindingSites !== 'undefined') {
         this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);

@@ -122,7 +122,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                         prot = this.dragElement.fromInteractor;
                     else
                         prot = this.dragElement.interactorLink.fromInteractor;
-                    var prots = this.proteins.values();
+                    var prots = this.interactors.values();
                     var protCount = prots.length;
                     for (var p = 0; p < protCount; p++) {
                         prots[p].subgraph = null;
@@ -250,7 +250,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
         } //end of protein drag; do nothing
     }
     else if (rightclick) { //right click on background; show all hidden links
-        var links = this.proteinLinks.values();
+        var links = this.interactions.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var link = links[l];
@@ -314,10 +314,10 @@ xiNET.Controller.prototype.mouseWheel = function(evt) {
 };
 
 xiNET.Controller.prototype.clearSelection = function() {
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
+        var prot = interactors[p];
         prot.setSelected(false);
     }
 };

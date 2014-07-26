@@ -7,7 +7,7 @@
 xiNET.Controller.prototype.checkLinks = function() {
     if (this.initComplete) {
         var suspendID = this.svgElement.suspendRedraw(5000);
-        var links = this.proteinLinks.values();
+        var links = this.interactions.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var link = links[l];
@@ -22,16 +22,16 @@ xiNET.Controller.prototype.scale = function() {
     if (this.initComplete) {
         this.z = this.container.getScreenCTM().inverse().a;
 
-        var proteins = this.proteins.values();
-        var proteinCount = proteins.length;
+        var interactors = this.interactors.values();
+        var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
+            var prot = interactors[p];
             prot.setPosition(prot.x, prot.y); // this rescales the protein //TODO: check if this always need to happen
             if (prot.form !== 0)
                 prot.setAllLineCoordinates();
         }
 
-        var links = this.proteinLinks.values();
+        var links = this.interactions.values();
         var linkCount = links.length;
         for (var l = 0; l < linkCount; l++) {
             var protLink = links[l];

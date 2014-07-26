@@ -5,21 +5,17 @@
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 // InteractorLink.js
-// the class representing a protein-protein link
+// the class representing an n-ary interaction
 
 InteractorLink.prototype = new xiNET.Link();
 //used to calculate width of thivh background line
 InteractorLink.maxNoEvidences = 0;
-function InteractorLink(id, fromP, toP, xlvController) {
+function InteractorLink(id, xlvController) {
     this.id = id;
+    this.evidences = new Array();
     this.sequenceLinks = d3.map();
     this.xlv = xlvController;
-    this.fromInteractor = fromP; //its the object. not the ID number
-    this.toInteractor = toP; //its the object. not the ID number
-    this.intra = false;
-    if (this.fromInteractor === this.toInteractor) {
-        this.intra = true;
-    }
+
     this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
@@ -35,18 +31,22 @@ InteractorLink.prototype.addEvidence = function(interaction) {
     if (this.evidenceCount > InteractorLink.maxNoEvidences) {
         InteractorLink.maxNoEvidences = this.evidenceCount;
     }
-    //NB. source and target in JSON may not correspond with from and 
-    // to in InteractionLink,
-    //may have had to swap them around (to get consistent id's)
-    var from, to;
-    if (interaction.source.identifier.id === this.fromInteractor.id) {
-        from = interaction.source;
-        to = interaction.target;
-    } else {
-        from = interaction.target
-        to = interaction.source;
-    }
     
+    this.evidences.push(interaction);
+    
+    var participants = interaction.participants;
+    
+    if (participants.length === 2) {//TEMP
+    
+    this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
+    this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
+    //~ this.intra = false;
+    //~ if (this.fromInteractor === this.toInteractor) {
+        //~ this.intra = true;
+    //~ }
+    var from = this.fromInteractor;
+    var to = this.toInteractor
+       
     var hasLinkedFeatures = false;
     //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
     //for time being one interaction can only result in at most one sequenceLink
@@ -98,6 +98,8 @@ InteractorLink.prototype.addEvidence = function(interaction) {
         }
         sequenceLink.addEvidence(interaction);
     }
+    
+	}//end if participants.length === 2
 };
 
 InteractorLink.prototype.initSVG = function() {
@@ -247,84 +249,91 @@ InteractorLink.prototype.getFilteredEvidences = function() {
 };
 
 InteractorLink.prototype.check = function() {
+	
+	//if (participants.length !== 2) {//TEMP
+	if (!this.fromInteractor) {//TEMP
+		return false;
+	}
+
+	
     var seqLinks = this.sequenceLinks.values();
     var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
-    if (this.fromInteractor.isParked || this.toInteractor.isParked
-            || (this.xlv.intraHidden && this.intra)
-            || this.hidden) {
-        //if both ends are blobs then hide interactor-level link
-        if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-            this.hide();
-        }
-        //else loop through linked features hiding them
-        else {
-            for (var i = 0; i < seqLinkCount; i++) {
-                seqLinks[i].hide();
-            }
-        }
-        return false;
-    }
-    else // we need to check which interaction evidences match the filter criteria
+    //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
+            //~ || (this.xlv.intraHidden && this.intra)
+            //~ || this.hidden) {
+        //~ //if both ends are blobs then hide interactor-level link
+        //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
+            //~ this.hide();
+        //~ }
+        //~ //else loop through linked features hiding them
+        //~ else {
+            //~ for (var i = 0; i < seqLinkCount; i++) {
+                //~ seqLinks[i].hide();
+            //~ }
+        //~ }
+        //~ return false;
+    //~ }
+    //~ else // we need to check which interaction evidences match the filter criteria
     if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-        this.ambig = true;
-        var filteredEvids = this.getFilteredEvidences();
-        var evidCount = filteredEvids.length;
-        for (var i = 0; i < evidCount; i++) {
-            var evid = filteredEvids[i];
-            if (typeof evid.expansion === 'undefined') {
-                this.ambig = false;
-            }
-        }
-        if (evidCount > 0) {
-            //tooltip
-            this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            if (evidCount > 1) {
-                this.tooltip += 's';
-            }
-            this.tooltip += ' (';
-            var nested_data = d3.nest()
-                    .key(function(d) {
-                return d.experiment.detmethod.name;
-            })
-                    .rollup(function(leaves) {
-                return leaves.length;
-            })
-                    .entries(filteredEvids);
-
-            nested_data.sort(function(a, b) {
-                return b.values - a.values
-            });
-            var countDetMethods = nested_data.length
-            for (var i = 0; i < countDetMethods; i++) {
-                if (i > 0) {
-                    this.tooltip += ', ';
-                }
-                this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            }
-            this.tooltip += ' )';
-            //fatLine
-            if (evidCount > 1) {
-                this.fatLineShown = true
-                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
-            }
-            else {
-//                this.fatLineShown = false;//hack
-                this.w = evidCount * (45 / InteractorLink.maxNoEvidences);//hack
-            }
-            //ambig?
-            this.dashedLine(this.ambig);
+        //~ this.ambig = true;
+        //~ var filteredEvids = this.getFilteredEvidences();
+        //~ var evidCount = filteredEvids.length;
+        //~ for (var i = 0; i < evidCount; i++) {
+            //~ var evid = filteredEvids[i];
+            //~ if (typeof evid.expansion === 'undefined') {
+                //~ this.ambig = false;
+            //~ }
+        //~ }
+        //~ if (evidCount > 0) {
+            //~ //tooltip
+            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
+            //~ if (evidCount > 1) {
+                //~ this.tooltip += 's';
+            //~ }
+            //~ this.tooltip += ' (';
+            //~ var nested_data = d3.nest()
+                    //~ .key(function(d) {
+                //~ return d.experiment.detmethod.name;
+            //~ })
+                    //~ .rollup(function(leaves) {
+                //~ return leaves.length;
+            //~ })
+                    //~ .entries(filteredEvids);
+//~ 
+            //~ nested_data.sort(function(a, b) {
+                //~ return b.values - a.values
+            //~ });
+            //~ var countDetMethods = nested_data.length
+            //~ for (var i = 0; i < countDetMethods; i++) {
+                //~ if (i > 0) {
+                    //~ this.tooltip += ', ';
+                //~ }
+                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
+            //~ }
+            //~ this.tooltip += ' )';
+            //~ //fatLine
+            //~ if (evidCount > 1) {
+                //~ this.fatLineShown = true
+                //~ this.w = evidCount * (45 / InteractorLink.maxNoEvidences);
+            //~ }
+            //~ else {
+//~ //                this.fatLineShown = false;//hack
+                //~ this.w = evidCount * (45 / InteractorLink.maxNoEvidences);//hack
+            //~ }
+            //~ //ambig?
+            //~ this.dashedLine(this.ambig);
 
             //sequence links will have been hidden previously
             this.show();
             return true;
-        }
-        else {
-            this.hide();
-            return false;
-        }
+        //~ }
+        //~ else {
+            //~ this.hide();
+            //~ return false;
+        //~ }
     }
     else {//at least one end was in stick form
         this.hide();
@@ -360,22 +369,22 @@ InteractorLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            if (this.intra) {
+            //~ if (this.intra) {
 //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-
-                if (this.fatLineShown) {
-                    this.fatLine.setAttribute("transform", "translate(" +
-                            this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
-                            + " scale(" + (this.xlv.z) + ")");
-                    this.xlv.p_pLinksWide.appendChild(this.fatLine);
-                }
-
-                this.fromInteractor.upperGroup.appendChild(this.highlightLine);
-                this.fromInteractor.upperGroup.appendChild(this.line);
-                this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-                this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
-            }
-            else {
+//~ 
+                //~ if (this.fatLineShown) {
+                    //~ this.fatLine.setAttribute("transform", "translate(" +
+                            //~ this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
+                            //~ + " scale(" + (this.xlv.z) + ")");
+                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                //~ }
+//~ 
+                //~ this.fromInteractor.upperGroup.appendChild(this.highlightLine);
+                //~ this.fromInteractor.upperGroup.appendChild(this.line);
+                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
+                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
+            //~ }
+            //~ else {
                 this.line.setAttribute("stroke-width", this.xlv.z * 1);
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates(this.fromInteractor);
@@ -385,8 +394,7 @@ InteractorLink.prototype.show = function() {
                 }
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.p_pLinks.appendChild(this.line);
-            }
-        }
+            //~ }
         if (this.fatLineShown) {
             if (this.intra) {
                 this.fatLine.setAttribute("stroke-width", this.w);
@@ -394,6 +402,7 @@ InteractorLink.prototype.show = function() {
                 this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
             }
         }
+		}
     }
 };
 
@@ -443,4 +452,10 @@ InteractorLink.prototype.setLinkCoordinates = function(interactor) {
             }
         }
     }
+};
+
+InteractorLink.prototype.toJSON = function() {
+    return {
+        evidences: this.evidences
+    };
 };

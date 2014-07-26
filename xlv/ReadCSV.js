@@ -7,7 +7,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
     //    var iRes2 = headers.indexOf('residue2');
     //    var iDescription = headers.indexOf('description');
     var countRows = rows.length;
-    //we're going to need to know when all proteins have been init'ed from DAS
+    //we're going to need to know when all interactors have been init'ed from DAS
 //    var tempStack = d3.map(); // TODO: make tempStack a d3 map keySet,
 //    //so if DAS fail its left conatinig the accession no that failed
 //    addProteins('protein1', this);
@@ -32,9 +32,9 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
                     acc = splitOnBar [1];
                     name = splitOnBar[2];
                 }
-                if (!xlv.proteins.has(acc)) {
+                if (!xlv.interactors.has(acc)) {
                     tempStack.set(acc, 1);
-                    xlv.proteins.set(acc, new Interactor(acc, xlv, acc, name));
+                    xlv.interactors.set(acc, new Interactor(acc, xlv, acc, name));
                 }
             }
         }
@@ -51,7 +51,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
             var id = res.SEQUENCE[0].id;
             var seq = res.SEQUENCE[0].textContent;
             var label = res.SEQUENCE[0].label;
-            var prot = xlv.proteins.get(id);
+            var prot = xlv.interactors.get(id);
             prot.initProtein(seq, label);
             //            var key = '\\u0000' + seq;
             tempStack.remove(id);
@@ -61,7 +61,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
                 addCSVLinks(xlv);
             }
         };
-        var keys = xlv.proteins.keys();
+        var keys = xlv.interactors.keys();
         var proteinCount = keys.length;
         for (var p = 0; p < proteinCount; p++) {
             var accession = keys[p];
@@ -73,7 +73,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents) {
     }
 
     function addCSVLinks(xlv) {
-        //        xlv.message(this.proteins);
+        //        xlv.message(this.interactors);
         for (var row = 0; row < countRows; row++) {
             xlv.addMatch(rows[row]['protein1'], rows[row]['residue1'],
                     rows[row]['protein2'], rows[row]['residue2'], row + 1, rows[row]['score']);

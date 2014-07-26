@@ -74,7 +74,7 @@ xiNET.Controller = function(targetDiv) {
     this.container.appendChild(this.proteinLower);
 
     this.highlights = document.createElementNS(xiNET.svgns, "g");
-    this.highlights.setAttribute("class", "highlights");//proteins also contain highlight groups
+    this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
     this.container.appendChild(this.highlights);
 
     this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
@@ -161,8 +161,8 @@ xiNET.Controller = function(targetDiv) {
 
 xiNET.Controller.prototype.clear = function() {
     this.initComplete = false;
-    this.proteins = d3.map();
-    this.proteinLinks = d3.map();
+    this.interactors = d3.map();
+    this.interactions = d3.map();
     this.matches = d3.map();
     this.subgraphs = new Array();
     this.layoutXOffset = 0;
@@ -199,14 +199,6 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
-xiNET.Controller.prototype.toJSON = function() {
-    return {
-        //        links: this.proteinLinks,
-        proteins: this.proteins
-    };
-};
-
-
 xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
@@ -223,7 +215,7 @@ xiNET.Controller.prototype.message = function(text, preformatted) {
 xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
     var newProt = new Interactor(id, this, accession, label);
     newProt.initProtein(sequence, label, description, size);
-    this.proteins.set(id, newProt);
+    this.interactors.set(id, newProt);
 };
 
 ////Positions are one based
@@ -249,7 +241,7 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args
 xiNET.Controller.prototype.addAnnotation = function(protName, annotName, startRes, endRes, colour) {
-    var prots = this.proteins.values();
+    var prots = this.interactors.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
@@ -305,12 +297,12 @@ xiNET.Controller.prototype.init = function(width, height) {
         this.loadLayout();
     } else {
         //make inital form sticks or blobs
-        var proteins = this.proteins.values();
-        var proteinCount = proteins.length;
+        var interactors = this.interactors.values();
+        var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
+            var prot = interactors[p];
             prot.initStick();//needed, todo - remove
-            if (this.proteins.keys().length < 3) {
+            if (this.interactors.keys().length < 3) {
                 prot.toStick();
             }
             else {
@@ -322,8 +314,8 @@ xiNET.Controller.prototype.init = function(width, height) {
         }
         this.autoLayout(width, height);
     }
-//    this.message('#proteins: ' + this.proteins.values().length +
-//            '\n#protein - protein links: ' + this.proteinLinks.values().length);
+//    this.message('#interactors: ' + this.interactors.values().length +
+//            '\n#protein - protein links: ' + this.interactions.values().length);
 
     //temp
 //    this.geneNames = d3.map();
@@ -341,7 +333,7 @@ xiNET.Controller.prototype.init = function(width, height) {
 
 
 xiNET.Controller.prototype.getGeneName = function(pi) {
-    var prot = this.proteins.values()[pi];
+    var prot = this.interactors.values()[pi];
     var xmlhttp = new XMLHttpRequest();
     var url = "http://129.215.14.148/jb/uniprot/sequence.php?id=" + prot.accession + "&dat";
     var params = "";//;
@@ -355,9 +347,9 @@ xiNET.Controller.prototype.getGeneName = function(pi) {
            //alert(gn);
            xlv.geneNames.set(prot.accession, gn);
 
-            var proteins = xlv.proteins.values();
-            var protIndex = proteins.indexOf(prot);
-            if (protIndex < proteins.length - 1) {
+            var interactors = xlv.interactors.values();
+            var protIndex = interactors.indexOf(prot);
+            if (protIndex < interactors.length - 1) {
                 xlv.getGeneName(protIndex + 1);
             }
             else {
@@ -369,13 +361,13 @@ xiNET.Controller.prototype.getGeneName = function(pi) {
 }
 
 xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
-    var proteinLink = this.proteinLinks.get(linkID);
+    var proteinLink = this.interactions.get(linkID);
     if (typeof proteinLink !== 'undefined') {
         proteinLink.colour = new RGBColor(colour);
         proteinLink.colourSpecified = true;
     }
     else {
-        var protein = this.proteins.get(linkID);
+        var protein = this.interactors.get(linkID);
         if (typeof protein !== 'undefined') {
             protein.internalLinkColour = new RGBColor(colour);
             //            protein.colourSpecified = true;
@@ -384,7 +376,7 @@ xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
 };
 
 xiNET.Controller.prototype.parkAll = function(id, label, sequence, description, accession, size) {
-    var prots = this.proteins.values();
+    var prots = this.interactors.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
@@ -400,10 +392,10 @@ xiNET.Controller.prototype.resetZoom = function() {
     //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
+        var prot = interactors[p];
         prot.stickZoom = 1;
         prot.scale();
     }
@@ -423,9 +415,9 @@ xiNET.Controller.prototype.setLayout = function(layoutJSON) {
 
 xiNET.Controller.prototype.loadLayout = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
-    for (var prot in this.layout.proteins) {
-        var protState = this.layout.proteins[prot];
-        var protein = this.proteins.get(prot);
+    for (var prot in this.layout.interactors) {
+        var protState = this.layout.interactors[prot];
+        var protein = this.interactors.get(prot);
         if (protein !== undefined) {
             protein.setPosition(protState["x"], protState["y"]);
             protein.initStick();
@@ -468,11 +460,11 @@ xiNET.Controller.prototype.loadLayout = function() {
         }
     }
 
-    // incase proteins have been added which are not included in layout -
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    // incase interactors have been added which are not included in layout -
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
-        prot = proteins[p];
+        prot = interactors[p];
         if (prot.form == null) {
             prot.initStick();
             prot.toBlob();
@@ -485,7 +477,7 @@ xiNET.Controller.prototype.loadLayout = function() {
     // layout info for links (hidden / specified colour)
     for (var l in this.layout.links) {
         var linkState = this.layout.links[l];
-        var link = this.proteinLinks.get(l);
+        var link = this.interactions.get(l);
         if (link !== undefined) {
             if (typeof linkState.hidden !== 'undefined')
                 link.hidden = linkState.hidden;

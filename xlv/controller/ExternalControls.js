@@ -7,10 +7,10 @@ xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
         var group = opt.options[opt.selectedIndex].parentNode.label;
         var category = opt.options[opt.selectedIndex].value;
     }
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
-        proteins[p].setAnnotations(positional, group, category);
+        interactors[p].setAnnotations(positional, group, category);
     }
 };
 
@@ -45,10 +45,10 @@ xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
             }
         }
 
-        var proteins = this.proteins.values();
-        var proteinCount = proteins.length;
+        var interactors = this.interactors.values();
+        var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
+            var prot = interactors[p];
             if (prot.meetsTextFilter(this.textFilterRegex, this.fields)) {
                 prot.setParked(false);
             } else {
@@ -138,13 +138,13 @@ Interactor.prototype.meetsTextFilter = function(filterRegex, fields) {
 };
 
 xiNET.Controller.prototype.stepOut = function() {
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     var neighbours = [];
     for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
+        var prot = interactors[p];
         if (prot.isParked === false) {
-            var links = prot.proteinLinks.values();
+            var links = prot.interactions.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
@@ -162,11 +162,11 @@ xiNET.Controller.prototype.stepOut = function() {
 };
 
 xiNET.Controller.prototype.stepIn = function() {
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     var leaves = [];// nodes with only one connection
     for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
+        var prot = interactors[p];
         if (prot.countExternalLinks() <= 1) {
             leaves.push(prot);
         }
@@ -215,11 +215,11 @@ xiNET.Controller.prototype.stepIn = function() {
 };
 
 xiNET.Controller.prototype.parkUnconnected = function() {
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
+    var interactors = this.interactors.values();
+    var proteinCount = interactors.length;
     var unconnected = [];// nodes with only one connection
     for (var p = 0; p < proteinCount; p++) {
-        var prot = proteins[p];
+        var prot = interactors[p];
         if (prot.countExternalLinks() === 0) {
             unconnected.push(prot);
         }
@@ -232,12 +232,12 @@ xiNET.Controller.prototype.parkUnconnected = function() {
 };
 
 xiNET.Controller.prototype.exportProteins = function() {
-    //    var myJSONText = JSON.stringify(this.proteins, null, '\t');
+    //    var myJSONText = JSON.stringify(this.interactors, null, '\t');
     //    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     //    xlv.message(myJSONText, true);
 
     var output = "";
-    var prots = this.proteins.values();
+    var prots = this.interactors.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
@@ -251,7 +251,7 @@ xiNET.Controller.prototype.exportProteins = function() {
 };
 
 xiNET.Controller.prototype.exportLinks = function() {
-    var myJSONText = JSON.stringify(this.proteinLinks, null, '\t');
+    var myJSONText = JSON.stringify(this.interactions, null, '\t');
     myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     xlv.message(myJSONText, true);
 };
@@ -362,10 +362,10 @@ function loadLayout(layoutDesc) {
                 xlv.message("response:" + response, true);
                 xlv.setLayout(response);
                 xlv.loadLayout();
-                //            var proteins = xlv.proteins.values();
-                //            var proteinCount = proteins.length;
+                //            var interactors = xlv.interactors.values();
+                //            var proteinCount = interactors.length;
                 //            for (var p = 0; p < proteinCount; p++) {
-                //                var prot = proteins[p];
+                //                var prot = interactors[p];
                 //                prot.setAllLineCoordinates();
                 //            }
                 xlv.checkLinks();
@@ -376,7 +376,7 @@ function loadLayout(layoutDesc) {
 }
 
 function help() {
-    var helpText = "<P>Tip: To change the size of proteins in relation to the size of the page press Ctrl/- or Ctrl/+.<br/> (This zooms the browser, on a Mac its Cmd/- or Cmd/+.)   </P>\
+    var helpText = "<P>Tip: To change the size of interactors in relation to the size of the page press Ctrl/- or Ctrl/+.<br/> (This zooms the browser, on a Mac its Cmd/- or Cmd/+.)   </P>\
 <TABLE >\
 	<TR>\
 		<TD>\
@@ -445,15 +445,15 @@ function help() {
 	</TR>\
 	<TR>\
 		<TD >\
-			<P >Hide links between two specific proteins</P>\
+			<P >Hide links between two specific interactors</P>\
 		</TD>\
 		<TD >\
-			<P >Right click on any link between those proteins</P>\
+			<P >Right click on any link between those interactors</P>\
 		</TD>\
 	</TR>\
 	<TR>\
 		<TD >\
-			<P >Unhide all links between visible proteins</P>\
+			<P >Unhide all links between visible interactors</P>\
 		</TD>\
 		<TD >\
 			<P >Right-click on background</P>\

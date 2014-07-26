@@ -41,13 +41,16 @@
         <script type="text/javascript" src="./xlv/ReadCSV.js"></script>
         <script type="text/javascript" src="./xlv/ReadMIJSON.js"></script>
         <!--data-->
-        <script type="text/javascript" src="./data/example3.js"></script>
+        <script type="text/javascript" src="./data/json/fruitfly.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
+            <!--TODO: change exportSVG so param not needed?-->
             <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
+
             <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
+
             <button type="button" id="autoLayout" onclick="xlv.autoLayout();">Auto</button>
             <button type="button" id="resetViewport" onclick="xlv.resetZoom();">Reset zoom</button>
             <label for='expanded'>Expanded</label>
@@ -61,6 +64,7 @@
                     xlv.cutOff = this.value;
                     xlv.checkLinks();" />
             <label for='score_slider' id='score_label'>MI-score:</label>
+
             <div id="networkContainer"></div>
             <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
         </div>
@@ -71,9 +75,8 @@
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
-xlv.hideExpanded = !document.getElementById('expanded').checked;
+                xlv.hideExpanded = !document.getElementById('expanded').checked;
                 xlv.cutOff = document.getElementById('score_slider').value;
-
                 xlv.readMIJSON(miJson);
                 //]]>
         </script>
