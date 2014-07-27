@@ -37,50 +37,52 @@ NaryLink.prototype.addEvidence = function(interaction) {
     
     
     
-    //~ for (var pi = 0; pi < interaction.participants.length; pi++){
-		//~ var sourceID = interaction.participants[pi].interactorRef;
-		//~ var sourceInteractor = this.xlv.interactors.get(sourceID);
-		//~ var bindingSites = interaction.participants[pi].bindingSites;
-		//~ if (bindingSites){
-			//~ var bsCount = bindingSites.length;
-			//~ for (var bsi = 0; bsi < bsCount; bsi++){
-//~ 
-				//~ var bindingSite = bindingSites[bsi];
-				//~ if (bindingSite.linkedFeatures){
-					//~ for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-						//~ var target = this.xlv.features.get(bindingSite.linkedFeatures[fi]); 
-						//~ var targetInteractor = this.xlv.interactors.get(target.interactor);
-						//~ var linkID, fromInteractor, toInteractor;	
-						//~ // these links are undirected and should have same ID regardless of which way round 
-						//~ // source and target are
-						//~ if (sourceID < target.interactor) {
-							//~ linkID = sourceID + '-' + target.interactor;
-							//~ fromInteractor = sourceInteractor;
-							//~ toInteractor = targetInteractor; 
-						//~ } else {
-							//~ linkID = target.interactor + '-' + sourceID;
-							//~ fromInteractor = targetInteractor;
-							//~ toInteractor = sourceInteractor; 
-						//~ }
-						//~ 
-					//~ }
-										//~ 
-					//~ var link = this.xlv.links.get(linkID);
-					//~ if (typeof link === 'undefined') {
-						//~ if (fromInteractor === toInteractor){
-							//~ link = new UnaryLink(linkID, this);
-						//~ }else {
-							//~ link = new BinaryLink(linkID, this);
-						//~ }
-						//~ this.xlv.links.set(linkID, link);
-						//~ fromInteractor.addLink(link);
-						//~ toInteractor.addLink(link);
-					//~ }
-					//~ link.addEvidence(interaction);
-				//~ }
-			//~ }
-		//~ }
-	//~ }			
+    for (var pi = 0; pi < interaction.participants.length; pi++){
+		var sourceID = interaction.participants[pi].interactorRef;
+		var sourceInteractor = this.xlv.interactors.get(sourceID);
+		var bindingSites = interaction.participants[pi].bindingSites;
+		if (bindingSites){
+			var bsCount = bindingSites.length;
+			for (var bsi = 0; bsi < bsCount; bsi++){
+
+				var bindingSite = bindingSites[bsi];
+				if (bindingSite.linkedFeatures){
+					for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
+						var target = this.xlv.features.get(bindingSite.linkedFeatures[fi]); 
+						var targetInteractor = this.xlv.interactors.get(target.interactor);
+						var linkID, fromInteractor, toInteractor;	
+						// these links are undirected and should have same ID regardless of which way round 
+						// source and target are
+						if (sourceID < target.interactor) {
+							linkID = sourceID + '-' + target.interactor;
+							fromInteractor = sourceInteractor;
+							toInteractor = targetInteractor; 
+						} else {
+							linkID = target.interactor + '-' + sourceID;
+							fromInteractor = targetInteractor;
+							toInteractor = sourceInteractor; 
+						}
+						
+					}
+										
+					var link = this.xlv.links.get(linkID);
+					if (typeof link === 'undefined') {
+						if (fromInteractor === toInteractor){
+							link = new UnaryLink(linkID, this.xlv);
+							fromInteractor.addLink(link);
+						}else {
+							link = new BinaryLink(linkID, this.xlv, fromInteractor,toInteractor);
+						fromInteractor.addLink(link);
+						toInteractor.addLink(link);
+						}
+						this.xlv.links.set(linkID, link);
+
+					}
+					link.addEvidence(interaction);
+				}
+			}
+		}
+	}			
 	
     
     
@@ -407,19 +409,19 @@ NaryLink.prototype.show = function() {
 NaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        if (this.intra) {
-           if (this.fatLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
-            }
-            this.fromInteractor.upperGroup.removeChild(this.highlightLine);
-            this.fromInteractor.upperGroup.removeChild(this.line);
-        } else {
+        //~ if (this.intra) {
+           //~ if (this.fatLineShown) {
+                //~ this.xlv.p_pLinksWide.removeChild(this.fatLine);
+            //~ }
+            //~ this.fromInteractor.upperGroup.removeChild(this.highlightLine);
+            //~ this.fromInteractor.upperGroup.removeChild(this.line);
+        //~ } else {
             if (this.fatLineShown) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.xlv.highlights.removeChild(this.highlightLine);
+            //~ this.xlv.highlights.removeChild(this.highlightLine);
             this.xlv.p_pLinks.removeChild(this.line);
-        }
+        //~ }
     }
 };
 

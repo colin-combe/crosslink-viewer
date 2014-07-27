@@ -152,7 +152,9 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 		if (participantCount === 1) {
 			link = new UnaryLink(linkID, this);
 		} else if (participantCount === 2) {
-			link = new BinaryLink(linkID, this);
+			link = new BinaryLink(linkID, this, 
+				this.interactors.get(participants[0].interactorRef),
+				this.interactors.get(participants[1].interactorRef));
 		} else {
 			link = new NaryLink(linkID, this);
 		}

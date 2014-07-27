@@ -380,14 +380,14 @@ UnaryLink.prototype.getOtherEnd = function(protein) {//this makes no sense :)
 };
 
 UnaryLink.prototype.setLinkCoordinates = function(interactor) {
-    if (this.shown) {//don't waste time changing DOM if link not visible
-		this.line.setAttribute("x1", interactor.x);
-		this.line.setAttribute("y1", interactor.y);
-		this.highlightLine.setAttribute("x1", interactor.x);
-		this.highlightLine.setAttribute("y1", interactor.y);
-		if (this.fatLineShown) {
-			this.fatLine.setAttribute("x1", interactor.x);
-			this.fatLine.setAttribute("y1", interactor.y);
-		}
-    }
+    //~ if (this.shown) {//don't waste time changing DOM if link not visible
+		//~ this.line.setAttribute("x1", interactor.x);
+		//~ this.line.setAttribute("y1", interactor.y);
+		//~ this.highlightLine.setAttribute("x1", interactor.x);
+		//~ this.highlightLine.setAttribute("y1", interactor.y);
+		//~ if (this.fatLineShown) {
+			//~ this.fatLine.setAttribute("x1", interactor.x);
+			//~ this.fatLine.setAttribute("y1", interactor.y);
+		//~ }
+    //~ }
 };

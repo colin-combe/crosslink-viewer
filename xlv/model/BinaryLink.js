@@ -10,12 +10,13 @@
 BinaryLink.prototype = new xiNET.Link();
 //used to calculate width of thivh background line
 BinaryLink.maxNoEvidences = 0;
-function BinaryLink(id, xlvController) {
+function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = new Array();
     this.sequenceLinks = d3.map();
     this.xlv = xlvController;
-
+    this.fromInteractor = fromI; //its the object. not the ID number
+    this.toInteractor = toI; //its the object. not the ID number
     this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
@@ -37,15 +38,15 @@ BinaryLink.prototype.addEvidence = function(interaction) {
     this.evidences.push(interaction);
     
     var participants = interaction.participants;
-    
-    if (participants.length === 2) {//TEMP
-    
-    this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
-    this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
-    //~ this.intra = false;
-    //~ if (this.fromInteractor === this.toInteractor) {
-        //~ this.intra = true;
-    //~ }
+    //u r here - going to need to set from/to from constructor
+    //~ if (participants.length === 2) {//TEMP
+    //~ if (participants[0].interactorRef < participants[1].interactorRef){
+		//~ this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
+		//~ this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
+	//~ } else {
+		//~ this.fromInteractor = this.xlv.interactors.get(participants[1].interactorRef);
+		//~ this.toInteractor = this.xlv.interactors.get(participants[0].interactorRef); //its the object. not the ID number
+	//~ }
     var from = this.fromInteractor;
     var to = this.toInteractor
        
@@ -101,7 +102,7 @@ BinaryLink.prototype.addEvidence = function(interaction) {
         sequenceLink.addEvidence(interaction);
     }
     
-	}//end if participants.length === 2
+	//~ }//end if participants.length === 2
 };
 
 BinaryLink.prototype.initSVG = function() {
