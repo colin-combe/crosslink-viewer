@@ -218,7 +218,6 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 	this.whichRotator = -1;
 	this.state = xiNET.Controller.MOUSE_UP;
 
-	this.lastMouseUp = time;
     return false;
 };
 
