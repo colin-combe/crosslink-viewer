@@ -1,10 +1,19 @@
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+
+"use strict";
+
 xiNET.DASUtil = function(xlvController) {
     this.xlv = xlvController;
     this.dasServers = [
         {
             "name": "SuperFamily 1.75",
             "url": "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features"
-        },
+        }
+        ,
         {
             "name": "UniProt",
             "url": "http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/features"
@@ -27,7 +36,9 @@ xiNET.DASUtil = function(xlvController) {
     ];
     //use sequential AJAX requests to download DAS annotations for all interactors
     //(issuing lots of AJAX request at once would clog things up)
-    this.lookup(this.xlv.interactors.values()[0], this.dasServers[0]);
+    if (this.xlv.proteins.values()[0]) { //avoid crash if no proteins
+		this.lookup(this.xlv.interactions.values()[0], this.dasServers[0]);
+	}
 };
 
 xiNET.DASUtil.prototype.lookup = function(prot, server) {
@@ -43,8 +54,8 @@ xiNET.DASUtil.prototype.lookup = function(prot, server) {
             var message = "<p>FAILED " + server.name + " DAS lookup <strong>"
                     + prot.accession + "</strong> (name: " + prot.name
                     + " id:" + prot.id + ")</p>";
-            self.xlv.message(message);
-            alert(message);
+			//self.xlv.message(message);
+            //alert(message);
             self.nextDASQuery(prot, server);
         };
         /**
@@ -59,12 +70,12 @@ xiNET.DASUtil.prototype.lookup = function(prot, server) {
         dasClient.features({
             segment: prot.accession
         }, response, error_response);
-        this.xlv.message("<p>Waiting on " + server.name + " DAS for " + "<strong>"
-                + prot.accession + "</strong> (name: " + prot.name + " id:" + prot.id + ")</p>");
+//        this.xlv.message("<p>Waiting on " + server.name + " DAS for " + "<strong>"
+//                + prot.accession + "</strong> (name: " + prot.name + " id:" + prot.id + ")</p>");
     }
     else {
-        this.xlv.message("<p>No accession number for <strong>" + prot.name + "</strong> (id:"
-                + prot.id + '), hence no DAS annotations.</p>');
+//        this.xlv.message("<p>No accession number for <strong>" + prot.name + "</strong> (id:"
+//                + prot.id + '), hence no DAS annotations.</p>');
         this.nextDASQuery(prot, server);
     }
 };
@@ -76,14 +87,14 @@ xiNET.DASUtil.prototype.nextDASQuery = function(prot, server) {
         this.lookup(interactors[protIndex + 1], server);
     }
     else {
-        this.xlv.message("<p>" + server.name + " DAS complete.</p>");
+//        this.xlv.message("<p>" + server.name + " DAS complete.</p>");
         var serverIndex = this.dasServers.indexOf(server);
         if (serverIndex < this.dasServers.length - 1) {
             this.lookup(this.xlv.interactors.values()[0], this.dasServers[serverIndex + 1]);
         }
         else {
-            this.xlv.message("<h4>All DAS complete.</h4>");
-            updateMenus(this.xlv);
+//            this.xlv.message("<h4>All DAS complete.</h4>");
+//            updateMenus(this.xlv);
         }
     }
 };
@@ -117,9 +128,9 @@ Interactor.prototype.processDAS = function(serverName, das) {
                     var notes = (ann.NOTE) ? ann.NOTE : new Array();
 
                     if (typeCat !== undefined)
-                        typeCat = typeCat.replace(/\'/gi, '').replace(/\"/gi, '').replace(/&quot;/gi, '');
+                        typeCat = typeCat.replace(/\'/gi, '').replace(/\"/gi, '').replace(/&quot;/gi, '').replace(/\n/gi,'');
                     if (typeText !== undefined)
-                        typeText = typeText.replace(/\'/gi, '').replace(/\"/gi, '').replace(/&quot;/gi, '');
+                        typeText = typeText.replace(/\'/gi, '').replace(/\"/gi, '').replace(/&quot;/gi, '').replace(/\n/gi,'');
 
                     var noteText = undefined;
                     for (var n = 0; n < notes.length; n++) {
@@ -264,7 +275,7 @@ Interactor.prototype.processDAS = function(serverName, das) {
                         }
                     }
                     //onto the not positional/not keywords annotations
-                    else if (typeCat === "Interactor name") {
+                    else if (typeCat === "Protein name") {
                         //its the name from UniProt
                         if (serverName === 'UniProt') {
                             var name = ann.label;
@@ -327,7 +338,12 @@ Interactor.prototype.processDAS = function(serverName, das) {
             }
             this.processedDAS.set(serverName, processed);
             //temp
-            if (serverName === 'SuperFamily 1.75' && processed.positional) {
+            //~ if (serverName === 'UniProt' && processed.positional) {
+                //~ if (this.customAnnotations === undefined || this.customAnnotations === null) {
+                    //~ this.setPositionalFeatures(processed.positional.get('Secondary structure'));
+                //~ }
+            //~ }
+           if (serverName === 'SuperFamily 1.75' && processed.positional) {
                 if (this.customAnnotations === undefined || this.customAnnotations === null) {
                     this.setPositionalFeatures(processed.positional.get('miscellaneous'));
                 }
@@ -348,212 +364,6 @@ Interactor.prototype.processDAS = function(serverName, das) {
         }
         posFeatures.push(posFeat);
     }
-};
-
-Interactor.prototype.printAnnotationInfo = function() {
-    var self = this;
-    var message = "";
-    //heading, including PDB link
-    message += "<p><strong>" + highlightRegex(this.name, this.xlv.fields.names)
-            + "</strong> [" + highlightRegex(this.accession, self.xlv.fields.names) + "] ";
-    if (this.processedDAS) {
-        //do UniProt first
-        var uniprot = this.processedDAS.get('UniProt');
-        if (typeof uniprot !== 'undefined') {
-            message += "<a href='" + uniprot.href + "' target='_blank'>"
-                    + highlightRegex(uniprot.name, self.xlv.fields.names) + "</a>. ";
-            message += "Segment start: " + uniprot.start + ", stop: " + uniprot.stop + ". ";
-
-        }
-    }
-//    message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-//            + this.accession + "' target='_blank'>PDB</a></p>";
-    //non DAS info -
-    //original FASTA file info
-    if (typeof this.description !== 'undefined' && this.description !== '') {
-        message += "<p>" + highlightRegex(this.description, self.xlv.fields.names) + "</p>";
-    }
-    if (typeof this.geneName !== 'undefined') {
-        message += "<p>Gene names: " + highlightRegex(this.geneName, self.xlv.fields.names) + "</p>";
-    }
-
-    if (typeof this.json !== 'undefined'){
-        message += '<pre>' + JSON.stringify(this.json, null, '\t') + '</pre>';
-    }
-
-    //TODO: print custom domain annotation info
-
-    if (this.processedDAS) {
-        //do UniProt first
-        var uniprot = this.processedDAS.get('UniProt');
-        if (uniprot) {
-            message += "<p>" + highlightRegex(uniprot.full, self.xlv.fields.names) + "</p>";
-            printProcessedDAS(uniprot, 'UniProt');
-        }
-        //and the others
-        this.processedDAS.forEach(
-                function(serverName, processed) {
-                    if (serverName !== 'UniProt') { // done UniProt already
-                        printProcessedDAS(processed, serverName);
-                    }
-                }
-        );
-        //        message += '<pre>' +
-        //        JSON.stringify(this.processedDAS, null, '\t').replace(/\\u0000/gi, '')
-        //        + '</pre>';
-    }
-
-    xlv.message(message);
-
-    function printProcessedDAS(processed, serverName) {
-        message += "<p><strong style='text-decoration: underline;'>" + serverName + "</strong></p><div style='margin:32px;'>";
-        //notes
-        if (processed.notes) {
-            message += "<p style='text-decoration: underline;'>Notes:</p>";
-            processed.notes.forEach(function(n) {
-                printNotes(n);
-            });
-        }
-        //keywords
-        if (processed.keywords) {
-            message += "<p style='text-decoration: underline;'>Keywords:</p>";
-            var keywordString = "";
-            var keywords = processed.keywords;
-            var categories = keywords.keys();
-            var catCount = categories.length;
-            for (var c = 0; c < catCount; c++) {
-                var category = categories[c];
-                keywordString += '<p><strong>' + category + ':</strong> ';
-                var keywordArray = keywords.get(category);
-                var keywordCount = keywordArray.length;
-                for (var k = 0; k < keywordCount; k++) {
-                    var keyword = keywordArray[k];
-                    if (k > 0) {
-                        keywordString += ', ';
-                    }
-                    if (keyword.link) {
-                        keywordString += "<a href='" + keyword.link
-                                + "'  target='_blank' >"
-                                + highlightRegex(keyword.name, self.xlv.fields.key_text) + "</a>";
-                    }
-                    else {
-                        keywordString += "<span  target='_blank' >"
-                                + highlightRegex(keyword.name, self.xlv.fields.key_text) + "</span>";
-                    }
-                }
-                keywordString += '</p>';
-            }
-            message += keywordString;
-        }
-        //positional features
-        if (processed.positional) {
-            processed.positional.forEach(
-                    function(category, features) {
-                        message += "<p style='text-decoration: underline;'>Positional features: <strong>" + category + "</strong></p>";
-                        message += "<table><tr><th>Name</th><th>Start</th><th>End</th><th>Notes</th></tr>";
-                        for (var i = 0; i < features.length; i++) {
-                            var anno = features[i];
-                            message += "<tr>"
-                                    + "<td><p>" + highlightRegex(anno.name, self.xlv.fields.pos_text)
-                                    + "</p></td><td><p>" + anno.start
-                                    + "</p></td><td><p>" + anno.end
-                                    + "</p></td><td>";
-                            if (anno.notes !== undefined) {
-                                message += "<p>" + anno.notes;
-                                var links = anno.links;
-                                if (links !== undefined && links !== null) {
-                                    var linkString = "";
-                                    for (var l = 0; l < links.length; l++) {
-                                        linkString += " <a href='" + links[l].href + "' target='_blank'>"
-                                                + links[l].textContent + "</a>";
-                                    }
-                                    message += linkString;
-                                }
-                                message += "</p>";
-                            }
-                            message += "</td></tr>";
-                        }
-                        message += "</table>";
-                    }
-            );
-        }
-        message += "</div>";
-        //        if (processed.html) {
-        //            message += processed.html;
-        //        }
-    }
-    function printNotes(n) {
-        message += "<p>" + highlightRegex(n.notes, self.xlv.fields.notes);
-        var links = n.links;
-        if (links !== undefined && links !== null) {
-            var linkString = "";
-            for (var l = 0; l < links.length; l++) {
-                linkString += " <a href='" + links[l].href + "' target='_blank'>"
-                        + links[l].textContent + "</a>";
-            }
-            message += linkString;
-        }
-        message += "</p>";
-    }
-
-    function highlightRegex(annotationText, doIt) {
-        if (doIt === true) {
-            var regex;
-            var countRegex = self.xlv.textFilterRegex.length;
-            var matches = new Array();
-            var NOTs = new Array();
-            //matches
-            for (var r = 0; r < countRegex; r++) {
-                regex = self.xlv.textFilterRegex[r];
-                regex.lastIndex = 0;
-                var result = regex.exec(annotationText);
-                while (result != null) {
-                    var match = result[0];
-                    matches.push({start: (regex.lastIndex - match.length), stop: regex.lastIndex});
-                    result = regex.exec(annotationText);
-                }
-            }
-
-            var openSpan = "<span class='highlight'>";
-            var closeSpan = "</span>";
-            var highlightSpanTagLength = openSpan.length + closeSpan.length;
-            for (var i = 0; i < matches.length; i++) {
-                var match = matches[i];
-                annotationText = insert((i * highlightSpanTagLength) + match.start, openSpan, annotationText);
-                annotationText = insert((i * highlightSpanTagLength) + openSpan.length + match.stop, closeSpan, annotationText);
-            }
-
-            //NOTs
-            countRegex = self.xlv.textFilterRegexNOT.length;
-            for (var r = 0; r < countRegex; r++) {
-                regex = new RegExp(">[^<]+(" + self.xlv.textFilterRegexNOT[r].source + ")", "gi");
-                regex.lastIndex = 0;
-                result = regex.exec(">" + annotationText);
-                //console.log("in regex loop");
-                while (result != null) {
-                    var match = result[1];
-                    NOTs.push({start: (regex.lastIndex - match.length - 1), stop: regex.lastIndex - 1});
-                    result = regex.exec(">" + annotationText);
-                    //console.log(JSON.stringify(NOTs));
-                }
-            }
-            var openSpanNOT = "<span class='NOT'>";
-            var highlightSpanNotTagLength = openSpanNOT.length + closeSpan.length;
-
-            for (var i = 0; i < NOTs.length; i++) {
-                //console.log("in insert loop");
-                var match = NOTs[i];
-                annotationText = insert((i * highlightSpanNotTagLength) + match.start, openSpanNOT, annotationText);
-                annotationText = insert((i * highlightSpanNotTagLength) + openSpanNOT.length + match.stop, closeSpan, annotationText);
-            }
-
-        }
-        return annotationText;
-    }
-    function insert(index, string, target) {
-        return target.substring(0, index) + string + target.substring(index, target.length);
-    }
-    ;
 };
 
 function updateMenus(xlv) {
@@ -599,103 +409,104 @@ function updateMenus(xlv) {
     var select = document.getElementById('pos_feat_select');
     //empty menu
     if (typeof select !== 'undefined' && select != null) {
-        while (select.firstChild) {
-            select.removeChild(select.firstChild);
-        }
-        //add none option
-        var noneOption = document.createElement("option");
-        noneOption.setAttribute('value', 'none');
-        if (customAnnot) {
-            noneOption.appendChild(document.createTextNode('None or custom'));
-        } else {
-            noneOption.appendChild(document.createTextNode('None'));
-        }
-        select.appendChild(noneOption);
-        d3.keys(nestedPos).forEach(
-                function(group) {
-                    var optGroup = document.createElement("optGroup");
-                    optGroup.setAttribute('label', group);
-                    d3.keys(nestedPos[group]).forEach(
-                            function(opt) {
-                                var option = document.createElement("option");
-                                option.setAttribute('value', opt);
-                                option.appendChild(document.createTextNode(opt));
-                                optGroup.appendChild(option);
-                            }
-                    );
-                    select.appendChild(optGroup);
-                }
-        );
-        select.value = 'miscellaneous';
-        select.removeAttribute('disabled');
-
-        message += "<h6>Keyword sets</h4>";
-        var allKey = new Array();
-        for (var p = 0; p < protCount; p++) {
-            prots[p].processedDAS.forEach(
-                    function(serverName, das) {
-                        if (das.keywords) {
-                            das.keywords = d3.map(das.keywords);
-                            das.keywords.forEach(
-                                    function(cat, posFeatArray) {
-                                        allKey.push({
-                                            server: serverName,
-                                            category: cat
-                                        });
-                                    }
-                            );
-                        }
-                    }
-            );
-        }
-        var nestedKeywords = d3.nest()
-                .key(function(d) {
-            return d.server;
-        })
-                .key(function(d) {
-            return d.category;
-        })
-                .rollup(function(d) {
-            return (d.length + " annotated interactors");
-        })
-                .map(allKey);
-        message += '<pre>' + JSON.stringify(nestedKeywords, null, '\t') + '</pre>';
-
-        //update option menu
-        select = document.getElementById('keyword_select');
-        //empty menu
-        while (select.firstChild) {
-            select.removeChild(select.firstChild);
-        }
-        //add none option
-        var noneOption = document.createElement("option");
-        noneOption.setAttribute('value', 'none');
-        noneOption.appendChild(document.createTextNode('None'));
-        select.appendChild(noneOption);
-        d3.keys(nestedKeywords).forEach(
-                function(group) {
-                    var optGroup = document.createElement("optGroup");
-                    optGroup.setAttribute('label', group);
-                    d3.keys(nestedKeywords[group]).forEach(
-                            function(opt) {
-                                var option = document.createElement("option");
-                                option.setAttribute('value', opt);
-                                option.appendChild(document.createTextNode(opt));
-                                optGroup.appendChild(option);
-                            }
-                    );
-                    select.appendChild(optGroup);
-                }
-        );
-        select.removeAttribute('disabled');
-
-        //enable additonal text search checkboxes
-//    document.getElementById('notes').removeAttribute('disabled');
-        //    document.getElementById('notes').setAttribute('checked', 'checked');
-//    document.getElementById('key_text').removeAttribute('disabled');
-        //    document.getElementById('key_text').setAttribute('checked', 'checked');
-//    document.getElementById('posFeat_text').removeAttribute('disabled');
+    while (select.firstChild) {
+        select.removeChild(select.firstChild);
     }
+    //add none option
+    var noneOption = document.createElement("option");
+    noneOption.setAttribute('value', 'none');
+    if (customAnnot) {
+        noneOption.appendChild(document.createTextNode('None or custom'));
+    } else {
+        noneOption.appendChild(document.createTextNode('None'));
+    }
+    select.appendChild(noneOption);
+    d3.keys(nestedPos).forEach(
+            function(group) {
+                var optGroup = document.createElement("optGroup");
+                optGroup.setAttribute('label', group);
+                d3.keys(nestedPos[group]).forEach(
+                        function(opt) {
+                            opt = opt.replace(/\n/gi,'');
+                            var option = document.createElement("option");
+                            option.setAttribute('value', opt);
+                            option.appendChild(document.createTextNode(opt));
+                            optGroup.appendChild(option);
+                        }
+                );
+                select.appendChild(optGroup);
+            }
+    );
+    //select.value = 'miscellaneous';
+    select.removeAttribute('disabled');
+
+    message += "<h6>Keyword sets</h4>";
+    var allKey = new Array();
+    for (var p = 0; p < protCount; p++) {
+        prots[p].processedDAS.forEach(
+                function(serverName, das) {
+                    if (das.keywords) {
+                        das.keywords = d3.map(das.keywords);
+                        das.keywords.forEach(
+                                function(cat, posFeatArray) {
+                                    allKey.push({
+                                        server: serverName,
+                                        category: cat
+                                    });
+                                }
+                        );
+                    }
+                }
+        );
+    }
+    var nestedKeywords = d3.nest()
+            .key(function(d) {
+        return d.server;
+    })
+            .key(function(d) {
+        return d.category;
+    })
+            .rollup(function(d) {
+        return (d.length + " annotated proteins");
+    })
+            .map(allKey);
+    message += '<pre>' + JSON.stringify(nestedKeywords, null, '\t') + '</pre>';
+
+    //update option menu
+    select = document.getElementById('keyword_select');
+    //empty menu
+    while (select.firstChild) {
+        select.removeChild(select.firstChild);
+    }
+    //add none option
+    var noneOption = document.createElement("option");
+    noneOption.setAttribute('value', 'none');
+    noneOption.appendChild(document.createTextNode('None'));
+    select.appendChild(noneOption);
+    d3.keys(nestedKeywords).forEach(
+            function(group) {
+                var optGroup = document.createElement("optGroup");
+                optGroup.setAttribute('label', group);
+                d3.keys(nestedKeywords[group]).forEach(
+                        function(opt) {
+                            var option = document.createElement("option");
+                            option.setAttribute('value', opt);
+                            option.appendChild(document.createTextNode(opt));
+                            optGroup.appendChild(option);
+                        }
+                );
+                select.appendChild(optGroup);
+            }
+    );
+    select.removeAttribute('disabled');
+
+    //enable additonal text search checkboxes
+	//    document.getElementById('notes').removeAttribute('disabled');
+    //    document.getElementById('notes').setAttribute('checked', 'checked');
+	//    document.getElementById('key_text').removeAttribute('disabled');
+    //    document.getElementById('key_text').setAttribute('checked', 'checked');
+	//    document.getElementById('posFeat_text').removeAttribute('disabled');
+  }
 //    document.getElementById('posFeat_text').setAttribute('checked', 'checked');
 //xlv.message(message);
 }

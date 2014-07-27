@@ -1,9 +1,17 @@
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+
+"use strict";
+
 xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
     var positional = true;
     if (choice !== 1) {
         positional = false;
     }
-    if (typeof opt !== 'undefined' && opt != null) {
+    if (typeof opt !== 'undefined' && opt != null){
         var group = opt.options[opt.selectedIndex].parentNode.label;
         var category = opt.options[opt.selectedIndex].value;
     }
@@ -25,10 +33,10 @@ xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
     };
     if (filterText === '!') {
         this.parkAll();
-        //        this.textFilterRegexNOT[0] = new RegExp("*", 'gi');
+    //        this.textFilterRegexNOT[0] = new RegExp("*", 'gi');
     }
     else if (filterText === '') {
-        //        this.unparkAll();
+    //        this.unparkAll();
     }
     else {
         var filters = filterText.split(' ');
@@ -57,9 +65,9 @@ xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
         }
     }
     this.message("<p>Text filter: " + filterText
-            //            + "<br/>" + JSON.stringify(this.textFilterRegex, '\t')
-            //            + "<br/>" + JSON.stringify(this.textFilterRegexNOT, '\t')
-            + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
+        //            + "<br/>" + JSON.stringify(this.textFilterRegex, '\t')
+        //            + "<br/>" + JSON.stringify(this.textFilterRegexNOT, '\t')
+        + "<br/>" + JSON.stringify(this.fields, '\t') + "</p>");
     this.checkLinks();
 };
 
@@ -231,7 +239,7 @@ xiNET.Controller.prototype.parkUnconnected = function() {
     }
 };
 
-xiNET.Controller.prototype.exportProteins = function() {
+xiNET.Controller.prototype.exportInteractors = function() {
     //    var myJSONText = JSON.stringify(this.interactors, null, '\t');
     //    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
     //    xlv.message(myJSONText, true);
@@ -256,6 +264,21 @@ xiNET.Controller.prototype.exportLinks = function() {
     xlv.message(myJSONText, true);
 };
 
+xiNET.Controller.prototype.setCutOff = function(cutOff) {
+    this.cutOff = cutOff;
+    this.checkLinks();
+};
+
+xiNET.Controller.prototype.hideInternal = function(bool) {
+    this.intraHidden = bool;
+    this.checkLinks();
+};
+
+xiNET.Controller.prototype.hideAmbig = function(bool) {
+    this.ambigHidden = bool;
+    this.checkLinks();
+};
+
 //TODO:fix
 //xiNET.Controller.prototype.setAnnotations = function(positional, group, category) {
 //    //    alert(group + ' - ' + category);
@@ -263,36 +286,26 @@ xiNET.Controller.prototype.exportLinks = function() {
 //
 //    };
 
-xiNET.Controller.prototype.exportSVG = function(containerName) {
-    alert("You will likely need to manually rename the downloaded file so its file extension is '.svg'.\n\n You can then edit it in tools such as Inkscape or Illustrator.");
-    var rawSVG = document.getElementById(containerName).parentNode.innerHTML;
-    //TODO: rotator hide not working
-    var svgXml = rawSVG.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-            //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
-            //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
-            //    .replace(/xmlns:svg=/gi,"xmlns=")
-            //    .replace(/svg:/gi,"")
-            .replace(/<rect .*?\/rect>/i, "");
-
-    var args = [];
-    args.source = svgXml;
-    var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-            + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-            + svgXml;//markup_beauty(args);
-
-    //    alert("/");
-
-    var xmlAsUrl;
-    //    if (this.messageElement != null) { // if running in Col's developemnt PHP version
-    //        // this will make it really open in new window, instead of download
-    //        xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    //    //       xmlAsUrl = 'data:image/svg+xml;filename=ProteinViewExport.svg,'
-    //    }
-    //    else {
-    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    //    }
-    xmlAsUrl += encodeURIComponent(prettyXml);
-    var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
+xiNET.Controller.prototype.exportSVG = function() {
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
+    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
+    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
+    //    .replace(/xmlns:svg=/gi,"xmlns=")
+    //    .replace(/svg:/gi,"")
+    .replace(/<rect .*?\/rect>/i, "");//takes out background fill
+    
+    var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+	saveAs(blob, "xiNET_output.svg");
+	
+	//~ var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+    //~ + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+    //~ + svgXml;
+	//~ 
+	//~ var xmlAsUrl;
+    //~ xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+    //~ //xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
+    //~ xmlAsUrl += encodeURIComponent(xml);
+    //~ var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
 
 //set the message element to use (optional - mainly for debugging)
@@ -316,7 +329,7 @@ function saveLayout() {
         }
         var url = "./saveLayout.php";
         var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
-                layout) + "&desc=" + desc;
+            layout) + "&desc=" + desc;
         xmlhttp.open("POST", url, true);
         //Send the proper header information along with the request
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -330,7 +343,7 @@ function saveLayout() {
                 xlv.message("<br>Layout saved");
                 var select = document.getElementById('load_layout');
                 var optionlist = select.options;
-                for (var option = 0; option < optionlist.length; option++)
+                for (var option = 0; option < optionlist.length; option++ )
                 {
                     if (optionlist[option].text == desc)
                     {
@@ -373,94 +386,4 @@ function loadLayout(layoutDesc) {
         };
         xmlhttp.send(params);
     }
-}
-
-function help() {
-    var helpText = "<P>Tip: To change the size of interactors in relation to the size of the page press Ctrl/- or Ctrl/+.<br/> (This zooms the browser, on a Mac its Cmd/- or Cmd/+.)   </P>\
-<TABLE >\
-	<TR>\
-		<TD>\
-			<P><B>Action</B></P>\
-		</TD>\
-		<TD>\
-			<P><B>User control</B></P>\
-		</TD>\
-\
-	</TR>\
-	<TR>\
-		<TD>\
-			<P>Toggle protein between a bar and a circle</P>\
-		</TD>\
-		<TD >\
-			<P>Double-click on protein</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD>\
-			<P>Zoom</P>\
-		</TD>\
-		<TD>\
-			<P>Mouse wheel</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P>Pan</P>\
-		</TD>\
-		<TD >\
-			<P>Click and drag on background</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P>Move protein</P>\
-		</TD>\
-		<TD>\
-			<P>Click and drag on protein</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P >Expand bar (increases length until sequence is visible)</P>\
-		</TD>\
-		<TD >\
-			<P >Shift and left-click on protein</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD>\
-			<P>Rotate stick</P>\
-		</TD>\
-		<TD >\
-			<P>Click and drag on handles that appear at end of stick</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P >Hide/show protein (and all links to it)</P>\
-		</TD>\
-		<TD >\
-			<P >Right-click on protein</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P >Hide links between two specific interactors</P>\
-		</TD>\
-		<TD >\
-			<P >Right click on any link between those interactors</P>\
-		</TD>\
-	</TR>\
-	<TR>\
-		<TD >\
-			<P >Unhide all links between visible interactors</P>\
-		</TD>\
-		<TD >\
-			<P >Right-click on background</P>\
-		</TD>\
-	</TR>\
-</TABLE>\
-";
-    xlv.message(helpText);
-
 }

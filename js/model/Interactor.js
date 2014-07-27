@@ -1,8 +1,11 @@
-//      xiNET interaction viewer
-//      Copyright 2013 Rappsilber Laboratory
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
-//TODO - implement start and end residues (and rename class as Segment?)
-//TODO - move link posiitons to middle of residue letters - avoids a prob when rotated 180
+"use strict";
+
 Interactor.STICKHEIGHT = 20;//height of stick in pixels
 Interactor.MAXSIZE = 0; // residue count of longest sequence
 Interactor.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)

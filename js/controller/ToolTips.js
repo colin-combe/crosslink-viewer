@@ -1,3 +1,13 @@
+//    xiNET Interaction Viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
+"use strict";
+
 xiNET.Controller.prototype.showTooltip = function(p)
     {
         //TODO: if its going ot be off the right of the screen put it to left of the cursor
@@ -24,6 +34,7 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
     if (typeof colour !== 'undefined' && colour != null){
         this.tooltip_bg.setAttribute('fill', colour);
         this.tooltip_bg.setAttribute('stroke', colour);
+        this.tooltip_bg.setAttribute('fill-opacity', '0.5');
     } else {
         this.tooltip_bg.setAttribute('fill','white');
         this.tooltip_bg.setAttribute('stroke','grey');

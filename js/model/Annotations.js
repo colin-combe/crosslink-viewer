@@ -1,3 +1,13 @@
+//    xiNET Interaction Viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
+"use strict";
+
 //constructor for annotations
 function Annotation(annotName, startRes, endRes, colour, notes) {
     this.name = annotName;
@@ -45,7 +55,16 @@ Interactor.prototype.setAnnotations = function(pos, group, category) {
 };
 
 Interactor.prototype.setKeywords = function(keywords) {
-    if (keywords !== undefined && keywords !== null) {
+	function trig(radius, angleDegrees) {
+		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		var radians = (angleDegrees / 360) * Math.PI * 2;
+		return {
+			x: (radius * Math.cos(radians)),
+			y: (radius * Math.sin(radians))
+		};
+	}
+	
+	if (keywords !== undefined && keywords !== null) {
         var numberOfKeywords = keywords.length;
         var sliceAngleDegrees = 359 / numberOfKeywords;
         for (var i = 0; i < numberOfKeywords; i++) {
@@ -59,14 +78,6 @@ Interactor.prototype.setKeywords = function(keywords) {
             var endAngle = startAngle + sliceAngleDegrees;
 
             var radius = this.getBlobRadius() - 2;
-            function trig(radius, angleDegrees) {
-                //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-                var radians = (angleDegrees / 360) * Math.PI * 2;
-                return {
-                    x: (radius * Math.cos(radians)),
-                    y: (radius * Math.sin(radians))
-                };
-            }
             var arcStart = trig(radius, startAngle - 90);
             var arcEnd = trig(radius, endAngle - 90);
             var largeArch = 0;

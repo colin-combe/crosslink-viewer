@@ -4,6 +4,8 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
+"use strict";
+
 //rename to sequence link?
 SequenceLink.prototype = new xiNET.Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {

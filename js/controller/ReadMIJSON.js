@@ -1,5 +1,12 @@
-//      xiNET interaction viewer
-//      Copyright 2013 Rappsilber Laboratory
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
+"use strict";
 
 // reads our MI JSON format 
 xiNET.Controller.prototype.readMIJSON = function(miJson) {
@@ -9,8 +16,8 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
 	//we're gonna need to keep track of what things have missing sequences 
     //var interactorsMissingSequence = d3.set();
     
-    // we iterate through the data twice, once for interactors and once for links
-    // (iteractors and links are mixed together in 'data')
+    // we iterate through the data twice, once for interactors and once for interactions
+    // (iteractors and interactions are mixed together in 'data')
     // the second iteration is in the 'addInteractions' function below
     
     var data = miJson.data;

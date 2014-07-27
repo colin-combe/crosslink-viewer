@@ -1,16 +1,40 @@
-//Init.js
+//    xiNET Interaction Viewer
+//    Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//	  author: Colin Combe
+//
+//    Init.js
+
+"use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
 
 xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
-xiNET.linkWidth = 1.5;// default line width
+xiNET.linkWidth = 1.3;// default line width
 
-xiNET.Controller = function(targetDiv) {
-    this.fields = {}; // not sure about this, used by text search
-    //see note below re gwt, two different ways to initialise
-    //    if (targetDiv != null) {// if null gwt will pass in SVG
+// highlight and selection colours are global
+// (because all instances of xiNET should use same colours for this)
+xiNET.highlightColour = new RGBColor("#ffff99");//"#fdc086");//"yellow");
+xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
+//xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");//"#8c510a");//"#d8b365");//("#1b9e77");//"#beaed4");//"#8dd3c7");//#8073AC'");//
+//xiNET.defaultInterLinkColour = new RGBColor("#35978f");//"#01665e");//"#5ab4ac");//"#7570b3");//"#fdc086");//"#bebada");//#E08214");//
+//xiNET.homodimerLinkColour = new RGBColor("#a50f15");//"#e41a1c");
+
+xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
+	if (typeof targetDiv === "string"){
+		targetDiv = document.getElementById(targetDiv);
+	}
+	
+	//these attributes are used by checkboxes to hide self links or ambiguous links
+	this.intraHidden = false;
+	this.ambigHidden = false;
+	
+    this.fields = {}; //used by text search
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     
     //create SVG elemnent
@@ -217,59 +241,64 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
     this.interactors.set(id, newProt);
 };
 
-////Positions are one based
-//xiNET.Controller.prototype.addInteraction = function(pep1_protIDs, pep1_positions,
-//        pep2_protIDs, pep2_positions,
-//        id, meta, linkPos1, linkPos2, pep1_seq, pep2_seq) {
-//    var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-//            id, meta, this, linkPos1, linkPos2, pep1_seq, pep2_seq);
-//    this.matches.set(id, match);
-//};
-//
-//// add all matches with single call, arg is an array of arrays
-//xiNET.Controller.prototype.addMatches = function(matches) {
-//    var l = matches.length;
-//    for (var i = 0; i < l; i++) {
-//        //        alert(matches[i]);
-//        this.addInteraction(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
-//                matches[i][4], matches[i][5], matches[i][6], matches[i][7],
-//                matches[i][8], matches[i][9]);
-//    }
-//}
-
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args
-xiNET.Controller.prototype.addAnnotation = function(protName, annotName, startRes, endRes, colour) {
-    var prots = this.interactors.values();
+xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
+    var protein = this.proteins.get(protId);
+	//lets just check a few things here...
+	// we're using human (starts at 1) numbering
+	if (startRes == null && endRes == null) {
+		startRes = 1;
+		endRes = protein.size;
+	}
+	else if (startRes == null)
+		startRes = endRes;
+	else if (endRes == null)
+		endRes = startRes;
+
+	if (startRes > endRes) {
+		var temp = startRes;
+		startRes = endRes;
+		endRes = temp;
+	}
+
+	var annotation = new Annotation(annotName, startRes, endRes, colour);
+	if (protein.customAnnotations == null) {
+		protein.customAnnotations = new Array();
+	}
+	protein.customAnnotations.push(annotation);
+	protein.setPositionalFeatures(protein.customAnnotations);
+}
+
+xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
+    var prots = this.proteins.values(); 
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
         if (protein.name == protName) {
-
-            //lets just check a few things here...
-            // we're using human (starts at 1) numbering
-            if (startRes == null && endRes == null) {
-                startRes = 1;
-                endRes = protein.size;
-            }
-            else if (startRes == null)
-                startRes = endRes;
-            else if (endRes == null)
-                endRes = startRes;
-
-            if (startRes > endRes) {
-                var temp = startRes;
-                startRes = endRes;
-                endRes = temp;
-            }
-
-            var annotation = new Annotation(annotName, startRes, endRes, colour);
-            if (protein.customAnnotations == null) {
-                protein.customAnnotations = new Array();
-            }
-            protein.customAnnotations.push(annotation);
-            protein.setPositionalFeatures(protein.customAnnotations);
+            this.addAnnotation(protein.id, annotName, startRes, endRes, colour);
         }
+    }
+}
+
+// add all matches with single call, arg is an array of arrays
+xiNET.Controller.prototype.addAnnotations = function(annotations) {
+    var rows = d3.csv.parseRows(annotations);
+    
+    var headers = rows[0];
+    //~ console.log(headers.toString());
+    
+    var iProtId = headers.indexOf('ProteinId');
+    var iAnnotName = headers.indexOf('AnnotName');
+    var iStartRes = headers.indexOf('StartRes');
+    var iEndRes = headers.indexOf('EndRes');
+    var iColour = headers.indexOf('Color');    
+        
+    var l = rows.length;
+    for (var i = 1; i < l; i++) {
+        //        alert(matches[i]);
+        this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
+							rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
     }
 }
 
@@ -311,8 +340,7 @@ xiNET.Controller.prototype.init = function(width, height) {
             else {
                 prot.toBlob();
             }
-            prot.setPosition(0, 0);
-            //            this.proteinLower.appendChild(prot.rectDomainsColoured);
+            this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
         this.autoLayout(width, height);
@@ -320,9 +348,6 @@ xiNET.Controller.prototype.init = function(width, height) {
 //    this.message('#interactors: ' + this.interactors.values().length +
 //            '\n#protein - protein links: ' + this.links.values().length);
 
-    //temp
-//    this.geneNames = d3.map();
-//    this.getGeneName(0);
 
     this.initMouseEvents();
     if (typeof this.initTouchEvents === 'function'){
@@ -374,8 +399,8 @@ xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
     }
 };
 
-xiNET.Controller.prototype.parkAll = function(id, label, sequence, description, accession, size) {
-    var prots = this.interactors.values();
+xiNET.Controller.prototype.parkAll = function() {
+    var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];

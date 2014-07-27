@@ -1,12 +1,15 @@
-// highlight and selection colours are global
-// (because all instances of xiNet should use same colours for this)
-xiNET.highlightColour = new RGBColor("yellow");
-xiNET.selectedColour = new RGBColor("orange");
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+
+"use strict";
 
 //static var's signifying Controller's status
-xiNET.Controller.MOUSE_UP = 0;//start state, set when mouse up on svgElement
+xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xiNET.Controller.DRAGGING = 2;//set by mouse down on Interactor or Link
+xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
 xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
 xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 

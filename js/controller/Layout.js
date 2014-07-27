@@ -1,9 +1,19 @@
-xiNET.Controller.prototype.autoLayout = function() {
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
+"use strict";
+
+xiNET.Controller.prototype.autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
-    var width = this.svgElement.parentNode.clientWidth;
-    var height = this.svgElement.parentNode.clientHeight;
+    if (!width) width = this.svgElement.parentNode.clientWidth;
+    if (!height) height = this.svgElement.parentNode.clientHeight;
 
     var proteinCount = this.interactors.keys().length;
     if (proteinCount === 1) {

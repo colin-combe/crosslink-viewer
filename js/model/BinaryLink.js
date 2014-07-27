@@ -4,6 +4,8 @@
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
+"use strict";
+
 // BinaryLink.js
 // the class representing an n-ary interaction
 
@@ -106,35 +108,18 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 };
 
 BinaryLink.prototype.initSVG = function() {
-    if (!this.intra) {
-        this.line = document.createElementNS(xiNET.svgns, "line");
-        this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-        this.fatLine = document.createElementNS(xiNET.svgns, "line");
-    } else {
-        function trig(radius, angleDegrees) {
-//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-            var radians = (angleDegrees / 360) * Math.PI * 2;
-            return {
-                x: (radius * Math.cos(radians)),
-                y: -(radius * Math.sin(radians))
-            };
-        }
-        var intraR = this.fromInteractor.getBlobRadius() + 7;
-        var r = 45;
-        var arcStart = trig(intraR, 15 + r);
-        var arcEnd = trig(intraR, -35 + r);
-        var cp1 = trig(intraR, 30 + r);
-        var cp2 = trig(intraR, -50 + r);
-        var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
-                + ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
-                + ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
-        this.line = document.createElementNS(xiNET.svgns, "path");
-        this.line.setAttribute('d', path);
-        this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-        this.highlightLine.setAttribute('d', path);
-        this.fatLine = document.createElementNS(xiNET.svgns, 'path');
-        this.fatLine.setAttribute('d', path);
-    }
+	function trig(radius, angleDegrees) {
+		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		var radians = (angleDegrees / 360) * Math.PI * 2;
+		return {
+			x: (radius * Math.cos(radians)),
+			y: -(radius * Math.sin(radians))
+		};
+	}
+	
+	this.line = document.createElementNS(xiNET.svgns, "line");
+	this.highlightLine = document.createElementNS(xiNET.svgns, "line");
+	this.fatLine = document.createElementNS(xiNET.svgns, "line");
 
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");

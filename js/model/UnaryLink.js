@@ -7,6 +7,8 @@
 // UnaryLink.js
 // the class representing a self-link
 
+"use strict";
+
 UnaryLink.prototype = new xiNET.Link();
 
 function UnaryLink(id, xlvController) {
