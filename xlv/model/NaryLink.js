@@ -407,14 +407,14 @@ NaryLink.prototype.show = function() {
 };
 
 NaryLink.prototype.hide = function() {
-    if (this.shown) {
-        this.shown = false;
-		if (this.fatLineShown) {
-			this.xlv.p_pLinksWide.removeChild(this.fatLine);
-		}
-		//~ this.xlv.highlights.removeChild(this.highlightLine);
-		this.xlv.p_pLinks.removeChild(this.line);
-    }
+    //~ if (this.shown) {
+        //~ this.shown = false;
+		//~ if (this.fatLineShown) {
+			//~ this.xlv.p_pLinksWide.removeChild(this.fatLine);
+		//~ }
+		//this.xlv.highlights.removeChild(this.highlightLine);
+		//~ this.xlv.p_pLinks.removeChild(this.line);
+    //~ }
 };
 
 NaryLink.prototype.getOtherEnd = function(protein) {

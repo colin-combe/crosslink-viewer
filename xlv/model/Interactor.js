@@ -9,6 +9,7 @@ Interactor.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+Interactor.transitionTime = 650;
 
 //http://stackoverflow.com/questions/4179283/how-to-overload-constructor-of-an-object-in-js-javascript
 function Interactor(id, xlvController, json) {
@@ -24,7 +25,7 @@ Interactor.prototype.toJSON = function() {
     };
 };
 
-Interactor.prototype.initProtein = function(sequence, name, description, size)
+Interactor.prototype.initInteractor = function(sequence, name, description, size)
 {
     this.accession = this.json.identifier.id;
     this.name = this.json.label.substring(0, this.json.label.indexOf('_'));
@@ -36,7 +37,7 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
         this.name = name;
     }
     //check for labeling modifications in sequence now, we're about to lose this info
-    if (/\d/.test(sequence)) {//is there a digit in the sequence
+    if (/\d/.test(sequence)) {//is there a digit in the sequence?
         this.labeling = '';// as in silac labelling
         if (sequence.indexOf('K4') !== -1)
             this.labeling += 'K4';
@@ -53,13 +54,15 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
         if (sequence.indexOf('R10') !== -1)
             this.labeling += 'R10';
     }
-    this.sequence = sequence.replace(/[^A-Z]/g, '');//remove modification site info from seq
-    if (typeof size !== 'undefined' && size != null) {
-        this.size = size;
-    } else {
-        this.size = this.sequence.length;
-    }
-    // get the largest protein size - for scaling purposes
+    //remove modification site info from sequence
+    this.sequence = sequence.replace(/[^A-Z]/g, '');
+    if (typeof size != "undefined") {
+		this.size = size;
+	}
+	else {
+		this.size = this.sequence.length;
+	}
+    // keep track of largest protein size - used for initial scaling of bars
     if (Interactor.MAXSIZE < this.size) {
         Interactor.MAXSIZE = this.size;
     }
@@ -72,185 +75,212 @@ Interactor.prototype.initProtein = function(sequence, name, description, size)
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
-    this.form = null; // 0 = blob, 1 = stick
+    this.form = 0;//null; // 0 = blob, 1 = stick
     this.isParked = false;
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
-    this.customAnnotations = null;//new Array();
-
-    //TODO: remove need for this?
-    this.rectX;
-
-    //svg elements we always need
+    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
+	//rotators
+	//~ this.mouseoverControls = new MouseoverControls(this, this.xlv);
+	this.lowerRotator = new Rotator(this, 0, this.xlv);
+	this.upperRotator = new Rotator(this, 1, this.xlv);
+    
+    var r = this.getBlobRadius();
+	
+    /*
+     * Lower group
+     * svg group for elements that appear underneath links
+     */
+    this.lowerGroup = document.createElementNS(xiNET.svgns, "g");
+    this.lowerGroup.setAttribute("class", "protein lowerGroup");
+ 	
+ 	//make highlight
+    this.highlight = document.createElementNS(xiNET.svgns, "rect");
+    //invariant attributes
+    if (xiNET.highlightColour !== undefined) {
+        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+	}
+    this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("fill", "none");   
+    //this.highlight.setAttribute("fill-opacity", 1);   
+    //attributes that may change
+    d3.select(this.highlight).attr("stroke-opacity", 0)
+		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+		.attr("x", -r - 2.5).attr("y", -r - 2.5)
+		.attr("rx", r + 2.5).attr("ry", r + 2.5);
+	this.lowerGroup.appendChild(this.highlight);   
+    
+    //domains in rectangle form (shown underneath links) 
+    this.rectDomains = document.createElementNS(xiNET.svgns, "g");
+    this.rectDomains.setAttribute("opacity", "0");
+    this.lowerGroup.appendChild(this.rectDomains);
+    
+    this.peptides = document.createElementNS(xiNET.svgns, "g");
+	this.lowerGroup.appendChild(this.peptides);
+	
+	/*
+     * Upper group
+     * svg group for elements that appear above links
+     */
+     
     this.upperGroup = document.createElementNS(xiNET.svgns, "g");
-    this.upperGroup.setAttribute("class", "protein");
-    this.rectDomainsColouredContainer = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsColouredContainer.setAttribute("class", "protein");
-    this.rectDomainsColoured = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsColoured.setAttribute("class", "protein");
-    this.rectDomainsMouseEvents = document.createElementNS(xiNET.svgns, "g");
-    this.rectDomainsMouseEvents.setAttribute("class", "protein");
-    this.circDomains = document.createElementNS(xiNET.svgns, "g");
-    this.circDomains.setAttribute("class", "protein");
-
-    //add label to it - we will move this svg element around when protein form changes
+    this.upperGroup.setAttribute("class", "protein upperGroup");
+    
+    //svg groups for self links
+    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
+    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
+    this.upperGroup.appendChild(this.intraLinksHighlights);
+	this.upperGroup.appendChild(this.intraLinks);    
+    
+    //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(xiNET.svgns, "text");
-    //    this.labelSVG.setAttribute("class", "proteinLabel");
     this.labelSVG.setAttribute("text-anchor", "end");
+    this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
-    //    this.labelSVG.setAttribute("class", "Xlr_protein Xlr_proteinLabel");
+    this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-
     //choose label text
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
     }
-    else if (description !== null & description !== "") {
+    else if (description != null & description !== "") {
         this.labelText = description;
         this.name = description;
     }
-    else {
+    else if (this.accession != null & this.accession !== "") {
         this.labelText = this.accession;
+    }
+    else {
+		this.labelText  = this.id;
+	}
+    if (this.labelText.length > 25) {
+        this.labelText = this.labelText.substr(0, 16) + "...";
     }
     if (typeof this.labeling !== 'undefined') {
         this.labelText = '[' + this.labeling + '] ' + this.labelText;
     }
     this.labelTextNode = document.createTextNode(this.labelText);
-    this.labelSVG.setAttribute('class', 'xlv_text');
     this.labelSVG.appendChild(this.labelTextNode);
-    //append label
+    d3.select(this.labelSVG).attr("transform", 
+		"translate( -" + (r + 5) + " " + Interactor.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
+   	
+   	//ticks (and animo acid letters)
+    this.ticks = document.createElementNS(xiNET.svgns, "g");
+     
+	//make outline
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.outline = document.createElementNS(xiNET.svgns, "rect");
+    this.outline.setAttribute("stroke", "black");
+    this.outline.setAttribute("stroke-width", "1");
+    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
+			.attr("fill", "#ffffff")
+			.attr("width", r * 2).attr("height", r * 2)
+			.attr("x", -r).attr("y", -r)
+			.attr("rx", r).attr("ry", r);
+    //append outline
+    this.upperGroup.appendChild(this.outline);
+    
+    //domains as pie slices - shown on top of everything
+	this.circDomains = document.createElementNS(xiNET.svgns, "g");
+    //~ this.circDomains.setAttribute("class", "protein circDomains");
+	this.circDomains.setAttribute("opacity", 1);
+	this.upperGroup.appendChild(this.circDomains);
 
-    //make blob
-    if (this.accession.indexOf("CHEBI") !== -1) {
-        var points = "0, -10  8.66,5 -8.66,5";
-        this.blob = document.createElementNS(xiNET.svgns, "polygon");
-        this.blob.setAttribute("points", points);
-        this.blobHighlight = document.createElementNS(xiNET.svgns, "polygon");
-        this.blobHighlight.setAttribute("points", points);
-        this.parked = document.createElementNS(xiNET.svgns, "polygon");
-        this.parked.setAttribute("points", points);
-    }
-    else {
-        this.blob = document.createElementNS(xiNET.svgns, "circle");
-        this.blob.setAttribute("r", this.getBlobRadius());
-        this.blobHighlight = document.createElementNS(xiNET.svgns, "circle");
-        this.blobHighlight.setAttribute("r", this.getBlobRadius());
-        this.parked = document.createElementNS(xiNET.svgns, "circle");
-        this.parked.setAttribute("r", this.getBlobRadius());
-    }
-    this.blob.setAttribute("cx", 0);
-    this.blob.setAttribute("cy", 0);
-    //style it
-    this.blob.setAttribute("fill", "white");
-    this.blob.setAttribute("fill-opacity", "1");
-    this.blob.setAttribute("stroke", "black");
-    this.blob.setAttribute("stroke-width", "1");
-    //make blobHighlight
-    this.blobHighlight.setAttribute("cx", 0);
-    this.blobHighlight.setAttribute("cy", 0);
-    //    this.blobHighlight.setAttribute("class", "Xlr_protein Xlr_blob");
-    //style it
-    this.blobHighlight.setAttribute("stroke-opacity", "0");
-    if (xiNET.highlightColour !== undefined)
-        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    this.blobHighlight.setAttribute("stroke-width", "10");
-
-    //make parked blob //TODO: don't use new SVG element, change attributes of blob
-    this.parked.setAttribute("cx", 0);
-    this.parked.setAttribute("cy", 0);
-    this.parked.setAttribute("class", "Xlr_protein Xlr_parked");
-    this.parked.setAttribute("fill", "lightGrey");
-    this.parked.setAttribute("fill-opacity", "0.75");
-    this.parked.setAttribute("stroke", "none");
-
-    //STICK = EVRYTHING THAT ROTATES: rectangle, annotation, intra links, outline, scale,
-    //but NOT LABEL. cannot currently be made until after all interactors (for scaling)
-    this.stick = null;//see getStick() //protein as stick,
-
-    //svg groups for intra protein links
-    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinksHighlights.setAttribute("class", "highlights");
-    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinks.setAttribute("class", "intraLinks");
-
-    this.rectAndTicks = document.createElementNS(xiNET.svgns, "g");
-    ////don't want to scale ticks but do want to add listener to both rect and ticks
-    this.rectAndTicks.setAttribute("class", "rectAndTicks");
-    // stick symbol minus label, scale labels/sequence and intra links, i.e. rectangular bits to scale
-    this.rect = document.createElementNS(xiNET.svgns, "g");
-    this.rect.setAttribute("class", "rect");
-    this.rectAndTicks.appendChild(this.rect);
-
-    this.p = document.createElementNS(xiNET.svgns, "rect");//protein stick outline
-    //style it
-    this.p.setAttribute("fill", "none");
-    this.p.setAttribute("stroke", "black");
-    this.p.setAttribute("stroke-width", "0.75");
-
-    this.rectHighlight = document.createElementNS(xiNET.svgns, "rect");
-    this.rectHighlight.setAttribute("stroke-opacity", "0");
-    if (xiNET.highlightColour !== undefined)
-        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    this.rectHighlight.setAttribute("stroke-width", "10");
-    this.rectHighlight.setAttribute("fill", "none");
-    //    this.rectHighlight.setAttribute("class", "pOutline Xlr_protein");
-
-    this.rectDomainsColouredContainer.appendChild(this.rectHighlight);
-    this.rectDomainsColouredContainer.appendChild(this.rectDomainsColoured);
-    this.rectAndTicks.appendChild(this.p);
-
-    this.ticks = null;//document.createElementNS(xiNET.svgns, "g");
     this.scaleLabels = new Array();
 
     // events
     var self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
     this.upperGroup.onmousedown = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-        if (self.xlv.force !== undefined) {
-            self.xlv.force.stop();
-        }
-        self.xlv.dragElement = self;
-        if (evt.ctrlKey === false) {
-            self.xlv.clearSelection();
-            self.setSelected(true);
-        } else {
-            self.setSelected(!this.isSelected);
-        }
-        //store start location
-        var p = self.xlv.getEventPoint(evt);
-        self.xlv.dragStart = self.xlv.mouseToSVG(p.x, p.y);
-        //self.xlv.message(JSON.stringify(self.json));
-        self.printAnnotationInfo();
-        return false;
+		self.mouseDown(evt);
     };
     this.upperGroup.onmouseover = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);
-        self.showHighlight(true);
-        self.xlv.setTooltip(self.tooltip);
-        return false;
+		self.mouseOver(evt);
     };
     this.upperGroup.onmouseout = function(evt) {
-        self.xlv.preventDefaultsAndStopPropagation(evt);
-        self.showHighlight(false);
-        self.xlv.hideTooltip();
-        return false;
+		self.mouseOut(evt);
     };
-    this.upperGroup.ondblclick = function(evt) {
-        var p = self.xlv.getEventPoint(evt);
-        var c = self.xlv.mouseToSVG(p.x, p.y);
-        if (self.form === 0) {
-            self.setForm(1, c);
-        } else {
-            self.setForm(0, c);
+     
+    this.upperGroup.ontouchstart = function(evt) {
+		self.xlv.message("protein touch start");
+		self.touchStart(evt);
+    };
+    //~ this.upperGroup.ontouchmove = function(evt) {};
+	//~ this.upperGroup.ontouchend = function(evt) {
+		//~ self.xlv.message("protein touch end");
+		//~ self.mouseOut(evt);
+    //~ };
+    //~ this.upperGroup.ontouchenter = function(evt) {
+        //~ self.message("protein touch enter");
+    	//~ self.touchStart(evt);
+    //~ };
+    //~ this.upperGroup.ontouchleave = function(evt) {
+        //~ self.message("protein touch leave");
+    	//~ self.mouseOut(evt);
+    //~ };
+    //~ this.upperGroup.ontouchcancel = function(evt) {
+        //~ self.message("protein touch cancel");
+    	//~ self.mouseOut(evt);
+    //~ };
+    this.isSelected = false;
+};
+
+Interactor.prototype.mouseDown = function(evt) {
+           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        //if a force layout exists then stop it
+        if (this.xlv.force !== undefined) {
+            this.xlv.force.stop();
         }
-        self.xlv.checkLinks();
-    };
+        this.xlv.dragElement = this;
+        //~ if (evt.ctrlKey === false) {
+            this.xlv.clearSelection();
+            this.setSelected(true);
+        //~ } else {
+            //~ this.setSelected(!this.isSelected);
+        //~ }
+        //store start location
+        var p = this.xlv.getEventPoint(evt);
+        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        this.printAnnotationInfo();
+        return false;
+};
+
+Interactor.prototype.touchStart = function(evt) {
+           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        //if a force layout exists then stop it
+        if (this.xlv.force !== undefined) {
+            this.xlv.force.stop();
+        }
+        this.xlv.dragElement = this;
+        //~ if (evt.ctrlKey === false) {
+            this.xlv.clearSelection();
+            this.setSelected(true);
+        //~ } else {
+            //~ this.setSelected(!this.isSelected);
+        //~ }
+        //store start location
+        var p = this.xlv.getTouchEventPoint(evt);
+        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        this.printAnnotationInfo();
+        return false;
+};
+
+Interactor.prototype.mouseOver = function(evt) {
+        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.showHighlight(true);
+        this.xlv.setTooltip(this.tooltip);
+        return false;
+};
+
+Interactor.prototype.mouseOut = function(evt) {
+        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.showHighlight(false);
+        this.xlv.hideTooltip();
+        return false;
 };
 
 Interactor.prototype.getBlobRadius = function() {
@@ -332,108 +362,111 @@ Interactor.prototype.addFeature = function(feature) {
 }
 
 Interactor.prototype.showHighlight = function(show) {
-    if (show) {
-        this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.blobHighlight.setAttribute("stroke-opacity", "1");
-        this.rectHighlight.setAttribute("stroke-opacity", "1");
+    if (show === true) {
+        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlight.setAttribute("stroke-opacity", "1");
     } else {
-        if (this.isSelected === false) {
-            if (this.form !== 1)
-                this.blobHighlight.setAttribute("stroke-opacity", "0");
-            else
-                this.rectHighlight.setAttribute("stroke-opacity", "0");
+		if (this.isSelected == false) {
+                this.highlight.setAttribute("stroke-opacity", "0");
         }
-        this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
 };
 
 Interactor.prototype.setSelected = function(select) {
-    //    if (select && this.isSelected === false) {
-    //        this.xlv.selectedProteins.set(this.id, this);
-    //        this.isSelected = true;
-    //        if (this.form !== 1) {
-    //            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-    //            this.blobHighlight.setAttribute("stroke-opacity", "1");
-    //        }
-    //        else {
-    //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-    //            this.rectHighlight.setAttribute("stroke-opacity", "1");
-    //        }
-    //    }
-    //    else if (select === false && this.isSelected === true) {
-    //        this.xlv.selectedProteins.remove(this.id);
-    //        this.isSelected = false;
-    //        if (this.form !== 1) {
-    //            this.blobHighlight.setAttribute("stroke-opacity", "0");
-    //            this.blobHighlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    //        }
-    //        else {
-    //            this.rectHighlight.setAttribute("stroke-opacity", "0");
-    //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-    //        }
-    //    }
+    if (select && this.isSelected === false) {
+        this.xlv.selected.set(this.id, this);
+        this.isSelected = true;
+		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		this.highlight.setAttribute("stroke-opacity", "1");
+    }
+    else if (select === false && this.isSelected === true) {
+        this.xlv.selected.remove(this.id);
+        this.isSelected = false;
+		this.highlight.setAttribute("stroke-opacity", "0");
+		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    }
 };
-Interactor.prototype.setRotation = function(angle) {
-    this.previousRotation = this.rotation;
-    this.rotation = angle % 360;
-    if (this.rotation < 0)
-        this.rotation += 360;
-    //    this.xlv.message(this.rotation);
-    this.rectHighlight.setAttribute("transform", "rotate(" + this.rotation + ")");
-    this.stick.setAttribute("transform", "rotate(" + this.rotation + ")");
-    this.rectDomainsColoured.setAttribute("transform", "rotate(" + this.rotation + ") scale(" + (this.stickZoom) + " 1 )");
-    var sll = this.scaleLabels.length;
-    if (this.rotation > 90 && this.rotation <= 270) {
 
-        this.labelSVG.setAttribute("transform", " rotate(" + (this.rotation - 180) + ")" +
-                "translate( -" + (((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Interactor.labelY + ")");
-        //        if (this.previousRotation <= 90 || this.previousRotation > 270){
-        for (var i = 0; i < sll; i++) {
-            this.scaleLabels[i].setAttribute("transform", "rotate(180)");
-        }
-        //        }
-    }
+Interactor.prototype.setRotation = function(angle) {
+    this.rotation = angle % 360;
+    if (this.rotation < 0) {
+        this.rotation += 360;
+	}
+    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+    this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+
+    var svg = this.xlv.svgElement;    
+	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
+	var labelTransform = d3.transform(transformToContainingGroup);
+	var sll = this.scaleLabels.length;
+	if (this.rotation >= 90 && this.rotation < 270) {
+			var k = svg.createSVGMatrix()
+						.translate(Math.abs(labelTransform.translate[0]), -Interactor.labelY)
+						.rotate(180, 0, 0);
+			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+			if (this.form ===1){
+				for (var i = 0; i < sll; i++) {
+					   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
+					}
+					this.ticks.setAttribute("transform", "scale(1,-1)");
+			}
+	}
     else {
-        this.labelSVG.setAttribute("transform", " rotate(" + this.rotation + ")" +
-                "translate( -" + (((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10) + " " + Interactor.labelY + ")");
-        //        if (this.previousRotation > 90 || this.previousRotation <= 270){
-        for (var j = 0; j < sll; j++) {
-            this.scaleLabels[j].setAttribute("transform", "rotate(0)");
-            //            }
-        }
-    }
+    		var k = svg.createSVGMatrix()
+						.translate(-(Math.abs(labelTransform.translate[0])), Interactor.labelY);
+			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+			if (this.form ===1){
+				for (var j = 0; j < sll; j++) {
+					this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
+				}
+				this.ticks.setAttribute("transform", "scale(1,1)");
+			}
+	}
 };
-// seting the x,y position on the svg
-// - now more accurately described as setting transform for top group (sets scale on top group also)
+
+// more accurately described as setting transform for top svg elements (sets scale also)
 Interactor.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    this.rectDomainsColouredContainer.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
-    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
-    if (this.internalLink != null) {
-        if (typeof this.internalLink.fatLine !== 'undefined') {
-            this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
-                    + " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
-        }
-    }
+    if (this.form === 1 && this.isParked === false){
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+    } 
+    else {
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") ");
+		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				+ " scale(" + (this.xlv.z) + ") ");
+		if (this.internalLink != null) {
+			if (typeof this.internalLink.fatLine !== 'undefined') {
+				this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+			}
+				this.internalLink.line.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+		}
+	}
 };
 Interactor.rotOffset = 20 * 0.7; // see Rotator.js
 Interactor.minXDist = 30;
 Interactor.prototype.switchStickScale = function(svgP) {
     if (this.isParked) {
         this.toggleParked();
-        //        this.xlv.stickUnderMouse = null;
     }
     if (this.form === 0) {
-        this.fromBlob();
         this.toStick();
     }
     else {
         var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
         if (pixPerRes > 8) {
-            this.stickZoom = 0.5;
+            this.stickZoom = 0.5;//this looks like a hack
             this.setPosition(svgP.x, svgP.y);
         }
         else {
@@ -449,161 +482,143 @@ Interactor.prototype.switchStickScale = function(svgP) {
         }
     }
     // when setting the form of prot's,
-    // remember following doesn't happen when you just call fromBlob();toStick();
+    // remember following doesn't happen when you just call toStick();
     this.scale();
     this.setAllLineCoordinates();
 };
 
 Interactor.prototype.scale = function() {
-    //    alert('in scale');
     var protLength = (this.size) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
-    //    this.setPosition(this.x, this.y);
     if (this.form === 1) {
-        this.setRotation(this.rotation); //places label
-        this.setAllLineCoordinates();
-        this.rect.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
-        //        this.rectDomainsColoured.setAttribute("transform",
-        //            " scale("+(this.stickZoom) + " 1 )");
-        this.rectDomainsMouseEvents.setAttribute("transform",
-                " scale(" + (this.stickZoom) + " 1 )");
-        //place rotators
-        this.lowerRotator.svg.setAttribute("transform", "translate(" + (this.getResXwithStickZoom(0) - Interactor.rotOffset) + " 0)");
-        this.upperRotator.svg.setAttribute("transform", "translate("
-                + (this.getResXwithStickZoom(this.size) + Interactor.rotOffset) + " 0)");
+      	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+		var k = this.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
+			.translate((-(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
+	    
+		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		
+		d3.select(this.outline)
+			.attr("width", protLength)
+			.attr("x", this.getResXwithStickZoom(0.5));
+			
+		d3.select(this.highlight)
+			.attr("width", protLength + 5)
+			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
+			
+		//place rotators
+		//this.mouseoverControls.place();
+        this.lowerRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(0.5) - Interactor.rotOffset) + " 0)");
+        this.upperRotator.svg.setAttribute("transform", 
+			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Interactor.rotOffset) + " 0)");
+        
         //internal links
-//        if (this.internalLink != null) {
-//            var resLinks = this.internalLink.sequenceLinks.values();
-//            var iLinkCount = resLinks.length;
-//            for (var l = 0; l < iLinkCount; l++) {
-//                resLinks[l].setUpCurve();
-//            }
-//        }
+        if (this.internalLink != null) {
+            var resLinks = this.internalLink.residueLinks.values();
+            var iLinkCount = resLinks.length;
+            for (var l = 0; l < iLinkCount; l++) {
+				var residueLink = resLinks[l];
+				if (residueLink.shown) {
+					var path = this.getResidueLinkPath(residueLink);
+					d3.select(residueLink.line).attr("d", path);
+					d3.select(residueLink.highlightLine).attr("d", path);
+				}
+            }
+        }
 
-        if (this.ticks !== null)
-            this.rectAndTicks.removeChild(this.ticks);
-        this.ticks = getScaleGroup(this);
-        this.p.setAttribute("x", this.getResXwithStickZoom(0));
-        this.p.setAttribute("y", -Interactor.STICKHEIGHT / 2); //svgHeight);
-        this.p.setAttribute("width", protLength);
-        this.p.setAttribute("height", Interactor.STICKHEIGHT);
-        this.rectHighlight.setAttribute("x", this.getResXwithStickZoom(0));
-        this.rectHighlight.setAttribute("y", -Interactor.STICKHEIGHT / 2); //svgHeight);
-        this.rectHighlight.setAttribute("width", protLength);
-        this.rectHighlight.setAttribute("height", Interactor.STICKHEIGHT);
-        this.rectAndTicks.appendChild(this.ticks);
-        this.setRotation(this.rotation);
+       //linker modified peptides
+        if (this.linkerModifications != null) {
+            var mods = this.linkerModifications.residueLinks.values();
+            var iModCount = mods.length;
+            for (var m = 0; m < iModCount; m++) {
+				var mod = mods[m];
+				if (mod.shown) {
+				   var path = this.getResidueLinkPath(mod);
+				   d3.select(mod.line).attr("d", path);
+				   d3.select(mod.highlightLine).attr("d", path);
+				}
+            }
+        }
+        this.setScaleGroup();
+        this.setRotation(this.rotation); // places ticks and rotators
     }
+};
 
-    function getScaleGroup(protein) {
-        protein.scaleLabels = new Array();
-        //options for scale interval: 1 (special case: show sequence), 10, 100, 1000
-        //need to know number of pix for 1 em.
-        // calc pix per unit
-        var ScaleMajTick = 100;
-        // every ScaleMinTick paint a small tick
-        //var  ScaleMinTick 	  = 20;
-        // every ScaleTicksPerLabel "big" ticks write a label
-        var ScaleTicksPerLabel = 2; // varies with scale?
-        // we label the end - so dont write the previous label, unless it's at least ScaleMaxScaleTextDist residues away
-        //var ScaleMaxScaleTextDist = 50;
-        var pixPerRes = Interactor.UNITS_PER_RESIDUE * protein.stickZoom; // / this.xlv.z;
-        var scaleGroup = document.createElementNS(xiNET.svgns, "g");
-        var tick = -1;
-        var lastTickX = protein.getResXwithStickZoom(protein.size);
-        var testOffset100 = 0;
-        var testOffset10 = 0;
-        // for juan
-        //	alert (this.name + ',' + (this.name == 'Ska1Domain'))
-        //        if (xiNET.sid == 682){
-        //            testOffset10 = 7;
-        //            testOffset100 = 67;
-        //        }
-        //
-        //        else if (protein.name == 'Ska1Domain'){
-        //            testOffset10 = 8;
-        //            testOffset100 = 138;
-        //        }
-        for (var res = 1; res <= protein.size; res++) {
-            if (res === 1 ||
-                    ((res % 100 === testOffset100) && (200 * pixPerRes > Interactor.minXDist)) ||
-                    ((res % 10 === testOffset10) && (20 * pixPerRes > Interactor.minXDist))
-                    ) {
-                var tx = protein.getResXwithStickZoom(res);
-                // for juan
-                //                if (xiNET.sid == 682 && res == 1)
-                //                    tx =  protein.getResXwithStickZoom(res + 4);
-                //                else if (protein.name == 'Ska1Domain' && res == 1){
-                //                    tx =  protein.getResXwithStickZoom(res + 132);
-                //                }
-                tickAt(scaleGroup, tx);
-                tick = (tick + 1) % ScaleTicksPerLabel;
-                // does this one get a label?
-                if (tick === 0) {// && tx > 20) {
-                    if ((tx + Interactor.minXDist) < lastTickX) {
-                        // for juan
-                        //                        if (xiNET.sid == 682 && res == 1)
-                        //                            scaleLabelAt(res + 4, scaleGroup, tx);
-                        //                        if (protein.name == 'Ska1Domain' && res == 1){
-                        //                            scaleLabelAt(res + 132, scaleGroup, tx);
-                        //                        }
-                        //                        else
-                        scaleLabelAt(res, scaleGroup, tx);
-                    }
-                }
-            }
-            if (pixPerRes > 8) {
-                var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
-                seqLabelGroup.setAttribute("transform", "translate(" + protein.getResXwithStickZoom(res) + " " + 0 + ")");
-                var seqLabel = document.createElementNS(xiNET.svgns, "text");
-                //                seqLabel.setAttribute("class", "Xlr_proteinSeqLabelText");
-                seqLabel.setAttribute('font-family', 'Arial');
-                seqLabel.setAttribute('font-size', '10');
-                seqLabel.setAttribute("text-anchor", "end");
-                seqLabel.setAttribute("x", 0);
-                seqLabel.setAttribute("y", 0); //Interactor.STICKHEIGHT + 3);
-                seqLabel.appendChild(document.createTextNode(protein.sequence[res - 1]));
-                seqLabelGroup.appendChild(seqLabel);
-                protein.scaleLabels.push(seqLabel);
-                scaleGroup.appendChild(seqLabelGroup);
-            }
-            //            if (res == 1) res = 0; // means next tick will be 100 not 101
-        }
-        scaleLabelAt(protein.size, scaleGroup, lastTickX);
-        tickAt(scaleGroup, lastTickX);
-        return scaleGroup;
-        function scaleLabelAt(text, group, tickX) {
-            var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
-            scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-            var scaleLabel = document.createElementNS(xiNET.svgns, "text");
-            scaleLabel.setAttribute("class", "Xlr_proteinScaleLabelText xlv_text");
-            scaleLabel.setAttribute('font-family', 'Arial');
-            scaleLabel.setAttribute('font-size', '14');
-            scaleLabel.setAttribute("text-anchor", "middle");
-            scaleLabel.setAttribute("x", 0);
-            scaleLabel.setAttribute("y", Interactor.STICKHEIGHT + 3);
-            // for juan
-            if (xiNET.sid === 682)
-                text = text + 33;
-            else if (protein.name === 'Ska1Domain') {
-                text = text + 132;
-            }
-            scaleLabel.appendChild(document.createTextNode(text));
-            scaleLabelGroup.appendChild(scaleLabel);
-            protein.scaleLabels.push(scaleLabel);
-            group.appendChild(scaleLabelGroup);
-        }
+Interactor.prototype.setScaleGroup = function() {
+	this.xlv.emptyElement(this.ticks);
+	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
+    
+    this.scaleLabels = new Array();
+	var ScaleMajTick = 100;
+	var ScaleTicksPerLabel = 2; // varies with scale?
+	var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
+	var tick = -1;
+	var lastTickX = this.getResXwithStickZoom(this.size);
+	
+	for (var res = 1; res <= this.size; res++) {
+		if (res === 1 ||
+				((res % 100 === 0) && (200 * pixPerRes > Interactor.minXDist)) ||
+				((res % 10 === 0) && (20 * pixPerRes > Interactor.minXDist))
+				) {
+			var tx = this.getResXwithStickZoom(res);
+			if (pixPerRes >= 8 || res !== 1) {
+				tickAt(this, tx);
+			}
+			tick = (tick + 1) % ScaleTicksPerLabel;
+			// does this one get a label?
+			if (tick === 0) {// && tx > 20) {
+				if ((tx + Interactor.minXDist) < lastTickX) {
+					scaleLabelAt(this, res, tx);
+				}
+			}
+		}
+		if (pixPerRes > 8) {
+			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
+			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
+			var seqLabel = document.createElementNS(xiNET.svgns, "text");
+			seqLabel.setAttribute('font-family', "'Courier New', monospace");
+			seqLabel.setAttribute('font-size', '10px');
+			seqLabel.setAttribute("text-anchor", "middle");
+			seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
+			seqLabel.setAttribute("y", 3);
+			seqLabel.appendChild(document.createTextNode(this.sequence[res - 1]));
+			seqLabelGroup.appendChild(seqLabel);
+			this.scaleLabels.push(seqLabel);
+			this.ticks.appendChild(seqLabelGroup);
+		}
+	}
+	scaleLabelAt(this, this.size, lastTickX);
+	if (pixPerRes > 8) {
+		tickAt(this, lastTickX);
+	}
+	
+	function scaleLabelAt(self, text, tickX) {
+		var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
+		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
+		var scaleLabel = document.createElementNS(xiNET.svgns, "text");
+		scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
+		scaleLabel.setAttribute('font-family', "'Courier New', monospace");
+		scaleLabel.setAttribute('font-size', '14');
+		scaleLabel.setAttribute("text-anchor", "middle");
+		scaleLabel.setAttribute("x", 0);
+		scaleLabel.setAttribute("y", Interactor.STICKHEIGHT + 4);
+		scaleLabel.appendChild(document.createTextNode(text));
+		scaleLabelGroup.appendChild(scaleLabel);
+		self.scaleLabels.push(scaleLabel);
+		self.ticks.appendChild(scaleLabelGroup);
+	}
 
-        function tickAt(group, tickX) {
-            var mayt = document.createElementNS(xiNET.svgns, "line");
-            mayt.setAttribute("x1", tickX);
-            mayt.setAttribute("y1", (-Interactor.STICKHEIGHT / 2) * 0.75);
-            mayt.setAttribute("x2", tickX);
-            mayt.setAttribute("y2", ((-Interactor.STICKHEIGHT / 2) + Interactor.STICKHEIGHT) * 0.75);
-            mayt.setAttribute("stroke", "black");
-            group.appendChild(mayt);
-        }
-    }
+	function tickAt(self, tickX) {
+		var tick = document.createElementNS(xiNET.svgns, "line");
+		tick.setAttribute("x1", tickX);
+		tick.setAttribute("y1", 5);
+		tick.setAttribute("x2", tickX);
+		tick.setAttribute("y2", 10);
+		tick.setAttribute("stroke", "black");
+		self.ticks.appendChild(tick);
+	}
 };
 
 Interactor.prototype.toggleFlipped = function() {
@@ -619,240 +634,505 @@ Interactor.prototype.toggleFlipped = function() {
 };
 
 Interactor.prototype.setParked = function(bool, svgP) {
-    if (this.isParked === true && bool == false) {
-        this.fromParked();
-        if (this.form === 0) {
-            this.toBlob();
-        }
-        else {
-            this.toStick();
-        }
-        this.scale();
-        this.setAllLineCoordinates();
-    }
-    else if (this.isParked === false && bool == true) {
-        if (this.form === 0) {
-            this.fromBlob();
-        }
-        else {
-            this.fromStick();
-            if (svgP !== undefined && svgP !== null) {
-                this.setPosition(svgP.x, svgP.y);
-            }
-        }
-        this.toParked();
-    }
+    if (this.busy !== true) {
+		if (this.isParked === true && bool == false) {
+			this.isParked = false;
+			if (this.form === 0) {
+				this.toBlob(svgP);
+			}
+			else {
+				this.toStick();
+			}
+			this.scale();
+			this.setAllLineCoordinates();
+		}
+		else if (this.isParked === false && bool == true) {
+			this.isParked = true;
+			this.toParked(svgP);
+		}
+	}
 };
 
 Interactor.prototype.setForm = function(form, svgP) {
-    if (this.isParked) {
-        this.form = form;
-        this.setParked(false);
-        //TODO: temp
-        this.xlv.stickUnderMouse = null;
-    }
-    else
-    {
-        if (form == 1) {
-            if (this.accession.indexOf("CHEBI") === -1) { // CAN'T TOGGLE SMALL MOLECULES
-                if (this.form === 0) {
-                    this.fromBlob();
-                }
-                this.toStick();
-            }
-        }
-        else {
-            if (this.form === 1) {
-                this.fromStick();
-            }
-            //          console.log(JSON.stringify(svgP, null, '\t'));
-            if (svgP !== undefined && svgP !== null) {
-                this.setPosition(svgP.x, svgP.y);
-            }
-            this.toBlob();
-            //TODO: temp
-            this.xlv.stickUnderMouse = null;
-        }
-        this.scale();
-        this.setAllLineCoordinates();
-    }
+    if (this.busy !== true) {
+		if (this.isParked) {
+			this.setParked(false);
+		}
+		else
+		{
+			if (form == 1) {
+				this.toStick();
+			}
+			else {
+				this.toBlob(svgP);
+			}
+		}
+	}
 };
 
-Interactor.prototype.fromBlob = function() {
-    this.upperGroup.removeChild(this.circDomains);
-    this.upperGroup.removeChild(this.blob);
-    //following causes prob for use/defs
-    this.upperGroup.removeChild(this.blobHighlight);
+Interactor.prototype.toBlob = function(svgP) {
+	if (this.form === 1){ //this is causing from parked it below to run when tool opens 
+		this.toCircle(svgP);
+		var r = this.getBlobRadius();
+		
+		var self = this;
+		d3.select(this.outline).transition()
+			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+			.attr("fill", "#ffffff")
+			.attr("x", -r).attr("y", -r)
+			.attr("width", r * 2).attr("height", r * 2)
+			.attr("rx", r).attr("ry", r)
+			.duration(Interactor.transitionTime);
+
+		d3.select(this.rectDomains).transition().attr("opacity", 0)
+			.attr("transform", "scale(1, 1)")
+			.duration(Interactor.transitionTime);
+	}
+	else {//from parked
+		d3.select(this.outline).transition()
+			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+			.attr("fill", "#ffffff")
+			.duration(Interactor.transitionTime);
+		this.checkLinks();
+	}
+	d3.select(this.circDomains).transition().attr("opacity", 1)
+		.attr("transform", "scale(1, 1)")
+		.duration(Interactor.transitionTime);
 };
 
-Interactor.prototype.fromParked = function() {
-    this.isParked = false;
-    this.upperGroup.removeChild(this.parked);
+Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
+	this.busy = true;
+	//~ this.removePeptides();
+	//this.mouseoverControls.remove();
+	this.upperGroup.removeChild(this.lowerRotator.svg);
+	this.upperGroup.removeChild(this.upperRotator.svg);  
+			    
+    var protLength = this.size * Interactor.UNITS_PER_RESIDUE * this.stickZoom;		
+	var r = this.getBlobRadius();
+	
+	//~ var lengthInterpol = d3.interpolate(protLength, (2 * r));
+	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
+	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
+	var labelTranslateInterpol = d3.interpolate(-(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10), -(r + 5));
+	
+	var xInterpol = null, yInterpol = null;
+	if (typeof svgP !== 'undefined' && svgP !== null) {
+		xInterpol = d3.interpolate(this.x, svgP.x);
+		yInterpol = d3.interpolate(this.y, svgP.y);
+	}	
+	
+	var self = this;
+	d3.select(this.ticks).transition().attr("opacity", 0).duration(Interactor.transitionTime / 4)
+				.each("end", 
+					function () {
+						self.upperGroup.removeChild(self.ticks);
+					}
+				);
+	
+	d3.select(this.highlight).transition()
+		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+		.attr("x", -r - 2.5).attr("y", -r - 2.5)
+		.attr("rx", r + 2.5).attr("ry", r + 2.5)
+		.duration(Interactor.transitionTime);		   
+
+	d3.select(this.upperGroup).transition().attr("transform", 
+			"translate(" + this.x + " " + this.y + ")" 
+			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			.duration(Interactor.transitionTime);
+	
+	d3.select(this.lowerGroup).transition().attr("transform", 
+		"translate(" + this.x + " " + this.y + ")" 
+			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			.duration(Interactor.transitionTime);
+	
+	 if (this.internalLink != null) {
+		var resLinks = this.internalLink.residueLinks.values();
+		var resLinkCount = resLinks.length;
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			var residueLink = resLinks[rl];
+			if (residueLink.intra === true && residueLink.shown) {
+						var selectLine = d3.select(residueLink.line);
+						selectLine.attr("d",this.getResidueLinkPath(residueLink));
+						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							.duration(Interactor.transitionTime);	
+						var highlightLine = d3.select(residueLink.highlightLine);
+						highlightLine.attr("d",this.getResidueLinkPath(residueLink));
+						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							.duration(Interactor.transitionTime);					
+			}
+		}
+	}	
+	
+	//linker modified peptides
+	if (this.linkerModifications != null) {
+		var mods = this.linkerModifications.residueLinks.values();
+		var iModCount = mods.length;
+		for (var m = 0; m < iModCount; m++) {
+			var mod = mods[m];
+			if (mod.shown) {
+				var selectLine = d3.select(mod.line);
+				selectLine.attr("fill", "none");
+				selectLine.attr("d", "M 0,0 L 0,0");
+			}
+		}
+	}
+	
+	var self = this;
+	if (typeof this.annotations !== 'undefined') {
+		var annots = this.annotations;
+		var ca = annots.length;
+		for (var a = 0; a < ca; a++) {
+			//TODO: structure of this is not ideal...
+			var anno = annots[a].anno;
+			var pieSlice = annots[a].pieSlice;
+			var rectDomain = annots[a].rect;
+
+			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+				.duration(Interactor.transitionTime).each("end", 
+					function () {
+						//d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));//mistake - this doesn't work 
+						//this is a mess...
+						for (var b = 0; b < ca; b++) {
+							var annoB = annots[b];
+							if (this === annoB.pieSlice){
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+							}
+						}
+					}
+				);
+			d3.select(rectDomain).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+				.duration(Interactor.transitionTime);
+		}
+	}
+
+	var originalStickZoom = this.stickZoom;
+	var originalRotation = this.rotation;
+	var cubicInOut = d3.ease('cubic-in-out');
+	d3.timer(function(elapsed) {
+	  return update(elapsed / Interactor.transitionTime);
+	});
+ 
+	// update(1);
+ 
+	function update(interp) {
+		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		
+		if (xInterpol !== null){
+			self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+		}
+		
+	   	var rot = rotationInterpol(cubicInOut(interp));
+		self.setRotation(rot);
+	 
+		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+		self.setAllLineCoordinates();
+		
+		if (interp ===  1){ // finished - tidy up
+			var links = self.links.values();
+			var c = links.length;
+			for (var l = 0; l < c; l++) {
+				var link = links[l];
+				//~ if (link.toInteractor === null || (link.getFromInteractor() === self && link.getToInteractor().form === 0) ||
+						//~ (link.getToInteractor() === self && link.getFromInteractor().form === 0) ||
+						//~ (link.getToInteractor() == link.getFromInteractor()))
+				{
+					// swap links - out with the old
+					var resLinks = link.sequenceLinks.values();
+					var resLinkCount = resLinks.length; 
+					for (var rl = 0; rl < resLinkCount; rl++) {
+						var resLink = resLinks[rl];
+							resLink.hide();
+					}
+				}
+			}
+			//bring in new 
+			self.form = 0;
+			self.checkLinks();
+			self.stickZoom = originalStickZoom;
+			self.rotation = originalRotation;
+			self.busy = false;
+			return true;
+		} else if (interp > 1){
+			return update(1);
+		} else {
+			return false;
+		}
+	}
 };
 
-Interactor.prototype.toBlob = function() {
-    this.form = 0;
-    if (this.isParked === false) {
-        //following causes prob for use/defs
-        this.upperGroup.appendChild(this.blobHighlight);
-        this.upperGroup.appendChild(this.blob);
-        this.upperGroup.appendChild(this.circDomains);
-        this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
-        var links = this.links.values();
-        var c = links.length;
-        for (var l = 0; l < c; l++) {
-            var link = links[l];
-            if ((link.fromInteractor === this && link.toInteractor.form === 0) ||
-                    (link.toInteractor === this && link.fromInteractor.form === 0))
-            {
-                // swap links
-                //out with the old
-                //would it  be better if checkLinks did this? no, slower
-                var seqLinks = link.sequenceLinks.values();
-                var slCount = seqLinks.length;
-                for (var sl = 0; sl < slCount; sl ++) {
-                    var seqLink = seqLinks[sl];
-                    //TODO: !fix this issue to do with iterating sequenceLinks!
-//                    if (seqLink.shown) {
-                        seqLink.hide();
-//                    }
-                }
-                //in with the new
-                //// done by setAllLineCoordinates
-            }
-        }
-    }
-};
-
-Interactor.prototype.toParked = function() {
-    this.isParked = true;
-    this.upperGroup.appendChild(this.parked);
-    this.labelSVG.setAttribute("transform", "translate( -" + (this.getBlobRadius() + 5) + " " + Interactor.labelY + ")");
+Interactor.prototype.toParked = function(svgP) {   
     var c = this.links.values().length;
     for (var l = 0; l < c; l++) {
         var link = this.links.values()[l];
         //out with the old (i.e. all links)
         link.hide();
-        for (var rl in link.sequenceLinks) {
-            var resLink = link.sequenceLinks[rl];
-            if (resLink.shown) {//TODO: fix fact this line is required, prob is with for...in loop (when certain libs loaded)
-                resLink.hide();
-            }
-        }
-    }
-};
-
-Interactor.prototype.fromStick = function() {
-    this.xlv.proteinLower.removeChild(this.rectDomainsColouredContainer);
-    //    this.xlv.proteinLower.removeChild(this.rectHighlight);
-    this.upperGroup.removeChild(this.stick);
-//    this.upperGroup.removeChild(this.rectDomainsMouseEvents);
+		var resLinks = link.sequenceLinks.values();
+		var resLinkCount = resLinks.length; 
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			var resLink = resLinks[rl];
+				resLink.hide();
+		}
+    }       
+    
+    if (this.form === 1){
+		this.toCircle(svgP);
+		var r = this.getBlobRadius();
+		d3.select(this.outline).transition()
+			.attr("stroke-opacity", 0).attr("fill-opacity", 1)
+			.attr("fill", "#EEEEEE")
+			.attr("x", -r).attr("y", -r)
+			.attr("width", r * 2).attr("height", r * 2)
+			.attr("rx", r).attr("ry", r)
+			.duration(Interactor.transitionTime);	
+		d3.select(this.rectDomains).transition().attr("opacity", 0)
+			.attr("transform", "scale(1, 1)")
+			.duration(Interactor.transitionTime);
+	}
+	else {
+		d3.select(this.outline).transition()
+			.attr("stroke-opacity", 0)
+			.attr("fill", "#EEEEEE")
+			.duration(Interactor.transitionTime);	
+		d3.select(this.circDomains).transition().attr("opacity", 0)
+			.attr("transform", "scale(1, 1)")
+			.duration(Interactor.transitionTime);	
+	}
 };
 
 Interactor.prototype.toStick = function() {
-    //    if (this.accession === 'P75489') {
-    //           alert('P75489');
-    //    }
-    this.form = 1;
-    if (this.isParked === false) {
-        if (this.stick === null)
-            this.initStick();
-        //    this.xlv.proteinLower.appendChild(this.rectHighlight);
+	this.busy = true;
+    this.form = 1; 
+   
+    //place rotators
+	//~ this.mouseoverControls.add();
+	this.upperGroup.appendChild(this.lowerRotator.svg);
+	this.upperGroup.appendChild(this.upperRotator.svg);  
+	this.lowerRotator.svg.setAttribute("transform", 
+		"translate(" + (this.getResXwithStickZoom(0.5) - Interactor.rotOffset) + " 0)");
+	this.upperRotator.svg.setAttribute("transform", 
+		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Interactor.rotOffset) + " 0)");
+   //remove prot-prot links - would it be better if checkLinks did this? - think not
+	var c = this.links.values().length;
+	for (var l = 0; l < c; l++) {
+		var link = this.links.values()[l];
+		//out with the old
+		if (link.shown) {
+			link.hide();
+		}
+	}
+	 			   
+    var protLength = this.size * Interactor.UNITS_PER_RESIDUE * this.stickZoom;		
+	var r = this.getBlobRadius();
+	
+ 	var lengthInterpol = d3.interpolate((2 * r), protLength);
+	var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
+	var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);	
+	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+  
+    var origStickZoom = this.stickZoom;	
+	this.stickZoom = 0;
+    this.checkLinks();
+	this.stickZoom = origStickZoom;
+ 	
+	d3.select(this.circDomains).transition().attr("opacity", 0)
+		.attr("transform", "scale(" + this.stickZoom + ", 1)")
+		.duration(Interactor.transitionTime);
+	d3.select(this.rectDomains).transition().attr("opacity", 1)
+		.attr("transform", "scale(" + this.stickZoom + ", 1)")
+		.duration(Interactor.transitionTime);
+				
+	d3.select(this.outline).transition().attr("stroke-opacity", 1)
+	.attr("fill-opacity",  0)
+		.attr("fill", "#FFFFFF")
+		.attr("height", Interactor.STICKHEIGHT)
+		.attr("y",  -Interactor.STICKHEIGHT / 2)
+		.attr("rx", 0).attr("ry", 0)
+		.duration(Interactor.transitionTime);		
 
-        this.xlv.proteinLower.appendChild(this.rectDomainsColouredContainer);
-        //    this.stick.setAttribute("transform","rotate(" + this.rotation + ")");
-        this.setRotation(this.rotation);
-        this.upperGroup.appendChild(this.stick);
-        //    this.upperGroup.appendChild(this.rectDomainsMouseEvents);
-        if (this.internalLink != null) {
-            var intraResLinks = this.internalLink.sequenceLinks.values();
-            var rlCount = intraResLinks.length;
-            if (typeof intraResLinks[0].glyph === 'undefined') {
-                for (var irl = 0; irl < rlCount; irl++) {
-                    intraResLinks[irl].initSVG();
-                }
-            }
-        }
-        this.scale();
-        if (this.isSelected === true) {
-            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-            this.rectHighlight.setAttribute("stroke-opacity", "1");
-        }
+	d3.select(this.highlight).transition()
+		.attr("width", protLength + 5).attr("height", Interactor.STICKHEIGHT + 5)
+		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Interactor.STICKHEIGHT / 2) - 2.5)
+		.attr("rx", 0).attr("ry", 0)
+		.duration(Interactor.transitionTime);		   
+	
+	 if (this.internalLink != null) {
+		var resLinks = this.internalLink.residueLinks.values();
+		var resLinkCount = resLinks.length;
+		for (var rl = 0; rl < resLinkCount; rl++) {
+			var residueLink = resLinks[rl];			
+			if (residueLink.shown) {
+				d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
+				d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
+					.duration(Interactor.transitionTime);					
+				d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
+				d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
+					.duration(Interactor.transitionTime);					
+			}
+		}
+	}	
 
-        //        if (select && this.isSelected === false) {
-        //        this.xlv.selectedProteins.set(this.id, this);
-        //        this.isSelected = true;
-        //        if (this.form !== 1) {
-        //            this.blobHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        //            this.blobHighlight.setAttribute("stroke-opacity", "1");
-        //        }
-        //        else {
-        //            this.rectHighlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-        //            this.rectHighlight.setAttribute("stroke-opacity", "1");
-        //        }
-        //    }
-        //would it  be better if checkLinks did this? - think not
-        var c = this.links.values().length;
-        for (var l = 0; l < c; l++) {
-            var link = this.links.values()[l];
-            //out with the old
-            if (link.shown) {
-                link.hide();
-            }
-        }
-    }
-// checkLinks brings in new
+   //linker modified peptides
+	if (this.linkerModifications != null) {
+		var mods = this.linkerModifications.residueLinks.values();
+		var iModCount = mods.length;
+		for (var m = 0; m < iModCount; m++) {
+			var mod = mods[m];
+			if (mod.shown) {
+				var path = this.getResidueLinkPath(mod);
+				d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
+				d3.select(mod.line).transition().attr("d",path)
+					.duration(Interactor.transitionTime);					
+				d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
+				d3.select(mod.highlightLine).transition().attr("d",path)
+					.duration(Interactor.transitionTime);	
+			}
+		}
+	}	
+	
+	if (typeof this.annotations !== 'undefined') {
+		var bottom = Interactor.STICKHEIGHT / 2, top = -Interactor.STICKHEIGHT / 2;
+		var annots = this.annotations;
+		var ca = annots.length;
+		for (var a = 0; a < ca; a++) {
+			var anno = annots[a].anno;
+			var pieSlice = annots[a].pieSlice;
+			var rectDomain = annots[a].rect;
+
+			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+						
+			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
+				.duration(Interactor.transitionTime);
+			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
+				.duration(Interactor.transitionTime);
+		}
+	}
+	
+	var self = this;
+	var cubicInOut = d3.ease('cubic-in-out');
+	d3.timer(function(elapsed) {
+	  return update(elapsed / Interactor.transitionTime);
+	});
+ 
+	//~ update(1);
+ 
+	function update(interp) {
+		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+	   
+	   	var rot = rotationInterpol(cubicInOut(interp));
+		self.setRotation(rot);
+	 
+		var currentLength = lengthInterpol(cubicInOut(interp));
+		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Interactor.UNITS_PER_RESIDUE * self.stickZoom));
+		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+		self.setAllLineCoordinates();
+		
+		if (interp ===  1){ // finished - tidy up
+			self.busy = false;
+			return true;
+		} else if (interp > 1){
+			return update(1);
+		} else {
+			return false;
+		}
+	}
+
+	d3.select(this.ticks).attr("opacity", 0);
+    this.setScaleGroup();
+    d3.select(this.ticks).transition().attr("opacity", 1)
+		.delay(Interactor.transitionTime * 0.8).duration(Interactor.transitionTime / 2);
 };
 
-Interactor.prototype.initStick = function() {
-    if (this.stick !== null) {
-        //        alert("this shouldn't really happen...");
-    }
-    else {
-        //rotators
-        this.lowerRotator = new Rotator(this, 0, this.xlv);
-        this.upperRotator = new Rotator(this, 1, this.xlv);
-        this.stick = document.createElementNS(xiNET.svgns, "g");
-        this.stick.appendChild(this.rectAndTicks);
-        this.stick.setAttribute("class", "stick");
-        this.stick.appendChild(this.intraLinksHighlights);
-        this.stick.appendChild(this.intraLinks);
-        this.stick.appendChild(this.rectDomainsMouseEvents);
-        var protLength = this.size * Interactor.UNITS_PER_RESIDUE;
-        this.rectX = -(protLength / 2);
-        var y = -Interactor.STICKHEIGHT / 2;
-        getBackgroundRect(this);
-        this.rectAndTicks.appendChild(this.rect);
-        this.stick.appendChild(this.lowerRotator.svg);
-        this.stick.appendChild(this.upperRotator.svg);
-    }
+Interactor.prototype.getAggregateSelfLinkPath = function() {
+	var intraR = this.getBlobRadius() + 7;
+	var sectorSize = 45;
+	var arcStart = Interactor.trig(intraR, 25 + sectorSize);
+	var arcEnd = Interactor.trig(intraR, -25 + sectorSize);
+	var cp1 = Interactor.trig(intraR, 40 + sectorSize);
+	var cp2 = Interactor.trig(intraR, -40 + sectorSize);
+	return 'M 0,0 ' 
+		+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
+		+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
+		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
+}
 
-    function getBackgroundRect(protein) {
-        var p = document.createElementNS(xiNET.svgns, "rect");
-        p.setAttribute("class", "pBackground Xlr_protein");
-        p.setAttribute("x", protein.getResXUnzoomed(0));
-        p.setAttribute("y", y); //svgHeight);
-        p.setAttribute("width", (protein.size) * Interactor.UNITS_PER_RESIDUE);
-        p.setAttribute("height", Interactor.STICKHEIGHT);
-        //style it
-        //        p.setAttribute("fill", "white");
-        p.setAttribute("fill-opacity", "0");
-        p.setAttribute("stroke", "none");
-        //        p.appendChild(protein.protTooltip);
-        protein.rect.appendChild(p);
-    }
-};
-
-Interactor.prototype.getResXUnzoomed = function(r) {
-    return (Interactor.UNITS_PER_RESIDUE * r) + this.rectX;
-};
+Interactor.prototype.getResidueLinkPath = function(residueLink) {			
+	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
+	var baseLine = 0;
+	if (Interactor.UNITS_PER_RESIDUE * this.stickZoom >= 8){
+		baseLine = -5;
+	}
+	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
+		if (residueLink.ambig === false){
+			residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+		}
+		var p1 = [x1, 26];
+		var p3 = [x1, 18];
+		var p2 = Interactor.rotatePointAboutPoint(p1, p3, 60);
+		baseLine = baseLine * -1;
+		return "M " + x1 + "," + baseLine 
+			+ " L " + p1[0] + "," + p1[1] 
+			+ " L " +  p2[0] + "," + p2[1]
+			+ " L " + p3[0] + "," + p3[1];
+	}
+	else {
+		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
+		var height, cp1, cp2, arcStart, arcEnd, arcRadius;
+		arcRadius = (Math.abs(x2 - x1)) / 2;
+		var height = -((Interactor.STICKHEIGHT / 2) + 3);
+		if (arcRadius < 15){
+			height = -28 + arcRadius;
+		}
+		
+		var start = [x1, baseLine];
+		var end = [x2, baseLine];
+		
+		var angle;
+		if (residueLink.intraMolecular === true){
+			
+			var curveMidX = x1 + ((x2 - x1) / 2);
+			arcStart = [ curveMidX, height - arcRadius];
+			arcEnd =  [ curveMidX, height - arcRadius];
+			cp1 = [ curveMidX, height - arcRadius];
+			cp2 =  [ curveMidX, height - arcRadius];
+			//flip
+			//~ start[1] = start[1] * -1;
+			//~ cp1[1] = cp1[1] * -1;
+			//~ arcStart[1] = arcStart[1] * -1;
+			//~ arcEnd[1] = arcEnd[1] * -1;
+			//~ cp2[1] = cp2[1] * -1;
+			//~ end[1] = end[1] * -1;
+		}
+		else if (residueLink.hd){	
+			var curveMidX = x1 + ((x2 - x1) / 2);
+			arcStart = [curveMidX, height - arcRadius];
+			arcEnd = [curveMidX, height - arcRadius];
+			cp1 = Interactor.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
+			cp2 = Interactor.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
+		}
+		else {	
+			cp1 = [x1, height];
+			cp2 = [x2, baseLine];
+			arcStart = [x1, height];
+			arcEnd =  [x2, height];
+		}		
+		
+		return " M " + start[0] + "," + start[1]	 
+			+ " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
+			+ " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
+			+ " Q "+ cp2[0] + ',' + cp2[1] +  " "  + end[0] + "," + end[1];
+	}
+}
 
 Interactor.prototype.getResXwithStickZoom = function(r) {
-    if (isNaN(r) || r === '?' || r === 'n') {
-        return (this.rectX * this.stickZoom) - 8;// ;
+	if (isNaN(r) || r === '?' || r === 'n') {
+        return ((0 - (this.size/2)) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) - 8;// ;
     }
-    return this.getResXUnzoomed(r) * this.stickZoom;
-};
+    return (r - (this.size/2)) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
+ };
 
 //calculate the  coordinates of a residue (relative to this.xlv.container)
 Interactor.prototype.getResidueCoordinates = function(r, yOff) {
@@ -881,6 +1161,21 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
     y = y + this.y;
     return [x, y];
 };
+
+Interactor.rotatePointAboutPoint = function(p, o, theta) {
+	theta = (theta / 360) * Math.PI * 2;
+	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
+	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
+	return [rx, ry];
+}
+
+Interactor.prototype.checkLinks = function() {
+    var links = this.links.values();
+    var c = links.length;
+    for (var l = 0; l < c; l++) {
+        links[l].check();
+    }
+}
 
 // update all lines (e.g after a move)
 Interactor.prototype.setAllLineCoordinates = function() {
@@ -934,12 +1229,8 @@ Interactor.prototype.getSubgraph = function(subgraphs) {
         if (this.isParked === false) {
             this.subgraph = this.addConnectedNodes(subgraph);
         }
-        //        else {
-        //            this.subgraph = subgraph;
-        //        }
-        this.xlv.subgraphs.push(subgraph); //TODO: fix this
+        this.xlv.subgraphs.push(subgraph); 
     }
-    //    if (this.subgraph.nodes.keys().length > 1) {alert(this.subgraph.nodes.keys());}
     return this.subgraph;
 };
 Interactor.prototype.addConnectedNodes = function(subgraph) {

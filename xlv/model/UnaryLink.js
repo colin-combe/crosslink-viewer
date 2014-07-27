@@ -351,8 +351,8 @@ UnaryLink.prototype.show = function() {
 			}
 			this.fromInteractor.upperGroup.appendChild(this.highlightLine);
 			this.fromInteractor.upperGroup.appendChild(this.line);
-			this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-			this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
+			//~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
+			//~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
 			if (this.fatLineShown) {
 				if (this.intra) {
 					this.fatLine.setAttribute("stroke-width", this.w);

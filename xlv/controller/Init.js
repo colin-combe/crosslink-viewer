@@ -12,19 +12,15 @@ xiNET.Controller = function(targetDiv) {
     //see note below re gwt, two different ways to initialise
     //    if (targetDiv != null) {// if null gwt will pass in SVG
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+    
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     targetDiv.appendChild(this.svgElement);
-    //        this.setSvgElement(svg);
-    //    }
-    //}
-
-    //the GWT framework wants to have access to the SVG element, it creates it and passes it in
-    //xiNET.Controller.prototype.setSvgElement = function(svgElement){
-
+    
+    //are we panning?
     this.panning = false;
-    // if we are dragging something at the moment - this will be the element, that is draged
+    // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
     // are we dragging at the moment?
     this.dragging = false;
@@ -33,19 +29,16 @@ xiNET.Controller = function(targetDiv) {
     // are we rotating at the moment
     this.rotating = false;
 
-    //    this.svgElement = svgElement;
-    this.svgElement.setAttribute("class", "Xlv");
     // disable right click context menu (we wish to put right click to our own purposes)
-    // doesn't work in Opera, Opera requires user to specify this thru options/prefs
     this.svgElement.oncontextmenu = function() {
         return false;
     };
 
-    // background needed in some versions of chrome, else cannot click/drag background
+    // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
     var background = document.createElementNS(xiNET.svgns, "rect");
-    background.setAttribute("id", "XlvBackground");
+    background.setAttribute("id", "background_fill");
     background.setAttribute("x", 0);
     background.setAttribute("y", 0);
     background.setAttribute("width", 2560 * 2);
@@ -57,7 +50,8 @@ xiNET.Controller = function(targetDiv) {
     this.container = document.createElementNS(xiNET.svgns, "g");
     this.container.setAttribute("id", "container");
 
-    var useDefs = false;//show experimental magnifier using use and defs elements
+    var useDefs = false;//show magnifier using use and defs elements - experimental
+    // see https://bugzilla.mozilla.org/show_bug.cgi?id=265895
     var defs;
     if (useDefs === true) {
         //for magnifier... chrome only
@@ -72,7 +66,7 @@ xiNET.Controller = function(targetDiv) {
 	this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
-
+ 
     this.proteinLower = document.createElementNS(xiNET.svgns, "g");
     this.proteinLower.setAttribute("id", "proteinLower");
     this.container.appendChild(this.proteinLower);
@@ -81,13 +75,13 @@ xiNET.Controller = function(targetDiv) {
     this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
     this.container.appendChild(this.highlights);
 
-    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
-    this.p_pLinks.setAttribute("id", "p_pLinks");
-    this.container.appendChild(this.p_pLinks);
-
     this.res_resLinks = document.createElementNS(xiNET.svgns, "g");
     this.res_resLinks.setAttribute("id", "res_resLinks");
     this.container.appendChild(this.res_resLinks);
+
+    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
+    this.p_pLinks.setAttribute("id", "p_pLinks");
+    this.container.appendChild(this.p_pLinks);
 
     this.proteinUpper = document.createElementNS(xiNET.svgns, "g");
     this.proteinUpper.setAttribute("id", "proteinUpper");
@@ -130,11 +124,11 @@ xiNET.Controller = function(targetDiv) {
         this.svgElement.appendChild(mag);
         this.svgElement.appendChild(defs);
     }
-    //showing title as tooltips is not part of svg spec
-    //also more repsonsive if we do our own
+    //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
+    //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(xiNET.svgns, "text");
-//    this.tooltip.setAttribute('class', 'tooltip');//class conflicts with bootstrap
-//    this.tooltip.setAttribute('id', 'tooltip');
+  //  this.tooltip.setAttribute('class', 'tooltip');
+  //  this.tooltip.setAttribute('id', 'tooltip');
     this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
     var tooltipTextNode = document.createTextNode('tooltip');
@@ -178,7 +172,7 @@ xiNET.Controller.prototype.clear = function() {
     this.layout = null;
     this.z = 1;
     this.scores = null;
-    this.selectedProteins = d3.map();
+    this.selected = d3.map();
     this.selectedLinks = d3.map();
 
 
@@ -304,9 +298,13 @@ xiNET.Controller.prototype.init = function(width, height) {
         //make inital form sticks or blobs
         var interactors = this.interactors.values();
         var proteinCount = interactors.length;
+        for (var p = 0; p < proteinCount; p++) { //temp
+			var prot = interactors[p];
+            prot.setPosition(0, 0);
+		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
-            prot.initStick();//needed, todo - remove
+           // prot.initStick();//needed, todo - remove
             if (this.interactors.keys().length < 3) {
                 prot.toStick();
             }
@@ -326,14 +324,10 @@ xiNET.Controller.prototype.init = function(width, height) {
 //    this.geneNames = d3.map();
 //    this.getGeneName(0);
 
-    // horizontal slider control
-    if (xlv.scores != null) {
-        var scoreSlider = document.getElementById('scoreSlider');
-        if (scoreSlider != null) {
-            scoreSlider.setAttribute('style', 'display:inline-block');
-        }
-    }
     this.initMouseEvents();
+    if (typeof this.initTouchEvents === 'function'){
+		this.initTouchEvents();
+	}
 }
 
 
@@ -425,31 +419,34 @@ xiNET.Controller.prototype.loadLayout = function() {
         var protein = this.interactors.get(prot);
         if (protein !== undefined) {
             protein.setPosition(protState["x"], protState["y"]);
-            protein.initStick();
-            if (typeof protState.annot !== 'undefined' && protState.annot != null) {
-                if (protState.annot.length > 0) {
-                    protein.customAnnotations = protState.annot;
-                    protein.setPositionalFeatures(protein.customAnnotations);
+            // protein.toStick();
+            //~ if (typeof protState.annot !== 'undefined' && protState.annot != null) {
+                //~ if (protState.annot.length > 0) {
+                    //~ protein.customAnnotations = protState.annot;
+                    //~ protein.setPositionalFeatures(protein.customAnnotations);
+                //~ }
+            //~ }
+            
+            //~ if (protState["form"] === 1) {
+                if (typeof protState["stickZoom"] !== 'undefined') {
+                    protein.stickZoom = protState["stickZoom"];
+                    //~ protein.scale();
                 }
-            }
-            if (typeof protState["form"] !== 'undefined') {
-                protein.setForm(protState["form"] - 0);
-            }
-            else {
-                protein.toBlob();
-            }
+                //~ protein.setRotation(protein.rotation);
+            //~ }
+            
             if (typeof protState['rot'] !== 'undefined') {
                 protein.rotation = protState["rot"];
             }
 
-            if (protState["form"] === 1) {
-                if (typeof protState["stickZoom"] !== 'undefined' && protState["stickZoom"] !== 1) {
-                    protein.stickZoom = protState["stickZoom"];
-                    protein.scale();
-                }
-                protein.setRotation(protein.rotation);
+            if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
+                protein.toStick();
             }
-            protein.setAllLineCoordinates();// watch out for this
+            else {
+                protein.toBlob();
+            }
+            
+			protein.setAllLineCoordinates();// watch out for this
 
             if (typeof protState["parked"] !== 'undefined') {
                 protein.setParked(protState["parked"]);
@@ -457,10 +454,10 @@ xiNET.Controller.prototype.loadLayout = function() {
             if (protState["flipped"]) { //TODO: fix this
                 protein.toggleFlipped(); // change to setFlipped(protState["flipped"])
             }
-            if (protState["processedDAS"]) {
-                protein.processedDAS = d3.map(protState["processedDAS"]);
-            }
-            //            this.proteinLower.appendChild(protein.rectDomains);
+            //~ if (protState["processedDAS"]) {
+                //~ protein.processedDAS = d3.map(protState["processedDAS"]);
+            //~ }
+            this.proteinLower.appendChild(protein.lowerGroup);
             this.proteinUpper.appendChild(protein.upperGroup);
         }
     }
@@ -470,11 +467,11 @@ xiNET.Controller.prototype.loadLayout = function() {
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         prot = interactors[p];
-        if (prot.form == null) {
-            prot.initStick();
+        if (prot.x == null) {
+            //prot.initStick();
             prot.toBlob();
             prot.setPosition(20, 20);
-            //            this.proteinLower.appendChild(prot.rectDomains);
+            this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
     }

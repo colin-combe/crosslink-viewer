@@ -29,14 +29,14 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
                     + interactor.identifier.id;
 
             if (typeof interactor.sequence !== 'undefined') {
-                p.initProtein(interactor.sequence, interactor.label, description);
+                p.initInteractor(interactor.sequence, interactor.label, description);
             }
             else {
                 if (interactor.identifier.db === 'uniprotkb') {
                     interactorsMissingSequence.add(interactor.identifier.id);
                 }
                 else {
-                    p.initProtein('MISSING', interactor.label, description);
+                    p.initInteractor('MISSING', interactor.label, description);
                 }
             }
         }
@@ -58,9 +58,9 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         Interactor.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         var interactors = self.interactors.values();
         var proteinCount = interactors.length;
-        for (var p = 0; p < proteinCount; p++) {
-            interactors[p].initStick();
-        }
+        //~ for (var p = 0; p < proteinCount; p++) {
+            //~ interactors[p].initStick();
+        //~ }
         self.features = d3.map();       
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
