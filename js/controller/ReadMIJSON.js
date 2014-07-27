@@ -1,9 +1,14 @@
-//      xiNET interaction viewer
-//      Copyright 2013 Rappsilber Laboratory
+//    xiNET cross-link viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
 
-// reads our MI JSON format 
 "use strict";
 
+// reads our MI JSON format 
 xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(decodeURIComponent(layoutJSON));
@@ -120,8 +125,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
             if (interaction.object === 'interaction') {
                 self.addFeatures(interaction);
             }
-        }
-        
+        }       
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {

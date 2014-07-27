@@ -1,5 +1,8 @@
-//		xiNET cross-link viewer
+//		xiNET Cross-link Viewer
 //		Copyright 2013 Rappsilber Laboratory
+//
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
 //		author: Colin Combe
 //		
@@ -18,8 +21,8 @@ xiNET.Link.prototype.mouseDown = function(evt) {
         this.xlv.force.stop();
     }
     this.xlv.dragElement = this;
-            this.xlv.clearSelection();
-            this.setSelected(true);
+    this.xlv.clearSelection();
+    this.setSelected(true);
     //store start location
     var p = this.xlv.getEventPoint(evt);// seems to be correct, see above
     this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);

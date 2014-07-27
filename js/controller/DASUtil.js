@@ -1,3 +1,8 @@
+//    xiNET cross-link viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 "use strict";
 
@@ -49,7 +54,7 @@ xiNET.DASUtil.prototype.lookup = function(prot, server) {
             var message = "<p>FAILED " + server.name + " DAS lookup <strong>"
                     + prot.accession + "</strong> (name: " + prot.name
                     + " id:" + prot.id + ")</p>";
-//            self.xlv.message(message);
+			//self.xlv.message(message);
             //alert(message);
             self.nextDASQuery(prot, server);
         };
@@ -241,7 +246,7 @@ Protein.prototype.processDAS = function(serverName, das) {
                                 //for InterPro and Pfam swap category and method
                                 addPositionalFeature(method);
                             }
-                        } 
+                        }
                         else if (serverName === 'InterPro') {
                             if (
                                     method === 'GENE3D'
@@ -496,11 +501,11 @@ function updateMenus(xlv) {
     select.removeAttribute('disabled');
 
     //enable additonal text search checkboxes
-//    document.getElementById('notes').removeAttribute('disabled');
+	//    document.getElementById('notes').removeAttribute('disabled');
     //    document.getElementById('notes').setAttribute('checked', 'checked');
-//    document.getElementById('key_text').removeAttribute('disabled');
+	//    document.getElementById('key_text').removeAttribute('disabled');
     //    document.getElementById('key_text').setAttribute('checked', 'checked');
-//    document.getElementById('posFeat_text').removeAttribute('disabled');
+	//    document.getElementById('posFeat_text').removeAttribute('disabled');
   }
 //    document.getElementById('posFeat_text').setAttribute('checked', 'checked');
 //xlv.message(message);

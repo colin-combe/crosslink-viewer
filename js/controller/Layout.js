@@ -1,3 +1,11 @@
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
 "use strict";
 
 xiNET.Controller.prototype.autoLayout = function(width, height) {

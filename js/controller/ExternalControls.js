@@ -1,3 +1,9 @@
+//    xiNET cross-link viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+
 "use strict";
 
 xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
@@ -244,12 +250,12 @@ xiNET.Controller.prototype.exportProteins = function() {
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
         output += "xlv.addProtein('" + protein.id + "','"
-                                    + protein.name  + "','"
-                                    + protein.sequence  + "','"
-                                      + "','"
-                                    + protein.accession  +  "');\n"
+                + protein.name + "','"
+                + protein.sequence + "','"
+                + "','"
+                + protein.accession + "');\n"
     }
-xlv.message(output);
+    xlv.message(output);
 };
 
 xiNET.Controller.prototype.exportLinks = function() {

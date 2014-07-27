@@ -1,9 +1,12 @@
-//		xiNET Cross-link Viewer
-//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//	  xiNET Cross-link Viewer
+//	  Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
-//		author: Colin Combe
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		Init.js
+//	  author: Colin Combe
+//
+//    Init.js
 
 "use strict";
 
@@ -215,17 +218,10 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
-xiNET.Controller.prototype.toJSON = function() {
-    return {
-        //        links: this.proteinLinks,
-        proteins: this.proteins
-    };
-};
-
 xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
-            text = JSON.stringify(text, null, '\t');
+            text = JSON.stringify(text, null, ' ');
             text = text.replace(/\\u0000/gi, '');
             preformatted = true;
         }
@@ -544,4 +540,12 @@ xiNET.Controller.prototype.loadLayout = function() {
         }
     }
     this.svgElement.unsuspendRedraw(suspendID);
+};
+
+
+xiNET.Controller.prototype.toJSON = function() {
+    return {
+        //        links: this.proteinLinks,
+        proteins: this.proteins
+    };
 };

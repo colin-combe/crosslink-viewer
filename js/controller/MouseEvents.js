@@ -21,7 +21,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 xiNET.Controller.prototype.initMouseEvents = function() {
     //add listeners
     var self = this;
-   this.svgElement.onmousedown = function(evt) {
+    this.svgElement.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
     this.svgElement.onmousemove = function(evt) {
