@@ -2,6 +2,8 @@
 //      Copyright 2013 Rappsilber Laboratory
 
 // reads our MI JSON format 
+"use strict";
+
 xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(decodeURIComponent(layoutJSON));

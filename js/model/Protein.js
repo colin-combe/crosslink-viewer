@@ -5,6 +5,8 @@
 //		
 //		Protein.js
 
+"use strict";
+
 Protein.STICKHEIGHT = 20; 		// height of stick in pixels
 Protein.MAXSIZE = 0; 			// residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)

@@ -6,6 +6,8 @@
 //		ResidueLink.js
 // 		the class representing a residue-residue link
 
+"use strict";
+
 ResidueLink.prototype = new xiNET.Link();
 
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {

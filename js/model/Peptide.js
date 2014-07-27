@@ -5,6 +5,8 @@
 //		
 //		Peptide.js
 
+"use strict";
+
 function Peptide(sequence, linkPositionInPeptide, linkPositionInProtein){
 		
 }

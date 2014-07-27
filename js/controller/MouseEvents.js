@@ -5,6 +5,8 @@
 //
 //		MouseEvents.js
 
+"use strict";
+
 //static var's signifying Controller's status
 xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl

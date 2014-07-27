@@ -5,6 +5,8 @@
 //		
 //		Protein_printAnnotationInfo.js
 
+"use strict";
+
 Protein.prototype.printAnnotationInfo = function() {
     var self = this;
     var message = "";

@@ -1,6 +1,8 @@
 // Rotator.js
 // see http://stackoverflow.com/questions/1369004/this-keyword-in-event-methods-when-using-javascript-prototype-object
 
+"use strict";
+
 function Rotator(proteinRegion, upperOrLower, xlvController) {
     var self = this;
     this.xlv = xlvController;

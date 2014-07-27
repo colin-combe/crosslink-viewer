@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();

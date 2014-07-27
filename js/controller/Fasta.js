@@ -1,6 +1,8 @@
 //authors: Hendrik Hofstadt, Colin Combe
 //see http://en.wikipedia.org/wiki/FASTA_format
 
+"use strict";
+
 xiNET.Controller.prototype.readFasta = function(file){
 	var line_array = file.split("\n");
 	var tempIdentifier = null;

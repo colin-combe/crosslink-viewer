@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var rows = d3.csv.parseRows(csvContents);
     

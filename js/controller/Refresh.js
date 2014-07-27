@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.checkLinks = function() {
     if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);

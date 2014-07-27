@@ -1,3 +1,12 @@
+//		xiNET cross-link viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//		author: Colin Combe
+//		
+//		Link.js
+
+"use strict";
+
 //'superclass' for Protein, ResidueLink, ProteinLink
 xiNET.Link = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)

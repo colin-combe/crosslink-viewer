@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
     var positional = true;
     if (choice !== 1) {

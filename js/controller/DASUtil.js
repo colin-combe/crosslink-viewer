@@ -1,3 +1,6 @@
+
+"use strict";
+
 xiNET.DASUtil = function(xlvController) {
     this.xlv = xlvController;
     this.dasServers = [

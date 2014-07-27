@@ -6,6 +6,8 @@
 //		ProteinLink.js
 // 		the class representing a protein-protein link
 
+"use strict";
+
 //static variable used to calculate width of the background line
 ProteinLink.maxNoResidueLinks = 0;
 
@@ -32,19 +34,20 @@ function ProteinLink(id, fromP, toP, xlvController) {
 }
 
 ProteinLink.prototype.initSVG = function() {
+    function trig(radius, angleDegrees) {
+		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		var radians = (angleDegrees / 360) * Math.PI * 2;
+		return {
+			x: (radius * Math.cos(radians)),
+			y: -(radius * Math.sin(radians))
+		};
+    }
+    
     if (!this.intra) {
         this.line = document.createElementNS(xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(xiNET.svgns, "line");
         this.fatLine = document.createElementNS(xiNET.svgns, "line");
     } else {
-        function trig(radius, angleDegrees) {
-            //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-            var radians = (angleDegrees / 360) * Math.PI * 2;
-            return {
-                x: (radius * Math.cos(radians)),
-                y: -(radius * Math.sin(radians))
-            };
-        }
         var path = this.fromProtein.getAggregateSelfLinkPath();
         this.line = document.createElementNS(xiNET.svgns, "path");
         this.line.setAttribute('d', path);

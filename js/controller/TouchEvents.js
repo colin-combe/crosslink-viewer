@@ -5,6 +5,8 @@
 //
 //		TouchEvents.js
 
+"use strict";
+
 //static var's signifying Controller's status Are declared in MouseEvents.js
 
 //listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events

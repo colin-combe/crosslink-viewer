@@ -5,6 +5,8 @@
 //		
 //		Match.js
 
+"use strict";
+
 // TODO: for historical reasons the order of the parameters 
 // to this function is not that logical - should reorder them.
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
@@ -424,7 +426,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	}
 
 	//get or create residue link
-	resLink = link.residueLinks.get(residueLinkID);
+	var resLink = link.residueLinks.get(residueLinkID);
 	if (resLink === undefined) {
 		//WATCH OUT - residues need to be in correct order
 		if (p1ID === p2ID) {

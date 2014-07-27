@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.showTooltip = function(p)
     {
         //TODO: if its going ot be off the right of the screen put it to left of the cursor
