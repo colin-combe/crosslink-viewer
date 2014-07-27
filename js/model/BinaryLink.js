@@ -142,24 +142,29 @@ BinaryLink.prototype.initSVG = function() {
     this.line.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    //TODO: problem here for big data sets - temp hack, remove some mouse listeners
     this.line.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
     this.line.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.line.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
     this.highlightLine.onmouseover = function(evt) {
-//        this.xlv.setTooltip(this.tooltip);
         self.mouseOver(evt);
     };
     this.highlightLine.onmouseout = function(evt) {
-//         this.xlv.hideTooltip();
         self.mouseOut(evt);
     };
+    this.highlightLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.fatLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -172,7 +177,13 @@ BinaryLink.prototype.initSVG = function() {
     this.fatLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-};
+    this.fatLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
+    this.isSelected = false;
+}
+;
 BinaryLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false; //TODO: tEMP HACK
@@ -404,10 +415,6 @@ BinaryLink.prototype.hide = function() {
     }
 };
 
-BinaryLink.prototype.getOtherEnd = function(protein) {
-    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
-};
-
 BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
         if (this.fromInteractor === interactor) {
@@ -432,3 +439,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
         }
     }
 };
+BinaryLink.prototype.getOtherEnd = function(protein) {
+    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
+};
+

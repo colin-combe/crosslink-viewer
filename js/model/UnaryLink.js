@@ -1,11 +1,13 @@
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
+//    	xiNET Interaction Viewer
+//    	Copyright 2013 Rappsilber Laboratory
 //
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-
-// UnaryLink.js
-// the class representing a self-link
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//		author: Colin Combe
+//
+// 		UnaryLink.js
+// 		the class representing a self-link
 
 "use strict";
 
@@ -36,6 +38,7 @@ UnaryLink.prototype.addEvidence = function(interaction) {
     this.fromInteractor = this.xlv.interactors.get(participant.interactorRef);//its the object. not the ID number
     this.toInteractor = this.fromInteractor; 
     //TODO tidy...
+    this.initSVG();
     var from = this.fromInteractor;
     var to = this.toInteractor
        
@@ -100,27 +103,20 @@ UnaryLink.prototype.initSVG = function() {
 			x: (radius * Math.cos(radians)),
 			y: -(radius * Math.sin(radians))
 		};
-	}
-	var intraR = this.fromInteractor.getBlobRadius() + 7;
-	var r = 45;
-	var arcStart = trig(intraR, 15 + r);
-	var arcEnd = trig(intraR, -35 + r);
-	var cp1 = trig(intraR, 30 + r);
-	var cp2 = trig(intraR, -50 + r);
-	var path = 'M0,0 Q' + cp1.x + ',' + cp1.y + ' ' + arcStart.x + ',' + arcStart.y
-			+ ' A' + intraR + ',' + intraR + ' 0 0,1 ' + arcEnd.x + ',' + arcEnd.y
-			+ ' Q' + cp2.x + ',' + cp2.y + ' 0,0';
-	this.line = document.createElementNS(xiNET.svgns, "path");
-	this.line.setAttribute('d', path);
-	this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-	this.highlightLine.setAttribute('d', path);
-	this.fatLine = document.createElementNS(xiNET.svgns, 'path');
-	this.fatLine.setAttribute('d', path);
+    }
     
+         var path = this.fromInteractor.getAggregateSelfLinkPath();
+        this.line = document.createElementNS(xiNET.svgns, "path");
+        this.line.setAttribute('d', path);
+        this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+        this.highlightLine.setAttribute('d', path);
+        this.fatLine = document.createElementNS(xiNET.svgns, 'path');
+        this.fatLine.setAttribute('d', path);
+   
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
-    this.line.setAttribute("stroke-width", "1");
+    this.line.setAttribute("stroke-width", 1);
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
@@ -138,24 +134,29 @@ UnaryLink.prototype.initSVG = function() {
     this.line.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    //TODO: problem here for big data sets - temp hack, remove some mouse listeners
     this.line.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
     this.line.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.line.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
     this.highlightLine.onmouseover = function(evt) {
-//        this.xlv.setTooltip(this.tooltip);
         self.mouseOver(evt);
     };
     this.highlightLine.onmouseout = function(evt) {
-//         this.xlv.hideTooltip();
         self.mouseOut(evt);
     };
+    this.highlightLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.fatLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -172,39 +173,20 @@ UnaryLink.prototype.initSVG = function() {
 
 UnaryLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false; //TODO: tEMP HACK
+        andAlternatives = false;
     }
     if (this.shown) {
         if (show) {
+			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
+			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+			if (this.isSelected == false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			}
+			
         }
     }
-//    if (andAlternatives && this.ambig) {
-////TODO: we want to highlight smallest possible set of alternatives
-//        var rc = this.sequenceLinks.values().length;
-//        for (var rl = 0; rl < rc; rl++) {
-//            var resLink = this.sequenceLinks.values()[rl];
-//            var mc = resLink.matches.length;
-//            for (var m = 0; m < mc; m++) {
-//                var match = resLink.matches[m];
-//                if (match.isAmbig()) {
-//                    var mrc = match.sequenceLinks.length;
-//                    for (var mrl = 0; mrl < mrc; mrl++) {
-//                        var resLink = match.sequenceLinks[mrl];
-//                        if (resLink.shown === true) {
-//                            resLink.showHighlight(show, false);
-//                        }
-//                        if (resLink.proteinLink.shown === true) {
-//                            resLink.proteinLink.showHighlight(show, false);
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
 };
 
 UnaryLink.prototype.getFilteredEvidences = function() {
@@ -324,14 +306,18 @@ UnaryLink.prototype.check = function() {
 };
 
 UnaryLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line === 'undefined') {
-        this.initSVG();
-    }
-    if (dash) {// && !this.dashed) {
+    //if (typeof this.line === 'undefined') {
+    //    this.initSVG();
+    //}
+    if (dash){// && !this.dashed) {
         this.dashed = true;
-        this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+        if (this.intra === true) {
+			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+		} else {
+			this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+		}
     }
-    else if (!dash) {// && this.dashed) {
+    else if (!dash){// && this.dashed) {
         this.dashed = false;
         this.line.removeAttribute("stroke-dasharray");
     }
@@ -345,38 +331,79 @@ UnaryLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-			if (this.fatLineShown) {
-				this.fatLine.setAttribute("transform", "translate(" +
-						this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
-						+ " scale(" + (this.xlv.z) + ")");
-				this.xlv.p_pLinksWide.appendChild(this.fatLine);
-			}
-			this.fromInteractor.upperGroup.appendChild(this.highlightLine);
-			this.fromInteractor.upperGroup.appendChild(this.line);
-			//~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-			//~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
-			if (this.fatLineShown) {
-				if (this.intra) {
-					this.fatLine.setAttribute("stroke-width", this.w);
-				} else {
-					this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
-				}
-			}
-		}
+                //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
+
+                //~ if (BinaryLink.maxNoResidueLinks > 1) {
+                    //~ this.fatLine.setAttribute("transform", "translate(" +
+                        //~ this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
+                        //~ + " scale(" + (this.xlv.z) + ")");
+                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                //~ }
+				this.line.setAttribute("transform", "translate(" + this.fromInteractor.x
+						+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
+				this.highlightLine.setAttribute("transform", "translate(" + this.fromInteractor.x
+						+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
+
+                //~ this.fromProtein.lowerGroup.appendChild(this.highlightLine);
+                //~ this.fromProtein.lowerGroup.appendChild(this.line);
+                this.xlv.highlights.appendChild(this.highlightLine);
+                this.xlv.p_pLinks.appendChild(this.line);
+        }
+        //~ if (BinaryLink.maxNoResidueLinks > 1) {
+                //~ this.fatLine.setAttribute("stroke-width", this.w);
+        //~ }
     }
 };
 
 UnaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-		if (this.fatLineShown) {
-			this.xlv.p_pLinksWide.removeChild(this.fatLine);
-		}
-		this.fromInteractor.upperGroup.removeChild(this.highlightLine);
-		this.fromInteractor.upperGroup.removeChild(this.line);
+        //TODO: be more selective about when to show 'fatLine'
+        //~ if (ProteinLink.maxNoResidueLinks > 1) {
+            //~ this.xlv.p_pLinksWide.removeChild(this.fatLine);
+        //~ }
+        this.xlv.highlights.removeChild(this.highlightLine);
+        this.xlv.p_pLinks.removeChild(this.line);
 	}
 };
 
+/*
+ProteinLink.prototype.setLineCoordinates = function(interactor) {
+	//a defensive check
+    if (interactor.x == null || interactor.y == null) {
+        return;
+    }
+	//if not linker modified pep
+	if (this.getToProtein() !== null){
+		//don't waste time changing DOM if this not visible
+		if (this.shown) {
+			if (this.getFromProtein() === interactor) {
+						this.line.setAttribute("x1", interactor.x);
+						this.line.setAttribute("y1", interactor.y);
+						//                    if (moveHighlight == false){
+						this.highlightLine.setAttribute("x1", interactor.x);
+						this.highlightLine.setAttribute("y1", interactor.y);
+						//                    }
+						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
+						this.fatLine.setAttribute("x1", interactor.x);
+						this.fatLine.setAttribute("y1", interactor.y);
+			}
+			else if (this.getToProtein() === interactor) {
+						this.line.setAttribute("x2", interactor.x);
+						this.line.setAttribute("y2", interactor.y);
+						//                    if (moveHighlight == false){
+						this.highlightLine.setAttribute("x2", interactor.x);
+						this.highlightLine.setAttribute("y2", interactor.y);
+						//                    }
+						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
+						this.fatLine.setAttribute("x2", interactor.x);
+						this.fatLine.setAttribute("y2", interactor.y);
+						//                    }
+			}
+		}
+	}
+}
+*/
 UnaryLink.prototype.getOtherEnd = function(protein) {//this makes no sense :)
     return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };

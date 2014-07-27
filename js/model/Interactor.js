@@ -248,7 +248,7 @@ Interactor.prototype.mouseDown = function(evt) {
         //store start location
         var p = this.xlv.getEventPoint(evt);
         this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
-        this.printAnnotationInfo();
+        //this.printAnnotationInfo();
         return false;
 };
 
@@ -324,7 +324,7 @@ Interactor.prototype.addLink = function(link) {
     if (!this.links.has(link.id)) {
         this.links.set(link.id, link);
     }
-    if (link.intra) {
+    if (link.arity == 1) {
         this.internalLink = link;
     }
 };
