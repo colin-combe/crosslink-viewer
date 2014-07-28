@@ -16,7 +16,7 @@ Interactor.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
 //~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
-//~ Protein.domainColours = d3.scale.category20c(); //
+//~ Interactor.domainColours = d3.scale.category20c(); //
 //~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
 //~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
@@ -528,7 +528,7 @@ Interactor.prototype.scale = function() {
         
         //internal links
         if (this.internalLink != null) {
-            var resLinks = this.internalLink.residueLinks.values();
+            var resLinks = this.internalLink.sequenceLinks.values();
             var iLinkCount = resLinks.length;
             for (var l = 0; l < iLinkCount; l++) {
 				var residueLink = resLinks[l];

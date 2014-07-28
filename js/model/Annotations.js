@@ -168,9 +168,9 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 c = anno.colour;
             }
             annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotPieSlice.setAttribute("fill-opacity", "0.5");
+            annotPieSlice.setAttribute("fill-opacity", "1");
             annotColouredRect.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "0.5");
+            annotColouredRect.setAttribute("fill-opacity", "1");
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
