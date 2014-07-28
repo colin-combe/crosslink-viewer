@@ -15,7 +15,13 @@ Interactor.MAXSIZE = 0; // residue count of longest sequence
 Interactor.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+//~ Protein.domainColours = d3.scale.category20c(); //
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
+//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
+Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
+
 Interactor.transitionTime = 650;
 
 function Interactor(id, xlvController, json) {
@@ -369,13 +375,13 @@ Interactor.prototype.addFeature = function(feature) {
 
 Interactor.prototype.showHighlight = function(show) {
     if (show === true) {
-        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     } else {
-		if (this.isSelected == false) {
+		//~ if (this.isSelected == false) {
                 this.highlight.setAttribute("stroke-opacity", "0");
-        }
-        this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        //~ }
+        //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
 };
 

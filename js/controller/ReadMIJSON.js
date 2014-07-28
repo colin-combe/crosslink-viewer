@@ -105,6 +105,7 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 				this.features.set(experimentalFeature.id, 
 					{interactor:interactor.id,
 					 feature:experimentalFeature});
+				interactor.addFeature(experimentalFeature);	
 			}	
 		}		
 	}	
@@ -162,6 +163,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 xiNET.Controller.prototype.toJSON = function() {
     return {
         interactors: this.interactors,
+        features: this.features,
 		links: this.links,
     };
 };

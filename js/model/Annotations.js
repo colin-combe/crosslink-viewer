@@ -212,8 +212,8 @@ Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	var startAngle = ((annotation.start - 1) / this.size) * 360;
 	var endAngle = ((annotation.end) / this.size) * 360;
 	var radius = this.getBlobRadius() - 2;
-	var arcStart = Protein.trig(radius, startAngle - 90);
-	var arcEnd = Protein.trig(radius, endAngle - 90);
+	var arcStart = Interactor.trig(radius, startAngle - 90);
+	var arcEnd = Interactor.trig(radius, endAngle - 90);
 	var largeArch = 0;
 	if ((endAngle - startAngle) > 180) {
 		largeArch = 1;
@@ -252,13 +252,13 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
 	var startAngle = ((annotation.start - 1) / this.size) * 360;
 	var endAngle = ((annotation.end) / this.size) * 360;
 	var pieRadius = this.getBlobRadius() - 2;
-	var arcStart = Protein.trig(pieRadius, startAngle - 90);
-	var arcEnd = Protein.trig(pieRadius, endAngle - 90);
+	var arcStart = Interactor.trig(pieRadius, startAngle - 90);
+	var arcEnd = Interactor.trig(pieRadius, endAngle - 90);
 	var approximatePiePath = "M 0,0";
 	var stepsInArc = 5;
-	for (var sia = 0; sia <= Protein.stepsInArc; sia++) {
+	for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
 		var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-		var siaCoord = Protein.trig(pieRadius, angle - 90);
+		var siaCoord = Interactor.trig(pieRadius, angle - 90);
 		approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
 	}
 	approximatePiePath += " L " + 0 + "," + 0;
@@ -268,14 +268,14 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
 
 Interactor.prototype.getAnnotationRectPath = function(annotation) {
 	//domain as rectangle path
-	var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
-	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
+	var bottom = Interactor.STICKHEIGHT / 2, top = -Interactor.STICKHEIGHT / 2;
+	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Interactor.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
 	//~ //Ouch!! Without brackets following may do string concatenation
 	var annotSize = (1 + (annotation.end - annotation.start));
-	var annotLength = annotSize * Protein.UNITS_PER_RESIDUE;
+	var annotLength = annotSize * Interactor.UNITS_PER_RESIDUE;
 	var rectPath = "M " + annotX + "," + bottom;
-	for (var sia = 0; sia <= Protein.stepsInArc; sia++) {
-		var step = annotX + (annotLength * (sia / Protein.stepsInArc));
+	for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
+		var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
 		rectPath += " L " + step + "," + top;
 	}		
 	rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
