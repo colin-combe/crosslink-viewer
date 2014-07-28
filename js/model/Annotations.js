@@ -138,7 +138,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
            // alert(this.form);
-            if (this.form === 0) { // ** UR HERE **
+            if (this.form === 0) {
 				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
 				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 			} else {

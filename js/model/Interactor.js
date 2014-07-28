@@ -1,8 +1,12 @@
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
+//    	xiNET Interaction Viewer
+//    	Copyright 2013 Rappsilber Laboratory
 //
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//		
+//		Interactor.js		
+//
+//		authors: Lutz Fischer, Colin Combe
 
 "use strict";
 
@@ -1162,6 +1166,9 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
     }
     x = x + this.x;
     y = y + this.y;
+    if (isNaN(y)){
+		console.log([x, y]);
+	}
     return [x, y];
 };
 

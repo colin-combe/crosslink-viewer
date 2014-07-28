@@ -26,6 +26,7 @@ function UnaryLink(id, xlvController) {
     this.fatLineShown = false;
     //layout stuff
     this.hidden = false;
+    this.arity = 1;
 }
 
 UnaryLink.prototype.addEvidence = function(interaction) {
@@ -311,11 +312,11 @@ UnaryLink.prototype.dashedLine = function(dash) {
     //}
     if (dash){// && !this.dashed) {
         this.dashed = true;
-        if (this.intra === true) {
+        //~ if (this.intra === true) {
 			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-		} else {
-			this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
-		}
+		//~ } else {
+			//~ this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+		//~ }
     }
     else if (!dash){// && this.dashed) {
         this.dashed = false;

@@ -333,7 +333,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
                     }
                 }
             }
-            return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2);
+            return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
     if (this.shown) { //don't waste time changing DOM if link is not visible
         var fromInteractor = this.interactorLink.fromInteractor;
