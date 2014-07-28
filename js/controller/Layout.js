@@ -1,10 +1,17 @@
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
+//    	xiNET interaction viewer
+//    	Copyright 2013 Rappsilber Laboratory
 //
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//    author: Colin Combe
+//    	author: Colin Combe
+//
+//		Layout.js
+//
+//		Just ignore this file at the moment - its in a bit of a mess
+//		Important thing for now is that is does some sort of
+//		spoke expansion to keep participants of n-ary interactions togther.
+//		Needs looked at again.
 
 "use strict";
 

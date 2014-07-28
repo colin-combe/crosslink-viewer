@@ -10,20 +10,17 @@
 
 "use strict";
 
-var xiNET = {}; //crosslinkviewer's javascript namespace
+var xiNET = {}; //create xiNET's javascript namespace
 
 xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
 xiNET.linkWidth = 1.3;// default line width
 
-// highlight and selection colours are global
+// highlight and selection colours are static
 // (because all instances of xiNET should use same colours for this)
 xiNET.highlightColour = new RGBColor("#ffff99");//"#fdc086");//"yellow");
 xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
-//xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");//"#8c510a");//"#d8b365");//("#1b9e77");//"#beaed4");//"#8dd3c7");//#8073AC'");//
-//xiNET.defaultInterLinkColour = new RGBColor("#35978f");//"#01665e");//"#5ab4ac");//"#7570b3");//"#fdc086");//"#bebada");//#E08214");//
-//xiNET.homodimerLinkColour = new RGBColor("#a50f15");//"#e41a1c");
 
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
 	if (typeof targetDiv === "string"){
@@ -235,73 +232,6 @@ xiNET.Controller.prototype.message = function(text, preformatted) {
     }
 };
 
-xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
-    var newProt = new Interactor(id, this, accession, label);
-    newProt.initProtein(sequence, label, description, size);
-    this.interactors.set(id, newProt);
-};
-
-// add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
-//TODO: make start and end res last args
-xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
-    var protein = this.proteins.get(protId);
-	//lets just check a few things here...
-	// we're using human (starts at 1) numbering
-	if (startRes == null && endRes == null) {
-		startRes = 1;
-		endRes = protein.size;
-	}
-	else if (startRes == null)
-		startRes = endRes;
-	else if (endRes == null)
-		endRes = startRes;
-
-	if (startRes > endRes) {
-		var temp = startRes;
-		startRes = endRes;
-		endRes = temp;
-	}
-
-	var annotation = new Annotation(annotName, startRes, endRes, colour);
-	if (protein.customAnnotations == null) {
-		protein.customAnnotations = new Array();
-	}
-	protein.customAnnotations.push(annotation);
-	protein.setPositionalFeatures(protein.customAnnotations);
-}
-
-xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
-    var prots = this.proteins.values(); 
-    var protCount = prots.length;
-    for (var p = 0; p < protCount; p++) {
-        var protein = prots[p];
-        if (protein.name == protName) {
-            this.addAnnotation(protein.id, annotName, startRes, endRes, colour);
-        }
-    }
-}
-
-// add all matches with single call, arg is an array of arrays
-xiNET.Controller.prototype.addAnnotations = function(annotations) {
-    var rows = d3.csv.parseRows(annotations);
-    
-    var headers = rows[0];
-    //~ console.log(headers.toString());
-    
-    var iProtId = headers.indexOf('ProteinId');
-    var iAnnotName = headers.indexOf('AnnotName');
-    var iStartRes = headers.indexOf('StartRes');
-    var iEndRes = headers.indexOf('EndRes');
-    var iColour = headers.indexOf('Color');    
-        
-    var l = rows.length;
-    for (var i = 1; i < l; i++) {
-        //        alert(matches[i]);
-        this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
-							rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
-    }
-}
-
 xiNET.Controller.prototype.init = function(width, height) {
     //initial dimensions
     var containingDiv = this.svgElement.parentNode;
@@ -346,58 +276,13 @@ xiNET.Controller.prototype.init = function(width, height) {
         this.autoLayout(width, height);
     }
 //    this.message('#interactors: ' + this.interactors.values().length +
-//            '\n#protein - protein links: ' + this.links.values().length);
-
+//            '\n# links: ' + this.links.values().length);
 
     this.initMouseEvents();
     if (typeof this.initTouchEvents === 'function'){
 		this.initTouchEvents();
 	}
 }
-
-
-xiNET.Controller.prototype.getGeneName = function(pi) {
-    var prot = this.interactors.values()[pi];
-    var xmlhttp = new XMLHttpRequest();
-    var url = "http://129.215.14.148/jb/uniprot/sequence.php?id=" + prot.accession + "&dat";
-    var params = "";//;
-    xmlhttp.open("GET", url, true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            var response = xmlhttp.responseText;
-           var gnRegex = /GN( *)(.*)/g
-           var gn = gnRegex.exec(response)[2];
-           //alert(gn);
-           xlv.geneNames.set(prot.accession, gn);
-
-            var interactors = xlv.interactors.values();
-            var protIndex = interactors.indexOf(prot);
-            if (protIndex < interactors.length - 1) {
-                xlv.getGeneName(protIndex + 1);
-            }
-            else {
-                xlv.message(xlv.geneNames);
-            }
-        }
-    };
-    xmlhttp.send(params);
-}
-
-xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
-    var proteinLink = this.links.get(linkID);
-    if (typeof proteinLink !== 'undefined') {
-        proteinLink.colour = new RGBColor(colour);
-        proteinLink.colourSpecified = true;
-    }
-    else {
-        var protein = this.interactors.get(linkID);
-        if (typeof protein !== 'undefined') {
-            protein.internalLinkColour = new RGBColor(colour);
-            //            protein.colourSpecified = true;
-        }
-    }
-};
 
 xiNET.Controller.prototype.parkAll = function() {
     var prots = this.proteins.values();

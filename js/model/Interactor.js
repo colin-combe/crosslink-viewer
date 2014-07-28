@@ -753,7 +753,7 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 			.duration(Interactor.transitionTime);
 	
 	 if (this.internalLink != null) {
-		var resLinks = this.internalLink.residueLinks.values();
+		var resLinks = this.internalLink.sequenceLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
@@ -965,7 +965,7 @@ Interactor.prototype.toStick = function() {
 		.duration(Interactor.transitionTime);		   
 	
 	 if (this.internalLink != null) {
-		var resLinks = this.internalLink.residueLinks.values();
+		var resLinks = this.internalLink.sequenceLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];			
@@ -1072,20 +1072,20 @@ Interactor.prototype.getResidueLinkPath = function(residueLink) {
 	if (Interactor.UNITS_PER_RESIDUE * this.stickZoom >= 8){
 		baseLine = -5;
 	}
-	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
-		if (residueLink.ambig === false){
-			residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
-		}
-		var p1 = [x1, 26];
-		var p3 = [x1, 18];
-		var p2 = Interactor.rotatePointAboutPoint(p1, p3, 60);
-		baseLine = baseLine * -1;
-		return "M " + x1 + "," + baseLine 
-			+ " L " + p1[0] + "," + p1[1] 
-			+ " L " +  p2[0] + "," + p2[1]
-			+ " L " + p3[0] + "," + p3[1];
-	}
-	else {
+	//~ if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
+		//~ if (residueLink.ambig === false){
+			//~ residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+		//~ }
+		//~ var p1 = [x1, 26];
+		//~ var p3 = [x1, 18];
+		//~ var p2 = Interactor.rotatePointAboutPoint(p1, p3, 60);
+		//~ baseLine = baseLine * -1;
+		//~ return "M " + x1 + "," + baseLine 
+			//~ + " L " + p1[0] + "," + p1[1] 
+			//~ + " L " +  p2[0] + "," + p2[1]
+			//~ + " L " + p3[0] + "," + p3[1];
+	//~ }
+	//~ else {
 		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
 		var height, cp1, cp2, arcStart, arcEnd, arcRadius;
 		arcRadius = (Math.abs(x2 - x1)) / 2;
@@ -1131,7 +1131,7 @@ Interactor.prototype.getResidueLinkPath = function(residueLink) {
 			+ " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
 			+ " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
 			+ " Q "+ cp2[0] + ',' + cp2[1] +  " "  + end[0] + "," + end[1];
-	}
+	//~ }
 }
 
 Interactor.prototype.getResXwithStickZoom = function(r) {
