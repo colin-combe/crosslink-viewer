@@ -23,7 +23,7 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.fatLineShown = false;
+    this.thickLineShown = false;
     //layout stuff
     this.hidden = false;
     this.evidenceCount = 0;
@@ -119,7 +119,7 @@ BinaryLink.prototype.initSVG = function() {
 	
 	this.line = document.createElementNS(xiNET.svgns, "line");
 	this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-	this.fatLine = document.createElementNS(xiNET.svgns, "line");
+	this.thickLine = document.createElementNS(xiNET.svgns, "line");
 
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
@@ -132,11 +132,11 @@ BinaryLink.prototype.initSVG = function() {
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
-    this.fatLine.setAttribute("class", "link");
-    this.fatLine.setAttribute("fill", "none");
-    this.fatLine.setAttribute("stroke", "lightgray");
-    this.fatLine.setAttribute("stroke-linecap", "round");
-    this.fatLine.setAttribute("stroke-linejoin", "round");
+    this.thickLine.setAttribute("class", "link");
+    this.thickLine.setAttribute("fill", "none");
+    this.thickLine.setAttribute("stroke", "lightgray");
+    this.thickLine.setAttribute("stroke-linecap", "round");
+    this.thickLine.setAttribute("stroke-linejoin", "round");
     //set the events for it
     var self = this;
     this.line.onmousedown = function(evt) {
@@ -165,19 +165,19 @@ BinaryLink.prototype.initSVG = function() {
         self.touchStart(evt);
     };
     
-    this.fatLine.onmousedown = function(evt) {
+    this.thickLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    this.fatLine.onmousedown = function(evt) {
+    this.thickLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    this.fatLine.onmouseover = function(evt) {
+    this.thickLine.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
-    this.fatLine.onmouseout = function(evt) {
+    this.thickLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-    this.fatLine.ontouchstart = function(evt) {
+    this.thickLine.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
     
@@ -304,13 +304,13 @@ BinaryLink.prototype.check = function() {
                 //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
             //~ }
             //~ this.tooltip += ' )';
-            //~ //fatLine
+            //~ //thickLine
             //~ if (evidCount > 1) {
-                //~ this.fatLineShown = true
+                //~ this.thickLineShown = true
                 //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
             //~ }
             //~ else {
-//~ //                this.fatLineShown = false;//hack
+//~ //                this.thickLineShown = false;//hack
                 //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
             //~ }
             //~ //ambig?
@@ -362,11 +362,11 @@ BinaryLink.prototype.show = function() {
             //~ if (this.intra) {
 //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
 //~ 
-                //~ if (this.fatLineShown) {
-                    //~ this.fatLine.setAttribute("transform", "translate(" +
+                //~ if (this.thickLineShown) {
+                    //~ this.thickLine.setAttribute("transform", "translate(" +
                             //~ this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
                             //~ + " scale(" + (this.xlv.z) + ")");
-                    //~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                    //~ this.xlv.p_pLinksWide.appendChild(this.thickLine);
                 //~ }
 //~ 
                 //~ this.fromInteractor.upperGroup.appendChild(this.highlightLine);
@@ -379,17 +379,17 @@ BinaryLink.prototype.show = function() {
                 this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
                 this.setLinkCoordinates(this.fromInteractor);
                 this.setLinkCoordinates(this.toInteractor);
-                if (this.fatLineShown) {
-                    this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                if (this.thickLineShown) {
+                    this.xlv.p_pLinksWide.appendChild(this.thickLine);
                 }
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.p_pLinks.appendChild(this.line);
             //~ }
-        if (this.fatLineShown) {
+        if (this.thickLineShown) {
             if (this.intra) {
-                this.fatLine.setAttribute("stroke-width", this.w);
+                this.thickLine.setAttribute("stroke-width", this.w);
             } else {
-                this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
+                this.thickLine.setAttribute("stroke-width", this.xlv.z * this.w);
             }
         }
 		}
@@ -400,14 +400,14 @@ BinaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         if (this.intra) {
-           if (this.fatLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
+           if (this.thickLineShown) {
+                this.xlv.p_pLinksWide.removeChild(this.thickLine);
             }
             this.fromInteractor.upperGroup.removeChild(this.highlightLine);
             this.fromInteractor.upperGroup.removeChild(this.line);
         } else {
-            if (this.fatLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
+            if (this.thickLineShown) {
+                this.xlv.p_pLinksWide.removeChild(this.thickLine);
             }
             this.xlv.highlights.removeChild(this.highlightLine);
             this.xlv.p_pLinks.removeChild(this.line);
@@ -422,9 +422,9 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
             this.line.setAttribute("y1", interactor.y);
             this.highlightLine.setAttribute("x1", interactor.x);
             this.highlightLine.setAttribute("y1", interactor.y);
-            if (this.fatLineShown) {
-                this.fatLine.setAttribute("x1", interactor.x);
-                this.fatLine.setAttribute("y1", interactor.y);
+            if (this.thickLineShown) {
+                this.thickLine.setAttribute("x1", interactor.x);
+                this.thickLine.setAttribute("y1", interactor.y);
             }
         }
         else {
@@ -432,9 +432,9 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
             this.line.setAttribute("y2", interactor.y);
             this.highlightLine.setAttribute("x2", interactor.x);
             this.highlightLine.setAttribute("y2", interactor.y);
-            if (this.fatLineShown) {
-                this.fatLine.setAttribute("x2", interactor.x);
-                this.fatLine.setAttribute("y2", interactor.y);
+            if (this.thickLineShown) {
+                this.thickLine.setAttribute("x2", interactor.x);
+                this.thickLine.setAttribute("y2", interactor.y);
             }
         }
     }

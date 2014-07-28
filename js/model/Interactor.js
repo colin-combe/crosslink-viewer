@@ -18,7 +18,6 @@ Interactor.labelY = -5; //label Y offset, better if calc'd half height of label 
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 Interactor.transitionTime = 650;
 
-//http://stackoverflow.com/questions/4179283/how-to-overload-constructor-of-an-object-in-js-javascript
 function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.xlv = xlvController;
@@ -450,8 +449,8 @@ Interactor.prototype.setPosition = function(x, y) {
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.xlv.z) + ") ");
 		if (this.internalLink != null) {
-			if (typeof this.internalLink.fatLine !== 'undefined') {
-				this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
+			if (typeof this.internalLink.thickLine !== 'undefined') {
+				this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
 						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
 			}
 				this.internalLink.line.setAttribute("transform", "translate(" + this.x
@@ -844,7 +843,7 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 				//~ if (link.toInteractor === null || (link.getFromInteractor() === self && link.getToInteractor().form === 0) ||
 						//~ (link.getToInteractor() === self && link.getFromInteractor().form === 0) ||
 						//~ (link.getToInteractor() == link.getFromInteractor()))
-				{
+				if (link.sequenceLinks) {
 					// swap links - out with the old
 					var resLinks = link.sequenceLinks.values();
 					var resLinkCount = resLinks.length; 

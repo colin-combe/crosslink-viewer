@@ -7,17 +7,62 @@
 //		author: Colin Combe
 //		
 //		Link.js
+//		The graphical representation of one or many interactions.
+//		One link represents all interactions with same particpants.
+//		E.g. psi-mi may conatins multiple experiments giving evidence for same interaction
+//		- using one glyph to represent them all prevents uppermost graphic from occluded those lower down 
 
 "use strict";
 
-
-// 'superclass' for SequenceLink, BinaryLink
-// terminology? could this class be renamed to Interaction?
-// or a 'Link' is a graphical rperesentation of one or many links
-// i.e. 'link' is a glyph, 'interaction' is biology?
-
 xiNET.Link = function (){};
 xiNET.Link.maxNoEvidences = 0;
+
+//id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
+xiNET.Link.getIdFromInteraction = function(interaction){
+    var linkId = "";
+    //sort participants by interactorRef
+    var participants = interaction.participants.sort(
+		function comparator(a, b) {
+			return a.interactorRef - b.interactorRef;
+		}
+	);
+    var participantCount = participants.length;
+    var pIDs = d3.set();//used to eliminate duplicates
+    for (var pi = 0; pi < participantCount; pi++) {
+		var pID = participants[pi].interactorRef;
+		if (pIDs.has(pID) === false){
+			pIDs.add(pID);
+			if (pi > 0) {
+				linkId += "-"; 
+			}
+			linkId += pID;
+		}
+	}
+	return linkId;	
+}
+
+xiNET.Link.prototype.initInteractors = function(interaction){
+    this.interactors = new Array();//order important for binary links
+    //sort participants by interactorRef
+    var participants = interaction.participants.sort(
+		function comparator(a, b) {
+			return a.interactorRef - b.interactorRef;
+		}
+	);
+    var participantCount = participants.length;
+    var pIDs = d3.set();//used to eliminate duplicates
+    for (var pi = 0; pi < participantCount; pi++) {
+		var pID = participants[pi].interactorRef;
+		if (pIDs.has(pID) === false){
+			pIDs.add(pID);
+			var interactor = this.xlv.interactors.get(pID);
+			if (typeof interactor === 'undefined') {
+				alert("Fail - no interactor with id " + pID);
+			}
+			this.interactors.push(interactor);
+		}
+	}
+}
 
 // event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Link.prototype.mouseDown = function(evt) {
@@ -88,7 +133,7 @@ xiNET.Link.prototype.showID = function() {
 
 xiNET.Link.prototype.toJSON = function() {
     return {
-        evidences: this.evidences
+        //~ evidences: this.evidences
     };
 };
 

@@ -223,13 +223,13 @@ SequenceLink.prototype.check = function(filter) {
             }
             this.tooltip += ' )';
 
-//            //fatLine
+//            //thickLine
 //            if (evidCount > 1) {
-//                this.fatLineShown = true
+//                this.thickLineShown = true
 //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
 //            }
 //            else {
-////                this.fatLineShown = false;
+////                this.thickLineShown = false;
 //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
 //            }
 //            //ambig?

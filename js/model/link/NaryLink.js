@@ -1,47 +1,49 @@
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
+//    	xiNET interaction viewer
+//    	Copyright 2014 Rappsilber Laboratory
 //
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//		author: Colin Combe
 
 "use strict";
 
 // NaryLink.js
-// the class representing an n-ary interaction
+// graphically represents an n-ary interaction
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 
 NaryLink.prototype = new xiNET.Link();
-//used to calculate width of thivh background line
-NaryLink.maxNoEvidences = 0;
+
 function NaryLink(id, xlvController) {
     this.id = id;
-    this.evidences = new Array();
-    this.sequenceLinks = d3.map();
+    this.evidences = new Array();//d3.map();//will need to eliminate duplicates
+    this.interactors = null;// will be new Array();//need order for binary links so use array
+    this.subLinks = d3.map();
     this.xlv = xlvController;
 
-    this.ambig = false;
+    //this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.fatLineShown = false;
+    //this.thickLineShown = false;
     //layout stuff
     this.hidden = false;
-    this.evidenceCount = 0;
 }
 
 NaryLink.prototype.addEvidence = function(interaction) {
-    this.evidenceCount++;
-    if (this.evidenceCount > NaryLink.maxNoEvidences) {
-        NaryLink.maxNoEvidences = this.evidenceCount;
-    }
-    
     this.evidences.push(interaction);
-    
-    
-    
+    //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+        //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
+    //~ }
+        
+    if (this.interactors === null){
+		this.initInteractors(interaction);
+	}    
+        
     for (var pi = 0; pi < interaction.participants.length; pi++){
 		var sourceID = interaction.participants[pi].interactorRef;
 		var sourceInteractor = this.xlv.interactors.get(sourceID);
+				
 		var bindingSites = interaction.participants[pi].bindingSites;
 		if (bindingSites){
 			var bsCount = bindingSites.length;
@@ -80,198 +82,66 @@ NaryLink.prototype.addEvidence = function(interaction) {
 						this.xlv.links.set(linkID, link);
 
 					}
+					this.subLinks.set(linkID, link);
 					link.addEvidence(interaction);
 				}
 			}
 		}
 	}			
-	
-    
-    
-    
-    
-    //~ this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
-    //~ this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
-    //this.intra = false;
-    //if (this.fromInteractor === this.toInteractor) {
-    //    this.intra = true;
-    //}
-    //~ var from = this.fromInteractor;
-    //~ var to = this.toInteractor
-       //~ 
-    //~ var hasLinkedFeatures = false;
-    //~ //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
-    //~ //for time being one interaction can only result in at most one sequenceLink
-    //~ if (hasLinkedFeatures) {
-        //~ //LinkedFeatures not yet implemented in JAMI
-    //~ }
-    //~ //if no linked features may be able to make some assumptions about whats linked to what. 
-    //~ // If:
-    //~ // 1. it is not a product of expansion   
-    //~ // 2. there is no more than one binding site feature at each of interaction
-    //~ else if ((typeof interaction.expansion === 'undefined')
-            //~ && (typeof from.bindingSites === 'undefined'
-            //~ || from.bindingSites.length === 1)
-            //~ && (typeof to.bindingSites === 'undefined'
-            //~ || to.bindingSites.length === 1)
-            //~ ) {
-        //~ // first we need to know ID for sequenceLink, 
-        //~ // that means knowing the binding sites
-        //~ var fromBindingSite, toBindingSite;
-        //~ if (typeof from.bindingSites !== 'undefined') {
-            //~ fromBindingSite = from.bindingSites[0];
-        //~ }
-        //~ if (typeof to.bindingSites !== 'undefined') {
-            //~ toBindingSite = to.bindingSites[0];
-        //~ }
-        //~ var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
-                //~ fromBindingSite.sequenceData.sort() : ['?-?'];
-        //~ var toSequenceData = (typeof toBindingSite !== 'undefined') ?
-                //~ toBindingSite.sequenceData.sort() : ['?-?'];
-        //~ var seqLinkId = fromSequenceData.toString() + ':' +
-                //~ this.fromInteractor.id + ' to ' +
-                //~ toSequenceData.toString() + ':' + this.toInteractor.id;
-//~ //        console.log(seqLinkId);
-        //~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
-        //~ if (typeof sequenceLink === 'undefined') {
-            //~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
-            //~ this.sequenceLinks.set(seqLinkId, sequenceLink);
-        //~ }
-        //~ sequenceLink.addEvidence(interaction);
-    //~ } else {
-        //~ var seqLinkId = '?-?:' +
-                //~ this.fromInteractor.id + ' to ' +
-                //~ '?-?:' + this.toInteractor.id;
-//~ //        console.log(seqLinkId);
-        //~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
-        //~ if (typeof sequenceLink === 'undefined') {
-            //~ sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.xlv, interaction);
-            //~ this.sequenceLinks.set(seqLinkId, sequenceLink);
-        //~ }
-        //~ sequenceLink.addEvidence(interaction);
-    //~ }
 };
 
 NaryLink.prototype.initSVG = function() {
-
-	this.line = document.createElementNS(xiNET.svgns, "rect");
-	this.line.setAttribute('fill', NaryLink.naryColours(this.id));
-	this.line.setAttribute('opacity', 0.4);
-	this.line.setAttribute('rx', '30');
-	this.line.setAttribute('ry', '30');
-	
-	//~ this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-	//~ this.fatLine = document.createElementNS(xiNET.svgns, "line");
-
-    //~ this.line.setAttribute("class", "link");
-    //~ this.line.setAttribute("fill", "none");
-    //~ this.line.setAttribute("stroke", "black");
-    //~ this.line.setAttribute("stroke-width", "1");
-    //~ this.line.setAttribute("stroke-linecap", "round");
-    //~ this.highlightLine.setAttribute("class", "link");
-    //~ this.highlightLine.setAttribute("fill", "none");
-    //~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    //~ this.highlightLine.setAttribute("stroke-width", "10");
-    //~ this.highlightLine.setAttribute("stroke-linecap", "round");
-    //~ this.highlightLine.setAttribute("stroke-opacity", "0");
-    //~ this.fatLine.setAttribute("class", "link");
-    //~ this.fatLine.setAttribute("fill", "none");
-    //~ this.fatLine.setAttribute("stroke", "lightgray");
-    //~ this.fatLine.setAttribute("stroke-linecap", "round");
-    //~ this.fatLine.setAttribute("stroke-linejoin", "round");
-
+	this.rect = document.createElementNS(xiNET.svgns, "rect");
+	this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
+	this.rect.setAttribute('opacity', 0.4);
+	this.rect.setAttribute('rx', '30');
+	this.rect.setAttribute('ry', '30');
     //set the events for it
     var self = this;
-    this.line.onmousedown = function(evt) {
+    this.rect.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    //TODO: problem here for big data sets - temp hack, remove some mouse listeners
-    this.line.onmouseover = function(evt) {
+    this.rect.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
-    this.line.onmouseout = function(evt) {
+    this.rect.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-    //~ this.highlightLine.onmousedown = function(evt) {
-        //~ self.mouseDown(evt);
-    //~ };
-    //~ this.highlightLine.onmouseover = function(evt) {
-//~ //        this.xlv.setTooltip(this.tooltip);
-        //~ self.mouseOver(evt);
-    //~ };
-    //~ this.highlightLine.onmouseout = function(evt) {
-//~ //         this.xlv.hideTooltip();
-        //~ self.mouseOut(evt);
-    //~ };
-    //~ this.fatLine.onmousedown = function(evt) {
-        //~ self.mouseDown(evt);
-    //~ };
-    //~ this.fatLine.onmousedown = function(evt) {
-        //~ self.mouseDown(evt);
-    //~ };
-    //~ this.fatLine.onmouseover = function(evt) {
-        //~ self.mouseOver(evt);
-    //~ };
-    //~ this.fatLine.onmouseout = function(evt) {
-        //~ self.mouseOut(evt);
-    //~ };
+    this.rect.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
 };
 
-NaryLink.prototype.showHighlight = function(show, andAlternatives) {
-    //~ if (typeof andAlternatives === 'undefined') {
-        //~ andAlternatives = false; //TODO: tEMP HACK
-    //~ }
-    //~ if (this.shown) {
-        //~ if (show) {
-            //~ this.highlightLine.setAttribute("stroke-opacity", "1");
-        //~ } else {
-            //~ this.highlightLine.setAttribute("stroke-opacity", "0");
+NaryLink.prototype.showHighlight = function(show) {
+	//we will iterate through all interactors and sublinks and highlight them
+	var interactors = this.interactors;
+	for (var i = 0; i < interactors.length; i++) {
+		interactors[i].showHighlight(show);
+	}
+	var subLinks = this.subLinks.values();
+	for (var s = 0; s < subLinks.length; s++) {
+		subLinks[s].showHighlight(show);
+	}
+};
+
+
+
+//~ NaryLink.prototype.getFilteredEvidences = function() {
+    //~ var seqLinks = this.sequenceLinks.values();
+    //~ var seqLinkCount = seqLinks.length;
+    //~ // use map to eliminate duplicates 
+    //~ // (which result from linked features resulting in multiple SequenceLinks for single interaction)
+    //~ var filteredEvids = d3.map();
+    //~ for (var i = 0; i < seqLinkCount; i++) {
+        //~ var seqLink = seqLinks[i];
+        //~ var seqLinkEvids = seqLink.getFilteredEvidences();
+        //~ var seqLinkEvidCount = seqLinkEvids.length;
+        //~ for (var j = 0; j < seqLinkEvidCount; j++) {
+            //~ filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
         //~ }
     //~ }
-//    if (andAlternatives && this.ambig) {
-////TODO: we want to highlight smallest possible set of alternatives
-//        var rc = this.sequenceLinks.values().length;
-//        for (var rl = 0; rl < rc; rl++) {
-//            var resLink = this.sequenceLinks.values()[rl];
-//            var mc = resLink.matches.length;
-//            for (var m = 0; m < mc; m++) {
-//                var match = resLink.matches[m];
-//                if (match.isAmbig()) {
-//                    var mrc = match.sequenceLinks.length;
-//                    for (var mrl = 0; mrl < mrc; mrl++) {
-//                        var resLink = match.sequenceLinks[mrl];
-//                        if (resLink.shown === true) {
-//                            resLink.showHighlight(show, false);
-//                        }
-//                        if (resLink.proteinLink.shown === true) {
-//                            resLink.proteinLink.showHighlight(show, false);
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-};
-
-
-
-NaryLink.prototype.getFilteredEvidences = function() {
-    var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
-    // use map to eliminate duplicates 
-    // (which result from linked features resulting in multiple SequenceLinks for single interaction)
-    var filteredEvids = d3.map();
-    for (var i = 0; i < seqLinkCount; i++) {
-        var seqLink = seqLinks[i];
-        var seqLinkEvids = seqLink.getFilteredEvidences();
-        var seqLinkEvidCount = seqLinkEvids.length;
-        for (var j = 0; j < seqLinkEvidCount; j++) {
-            filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
-        }
-    }
-    return filteredEvids.values();
-};
+    //~ return filteredEvids.values();
+//~ };
 
 NaryLink.prototype.check = function() {
 
@@ -334,13 +204,13 @@ NaryLink.prototype.check = function() {
                 //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
             //~ }
             //~ this.tooltip += ' )';
-            //~ //fatLine
+            //~ //thickLine
             //~ if (evidCount > 1) {
-                //~ this.fatLineShown = true
+                //~ this.thickLineShown = true
                 //~ this.w = evidCount * (45 / NaryLink.maxNoEvidences);
             //~ }
             //~ else {
-//~ //                this.fatLineShown = false;//hack
+//~ //                this.thickLineShown = false;//hack
                 //~ this.w = evidCount * (45 / NaryLink.maxNoEvidences);//hack
             //~ }
             //~ //ambig?
@@ -367,43 +237,16 @@ NaryLink.prototype.check = function() {
     //~ }
 };
 
-NaryLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line === 'undefined') {
-        this.initSVG();
-    }
-    if (dash) {// && !this.dashed) {
-        this.dashed = true;
-        this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
-    }
-    else if (!dash) {// && this.dashed) {
-        this.dashed = false;
-        this.line.removeAttribute("stroke-dasharray");
-    }
-};
-
 NaryLink.prototype.show = function() {
     if (this.xlv.initComplete) {
-// TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
-            if (typeof this.line === 'undefined') {
+            if (typeof this.rect === 'undefined') {
                 this.initSVG();
             }
-			this.line.setAttribute("stroke-width", this.xlv.z * 1);
-			//~ this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+			this.rect.setAttribute("stroke-width", this.xlv.z * 1);
 			this.setLinkCoordinates();
-			//~ if (this.fatLineShown) {
-				//~ this.xlv.p_pLinksWide.appendChild(this.fatLine);
-			//~ }
-			//~ this.xlv.highlights.appendChild(this.highlightLine);
-			this.xlv.naryLinks.appendChild(this.line);
-			if (this.fatLineShown) {
-				if (this.intra) {
-					this.fatLine.setAttribute("stroke-width", this.w);
-				} else {
-					this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
-				}
-			}
+			this.xlv.naryLinks.appendChild(this.rect);
 		}
     }
 };
@@ -411,51 +254,42 @@ NaryLink.prototype.show = function() {
 NaryLink.prototype.hide = function() {
     //~ if (this.shown) {
         //~ this.shown = false;
-		//~ if (this.fatLineShown) {
-			//~ this.xlv.p_pLinksWide.removeChild(this.fatLine);
+		//~ if (this.thickLineShown) {
+			//~ this.xlv.p_pLinksWide.removeChild(this.thickLine);
 		//~ }
 		//this.xlv.highlights.removeChild(this.highlightLine);
-		//~ this.xlv.p_pLinks.removeChild(this.line);
+		//~ this.xlv.p_pLinks.removeChild(this.rect);
     //~ }
-};
-
-NaryLink.prototype.getOtherEnd = function(protein) {
-    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
 
 NaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
 		var northerly = null, southerly = null, 
 			westerly = null, easterly = null; //bounding interactors
-		for (var i = 0; i < this.evidences.length; i++) {
-			var participants = this.evidences[i].participants;
-			var participantCount = participants.length; 
-			//TODO: if evidence.check() ==== true
-			for (var p = 0; p < participantCount; p++){
-				var participant = this.xlv.interactors.get(participants[p].interactorRef);
+		var interactors = this.interactors;
+		var iCount = interactors.length;
+		for (var i = 0; i < iCount; i++){
+			var interactor = interactors[i];
 				
-				if (westerly === null || participant.x < westerly.x) {
-					westerly = participant;
-				}
-				
-				if (easterly === null || participant.x > easterly.x) {
-					easterly = participant;
-				}
-				
-				if (southerly === null || participant.y > southerly.y) {
-					southerly = participant;
-				}
-				
-				if (northerly === null || participant.y < northerly.y) {
-					northerly = participant;
-				}
-				
+			if (westerly === null || interactor.x < westerly.x) {
+				westerly = interactor;
 			}
-		}
-		
-		this.line.setAttribute('x',westerly.x - 20);
-		this.line.setAttribute('y',northerly.y - 20);
-		this.line.setAttribute('width',(easterly.x - westerly.x) + 40);
-		this.line.setAttribute('height',(southerly.y - northerly.y) + 40);
+			
+			if (easterly === null || interactor.x > easterly.x) {
+				easterly = interactor;
+			}
+			
+			if (southerly === null || interactor.y > southerly.y) {
+				southerly = interactor;
+			}
+			
+			if (northerly === null || interactor.y < northerly.y) {
+				northerly = interactor;
+			}
+		}		
+		this.rect.setAttribute('x',westerly.x - 20);
+		this.rect.setAttribute('y',northerly.y - 20);
+		this.rect.setAttribute('width',(easterly.x - westerly.x) + 40);
+		this.rect.setAttribute('height',(southerly.y - northerly.y) + 40);
     }
 };

@@ -53,7 +53,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //we will download missing sequences before doing second iteration to add links
     //~ if (interactorsMissingSequence.values().length === 0) {//if no missing sequences
         addInteractions();
-		this.message(this.features);
+		this.message(this.links);
     //~ }
     //~ else {
         //~ this.message(interactorsMissingSequence);
@@ -65,9 +65,6 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         Interactor.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         var interactors = self.interactors.values();
         var proteinCount = interactors.length;
-        //~ for (var p = 0; p < proteinCount; p++) {
-            //~ interactors[p].initStick();
-        //~ }
         self.features = d3.map();       
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
@@ -131,42 +128,28 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
         }
     }
     
-    var participants = interaction.participants.sort(
-		function comparator(a, b) {
-			return a.interactorRef - b.interactorRef;
-		}
-	);
-    
-    var linkID = "";
-    var participantCount = participants.length;
-    var pIDs = d3.set();
-    for (var pi = 0; pi < participantCount; pi++) {
-		var pID = participants[pi].interactorRef;
-		if (pIDs.has(pID) === false){
-			pIDs.add(pID);
-			if (typeof this.interactors.get(pID) === 'undefined') {
-				alert("Fail - no interactor with id " + pID);
-			}
-			if (pi > 0) {
-				linkID += "-"; 
-			}
-			linkID += pID;
-		}
-	}
+	var linkId = xiNET.Link.getIdFromInteraction(interaction);
+	var link = this.links.get(linkId);
 	
-    var link = this.links.get(linkID);
     if (typeof link === 'undefined') {
+		var participants = interaction.participants;
+		var participantCount = participants.length;
 		if (participantCount === 1) {
-			link = new UnaryLink(linkID, this);
+			link = new UnaryLink(linkId, this);
 		} else if (participantCount === 2) {
-			link = new BinaryLink(linkID, this, 
+			var participants = interaction.participants.sort(
+			function comparator(a, b) {
+				return a.interactorRef - b.interactorRef;
+				}
+			);		
+			link = new BinaryLink(linkId, this, 
 				this.interactors.get(participants[0].interactorRef),
 				this.interactors.get(participants[1].interactorRef));
 		} else {
-			link = new NaryLink(linkID, this);
+			link = new NaryLink(linkId, this);
 		}
-        this.links.set(linkID, link);
-		for (pi = 0; pi < participantCount; pi++) {
+        this.links.set(linkId, link);
+		for (var pi = 0; pi < participantCount; pi++) {
 			this.interactors.get(participants[pi].interactorRef).addLink(link);
 		}
 	}
