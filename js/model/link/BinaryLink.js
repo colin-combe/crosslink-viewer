@@ -15,6 +15,7 @@ BinaryLink.maxNoEvidences = 0;
 function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = new Array();
+    this.interactors = null;
     this.sequenceLinks = d3.map();
     this.xlv = xlvController;
     this.fromInteractor = fromI; //its the object. not the ID number
@@ -32,13 +33,15 @@ function BinaryLink(id, xlvController, fromI, toI) {
 }
 
 BinaryLink.prototype.addEvidence = function(interaction) {
-    this.evidenceCount++;
-    if (this.evidenceCount > BinaryLink.maxNoEvidences) {
-        BinaryLink.maxNoEvidences = this.evidenceCount;
-    }
-    
     this.evidences.push(interaction);
-    
+    //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+        //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
+    //~ }
+        
+    if (this.interactors === null){
+		this.initInteractors(interaction);
+	}    
+      
     var participants = interaction.participants;
     //u r here - going to need to set from/to from constructor
     //~ if (participants.length === 2) {//TEMP
@@ -168,9 +171,6 @@ BinaryLink.prototype.initSVG = function() {
     this.thickLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    this.thickLine.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
     this.thickLine.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
@@ -184,58 +184,21 @@ BinaryLink.prototype.initSVG = function() {
     this.isSelected = false;
 }
 ;
-BinaryLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false; //TODO: tEMP HACK
-    }
+BinaryLink.prototype.showHighlight = function(show) {
     if (this.shown) {
+		if (this.notSubLink === true){
+			this.highlightInteractors(show);
+		}
         if (show) {
+			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
+			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+			//~ if (this.isSelected === false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			//~ }			
         }
     }
-//    if (andAlternatives && this.ambig) {
-////TODO: we want to highlight smallest possible set of alternatives
-//        var rc = this.sequenceLinks.values().length;
-//        for (var rl = 0; rl < rc; rl++) {
-//            var resLink = this.sequenceLinks.values()[rl];
-//            var mc = resLink.matches.length;
-//            for (var m = 0; m < mc; m++) {
-//                var match = resLink.matches[m];
-//                if (match.isAmbig()) {
-//                    var mrc = match.sequenceLinks.length;
-//                    for (var mrl = 0; mrl < mrc; mrl++) {
-//                        var resLink = match.sequenceLinks[mrl];
-//                        if (resLink.shown === true) {
-//                            resLink.showHighlight(show, false);
-//                        }
-//                        if (resLink.proteinLink.shown === true) {
-//                            resLink.proteinLink.showHighlight(show, false);
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-};
-
-BinaryLink.prototype.getFilteredEvidences = function() {
-    var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
-    // use map to eliminate duplicates 
-    // (which result from linked features resulting in multiple SequenceLinks for single interaction)
-    var filteredEvids = d3.map();
-    for (var i = 0; i < seqLinkCount; i++) {
-        var seqLink = seqLinks[i];
-        var seqLinkEvids = seqLink.getFilteredEvidences();
-        var seqLinkEvidCount = seqLinkEvids.length;
-        for (var j = 0; j < seqLinkEvidCount; j++) {
-            filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
-        }
-    }
-    return filteredEvids.values();
 };
 
 BinaryLink.prototype.check = function() {
@@ -337,19 +300,19 @@ BinaryLink.prototype.check = function() {
     }
 };
 
-BinaryLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line === 'undefined') {
-        this.initSVG();
-    }
-    if (dash) {// && !this.dashed) {
-        this.dashed = true;
-        this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
-    }
-    else if (!dash) {// && this.dashed) {
-        this.dashed = false;
-        this.line.removeAttribute("stroke-dasharray");
-    }
-};
+//~ BinaryLink.prototype.dashedLine = function(dash) {
+    //~ if (typeof this.line === 'undefined') {
+        //~ this.initSVG();
+    //~ }
+    //~ if (dash) {// && !this.dashed) {
+        //~ this.dashed = true;
+        //~ this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+    //~ }
+    //~ else if (!dash) {// && this.dashed) {
+        //~ this.dashed = false;
+        //~ this.line.removeAttribute("stroke-dasharray");
+    //~ }
+//~ };
 
 BinaryLink.prototype.show = function() {
     if (this.xlv.initComplete) {
@@ -359,39 +322,18 @@ BinaryLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            //~ if (this.intra) {
-//this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-//~ 
-                //~ if (this.thickLineShown) {
-                    //~ this.thickLine.setAttribute("transform", "translate(" +
-                            //~ this.fromInteractor.x + " " + this.fromInteractor.y + ")"  // possibly not neccessary
-                            //~ + " scale(" + (this.xlv.z) + ")");
-                    //~ this.xlv.p_pLinksWide.appendChild(this.thickLine);
-                //~ }
-//~ 
-                //~ this.fromInteractor.upperGroup.appendChild(this.highlightLine);
-                //~ this.fromInteractor.upperGroup.appendChild(this.line);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.blob);
-                //~ this.fromInteractor.upperGroup.appendChild(this.fromInteractor.circDomains);
-            //~ }
-            //~ else {
-                this.line.setAttribute("stroke-width", this.xlv.z * 1);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
-                this.setLinkCoordinates(this.fromInteractor);
-                this.setLinkCoordinates(this.toInteractor);
-                if (this.thickLineShown) {
-                    this.xlv.p_pLinksWide.appendChild(this.thickLine);
-                }
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.p_pLinks.appendChild(this.line);
-            //~ }
-        if (this.thickLineShown) {
-            if (this.intra) {
-                this.thickLine.setAttribute("stroke-width", this.w);
-            } else {
-                this.thickLine.setAttribute("stroke-width", this.xlv.z * this.w);
-            }
-        }
+			this.line.setAttribute("stroke-width", this.xlv.z * 1);
+			this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+			this.setLinkCoordinates(this.fromInteractor);
+			this.setLinkCoordinates(this.toInteractor);
+			if (this.thickLineShown) {
+				this.xlv.p_pLinksWide.appendChild(this.thickLine);
+			}
+			this.xlv.highlights.appendChild(this.highlightLine);
+			this.xlv.p_pLinks.appendChild(this.line);
+			if (this.thickLineShown) {
+				this.thickLine.setAttribute("stroke-width", this.w);
+			}
 		}
     }
 };
@@ -399,19 +341,11 @@ BinaryLink.prototype.show = function() {
 BinaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        if (this.intra) {
-           if (this.thickLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.thickLine);
-            }
-            this.fromInteractor.upperGroup.removeChild(this.highlightLine);
-            this.fromInteractor.upperGroup.removeChild(this.line);
-        } else {
-            if (this.thickLineShown) {
-                this.xlv.p_pLinksWide.removeChild(this.thickLine);
-            }
-            this.xlv.highlights.removeChild(this.highlightLine);
-            this.xlv.p_pLinks.removeChild(this.line);
-        }
+		if (this.thickLineShown) {
+			this.xlv.p_pLinksWide.removeChild(this.thickLine);
+		}
+		this.xlv.highlights.removeChild(this.highlightLine);
+		this.xlv.p_pLinks.removeChild(this.line);
     }
 };
 
@@ -439,7 +373,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
         }
     }
 };
+
 BinaryLink.prototype.getOtherEnd = function(protein) {
     return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
-

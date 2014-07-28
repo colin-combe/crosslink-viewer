@@ -16,7 +16,6 @@
         <!--libraries-->
         <script type="text/javascript" src="./lib/d3.js"></script>
         <script type="text/javascript" src="./lib/colorbrewer.js"></script>
-        <script type="text/javascript" src="./lib/jsdas.js"></script>
         <script type="text/javascript" src="./lib/rgbcolor.js"></script>
         <script type="text/javascript" src="./lib/Blob.js"></script>
         <script type="text/javascript" src="./lib/FileSaver.js"></script>
@@ -37,7 +36,6 @@
         <script type="text/javascript" src="./js/model/link/SequenceDatum.js"></script>
         <script type="text/javascript" src="./js/controller/ExternalControls.js"></script>
         <script type="text/javascript" src="./js/controller/Rotator.js"></script>
-        <script type="text/javascript" src="./js/controller/DASUtil.js"></script>
         <script type="text/javascript" src="./js/controller/ReadMIJSON.js"></script>
         <!--data-->
         <script type="text/javascript" src="./data/json/fruitfly.js"></script>
@@ -45,14 +43,7 @@
     <body>
 
         <div style="height:100%;">
-            <!--TODO: change exportSVG so param not needed?-->
-            <button type='button' id='exportSVG' style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
-
-            <button style="width:171px;margin:8px;margin-left:16px;text-align: center;" onclick="help()">HELP</button>
-
-            <button type="button" id="autoLayout" onclick="xlv.autoLayout();">Auto</button>
-            <button type="button" id="resetViewport" onclick="xlv.resetZoom();">Reset zoom</button>
-<!--
+ <!--
             <label for='expanded'>Expanded</label>
             <input checked id='expanded'
                    onclick="xlv.hideExpanded = !document.getElementById('expanded').checked;
@@ -69,7 +60,13 @@
 -->
 
             <div id="networkContainer"></div>
-            <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>DOUBLE CLICK interactors to toggle between blob and stick</strong></p></div>
+              <div id='controls'>
+				<button onclick="xlv.autoLayout();">Auto layout</button>
+				<button onclick="xlv.resetZoom();">Reset zoom</button>
+				<button onclick="xlv.exportSVG();">Export SVG</button>
+				<button onclick="xlv.message(xlv)">Data object</button>
+			</div>
+         <div id="networkCaption"><p style="width:100%;text-align: center;"><strong>CLICK interactors to toggle between blob and stick</strong></p></div>
         </div>
 
         <script type="text/javascript">

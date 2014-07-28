@@ -136,6 +136,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 		var participantCount = participants.length;
 		if (participantCount === 1) {
 			link = new UnaryLink(linkId, this);
+			link.notSubLink = true;
 		} else if (participantCount === 2) {
 			var participants = interaction.participants.sort(
 			function comparator(a, b) {
@@ -145,6 +146,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 			link = new BinaryLink(linkId, this, 
 				this.interactors.get(participants[0].interactorRef),
 				this.interactors.get(participants[1].interactorRef));
+			link.notSubLink = true;
 		} else {
 			link = new NaryLink(linkId, this);
 		}

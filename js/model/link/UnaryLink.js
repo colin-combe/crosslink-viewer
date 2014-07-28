@@ -16,10 +16,11 @@ UnaryLink.prototype = new xiNET.Link();
 function UnaryLink(id, xlvController) {
     this.id = id;
     this.evidences = new Array();
+    this.interactors = null;
     this.sequenceLinks = d3.map();
     this.xlv = xlvController;
 
-    this.ambig = false;
+    //this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
@@ -31,61 +32,63 @@ function UnaryLink(id, xlvController) {
 
 UnaryLink.prototype.addEvidence = function(interaction) {
     this.evidences.push(interaction);
-    if (this.evidences.length > xiNET.Link.maxNoEvidences) {
-        xiNET.Link.maxNoEvidences = this.evidences.length;
-    }
-    var participant = interaction.participants[0];
+    //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+        //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
+    //~ }
+        
+    if (this.interactors === null){
+		this.initInteractors(interaction);
+		//TODO: sort this out?
+		this.fromInteractor = this.interactors[0]; 
+		this.toInteractor = this.interactors[0]; 
+		this.initSVG();
+	}    
+           
     
-    this.fromInteractor = this.xlv.interactors.get(participant.interactorRef);//its the object. not the ID number
-    this.toInteractor = this.fromInteractor; 
-    //TODO tidy...
-    this.initSVG();
-    var from = this.fromInteractor;
-    var to = this.toInteractor
-       
-    var hasLinkedFeatures = false;
-    //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
-    //for time being one interaction can only result in at most one sequenceLink
-    if (hasLinkedFeatures) {
-        //LinkedFeatures not yet implemented in JAMI
-    }
-    //if no linked features may be able to make some assumptions about whats linked to what. 
-    // If:
-    // 1. it is not a product of expansion   
-    // 2. there is no more than one binding site feature at each of interaction
-    else if ((typeof interaction.expansion === 'undefined')
-            && (typeof from.bindingSites === 'undefined'
-            || from.bindingSites.length === 1)
-            && (typeof to.bindingSites === 'undefined'
-            || to.bindingSites.length === 1)
-            ) {
-        // first we need to know ID for sequenceLink, 
-        // that means knowing the binding sites
-        var fromBindingSite, toBindingSite;
-        if (typeof from.bindingSites !== 'undefined') {
-            fromBindingSite = from.bindingSites[0];
-        }
-        if (typeof to.bindingSites !== 'undefined') {
-            toBindingSite = to.bindingSites[0];
-        }
-        var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
-                fromBindingSite.sequenceData.sort() : ['?-?'];
-        var toSequenceData = (typeof toBindingSite !== 'undefined') ?
-                toBindingSite.sequenceData.sort() : ['?-?'];
-        var seqLinkId = fromSequenceData.toString() + ':' +
-                this.fromInteractor.id + ' to ' +
-                toSequenceData.toString() + ':' + this.toInteractor.id;
-//        console.log(seqLinkId);
-        var sequenceLink = this.sequenceLinks.get(seqLinkId);
-        if (typeof sequenceLink === 'undefined') {
-            sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
-            this.sequenceLinks.set(seqLinkId, sequenceLink);
-        }
-        sequenceLink.addEvidence(interaction);
-    } else {
+    
+    //~ var hasLinkedFeatures = false;
+    //~ //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
+    //~ //for time being one interaction can only result in at most one sequenceLink
+    //~ if (hasLinkedFeatures) {
+        //~ //LinkedFeatures not yet implemented in JAMI
+    //~ }
+    //~ //if no linked features may be able to make some assumptions about whats linked to what. 
+    //~ // If:
+    //~ // 1. it is not a product of expansion   
+    //~ // 2. there is no more than one binding site feature at each of interaction
+    //~ else if ((typeof interaction.expansion === 'undefined')
+            //~ && (typeof from.bindingSites === 'undefined'
+            //~ || from.bindingSites.length === 1)
+            //~ && (typeof to.bindingSites === 'undefined'
+            //~ || to.bindingSites.length === 1)
+            //~ ) {
+        //~ // first we need to know ID for sequenceLink, 
+        //~ // that means knowing the binding sites
+        //~ var fromBindingSite, toBindingSite;
+        //~ if (typeof from.bindingSites !== 'undefined') {
+            //~ fromBindingSite = from.bindingSites[0];
+        //~ }
+        //~ if (typeof to.bindingSites !== 'undefined') {
+            //~ toBindingSite = to.bindingSites[0];
+        //~ }
+        //~ var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
+                //~ fromBindingSite.sequenceData.sort() : ['?-?'];
+        //~ var toSequenceData = (typeof toBindingSite !== 'undefined') ?
+                //~ toBindingSite.sequenceData.sort() : ['?-?'];
+        //~ var seqLinkId = fromSequenceData.toString() + ':' +
+                //~ this.fromInteractor.id + ' to ' +
+                //~ toSequenceData.toString() + ':' + this.toInteractor.id;
+//~ //        console.log(seqLinkId);
+        //~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
+        //~ if (typeof sequenceLink === 'undefined') {
+            //~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
+            //~ this.sequenceLinks.set(seqLinkId, sequenceLink);
+        //~ }
+        //~ sequenceLink.addEvidence(interaction);
+    //~ } else {
         var seqLinkId = '?-?:' +
-                this.fromInteractor.id + ' to ' +
-                '?-?:' + this.toInteractor.id;
+                this.interactors[0].id + ' to ' +
+                '?-?:' + this.interactors[0].id;
 //        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
@@ -93,7 +96,7 @@ UnaryLink.prototype.addEvidence = function(interaction) {
             this.sequenceLinks.set(seqLinkId, sequenceLink);
         }
         sequenceLink.addEvidence(interaction);
-    }
+    //~ }
 };
 
 UnaryLink.prototype.initSVG = function() {
@@ -106,13 +109,13 @@ UnaryLink.prototype.initSVG = function() {
 		};
     }
     
-         var path = this.fromInteractor.getAggregateSelfLinkPath();
-        this.line = document.createElementNS(xiNET.svgns, "path");
-        this.line.setAttribute('d', path);
-        this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-        this.highlightLine.setAttribute('d', path);
-        this.thickLine = document.createElementNS(xiNET.svgns, 'path');
-        this.thickLine.setAttribute('d', path);
+	var path = this.fromInteractor.getAggregateSelfLinkPath();
+	this.line = document.createElementNS(xiNET.svgns, "path");
+	this.line.setAttribute('d', path);
+	this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+	this.highlightLine.setAttribute('d', path);
+	this.thickLine = document.createElementNS(xiNET.svgns, 'path');
+	this.thickLine.setAttribute('d', path);
    
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
@@ -158,10 +161,7 @@ UnaryLink.prototype.initSVG = function() {
         self.touchStart(evt);
     };
     
-    this.thickLine.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.thickLine.onmousedown = function(evt) {
+   this.thickLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
     this.thickLine.onmouseover = function(evt) {
@@ -170,52 +170,32 @@ UnaryLink.prototype.initSVG = function() {
     this.thickLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+	this.thickLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
+    this.isSelected = false;
 };
 
-UnaryLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false;
-    }
+UnaryLink.prototype.showHighlight = function(show) {
     if (this.shown) {
+		if (this.notSubLink === true){
+			this.highlightInteractors(show);
+		}
         if (show) {
-			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			if (this.isSelected == false) {
+			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+			//~ if (this.isSelected === false) {
 				this.highlightLine.setAttribute("stroke-opacity", "0");
-			}
-			
+			//~ }			
         }
     }
-};
-
-UnaryLink.prototype.getFilteredEvidences = function() {
-    var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
-    // use map to eliminate duplicates 
-    // (which result from linked features resulting in multiple SequenceLinks for single interaction)
-    var filteredEvids = d3.map();
-    for (var i = 0; i < seqLinkCount; i++) {
-        var seqLink = seqLinks[i];
-        var seqLinkEvids = seqLink.getFilteredEvidences();
-        var seqLinkEvidCount = seqLinkEvids.length;
-        for (var j = 0; j < seqLinkEvidCount; j++) {
-            filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
-        }
-    }
-    return filteredEvids.values();
 };
 
 UnaryLink.prototype.check = function() {
-	
-	//if (participants.length !== 2) {//TEMP
-	if (!this.fromInteractor) {//TEMP
-		return false;
-	}
-
-	
-    var seqLinks = this.sequenceLinks.values();
+	var seqLinks = this.sequenceLinks.values();
     var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
     // or self-interactors are hidden and this is self interactor
@@ -306,53 +286,29 @@ UnaryLink.prototype.check = function() {
     }
 };
 
-UnaryLink.prototype.dashedLine = function(dash) {
-    //if (typeof this.line === 'undefined') {
-    //    this.initSVG();
-    //}
-    if (dash){// && !this.dashed) {
-        this.dashed = true;
-        //~ if (this.intra === true) {
-			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-		//~ } else {
-			//~ this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
-		//~ }
-    }
-    else if (!dash){// && this.dashed) {
-        this.dashed = false;
-        this.line.removeAttribute("stroke-dasharray");
-    }
-};
+//~ UnaryLink.prototype.dashedLine = function(dash) {
+    //~ if (dash){// && !this.dashed) {
+        //~ this.dashed = true;
+        //~ this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+    //~ }
+    //~ else if (!dash){// && this.dashed) {
+        //~ this.dashed = false;
+        //~ this.line.removeAttribute("stroke-dasharray");
+    //~ }
+//~ };
 
 UnaryLink.prototype.show = function() {
     if (this.xlv.initComplete) {
 		// resembles Refresh.js, scale() function
         if (!this.shown) {
             this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
-                //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-
-                //~ if (BinaryLink.maxNoResidueLinks > 1) {
-                    //~ this.thickLine.setAttribute("transform", "translate(" +
-                        //~ this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
-                        //~ + " scale(" + (this.xlv.z) + ")");
-                    //~ this.xlv.p_pLinksWide.appendChild(this.thickLine);
-                //~ }
-				this.line.setAttribute("transform", "translate(" + this.fromInteractor.x
-						+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
-				this.highlightLine.setAttribute("transform", "translate(" + this.fromInteractor.x
-						+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
-
-                //~ this.fromProtein.lowerGroup.appendChild(this.highlightLine);
-                //~ this.fromProtein.lowerGroup.appendChild(this.line);
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.p_pLinks.appendChild(this.line);
+			this.line.setAttribute("transform", "translate(" + this.fromInteractor.x
+					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
+			this.highlightLine.setAttribute("transform", "translate(" + this.fromInteractor.x
+					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
+			this.xlv.highlights.appendChild(this.highlightLine);
+			this.xlv.p_pLinks.appendChild(this.line);
         }
-        //~ if (BinaryLink.maxNoResidueLinks > 1) {
-                //~ this.thickLine.setAttribute("stroke-width", this.w);
-        //~ }
     }
 };
 
@@ -360,56 +316,19 @@ UnaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         //TODO: be more selective about when to show 'thickLine'
-        //~ if (ProteinLink.maxNoResidueLinks > 1) {
-            //~ this.xlv.p_pLinksWide.removeChild(this.thickLine);
-        //~ }
+        // if (ProteinLink.maxNoResidueLinks > 1) {
+            // this.xlv.p_pLinksWide.removeChild(this.thickLine);
+        // }
         this.xlv.highlights.removeChild(this.highlightLine);
         this.xlv.p_pLinks.removeChild(this.line);
 	}
 };
 
-/*
-ProteinLink.prototype.setLineCoordinates = function(interactor) {
-	//a defensive check
-    if (interactor.x == null || interactor.y == null) {
-        return;
-    }
-	//if not linker modified pep
-	if (this.getToProtein() !== null){
-		//don't waste time changing DOM if this not visible
-		if (this.shown) {
-			if (this.getFromProtein() === interactor) {
-						this.line.setAttribute("x1", interactor.x);
-						this.line.setAttribute("y1", interactor.y);
-						//                    if (moveHighlight == false){
-						this.highlightLine.setAttribute("x1", interactor.x);
-						this.highlightLine.setAttribute("y1", interactor.y);
-						//                    }
-						//                    if ( this.thickLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
-						this.thickLine.setAttribute("x1", interactor.x);
-						this.thickLine.setAttribute("y1", interactor.y);
-			}
-			else if (this.getToProtein() === interactor) {
-						this.line.setAttribute("x2", interactor.x);
-						this.line.setAttribute("y2", interactor.y);
-						//                    if (moveHighlight == false){
-						this.highlightLine.setAttribute("x2", interactor.x);
-						this.highlightLine.setAttribute("y2", interactor.y);
-						//                    }
-						//                    if ( this.thickLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
-						this.thickLine.setAttribute("x2", interactor.x);
-						this.thickLine.setAttribute("y2", interactor.y);
-						//                    }
-			}
-		}
-	}
-}
-*/
-UnaryLink.prototype.getOtherEnd = function(protein) {//this makes no sense :)
-    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
-};
-
 UnaryLink.prototype.setLinkCoordinates = function(interactor) {
+	//actually don't currently need to do anything here,
+	//interactor.setPosition is doing it for self links
+	//TODO: tidy this up
+	
     //~ if (this.shown) {//don't waste time changing DOM if link not visible
 		//~ this.line.setAttribute("x1", interactor.x);
 		//~ this.line.setAttribute("y1", interactor.y);

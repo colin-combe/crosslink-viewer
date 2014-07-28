@@ -113,14 +113,13 @@ NaryLink.prototype.initSVG = function() {
 };
 
 NaryLink.prototype.showHighlight = function(show) {
-	//we will iterate through all interactors and sublinks and highlight them
-	var interactors = this.interactors;
-	for (var i = 0; i < interactors.length; i++) {
-		interactors[i].showHighlight(show);
-	}
-	var subLinks = this.subLinks.values();
-	for (var s = 0; s < subLinks.length; s++) {
-		subLinks[s].showHighlight(show);
+	if (this.shown) {
+		//we will iterate through all interactors and sublinks and highlight them
+		this.highlightInteractors(show);
+		var subLinks = this.subLinks.values();
+		for (var s = 0; s < subLinks.length; s++) {
+			subLinks[s].showHighlight(show);
+		}
 	}
 };
 

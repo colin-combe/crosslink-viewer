@@ -48,14 +48,14 @@ SequenceLink.prototype.addEvidence = function(interaction) {
         //~ to = interaction.source;
     //~ }
 
-    if (typeof from.bindingSites !== 'undefined') {
-        this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
-        //    fromBindingSite = from.bindingSites[0];
-    }
-    if (typeof to.bindingSites !== 'undefined') {
-        this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
-        //    toBindingSite = to.bindingSites[0];
-    }
+    //~ if (typeof from.bindingSites !== 'undefined') {
+        //~ this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
+        //~ //    fromBindingSite = from.bindingSites[0];
+    //~ }
+    //~ if (typeof to.bindingSites !== 'undefined') {
+        //~ this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
+        //~ //    toBindingSite = to.bindingSites[0];
+    //~ }
 
 //    if (typeof from.pointMutations !== 'undefined') {
 //        this.fromInteractor.addFeature(from.pointMutations[0]);

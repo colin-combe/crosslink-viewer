@@ -43,10 +43,10 @@ xiNET.Controller.prototype.scale = function() {
                     if (protLink.fromInteractor.form === 0 && protLink.toInteractor.form === 0) {
                         protLink.line.setAttribute("stroke-width", this.z * xiNET.linkWidth);
                         protLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                        protLink.fatLine.setAttribute("stroke-width", this.z * protLink.w);
-                        if (protLink.ambig) {
-                            protLink.dashedLine(true); //rescale spacing of dashes
-                        }
+                        //~ protLink.fatLine.setAttribute("stroke-width", this.z * protLink.w);
+                        //~ if (protLink.ambig) {
+                            //~ protLink.dashedLine(true); //rescale spacing of dashes
+                        //~ }
                     }
                     else {
                         //inter protein res links
@@ -56,9 +56,9 @@ xiNET.Controller.prototype.scale = function() {
                           //  if (resLink.check()) {
                                 protLink.sequenceLinks.values()[rl].glyph.setAttribute("stroke-width", this.z * xiNET.linkWidth);
                                 protLink.sequenceLinks.values()[rl].highlightGlyph.setAttribute("stroke-width", this.z * 10);
-                                if (resLink.ambig) {
-                                    resLink.dashedLine(true); //rescale spacing of dashes
-                                }
+                                //~ if (resLink.ambig) {
+                                    //~ resLink.dashedLine(true); //rescale spacing of dashes
+                                //~ }
                           //  }
                         }
                     }

@@ -63,6 +63,12 @@ xiNET.Link.prototype.initInteractors = function(interaction){
 		}
 	}
 }
+xiNET.Link.prototype.highlightInteractors = function(show){	
+	var interactors = this.interactors;
+	for (var i = 0; i < interactors.length; i++) {
+		interactors[i].showHighlight(show);
+	}
+}
 
 // event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Link.prototype.mouseDown = function(evt) {
@@ -133,7 +139,26 @@ xiNET.Link.prototype.showID = function() {
 
 xiNET.Link.prototype.toJSON = function() {
     return {
-        //~ evidences: this.evidences
+        evidences: this.evidences
     };
 };
+
+
+
+//~ BinaryLink.prototype.getFilteredEvidences = function() {
+    //~ var seqLinks = this.sequenceLinks.values();
+    //~ var seqLinkCount = seqLinks.length;
+    //~ // use map to eliminate duplicates 
+    //~ // (which result from linked features resulting in multiple SequenceLinks for single interaction)
+    //~ var filteredEvids = d3.map();
+    //~ for (var i = 0; i < seqLinkCount; i++) {
+        //~ var seqLink = seqLinks[i];
+        //~ var seqLinkEvids = seqLink.getFilteredEvidences();
+        //~ var seqLinkEvidCount = seqLinkEvids.length;
+        //~ for (var j = 0; j < seqLinkEvidCount; j++) {
+            //~ filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
+        //~ }
+    //~ }
+    //~ return filteredEvids.values();
+//~ };
 
