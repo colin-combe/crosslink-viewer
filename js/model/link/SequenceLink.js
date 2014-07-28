@@ -10,7 +10,7 @@
 SequenceLink.prototype = new xiNET.Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
     this.id = id;
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
     this.interactorLink = interactorLink;
     this.evidences = new Array();
     this.intra = false;
@@ -93,12 +93,12 @@ SequenceLink.prototype.initSVG = function() {
         var self = this;
         this.uncertainGlyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.xlv.res_resLinks.removeChild(self.highlightGlyph);
-            self.xlv.res_resLinks.appendChild(self.highlightGlyph);
-            self.xlv.res_resLinks.removeChild(self.glyph);
-            self.xlv.res_resLinks.appendChild(self.glyph);
-            self.xlv.res_resLinks.removeChild(self.uncertainGlyph);
-            self.xlv.res_resLinks.appendChild(self.uncertainGlyph);
+            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
+            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
+            self.ctrl.res_resLinks.removeChild(self.glyph);
+            self.ctrl.res_resLinks.appendChild(self.glyph);
+            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
+            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.uncertainGlyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -108,12 +108,12 @@ SequenceLink.prototype.initSVG = function() {
         };
         this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.xlv.res_resLinks.removeChild(self.highlightGlyph);
-            self.xlv.res_resLinks.appendChild(self.highlightGlyph);
-            self.xlv.res_resLinks.removeChild(self.glyph);
-            self.xlv.res_resLinks.appendChild(self.glyph);
-            self.xlv.res_resLinks.removeChild(self.uncertainGlyph);
-            self.xlv.res_resLinks.appendChild(self.uncertainGlyph);
+            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
+            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
+            self.ctrl.res_resLinks.removeChild(self.glyph);
+            self.ctrl.res_resLinks.appendChild(self.glyph);
+            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
+            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -176,7 +176,7 @@ SequenceLink.prototype.showID = function() {
             + ") to" + ' ' + toInt.name + " (" + toInt.accession
             + ")</strong></p><p><strong>" + this.id + "</strong></p>";
     linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
-    this.xlv.message(linkInfo);
+    this.ctrl.message(linkInfo);
 };
 
 //used when filter changed
@@ -246,37 +246,37 @@ SequenceLink.prototype.getFilteredEvidences = function() {
     var filteredEvids = new Array();
     for (var i = 0; i < evidCount; i++) {
         var evid = evids[i];
-        if ((this.xlv.hideExpanded === false || typeof evid.expansion === 'undefined')
-                && (typeof evid.score === 'undefined' || evid.score >= this.xlv.cutOff)) {
+        if ((this.ctrl.hideExpanded === false || typeof evid.expansion === 'undefined')
+                && (typeof evid.score === 'undefined' || evid.score >= this.ctrl.cutOff)) {
             filteredEvids.push(evid);
         }
     }
     return filteredEvids;
 };
 SequenceLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            this.glyph.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
-            this.uncertainGlyph.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
-            this.highlightGlyph.setAttribute("stroke-width", this.xlv.z * 10);
+            this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
+            this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
+            this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);
             this.setLinkCoordinates();
-            this.xlv.res_resLinks.appendChild(this.highlightGlyph);
-            this.xlv.res_resLinks.appendChild(this.glyph);
-            this.xlv.res_resLinks.appendChild(this.uncertainGlyph);
+            this.ctrl.res_resLinks.appendChild(this.highlightGlyph);
+            this.ctrl.res_resLinks.appendChild(this.glyph);
+            this.ctrl.res_resLinks.appendChild(this.uncertainGlyph);
         }
     }
 };
 SequenceLink.prototype.hide = function() {
-    if (this.xlv.initComplete) {
+    if (this.ctrl.initComplete) {
         if (this.shown) {
             this.shown = false;
-            this.xlv.res_resLinks.removeChild(this.glyph);
-            this.xlv.res_resLinks.removeChild(this.uncertainGlyph);
-            this.xlv.res_resLinks.removeChild(this.highlightGlyph);
+            this.ctrl.res_resLinks.removeChild(this.glyph);
+            this.ctrl.res_resLinks.removeChild(this.uncertainGlyph);
+            this.ctrl.res_resLinks.removeChild(this.highlightGlyph);
         }
     }
 };
@@ -391,14 +391,14 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             tRotRad = tRotRad - Math.PI;
         }
 
-        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.xlv.z),
-            fMid[1] - (30 * Math.cos(fRotRad) * this.xlv.z)];
+        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.ctrl.z),
+            fMid[1] - (30 * Math.cos(fRotRad) * this.ctrl.z)];
         if (fromInteractor.form === 0) {
             ftMid = fMid;
         }
 
-        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.xlv.z),
-            tMid[1] - (30 * Math.cos(tRotRad) * this.xlv.z)];
+        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.ctrl.z),
+            tMid[1] - (30 * Math.cos(tRotRad) * this.ctrl.z)];
         if (toInteractor.form === 0) {
             ttMid = tMid;
         }

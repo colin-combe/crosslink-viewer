@@ -17,7 +17,7 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.evidences = new Array();
     this.interactors = null;
     this.sequenceLinks = d3.map();
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
     this.fromInteractor = fromI; //its the object. not the ID number
     this.toInteractor = toI; //its the object. not the ID number
     this.ambig = false;
@@ -46,11 +46,11 @@ BinaryLink.prototype.addEvidence = function(interaction) {
     //u r here - going to need to set from/to from constructor
     //~ if (participants.length === 2) {//TEMP
     //~ if (participants[0].interactorRef < participants[1].interactorRef){
-		//~ this.fromInteractor = this.xlv.interactors.get(participants[0].interactorRef);
-		//~ this.toInteractor = this.xlv.interactors.get(participants[1].interactorRef); //its the object. not the ID number
+		//~ this.fromInteractor = this.ctrl.interactors.get(participants[0].interactorRef);
+		//~ this.toInteractor = this.ctrl.interactors.get(participants[1].interactorRef); //its the object. not the ID number
 	//~ } else {
-		//~ this.fromInteractor = this.xlv.interactors.get(participants[1].interactorRef);
-		//~ this.toInteractor = this.xlv.interactors.get(participants[0].interactorRef); //its the object. not the ID number
+		//~ this.fromInteractor = this.ctrl.interactors.get(participants[1].interactorRef);
+		//~ this.toInteractor = this.ctrl.interactors.get(participants[0].interactorRef); //its the object. not the ID number
 	//~ }
     var from = this.fromInteractor;
     var to = this.toInteractor
@@ -90,7 +90,7 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 //        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
-            sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
+            sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
             this.sequenceLinks.set(seqLinkId, sequenceLink);
         }
         sequenceLink.addEvidence(interaction);
@@ -101,7 +101,7 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 //        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
-            sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.xlv, interaction);
+            sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
             this.sequenceLinks.set(seqLinkId, sequenceLink);
         }
         sequenceLink.addEvidence(interaction);
@@ -215,7 +215,7 @@ BinaryLink.prototype.check = function() {
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
     //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.xlv.intraHidden && this.intra)
+            //~ || (this.ctrl.intraHidden && this.intra)
             //~ || this.hidden) {
         //~ //if both ends are blobs then hide interactor-level link
         //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
@@ -306,7 +306,7 @@ BinaryLink.prototype.check = function() {
     //~ }
     //~ if (dash) {// && !this.dashed) {
         //~ this.dashed = true;
-        //~ this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+        //~ this.line.setAttribute("stroke-dasharray", (4 * this.ctrl.z) + ", " + (4 * this.ctrl.z));
     //~ }
     //~ else if (!dash) {// && this.dashed) {
         //~ this.dashed = false;
@@ -315,22 +315,22 @@ BinaryLink.prototype.check = function() {
 //~ };
 
 BinaryLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    if (this.ctrl.initComplete) {
 // TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-			this.line.setAttribute("stroke-width", this.xlv.z * 1);
-			this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+			this.line.setAttribute("stroke-width", this.ctrl.z * 1);
+			this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
 			this.setLinkCoordinates(this.fromInteractor);
 			this.setLinkCoordinates(this.toInteractor);
 			if (this.thickLineShown) {
-				this.xlv.p_pLinksWide.appendChild(this.thickLine);
+				this.ctrl.p_pLinksWide.appendChild(this.thickLine);
 			}
-			this.xlv.highlights.appendChild(this.highlightLine);
-			this.xlv.p_pLinks.appendChild(this.line);
+			this.ctrl.highlights.appendChild(this.highlightLine);
+			this.ctrl.p_pLinks.appendChild(this.line);
 			if (this.thickLineShown) {
 				this.thickLine.setAttribute("stroke-width", this.w);
 			}
@@ -342,10 +342,10 @@ BinaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
 		if (this.thickLineShown) {
-			this.xlv.p_pLinksWide.removeChild(this.thickLine);
+			this.ctrl.p_pLinksWide.removeChild(this.thickLine);
 		}
-		this.xlv.highlights.removeChild(this.highlightLine);
-		this.xlv.p_pLinks.removeChild(this.line);
+		this.ctrl.highlights.removeChild(this.highlightLine);
+		this.ctrl.p_pLinks.removeChild(this.line);
     }
 };
 

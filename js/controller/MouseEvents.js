@@ -257,12 +257,12 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 			} //end of protein drag; do nothing
 		}
 		else if (rightclick) { //right click on background; show all hidden links
-			var links = this.proteinLinks.values();
-			var linkCount = links.length;
-			for (var l = 0; l < linkCount; l++) {
-				var link = links[l];
-				link.hidden = false;
-			}
+			//~ var links = this.proteinLinks.values();
+			//~ var linkCount = links.length;
+			//~ for (var l = 0; l < linkCount; l++) {
+				//~ var link = links[l];
+				//~ link.hidden = false;
+			//~ }
 			this.checkLinks();
 		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
 			this.clearSelection();

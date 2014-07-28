@@ -125,18 +125,18 @@ Interactor.prototype.meetsTextFilter = function(filterRegex, fields) {
     }
 
     var regex;
-    var countRegex = this.xlv.textFilterRegex.length;
+    var countRegex = this.ctrl.textFilterRegex.length;
     for (var r = 0; r < countRegex; r++) {
-        regex = this.xlv.textFilterRegex[r];
+        regex = this.ctrl.textFilterRegex[r];
         regex.lastIndex = 0;
         if (regex.test(searchString) === false) {
             return false;
         }
     }
     //NOTs
-    countRegex = this.xlv.textFilterRegexNOT.length;
+    countRegex = this.ctrl.textFilterRegexNOT.length;
     for (var r = 0; r < countRegex; r++) {
-        regex = this.xlv.textFilterRegexNOT[r];
+        regex = this.ctrl.textFilterRegexNOT[r];
         regex.lastIndex = 0;
         if (regex.test(searchString) === true) {
             return false;
@@ -242,26 +242,26 @@ xiNET.Controller.prototype.parkUnconnected = function() {
 xiNET.Controller.prototype.exportInteractors = function() {
     //    var myJSONText = JSON.stringify(this.interactors, null, '\t');
     //    myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
-    //    xlv.message(myJSONText, true);
+    //    this.message(myJSONText, true);
 
     var output = "";
     var prots = this.interactors.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
-        output += "xlv.addProtein('" + protein.id + "','"
+        output += "this.addProtein('" + protein.id + "','"
                 + protein.name + "','"
                 + protein.sequence + "','"
                 + "','"
                 + protein.accession + "');\n"
     }
-    xlv.message(output);
+    this.message(output);
 };
 
 xiNET.Controller.prototype.exportLinks = function() {
     var myJSONText = JSON.stringify(this.links, null, '\t');
     myJSONText = myJSONText.replace(/\\u0000/gi, '');//regex replaces a null char that appears in d3.map
-    xlv.message(myJSONText, true);
+    this.message(myJSONText, true);
 };
 
 xiNET.Controller.prototype.setCutOff = function(cutOff) {
@@ -314,8 +314,8 @@ xiNET.Controller.prototype.setMessageElement = function(e) {
 };
 
 function saveLayout() {
-    var layout = xlv.getLayout();
-    //        xlv.message("layout sent:" + layout, true);
+    var layout = this.getLayout();
+    //        this.message("layout sent:" + layout, true);
     var defaultDesc = this.currentLayoutName;
     var desc = '';
     while (desc === '' || desc === 'default') {
@@ -328,7 +328,7 @@ function saveLayout() {
             xmlhttp = new XMLHttpRequest();
         }
         var url = "./saveLayout.php";
-        var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
+        var params = "sid=" + this.sid + "&layout=" + encodeURIComponent(
             layout) + "&desc=" + desc;
         xmlhttp.open("POST", url, true);
         //Send the proper header information along with the request
@@ -339,8 +339,8 @@ function saveLayout() {
 
         xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                //                xlv.message("response:" + xmlhttp.responseText, true)
-                xlv.message("<br>Layout saved");
+                //                this.message("response:" + xmlhttp.responseText, true)
+                this.message("<br>Layout saved");
                 var select = document.getElementById('load_layout');
                 var optionlist = select.options;
                 for (var option = 0; option < optionlist.length; option++ )
@@ -366,22 +366,22 @@ function loadLayout(layoutDesc) {
     if (layoutDesc != '') {
         var xmlhttp = new XMLHttpRequest();
         var url = "../searches/getLayout.php";
-        var params = "sid=" + xlv.sid + "&desc=" + layoutDesc;
+        var params = "sid=" + this.sid + "&desc=" + layoutDesc;
         xmlhttp.open("POST", url, true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var response = xmlhttp.responseText;
-                xlv.message("response:" + response, true);
-                xlv.setLayout(response);
-                xlv.loadLayout();
-                //            var interactors = xlv.interactors.values();
+                this.message("response:" + response, true);
+                this.setLayout(response);
+                this.loadLayout();
+                //            var interactors = this.interactors.values();
                 //            var proteinCount = interactors.length;
                 //            for (var p = 0; p < proteinCount; p++) {
                 //                var prot = interactors[p];
                 //                prot.setAllLineCoordinates();
                 //            }
-                xlv.checkLinks();
+                this.checkLinks();
             }
         };
         xmlhttp.send(params);

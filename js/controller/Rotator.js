@@ -13,7 +13,7 @@
 
 function Rotator(proteinRegion, upperOrLower, xlvController) {
     var self = this;
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
     this.proteinOrPartThereof = proteinRegion;
     this.upperOrLower = upperOrLower;
 
@@ -78,7 +78,7 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
 
 Rotator.prototype.rotatorMouseOver = function (evt) {
 //    console.log("rotator mouseover (this = " + this.toString() + ')');
-    if (!this.xlv.rotating) {
+    if (!this.ctrl.rotating) {
         this.rotatorSymbol.setAttribute("visibility", "visible");
     }
 }
@@ -90,11 +90,11 @@ Rotator.prototype.rotatorMouseOut = function (evt) {
 }
 
 Rotator.prototype.rotatorMouseDown = function (evt) {
-    this.xlv.state = xiNET.Controller.ROTATING;
-    this.xlv.dragElement = this.proteinOrPartThereof;
-    var p = this.xlv.getEventPoint(evt);// seems to be correct, see above
-    var c = this.xlv.mouseToSVG(p.x, p.y);
-    this.xlv.whichRotator = this.upperOrLower;
+    this.ctrl.state = xiNET.Controller.ROTATING;
+    this.ctrl.dragElement = this.proteinOrPartThereof;
+    var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
+    var c = this.ctrl.mouseToSVG(p.x, p.y);
+    this.ctrl.whichRotator = this.upperOrLower;
     // rot.rotatorSymbol.setAttribute("visibility", "hidden");
     return false;
 }

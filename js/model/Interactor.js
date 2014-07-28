@@ -20,7 +20,7 @@ Interactor.transitionTime = 650;
 
 function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
     this.json = json;  
     this.experimentalFeatures = d3.map();  
 }
@@ -88,9 +88,9 @@ Interactor.prototype.initInteractor = function(sequence, name, description, size
     //annotation scheme
     this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
 	//rotators
-	//~ this.mouseoverControls = new MouseoverControls(this, this.xlv);
-	this.lowerRotator = new Rotator(this, 0, this.xlv);
-	this.upperRotator = new Rotator(this, 1, this.xlv);
+	//~ this.mouseoverControls = new MouseoverControls(this, this.ctrl);
+	this.lowerRotator = new Rotator(this, 0, this.ctrl);
+	this.upperRotator = new Rotator(this, 1, this.ctrl);
     
     var r = this.getBlobRadius();
 	
@@ -212,12 +212,12 @@ Interactor.prototype.initInteractor = function(sequence, name, description, size
     };
      
     this.upperGroup.ontouchstart = function(evt) {
-		self.xlv.message("protein touch start");
+		self.ctrl.message("protein touch start");
 		self.touchStart(evt);
     };
     //~ this.upperGroup.ontouchmove = function(evt) {};
 	//~ this.upperGroup.ontouchend = function(evt) {
-		//~ self.xlv.message("protein touch end");
+		//~ self.ctrl.message("protein touch end");
 		//~ self.mouseOut(evt);
     //~ };
     //~ this.upperGroup.ontouchenter = function(evt) {
@@ -236,56 +236,56 @@ Interactor.prototype.initInteractor = function(sequence, name, description, size
 };
 
 Interactor.prototype.mouseDown = function(evt) {
-           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.xlv.force !== undefined) {
-            this.xlv.force.stop();
+        if (this.ctrl.force !== undefined) {
+            this.ctrl.force.stop();
         }
-        this.xlv.dragElement = this;
+        this.ctrl.dragElement = this;
         //~ if (evt.ctrlKey === false) {
-            this.xlv.clearSelection();
+            this.ctrl.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.xlv.getEventPoint(evt);
-        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        var p = this.ctrl.getEventPoint(evt);
+        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
         //this.printAnnotationInfo();
         return false;
 };
 
 Interactor.prototype.touchStart = function(evt) {
-           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.xlv.force !== undefined) {
-            this.xlv.force.stop();
+        if (this.ctrl.force !== undefined) {
+            this.ctrl.force.stop();
         }
-        this.xlv.dragElement = this;
+        this.ctrl.dragElement = this;
         //~ if (evt.ctrlKey === false) {
-            this.xlv.clearSelection();
+            this.ctrl.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.xlv.getTouchEventPoint(evt);
-        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        var p = this.ctrl.getTouchEventPoint(evt);
+        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
         this.printAnnotationInfo();
         return false;
 };
 
 Interactor.prototype.mouseOver = function(evt) {
-        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.ctrl.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.xlv.setTooltip(this.tooltip);
+        this.ctrl.setTooltip(this.tooltip);
         return false;
 };
 
 Interactor.prototype.mouseOut = function(evt) {
-        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.ctrl.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(false);
-        this.xlv.hideTooltip();
+        this.ctrl.hideTooltip();
         return false;
 };
 
@@ -381,13 +381,13 @@ Interactor.prototype.showHighlight = function(show) {
 
 Interactor.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.xlv.selected.set(this.id, this);
+        this.ctrl.selected.set(this.id, this);
         this.isSelected = true;
 		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
-        this.xlv.selected.remove(this.id);
+        this.ctrl.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
@@ -400,11 +400,11 @@ Interactor.prototype.setRotation = function(angle) {
         this.rotation += 360;
 	}
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
     this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
 
-    var svg = this.xlv.svgElement;    
+    var svg = this.ctrl.svgElement;    
 	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
 	var labelTransform = d3.transform(transformToContainingGroup);
 	var sll = this.scaleLabels.length;
@@ -439,24 +439,24 @@ Interactor.prototype.setPosition = function(x, y) {
     this.y = y;
     if (this.form === 1 && this.isParked === false){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
     } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") ");
+				+ " scale(" + (this.ctrl.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") ");
+				+ " scale(" + (this.ctrl.z) + ") ");
 		if (this.internalLink != null) {
 			if (typeof this.internalLink.thickLine !== 'undefined') {
 				this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
 			}
 				this.internalLink.line.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
 				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
 		}
 	}
 };
@@ -470,7 +470,7 @@ Interactor.prototype.switchStickScale = function(svgP) {
         this.toStick();
     }
     else {
-        var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
+        var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
         if (pixPerRes > 8) {
             this.stickZoom = 0.5;//this looks like a hack
             this.setPosition(svgP.x, svgP.y);
@@ -497,9 +497,9 @@ Interactor.prototype.scale = function() {
     var protLength = (this.size) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-		var k = this.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
+		var k = this.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
 			.translate((-(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
-		this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
+		this.labelSVG.transform.baseVal.initialize(this.ctrl.svgElement.createSVGTransformFromMatrix(k));
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
@@ -553,13 +553,13 @@ Interactor.prototype.scale = function() {
 };
 
 Interactor.prototype.setScaleGroup = function() {
-	this.xlv.emptyElement(this.ticks);
+	this.ctrl.emptyElement(this.ticks);
 	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
     
     this.scaleLabels = new Array();
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
-	var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
+	var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
 	var tick = -1;
 	var lastTickX = this.getResXwithStickZoom(this.size);
 	
@@ -743,12 +743,12 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 
 	d3.select(this.upperGroup).transition().attr("transform", 
 			"translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")")
 			.duration(Interactor.transitionTime);
 	
 	d3.select(this.lowerGroup).transition().attr("transform", 
 		"translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")")
 			.duration(Interactor.transitionTime);
 	
 	 if (this.internalLink != null) {
@@ -822,8 +822,8 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.ctrl.svgElement.createSVGTransformFromMatrix(k));
 		
 		if (xInterpol !== null){
 			self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
@@ -1025,8 +1025,8 @@ Interactor.prototype.toStick = function() {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.ctrl.svgElement.createSVGTransformFromMatrix(k));
 	   
 	   	var rot = rotationInterpol(cubicInOut(interp));
 		self.setRotation(rot);
@@ -1140,14 +1140,14 @@ Interactor.prototype.getResXwithStickZoom = function(r) {
     return (r - (this.size/2)) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
  };
 
-//calculate the  coordinates of a residue (relative to this.xlv.container)
+//calculate the  coordinates of a residue (relative to this.ctrl.container)
 Interactor.prototype.getResidueCoordinates = function(r, yOff) {
     if (Interactor.UNITS_PER_RESIDUE === undefined)
         alert("Error: Interactor.UNITS_PER_RESIDUE is undefined");
     if (r === undefined)
         alert("Error: residue number is undefined");
   //  console.log(r * 1);
-    var x = this.getResXwithStickZoom(r * 1) * this.xlv.z;
+    var x = this.getResXwithStickZoom(r * 1) * this.ctrl.z;
     var y = 0;
     if (x !== 0) {
         var l = Math.abs(x);
@@ -1156,8 +1156,8 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
         x = l * Math.cos(rotRad + a);
         y = l * Math.sin(rotRad + a);
         if (typeof yOff !== 'undefined') {
-            x += yOff * this.xlv.z * Math.cos(rotRad + (Math.PI / 2));
-            y += yOff * this.xlv.z * Math.sin(rotRad + (Math.PI / 2));
+            x += yOff * this.ctrl.z * Math.cos(rotRad + (Math.PI / 2));
+            y += yOff * this.ctrl.z * Math.sin(rotRad + (Math.PI / 2));
         }
     }
     else {
@@ -1238,7 +1238,7 @@ Interactor.prototype.getSubgraph = function(subgraphs) {
         if (this.isParked === false) {
             this.subgraph = this.addConnectedNodes(subgraph);
         }
-        this.xlv.subgraphs.push(subgraph); 
+        this.ctrl.subgraphs.push(subgraph); 
     }
     return this.subgraph;
 };

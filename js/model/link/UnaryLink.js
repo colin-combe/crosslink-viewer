@@ -18,7 +18,7 @@ function UnaryLink(id, xlvController) {
     this.evidences = new Array();
     this.interactors = null;
     this.sequenceLinks = d3.map();
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
 
     //this.ambig = false;
     this.tooltip = this.id;
@@ -81,7 +81,7 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 //~ //        console.log(seqLinkId);
         //~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
         //~ if (typeof sequenceLink === 'undefined') {
-            //~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.xlv, interaction);
+            //~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
             //~ this.sequenceLinks.set(seqLinkId, sequenceLink);
         //~ }
         //~ sequenceLink.addEvidence(interaction);
@@ -92,7 +92,7 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 //        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
-            sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.xlv, interaction);
+            sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
             this.sequenceLinks.set(seqLinkId, sequenceLink);
         }
         sequenceLink.addEvidence(interaction);
@@ -201,7 +201,7 @@ UnaryLink.prototype.check = function() {
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
     //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.xlv.intraHidden && this.intra)
+            //~ || (this.ctrl.intraHidden && this.intra)
             //~ || this.hidden) {
         //~ //if both ends are blobs then hide interactor-level link
         //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
@@ -298,16 +298,16 @@ UnaryLink.prototype.check = function() {
 //~ };
 
 UnaryLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    if (this.ctrl.initComplete) {
 		// resembles Refresh.js, scale() function
         if (!this.shown) {
             this.shown = true;
 			this.line.setAttribute("transform", "translate(" + this.fromInteractor.x
-					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
+					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.ctrl.z) + ")");
 			this.highlightLine.setAttribute("transform", "translate(" + this.fromInteractor.x
-					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.xlv.z) + ")");
-			this.xlv.highlights.appendChild(this.highlightLine);
-			this.xlv.p_pLinks.appendChild(this.line);
+					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			this.ctrl.highlights.appendChild(this.highlightLine);
+			this.ctrl.p_pLinks.appendChild(this.line);
         }
     }
 };
@@ -317,10 +317,10 @@ UnaryLink.prototype.hide = function() {
         this.shown = false;
         //TODO: be more selective about when to show 'thickLine'
         // if (ProteinLink.maxNoResidueLinks > 1) {
-            // this.xlv.p_pLinksWide.removeChild(this.thickLine);
+            // this.ctrl.p_pLinksWide.removeChild(this.thickLine);
         // }
-        this.xlv.highlights.removeChild(this.highlightLine);
-        this.xlv.p_pLinks.removeChild(this.line);
+        this.ctrl.highlights.removeChild(this.highlightLine);
+        this.ctrl.p_pLinks.removeChild(this.line);
 	}
 };
 

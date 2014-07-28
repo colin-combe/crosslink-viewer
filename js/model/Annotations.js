@@ -102,7 +102,7 @@ Interactor.prototype.setKeywords = function(keywords) {
 
             var text = anno.name;
             annotPieSlice.name = text;
-            var xlv = this.xlv;
+            var xlv = this.ctrl;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
                 //    for magnifier experiment
@@ -119,8 +119,8 @@ Interactor.prototype.setKeywords = function(keywords) {
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
-    if (this.circDomains) this.xlv.emptyElement(this.circDomains);
-    if (this.rectDomains) this.xlv.emptyElement(this.rectDomains);
+    if (this.circDomains) this.ctrl.emptyElement(this.circDomains);
+    if (this.rectDomains) this.ctrl.emptyElement(this.rectDomains);
     
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
@@ -175,7 +175,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
             //~ annotMouseEventRect.name = text;
-            var xlv = this.xlv;
+            var xlv = this.ctrl;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
                 //    for magnifier experiment

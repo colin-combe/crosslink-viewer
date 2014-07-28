@@ -19,7 +19,7 @@ function NaryLink(id, xlvController) {
     this.evidences = new Array();//d3.map();//will need to eliminate duplicates
     this.interactors = null;// will be new Array();//need order for binary links so use array
     this.subLinks = d3.map();
-    this.xlv = xlvController;
+    this.ctrl = xlvController;
 
     //this.ambig = false;
     this.tooltip = this.id;
@@ -42,7 +42,7 @@ NaryLink.prototype.addEvidence = function(interaction) {
         
     for (var pi = 0; pi < interaction.participants.length; pi++){
 		var sourceID = interaction.participants[pi].interactorRef;
-		var sourceInteractor = this.xlv.interactors.get(sourceID);
+		var sourceInteractor = this.ctrl.interactors.get(sourceID);
 				
 		var bindingSites = interaction.participants[pi].bindingSites;
 		if (bindingSites){
@@ -52,8 +52,8 @@ NaryLink.prototype.addEvidence = function(interaction) {
 				var bindingSite = bindingSites[bsi];
 				if (bindingSite.linkedFeatures){
 					for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-						var target = this.xlv.features.get(bindingSite.linkedFeatures[fi]); 
-						var targetInteractor = this.xlv.interactors.get(target.interactor);
+						var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
+						var targetInteractor = this.ctrl.interactors.get(target.interactor);
 						var linkID, fromInteractor, toInteractor;	
 						// these links are undirected and should have same ID regardless of which way round 
 						// source and target are
@@ -69,17 +69,17 @@ NaryLink.prototype.addEvidence = function(interaction) {
 						
 					}
 										
-					var link = this.xlv.links.get(linkID);
+					var link = this.ctrl.links.get(linkID);
 					if (typeof link === 'undefined') {
 						if (fromInteractor === toInteractor){
-							link = new UnaryLink(linkID, this.xlv);
+							link = new UnaryLink(linkID, this.ctrl);
 							fromInteractor.addLink(link);
 						}else {
-							link = new BinaryLink(linkID, this.xlv, fromInteractor,toInteractor);
+							link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
 						fromInteractor.addLink(link);
 						toInteractor.addLink(link);
 						}
-						this.xlv.links.set(linkID, link);
+						this.ctrl.links.set(linkID, link);
 
 					}
 					this.subLinks.set(linkID, link);
@@ -151,7 +151,7 @@ NaryLink.prototype.check = function() {
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
     //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.xlv.intraHidden && this.intra)
+            //~ || (this.ctrl.intraHidden && this.intra)
             //~ || this.hidden) {
         //~ //if both ends are blobs then hide interactor-level link
         //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
@@ -237,15 +237,15 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.rect === 'undefined') {
                 this.initSVG();
             }
-			this.rect.setAttribute("stroke-width", this.xlv.z * 1);
+			this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
 			this.setLinkCoordinates();
-			this.xlv.naryLinks.appendChild(this.rect);
+			this.ctrl.naryLinks.appendChild(this.rect);
 		}
     }
 };
@@ -254,10 +254,10 @@ NaryLink.prototype.hide = function() {
     //~ if (this.shown) {
         //~ this.shown = false;
 		//~ if (this.thickLineShown) {
-			//~ this.xlv.p_pLinksWide.removeChild(this.thickLine);
+			//~ this.ctrl.p_pLinksWide.removeChild(this.thickLine);
 		//~ }
-		//this.xlv.highlights.removeChild(this.highlightLine);
-		//~ this.xlv.p_pLinks.removeChild(this.rect);
+		//this.ctrl.highlights.removeChild(this.highlightLine);
+		//~ this.ctrl.p_pLinks.removeChild(this.rect);
     //~ }
 };
 
