@@ -3,13 +3,19 @@
  * =========================================================== */
 
 body {
+/*
+    margin-left:240px;
+*/
     padding: 0px;
-    font-family: "Lato", sans-serif;  /* Better Helvetica */
+    font-family: "Lato", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;  /* Better Helvetica */
 }
 
 html, body, #outerDiv  {
     height: 100%;
     width: 100%;
+/*
+    min-height: 700px;
+*/
 }
 
 /* ===========================================================
@@ -43,24 +49,22 @@ input, select, button {
 
 #infoButton {
 	float:right;
-	color: #091D42;
-	background: #fff;
+	color: black;
+	background: #ffff99;
 	width: 120px;
 	position: fixed;
 	z-index: 20;
-    margin-top: 0px;
-	right:10px;
-	border: 1px solid black;
-}
-
-#infoButton:hover {
-    background: #ddd;
+	right:20px;
 }
 
 .controls {
-    position: relative;
+    position: fixed;
     top: 0px;
-    text-align: center;
+/*
+    left: 250px;
+    right: 20px;
+*/
+    text-align: left;
     height: 60px;
     z-index: 20;
     background-color:#fff;
@@ -108,7 +112,7 @@ input, select, button {
     width: 480px;
 }
 
-#debug1 {
+#cutoffLabel {
     display:inline-block;
 /*
     width:140px;
@@ -117,7 +121,7 @@ input, select, button {
 
 .scoreLabel {
     display:inline-block;
-    color: #091D42;
+    color: #34495e;
 }
 
 .info{
@@ -144,18 +148,22 @@ input, select, button {
     width: 500px;
     top: 100%;
     left: -10px;
-    border: none;
+/*
+    color: #fff;
+*/
     z-index: 10;
     padding: 20px;
     margin-top: 60px;
     line-height: 2;
     text-align: left;
     display: none;
+    
+    border-radius: 0px 20px 20px 0px;
 }
 
 .overlay-box a:hover {
     color: #fff;
-    background-color: #9AB4CB;
+    background-color: #16A085;
     padding: 2px 0px 2px 0px;
 }
 
@@ -171,6 +179,10 @@ input, select, button {
 	right: auto;
 	top: 10px;
 	position: relative;
+/*
+	margin-left: auto;
+	margin-right: auto;
+*/
 	width: 100%;
 	border-collapse: collapse;
     background-color: rgba(255, 255, 255, 1);
@@ -179,15 +191,15 @@ input, select, button {
 }
 
 .overlay-box th {
-	font-size: 1.2em;
-	font-weight: 700;
-	color: #091D4A;
+	font-size: 14px;
+	font-weight: normal;
+	color: #039;
 	padding: 10px 8px;
     border: 0px;
 }
 
 .overlay-box thead td {
-    color: #091D42;
+    color: #34495E;
 }
 
 .overlay-box td {
@@ -195,27 +207,14 @@ input, select, button {
 	padding: 9px 8px 0px 8px;
 	border: 0px solid #eee;
 }
-.overlay-box p {
-    font-size: 1.2em;
-    line-height: 1.5em;
-}
 
-.overlay-box tbody tr:hover td {
-	color: #fff;
-	background-color: #091D42;
+.overlay-box  tbody tr:hover td {
+	color: #009;
+	background-color:#ECF0F1;
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
     -ms-transition: all 200ms ease;
     -o-transition: all 200ms ease;
 	transition: all 200ms ease;
 }
-#networkContainer {
-    	-webkit-transform: translate3d(0, 0, 0);
-        -webkit-backface-visibility: hidden;
-    	-webkit-perspective: 1000;
-}
-.overlay-box {
-    color: #fff;
-    background: rgba(9, 29, 66, 0.9);
-    border-top: 20px solid rgba(9, 29, 66, 0.9);
-}
+
