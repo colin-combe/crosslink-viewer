@@ -6,6 +6,8 @@
 //		ProteinLink.js
 // 		the class representing a protein-protein link
 
+"use strict";
+
 //static variable used to calculate width of the background line
 ProteinLink.maxNoResidueLinks = 0;
 
@@ -17,7 +19,7 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.xlv = xlvController;
     this.fromProtein = fromP; //its the object. not the ID number
     this.toProtein = toP; //its the object. not the ID number
-    this.intra = false;
+    this.intra = false;// TODO: remove this
     if (this.fromProtein === this.toProtein) {
         this.intra = true;
     }
@@ -32,19 +34,20 @@ function ProteinLink(id, fromP, toP, xlvController) {
 }
 
 ProteinLink.prototype.initSVG = function() {
+    function trig(radius, angleDegrees) {
+		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		var radians = (angleDegrees / 360) * Math.PI * 2;
+		return {
+			x: (radius * Math.cos(radians)),
+			y: -(radius * Math.sin(radians))
+		};
+    }
+    
     if (!this.intra) {
         this.line = document.createElementNS(xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(xiNET.svgns, "line");
         this.fatLine = document.createElementNS(xiNET.svgns, "line");
     } else {
-        function trig(radius, angleDegrees) {
-            //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-            var radians = (angleDegrees / 360) * Math.PI * 2;
-            return {
-                x: (radius * Math.cos(radians)),
-                y: -(radius * Math.sin(radians))
-            };
-        }
         var path = this.fromProtein.getAggregateSelfLinkPath();
         this.line = document.createElementNS(xiNET.svgns, "path");
         this.line.setAttribute('d', path);
@@ -81,6 +84,10 @@ ProteinLink.prototype.initSVG = function() {
     this.line.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.line.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -90,6 +97,10 @@ ProteinLink.prototype.initSVG = function() {
     this.highlightLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
+    this.highlightLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    
     this.fatLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -101,6 +112,9 @@ ProteinLink.prototype.initSVG = function() {
     };
     this.fatLine.onmouseout = function(evt) {
         self.mouseOut(evt);
+    };
+    this.fatLine.ontouchstart = function(evt) {
+        self.touchStart(evt);
     };
     
     this.isSelected = false;
@@ -208,24 +222,29 @@ ProteinLink.prototype.showID = function() {
         for (var i = 0; i < resLinkCount; i++) {
 			var resLink = resLinks[i];
 			var resLinkMeetsCriteria = false;
-			var mCount = resLink.matches.length;
-			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m][0];
-				if (match.meetsFilterCriteria()) {
-					if (resLinkMeetsCriteria === false) {
-						resLinkMeetsCriteria = true;
-						filteredResLinks.push(resLink);
-					}
-					filteredMatches.set(match.id);
-					if (match.isAmbig()) {
-						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+			if (resLink.matches) {
+				var mCount = resLink.matches.length;
+				for (var m = 0; m < mCount; m++) {
+					var match = resLink.matches[m][0];
+					if (match.meetsFilterCriteria()) {
+						if (resLinkMeetsCriteria === false) {
+							resLinkMeetsCriteria = true;
+							filteredResLinks.push(resLink);
+						}
+						filteredMatches.set(match.id);
+						if (match.isAmbig()) {
+							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+							}
+						}
+						else {
+							this.ambig = false;
 						}
 					}
-					else {
-						this.ambig = false;
-					}
 				}
+			}
+			else {
+				filteredResLinks.push(resLink);
 			}
         }
 		var filteredResLinkCount = filteredResLinks.length;
@@ -356,27 +375,32 @@ ProteinLink.prototype.check = function() {
 		for (var i = 0; i < resLinkCount; i++) {
 			var resLink = resLinks[i];
 			var resLinkMeetsCriteria = false;
-			var mCount = resLink.matches.length;
-			for (var m = 0; m < mCount; m++) {
-				var match = resLink.matches[m][0];
-				if (match.meetsFilterCriteria()) {
-					if (match.hd === true) {
-						this.hd = true;
-					}
-					if (resLinkMeetsCriteria === false) {
-						resLinkMeetsCriteria = true;
-						filteredResLinks.push(resLink);
-					}
-					filteredMatches.set(match.id);
-					if (match.isAmbig()) {
-						for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-							altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+			if (resLink.matches){
+				var mCount = resLink.matches.length;
+				for (var m = 0; m < mCount; m++) {
+					var match = resLink.matches[m][0];
+					if (match.meetsFilterCriteria()) {
+						if (match.hd === true) {
+							this.hd = true;
+						}
+						if (resLinkMeetsCriteria === false) {
+							resLinkMeetsCriteria = true;
+							filteredResLinks.push(resLink);
+						}
+						filteredMatches.set(match.id);
+						if (match.isAmbig()) {
+							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
+								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
+							}
+						}
+						else {
+							this.ambig = false;
 						}
 					}
-					else {
-						this.ambig = false;
-					}
 				}
+			}
+			else {
+				filteredResLinks.push(resLink);
 			}
 		}
 		var filteredResLinkCount = filteredResLinks.length;

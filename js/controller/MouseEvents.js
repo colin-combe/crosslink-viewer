@@ -5,6 +5,8 @@
 //
 //		MouseEvents.js
 
+"use strict";
+
 //static var's signifying Controller's status
 xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
@@ -19,7 +21,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 xiNET.Controller.prototype.initMouseEvents = function() {
     //add listeners
     var self = this;
-   this.svgElement.onmousedown = function(evt) {
+    this.svgElement.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
     this.svgElement.onmousemove = function(evt) {
@@ -33,25 +35,7 @@ xiNET.Controller.prototype.initMouseEvents = function() {
     this.svgElement.onmouseout = function(evt) {
         self.hideTooltip(evt);
     };
-    	
-    //~ //touchstart
-    //~ this.svgElement.ontouchstart = function(evt) {
-        //~ self.mouseDown(evt);
-         //~ self.preventDefaultsAndStopPropagation(evt);
-   //~ 
-    //~ };
-    //~ //touchmove
-    //~ this.svgElement.ontouchmove = function(evt) {
-        //~ self.mouseMove(evt);
-         //~ self.preventDefaultsAndStopPropagation(evt);
-   //~ 
-    //~ };//touchend
-    //~ this.svgElement.ontouchend = function(evt) {
-        //~ self.mouseUp(evt);
-         //~ self.preventDefaultsAndStopPropagation(evt);
-    //~ };
-    
-    
+     
 	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
 		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
@@ -59,14 +43,7 @@ xiNET.Controller.prototype.initMouseEvents = function() {
 	else if (document.addEventListener) { //WC3 browsers
 		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
 	}
-    
-     //for pinch gestures, e.g. to zoom	
-    // gesturestart, 
-    // gesturechange, 
-    // and gestureend
-    //http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch
-    //https://developer.apple.com/library/safari/documentation/UserExperience/Reference/GestureEventClassReference/GestureEvent/GestureEvent.html 
-    	  
+        	  
     this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
     this.marquee.setAttribute('class', 'marquee');
     this.marquee.setAttribute('fill', 'red');

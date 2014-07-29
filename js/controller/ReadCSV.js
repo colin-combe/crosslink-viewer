@@ -1,3 +1,5 @@
+"use strict";
+
 xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var rows = d3.csv.parseRows(csvContents);
     
@@ -14,6 +16,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var iPepSeq1 = headers.indexOf('PepSeq1');
     var iLinkPosition2 = headers.indexOf('LinkPos2');
     var iPepSeq2 = headers.indexOf('PepSeq2');
+    var iType = headers.indexOf('Type');//for xQuest looplinks and monolinks 
     
     //missing Protein column
     if (iProt1 === -1){
@@ -146,40 +149,57 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		for (var row = 1; row < countRows; row++) {
 			prot1 = rows[row][iProt1];
 			prot2 = rows[row][iProt2];
-				if (iId !== -1){
-					id = rows[row][iId];
-				}
-				else {
-					id = row;
-				}
-				if (iScore !== -1){
-					score = rows[row][iScore];
-				} 
-				var xQuestIdRegex = /(.*)-(.*)-a(\d*)-b(\d*)/;
-				//~ console.log(id);
-				var m = xQuestIdRegex.exec(id);
-				//~ console.log(m);
-				if (m !== null){
-					var pep1_seq = m[1], pep2_seq = m[2],
+			if (iId !== -1){
+				id = rows[row][iId];
+			}
+			else {
+				id = row;
+			}
+			if (iScore !== -1){
+				score = rows[row][iScore];
+			} 
+			var xQuestCrosslinkIdRegex = /(.*)-(.*)-a(\d*)-b(\d*)/; //only appiles to type 2 products (i.e. cross-linked peptides)
+			var xQuestOtherIdRegex = /(.*)-(.*)-(.*)/;
+			var m = xQuestCrosslinkIdRegex.exec(id);
+			var m2 = xQuestOtherIdRegex.exec(id);
+			if (m !== null){
+				var pep1_seq = m[1], pep2_seq = m[2],
 					linkPos1 = m[3] - 0, linkPos2 = m[4] - 0;
-					var peptidePositions1 = rows[row][iLinkPosition1].toString().split(/[;,]/);
-					for (var pp = 0; pp < peptidePositions1.length; pp++){
-						peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1 + 1;
-					}
-					var peptidePositions2 = rows[row][iLinkPosition2].toString().split(/[;,]/);
-					for (pp = 0; pp < peptidePositions2.length; pp++){
-						peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2 + 1;
-					}
-					
-					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
-									prot2, peptidePositions2.join(';'), 
-									id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
-				} else {
-					var m = rows[row];
-					xlv.addMatch(prot1, m[iRes1], prot2, m[iRes2], id, score,
-						m[iLinkPosition1], m[iLinkPosition2],
-						m[iPepSeq1],m[iPepSeq2]);
+				var peptidePositions1 = rows[row][iLinkPosition1].toString().split(/[;,]/);
+				for (var pp = 0; pp < peptidePositions1.length; pp++){
+					peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1 + 1;
 				}
+				var peptidePositions2 = rows[row][iLinkPosition2].toString().split(/[;,]/);
+				for (pp = 0; pp < peptidePositions2.length; pp++){
+					peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2 + 1;
+				}
+				xlv.addMatch(prot1,  peptidePositions1.join(';'), 
+								prot2, peptidePositions2.join(';'), 
+								id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
+			} else if (iType !== -1 && m2 !== null && (rows[row][iType] === "intralink" || rows[row][iType] === "monolink")) {
+				var pep1_seq = m2[1];
+				var linkPos1 = parseInt(m2[2].substring(1));
+				var peptidePositions1 = rows[row][iLinkPosition1].toString().split(/[;,]/);
+				for (var pp = 0; pp < peptidePositions1.length; pp++){
+					peptidePositions1[pp] = parseInt(peptidePositions1[pp]) - linkPos1 + 1;
+				}
+				if (rows[row][iType] === "intralink") {//its an internally linked peptide
+					var linkPos2 = parseInt(m2[3].substring(1));
+					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
+							null, null, 
+							id, score, linkPos1, linkPos2, pep1_seq, null);	
+				} else { //its a linker modified peptide
+					xlv.addMatch(prot1,  peptidePositions1.join(';'), 
+							null, null, 
+							id, score, linkPos1, null, pep1_seq, null);					
+				}				
+			}
+			else {
+				var m = rows[row];
+				xlv.addMatch(prot1, m[iRes1], prot2, m[iRes2], id, score,
+					m[iLinkPosition1], m[iLinkPosition2],
+					m[iPepSeq1],m[iPepSeq2]);
+			}
 		}
 		var protCount = xlv.proteins.values().length;
 		var prots = xlv.proteins.values();

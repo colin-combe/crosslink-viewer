@@ -1,61 +1,74 @@
-xiNET.Controller.prototype.autoLayout = function() {
+//    xiNET interaction viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+
+"use strict";
+
+xiNET.Controller.prototype.autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
-    var width = this.svgElement.parentNode.clientWidth;
-    var height = this.svgElement.parentNode.clientHeight;
-
+    if (!width) width = this.svgElement.parentNode.clientWidth;
+    if (!height) height = this.svgElement.parentNode.clientHeight;
+	
+	var self = this;
+	//Init subgraphs
+	//clear subgraphs
+	this.subgraphs.length = 0;
+	var prots = this.proteins.values();
+	var proteinCount = prots.length;
+	//~ for (var p = 0; p < proteinCount; p++) {
+		//~ var prot = prots[p];
+		//~ var park = true;
+		//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+			//~ var protLink = prot.proteinLinks.values()[ppl];
+			//~ if (protLink.getFilteredMatches().length > 0){
+				//~ if (this.intraHidden === false || 
+					//~ (this.intraHidden === true && protLink.intra != true)) {
+						//~ park = false;
+					//~ }
+			//~ }
+		//~ }
+		//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+			//~ // var protLink = prot.proteinLinks.values()[ppl];
+			//~ // if (protLink.getFilteredMatches().length > 0){
+				//~ // park = false;
+			//~ // }
+		//~ // }
+		//~ prot.setParked(park);
+	//~ }
+	for (var p = 0; p < proteinCount; p++) {
+		prots[p].subgraph = null;
+	}
+	//init subgraphs
+	for (var p = 0; p < proteinCount; p++) {
+		prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
+	}
+	//sort subgraphs by size
+	this.subgraphs.sort(function(a, b) {
+		return a.nodes.values().length - b.nodes.values().length;
+	});
+     
     if (proteinCount === 1) {
-        var protein = proteins[0];
+        var protein = prots[0];
         protein.setPosition(width / 2, height / 4 * 3);
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = proteins[0];
-        p1.setPosition(width / 2, height / 2);
-        var p2 = proteins[1];
-        p2.setPosition(width / 2, height - 32);
+        var p1 = prots[0];
+        p1.setPosition(width / 2, height * 0.3);
+        p1.setAllLineCoordinates();
+        var p2 = prots[1];
+        p2.setPosition(width / 2, height * 0.6);
+        p2.setAllLineCoordinates();
         return;
     }
     else {
-        var self = this;
-        //Init subgraphs
-        //clear subgraphs
-        this.subgraphs.length = 0;
-        var prots = this.proteins.values();
-        var proteinCount = prots.length;
-        //~ for (var p = 0; p < proteinCount; p++) {
-            //~ var prot = prots[p];
-            //~ var park = true;
-            //~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-				//~ var protLink = prot.proteinLinks.values()[ppl];
-				//~ if (protLink.getFilteredMatches().length > 0){
-					//~ if (this.intraHidden === false || 
-						//~ (this.intraHidden === true && protLink.intra != true)) {
-							//~ park = false;
-						//~ }
-				//~ }
-			//~ }
-			//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-				//~ // var protLink = prot.proteinLinks.values()[ppl];
-				//~ // if (protLink.getFilteredMatches().length > 0){
-					//~ // park = false;
-				//~ // }
-			//~ // }
-			//~ prot.setParked(park);
-        //~ }
-        for (var p = 0; p < proteinCount; p++) {
-            prots[p].subgraph = null;
-        }
-        //init subgraphs
-        for (var p = 0; p < proteinCount; p++) {
-            prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
-        }
-        //sort subgraphs by size
-        this.subgraphs.sort(function(a, b) {
-            return a.nodes.values().length - b.nodes.values().length;
-        });
-        //Sort subgraphs into linear and non-linear sets
+          //Sort subgraphs into linear and non-linear sets
         var linearGraphs = [];
         var nonLinearGraphs = [];
         var graphCount = this.subgraphs.length;

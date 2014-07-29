@@ -2,6 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+"use strict";
+
 
 //function PV_setAnnotations(annotSet){
 //        alert(annotSet);

@@ -1,3 +1,15 @@
+//		xiNET Cross-link Viewer
+//		Copyright 2013 Rappsilber Laboratory
+//
+//    	This product includes software developed at
+//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//		author: Colin Combe
+//		
+//		Link.js
+
+"use strict";
+
 //'superclass' for Protein, ResidueLink, ProteinLink
 xiNET.Link = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
@@ -9,8 +21,8 @@ xiNET.Link.prototype.mouseDown = function(evt) {
         this.xlv.force.stop();
     }
     this.xlv.dragElement = this;
-            this.xlv.clearSelection();
-            this.setSelected(true);
+    this.xlv.clearSelection();
+    this.setSelected(true);
     //store start location
     var p = this.xlv.getEventPoint(evt);// seems to be correct, see above
     this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
@@ -38,6 +50,22 @@ xiNET.Link.prototype.mouseOut = function(evt){
     //        }
     //    }
     this.xlv.hideTooltip();
+    return false;
+}
+
+xiNET.Link.prototype.touchStart = function(evt) {
+//    //console.log("clickable mouse down");
+    this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    //if a force layout exists then stop it
+    if (this.xlv.force !== undefined){
+        this.xlv.force.stop();
+    }
+    this.xlv.dragElement = this;
+            this.xlv.clearSelection();
+            this.setSelected(true);
+    //store start location
+    var p = this.xlv.getTouchEventPoint(evt);// seems to be correct, see above
+    this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
     return false;
 }
 

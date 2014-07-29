@@ -5,6 +5,8 @@
 //		
 //		Match.js
 
+"use strict";
+
 // TODO: for historical reasons the order of the parameters 
 // to this function is not that logical - should reorder them.
 function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
@@ -64,21 +66,22 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			this.xlv.manualValidatedFound = true;
 		}
 	}
-	
-	//protein IDs
-	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
-	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
-
+		
 	//tidy up IDs, leaves protIDs null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
+	var eliminateQuotes = /(['"])/g;
+	var split = /[;,]/g;
+	var capitalsOnly = /[^A-Z]/g;
 	function sanitiseProteinIDs(protIDs){
-		if (typeof protIDs  != 'undefined' && protIDs){
+		if (protIDs){
 			protIDs = protIDs.toString().trim();
 			if (protIDs !== '' && protIDs !== '-' && protIDs !== 'n/a'){
 				// eliminate all forms of quotation mark
-				// - sooner or later their going to screw up javascript, prob whilst trying to generate>parse JSON
-				protIDs = protIDs.toString().replace(/(['"])/g, '');
-				protIDs = protIDs.split(/[;,]/);			
+				// - sooner or later they're going to screw up javascript, prob whilst trying to generate>parse JSON
+				eliminateQuotes.lastIndex = 0;
+				protIDs = protIDs.replace(eliminateQuotes, '');
+				split.lastIndex = 0;
+				protIDs = protIDs.split(split);			
 				var protIDCount = protIDs.length
 				for (var p2 = 0; p2 < protIDCount; p2++ ){
 					protIDs[p2] = protIDs[p2].trim();
@@ -94,10 +97,16 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		return protIDs;
 	}
 
-	if (typeof pepSeq1 != 'undefined'){
+	//protein IDs
+	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
+	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
+
+
+	if (typeof pepSeq1 != 'undefined' && pepSeq1 != null){
 		pepSeq1 = pepSeq1.trim();
 		if (pepSeq1){
-			this.pepSeq1 = pepSeq1.replace(/[^A-Z]/g, '');	
+			capitalsOnly.lastindex = 0;
+			this.pepSeq1 = pepSeq1.replace(capitalsOnly, '');	
 		}
 		else{
 			this.pepSeq1 = null;
@@ -107,10 +116,11 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		this.pepSeq1 = null;
 	}
 
-	if (typeof pepSeq2 !== 'undefined'){
+	if (typeof pepSeq2 !== 'undefined' && pepSeq2 != null){
 		pepSeq2 = pepSeq2.trim();
 		if (pepSeq2){
-			this.pepSeq2 = pepSeq2.replace(/[^A-Z]/g, '');
+			capitalsOnly.lastindex = 0;
+			this.pepSeq2 = pepSeq2.replace(capitalsOnly, '');
 		} else {
 			this.pepSeq2 = null;
 		}
@@ -128,13 +138,15 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	// leaves positions null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"
 	function sanitisePositions(positions){
-		if (typeof positions  != 'undefined' && positions){
+		if (positions){
 			positions = positions.toString().trim();
 			if (positions !== '' && positions !== '-' && positions !== 'n/a'){
 				// eliminate all forms of quotation mark 
-				positions = positions.toString().replace(/(['"])/g, '');
+				eliminateQuotes.lastIndex = 0;
+				positions = positions.toString().replace(eliminateQuotes, '');
 				//; or , as seperator
-				positions = positions.split(/[;,]/);	
+				split.lastIndex = 0;
+				positions = positions.split(split);	
 				var posCount = positions.length;
 				for (var i2 = 0; i2 < posCount; i2++ ){
 					var pos = parseInt(positions[i2]);
@@ -284,7 +296,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
 		else {
 			//loop to produce all alternative linkage site combinations 
-			//(position1 count * position2 count alternative)
+			//(position1 count * position2 count alternatives)
 			for (var i = 0; i < linkPos1.length; i++) {
 				for (var j = 0; j < linkPos2.length; j++) {
 					// allowed, but undocumneted:
@@ -422,11 +434,11 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	}
 
 	//get or create residue link
-	resLink = link.residueLinks.get(residueLinkID);
+	var resLink = link.residueLinks.get(residueLinkID);
 	if (resLink === undefined) {
 		//WATCH OUT - residues need to be in correct order
 		if (p1ID === p2ID) {
-			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake?
+			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake? Already dealt with?
 				resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
 			} else {
 				resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);

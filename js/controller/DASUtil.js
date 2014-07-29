@@ -1,3 +1,11 @@
+//    xiNET cross-link viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+
+"use strict";
+
 xiNET.DASUtil = function(xlvController) {
     this.xlv = xlvController;
     this.dasServers = [
@@ -28,7 +36,9 @@ xiNET.DASUtil = function(xlvController) {
     ];
     //use sequential AJAX requests to download DAS annotations for all proteins
     //(issuing lots of AJAX request at once would clog things up)
-    this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
+    if (this.xlv.proteins.values()[0]) { //avoid crash if no proteins
+		this.lookup(this.xlv.proteins.values()[0], this.dasServers[0]);
+	}
 };
 
 xiNET.DASUtil.prototype.lookup = function(prot, server) {
@@ -44,7 +54,7 @@ xiNET.DASUtil.prototype.lookup = function(prot, server) {
             var message = "<p>FAILED " + server.name + " DAS lookup <strong>"
                     + prot.accession + "</strong> (name: " + prot.name
                     + " id:" + prot.id + ")</p>";
-//            self.xlv.message(message);
+			//self.xlv.message(message);
             //alert(message);
             self.nextDASQuery(prot, server);
         };
@@ -236,7 +246,7 @@ Protein.prototype.processDAS = function(serverName, das) {
                                 //for InterPro and Pfam swap category and method
                                 addPositionalFeature(method);
                             }
-                        } 
+                        }
                         else if (serverName === 'InterPro') {
                             if (
                                     method === 'GENE3D'
@@ -491,11 +501,11 @@ function updateMenus(xlv) {
     select.removeAttribute('disabled');
 
     //enable additonal text search checkboxes
-//    document.getElementById('notes').removeAttribute('disabled');
+	//    document.getElementById('notes').removeAttribute('disabled');
     //    document.getElementById('notes').setAttribute('checked', 'checked');
-//    document.getElementById('key_text').removeAttribute('disabled');
+	//    document.getElementById('key_text').removeAttribute('disabled');
     //    document.getElementById('key_text').setAttribute('checked', 'checked');
-//    document.getElementById('posFeat_text').removeAttribute('disabled');
+	//    document.getElementById('posFeat_text').removeAttribute('disabled');
   }
 //    document.getElementById('posFeat_text').setAttribute('checked', 'checked');
 //xlv.message(message);

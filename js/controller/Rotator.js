@@ -1,5 +1,15 @@
-// Rotator.js
-// see http://stackoverflow.com/questions/1369004/this-keyword-in-event-methods-when-using-javascript-prototype-object
+//    xiNET Cross-link Viewer
+//    Copyright 2013 Rappsilber Laboratory
+//
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//
+//    author: Colin Combe
+//
+//    Rotator.js
+//    see http://stackoverflow.com/questions/1369004/this-keyword-in-event-methods-when-using-javascript-prototype-object
+
+"use strict";
 
 function Rotator(proteinRegion, upperOrLower, xlvController) {
     var self = this;

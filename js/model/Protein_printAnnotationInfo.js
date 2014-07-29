@@ -5,6 +5,8 @@
 //		
 //		Protein_printAnnotationInfo.js
 
+"use strict";
+
 Protein.prototype.printAnnotationInfo = function() {
     var self = this;
     var message = "";
@@ -55,7 +57,7 @@ Protein.prototype.printAnnotationInfo = function() {
         //        + '</pre>';
     }
 
-    xlv.message(message);
+    this.xlv.message(message);
 
     function printProcessedDAS(processed, serverName) {
         message += "<h6>" + serverName + "</h6>";

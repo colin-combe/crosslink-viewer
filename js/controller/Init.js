@@ -1,9 +1,14 @@
-//		xiNET Cross-link Viewer
-//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//	  xiNET Cross-link Viewer
+//	  Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
-//		author: Colin Combe
+//    This product includes software developed at
+//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		Init.js
+//	  author: Colin Combe
+//
+//    Init.js
+
+"use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
 
@@ -213,17 +218,10 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
-xiNET.Controller.prototype.toJSON = function() {
-    return {
-        //        links: this.proteinLinks,
-        proteins: this.proteins
-    };
-};
-
 xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
-            text = JSON.stringify(text, null, '\t');
+            text = JSON.stringify(text, null, ' ');
             text = text.replace(/\\u0000/gi, '');
             preformatted = true;
         }
@@ -346,29 +344,34 @@ xiNET.Controller.prototype.init = function(width, height) {
         //make inital form sticks or blobs
         var proteins = this.proteins.values();
         var proteinCount = proteins.length;
+        for (var p = 0; p < proteinCount; p++) { //temp
+			var prot = proteins[p];
+            prot.setPosition(0, 0);
+		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-            //~ prot.initStick();//needed, todo - remove
             if (this.proteins.keys().length < 3) {
                 prot.toStick();
             }
             else {
                 prot.toBlob();
             }
-            prot.setPosition(0, 0);
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
         this.autoLayout(width, height);
     }
-//    this.message('#proteins: ' + this.proteins.values().length +
-//            '\n#protein - protein links: ' + this.proteinLinks.values().length);
+    this.message('Proteins: ' + this.proteins.values().length +
+            '. Protein-protein links: ' + this.proteinLinks.values().length);
 
     //temp
-//    this.geneNames = d3.map();
-//    this.getGeneName(0);
-	this.checkLinks();
+	//    this.geneNames = d3.map();
+	//    this.getGeneName(0);
+	//this.checkLinks();
     this.initMouseEvents();
+    if (typeof this.initTouchEvents === 'function'){
+		this.initTouchEvents();
+	}
 }
 
 
@@ -537,4 +540,12 @@ xiNET.Controller.prototype.loadLayout = function() {
         }
     }
     this.svgElement.unsuspendRedraw(suspendID);
+};
+
+
+xiNET.Controller.prototype.toJSON = function() {
+    return {
+        //        links: this.proteinLinks,
+        proteins: this.proteins
+    };
 };

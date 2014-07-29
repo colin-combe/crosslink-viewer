@@ -2,6 +2,8 @@
 
 //NOT CURRENTLY USED
 
+"use strict";
+
 function MouseoverControls(protein, xlvController) {
     var self = this;
     this.xlv = xlvController;

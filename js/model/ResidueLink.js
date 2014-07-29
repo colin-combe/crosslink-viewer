@@ -6,6 +6,8 @@
 //		ResidueLink.js
 // 		the class representing a residue-residue link
 
+"use strict";
+
 ResidueLink.prototype = new xiNET.Link();
 
 function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {
@@ -74,6 +76,10 @@ ResidueLink.prototype.initSVG = function() {
         this.line.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
+        this.line.ontouchstart = function(evt) {
+			self.touchStart(evt);
+		};
+
         this.highlightLine.onmousedown = function(evt) {
             self.mouseDown(evt);
         };
@@ -83,6 +89,9 @@ ResidueLink.prototype.initSVG = function() {
         this.highlightLine.onmouseout = function(evt) {
             self.mouseOut(evt);
         };
+        this.highlightLine.ontouchstart = function(evt) {
+			self.touchStart(evt);
+		};
     }
     if (this.intra === true) {
         //~ this.setUpCurve();
@@ -139,7 +148,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 		}
 		if (andAlternatives && this.ambig) {
 			//TODO: we want to highlight smallest possible set of alternatives?
-			var mc = this.matches.length;
+			var mc = this.matches? this.matches.length : 0;
 			for (var m = 0; m < mc; m++) {
 				var match = this.matches[m][0];
 				if (match.isAmbig()) {
@@ -246,7 +255,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
     this.hd = false;
     this.intraMolecular = false; //i.e. type 1, loop link, intra peptide, internally linked peptide, etc 
     var filteredMatches = new Array();
-    var count = this.matches.length;
+    var count = this.matches? this.matches.length : 0;
     for (var i = 0; i < count; i++) {
         var match = this.matches[i][0];
         if (match.meetsFilterCriteria()) {
@@ -276,13 +285,14 @@ ResidueLink.prototype.check = function(filter) {
         return false;
     }
     if (typeof this.matches === 'undefined' || this.matches == null) {
-        if (this.proteinLink.sc >= this.xlv.cutOff) {
-            this.show();
+        //~ if (this.proteinLink.sc >= this.xlv.cutOff) {
+            this.ambig = false;
+			this.show();
             return true;
-        } else {
-            this.hide();
-            return false;
-        }
+        //~ } else {
+            //~ this.hide();
+            //~ return false;
+        //~ }
     }
     var filteredMatches = this.getFilteredMatches();
     
