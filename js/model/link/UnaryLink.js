@@ -44,8 +44,71 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 		this.initSVG();
 	}    
            
-    
-    
+ 
+     for (var pi = 0; pi < interaction.participants.length; pi++){ //should only be one
+		var sourceID = interaction.participants[pi].interactorRef;
+		var sourceInteractor = this.ctrl.interactors.get(sourceID);
+		if (sourceInteractor === this.fromInteractor) { 
+							//~ || sourceIntercator === this.toInteractor ) {
+			//~ var reversed = (sourceIntercator === this.toInteractor);			
+			var bindingSites = interaction.participants[pi].bindingSites;
+			if (bindingSites){
+				var bsCount = bindingSites.length; //TODO: deal with self link with multiple binding sites
+				for (var bsi = 0; bsi < bsCount; bsi++){
+
+					var bindingSite = bindingSites[bsi];
+					var fromSequenceData = bindingSite.sequenceData;
+					if (!fromSequenceData) {
+						fromSequenceData = ['?-?'];
+					}
+					var toSequenceData =  fromSequenceData;
+						
+					fromSequenceData = d3.set(fromSequenceData).values();
+					fromSequenceData.sort();
+					toSequenceData = d3.set(toSequenceData).values();
+					toSequenceData.sort();
+					  
+					var seqLinkId = fromSequenceData.toString() + ':' +
+							this.fromInteractor.id + '><' +
+							toSequenceData.toString() + ':' + this.toInteractor.id;
+					
+															
+					console.log(seqLinkId);
+					var sequenceLink = this.sequenceLinks.get(seqLinkId);
+					if (typeof sequenceLink === 'undefined') {
+						sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
+						this.sequenceLinks.set(seqLinkId, sequenceLink);
+					}
+					sequenceLink.addEvidence(interaction);					
+				}
+			}
+			
+		}
+	}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    //~ var participants = interaction.participants;
+    //~ //u r here - going to need to set from/to from constructor
+    //~ // if (participants.length === 2) {//TEMP
+    //~ // if (participants[0].interactorRef < participants[1].interactorRef){
+		//~ // this.fromInteractor = this.ctrl.interactors.get(participants[0].interactorRef);
+		//~ // this.toInteractor = this.ctrl.interactors.get(participants[1].interactorRef); //its the object. not the ID number
+	//~ // } else {
+		//~ // this.fromInteractor = this.ctrl.interactors.get(participants[1].interactorRef);
+		//~ // this.toInteractor = this.ctrl.interactors.get(participants[0].interactorRef); //its the object. not the ID number
+	//~ // }
+    //~ var from = this.fromInteractor;
+    //~ var to = this.toInteractor
+       //~ 
     //~ var hasLinkedFeatures = false;
     //~ //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
     //~ //for time being one interaction can only result in at most one sequenceLink
@@ -86,19 +149,22 @@ UnaryLink.prototype.addEvidence = function(interaction) {
         //~ }
         //~ sequenceLink.addEvidence(interaction);
     //~ } else {
+		
+	if (this.sequenceLinks.values().length === 0) {
         var seqLinkId = '?-?:' +
-                this.interactors[0].id + ' to ' +
-                '?-?:' + this.interactors[0].id;
-//        console.log(seqLinkId);
+                this.fromInteractor.id + ' to ' +
+                '?-?:' + this.toInteractor.id;
+        console.log(seqLinkId);
         var sequenceLink = this.sequenceLinks.get(seqLinkId);
         if (typeof sequenceLink === 'undefined') {
             sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
             this.sequenceLinks.set(seqLinkId, sequenceLink);
         }
         sequenceLink.addEvidence(interaction);
-    //~ }
+    }
+    //~ 
+	//~ // }//end if participants.length === 2
 };
-
 UnaryLink.prototype.initSVG = function() {
 	function trig(radius, angleDegrees) {
 		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)

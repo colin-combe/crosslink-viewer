@@ -74,6 +74,7 @@ SequenceLink.prototype.initSVG = function() {
         this.highlightGlyph.setAttribute("stroke-linecap", "round");
         this.glyph.setAttribute("class", "link");
         this.glyph.setAttribute("fill", "#E08214");
+        this.glyph.setAttribute("opacity", "0.6");
         this.glyph.setAttribute("stroke", "#A08214");
         this.uncertainGlyph.setAttribute("class", "link");
         this.uncertainGlyph.setAttribute("fill", "#A01284");
