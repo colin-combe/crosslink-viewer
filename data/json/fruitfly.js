@@ -1,4 +1,5 @@
-var miJson = {
+var miJson = 
+{
    "data":[
       {
          "object":"interactor",

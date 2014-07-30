@@ -1,0 +1,378 @@
+var miJson = {
+   "data":[
+      {
+         "object":"interactor",
+         "id":"1",
+         "sequence":"MVEAIVEFDYQAQHDDELTISVGEIITNIRKEDGGWWEGQINGRRGLFPDNFVREIKKEMKKDPLTNKAPEKPLHEVPSGNSLLSSETILRTNKRGERRRRRCQVAFSYLPQNDDELELKVGDIIEVVGEVEEGWWEGVLNGKTGMFPSNFIKELSGESDELGISQDEQLSKSSLRETTGSESDGGDSSSTKSEGANGTVATAAIQPKKVKGVGFGDIFKDKPIKLRPRSIEVENDFLPVEKTIGKKLPATTATPDSSKTEMDSRTKSKDYCKVIFPYEAQNDDELTIKEGDIVTLINKDCIDVGWWEGELNGRRGVFPDNFVKLLPPDFEKEGNRPKKPPPPSAPVIKQGAGTTERKHEIKKIPPERPEMLPNRTEEKERPEREPKLDLQKPSVPAIPPKKPRPPKTNSLSRPGALPPRRPERPVGPLTHTRGDSPKIDLAGSSLSGILDKDLSDRSNDIDLEGFDSVVSSTEKLSHPTTSRPKATGRRPPSQSLTSSSLSSPDIFDSPSPEEDKEEHISLAHRGVDASKKTSKTVTISQVSDNKASLPPKPGTMAAGGGGPAPLSSAAPSPLSSSLGTAGHRANSPSLFGTEGKPKMEPAASSQAAVEELRTQVRELRSIIETMKDQQKREIKQLLSELDEEKKIRLRLQMEVNDIKKALQSK",
+         "type":{
+            "id":"MI:0326",
+            "name":"protein"
+         },
+         "organism":{
+            "taxid":"9606",
+            "common":"human",
+            "scientific":"Homo sapiens"
+         },
+         "identifier":{
+            "db":"uniprotkb",
+            "id":"Q96B97"
+         },
+         "label":"sh3k1_human"
+      },
+      {
+         "object":"interactor",
+         "id":"2",
+         "sequence":"MAGNVKKSSGAGGGSGSGGSGSGGLIGLMKDAFQPHHHHHHHLSPHPPGTVDKKMVEKCWKLMDKVVRLCQNPKLALKNSPPYILDLLPDTYQHLRTILSRYEGKMETLGENEYFRVFMENLMKKTKQTISLFKEGKERMYEENSQPRRNLTKLSLIFSHMLAELKGIFPSGLFQGDTFRITKADAAEFWRKAFGEKTIVPWKSFRQALHEVHPISSGLEAMALKSTIDLTCNDYISVFEFDIFTRLFQPWSSLLRNWNSLAVTHPGYMAFLTYDEVKARLQKFIHKPGSYIFRLSCTRLGQWAIGYVTADGNILQTIPHNKPLFQALIDGFREGFYLFPDGRNQNPDLTGLCEPTPQDHIKVTQEQYELYCEMGSTFQLCKICAENDKDVKIEPCGHLMCTSCLTSWQESEGQGCPFCRCEIKGTEPIVVDPFDPRGSGSLLRQGAEGAPSPNYDDDDDERADDTLFMMKELAGAKVERPPSPFSMAPQASLPPVPPRLDLLPQRVCVPSSASALGTASKAASGSLHKDKPLPVPPTLRDLPPPPPPDRPYSVGAESRPQRRPLPCTPGDCPSRDKLPPVPSSRLGDSWLPRPIPKVPVSAPSSSDPWTGRELTNRHSLPFSLPSQMEPRPDVPRLGSTFSLDTSMSMNSSPLVGPECDHPKIKPSSSANAIYSLAARPLPVPKLPPGEQCEGEEDTEYMTPSSRPLRPLDTSQSSRACDCDQQIDSCTYEAMYNIQSQAPSITESSTFGEGNLAAAHANTGPEESENEDDGYDVPKPPVPAVLARRTLSDISNASSSFGWLSLDGDPTTNVTEGSQVPERPPKPFPRRINSERKAGSCQQGSGPAASAATASPQLSSEIENLMSQGYSYQDIQKALVIAQNNIEMAKNILREFVSISSPAHVAT",
+         "type":{
+            "id":"MI:0326",
+            "name":"protein"
+         },
+         "organism":{
+            "taxid":"9606",
+            "common":"human",
+            "scientific":"Homo sapiens"
+         },
+         "identifier":{
+            "db":"uniprotkb",
+            "id":"P22681"
+         },
+         "label":"cbl_human"
+      },
+      {
+         "object":"interaction",
+         "id":"3",
+         "interactionType":{
+            "id":"MI:0915",
+            "name":"physical association"
+         },
+         "experiment":{
+            "detmethod":{
+               "id":"MI:0018",
+               "name":"two hybrid"
+            },
+            "host":{
+               "taxid":"4932",
+               "common":"yeasx",
+               "scientific":"Saccharomyces cerevisiae (Baker's yeast)"
+            },
+            "pubid":[
+               {
+                  "db":"pubmed",
+                  "id":"10679202"
+               }
+            ],
+            "sourceDatabase":{
+               "id":"MI:0486",
+               "name":"UniProt"
+            },
+            "figures":[
+               "no figure"
+            ]
+         },
+         "identifiers":[
+            {
+               "db":"intact",
+               "id":"EBI-6307711"
+            },
+            {
+               "db":"imex",
+               "id":"IM-17874-1"
+            }
+         ],
+         "participants":[
+            {
+               "interactorRef":"1",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "bindingSites":[
+                  {
+                     "id":"4",
+                     "name":"region",
+                     "type":{
+                        "id":"MI:0442",
+                        "name":"sufficient binding region"
+                     },
+                     "sequenceData":[
+                        "55-331"
+                     ]
+                  }
+               ]
+            },
+            {
+               "interactorRef":"2",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               }
+            }
+         ]
+      },
+      {
+         "object":"interaction",
+         "id":"5",
+         "interactionType":{
+            "id":"MI:0915",
+            "name":"physical association"
+         },
+         "experiment":{
+            "detmethod":{
+               "id":"MI:0007",
+               "name":"anti tag coimmunoprecipitation"
+            },
+            "host":{
+               "taxid":"9534",
+               "common":"chlae-cos_7",
+               "scientific":"Cercopithecus aethiops simian cells transformed with SV40",
+               "cellType":{
+                  "id":"MINT-6597534",
+                  "name":"cercopithecus aethiops, by transformation with SV40"
+               }
+            },
+            "pubid":[
+               {
+                  "db":"pubmed",
+                  "id":"10679202"
+               }
+            ],
+            "sourceDatabase":{
+               "id":"MI:0486",
+               "name":"UniProt"
+            },
+            "figures":[
+               "3B and 4B"
+            ]
+         },
+         "identifiers":[
+            {
+               "db":"intact",
+               "id":"EBI-6307724"
+            },
+            {
+               "db":"imex",
+               "id":"IM-17874-2"
+            }
+         ],
+         "participants":[
+            {
+               "interactorRef":"1",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "experimentalFeatures":[
+                  {
+                     "id":"6",
+                     "name":"n-terminus",
+                     "type":{
+                        "id":"MI:0518",
+                        "name":"flag tag"
+                     },
+                     "sequenceData":[
+                        "n-n"
+                     ]
+                  }
+               ],
+               "bindingSites":[
+                  {
+                     "id":"7",
+                     "name":"region",
+                     "type":{
+                        "id":"MI:0442",
+                        "name":"sufficient binding region"
+                     },
+                     "sequenceData":[
+                        "103-328"
+                     ]
+                  }
+               ]
+            },
+            {
+               "interactorRef":"2",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               }
+            }
+         ]
+      },
+      {
+         "object":"interaction",
+         "id":"8",
+         "interactionType":{
+            "id":"MI:0915",
+            "name":"physical association"
+         },
+         "experiment":{
+            "detmethod":{
+               "id":"MI:0006",
+               "name":"anti bait coip"
+            },
+            "host":{
+               "taxid":"9534",
+               "common":"chlae-cos_7",
+               "scientific":"Cercopithecus aethiops simian cells transformed with SV40",
+               "cellType":{
+                  "id":"MINT-6597534",
+                  "name":"cercopithecus aethiops, by transformation with SV40"
+               }
+            },
+            "pubid":[
+               {
+                  "db":"pubmed",
+                  "id":"10679202"
+               }
+            ],
+            "sourceDatabase":{
+               "id":"MI:0486",
+               "name":"UniProt"
+            },
+            "figures":[
+               "3C"
+            ]
+         },
+         "identifiers":[
+            {
+               "db":"intact",
+               "id":"EBI-6307737"
+            },
+            {
+               "db":"imex",
+               "id":"IM-17874-3"
+            }
+         ],
+         "participants":[
+            {
+               "interactorRef":"2",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               }
+            },
+            {
+               "interactorRef":"1",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "experimentalFeatures":[
+                  {
+                     "id":"9",
+                     "name":"n-terminus",
+                     "type":{
+                        "id":"MI:0518",
+                        "name":"flag tag"
+                     },
+                     "sequenceData":[
+                        "n-n"
+                     ]
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "object":"interaction",
+         "id":"10",
+         "interactionType":{
+            "id":"MI:0915",
+            "name":"physical association"
+         },
+         "experiment":{
+            "detmethod":{
+               "id":"MI:0006",
+               "name":"anti bait coip"
+            },
+            "host":{
+               "taxid":"9606",
+               "common":"human-293",
+               "scientific":"Homo sapiens transformed primary embryonal kidney cells",
+               "cellType":{
+                  "id":"MINT-1782570",
+                  "name":"Transformed human primary embryonal kidney cells."
+               }
+            },
+            "pubid":[
+               {
+                  "db":"pubmed",
+                  "id":"10679202"
+               }
+            ],
+            "sourceDatabase":{
+               "id":"MI:0486",
+               "name":"UniProt"
+            },
+            "figures":[
+               "5 and 6B"
+            ]
+         },
+         "identifiers":[
+            {
+               "db":"intact",
+               "id":"EBI-6307754"
+            },
+            {
+               "db":"imex",
+               "id":"IM-17874-4"
+            }
+         ],
+         "participants":[
+            {
+               "interactorRef":"1",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "experimentalFeatures":[
+                  {
+                     "id":"11",
+                     "name":"n-terminus",
+                     "type":{
+                        "id":"MI:0518",
+                        "name":"flag tag"
+                     },
+                     "sequenceData":[
+                        "n-n"
+                     ]
+                  }
+               ]
+            },
+            {
+               "interactorRef":"2",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "pointMutations":[
+                  {
+                     "id":"12",
+                     "name":"tyr700phe-tyr731phe-tyr744phe",
+                     "type":{
+                        "id":"MI:0573",
+                        "name":"mutation disrupting interaction"
+                     },
+                     "sequenceData":[
+                        "700-700",
+                        "731-731",
+                        "744-744"
+                     ]
+                  },
+                  {
+                     "id":"13",
+                     "name":"tyr700phe-tyr731phe",
+                     "type":{
+                        "id":"MI:0119",
+                        "name":"mutation decreasing interaction"
+                     },
+                     "sequenceData":[
+                        "700-700",
+                        "731-731"
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+};
