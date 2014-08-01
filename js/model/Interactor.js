@@ -31,11 +31,11 @@ function Interactor(id, xlvController, json) {
     this.experimentalFeatures = d3.map();  
 }
 
-Interactor.prototype.toJSON = function() {
-    return {
-        interactor: this.json
-    };
-};
+//~ Interactor.prototype.toJSON = function() {
+    //~ return {
+        //~ interactor: this.json
+    //~ };
+//~ };
 
 Interactor.prototype.initInteractor = function(sequence, name, description, size)
 {
@@ -1216,25 +1216,23 @@ Interactor.prototype.setAllLineCoordinates = function() {
 };
 
 Interactor.prototype.countExternalLinks = function() {
-    if (this.isParked) {
-        return 0;
-    }
+    //~ if (this.isParked) {
+        //~ return 0;
+    //~ }
     var countExternal = 0;
     var c = this.links.keys().length;
     for (var l = 0; l < c; l++) {
         var link = this.links.values()[l];
-        if (!link.intra)
-        {
-            if (link.check() === true) {
-                countExternal++;
-            }
-        }
+        //~ {
+            //~ if (link.check() === true) {
+                countExternal += link.interactors.length - 1;
+            //~ }
+        //~ }
     }
     return countExternal;
 };
 
 Interactor.prototype.getSubgraph = function(subgraphs) {
-    //u r here
     if (this.subgraph == null) { // don't check for undefined here
         var subgraph = {
             nodes: d3.map(),
@@ -1248,31 +1246,27 @@ Interactor.prototype.getSubgraph = function(subgraphs) {
     }
     return this.subgraph;
 };
+
 Interactor.prototype.addConnectedNodes = function(subgraph) {
-    //~ var count = this.links.values().length;
-    //~ for (var i = 0; i < count; i++) {
-        //~ var externalLink = this.links.values()[i];
+	var count = this.links.values().length;
+    for (var i = 0; i < count; i++) {
+        var externalLink = this.links.values()[i];
+        if (subgraph.links.has(externalLink.id) === false) {
         //~ if (externalLink.isBinary) {
-			//if (externalLink.check() === true) {
-				//~ if (!subgraph.links.has(externalLink.id)) {
-					//~ subgraph.links.set(externalLink.id, externalLink);
-					//~ var otherEnd;
-					//~ if (externalLink.fromInteractor === this) {
-						//~ otherEnd = externalLink.toInteractor;
-					//~ }
-					//~ else {
-						//~ otherEnd = externalLink.fromInteractor;
-					//~ }
-					//~ if (!subgraph.nodes.has(otherEnd.id)) {
-						//~ subgraph.nodes.set(otherEnd.id, otherEnd);
-						//~ //                  console.log(otherEnd.id);
-						//~ //            console.log(JSON.stringify(subgraph.nodes.keys()));
-						//~ otherEnd.subgraph = subgraph;
-						//~ otherEnd.addConnectedNodes(subgraph);
-					//~ }
+			//~ //if (externalLink.check() === true) {
+					subgraph.links.set(externalLink.id, externalLink);
+					for (var i = 0; i < externalLink.interactors.length; i++) {
+						var otherEnd = externalLink.interactors[i];
+						if (otherEnd !== this && subgraph.nodes.has(otherEnd.id) === false){
+						subgraph.nodes.set(otherEnd.id, otherEnd);
+						//                  console.log(otherEnd.id);
+						//            console.log(JSON.stringify(subgraph.nodes.keys()));
+						otherEnd.subgraph = subgraph;
+						otherEnd.addConnectedNodes(subgraph);
+						}
+					}
+				}
 				//~ }
-			//}
-		//~ }
-    //~ }
+    }
     return subgraph;
 };

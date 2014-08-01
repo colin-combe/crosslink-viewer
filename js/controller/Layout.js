@@ -16,6 +16,50 @@
 "use strict";
 
 xiNET.Controller.prototype.autoLayout = function(width, height) {
+    //functions used...
+    function xForColumn(c) {
+        return (c * ((2 * self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
+    };
+
+    function yForRow(r) {
+        return (r * self.maxBlobRadius);
+    };
+        
+    function reorderedNodes(linearGraph) {
+        var reorderedNodes = [];
+        appendNode(getStartNode());
+        return reorderedNodes;
+
+        function getStartNode() {
+            var ns = linearGraph.nodes.values();
+            var count = ns.length;
+            //                    alert (nodeCount);
+            for (var n = 0; n < count; n++) {
+                if (ns[n].countExternalLinks() < 2) {
+                    //                            alert("got start");
+                    return ns[n];
+                }
+            }
+            console.error("missed linear subgraph start");
+            return null;
+        }
+
+        function appendNode(currentNode) {
+            reorderedNodes.push(currentNode.id);
+            for (var l = 0; l < currentNode.links.values().length; l++) {
+                var link = currentNode.links.values()[l];
+                if (link.isBinary && link.check() === true) {
+                    var nextNode = link.getOtherEnd(currentNode);
+                    if (reorderedNodes.indexOf(nextNode.id) === -1) {
+                        //                    alert("here");
+                        appendNode(nextNode);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
@@ -49,114 +93,112 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
         for (var p = 0; p < proteinCount; p++) {
             prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
         }
-        //sort subgraphs by decreasing size
-        //~ this.subgraphs.sort(function(a, b) {
-            //~ return b.nodes.values().length - a.nodes.values().length;
-        //~ });
-        //~ //Sort subgraphs into linear and non-linear sets
-        //~ var linearGraphs = [];
-        //~ var nonLinearGraphs = [];
-        //~ var graphCount = this.subgraphs.length;
-        //~ for (var g = 0; g < graphCount; g++) {
-            //~ var graph = this.subgraphs[g];
-            //~ var nodes = graph.nodes.values();
-            //~ var nodeCount = nodes.length;
-            //~ var isLinear = true;
-            //~ if (nodeCount === 1) {
-                //~ isLinear = true;
-            //~ }
-            //~ else {
-                //~ var endFound = false;
-                //~ for (var n = 0; n < nodeCount; n++) {
-                    //~ if (nodes[n].countExternalLinks() > 2) {
-                        //~ isLinear = false;
-                        //~ break;
-                    //~ }
-                    //~ else if (nodes[n].countExternalLinks() < 2) {
-                        //~ endFound = true;
-                    //~ }
-                //~ }
-                //~ //check not circular
-                //~ if (!endFound) {
-                    //~ isLinear = false;
-                //~ }
-            //~ }
-            //~ if (false){//isLinear === true) {//TEMP
-                //~ linearGraphs.push(graph);
-            //~ } else {
-                //~ nonLinearGraphs.push(graph);
-            //~ }
-        //~ }
-        //~ //Grid layout linear graphs
-        //~ var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
-        //~ var singleCount = 0;
+        //~ //sort subgraphs by decreasing size
+        this.subgraphs.sort(function(a, b) {
+            return b.nodes.values().length - a.nodes.values().length;
+        });
+        //Sort subgraphs into linear and non-linear sets
+        var linearGraphs = [];
+        var nonLinearGraphs = [];
+        var graphCount = this.subgraphs.length;
+        for (var g = 0; g < graphCount; g++) {
+            var graph = this.subgraphs[g];
+            var nodes = graph.nodes.values();
+            var nodeCount = nodes.length;
+            var isLinear = true;
+            if (nodeCount === 1) {
+                isLinear = true;
+            }
+            else {
+                var endFound = false;
+                for (var n = 0; n < nodeCount; n++) {
+					var linkCount = nodes[n].countExternalLinks();
+					if (linkCount > 2) {
+                        isLinear = false;
+                        break;
+                    }
+                    else if (linkCount < 2) {
+                        endFound = true;
+                    }
+                }
+                //check not circular
+                if (!endFound) {
+                    isLinear = false;
+                }
+            }
+            if (isLinear === true) {
+                linearGraphs.push(graph);
+            } else {
+                nonLinearGraphs.push(graph);
+            }
+        }
+        //Grid layout linear graphs
+        var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
+        var singleCount = 0;
         var yOffset = 0;
-        //~ if (linearGraphs.length > 0) {
-            //~ yOffset = yForRow(4);
-            //~ for (var g = 0; g < linearGraphs.length; g++) {
-                //~ var nodes = linearGraphs[g].nodes.keys(); //
-                //~ var nodeCount = nodes.length;
-//~ 
-                //~ if (nodeCount > 2) {
-                    //~ nodes = reorderedNodes(linearGraphs[g]);
-//~ 
-                //~ }
-                //~ for (var n = 0; n < nodeCount; n++) {
-                    //~ var p = this.interactors.get(nodes[n]);
-                    //~ var x, y;
-                    //~ if (p.isParked === true) {
-                        //~ parkedRow++;
-                        //~ x = xForColumn(parkedColumn);
-                        //~ y = yForRow(parkedRow);
-                        //~ if (y > height) {
-                            //~ parkedColumn--;
-                            //~ parkedRow = 1;
-                            //~ x = xForColumn(parkedColumn);
-                            //~ y = yForRow(parkedRow);
-                        //~ }
-                    //~ }
-                    //~ else {
-                        //~ x = xForColumn(column);
-                        //~ y = yForRow(row);
-                        //~ var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
-                        //~ if ((lastNodeY + this.maxBlobRadius) > height) {
-                            //~ column++;
-                            //~ row = 1;
-                            //~ if (proteinCount < 60) {
-                                //~ row++;
-                            //~ }
-                            //~ x = xForColumn(column);
-                            //~ y = yForRow(row);
-                        //~ }
-                        //~ row++;
-                        //~ if (proteinCount < 60 || nodeCount > 1) {
-                            //~ row++;
-                        //~ }
-                    //~ }
-                    //~ p.setPosition(x, y);
-//~ //                p.fixed = true;
-                    //~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
-                    //~ p.setAllLineCoordinates();//TODO: check this is needed
-                //~ }
-                //~ if (nodeCount === 1){
-                    //~ singleCount++;
-                //~ }
-                //~ if (nodeCount > 1 || singleCount % 3 === 0) {
-                    //~ column++;
-                    //~ row = 1;
-                //~ }
-//~ 
-            //~ }
-        //~ }
-        //remember edge of gridded interactors
-        //this.layoutXOffset = xForColumn(column + 0.5);
+        if (linearGraphs.length > 0) {
+            yOffset = yForRow(4);
+            for (var g = 0; g < linearGraphs.length; g++) {
+                var nodes = linearGraphs[g].nodes.keys(); //
+                var nc = nodes.length;
+                if (nc > 2) {
+                    //nodes = reorderedNodes(linearGraphs[g]);
+                }
+                for (var n = 0; n < nc; n++) {
+                    var p = this.interactors.get(nodes[n]);
+                    var x, y;
+                    if (p.isParked === true) {
+                        parkedRow++;
+                        x = xForColumn(parkedColumn);
+                        y = yForRow(parkedRow);
+                        if (y > height) {
+                            parkedColumn--;
+                            parkedRow = 1;
+                            x = xForColumn(parkedColumn);
+                            y = yForRow(parkedRow);
+                        }
+                    }
+                    else {
+                        x = xForColumn(column);
+                        y = yForRow(row);
+                        var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
+                        if ((lastNodeY + this.maxBlobRadius) > height) {
+                            column++;
+                            row = 1;
+                            if (proteinCount < 60) {
+                                row++;
+                            }
+                            x = xForColumn(column);
+                            y = yForRow(row);
+                        }
+                        row++;
+                        if (proteinCount < 60 || nodeCount > 1) {
+                            row++;
+                        }
+                    }
+                    p.setPosition(x, y);
+//                p.fixed = true;
+                    p.setAllLineCoordinates();
+                }
+                if (nodeCount === 1){
+                    singleCount++;
+                }
+                if (nodeCount > 1 || singleCount % 3 === 0) {
+                    column++;
+                    row = 1;
+                }
+
+            }
+        }
+        //~ //remember edge of gridded interactors
+        this.layoutXOffset = 0;//xForColumn(column + 0.5);
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
             var json = "{\"name\": \"ALL\",\"children\": [";
             var pi = 0;
-            //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
-                var nodes = this.interactors.values();
+            for (var g = 0; g < nonLinearGraphs.length; g++) {
+                var nodes = nonLinearGraphs[g].nodes.values();
                 var nodeCount = nodes.length;
                 for (var n = 0; n < nodeCount; n++) {
                     var prot = this.interactors.get(nodes[n].id);
@@ -165,22 +207,24 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                         json += ",";
                     }
                     pi++;
+                    //TODO: change to actual json obj not string, tried this before and couldn't get it to work
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
                             + prot.links.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
-            //~ }
+            }
             json += "]}";
             var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
                     .size([width, height])
-                    //    .children(json.children);
                     .value(function(d) {
-                return d.size;
-            })
-                    .sort(function comparator(a, b) {
-                return (b.ppLinkCount - 0) - (a.ppLinkCount - 0);
-            });
+						return d.size;
+					})
+                    //~ .sort(function comparator(a, b) {
+						//~ return (b.links.keys().length) - (a.links.keys().length);
+					//~ })
+					;
+            //~ this.message(layoutObj);
             var nodes = packLayout.nodes(jsonObj);
             var nodeCount = nodes.length;
             for (var n = 1; n < nodeCount; n++) {
@@ -192,51 +236,39 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 protein.setAllLineCoordinates(false);
             }
         }
+        
         //do force directed layout
-        //TODO: don't create JSON string, just create object
+        var gWidth = width - this.layoutXOffset;
+        if (gWidth < 200) {
+            gWidth = width;
+        }
         var linkDistance = 60;
-        var json = "{\"nodes\":[";
+        var layoutObj = {};
+        layoutObj.nodes = [];
+        layoutObj.links = [];
         var protLookUp = {};
         var pi = 0;
 
-//         for (var g = 0; g < linearGraphs.length; g++) {
-//             var nodes = linearGraphs[g].nodes.values();
-//             var nodeCount = nodes.length;
-//             for (var n = 0; n < nodeCount; n++) {
-//                 var prot = this.interactors.get(nodes[n].id);
-//                 protLookUp[prot.id] = pi;
-//                 if (pi > 0)
-//                     json += ",";
-//                pi++;
-//                 json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
-//                         + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
-//                         + ",\"py\":" + prot.y
-//                         + ",\"fixed\":\"true\"";
-//                 json += "}";
-//             }
-//         }
-         var nodesInPlay = 0;
-        //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
-            var nodes = this.interactors.values();
+        for (var g = 0; g < nonLinearGraphs.length; g++) {
+            var nodes = nonLinearGraphs[g].nodes.values();
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
-                nodesInPlay++;
                 var prot = this.interactors.get(nodes[n].id);
+//        if (prot.fixed === false) {
                 protLookUp[prot.id] = pi;
-                if (pi > 0)
-                    json += ",";
                 pi++;
-                json += "{\"id\":\"" + prot.id + "\"" + ",\"x\":" + (prot.x)
-                        + ",\"y\":" + prot.y + ",\"px\":" + (prot.x) + ""
-                        + ",\"py\":" + prot.y
-                        + ",\"radius\":" + prot.getBlobRadius()
-                 + "}";
+                var nodeObj = {};
+                nodeObj.id = prot.id;
+                nodeObj.x = prot.x - this.layoutXOffset;
+                nodeObj.y = prot.y;
+                nodeObj.px = prot.x - this.layoutXOffset;
+                nodeObj.py = prot.y;
+                layoutObj.nodes.push(nodeObj);
             }
-        //~ }
-        json += "],\"links\":[";
-        var li = 0;
-        //~ for (var g = 0; g < nonLinearGraphs.length; g++) {
-            var links = this.links.values();
+//        }
+        }
+        for (var g = 0; g < nonLinearGraphs.length; g++) {
+            var links = nonLinearGraphs[g].links.values();
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
@@ -250,20 +282,19 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
 					if (source !== target) {
 
 						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-							if (li > 0)
-								json += ",";
-							li++;
-							json += "{\"source\":" + source + ", \"target\":" + target
-									+ ", \"id\":\"" + link.id
-									+ "\"}";
+							var linkObj = {};
+							linkObj.source = source;
+							linkObj.target = target;
+							linkObj.id = link.id;
+							layoutObj.links.push(linkObj);
 						}
 						else {
 							alert("NOT RIGHT");
 						}
 					}
 				} else {
-					for (var i = 0; i < link.evidences.length; i++) {
-					var participants = link.evidences[i].participants;
+					for (var i = 0; i < link.evidences.values().length; i++) {
+					var participants = link.evidences.values()[i].participants;
 					var participantCount = participants.length; 
 					//TODO: if evidence.check() ==== true
 					var fakeHub = this.interactors.get(participants[0].interactorRef);
@@ -273,35 +304,28 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
 						var participant = this.interactors.get(participants[p].interactorRef);
 						var toProt = participant;
 						var target = protLookUp[toProt.id];
-						if (li > 0)
-							json += ",";
-						li++;
-						json += "{\"source\":" + source + ", \"target\":" + target
-								+ ", \"id\":\"" + link.id
-								+ "\"}";						
+						var linkObj = {};
+						linkObj.source = source;
+						linkObj.target = target;
+						linkObj.id = link.id;
+						layoutObj.links.push(linkObj);						
 					}
 				}
 			}
                 //        } // closing unused link.check()
             }
-        //~ }
-        json += "]}";
-        //~ this.message(json);
-        var jsonObj = JSON.parse(json);
-        var k = Math.sqrt(nodesInPlay / ((width) * (height - yOffset)));
+        }
+        var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
 // mike suggests:
 //    .charge(-10 / k)
 //    .gravity(100 * k)
         this.force = d3.layout.force()
-                .nodes(jsonObj.nodes)
-                .links(jsonObj.links)
-                .gravity(80 * k)//was 40
+                .nodes(layoutObj.nodes)
+                .links(layoutObj.links)
+                .gravity(85 * k)
                 .linkDistance(linkDistance)
-                .charge(function(n){
-                            var chrg = -15 / k  * (n.radius / 8);
-                     //       console.log((-15 / k) + " - " + chrg);
-                            return chrg;})//-15 / k;})
-                .size([width, (height - yOffset)]);
+                .charge(-30 / k)
+                .size([gWidth, height]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
@@ -311,56 +335,10 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 var protein = self.interactors.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx, ny + yOffset);
+                protein.setPosition(nx + self.layoutXOffset, ny);
                 protein.setAllLineCoordinates();
             }
         });
         this.force.start();
     }
-
-    function reorderedNodes(linearGraph) {
-        var reorderedNodes = [];
-        appendNode(getStartNode());
-        return reorderedNodes;
-
-        function getStartNode() {
-            var ns = linearGraph.nodes.values();
-            var count = ns.length;
-            //                    alert (nodeCount);
-            for (var n = 0; n < count; n++) {
-                if (ns[n].countExternalLinks() < 2) {
-                    //                            alert("got start");
-                    return ns[n];
-                }
-            }
-            console.error("missed linear subgraph start");
-            return null;
-        }
-
-        function appendNode(currentNode) {
-            reorderedNodes.push(currentNode.id);
-            for (var l = 0; l < currentNode.links.values().length; l++) {
-                var link = currentNode.links.values()[l];
-                if (link.check() === true) {
-                    var nextNode = link.getOtherEnd(currentNode);
-                    if (reorderedNodes.indexOf(nextNode.id) === -1) {
-                        //                    alert("here");
-                        appendNode(nextNode);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    //functions used...
-    function xForColumn(c) {
-        return (c * ((2 * self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
-    }
-    ;
-
-    function yForRow(r) {
-        return (r * self.maxBlobRadius);
-    }
-    ;
 };

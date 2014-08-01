@@ -16,7 +16,7 @@ NaryLink.prototype = new xiNET.Link();
 
 function NaryLink(id, xlvController) {
     this.id = id;
-    this.evidences = new Array();//d3.map();//will need to eliminate duplicates
+    this.evidences = d3.map();
     this.interactors = null;// will be new Array();//need order for binary links so use array
     this.subLinks = d3.map();
     this.ctrl = xlvController;
@@ -31,63 +31,65 @@ function NaryLink(id, xlvController) {
 }
 
 NaryLink.prototype.addEvidence = function(interaction) {
-    this.evidences.push(interaction);
-    //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
-        //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
-    //~ }
-        
-    if (this.interactors === null){
-		this.initInteractors(interaction);
-	}    
-        
-    for (var pi = 0; pi < interaction.participants.length; pi++){
-		var sourceID = interaction.participants[pi].interactorRef;
-		var sourceInteractor = this.ctrl.interactors.get(sourceID);
-				
-		var bindingSites = interaction.participants[pi].bindingSites;
-		if (bindingSites){
-			var bsCount = bindingSites.length;
-			for (var bsi = 0; bsi < bsCount; bsi++){
+	if (this.evidences.has(interaction.id) === false) {
+		this.evidences.set(interaction.id, interaction);
+    
+		//~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+			//~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
+		//~ }
+			
+		if (this.interactors === null){
+			this.initInteractors(interaction);
+		}    
+			
+		for (var pi = 0; pi < interaction.participants.length; pi++){
+			var sourceID = interaction.participants[pi].interactorRef;
+			var sourceInteractor = this.ctrl.interactors.get(sourceID);
+					
+			var bindingSites = interaction.participants[pi].bindingSites;
+			if (bindingSites){
+				var bsCount = bindingSites.length;
+				for (var bsi = 0; bsi < bsCount; bsi++){
 
-				var bindingSite = bindingSites[bsi];
-				if (bindingSite.linkedFeatures){
-					for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-						var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
-						var targetInteractor = this.ctrl.interactors.get(target.interactor);
-						var linkID, fromInteractor, toInteractor;	
-						// these links are undirected and should have same ID regardless of which way round 
-						// source and target are
-						if (sourceID < target.interactor) {
-							linkID = sourceID + '-' + target.interactor;
-							fromInteractor = sourceInteractor;
-							toInteractor = targetInteractor; 
-						} else {
-							linkID = target.interactor + '-' + sourceID;
-							fromInteractor = targetInteractor;
-							toInteractor = sourceInteractor; 
+					var bindingSite = bindingSites[bsi];
+					if (bindingSite.linkedFeatures){
+						for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
+							var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
+							var targetInteractor = this.ctrl.interactors.get(target.interactor);
+							var linkID, fromInteractor, toInteractor;	
+							// these links are undirected and should have same ID regardless of which way round 
+							// source and target are
+							if (sourceID < target.interactor) {
+								linkID = sourceID + '-' + target.interactor;
+								fromInteractor = sourceInteractor;
+								toInteractor = targetInteractor; 
+							} else {
+								linkID = target.interactor + '-' + sourceID;
+								fromInteractor = targetInteractor;
+								toInteractor = sourceInteractor; 
+							}
+							
 						}
-						
-					}
-										
-					var link = this.ctrl.links.get(linkID);
-					if (typeof link === 'undefined') {
-						if (fromInteractor === toInteractor){
-							link = new UnaryLink(linkID, this.ctrl);
-							fromInteractor.addLink(link);
-						}else {
-							link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
-						fromInteractor.addLink(link);
-						toInteractor.addLink(link);
+											
+						var link = this.ctrl.links.get(linkID);
+						if (typeof link === 'undefined') {
+							if (fromInteractor === toInteractor){
+								link = new UnaryLink(linkID, this.ctrl);
+								fromInteractor.addLink(link);
+							}else {
+								link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
+								fromInteractor.addLink(link);
+								toInteractor.addLink(link);
+							}
+							this.ctrl.links.set(linkID, link);
 						}
-						this.ctrl.links.set(linkID, link);
-
+						this.subLinks.set(linkID, link);
+						link.addEvidence(interaction);
 					}
-					this.subLinks.set(linkID, link);
-					link.addEvidence(interaction);
 				}
 			}
-		}
-	}			
+		}			
+	}
 };
 
 NaryLink.prototype.initSVG = function() {
@@ -113,14 +115,14 @@ NaryLink.prototype.initSVG = function() {
 };
 
 NaryLink.prototype.showHighlight = function(show) {
-	if (this.shown) {
-		//we will iterate through all interactors and sublinks and highlight them
-		this.highlightInteractors(show);
-		var subLinks = this.subLinks.values();
-		for (var s = 0; s < subLinks.length; s++) {
-			subLinks[s].showHighlight(show);
-		}
-	}
+	//~ if (this.shown) {
+		//~ //we will iterate through all interactors and sublinks and highlight them
+		//~ this.highlightInteractors(show);
+		//~ var subLinks = this.subLinks.values();
+		//~ for (var s = 0; s < subLinks.length; s++) {
+			//~ subLinks[s].showHighlight(show);
+		//~ }
+	//~ }
 };
 
 

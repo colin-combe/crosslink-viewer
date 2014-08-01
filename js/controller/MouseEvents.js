@@ -329,7 +329,6 @@ xiNET.Controller.prototype.clearSelection = function() {
         var prot = interactors[p];
         prot.setSelected(false);
     }
-
 };
 
 //gets mouse position
