@@ -31,11 +31,12 @@ function Interactor(id, xlvController, json) {
     this.experimentalFeatures = d3.map();  
 }
 
-//~ Interactor.prototype.toJSON = function() {
-    //~ return {
+Interactor.prototype.toJSON = function() {
+    return {
         //~ interactor: this.json
-    //~ };
-//~ };
+		id: this.id
+    };
+};
 
 Interactor.prototype.initInteractor = function(sequence, name, description, size)
 {
@@ -1214,59 +1215,56 @@ Interactor.prototype.setAllLineCoordinates = function() {
 		}
     }
 };
-
+//~ 
 Interactor.prototype.countExternalLinks = function() {
-    //~ if (this.isParked) {
-        //~ return 0;
-    //~ }
-    var countExternal = 0;
+    //~ //if (this.isParked) {
+    //~ //    return 0;
+    //~ //}
+    var countExternal = d3.set();
     var c = this.links.keys().length;
     for (var l = 0; l < c; l++) {
         var link = this.links.values()[l];
-        //~ {
-            //~ if (link.check() === true) {
-                countExternal += link.interactors.length - 1;
-            //~ }
-        //~ }
+        for (var i = 0; i < link.interactors.length; i++) {
+       //~ // {
+         //~ //   if (link.check() === true) {
+                countExternal.add(link.interactors[i].id);
+           //~ //}
+      //~ //  }
+		}
     }
-    return countExternal;
+    return countExternal.values().length - 1;
 };
 
-Interactor.prototype.getSubgraph = function(subgraphs) {
+Interactor.prototype.getSubgraph = function() {
     if (this.subgraph == null) { // don't check for undefined here
         var subgraph = {
             nodes: d3.map(),
             links: d3.map()
         };
-        subgraph.nodes.set(this.id, this);
-        if (this.isParked === false) {
-            this.subgraph = this.addConnectedNodes(subgraph);
-        }
+        //if (this.isParked === false) {
+            //~ this.subgraph = 
+            this.addConnectedNodes(subgraph);
+        //}
         this.ctrl.subgraphs.push(subgraph); 
     }
     return this.subgraph;
 };
 
 Interactor.prototype.addConnectedNodes = function(subgraph) {
-	var count = this.links.values().length;
+	this.subgraph = subgraph;
+	subgraph.nodes.set(this.id, this);
+    var count = this.links.values().length;
     for (var i = 0; i < count; i++) {
         var externalLink = this.links.values()[i];
         if (subgraph.links.has(externalLink.id) === false) {
-        //~ if (externalLink.isBinary) {
-			//~ //if (externalLink.check() === true) {
-					subgraph.links.set(externalLink.id, externalLink);
-					for (var i = 0; i < externalLink.interactors.length; i++) {
-						var otherEnd = externalLink.interactors[i];
-						if (otherEnd !== this && subgraph.nodes.has(otherEnd.id) === false){
-						subgraph.nodes.set(otherEnd.id, otherEnd);
-						//                  console.log(otherEnd.id);
-						//            console.log(JSON.stringify(subgraph.nodes.keys()));
-						otherEnd.subgraph = subgraph;
-						otherEnd.addConnectedNodes(subgraph);
-						}
-					}
-				}
-				//~ }
+			//~ if (externalLink.check() === true) {
+        	subgraph.links.set(externalLink.id, externalLink);
+			for (var i = 0; i < externalLink.interactors.length; i++) {
+				var otherEnd = externalLink.interactors[i];
+				otherEnd.addConnectedNodes(subgraph);
+			}
+			//~ }
+		}
     }
-    return subgraph;
+    //~ console.debug(subgraph.nodes.keys());
 };

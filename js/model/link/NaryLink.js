@@ -59,7 +59,7 @@ NaryLink.prototype.addEvidence = function(interaction) {
 							var linkID, fromInteractor, toInteractor;	
 							// these links are undirected and should have same ID regardless of which way round 
 							// source and target are
-							if (sourceID < target.interactor) {
+							if (sourceID - 0 < target.interactor - 0) {
 								linkID = sourceID + '-' + target.interactor;
 								fromInteractor = sourceInteractor;
 								toInteractor = targetInteractor; 

@@ -132,9 +132,12 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 	var linkId = xiNET.Link.getIdFromInteraction(interaction);
 	var link = this.links.get(linkId);
 	
+	var interactorIds = linkId.split('-');
+	
     if (typeof link === 'undefined') {
-		var participants = interaction.participants;
-		var participantCount = participants.length;
+		//~ var participants = interaction.participants;
+		//~ var participantCount = participants.length; //...no
+		var participantCount = interactorIds.length;
 		if (participantCount === 1) {
 			link = new UnaryLink(linkId, this);
 			link.notSubLink = true;
@@ -145,15 +148,15 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 				}
 			);		
 			link = new BinaryLink(linkId, this, 
-				this.interactors.get(participants[0].interactorRef),
-				this.interactors.get(participants[1].interactorRef));
+				this.interactors.get(interactorIds[0]),
+				this.interactors.get(interactorIds[1]));
 			link.notSubLink = true;
 		} else {
 			link = new NaryLink(linkId, this);
 		}
         this.links.set(linkId, link);
 		for (var pi = 0; pi < participantCount; pi++) {
-			this.interactors.get(participants[pi].interactorRef).addLink(link);
+			this.interactors.get(interactorIds[pi]).addLink(link);
 		}
 	}
     //all other initialisation to do with links takes place within Links 

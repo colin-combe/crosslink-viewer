@@ -54,7 +54,7 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 				//~ var reversed = (sourceIntercator === this.toInteractor);			
 				var bindingSites = interaction.participants[pi].bindingSites;
 				if (bindingSites){
-					var bsCount = bindingSites.length; //TODO: deal with self link with multiple binding sites
+					var bsCount = 1;//bindingSites.length; //TODO: deal with self link with multiple binding sites
 					for (var bsi = 0; bsi < bsCount; bsi++){
 
 						var bindingSite = bindingSites[bsi];
@@ -74,9 +74,9 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 								toSequenceData.toString() + ':' + this.toInteractor.id;
 						
 																
-						console.log(seqLinkId);
 						var sequenceLink = this.sequenceLinks.get(seqLinkId);
 						if (typeof sequenceLink === 'undefined') {
+							console.log(seqLinkId);
 							sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
 							this.sequenceLinks.set(seqLinkId, sequenceLink);
 						}

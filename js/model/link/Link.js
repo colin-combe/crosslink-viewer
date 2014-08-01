@@ -139,7 +139,8 @@ xiNET.Link.prototype.showID = function() {
 
 xiNET.Link.prototype.toJSON = function() {
     return {
-        evidences: this.evidences
+        //~ evidences: this.evidences
+        id: this.id
     };
 };
 

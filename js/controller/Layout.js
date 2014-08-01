@@ -7,18 +7,13 @@
 //    	author: Colin Combe
 //
 //		Layout.js
-//
-//		Just ignore this file at the moment - its in a bit of a mess
-//		Important thing for now is that is does some sort of
-//		spoke expansion to keep participants of n-ary interactions togther.
-//		Needs looked at again.
 
 "use strict";
 
 xiNET.Controller.prototype.autoLayout = function(width, height) {
     //functions used...
     function xForColumn(c) {
-        return (c * ((2 * self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
+        return (c * ((/*2 **/ self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
     };
 
     function yForRow(r) {
@@ -133,18 +128,16 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
             }
         }
         //Grid layout linear graphs
-        var column = 1, row = 1, parkedRow = 0, parkedColumn = -1;
-        var singleCount = 0;
-        var yOffset = 0;
+        var column = 0.5, row = 0, parkedRow = 0, parkedColumn = -1;
         if (linearGraphs.length > 0) {
-            yOffset = yForRow(4);
+            column++;
             for (var g = 0; g < linearGraphs.length; g++) {
                 var nodes = linearGraphs[g].nodes.keys(); //
-                var nc = nodes.length;
-                if (nc > 2) {
-                    //nodes = reorderedNodes(linearGraphs[g]);
+                var nodeCount = nodes.length;
+                if (nodeCount > 2) {
+                    nodes = reorderedNodes(linearGraphs[g]);
                 }
-                for (var n = 0; n < nc; n++) {
+                for (var n = 0; n < nodeCount; n++) {
                     var p = this.interactors.get(nodes[n]);
                     var x, y;
                     if (p.isParked === true) {
@@ -159,9 +152,13 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                         }
                     }
                     else {
+                        row++;
+                        if (proteinCount < 60 || nodeCount > 1) {
+                        row++;
+                        }
                         x = xForColumn(column);
                         y = yForRow(row);
-                        var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
+                        var lastNodeY = yForRow(row + ((nodeCount - n) * 2));
                         if ((lastNodeY + this.maxBlobRadius) > height) {
                             column++;
                             row = 1;
@@ -171,27 +168,15 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                             x = xForColumn(column);
                             y = yForRow(row);
                         }
-                        row++;
-                        if (proteinCount < 60 || nodeCount > 1) {
-                            row++;
-                        }
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
                     p.setAllLineCoordinates();
                 }
-                if (nodeCount === 1){
-                    singleCount++;
-                }
-                if (nodeCount > 1 || singleCount % 3 === 0) {
-                    column++;
-                    row = 1;
-                }
-
-            }
+             }
         }
         //~ //remember edge of gridded interactors
-        this.layoutXOffset = 0;//xForColumn(column + 0.5);
+        this.layoutXOffset = xForColumn(column + 1);
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
@@ -207,7 +192,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                         json += ",";
                     }
                     pi++;
-                    //TODO: change to actual json obj not string, tried this before and couldn't get it to work
+                    //TODO: change to actual json obj not string
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
                             + prot.links.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
@@ -216,13 +201,13 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
             json += "]}";
             var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
-                    .size([width, height])
+                    .size([width - this.layoutXOffset, height])
                     .value(function(d) {
 						return d.size;
 					})
-                    //~ .sort(function comparator(a, b) {
-						//~ return (b.links.keys().length) - (a.links.keys().length);
-					//~ })
+                    .sort(function comparator(a, b) {
+						return (b.ppLinkCount) - (a.ppLinkCount);
+					})
 					;
             //~ this.message(layoutObj);
             var nodes = packLayout.nodes(jsonObj);
@@ -236,7 +221,6 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 protein.setAllLineCoordinates(false);
             }
         }
-        
         //do force directed layout
         var gWidth = width - this.layoutXOffset;
         if (gWidth < 200) {
@@ -325,7 +309,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
                 .charge(-30 / k)
-                .size([gWidth, height]);
+                .size([gWidth, height - yForRow(5)]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
@@ -335,7 +319,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 var protein = self.interactors.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx + self.layoutXOffset, ny);
+                protein.setPosition(nx + self.layoutXOffset, ny + yForRow(5));
                 protein.setAllLineCoordinates();
             }
         });
