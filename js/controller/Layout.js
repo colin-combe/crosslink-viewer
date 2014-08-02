@@ -308,7 +308,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 .links(layoutObj.links)
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
-                .charge(-30 / k)
+                .charge(-25 / k)
                 .size([gWidth, height - yForRow(5)]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
