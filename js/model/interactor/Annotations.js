@@ -272,11 +272,11 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
 
 Interactor.prototype.getAnnotationRectPath = function(annotation) {
 	//domain as rectangle path
-	var bottom = Interactor.STICKHEIGHT / 2, top = -Interactor.STICKHEIGHT / 2;
-	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Interactor.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
+	var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
+	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
 	//~ //Ouch!! Without brackets following may do string concatenation
 	var annotSize = (1 + (annotation.end - annotation.start));
-	var annotLength = annotSize * Interactor.UNITS_PER_RESIDUE;
+	var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE;
 	var rectPath = "M " + annotX + "," + bottom;
 	for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
 		var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
