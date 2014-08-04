@@ -192,7 +192,9 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 self.showHighlight(true);
             };
             this.circDomains.appendChild(annotPieSlice);
-            this.rectDomains.appendChild(annotColouredRect);
+            if (this.rectDomains) {
+				this.rectDomains.appendChild(annotColouredRect);
+			}
         }
     }
 };

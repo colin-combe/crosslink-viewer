@@ -25,8 +25,6 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     for (var n = 0; n < dataElementCount; n++) {
         if (data[n].object === 'interactor') {
             var interactor = data[n];
-            var p = new Interactor(interactor.id, this, interactor);
-            this.interactors.set(interactor.id, p);
             var organismText = "no organism data";
             if (interactor.organism) {
                 organismText = interactor.organism.scientific + '(' + interactor.organism.common + ')';
@@ -35,16 +33,23 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
                     + organismText + ', '
                     + interactor.identifier.id;
 
+			var p;
+             if (interactor.identifier.db === 'uniprotkb') {
+               p = new Interactor(interactor.id, this, interactor);
+			 } else {
+				p = new SmallMol(interactor.id, this, interactor);
+			 }
+            this.interactors.set(interactor.id, p);
             if (typeof interactor.sequence !== 'undefined') {
                 p.initInteractor(interactor.sequence, interactor.label, description);
             }
             else {
-                if (interactor.identifier.db === 'uniprotkb') {
-                    interactorsMissingSequence.add(interactor.identifier.id);
-                }
-                else {
-                    p.initInteractor('MISSING', interactor.label, description);
-                }
+                //~ if (interactor.identifier.db === 'uniprotkb') {
+                    //~ interactorsMissingSequence.add(interactor.identifier.id);
+                //~ }
+                //~ else {
+                    p.initInteractor('NO_SEQUENCE', interactor.label, description);
+                //~ }
             }
         }
     }
@@ -101,7 +106,7 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 			var efCount = participant.bindingSites.length;
 			for (var ef = 0; ef < efCount; ef++){
 				var experimentalFeature = participant.bindingSites[ef];
-				interactor.experimentalFeatures.set(experimentalFeature.id, experimentalFeature);
+				interactor.features.set(experimentalFeature.id, experimentalFeature);
 				this.features.set(experimentalFeature.id, 
 					{interactor:interactor.id,
 					 feature:experimentalFeature});

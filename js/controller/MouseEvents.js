@@ -236,7 +236,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 				}
 				else { //left click; show matches for link, toggle form for protein, switch stick scale
 					if (typeof this.dragElement.x === 'undefined') { //if not protein
-						this.dragElement.showID();
+						this.dragElement.showData();
 					} else if (evt.shiftKey) { //if shift key
 						this.dragElement.switchStickScale(c);
 					} else {

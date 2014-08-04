@@ -6,13 +6,12 @@
 
 "use strict";
 
-//rename to sequence link?
 SequenceLink.prototype = new xiNET.Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
     this.interactorLink = interactorLink;
-    this.evidences = new Array();
+    this.evidences = d3.map();
     this.intra = false;
     if (typeof this.interactorLink !== 'undefined') {
         if (this.interactorLink.fromProtein === this.interactorLink.toProtein) {
@@ -38,31 +37,33 @@ function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController)
 }
 
 SequenceLink.prototype.addEvidence = function(interaction) {
-    this.evidences.push(interaction);
-    var from = this.interactorLink.fromInteractor, to = this.interactorLink.toInteractor;
-    //~ if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
-        //~ from = interaction.source;
-        //~ to = interaction.target;
-    //~ } else {
-        //~ from = interaction.target
-        //~ to = interaction.source;
-    //~ }
+	if (this.evidences.has(interaction.id) === false) {
+		this.evidences.set(interaction.id, interaction);
+		//~ var from = this.interactorLink.fromInteractor, to = this.interactorLink.toInteractor;
+		//~ if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
+			//~ from = interaction.source;
+			//~ to = interaction.target;
+		//~ } else {
+			//~ from = interaction.target
+			//~ to = interaction.source;
+		//~ }
 
-    //~ if (typeof from.bindingSites !== 'undefined') {
-        //~ this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
-        //~ //    fromBindingSite = from.bindingSites[0];
-    //~ }
-    //~ if (typeof to.bindingSites !== 'undefined') {
-        //~ this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
-        //~ //    toBindingSite = to.bindingSites[0];
-    //~ }
+		//~ if (typeof from.bindingSites !== 'undefined') {
+			//~ this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
+			//~ //    fromBindingSite = from.bindingSites[0];
+		//~ }
+		//~ if (typeof to.bindingSites !== 'undefined') {
+			//~ this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
+			//~ //    toBindingSite = to.bindingSites[0];
+		//~ }
 
-//    if (typeof from.pointMutations !== 'undefined') {
-//        this.fromInteractor.addFeature(from.pointMutations[0]);
-//    }
-//    if (typeof to.pointMutations !== 'undefined') {
-//        this.toInteractor.addFeature(to.pointMutations[0]);
-//    }
+	//    if (typeof from.pointMutations !== 'undefined') {
+	//        this.fromInteractor.addFeature(from.pointMutations[0]);
+	//    }
+	//    if (typeof to.pointMutations !== 'undefined') {
+	//        this.toInteractor.addFeature(to.pointMutations[0]);
+	//    }
+	}
 };
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
@@ -182,63 +183,63 @@ SequenceLink.prototype.showID = function() {
 
 //used when filter changed
 SequenceLink.prototype.check = function(filter) {
-    var filteredEvids = this.getFilteredEvidences();
-    var evidCount = filteredEvids.length;
-    if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
-        this.hide();
-        return false;
-    }
-    else {
-//        this.ambig = true;
-//        for (var i = 0; i < evidCount; i++) {
-//            var evid = filteredEvids[i];
-//            if (typeof evid.expansion === 'undefined') {
-//                this.ambig = false;
-//            }
-//        } 
-
-//            //tooltip
-            this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            if (evidCount > 1) {
-                this.tooltip += 's';
-            }
-            this.tooltip += ' (';
-            var nested_data = d3.nest()
-                    .key(function(d) {
-                return d.experiment.detmethod.name;
-            })
-                    .rollup(function(leaves) {
-                return leaves.length;
-            })
-                    .entries(filteredEvids);
-
-            nested_data.sort(function(a, b) {
-                return b.values - a.values
-            });
-            var countDetMethods = nested_data.length
-            for (var i = 0; i < countDetMethods; i++) {
-                if (i > 0) {
-                    this.tooltip += ', ';
-                }
-                this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            }
-            this.tooltip += ' )';
-
-//            //thickLine
-//            if (evidCount > 1) {
-//                this.thickLineShown = true
-//                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
-//            }
-//            else {
-////                this.thickLineShown = false;
-//                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
-//            }
-//            //ambig?
-//            this.dashedLine(this.ambig);
+    //~ var filteredEvids = this.getFilteredEvidences();
+    //~ var evidCount = filteredEvids.length;
+    //~ if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
+        //~ this.hide();
+        //~ return false;
+    //~ }
+    //~ else {
+//~ //        this.ambig = true;
+//~ //        for (var i = 0; i < evidCount; i++) {
+//~ //            var evid = filteredEvids[i];
+//~ //            if (typeof evid.expansion === 'undefined') {
+//~ //                this.ambig = false;
+//~ //            }
+//~ //        } 
+//~ 
+//~ //            //tooltip
+            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
+            //~ if (evidCount > 1) {
+                //~ this.tooltip += 's';
+            //~ }
+            //~ this.tooltip += ' (';
+            //~ var nested_data = d3.nest()
+                    //~ .key(function(d) {
+                //~ return d.experiment.detmethod.name;
+            //~ })
+                    //~ .rollup(function(leaves) {
+                //~ return leaves.length;
+            //~ })
+                    //~ .entries(filteredEvids);
+//~ 
+            //~ nested_data.sort(function(a, b) {
+                //~ return b.values - a.values
+            //~ });
+            //~ var countDetMethods = nested_data.length
+            //~ for (var i = 0; i < countDetMethods; i++) {
+                //~ if (i > 0) {
+                    //~ this.tooltip += ', ';
+                //~ }
+                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
+            //~ }
+            //~ this.tooltip += ' )';
+//~ 
+//~ //            //thickLine
+//~ //            if (evidCount > 1) {
+//~ //                this.thickLineShown = true
+//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
+//~ //            }
+//~ //            else {
+//~ ////                this.thickLineShown = false;
+//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
+//~ //            }
+//~ //            //ambig?
+//~ //            this.dashedLine(this.ambig);
 
         this.show();
         return true;
-    }
+    //~ }
 };
 
 SequenceLink.prototype.getFilteredEvidences = function() {

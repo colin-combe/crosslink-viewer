@@ -28,7 +28,7 @@ function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
-    this.experimentalFeatures = d3.map();  
+    this.features = d3.map();  
 }
 
 Interactor.prototype.toJSON = function() {
@@ -258,7 +258,7 @@ Interactor.prototype.mouseDown = function(evt) {
         //store start location
         var p = this.ctrl.getEventPoint(evt);
         this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
-        //this.printAnnotationInfo();
+        this.showData();
         return false;
 };
 
@@ -278,9 +278,19 @@ Interactor.prototype.touchStart = function(evt) {
         //store start location
         var p = this.ctrl.getTouchEventPoint(evt);
         this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
-        this.printAnnotationInfo();
+        this.showData();
         return false;
 };
+
+Interactor.prototype.showData = function(evt) {
+    if (document.getElementById('jsonHeading')) {	
+		document.getElementById('jsonHeading').innerHTML = this.json.label;
+	} 
+	if ($("#json")) { // json tree depends on jquery
+		$("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
+		$('#json').JSONView('toggle', 2);
+	}	
+}
 
 Interactor.prototype.mouseOver = function(evt) {
         this.ctrl.preventDefaultsAndStopPropagation(evt);

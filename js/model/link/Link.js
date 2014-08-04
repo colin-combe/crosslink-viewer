@@ -72,7 +72,6 @@ xiNET.Link.prototype.highlightInteractors = function(show){
 
 // event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Link.prototype.mouseDown = function(evt) {
-//    //console.log("clickable mouse down");
     this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
     if (this.ctrl.force !== undefined){
@@ -128,13 +127,22 @@ xiNET.Link.prototype.touchStart = function(evt) {
 }
 
 //used when link clicked
-xiNET.Link.prototype.showID = function() {
-    var linkInfo = this.id;
-    //~ "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-            //~ + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
-            //~ + ")</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this, null, ' ') + "</pre>";
-    this.ctrl.message(linkInfo);
+xiNET.Link.prototype.showData = function() {
+    if (document.getElementById('jsonHeading')) {	
+		document.getElementById('jsonHeading').innerHTML = this.id;
+	} 
+	if ($("#json")) { // json tree depends on jquery
+		$("#json").JSONView(this.evidences.values(), {collapsed: false, nl2br: true});
+		$('#json').JSONView('toggle', 2);
+	} 
+	//~ else {    
+		//~ var linkInfo = this.id;
+		//~ // "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
+				//~ // + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
+				//~ // + ")</strong></p>";
+		//~ linkInfo += "<pre>" + JSON.stringify(this, null, ' ') + "</pre>";
+		//~ this.ctrl.message(linkInfo);
+	//~ }
 };
 
 xiNET.Link.prototype.toJSON = function() {

@@ -220,16 +220,16 @@ xiNET.Controller.prototype.emptyElement = function(element) {
 };
 
 xiNET.Controller.prototype.message = function(text, preformatted) {
-    if (typeof this.messageElement !== 'undefined') {
-        if (typeof text === "object") {
-            text = JSON.stringify(text, null, ' ');
-            text = text.replace(/\\u0000/gi, '');
-            preformatted = true;
-        }
-        if (preformatted)
-            text = "<pre>" + text + "</pre>";
-        this.messageElement.innerHTML = text;
-    }
+    //~ if (typeof this.messageElement !== 'undefined') {
+        //~ if (typeof text === "object") {
+            //~ text = JSON.stringify(text, null, ' ');
+            //~ text = text.replace(/\\u0000/gi, '');
+            //~ preformatted = true;
+        //~ }
+        //~ if (preformatted)
+            //~ text = "<pre>" + text + "</pre>";
+        //~ this.messageElement.innerHTML = text;
+    //~ }
 };
 
 xiNET.Controller.prototype.init = function(width, height) {
