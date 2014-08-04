@@ -31,7 +31,9 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.accession = this.json.identifier.id;
     this.name = name;
     this.organism = this.json.organism;
-
+	
+	this.size = 10;//HACK
+	
     this.description = description;
     this.tooltip = this.description;
     if (this.name == null) {
@@ -232,29 +234,16 @@ SmallMol.prototype.toParked = function(svgP) {
         var link = this.links.values()[l];
         //out with the old (i.e. all links)
         link.hide();
-		var resLinks = link.sequenceLinks.values();
-		var resLinkCount = resLinks.length; 
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var resLink = resLinks[rl];
+		if (link.sequenceLinks) {
+			var resLinks = link.sequenceLinks.values();
+			var resLinkCount = resLinks.length; 
+			for (var rl = 0; rl < resLinkCount; rl++) {
+				var resLink = resLinks[rl];
 				resLink.hide();
+			}
 		}
-    }       
+	}       
     
-    if (this.form === 1){
-		this.toCircle(svgP);
-		var r = this.getBlobRadius();
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0).attr("fill-opacity", 1)
-			.attr("fill", "#EEEEEE")
-			.attr("x", -r).attr("y", -r)
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("rx", r).attr("ry", r)
-			.duration(SmallMol.transitionTime);	
-		d3.select(this.rectDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(SmallMol.transitionTime);
-	}
-	else {
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 0)
 			.attr("fill", "#EEEEEE")
@@ -262,7 +251,6 @@ SmallMol.prototype.toParked = function(svgP) {
 		d3.select(this.circDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
 			.duration(SmallMol.transitionTime);	
-	}
 };
 
 

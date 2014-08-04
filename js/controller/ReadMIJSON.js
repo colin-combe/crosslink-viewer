@@ -13,12 +13,12 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 	
-	//we're gonna need to keep track of what things have missing sequences 
-    //var interactorsMissingSequence = d3.set();
+	//var interactorsMissingSequence = d3.set();
     
-    // we iterate through the data twice, once for interactors and once for interactions
-    // (iteractors and interactions are mixed together in 'data')
-    // the second iteration is in the 'addInteractions' function below
+    // we iterate through the data three times, 
+    // once for interactors, once for features, and once for interactions
+    // (iteractors and interactions are mixed together in data,
+	// features are conatined in interactions)
     
     var data = miJson.data;
     var dataElementCount = data.length;
@@ -35,7 +35,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
 
 			var p;
              if (interactor.identifier.db === 'uniprotkb') {
-               p = new Interactor(interactor.id, this, interactor);
+				p = new Polymer(interactor.id, this, interactor);
 			 } else {
 				p = new SmallMol(interactor.id, this, interactor);
 			 }
@@ -67,7 +67,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
-        Interactor.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
+        Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 4000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         var interactors = self.interactors.values();
         var proteinCount = interactors.length;
         self.features = d3.map();       

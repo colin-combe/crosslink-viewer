@@ -220,6 +220,8 @@ Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	if ((endAngle - startAngle) > 180) {
 		largeArch = 1;
 	}
+	//~ console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
+		//~ + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
 	return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
 		+ radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z";
 		

@@ -309,7 +309,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
                 .charge(-25 / k)
-                .size([gWidth, height - yForRow(5)]);
+                .size([gWidth - xForColumn(1), height - yForRow(2)]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
@@ -319,7 +319,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
                 var protein = self.interactors.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx + self.layoutXOffset, ny + yForRow(5));
+                protein.setPosition(nx + self.layoutXOffset, ny + yForRow(1));
                 protein.setAllLineCoordinates();
             }
         });

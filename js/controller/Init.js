@@ -265,10 +265,10 @@ xiNET.Controller.prototype.init = function(width, height) {
             var prot = interactors[p];
            // prot.initStick();//needed, todo - remove
             if (this.interactors.keys().length < 3) {
-                prot.toStick();
+               if (prot.toStick) prot.toStick();
             }
             else {
-                prot.toBlob();
+               if (prot.toBlob) prot.toBlob();
             }
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);

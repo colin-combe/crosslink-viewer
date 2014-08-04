@@ -4,44 +4,40 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		Interactor.js		
+//		Polymer.js		
 //
 //		authors: Lutz Fischer, Colin Combe
 
 "use strict";
 
-Interactor.STICKHEIGHT = 20;//height of stick in pixels
-Interactor.MAXSIZE = 0; // residue count of longest sequence
-Interactor.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
-Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
-Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
-//~ Interactor.domainColours = d3.scale.category20c(); //
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
-Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
-//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
+Polymer.STICKHEIGHT = 20;//height of stick in pixels
+Polymer.MAXSIZE = 0; // residue count of longest sequence
+Polymer.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)
+Polymer.transitionTime = 650;
 
-Interactor.transitionTime = 650;
+Polymer.prototype = new Interactor();
 
-function Interactor(id, xlvController, json) {
+function Polymer(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
     this.features = d3.map();  
 }
 
-Interactor.prototype.toJSON = function() {
+Polymer.prototype.toJSON = function() {
     return {
         //~ interactor: this.json
 		id: this.id
     };
 };
 
-Interactor.prototype.initInteractor = function(sequence, name, description, size)
+Polymer.prototype.initInteractor = function(sequence, name, description, size)
 {
     this.accession = this.json.identifier.id;
-    this.name = this.json.label.substring(0, this.json.label.indexOf('_'));
+    this.name = name;
+    if (this.json.label.indexOf('_') !== -1) { //take out organism suffix
+		this.json.label.substring(0, this.json.label.indexOf('_'));
+	}
     this.organism = this.json.organism;
 
     this.description = description;
@@ -76,8 +72,8 @@ Interactor.prototype.initInteractor = function(sequence, name, description, size
 		this.size = this.sequence.length;
 	}
     // keep track of largest protein size - used for initial scaling of bars
-    if (Interactor.MAXSIZE < this.size) {
-        Interactor.MAXSIZE = this.size;
+    if (Polymer.MAXSIZE < this.size) {
+        Polymer.MAXSIZE = this.size;
     }
     //links
     this.links = d3.map();
@@ -242,176 +238,19 @@ Interactor.prototype.initInteractor = function(sequence, name, description, size
     this.isSelected = false;
 };
 
-Interactor.prototype.mouseDown = function(evt) {
-           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-        if (this.ctrl.force !== undefined) {
-            this.ctrl.force.stop();
-        }
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
-            this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        var p = this.ctrl.getEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
-        this.showData();
-        return false;
-};
-
-Interactor.prototype.touchStart = function(evt) {
-           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-        if (this.ctrl.force !== undefined) {
-            this.ctrl.force.stop();
-        }
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
-            this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        var p = this.ctrl.getTouchEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
-        this.showData();
-        return false;
-};
-
-Interactor.prototype.showData = function(evt) {
-    if (document.getElementById('jsonHeading')) {	
-		document.getElementById('jsonHeading').innerHTML = this.json.label;
-	} 
-	if ($("#json")) { // json tree depends on jquery
-		$("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
-		$('#json').JSONView('toggle', 2);
-	}	
-}
-
-Interactor.prototype.mouseOver = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
-        this.showHighlight(true);
-        this.ctrl.setTooltip(this.tooltip);
-        return false;
-};
-
-Interactor.prototype.mouseOut = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
-        this.showHighlight(false);
-        this.ctrl.hideTooltip();
-        return false;
-};
-
-Interactor.prototype.getBlobRadius = function() {
-    if (this.accession.indexOf("CHEBI") !== -1) {
-        return 10;
-    }
-    else if (this.json.type.name === 'peptide' || this.json.type.name === 'single stranded deoxyribonucleic acid'){
-        return 5;
-    }
-    else {
+Polymer.prototype.getBlobRadius = function() {
+    //~ if (this.accession.indexOf("CHEBI") !== -1) {
+        //~ return 10;
+    //~ }
+    //~ else if (this.json.type.name === 'peptide' || this.json.type.name === 'single stranded deoxyribonucleic acid'){
+        //~ return 5;
+    //~ }
+    //~ else {
         return Math.sqrt(this.size / 3 / Math.PI);
-    }
+    //~ }
 };
 
-//only output the info needed to reproduce the layout
-//~ Interactor.prototype.toJSON = function() {
-    //~ return {
-        //~ //for saved interactors
-        //~ //        name: this.name,
-        //~ //        accession: this.accession,
-        //~ //        description: this.description,
-        //~ //        sequence: this.sequence,
-        //~ //        processedDAS: this.processedDAS,
-        //~ //for saved layout
-        //~ //        name: this.name,
-        //~ x: this.x,
-        //~ y: this.y,
-        //~ rot: this.rotation,
-        //~ form: this.form,
-        //~ stickZoom: this.stickZoom,
-        //~ parked: this.isParked,
-        //~ flipped: this.isFlipped,
-        //~ annot: this.customAnnotations
-    //~ };
-//~ };
-
-Interactor.prototype.addLink = function(link) {
-    if (!this.links.has(link.id)) {
-        this.links.set(link.id, link);
-    }
-    if (link.arity == 1) {
-        this.internalLink = link;
-    }
-};
-
-Interactor.prototype.addFeature = function(feature) {
-    if (typeof feature !== 'undefined') {
-        var annotName = "";
-        if (typeof feature.name !== 'undefined') {
-            annotName += feature.name + ', ';
-        }
-        if (typeof feature.type !== 'undefined') {
-            annotName += feature.type.name;
-        }
-        if (typeof feature.detmethod !== 'undefined') {
-            annotName += ', ' + feature.detmethod.name;
-        }
-        var colour = Interactor.domainColours(feature.type.name);
-        var segments = feature.sequenceData;
-        var countSegments = segments.length;
-
-        for (var i = 0; i < countSegments; i++) {
-            var segment = segments[i];
-            var sequenceRegex = /(.+)-(.+)/;
-            var match = sequenceRegex.exec(segment);
-            var startRes = match[1] * 1;
-            var endRes = match[2] * 1;
-            if (isNaN(startRes) === false && isNaN(endRes) === false) {
-//                console.log(segment.range);
-//                console.log(match);
-                var annotation = new Annotation(annotName, startRes, endRes, colour);
-                if (this.customAnnotations == null) {
-                    this.customAnnotations = new Array();
-                }
-                this.customAnnotations.push(annotation);
-            }
-        }
-    }
-}
-
-Interactor.prototype.showHighlight = function(show) {
-    if (show === true) {
-        //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.highlight.setAttribute("stroke-opacity", "1");
-    } else {
-		//~ if (this.isSelected == false) {
-                this.highlight.setAttribute("stroke-opacity", "0");
-        //~ }
-        //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-    }
-};
-
-Interactor.prototype.setSelected = function(select) {
-    if (select && this.isSelected === false) {
-        this.ctrl.selected.set(this.id, this);
-        this.isSelected = true;
-		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-		this.highlight.setAttribute("stroke-opacity", "1");
-    }
-    else if (select === false && this.isSelected === true) {
-        this.ctrl.selected.remove(this.id);
-        this.isSelected = false;
-		this.highlight.setAttribute("stroke-opacity", "0");
-		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    }
-};
-
-Interactor.prototype.setRotation = function(angle) {
+Polymer.prototype.setRotation = function(angle) {
     this.rotation = angle % 360;
     if (this.rotation < 0) {
         this.rotation += 360;
@@ -451,35 +290,36 @@ Interactor.prototype.setRotation = function(angle) {
 };
 
 // more accurately described as setting transform for top svg elements (sets scale also)
-Interactor.prototype.setPosition = function(x, y) {
-    this.x = x;
-    this.y = y;
-    if (this.form === 1 && this.isParked === false){
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-    } 
-    else {
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
-		if (this.internalLink != null) {
-			if (typeof this.internalLink.thickLine !== 'undefined') {
-				this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			}
-				this.internalLink.line.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-		}
-	}
-};
-Interactor.rotOffset = 20 * 0.7; // see Rotator.js
-Interactor.minXDist = 30;
-Interactor.prototype.switchStickScale = function(svgP) {
+//~ Polymer.prototype.setPosition = function(x, y) {
+    //~ this.x = x;
+    //~ this.y = y;
+    //~ if (this.form === 1 && this.isParked === false){
+		//~ this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
+		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
+    //~ } 
+    //~ else {
+		//~ this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.ctrl.z) + ") ");
+		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.ctrl.z) + ") ");
+		//~ if (this.internalLink != null) {
+			//~ if (typeof this.internalLink.thickLine !== 'undefined') {
+				//~ this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
+						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			//~ }
+				//~ this.internalLink.line.setAttribute("transform", "translate(" + this.x
+						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
+				//~ this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
+						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
+		//~ }
+	//~ }
+//~ };
+
+Polymer.rotOffset = 20 * 0.7; // see Rotator.js
+Polymer.minXDist = 30;
+Polymer.prototype.switchStickScale = function(svgP) {
     if (this.isParked) {
         this.toggleParked();
     }
@@ -487,7 +327,7 @@ Interactor.prototype.switchStickScale = function(svgP) {
         this.toStick();
     }
     else {
-        var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
+        var pixPerRes = Polymer.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
         if (pixPerRes > 8) {
             this.stickZoom = 0.5;//this looks like a hack
             this.setPosition(svgP.x, svgP.y);
@@ -510,12 +350,12 @@ Interactor.prototype.switchStickScale = function(svgP) {
     this.setAllLineCoordinates();
 };
 
-Interactor.prototype.scale = function() {
-    var protLength = (this.size) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
+Polymer.prototype.scale = function() {
+    var protLength = (this.size) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
 		var k = this.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-			.translate((-(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.ctrl.svgElement.createSVGTransformFromMatrix(k));
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
@@ -533,9 +373,9 @@ Interactor.prototype.scale = function() {
 		//place rotators
 		//this.mouseoverControls.place();
         this.lowerRotator.svg.setAttribute("transform", 
-			"translate(" + (this.getResXwithStickZoom(0.5) - Interactor.rotOffset) + " 0)");
+			"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform", 
-			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Interactor.rotOffset) + " 0)");
+			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");
         
         //internal links
         if (this.internalLink != null) {
@@ -569,21 +409,21 @@ Interactor.prototype.scale = function() {
     }
 };
 
-Interactor.prototype.setScaleGroup = function() {
+Polymer.prototype.setScaleGroup = function() {
 	this.ctrl.emptyElement(this.ticks);
 	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
     
     this.scaleLabels = new Array();
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
-	var pixPerRes = Interactor.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
+	var pixPerRes = Polymer.UNITS_PER_RESIDUE * this.stickZoom; // / this.ctrl.z;
 	var tick = -1;
 	var lastTickX = this.getResXwithStickZoom(this.size);
 	
 	for (var res = 1; res <= this.size; res++) {
 		if (res === 1 ||
-				((res % 100 === 0) && (200 * pixPerRes > Interactor.minXDist)) ||
-				((res % 10 === 0) && (20 * pixPerRes > Interactor.minXDist))
+				((res % 100 === 0) && (200 * pixPerRes > Polymer.minXDist)) ||
+				((res % 10 === 0) && (20 * pixPerRes > Polymer.minXDist))
 				) {
 			var tx = this.getResXwithStickZoom(res);
 			if (pixPerRes >= 8 || res !== 1) {
@@ -592,7 +432,7 @@ Interactor.prototype.setScaleGroup = function() {
 			tick = (tick + 1) % ScaleTicksPerLabel;
 			// does this one get a label?
 			if (tick === 0) {// && tx > 20) {
-				if ((tx + Interactor.minXDist) < lastTickX) {
+				if ((tx + Polymer.minXDist) < lastTickX) {
 					scaleLabelAt(this, res, tx);
 				}
 			}
@@ -626,7 +466,7 @@ Interactor.prototype.setScaleGroup = function() {
 		scaleLabel.setAttribute('font-size', '14');
 		scaleLabel.setAttribute("text-anchor", "middle");
 		scaleLabel.setAttribute("x", 0);
-		scaleLabel.setAttribute("y", Interactor.STICKHEIGHT + 4);
+		scaleLabel.setAttribute("y", Polymer.STICKHEIGHT + 4);
 		scaleLabel.appendChild(document.createTextNode(text));
 		scaleLabelGroup.appendChild(scaleLabel);
 		self.scaleLabels.push(scaleLabel);
@@ -644,19 +484,19 @@ Interactor.prototype.setScaleGroup = function() {
 	}
 };
 
-Interactor.prototype.toggleFlipped = function() {
-    this.isFlipped = !this.isFlipped;
-    if (this.isFlipped) {
-        this.intraLinks.setAttribute("transform", "scale (1 -1)");
-        this.intraLinksHighlights.setAttribute("transform", "scale (1 -1)");
-    }
-    else {
-        this.intraLinks.setAttribute("transform", "scale (1 1)");
-        this.intraLinksHighlights.setAttribute("transform", "scale (1 1)");
-    }
-};
+//~ Polymer.prototype.toggleFlipped = function() {
+    //~ this.isFlipped = !this.isFlipped;
+    //~ if (this.isFlipped) {
+        //~ this.intraLinks.setAttribute("transform", "scale (1 -1)");
+        //~ this.intraLinksHighlights.setAttribute("transform", "scale (1 -1)");
+    //~ }
+    //~ else {
+        //~ this.intraLinks.setAttribute("transform", "scale (1 1)");
+        //~ this.intraLinksHighlights.setAttribute("transform", "scale (1 1)");
+    //~ }
+//~ };
 
-Interactor.prototype.setParked = function(bool, svgP) {
+Polymer.prototype.setParked = function(bool, svgP) {
     if (this.busy !== true) {
 		if (this.isParked === true && bool == false) {
 			this.isParked = false;
@@ -676,7 +516,7 @@ Interactor.prototype.setParked = function(bool, svgP) {
 	}
 };
 
-Interactor.prototype.setForm = function(form, svgP) {
+Polymer.prototype.setForm = function(form, svgP) {
     if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);
@@ -693,7 +533,7 @@ Interactor.prototype.setForm = function(form, svgP) {
 	}
 };
 
-Interactor.prototype.toBlob = function(svgP) {
+Polymer.prototype.toBlob = function(svgP) {
 	if (this.form === 1){ //this is causing from parked it below to run when tool opens 
 		this.toCircle(svgP);
 		var r = this.getBlobRadius();
@@ -705,38 +545,38 @@ Interactor.prototype.toBlob = function(svgP) {
 			.attr("x", -r).attr("y", -r)
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("rx", r).attr("ry", r)
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 
 		d3.select(this.rectDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 	}
 	else {//from parked
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
 			.attr("fill", "#ffffff")
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 		this.checkLinks();
 	}
 	d3.select(this.circDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(1, 1)")
-		.duration(Interactor.transitionTime);
+		.duration(Polymer.transitionTime);
 };
 
-Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
+Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
 	this.busy = true;
 	//~ this.removePeptides();
 	//this.mouseoverControls.remove();
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
-    var protLength = this.size * Interactor.UNITS_PER_RESIDUE * this.stickZoom;		
+    var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
 	//~ var lengthInterpol = d3.interpolate(protLength, (2 * r));
 	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
 	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
-	var labelTranslateInterpol = d3.interpolate(-(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10), -(r + 5));
+	var labelTranslateInterpol = d3.interpolate(-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10), -(r + 5));
 	
 	var xInterpol = null, yInterpol = null;
 	if (typeof svgP !== 'undefined' && svgP !== null) {
@@ -745,7 +585,7 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 	}	
 	
 	var self = this;
-	d3.select(this.ticks).transition().attr("opacity", 0).duration(Interactor.transitionTime / 4)
+	d3.select(this.ticks).transition().attr("opacity", 0).duration(Polymer.transitionTime / 4)
 				.each("end", 
 					function () {
 						self.upperGroup.removeChild(self.ticks);
@@ -756,17 +596,17 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
 		.attr("x", -r - 2.5).attr("y", -r - 2.5)
 		.attr("rx", r + 2.5).attr("ry", r + 2.5)
-		.duration(Interactor.transitionTime);		   
+		.duration(Polymer.transitionTime);		   
 
 	d3.select(this.upperGroup).transition().attr("transform", 
 			"translate(" + this.x + " " + this.y + ")" 
 			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")")
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 	
 	d3.select(this.lowerGroup).transition().attr("transform", 
 		"translate(" + this.x + " " + this.y + ")" 
 			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")")
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 	
 	 if (this.internalLink != null) {
 		var resLinks = this.internalLink.sequenceLinks.values();
@@ -777,11 +617,11 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 						var selectLine = d3.select(residueLink.line);
 						selectLine.attr("d",this.getResidueLinkPath(residueLink));
 						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(Interactor.transitionTime);	
+							.duration(Polymer.transitionTime);	
 						var highlightLine = d3.select(residueLink.highlightLine);
 						highlightLine.attr("d",this.getResidueLinkPath(residueLink));
 						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(Interactor.transitionTime);					
+							.duration(Polymer.transitionTime);					
 			}
 		}
 	}	
@@ -811,7 +651,7 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 			var rectDomain = annots[a].rect;
 
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
-				.duration(Interactor.transitionTime).each("end", 
+				.duration(Polymer.transitionTime).each("end", 
 					function () {
 						//d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));//mistake - this doesn't work 
 						//this is a mess...
@@ -824,7 +664,7 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 					}
 				);
 			d3.select(rectDomain).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
-				.duration(Interactor.transitionTime);
+				.duration(Polymer.transitionTime);
 		}
 	}
 
@@ -832,14 +672,14 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 	var originalRotation = this.rotation;
 	var cubicInOut = d3.ease('cubic-in-out');
 	d3.timer(function(elapsed) {
-	  return update(elapsed / Interactor.transitionTime);
+	  return update(elapsed / Polymer.transitionTime);
 	});
  
 	// update(1);
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Polymer.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.ctrl.svgElement.createSVGTransformFromMatrix(k));
 		
 		if (xInterpol !== null){
@@ -885,17 +725,19 @@ Interactor.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form
 	}
 };
 
-Interactor.prototype.toParked = function(svgP) {   
+Polymer.prototype.toParked = function(svgP) {   
     var c = this.links.values().length;
     for (var l = 0; l < c; l++) {
         var link = this.links.values()[l];
         //out with the old (i.e. all links)
         link.hide();
-		var resLinks = link.sequenceLinks.values();
-		var resLinkCount = resLinks.length; 
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var resLink = resLinks[rl];
+		if (link.sequenceLinks) {
+			var resLinks = link.sequenceLinks.values();
+			var resLinkCount = resLinks.length; 
+			for (var rl = 0; rl < resLinkCount; rl++) {
+				var resLink = resLinks[rl];
 				resLink.hide();
+			}
 		}
     }       
     
@@ -908,23 +750,23 @@ Interactor.prototype.toParked = function(svgP) {
 			.attr("x", -r).attr("y", -r)
 			.attr("width", r * 2).attr("height", r * 2)
 			.attr("rx", r).attr("ry", r)
-			.duration(Interactor.transitionTime);	
+			.duration(Polymer.transitionTime);	
 		d3.select(this.rectDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
-			.duration(Interactor.transitionTime);
+			.duration(Polymer.transitionTime);
 	}
 	else {
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 0)
 			.attr("fill", "#EEEEEE")
-			.duration(Interactor.transitionTime);	
+			.duration(Polymer.transitionTime);	
 		d3.select(this.circDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
-			.duration(Interactor.transitionTime);	
+			.duration(Polymer.transitionTime);	
 	}
 };
 
-Interactor.prototype.toStick = function() {
+Polymer.prototype.toStick = function() {
 	this.busy = true;
     this.form = 1; 
    
@@ -933,9 +775,9 @@ Interactor.prototype.toStick = function() {
 	this.upperGroup.appendChild(this.lowerRotator.svg);
 	this.upperGroup.appendChild(this.upperRotator.svg);  
 	this.lowerRotator.svg.setAttribute("transform", 
-		"translate(" + (this.getResXwithStickZoom(0.5) - Interactor.rotOffset) + " 0)");
+		"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
 	this.upperRotator.svg.setAttribute("transform", 
-		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Interactor.rotOffset) + " 0)");
+		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");
    //remove prot-prot links - would it be better if checkLinks did this? - think not
 	var c = this.links.values().length;
 	for (var l = 0; l < c; l++) {
@@ -946,13 +788,13 @@ Interactor.prototype.toStick = function() {
 		}
 	}
 	 			   
-    var protLength = this.size * Interactor.UNITS_PER_RESIDUE * this.stickZoom;		
+    var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
  	var lengthInterpol = d3.interpolate((2 * r), protLength);
 	var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
 	var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);	
-	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10));
   
     var origStickZoom = this.stickZoom;	
 	this.stickZoom = 0;
@@ -961,24 +803,24 @@ Interactor.prototype.toStick = function() {
  	
 	d3.select(this.circDomains).transition().attr("opacity", 0)
 		.attr("transform", "scale(" + this.stickZoom + ", 1)")
-		.duration(Interactor.transitionTime);
+		.duration(Polymer.transitionTime);
 	d3.select(this.rectDomains).transition().attr("opacity", 1)
 		.attr("transform", "scale(" + this.stickZoom + ", 1)")
-		.duration(Interactor.transitionTime);
+		.duration(Polymer.transitionTime);
 				
 	d3.select(this.outline).transition().attr("stroke-opacity", 1)
 	.attr("fill-opacity",  0)
 		.attr("fill", "#FFFFFF")
-		.attr("height", Interactor.STICKHEIGHT)
-		.attr("y",  -Interactor.STICKHEIGHT / 2)
+		.attr("height", Polymer.STICKHEIGHT)
+		.attr("y",  -Polymer.STICKHEIGHT / 2)
 		.attr("rx", 0).attr("ry", 0)
-		.duration(Interactor.transitionTime);		
+		.duration(Polymer.transitionTime);		
 
 	d3.select(this.highlight).transition()
-		.attr("width", protLength + 5).attr("height", Interactor.STICKHEIGHT + 5)
-		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Interactor.STICKHEIGHT / 2) - 2.5)
+		.attr("width", protLength + 5).attr("height", Polymer.STICKHEIGHT + 5)
+		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Polymer.STICKHEIGHT / 2) - 2.5)
 		.attr("rx", 0).attr("ry", 0)
-		.duration(Interactor.transitionTime);		   
+		.duration(Polymer.transitionTime);		   
 	
 	 if (this.internalLink != null) {
 		var resLinks = this.internalLink.sequenceLinks.values();
@@ -988,10 +830,10 @@ Interactor.prototype.toStick = function() {
 			if (residueLink.shown) {
 				d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
 				d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
-					.duration(Interactor.transitionTime);					
+					.duration(Polymer.transitionTime);					
 				d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
 				d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
-					.duration(Interactor.transitionTime);					
+					.duration(Polymer.transitionTime);					
 			}
 		}
 	}	
@@ -1006,16 +848,16 @@ Interactor.prototype.toStick = function() {
 				var path = this.getResidueLinkPath(mod);
 				d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
 				d3.select(mod.line).transition().attr("d",path)
-					.duration(Interactor.transitionTime);					
+					.duration(Polymer.transitionTime);					
 				d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
 				d3.select(mod.highlightLine).transition().attr("d",path)
-					.duration(Interactor.transitionTime);	
+					.duration(Polymer.transitionTime);	
 			}
 		}
 	}	
 	
 	if (typeof this.annotations !== 'undefined') {
-		var bottom = Interactor.STICKHEIGHT / 2, top = -Interactor.STICKHEIGHT / 2;
+		var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
@@ -1026,16 +868,16 @@ Interactor.prototype.toStick = function() {
 			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 						
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
-				.duration(Interactor.transitionTime);
+				.duration(Polymer.transitionTime);
 			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
-				.duration(Interactor.transitionTime);
+				.duration(Polymer.transitionTime);
 		}
 	}
 	
 	var self = this;
 	var cubicInOut = d3.ease('cubic-in-out');
 	d3.timer(function(elapsed) {
-	  return update(elapsed / Interactor.transitionTime);
+	  return update(elapsed / Polymer.transitionTime);
 	});
  
 	//~ update(1);
@@ -1049,7 +891,7 @@ Interactor.prototype.toStick = function() {
 		self.setRotation(rot);
 	 
 		var currentLength = lengthInterpol(cubicInOut(interp));
-		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Interactor.UNITS_PER_RESIDUE * self.stickZoom));
+		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setAllLineCoordinates();
 		
@@ -1066,101 +908,88 @@ Interactor.prototype.toStick = function() {
 	d3.select(this.ticks).attr("opacity", 0);
     this.setScaleGroup();
     d3.select(this.ticks).transition().attr("opacity", 1)
-		.delay(Interactor.transitionTime * 0.8).duration(Interactor.transitionTime / 2);
+		.delay(Polymer.transitionTime * 0.8).duration(Polymer.transitionTime / 2);
 };
 
-Interactor.prototype.getAggregateSelfLinkPath = function() {
-	var intraR = this.getBlobRadius() + 7;
-	var sectorSize = 45;
-	var arcStart = Interactor.trig(intraR, 25 + sectorSize);
-	var arcEnd = Interactor.trig(intraR, -25 + sectorSize);
-	var cp1 = Interactor.trig(intraR, 40 + sectorSize);
-	var cp2 = Interactor.trig(intraR, -40 + sectorSize);
-	return 'M 0,0 ' 
-		+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
-		+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
-		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
-}
-
-Interactor.prototype.getResidueLinkPath = function(residueLink) {			
-	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
-	var baseLine = 0;
-	if (Interactor.UNITS_PER_RESIDUE * this.stickZoom >= 8){
-		baseLine = -5;
-	}
-	//~ if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
-		//~ if (residueLink.ambig === false){
-			//~ residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+//~ Polymer.prototype.getResidueLinkPath = function(residueLink) {			
+	//~ var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
+	//~ var baseLine = 0;
+	//~ if (Polymer.UNITS_PER_RESIDUE * this.stickZoom >= 8){
+		//~ baseLine = -5;
+	//~ }
+	//~ // if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
+		//~ // if (residueLink.ambig === false){
+			//~ //~residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
+		//~ // }
+		//~ // var p1 = [x1, 26];
+		//~ // var p3 = [x1, 18];
+		//~ // var p2 = Polymer.rotatePointAboutPoint(p1, p3, 60);
+		//~ // baseLine = baseLine * -1;
+		//~ // return "M " + x1 + "," + baseLine 
+			//~ // + " L " + p1[0] + "," + p1[1] 
+			//~ // + " L " +  p2[0] + "," + p2[1]
+			//~ // + " L " + p3[0] + "," + p3[1];
+	//~ // }
+	//~ // else {
+		//~ var x2 = this.getResXwithStickZoom(residueLink.toResidue);
+		//~ var height, cp1, cp2, arcStart, arcEnd, arcRadius;
+		//~ arcRadius = (Math.abs(x2 - x1)) / 2;
+		//~ var height = -((Polymer.STICKHEIGHT / 2) + 3);
+		//~ if (arcRadius < 15){
+			//~ height = -28 + arcRadius;
 		//~ }
-		//~ var p1 = [x1, 26];
-		//~ var p3 = [x1, 18];
-		//~ var p2 = Interactor.rotatePointAboutPoint(p1, p3, 60);
-		//~ baseLine = baseLine * -1;
-		//~ return "M " + x1 + "," + baseLine 
-			//~ + " L " + p1[0] + "," + p1[1] 
-			//~ + " L " +  p2[0] + "," + p2[1]
-			//~ + " L " + p3[0] + "," + p3[1];
-	//~ }
-	//~ else {
-		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
-		var height, cp1, cp2, arcStart, arcEnd, arcRadius;
-		arcRadius = (Math.abs(x2 - x1)) / 2;
-		var height = -((Interactor.STICKHEIGHT / 2) + 3);
-		if (arcRadius < 15){
-			height = -28 + arcRadius;
-		}
-		
-		var start = [x1, baseLine];
-		var end = [x2, baseLine];
-		
-		var angle;
-		if (residueLink.intraMolecular === true){
-			
-			var curveMidX = x1 + ((x2 - x1) / 2);
-			arcStart = [ curveMidX, height - arcRadius];
-			arcEnd =  [ curveMidX, height - arcRadius];
-			cp1 = [ curveMidX, height - arcRadius];
-			cp2 =  [ curveMidX, height - arcRadius];
-			//flip
-			//~ start[1] = start[1] * -1;
-			//~ cp1[1] = cp1[1] * -1;
-			//~ arcStart[1] = arcStart[1] * -1;
-			//~ arcEnd[1] = arcEnd[1] * -1;
-			//~ cp2[1] = cp2[1] * -1;
-			//~ end[1] = end[1] * -1;
-		}
-		else if (residueLink.hd){	
-			var curveMidX = x1 + ((x2 - x1) / 2);
-			arcStart = [curveMidX, height - arcRadius];
-			arcEnd = [curveMidX, height - arcRadius];
-			cp1 = Interactor.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
-			cp2 = Interactor.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
-		}
-		else {	
-			cp1 = [x1, height];
-			cp2 = [x2, baseLine];
-			arcStart = [x1, height];
-			arcEnd =  [x2, height];
-		}		
-		
-		return " M " + start[0] + "," + start[1]	 
-			+ " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
-			+ " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
-			+ " Q "+ cp2[0] + ',' + cp2[1] +  " "  + end[0] + "," + end[1];
-	//~ }
-}
+		//~ 
+		//~ var start = [x1, baseLine];
+		//~ var end = [x2, baseLine];
+		//~ 
+		//~ var angle;
+		//~ if (residueLink.intraMolecular === true){
+			//~ 
+			//~ var curveMidX = x1 + ((x2 - x1) / 2);
+			//~ arcStart = [ curveMidX, height - arcRadius];
+			//~ arcEnd =  [ curveMidX, height - arcRadius];
+			//~ cp1 = [ curveMidX, height - arcRadius];
+			//~ cp2 =  [ curveMidX, height - arcRadius];
+			//~ //flip
+			//~ // start[1] = start[1] * -1;
+			//~ // cp1[1] = cp1[1] * -1;
+			//~ // arcStart[1] = arcStart[1] * -1;
+			//~ // arcEnd[1] = arcEnd[1] * -1;
+			//~ // cp2[1] = cp2[1] * -1;
+			//~ // end[1] = end[1] * -1;
+		//~ }
+		//~ else if (residueLink.hd){	
+			//~ var curveMidX = x1 + ((x2 - x1) / 2);
+			//~ arcStart = [curveMidX, height - arcRadius];
+			//~ arcEnd = [curveMidX, height - arcRadius];
+			//~ cp1 = Polymer.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
+			//~ cp2 = Polymer.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
+		//~ }
+		//~ else {	
+			//~ cp1 = [x1, height];
+			//~ cp2 = [x2, baseLine];
+			//~ arcStart = [x1, height];
+			//~ arcEnd =  [x2, height];
+		//~ }		
+		//~ 
+		//~ return " M " + start[0] + "," + start[1]	 
+			//~ + " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
+			//~ + " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
+			//~ + " Q "+ cp2[0] + ',' + cp2[1] +  " "  + end[0] + "," + end[1];
+	//~ // }
+//~ }
 
-Interactor.prototype.getResXwithStickZoom = function(r) {
+Polymer.prototype.getResXwithStickZoom = function(r) {
 	if (isNaN(r) || r === '?' || r === 'n') {
-        return ((0 - (this.size/2)) * Interactor.UNITS_PER_RESIDUE * this.stickZoom) - 8;// ;
+        return ((0 - (this.size/2)) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) - 8;// ;
     }
-    return (r - (this.size/2)) * Interactor.UNITS_PER_RESIDUE * this.stickZoom;
+    return (r - (this.size/2)) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
  };
 
 //calculate the  coordinates of a residue (relative to this.ctrl.container)
-Interactor.prototype.getResidueCoordinates = function(r, yOff) {
-    if (Interactor.UNITS_PER_RESIDUE === undefined)
-        alert("Error: Interactor.UNITS_PER_RESIDUE is undefined");
+Polymer.prototype.getResidueCoordinates = function(r, yOff) {
+    if (Polymer.UNITS_PER_RESIDUE === undefined)
+        alert("Error: Polymer.UNITS_PER_RESIDUE is undefined");
     if (r === undefined)
         alert("Error: residue number is undefined");
   //  console.log(r * 1);
@@ -1186,95 +1015,4 @@ Interactor.prototype.getResidueCoordinates = function(r, yOff) {
 		console.log([x, y]);
 	}
     return [x, y];
-};
-
-Interactor.rotatePointAboutPoint = function(p, o, theta) {
-	theta = (theta / 360) * Math.PI * 2;
-	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
-	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
-	return [rx, ry];
-}
-
-Interactor.prototype.checkLinks = function() {
-    var links = this.links.values();
-    var c = links.length;
-    for (var l = 0; l < c; l++) {
-        links[l].check();
-    }
-}
-
-// update all lines (e.g after a move)
-Interactor.prototype.setAllLineCoordinates = function() {
-    var links = this.links.values();
-    var c = links.length;
-    for (var l = 0; l < c; l++) {
-        var link = links[l];
-        if (link.fromInteractor){//TEMP
-			if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-				link.setLinkCoordinates(this);
-			}
-			else {
-				var resLinks = link.sequenceLinks.values();
-				var resLinkCount = resLinks.length;
-				for (var rl = 0; rl < resLinkCount; rl++) {
-					resLinks[rl].setLinkCoordinates(this);
-				}
-			}
-		} else {
-			link.setLinkCoordinates(this);
-		}
-    }
-};
-//~ 
-Interactor.prototype.countExternalLinks = function() {
-    //~ //if (this.isParked) {
-    //~ //    return 0;
-    //~ //}
-    var countExternal = d3.set();
-    var c = this.links.keys().length;
-    for (var l = 0; l < c; l++) {
-        var link = this.links.values()[l];
-        for (var i = 0; i < link.interactors.length; i++) {
-       //~ // {
-         //~ //   if (link.check() === true) {
-                countExternal.add(link.interactors[i].id);
-           //~ //}
-      //~ //  }
-		}
-    }
-    return countExternal.values().length - 1;
-};
-
-Interactor.prototype.getSubgraph = function() {
-    if (this.subgraph == null) { // don't check for undefined here
-        var subgraph = {
-            nodes: d3.map(),
-            links: d3.map()
-        };
-        //if (this.isParked === false) {
-            //~ this.subgraph = 
-            this.addConnectedNodes(subgraph);
-        //}
-        this.ctrl.subgraphs.push(subgraph); 
-    }
-    return this.subgraph;
-};
-
-Interactor.prototype.addConnectedNodes = function(subgraph) {
-	this.subgraph = subgraph;
-	subgraph.nodes.set(this.id, this);
-    var count = this.links.values().length;
-    for (var i = 0; i < count; i++) {
-        var externalLink = this.links.values()[i];
-        if (subgraph.links.has(externalLink.id) === false) {
-			//~ if (externalLink.check() === true) {
-        	subgraph.links.set(externalLink.id, externalLink);
-			for (var i = 0; i < externalLink.interactors.length; i++) {
-				var otherEnd = externalLink.interactors[i];
-				otherEnd.addConnectedNodes(subgraph);
-			}
-			//~ }
-		}
-    }
-    //~ console.debug(subgraph.nodes.keys());
 };

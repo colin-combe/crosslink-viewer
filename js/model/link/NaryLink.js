@@ -288,6 +288,7 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 				northerly = interactor;
 			}
 		}		
+		//~ console.debug(this.id + "\t" + this.interactors.length)
 		this.rect.setAttribute('x',westerly.x - 20);
 		this.rect.setAttribute('y',northerly.y - 20);
 		this.rect.setAttribute('width',(easterly.x - westerly.x) + 40);
