@@ -614,14 +614,14 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
 			if (residueLink.intra === true && residueLink.shown) {
-						var selectLine = d3.select(residueLink.line);
-						selectLine.attr("d",this.getResidueLinkPath(residueLink));
-						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(Polymer.transitionTime);	
-						var highlightLine = d3.select(residueLink.highlightLine);
-						highlightLine.attr("d",this.getResidueLinkPath(residueLink));
-						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(Polymer.transitionTime);					
+						//~ var selectLine = d3.select(residueLink.line);
+						//~ selectLine.attr("d",this.getResidueLinkPath(residueLink));
+						//~ selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							//~ .duration(Polymer.transitionTime);	
+						//~ var highlightLine = d3.select(residueLink.highlightLine);
+						//~ highlightLine.attr("d",this.getResidueLinkPath(residueLink));
+						//~ highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							//~ .duration(Polymer.transitionTime);					
 			}
 		}
 	}	
@@ -828,12 +828,12 @@ Polymer.prototype.toStick = function() {
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];			
 			if (residueLink.shown) {
-				d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
-				d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
-					.duration(Polymer.transitionTime);					
-				d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
-				d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
-					.duration(Polymer.transitionTime);					
+				//~ d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
+				//~ d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
+					//~ .duration(Polymer.transitionTime);					
+				//~ d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
+				//~ d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
+					//~ .duration(Polymer.transitionTime);					
 			}
 		}
 	}	
