@@ -108,13 +108,11 @@ NaryLink.prototype.initSVG = function() {
     };
     this.rect.onmouseover = function(evt) {
         self.mouseOver(evt);
-        console.log("interactors", this.ctrl);
     };
     this.rect.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
     this.rect.ontouchstart = function(evt) {
-        console.log("touchstart");
         self.touchStart(evt);
     };
 };
@@ -268,28 +266,37 @@ NaryLink.prototype.hide = function() {
     //~ }
 };
 
-
-// Uses d3.geom.hull to calculate a path's move-to points based on an array of vertices. 
-var hullPath = function(values) {
-    // d3.geom.hull fails when values aren't perfect ([0,0] vertices, or less than three nodes)
-    // TODO: Figure out a better way than try catching!
-    var returnval = null;
-
-    try {
-        var calced = d3.geom.hull(values);
-        returnval = "M" + calced.join("L") + "Z";
-    } catch(err) {
-        return null
-    }
-
-    return returnval;
-};
-
 NaryLink.prototype.setLinkCoordinates = function(interactor) {
 
+    // Uses d3.geom.hull to calculate a bounding path around an array of vertices 
+    var calculateHullPath = function(values) {
+        
+        // d3.geom.hull does not like a situation where there are less than three points. 
+        if (values.length == 2) {
+            return "M" + values[0] + "L" + values[1] + "Z";
+        } else if (values.length == 1) {
+            // A single point SVG path does not get stroked, so the browser won't render something like the following:
+            // return "M" + values[0] + "L" + values[0] + "Z";
+            // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
+            // Just something to think about!
+            return;
+        }
+
+        // If all points are 0,0 then we can't have a path! (This breaks the d3 hull function)
+        var haspoints = values.some(function(nextpoint) {
+            return nextpoint.some(function(coordinate) {
+                return coordinate !== 0;
+            })
+        });
+
+        if (haspoints) {
+            var calced = d3.geom.hull(values);
+            return "M" + calced.join("L") + "Z";
+        }
+
+    };
+
     if (this.shown) {//don't waste time changing DOM if link not visible
-        var northerly = null, southerly = null, 
-            westerly = null, easterly = null; //bounding interactors
 
         var interactors = this.interactors;
 
@@ -297,7 +304,9 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
             return [i.x, i.y];
         });
 
-        var hullValues = hullPath(mapped);
-        this.rect.setAttribute('d',hullValues);
+        var hullValues = calculateHullPath(mapped);
+        if (hullValues) {
+            this.rect.setAttribute('d', hullValues);
+        }
     }
 };
