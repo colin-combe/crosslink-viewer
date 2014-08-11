@@ -13,11 +13,22 @@
 
 		<form class="fileupload"  action="./fup.php" enctype="multipart/form-data" method="POST">
 			<div class="upload-box">
+				<br/>
 				<label for="fastaFile">FASTA file:</label>
-				<input class="file" name="upfasta" type="file" id="fastFile"/>                    
+				<input name="upfasta" type="file" id="fastFile"/>                    
+				
+				<br/>
 				<label for="csvFile">CSV file:</label>
-				<input class="file" name="upfile" type="file" id="csvFile"/>                    
+				<input name="upfile" type="file" id="csvFile"/>                    
+				
+				<br/>
+				<label for="annotFile">Annotation CSV file:</label>
+				<input name="upannot" type="file" id="annotFile"/>
+				
+				<br/>
+				
 				<input value="Upload" type="submit">
+									
 			</div>
 		</form>
 	</body>
