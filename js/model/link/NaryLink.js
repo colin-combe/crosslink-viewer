@@ -1,10 +1,10 @@
-//    	xiNET interaction viewer
-//    	Copyright 2014 Rappsilber Laboratory
+//      xiNET interaction viewer
+//      Copyright 2014 Rappsilber Laboratory
 //
-//    	This product includes software developed at
-//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//      This product includes software developed at
+//      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		author: Colin Combe
+//      author: Colin Combe
 
 "use strict";
 
@@ -31,73 +31,76 @@ function NaryLink(id, xlvController) {
 }
 
 NaryLink.prototype.addEvidence = function(interaction) {
-	if (this.evidences.has(interaction.id) === false) {
-		this.evidences.set(interaction.id, interaction);
+    if (this.evidences.has(interaction.id) === false) {
+        this.evidences.set(interaction.id, interaction);
     
-		//~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
-			//~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
-		//~ }
-			
-		if (this.interactors === null){
-			this.initInteractors(interaction);
-		}    
-			
-		for (var pi = 0; pi < interaction.participants.length; pi++){
-			var sourceID = interaction.participants[pi].interactorRef;
-			var sourceInteractor = this.ctrl.interactors.get(sourceID);
-					
-			var bindingSites = interaction.participants[pi].bindingSites;
-			if (bindingSites){
-				var bsCount = bindingSites.length;
-				for (var bsi = 0; bsi < bsCount; bsi++){
+        //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+            //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
+        //~ }
+            
+        if (this.interactors === null){
+            this.initInteractors(interaction);
+        }    
+            
+        for (var pi = 0; pi < interaction.participants.length; pi++){
+            var sourceID = interaction.participants[pi].interactorRef;
+            var sourceInteractor = this.ctrl.interactors.get(sourceID);
+                    
+            var bindingSites = interaction.participants[pi].bindingSites;
+            if (bindingSites){
+                var bsCount = bindingSites.length;
+                for (var bsi = 0; bsi < bsCount; bsi++){
 
-					var bindingSite = bindingSites[bsi];
-					if (bindingSite.linkedFeatures){
-						for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-							var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
-							var targetInteractor = this.ctrl.interactors.get(target.interactor);
-							var linkID, fromInteractor, toInteractor;	
-							// these links are undirected and should have same ID regardless of which way round 
-							// source and target are
-							if (sourceID - 0 < target.interactor - 0) {
-								linkID = sourceID + '-' + target.interactor;
-								fromInteractor = sourceInteractor;
-								toInteractor = targetInteractor; 
-							} else {
-								linkID = target.interactor + '-' + sourceID;
-								fromInteractor = targetInteractor;
-								toInteractor = sourceInteractor; 
-							}
-							
-						}
-											
-						var link = this.ctrl.links.get(linkID);
-						if (typeof link === 'undefined') {
-							if (fromInteractor === toInteractor){
-								link = new UnaryLink(linkID, this.ctrl);
-								fromInteractor.addLink(link);
-							}else {
-								link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
-								fromInteractor.addLink(link);
-								toInteractor.addLink(link);
-							}
-							this.ctrl.links.set(linkID, link);
-						}
-						this.subLinks.set(linkID, link);
-						link.addEvidence(interaction);
-					}
-				}
-			}
-		}			
-	}
+                    var bindingSite = bindingSites[bsi];
+                    if (bindingSite.linkedFeatures){
+                        for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){                                 
+                            var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
+                            var targetInteractor = this.ctrl.interactors.get(target.interactor);
+                            var linkID, fromInteractor, toInteractor;   
+                            // these links are undirected and should have same ID regardless of which way round 
+                            // source and target are
+                            if (sourceID - 0 < target.interactor - 0) {
+                                linkID = sourceID + '-' + target.interactor;
+                                fromInteractor = sourceInteractor;
+                                toInteractor = targetInteractor; 
+                            } else {
+                                linkID = target.interactor + '-' + sourceID;
+                                fromInteractor = targetInteractor;
+                                toInteractor = sourceInteractor; 
+                            }
+                            
+                        }
+                                            
+                        var link = this.ctrl.links.get(linkID);
+                        if (typeof link === 'undefined') {
+                            if (fromInteractor === toInteractor){
+                                link = new UnaryLink(linkID, this.ctrl);
+                                fromInteractor.addLink(link);
+                            }else {
+                                link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
+                                fromInteractor.addLink(link);
+                                toInteractor.addLink(link);
+                            }
+                            this.ctrl.links.set(linkID, link);
+                        }
+                        this.subLinks.set(linkID, link);
+                        link.addEvidence(interaction);
+                    }
+                }
+            }
+        }           
+    }
 };
 
 NaryLink.prototype.initSVG = function() {
-	this.rect = document.createElementNS(xiNET.svgns, "rect");
-	this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
-	this.rect.setAttribute('opacity', 0.4);
-	this.rect.setAttribute('rx', '30');
-	this.rect.setAttribute('ry', '30');
+
+    this.rect = document.createElementNS(xiNET.svgns, "path");
+    this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
+    this.rect.setAttribute('opacity', 0.4);
+    this.rect.setAttribute('stroke', NaryLink.naryColours(this.id));
+    this.rect.setAttribute('stroke-linejoin', 'round');
+    this.rect.setAttribute('stroke-width', 40);
+
     //set the events for it
     var self = this;
     this.rect.onmousedown = function(evt) {
@@ -115,14 +118,14 @@ NaryLink.prototype.initSVG = function() {
 };
 
 NaryLink.prototype.showHighlight = function(show) {
-	//~ if (this.shown) {
-		//~ //we will iterate through all interactors and sublinks and highlight them
-		//~ this.highlightInteractors(show);
-		//~ var subLinks = this.subLinks.values();
-		//~ for (var s = 0; s < subLinks.length; s++) {
-			//~ subLinks[s].showHighlight(show);
-		//~ }
-	//~ }
+    //~ if (this.shown) {
+        //~ //we will iterate through all interactors and sublinks and highlight them
+        //~ this.highlightInteractors(show);
+        //~ var subLinks = this.subLinks.values();
+        //~ for (var s = 0; s < subLinks.length; s++) {
+            //~ subLinks[s].showHighlight(show);
+        //~ }
+    //~ }
 };
 
 
@@ -146,7 +149,7 @@ NaryLink.prototype.showHighlight = function(show) {
 
 NaryLink.prototype.check = function() {
 
-	
+    
     //~ var seqLinks = this.sequenceLinks.values();
     //~ var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
@@ -245,53 +248,65 @@ NaryLink.prototype.show = function() {
             if (typeof this.rect === 'undefined') {
                 this.initSVG();
             }
-			this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
-			this.setLinkCoordinates();
-			this.ctrl.naryLinks.appendChild(this.rect);
-		}
+            // this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
+            this.setLinkCoordinates();
+            this.ctrl.naryLinks.appendChild(this.rect);
+        }
     }
 };
 
 NaryLink.prototype.hide = function() {
     //~ if (this.shown) {
         //~ this.shown = false;
-		//~ if (this.thickLineShown) {
-			//~ this.ctrl.p_pLinksWide.removeChild(this.thickLine);
-		//~ }
-		//this.ctrl.highlights.removeChild(this.highlightLine);
-		//~ this.ctrl.p_pLinks.removeChild(this.rect);
+        //~ if (this.thickLineShown) {
+            //~ this.ctrl.p_pLinksWide.removeChild(this.thickLine);
+        //~ }
+        //this.ctrl.highlights.removeChild(this.highlightLine);
+        //~ this.ctrl.p_pLinks.removeChild(this.rect);
     //~ }
 };
 
 NaryLink.prototype.setLinkCoordinates = function(interactor) {
+
+    // Uses d3.geom.hull to calculate a bounding path around an array of vertices 
+    var calculateHullPath = function(values) {
+        
+        // d3.geom.hull does not like a situation where there are less than three points. 
+        if (values.length == 2) {
+            return "M" + values[0] + "L" + values[1] + "Z";
+        } else if (values.length == 1) {
+            // A single point SVG path does not get stroked, so the browser won't render something like the following:
+            // return "M" + values[0] + "L" + values[0] + "Z";
+            // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
+            // Just something to think about!
+            return;
+        }
+
+        // If all points are 0,0 then we can't have a path! (This breaks the d3 hull function)
+        var haspoints = values.some(function(nextpoint) {
+            return nextpoint.some(function(coordinate) {
+                return coordinate !== 0;
+            })
+        });
+
+        if (haspoints) {
+            var calced = d3.geom.hull(values);
+            return "M" + calced.join("L") + "Z";
+        }
+
+    };
+
     if (this.shown) {//don't waste time changing DOM if link not visible
-		var northerly = null, southerly = null, 
-			westerly = null, easterly = null; //bounding interactors
-		var interactors = this.interactors;
-		var iCount = interactors.length;
-		for (var i = 0; i < iCount; i++){
-			var interactor = interactors[i];
-				
-			if (westerly === null || interactor.x < westerly.x) {
-				westerly = interactor;
-			}
-			
-			if (easterly === null || interactor.x > easterly.x) {
-				easterly = interactor;
-			}
-			
-			if (southerly === null || interactor.y > southerly.y) {
-				southerly = interactor;
-			}
-			
-			if (northerly === null || interactor.y < northerly.y) {
-				northerly = interactor;
-			}
-		}		
-		//~ console.debug(this.id + "\t" + this.interactors.length)
-		this.rect.setAttribute('x',westerly.x - 20);
-		this.rect.setAttribute('y',northerly.y - 20);
-		this.rect.setAttribute('width',(easterly.x - westerly.x) + 40);
-		this.rect.setAttribute('height',(southerly.y - northerly.y) + 40);
+
+        var interactors = this.interactors;
+
+        var mapped = interactors.map(function(i) {
+            return [i.x, i.y];
+        });
+
+        var hullValues = calculateHullPath(mapped);
+        if (hullValues) {
+            this.rect.setAttribute('d', hullValues);
+        }
     }
 };
