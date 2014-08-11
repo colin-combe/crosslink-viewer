@@ -216,8 +216,8 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		if (manualAnnotations){
 			xlv.addAnnotations(manualAnnotations);
 		}
-		else {
+		//else {
 			new xiNET.DASUtil(xlv);
-		}
+		//}
     }
 };
