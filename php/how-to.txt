@@ -8,6 +8,7 @@ The table requires following columns:
 	'fileName', shown inpage title
 	'layout', used for saved layout
 	'fasta', protein sequence data as fasta file format string
+    'annot', stores uploaded custom annotation info
 
 You will need to add the connection string for your database into these files: 
 	fup.php, handles file upload then redirects to unique URL
