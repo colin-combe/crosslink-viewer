@@ -4,7 +4,7 @@
 //      This product includes software developed at
 //      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//      author: Colin Combe
+//      author: Colin Combe, Josh Heimbach
 
 "use strict";
 
@@ -278,6 +278,8 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
             // A single point SVG path does not get stroked, so the browser won't render something like the following:
             // return "M" + values[0] + "L" + values[0] + "Z";
             // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
+				// Col says - yes, we might care. E.g. case where id of an Unary interaction is 
+				//given as interactor in another interacton (interaction with a homodimer) 
             // Just something to think about!
             return;
         }
