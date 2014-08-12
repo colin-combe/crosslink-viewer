@@ -118,34 +118,16 @@ NaryLink.prototype.initSVG = function() {
 };
 
 NaryLink.prototype.showHighlight = function(show) {
-    //~ if (this.shown) {
-        //~ //we will iterate through all interactors and sublinks and highlight them
-        //~ this.highlightInteractors(show);
-        //~ var subLinks = this.subLinks.values();
-        //~ for (var s = 0; s < subLinks.length; s++) {
-            //~ subLinks[s].showHighlight(show);
-        //~ }
-    //~ }
+    if (this.shown) {
+        //we will iterate through all interactors and sublinks and highlight them
+        this.highlightInteractors(show);
+        var subLinks = this.subLinks.values();
+        for (var s = 0; s < subLinks.length; s++) {
+            subLinks[s].showHighlight(show);
+        }
+    }
 };
 
-
-
-//~ NaryLink.prototype.getFilteredEvidences = function() {
-    //~ var seqLinks = this.sequenceLinks.values();
-    //~ var seqLinkCount = seqLinks.length;
-    //~ // use map to eliminate duplicates 
-    //~ // (which result from linked features resulting in multiple SequenceLinks for single interaction)
-    //~ var filteredEvids = d3.map();
-    //~ for (var i = 0; i < seqLinkCount; i++) {
-        //~ var seqLink = seqLinks[i];
-        //~ var seqLinkEvids = seqLink.getFilteredEvidences();
-        //~ var seqLinkEvidCount = seqLinkEvids.length;
-        //~ for (var j = 0; j < seqLinkEvidCount; j++) {
-            //~ filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
-        //~ }
-    //~ }
-    //~ return filteredEvids.values();
-//~ };
 
 NaryLink.prototype.check = function() {
 

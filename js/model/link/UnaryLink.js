@@ -354,17 +354,6 @@ UnaryLink.prototype.check = function() {
     }
 };
 
-//~ UnaryLink.prototype.dashedLine = function(dash) {
-    //~ if (dash){// && !this.dashed) {
-        //~ this.dashed = true;
-        //~ this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-    //~ }
-    //~ else if (!dash){// && this.dashed) {
-        //~ this.dashed = false;
-        //~ this.line.removeAttribute("stroke-dasharray");
-    //~ }
-//~ };
-
 UnaryLink.prototype.show = function() {
     if (this.ctrl.initComplete) {
 		// resembles Refresh.js, scale() function
