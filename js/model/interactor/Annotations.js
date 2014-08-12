@@ -81,13 +81,13 @@ Interactor.prototype.setKeywords = function(keywords) {
             var arcStart = trig(radius, startAngle - 90);
             var arcEnd = trig(radius, endAngle - 90);
             var largeArch = 0;
-            if ((endAngle - startAngle) > 180)
+            if ((endAngle - startAngle || endAngle == startAngle) > 180)
                 largeArch = 1;
             annotPieSlice.setAttribute("d", "M0,0 L" + arcStart.x + "," +
                     arcStart.y + " A" + radius + "," + radius + " 0 " +
                     largeArch + ",1 " + arcEnd.x + "," + arcEnd.y + " z");
 
-            //style 'em // u r here
+            //style 'em
             annotPieSlice.setAttribute("stroke", "none");
             var c;
             //temp
@@ -212,12 +212,12 @@ Interactor.stepsInArc = 5;
 
 Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	var startAngle = ((annotation.start - 1) / this.size) * 360;
-	var endAngle = ((annotation.end) / this.size) * 360;
+	var endAngle = ((annotation.end - 1) / this.size) * 360;
 	var radius = this.getBlobRadius() - 2;
 	var arcStart = Interactor.trig(radius, startAngle - 90);
 	var arcEnd = Interactor.trig(radius, endAngle - 90);
 	var largeArch = 0;
-	if ((endAngle - startAngle) > 180) {
+	if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
 		largeArch = 1;
 	}
 	//~ console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 

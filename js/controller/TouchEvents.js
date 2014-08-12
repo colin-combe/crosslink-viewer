@@ -96,20 +96,8 @@ xiNET.Controller.prototype.touchMove = function(evt) {
             if (this.state === xiNET.Controller.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
-                if (typeof this.dragElement.x === 'undefined') { // if not a protein
-                    //its a link - drag whole connected subgraph
-                    var prot;
-                    if (this.dragElement.fromProtein)
-                        prot = this.dragElement.fromProtein;
-                    else
-                        prot = this.dragElement.proteinLink.fromProtein;
-                    var prots = this.proteins.values();
-                    var protCount = prots.length;
-                    for (var p = 0; p < protCount; p++) {
-                        prots[p].subgraph = null;
-                    }
-                    var subgraph = prot.getSubgraph();
-                    var nodes = subgraph.nodes.values();
+                if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+                    var nodes = this.dragElement.interactors;
                     var nodeCount = nodes.length;
                     for (var i = 0; i < nodeCount; i++) {
                         var protein = nodes[i];

@@ -43,9 +43,9 @@ xiNET.Controller.prototype.initMouseEvents = function() {
 		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
 	}
         	  
-    this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
-    this.marquee.setAttribute('class', 'marquee');
-    this.marquee.setAttribute('fill', 'red');
+    //~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
+    //~ this.marquee.setAttribute('class', 'marquee');
+    //~ this.marquee.setAttribute('fill', 'red');
     
     this.lastMouseUp = new Date().getTime();
 }
@@ -104,40 +104,28 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
         if (this.dragElement != null) { //dragging or rotating
             this.hideTooltip();
-            //~ var suspendID = this.svgElement.suspendRedraw(5000);
+            var suspendID = this.svgElement.suspendRedraw(5000);
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
             if (this.state === xiNET.Controller.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
-                if (typeof this.dragElement.x === 'undefined') { // if not a protein
-                    //its a link - drag whole connected subgraph
-                    //~ var prot;
-                    //~ if (this.dragElement.fromInteractor)
-                        //~ prot = this.dragElement.fromInteractor;
-                    //~ else
-                        //~ prot = this.dragElement.interactorLink.fromInteractor;
-                    //~ var prots = this.interactors.values();
-                    //~ var protCount = prots.length;
-                    //~ for (var p = 0; p < protCount; p++) {
-                        //~ prots[p].subgraph = null;
-                    //~ }
-                    //~ var subgraph = prot.getSubgraph();
-                    //~ var nodes = subgraph.nodes.values();
-                    //~ var nodeCount = nodes.length;
-                    //~ for (var i = 0; i < nodeCount; i++) {
-                        //~ var protein = nodes[i];
-                        //~ ox = protein.x;
-                        //~ oy = protein.y;
-                        //~ nx = ox - dx;
-                        //~ ny = oy - dy;
-                        //~ protein.setPosition(nx, ny);
-                        //~ protein.setAllLineCoordinates();
-                    //~ }
-                    //~ for (i = 0; i < nodeCount; i++) {
-                        //~ nodes[i].setAllLineCoordinates();
-                    //~ }
+                if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+                    var nodes = this.dragElement.interactors;
+                    var nodeCount = nodes.length;
+                    for (var i = 0; i < nodeCount; i++) {
+                        var protein = nodes[i];
+                        ox = protein.x;
+                        oy = protein.y;
+                        nx = ox - dx;
+                        ny = oy - dy;
+                        protein.setPosition(nx, ny);
+                        protein.setAllLineCoordinates();
+                    }
+                    for (i = 0; i < nodeCount; i++) {
+                        nodes[i].setAllLineCoordinates();
+                    }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
                     ox = this.dragElement.x;
@@ -171,7 +159,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
                 }
             }
-            //~ this.svgElement.unsuspendRedraw(suspendID);
+            this.svgElement.unsuspendRedraw(suspendID);
         }
 
 //    else if (this.state === xiNET.Controller.SELECTING) {
@@ -209,7 +197,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 		var p = this.getEventPoint(evt);// seems to be correct, see below
 		var c = this.mouseToSVG(p.x, p.y);
 
-	//    var suspendID = this.svgElement.suspendRedraw(5000);
+	    var suspendID = this.svgElement.suspendRedraw(5000);
 
 		if (this.dragElement != null) { 
 			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
@@ -273,7 +261,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 			this.svgElement.removeChild(this.marquee);
 		}
 	}
-	//    this.svgElement.unsuspendRedraw(suspendID);
+	    this.svgElement.unsuspendRedraw(suspendID);
 
 		this.dragElement = null;
 		this.whichRotator = -1;

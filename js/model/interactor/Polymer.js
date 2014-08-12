@@ -239,15 +239,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
 };
 
 Polymer.prototype.getBlobRadius = function() {
-    //~ if (this.accession.indexOf("CHEBI") !== -1) {
-        //~ return 10;
-    //~ }
-    //~ else if (this.json.type.name === 'peptide' || this.json.type.name === 'single stranded deoxyribonucleic acid'){
-        //~ return 5;
-    //~ }
-    //~ else {
-        return Math.sqrt(this.size / 3 / Math.PI);
-    //~ }
+    return Math.sqrt(this.size / 3 / Math.PI);
 };
 
 Polymer.prototype.setRotation = function(angle) {
@@ -288,34 +280,6 @@ Polymer.prototype.setRotation = function(angle) {
 			}
 	}
 };
-
-// more accurately described as setting transform for top svg elements (sets scale also)
-//~ Polymer.prototype.setPosition = function(x, y) {
-    //~ this.x = x;
-    //~ this.y = y;
-    //~ if (this.form === 1 && this.isParked === false){
-		//~ this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-    //~ } 
-    //~ else {
-		//~ this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.ctrl.z) + ") ");
-		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.ctrl.z) + ") ");
-		//~ if (this.internalLink != null) {
-			//~ if (typeof this.internalLink.thickLine !== 'undefined') {
-				//~ this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
-						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			//~ }
-				//~ this.internalLink.line.setAttribute("transform", "translate(" + this.x
-						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-				//~ this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
-						//~ + " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-		//~ }
-	//~ }
-//~ };
 
 Polymer.rotOffset = 20 * 0.7; // see Rotator.js
 Polymer.minXDist = 30;
@@ -377,33 +341,6 @@ Polymer.prototype.scale = function() {
         this.upperRotator.svg.setAttribute("transform", 
 			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");
         
-        //internal links
-        if (this.internalLink != null) {
-            var resLinks = this.internalLink.sequenceLinks.values();
-            var iLinkCount = resLinks.length;
-            for (var l = 0; l < iLinkCount; l++) {
-				var residueLink = resLinks[l];
-				if (residueLink.shown) {
-					var path = this.getResidueLinkPath(residueLink);
-					d3.select(residueLink.line).attr("d", path);
-					d3.select(residueLink.highlightLine).attr("d", path);
-				}
-            }
-        }
-
-       //linker modified peptides
-        if (this.linkerModifications != null) {
-            var mods = this.linkerModifications.residueLinks.values();
-            var iModCount = mods.length;
-            for (var m = 0; m < iModCount; m++) {
-				var mod = mods[m];
-				if (mod.shown) {
-				   var path = this.getResidueLinkPath(mod);
-				   d3.select(mod.line).attr("d", path);
-				   d3.select(mod.highlightLine).attr("d", path);
-				}
-            }
-        }
         this.setScaleGroup();
         this.setRotation(this.rotation); // places ticks and rotators
     }
@@ -484,18 +421,6 @@ Polymer.prototype.setScaleGroup = function() {
 	}
 };
 
-//~ Polymer.prototype.toggleFlipped = function() {
-    //~ this.isFlipped = !this.isFlipped;
-    //~ if (this.isFlipped) {
-        //~ this.intraLinks.setAttribute("transform", "scale (1 -1)");
-        //~ this.intraLinksHighlights.setAttribute("transform", "scale (1 -1)");
-    //~ }
-    //~ else {
-        //~ this.intraLinks.setAttribute("transform", "scale (1 1)");
-        //~ this.intraLinksHighlights.setAttribute("transform", "scale (1 1)");
-    //~ }
-//~ };
-
 Polymer.prototype.setParked = function(bool, svgP) {
     if (this.busy !== true) {
 		if (this.isParked === true && bool == false) {
@@ -534,7 +459,7 @@ Polymer.prototype.setForm = function(form, svgP) {
 };
 
 Polymer.prototype.toBlob = function(svgP) {
-	if (this.form === 1){ //this is causing from parked it below to run when tool opens 
+	if (this.form === 1){ 
 		this.toCircle(svgP);
 		var r = this.getBlobRadius();
 		
@@ -565,15 +490,12 @@ Polymer.prototype.toBlob = function(svgP) {
 
 Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
 	this.busy = true;
-	//~ this.removePeptides();
-	//this.mouseoverControls.remove();
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
     var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
-	//~ var lengthInterpol = d3.interpolate(protLength, (2 * r));
 	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
 	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
 	var labelTranslateInterpol = d3.interpolate(-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10), -(r + 5));
@@ -607,39 +529,7 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		"translate(" + this.x + " " + this.y + ")" 
 			+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")")
 			.duration(Polymer.transitionTime);
-	
-	 if (this.internalLink != null) {
-		var resLinks = this.internalLink.sequenceLinks.values();
-		var resLinkCount = resLinks.length;
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var residueLink = resLinks[rl];
-			if (residueLink.intra === true && residueLink.shown) {
-						//~ var selectLine = d3.select(residueLink.line);
-						//~ selectLine.attr("d",this.getResidueLinkPath(residueLink));
-						//~ selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							//~ .duration(Polymer.transitionTime);	
-						//~ var highlightLine = d3.select(residueLink.highlightLine);
-						//~ highlightLine.attr("d",this.getResidueLinkPath(residueLink));
-						//~ highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							//~ .duration(Polymer.transitionTime);					
-			}
-		}
-	}	
-	
-	//linker modified peptides
-	if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var selectLine = d3.select(mod.line);
-				selectLine.attr("fill", "none");
-				selectLine.attr("d", "M 0,0 L 0,0");
-			}
-		}
-	}
-	
+		
 	var self = this;
 	if (typeof this.annotations !== 'undefined') {
 		var annots = this.annotations;
@@ -679,7 +569,7 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Polymer.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.ctrl.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.ctrl.svgElement.createSVGTransformFromMatrix(k));
 		
 		if (xInterpol !== null){
@@ -778,7 +668,7 @@ Polymer.prototype.toStick = function() {
 		"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
 	this.upperRotator.svg.setAttribute("transform", 
 		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");
-   //remove prot-prot links - would it be better if checkLinks did this? - think not
+	//remove prot-prot links - would it be better if checkLinks did this? - think not
 	var c = this.links.values().length;
 	for (var l = 0; l < c; l++) {
 		var link = this.links.values()[l];
@@ -821,41 +711,7 @@ Polymer.prototype.toStick = function() {
 		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Polymer.STICKHEIGHT / 2) - 2.5)
 		.attr("rx", 0).attr("ry", 0)
 		.duration(Polymer.transitionTime);		   
-	
-	 if (this.internalLink != null) {
-		var resLinks = this.internalLink.sequenceLinks.values();
-		var resLinkCount = resLinks.length;
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var residueLink = resLinks[rl];			
-			if (residueLink.shown) {
-				//~ d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
-				//~ d3.select(residueLink.line).transition().attr("d",this.getResidueLinkPath(residueLink))
-					//~ .duration(Polymer.transitionTime);					
-				//~ d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
-				//~ d3.select(residueLink.highlightLine).transition().attr("d",this.getResidueLinkPath(residueLink))
-					//~ .duration(Polymer.transitionTime);					
-			}
-		}
-	}	
-
-   //linker modified peptides
-	if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var path = this.getResidueLinkPath(mod);
-				d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
-				d3.select(mod.line).transition().attr("d",path)
-					.duration(Polymer.transitionTime);					
-				d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
-				d3.select(mod.highlightLine).transition().attr("d",path)
-					.duration(Polymer.transitionTime);	
-			}
-		}
-	}	
-	
+		
 	if (typeof this.annotations !== 'undefined') {
 		var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
 		var annots = this.annotations;
@@ -911,74 +767,6 @@ Polymer.prototype.toStick = function() {
 		.delay(Polymer.transitionTime * 0.8).duration(Polymer.transitionTime / 2);
 };
 
-//~ Polymer.prototype.getResidueLinkPath = function(residueLink) {			
-	//~ var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
-	//~ var baseLine = 0;
-	//~ if (Polymer.UNITS_PER_RESIDUE * this.stickZoom >= 8){
-		//~ baseLine = -5;
-	//~ }
-	//~ // if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
-		//~ // if (residueLink.ambig === false){
-			//~ //~residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
-		//~ // }
-		//~ // var p1 = [x1, 26];
-		//~ // var p3 = [x1, 18];
-		//~ // var p2 = Polymer.rotatePointAboutPoint(p1, p3, 60);
-		//~ // baseLine = baseLine * -1;
-		//~ // return "M " + x1 + "," + baseLine 
-			//~ // + " L " + p1[0] + "," + p1[1] 
-			//~ // + " L " +  p2[0] + "," + p2[1]
-			//~ // + " L " + p3[0] + "," + p3[1];
-	//~ // }
-	//~ // else {
-		//~ var x2 = this.getResXwithStickZoom(residueLink.toResidue);
-		//~ var height, cp1, cp2, arcStart, arcEnd, arcRadius;
-		//~ arcRadius = (Math.abs(x2 - x1)) / 2;
-		//~ var height = -((Polymer.STICKHEIGHT / 2) + 3);
-		//~ if (arcRadius < 15){
-			//~ height = -28 + arcRadius;
-		//~ }
-		//~ 
-		//~ var start = [x1, baseLine];
-		//~ var end = [x2, baseLine];
-		//~ 
-		//~ var angle;
-		//~ if (residueLink.intraMolecular === true){
-			//~ 
-			//~ var curveMidX = x1 + ((x2 - x1) / 2);
-			//~ arcStart = [ curveMidX, height - arcRadius];
-			//~ arcEnd =  [ curveMidX, height - arcRadius];
-			//~ cp1 = [ curveMidX, height - arcRadius];
-			//~ cp2 =  [ curveMidX, height - arcRadius];
-			//~ //flip
-			//~ // start[1] = start[1] * -1;
-			//~ // cp1[1] = cp1[1] * -1;
-			//~ // arcStart[1] = arcStart[1] * -1;
-			//~ // arcEnd[1] = arcEnd[1] * -1;
-			//~ // cp2[1] = cp2[1] * -1;
-			//~ // end[1] = end[1] * -1;
-		//~ }
-		//~ else if (residueLink.hd){	
-			//~ var curveMidX = x1 + ((x2 - x1) / 2);
-			//~ arcStart = [curveMidX, height - arcRadius];
-			//~ arcEnd = [curveMidX, height - arcRadius];
-			//~ cp1 = Polymer.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
-			//~ cp2 = Polymer.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
-		//~ }
-		//~ else {	
-			//~ cp1 = [x1, height];
-			//~ cp2 = [x2, baseLine];
-			//~ arcStart = [x1, height];
-			//~ arcEnd =  [x2, height];
-		//~ }		
-		//~ 
-		//~ return " M " + start[0] + "," + start[1]	 
-			//~ + " Q "  + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1]
-			//~ + " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0]  + "," + arcEnd[1]
-			//~ + " Q "+ cp2[0] + ',' + cp2[1] +  " "  + end[0] + "," + end[1];
-	//~ // }
-//~ }
-
 Polymer.prototype.getResXwithStickZoom = function(r) {
 	if (isNaN(r) || r === '?' || r === 'n') {
         return ((0 - (this.size/2)) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) - 8;// ;
@@ -1011,8 +799,8 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
     }
     x = x + this.x;
     y = y + this.y;
-    if (isNaN(y)){
-		console.log([x, y]);
-	}
+    //~ if (isNaN(y)){
+		//~ console.log([x, y]);
+	//~ }
     return [x, y];
 };

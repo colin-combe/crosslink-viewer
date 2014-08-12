@@ -34,10 +34,10 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
                     + interactor.identifier.id;
 
 			var p;
-             if (interactor.identifier.db === 'uniprotkb') {
-				p = new Polymer(interactor.id, this, interactor);
-			 } else {
+             if (interactor.type.name === 'small molecule') {
 				p = new SmallMol(interactor.id, this, interactor);
+			 } else {
+				p = new Polymer(interactor.id, this, interactor);
 			 }
             this.interactors.set(interactor.id, p);
             if (typeof interactor.sequence !== 'undefined') {
