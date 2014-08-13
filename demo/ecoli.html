@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>xiNET Interaction Viewer</title>
+        <meta name="xiNET Interaction Viewer" content="xiNET Interaction Viewer">
+        <link rel="icon" type="image/x-icon" href="./favicon.ico">
+        <!-- css -->
+        <link rel="stylesheet" href="./css/demo.css">
+        <link rel='stylesheet' type='text/css' href='./css/XLV.css'/>
+        <link rel='stylesheet' type='text/css' href='../vendor/jsonview/jquery.jsonview.css'/>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!--libraries-->
+        <script type="text/javascript" src="../vendor/d3.js"></script>
+        <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
+        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>
+        <script type="text/javascript" src="../vendor/Blob.js"></script>
+        <script type="text/javascript" src="../vendor/FileSaver.js"></script>
+        <script type="text/javascript" src="../vendor/jsonview/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="../vendor/jsonview/jquery.jsonview.js"></script>
+        <!--xiNet-->
+        <script type="text/javascript" src="../src/controller/Init.js"></script>
+        <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
+        <script type="text/javascript" src="../src/controller/TouchEvents.js"></script>
+        <script type="text/javascript" src="../src/controller/Layout.js"></script>
+        <script type="text/javascript" src="../src/controller/Refresh.js"></script>
+        <script type="text/javascript" src="../src/controller/ToolTips.js"></script>
+        <script type="text/javascript" src="../src/model/interactor/Interactor.js"></script>
+        <script type="text/javascript" src="../src/model/interactor/Polymer.js"></script>
+        <script type="text/javascript" src="../src/model/interactor/SmallMol.js"></script>
+        <script type="text/javascript" src="../src/model/interactor/Annotations.js"></script>
+        <script type="text/javascript" src="../src/model/link/Link.js"></script>
+        <script type="text/javascript" src="../src/model/link/NaryLink.js"></script>
+        <script type="text/javascript" src="../src/model/link/BinaryLink.js"></script>
+        <script type="text/javascript" src="../src/model/link/UnaryLink.js"></script>
+        <script type="text/javascript" src="../src/model/link/SequenceLink.js"></script>
+        <script type="text/javascript" src="../src/model/link/SequenceDatum.js"></script>
+        <script type="text/javascript" src="../src/controller/ExternalControls.js"></script>
+        <script type="text/javascript" src="../src/controller/Rotator.js"></script>
+        <script type="text/javascript" src="../src/controller/ReadMIJSON.js"></script>
+        <!--data-->
+        <script type="text/javascript" src="./data/ecoli.js"></script>
+    </head>
+    <body>
+
+        <div style="height:100%;">
+		<div id="networkContainer"></div>
+		<div id='controls'>
+			<button onclick="xlv.autoLayout();">Auto layout</button>
+			<button onclick="xlv.resetZoom();">Reset zoom</button>
+			<button onclick="xlv.exportSVG();">Export SVG</button>
+			<button onclick="xlv.message(xlv)">Data object</button>
+		</div>
+        <div id="networkCaption">
+			<h2 id="jsonHeading"></h2> 
+			<div id="json"/>
+		</div>
+        </div>
+
+        <script type="text/javascript">
+                //<![CDATA[
+                var targetDiv = document.getElementById('networkContainer');
+                xlv = new xiNET.Controller(targetDiv);
+                xlv.readMIJSON(miJson);
+                //]]>
+        </script>
+
+    </body>
+</html>
