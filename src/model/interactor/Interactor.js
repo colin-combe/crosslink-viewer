@@ -77,7 +77,7 @@ Interactor.prototype.showData = function(evt) {
     if (document.getElementById('jsonHeading')) {	
 		document.getElementById('jsonHeading').innerHTML = this.json.label;
 	} 
-	if ($("#json")) { // json tree depends on jquery
+	if ($ && $("#json")) { // json tree depends on jquery
 		$("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
 		$('#json').JSONView('toggle', 2);
 	}	
