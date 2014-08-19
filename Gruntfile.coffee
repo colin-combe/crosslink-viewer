@@ -40,20 +40,6 @@ module.exports = taskManager = (grunt) ->
         src:  'build/<%= config.bower.name %>-<%= config.bower.version %>.js'
         dest: 'build/<%= config.bower.name %>-<%= config.bower.version %>.min.js'
 
-    # contrib-copy config
-    # (https://github.com/gruntjs/grunt-contrib-copy/blob/master/README.md)
-    copy:
-      builds:
-        files: [
-          {
-            src:  'build/<%= config.bower.name %>-<%= config.bower.version %>.js'
-            dest: '<%= config.bower.name %>.js'
-          }, {
-            src:  'build/<%= config.bower.name %>-<%= config.bower.version %>.min.js'
-            dest: '<%= config.bower.name %>.min.js'
-          }
-        ]
-
     # contrib-watch config
     # (https://github.com/gruntjs/grunt-contrib-watch/blob/master/README.md)
     watch:
@@ -74,9 +60,9 @@ module.exports = taskManager = (grunt) ->
   grunt.loadNpmTasks plugin for plugin in plugins
 
   # Register custom tasks.
-  grunt.registerTask 'setup',   ['bower:install', 'browserify', 'copy']
+  grunt.registerTask 'setup',   ['bower:install', 'browserify']
 
-  grunt.registerTask 'package',   ['browserify', 'uglify', 'copy']
+  grunt.registerTask 'package',   ['browserify', 'uglify']
 
   grunt.registerTask 'build',   ['browserify']
 

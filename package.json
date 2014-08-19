@@ -6,7 +6,6 @@
     "grunt": "0.4.x",
     "grunt-cli": ">=0.1.6",
     "grunt-contrib-uglify": "*",
-    "grunt-contrib-copy": "*",
     "grunt-contrib-watch": "*",
     "grunt-browserify": "*",
     "grunt-bower-task": "git://github.com/creatorrr/grunt-bower-task.git",
