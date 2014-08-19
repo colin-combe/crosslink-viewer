@@ -10,6 +10,9 @@
 
 "use strict";
 
+var RGBColor = require('../../vendor/rgbcolor');
+var d3 = require('../../node_modules/d3/');
+
 var xiNET = {}; //create xiNET's javascript namespace
 
 xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
