@@ -13,7 +13,7 @@ module.exports = taskManager = (grunt) ->
     bower:
       install:
         options:
-          targetDir: 'vendor'
+          targetDir: 'bower_components'
           layout:    'byType'
           install:   true
           cleanup:   true
