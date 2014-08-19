@@ -804,3 +804,5 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
 	//~ }
     return [x, y];
 };
+
+module.exports = Polymer;

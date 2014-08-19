@@ -12,6 +12,9 @@
 
 var RGBColor = require('../../vendor/rgbcolor');
 var d3 = require('../../node_modules/d3/');
+var Interactor = require('../model/interactor/Interactor');
+var Refresh = require('./Refresh');
+var ReadMIJSON = require('./ReadMIJSON');
 
 var xiNET = {}; //create xiNET's javascript namespace
 
@@ -180,6 +183,19 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 
     this.clear();
 };
+
+// Link to prototype functions that exist in other files.
+// Eventually the files will accept this controller as an argument
+
+// From Refresh.js
+xiNET.Controller.prototype.checkLink = Refresh.checkLinks;
+xiNET.Controller.prototype.scale = Refresh.scale;
+
+// From ReadMYJSON
+xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
+xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
+xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
+xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
 
 xiNET.Controller.prototype.clear = function() {
     this.initComplete = false;

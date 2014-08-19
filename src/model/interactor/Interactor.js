@@ -10,6 +10,8 @@
 
 "use strict";
 
+var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
+
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
 //~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
@@ -353,3 +355,5 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
     }
     //~ console.debug(subgraph.nodes.keys());
 };
+
+module.exports = Interactor;

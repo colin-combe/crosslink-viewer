@@ -9,7 +9,7 @@
 "use strict";
 
 // reads our MI JSON format 
-xiNET.Controller.prototype.readMIJSON = function(miJson) {
+var readMIJSON = function(miJson) {
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 	
@@ -92,7 +92,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     }
 };
 
-xiNET.Controller.prototype.addFeatures = function(interaction) {
+var addFeatures = function(interaction) {
     var participantCount = interaction.participants.length;
     var pIDs = d3.set();
     for (var pi = 0; pi < participantCount; pi++) {
@@ -116,7 +116,7 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 	}	
 };
 
-xiNET.Controller.prototype.addInteraction = function(interaction) {
+var addInteraction = function(interaction) {
     
     if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
         alert('missing interaction identifier');
@@ -168,7 +168,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
     link.addEvidence(interaction);
 };
 
-xiNET.Controller.prototype.toJSON = function() {
+var toJSON = function() {
     return {
         interactors: this.interactors,
         features: this.features,
@@ -225,3 +225,4 @@ xiNET.Controller.prototype.toJSON = function() {
         //~ }
     //~ }
 
+module.exports = {readMIJSON: readMIJSON, addFeatures: addFeatures, addInteraction: addInteraction, toJSON: toJSON};
