@@ -407,3 +407,5 @@ xiNET.Controller.prototype.loadLayout = function() {
     }
     this.svgElement.unsuspendRedraw(suspendID);
 };
+
+module.exports = xiNET.Controller;
