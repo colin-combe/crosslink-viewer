@@ -123,3 +123,5 @@ function SequenceDatum(sequenceDatumString, interactor) {
 //> instead of "123-123". JAMI could give you "<8" if both start and end
 //> positions of the feature are <8 but it could happen that you have a
 //> feature such as "<8->22" or "<8-22", etc.
+
+module.exports = SequenceDatum;

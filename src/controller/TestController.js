@@ -1,3 +1,16 @@
-var TestController = {}
+function TestController(){
+	this.color = "blue";
+};
 
-module.exports = TestController;
+TestController.prototype.talk = function() {
+	console.log("I am talking");
+}
+
+function App(){
+	var ctrl = new TestController();
+	ctrl.talk();
+	return ctrl;
+
+}
+
+module.exports = App;

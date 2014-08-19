@@ -98,3 +98,5 @@ Rotator.prototype.rotatorMouseDown = function (evt) {
     // rot.rotatorSymbol.setAttribute("visibility", "hidden");
     return false;
 }
+
+module.exports = Rotator;

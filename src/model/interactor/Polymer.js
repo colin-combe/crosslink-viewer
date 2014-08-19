@@ -10,6 +10,9 @@
 
 "use strict";
 
+var Interactor = require('./Interactor');
+var Rotator = require('../../controller/Rotator');
+
 Polymer.STICKHEIGHT = 20;//height of stick in pixels
 Polymer.MAXSIZE = 0; // residue count of longest sequence
 Polymer.UNITS_PER_RESIDUE = 1; //changed during init (calculated on basis of MAXSIZE)

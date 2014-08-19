@@ -15,6 +15,9 @@ var d3 = require('../../node_modules/d3/');
 var Interactor = require('../model/interactor/Interactor');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
+var Link = require('../model/link/Link');
+var Layout = require('./Layout');
+// var MouseEvents = require('./MouseEvents');
 
 var xiNET = {}; //create xiNET's javascript namespace
 
@@ -188,16 +191,39 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 // Eventually the files will accept this controller as an argument
 
 // From Refresh.js
-xiNET.Controller.prototype.checkLink = Refresh.checkLinks;
+xiNET.Controller.prototype.checkLinks = Refresh.checkLinks;
 xiNET.Controller.prototype.scale = Refresh.scale;
 
 // From ReadMYJSON
+// xiNET.Controller.prototype.readMIJSON = function(value) {ReadMIJSON.readMIJSON(value, this);}
 xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
+
 xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
 xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
 xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
 
+// From Layout.js
+xiNET.Controller.prototype.autoLayout = Layout;
+
+// From MouseEvents
+//static var's signifying Controller's status
+xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
+xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
+xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+
+/**
+ * Sets the current transform matrix of an element. JOSH TODO
+ */
+xiNET.setCTM = function(element, matrix) {
+    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+    element.setAttribute("transform", s);
+};
+
+
 xiNET.Controller.prototype.clear = function() {
+
     this.initComplete = false;
     this.interactors = d3.map();
     this.links = d3.map();
@@ -297,7 +323,7 @@ xiNET.Controller.prototype.init = function(width, height) {
 //    this.message('#interactors: ' + this.interactors.values().length +
 //            '\n# links: ' + this.links.values().length);
 
-    this.initMouseEvents();
+    // this.initMouseEvents();
     if (typeof this.initTouchEvents === 'function'){
 		this.initTouchEvents();
 	}
@@ -428,3 +454,4 @@ xiNET.Controller.prototype.loadLayout = function() {
 };
 
 module.exports = xiNET.Controller;
+

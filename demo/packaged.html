@@ -37,9 +37,14 @@
 
         <script type="text/javascript">
                 //<![CDATA[
-                var targetDiv = document.getElementById('networkContainer');
-                xlv = new xiNET(targetDiv);
-                xlv.readMIJSON(miJson);
+                setTimeout(function() {
+                    var targetDiv = document.getElementById('networkContainer');
+                    xlv = new xiNET(targetDiv);
+                    console.log("xlv", xlv);
+                    xlv.readMIJSON(miJson);
+                }, 1000);
+
+
                 //]]>
         </script>
 

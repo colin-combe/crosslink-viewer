@@ -6,10 +6,14 @@
 
 "use strict";
 
+var Config = require('../../controller/Config');
+var Link = require('./Link');
+var SequenceLink = require('./SequenceLink');
+
 // BinaryLink.js
 // the class representing an n-ary interaction
 
-BinaryLink.prototype = new xiNET.Link();
+BinaryLink.prototype = new Link();
 //used to calculate width of thivh background line
 BinaryLink.maxNoEvidences = 0;
 function BinaryLink(id, xlvController, fromI, toI) {
@@ -205,7 +209,7 @@ BinaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -451,3 +455,5 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 BinaryLink.prototype.getOtherEnd = function(protein) {
     return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
 };
+
+module.exports = BinaryLink;

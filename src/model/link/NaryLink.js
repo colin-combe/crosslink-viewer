@@ -8,11 +8,15 @@
 
 "use strict";
 
+var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
+var Link = require('./Link');
+var BinaryLink = require('./BinaryLink');
+
 // NaryLink.js
 // graphically represents an n-ary interaction
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 
-NaryLink.prototype = new xiNET.Link();
+NaryLink.prototype = new Link();
 
 function NaryLink(id, xlvController) {
     this.id = id;
@@ -224,10 +228,12 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
+    console.log("SHOWING");
     if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.rect === 'undefined') {
+                console.log("initting with this", this);
                 this.initSVG();
             }
             // this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
@@ -294,3 +300,5 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
         }
     }
 };
+
+module.exports = NaryLink;

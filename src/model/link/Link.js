@@ -14,34 +14,34 @@
 
 "use strict";
 
-xiNET.Link = function (){};
-xiNET.Link.maxNoEvidences = 0;
+var Link = function (){};
 
 //id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
-xiNET.Link.getIdFromInteraction = function(interaction){
-    var linkId = "";
-    //sort participants by interactorRef
-    var participants = interaction.participants.sort(
-		function comparator(a, b) {
-			return a.interactorRef - b.interactorRef;
-		}
-	);
-    var participantCount = participants.length;
-    var pIDs = d3.set();//used to eliminate duplicates
-    for (var pi = 0; pi < participantCount; pi++) {
-		var pID = participants[pi].interactorRef;
-		if (pIDs.has(pID) === false){
-			pIDs.add(pID);
-			if (pi > 0) {
-				linkId += "-"; 
-			}
-			linkId += pID;
-		}
-	}
-	return linkId;	
-}
+// Link.getIdFromInteraction = function(interaction){
+// Link.getIdFromInteraction = function(interaction){ // JOSH TODO
+//     var linkId = "";
+//     //sort participants by interactorRef
+//     var participants = interaction.participants.sort(
+// 		function comparator(a, b) {
+// 			return a.interactorRef - b.interactorRef;
+// 		}
+// 	);
+//     var participantCount = participants.length;
+//     var pIDs = d3.set();//used to eliminate duplicates
+//     for (var pi = 0; pi < participantCount; pi++) {
+// 		var pID = participants[pi].interactorRef;
+// 		if (pIDs.has(pID) === false){
+// 			pIDs.add(pID);
+// 			if (pi > 0) {
+// 				linkId += "-"; 
+// 			}
+// 			linkId += pID;
+// 		}
+// 	}
+// 	return linkId;	
+// }
 
-xiNET.Link.prototype.initInteractors = function(interaction){
+Link.prototype.initInteractors = function(interaction){
     this.interactors = new Array();//order important for binary links
     //sort participants by interactorRef
     var participants = interaction.participants.sort(
@@ -63,7 +63,7 @@ xiNET.Link.prototype.initInteractors = function(interaction){
 		}
 	}
 }
-xiNET.Link.prototype.highlightInteractors = function(show){	
+Link.prototype.highlightInteractors = function(show){	
 	var interactors = this.interactors;
 	for (var i = 0; i < interactors.length; i++) {
 		interactors[i].showHighlight(show);
@@ -71,7 +71,7 @@ xiNET.Link.prototype.highlightInteractors = function(show){
 }
 
 // event handler for starting dragging or rotation (or flipping internal links)
-xiNET.Link.prototype.mouseDown = function(evt) {
+Link.prototype.mouseDown = function(evt) {
     this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
     if (this.ctrl.force !== undefined){
@@ -87,7 +87,7 @@ xiNET.Link.prototype.mouseDown = function(evt) {
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
-xiNET.Link.prototype.mouseOver = function(evt){
+Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.ctrl.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
@@ -95,7 +95,7 @@ xiNET.Link.prototype.mouseOver = function(evt){
     return false;
 }
 
-xiNET.Link.prototype.mouseOut = function(evt){
+Link.prototype.mouseOut = function(evt){
     //console.log("clickable mouse out");
     this.ctrl.preventDefaultsAndStopPropagation(evt);
     //    if (this.ctrl.dragElement == undefined) {
@@ -110,7 +110,7 @@ xiNET.Link.prototype.mouseOut = function(evt){
     return false;
 }
 
-xiNET.Link.prototype.touchStart = function(evt) {
+Link.prototype.touchStart = function(evt) {
 //    //console.log("clickable mouse down");
     this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
@@ -127,7 +127,7 @@ xiNET.Link.prototype.touchStart = function(evt) {
 }
 
 //used when link clicked
-xiNET.Link.prototype.showData = function() {
+Link.prototype.showData = function() {
     if (document.getElementById('jsonHeading')) {	
 		document.getElementById('jsonHeading').innerHTML = this.id;
 	} 
@@ -145,7 +145,7 @@ xiNET.Link.prototype.showData = function() {
 	//~ }
 };
 
-xiNET.Link.prototype.toJSON = function() {
+Link.prototype.toJSON = function() {
     return {
         //~ evidences: this.evidences
         id: this.id
@@ -171,3 +171,4 @@ xiNET.Link.prototype.toJSON = function() {
     //~ return filteredEvids.values();
 //~ };
 
+module.exports = Link;

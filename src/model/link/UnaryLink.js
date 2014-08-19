@@ -11,7 +11,11 @@
 
 "use strict";
 
-UnaryLink.prototype = new xiNET.Link();
+var Config = require('../../controller/Config');
+var Link = require('./Link');
+var SequenceLink = require('./SequenceLink');
+
+UnaryLink.prototype = new Link();
 
 function UnaryLink(id, xlvController) {
     this.id = id;
@@ -192,7 +196,7 @@ UnaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -397,3 +401,5 @@ UnaryLink.prototype.setLinkCoordinates = function(interactor) {
 		//~ }
     //~ }
 };
+
+module.exports = UnaryLink;

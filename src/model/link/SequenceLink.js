@@ -6,7 +6,10 @@
 
 "use strict";
 
-SequenceLink.prototype = new xiNET.Link();
+var Link = require('./Link');
+var SequenceDatum = require('./SequenceDatum');
+
+SequenceLink.prototype = new Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
@@ -456,3 +459,5 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
 
     
 };
+
+module.exports = SequenceLink;

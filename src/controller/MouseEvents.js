@@ -1,10 +1,10 @@
-//    	xiNET interaction viewer
-//    	Copyright 2013 Rappsilber Laboratory
+//      xiNET interaction viewer
+//      Copyright 2013 Rappsilber Laboratory
 //
-//    	This product includes software developed at
-//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//      This product includes software developed at
+//      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		author: Colin Combe
+//      author: Colin Combe
 
 "use strict";
 
@@ -35,14 +35,14 @@ xiNET.Controller.prototype.initMouseEvents = function() {
         self.hideTooltip(evt);
     };
      
-	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
-		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
-	}
-	else if (document.addEventListener) { //WC3 browsers
-		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
-	}
-        	  
+    var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+    if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+        this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
+    }
+    else if (document.addEventListener) { //WC3 browsers
+        this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
+    }
+              
     //~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
     //~ this.marquee.setAttribute('class', 'marquee');
     //~ this.marquee.setAttribute('fill', 'red');
@@ -178,96 +178,96 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
 // this ends all dragging and rotating
 xiNET.Controller.prototype.mouseUp = function(evt) {
-	var time = new Date().getTime();
-	//console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
-	this.preventDefaultsAndStopPropagation(evt);
-	//eliminate some spurious mouse up events
-	if ((time - this.lastMouseUp) > 150){
-	
-		var rightclick, middleclick; //which button has just been raised
-		if (evt.which)
-			rightclick = (evt.which === 3);
-		else if (evt.button)
-			rightclick = (evt.button === 2);
-		if (evt.which)
-			middleclick = (evt.which === 2);
-		else if (evt.button)
-			middleclick = (evt.button === 1);
+    var time = new Date().getTime();
+    //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
+    this.preventDefaultsAndStopPropagation(evt);
+    //eliminate some spurious mouse up events
+    if ((time - this.lastMouseUp) > 150){
+    
+        var rightclick, middleclick; //which button has just been raised
+        if (evt.which)
+            rightclick = (evt.which === 3);
+        else if (evt.button)
+            rightclick = (evt.button === 2);
+        if (evt.which)
+            middleclick = (evt.which === 2);
+        else if (evt.button)
+            middleclick = (evt.button === 1);
 
-		var p = this.getEventPoint(evt);// seems to be correct, see below
-		var c = this.mouseToSVG(p.x, p.y);
+        var p = this.getEventPoint(evt);// seems to be correct, see below
+        var c = this.mouseToSVG(p.x, p.y);
 
-	    var suspendID = this.svgElement.suspendRedraw(5000);
+        var suspendID = this.svgElement.suspendRedraw(5000);
 
-		if (this.dragElement != null) { 
-			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
-				if (rightclick) { // RIGHT click
-					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-						if (this.dragElement.intra) {//if internal link
-							if (this.dragElement.proteinLink)
-								this.dragElement.proteinLink.fromProtein.toggleFlipped();
-						} else {
-							if (this.dragElement.hidden !== undefined) {//if ProteinLink
-								this.dragElement.hidden = true;
-							} else {//its a residue link
-								this.dragElement.proteinLink.hidden = true;
-							}
-							this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-							this.checkLinks();
-						}
-					} else {//right click on protein
-						this.dragElement.setParked(!this.dragElement.isParked, c);
-					}
-				}
-				else if (middleclick) {
-					//can't be used? problem with IE (scroll thingy)
-				}
-				else { //left click; show matches for link, toggle form for protein, switch stick scale
-					if (typeof this.dragElement.x === 'undefined') { //if not protein
-						this.dragElement.showData();
-					} else if (evt.shiftKey) { //if shift key
-						this.dragElement.switchStickScale(c);
-					} else {
-						if (this.dragElement.form === 0) {
-							this.dragElement.setForm(1, c);
-						} else {
-							this.dragElement.setForm(0, c);
-						}
-					}
-				}
-				//~ this.checkLinks();
-			}
-			else if (this.state === xiNET.Controller.ROTATING) {
-				//round protein rotation to nearest 5 degrees (looks neater)
-				this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
-			}
-			else {
-			} //end of protein drag; do nothing
-		}
-		else if (rightclick) { //right click on background; show all hidden links
-			//~ var links = this.proteinLinks.values();
-			//~ var linkCount = links.length;
-			//~ for (var l = 0; l < linkCount; l++) {
-				//~ var link = links[l];
-				//~ link.hidden = false;
-			//~ }
-			this.checkLinks();
-		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-			this.clearSelection();
-		}
+        if (this.dragElement != null) { 
+            if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
+                if (rightclick) { // RIGHT click
+                    if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
+                        if (this.dragElement.intra) {//if internal link
+                            if (this.dragElement.proteinLink)
+                                this.dragElement.proteinLink.fromProtein.toggleFlipped();
+                        } else {
+                            if (this.dragElement.hidden !== undefined) {//if ProteinLink
+                                this.dragElement.hidden = true;
+                            } else {//its a residue link
+                                this.dragElement.proteinLink.hidden = true;
+                            }
+                            this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
+                            this.checkLinks();
+                        }
+                    } else {//right click on protein
+                        this.dragElement.setParked(!this.dragElement.isParked, c);
+                    }
+                }
+                else if (middleclick) {
+                    //can't be used? problem with IE (scroll thingy)
+                }
+                else { //left click; show matches for link, toggle form for protein, switch stick scale
+                    if (typeof this.dragElement.x === 'undefined') { //if not protein
+                        this.dragElement.showData();
+                    } else if (evt.shiftKey) { //if shift key
+                        this.dragElement.switchStickScale(c);
+                    } else {
+                        if (this.dragElement.form === 0) {
+                            this.dragElement.setForm(1, c);
+                        } else {
+                            this.dragElement.setForm(0, c);
+                        }
+                    }
+                }
+                //~ this.checkLinks();
+            }
+            else if (this.state === xiNET.Controller.ROTATING) {
+                //round protein rotation to nearest 5 degrees (looks neater)
+                this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+            }
+            else {
+            } //end of protein drag; do nothing
+        }
+        else if (rightclick) { //right click on background; show all hidden links
+            //~ var links = this.proteinLinks.values();
+            //~ var linkCount = links.length;
+            //~ for (var l = 0; l < linkCount; l++) {
+                //~ var link = links[l];
+                //~ link.hidden = false;
+            //~ }
+            this.checkLinks();
+        } else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+            this.clearSelection();
+        }
 
-		if (this.state === xiNET.Controller.SELECTING) {
-			clearInterval(this.marcher);
-			this.svgElement.removeChild(this.marquee);
-		}
-	}
-	    this.svgElement.unsuspendRedraw(suspendID);
+        if (this.state === xiNET.Controller.SELECTING) {
+            clearInterval(this.marcher);
+            this.svgElement.removeChild(this.marquee);
+        }
+    }
+        this.svgElement.unsuspendRedraw(suspendID);
 
-		this.dragElement = null;
-		this.whichRotator = -1;
-		this.state = xiNET.Controller.MOUSE_UP;
+        this.dragElement = null;
+        this.whichRotator = -1;
+        this.state = xiNET.Controller.MOUSE_UP;
 
-	this.lastMouseUp = time;
+    this.lastMouseUp = time;
     return false;
 };
 
@@ -333,7 +333,7 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
         element = element.offsetParent;
    } while(element);
    //TODO: should do equivalent for horizontal scroll also
-	top += getScrollTop();
+    top += getScrollTop();
     p.x = evt.pageX - left;
     p.y = evt.pageY - top;
     return p;
