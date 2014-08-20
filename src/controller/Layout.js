@@ -14,7 +14,6 @@ var Interactor = require('../model/interactor/Interactor');
 
 var autoLayout = function(width, height) {
 
-    console.log("this.interactors", this.interactors);
     //functions used...
     function xForColumn(c) {
         return (c * ((/*2 **/ self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;

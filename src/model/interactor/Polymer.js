@@ -111,7 +111,6 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "rect");
     //invariant attributes
-    console.log("FLAG1!");
     if (Config.highlightColour !== undefined) {
         this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
         // this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());

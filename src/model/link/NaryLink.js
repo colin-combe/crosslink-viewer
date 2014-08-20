@@ -229,12 +229,10 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-    console.log("SHOWING");
     if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.rect === 'undefined') {
-                console.log("initting with this", this);
                 this.initSVG();
             }
             // this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
