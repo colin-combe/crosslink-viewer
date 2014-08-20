@@ -8,6 +8,7 @@
 
 var Link = require('./Link');
 var SequenceDatum = require('./SequenceDatum');
+var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
@@ -70,9 +71,9 @@ SequenceLink.prototype.addEvidence = function(interaction) {
 };
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
-        this.glyph = document.createElementNS(xiNET.svgns, "path");
-        this.uncertainGlyph = document.createElementNS(xiNET.svgns, "path");
-        this.highlightGlyph = document.createElementNS(xiNET.svgns, "path");
+        this.glyph = document.createElementNS(Config.svgns, "path");
+        this.uncertainGlyph = document.createElementNS(Config.svgns, "path");
+        this.highlightGlyph = document.createElementNS(Config.svgns, "path");
         this.glyph.setAttribute("stroke-linecap", "round");
         this.uncertainGlyph.setAttribute("stroke-linecap", "round");
         this.highlightGlyph.setAttribute("stroke-linecap", "round");

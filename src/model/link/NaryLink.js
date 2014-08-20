@@ -11,6 +11,7 @@
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Link = require('./Link');
 var BinaryLink = require('./BinaryLink');
+var Config = require('../../controller/Config');
 
 // NaryLink.js
 // graphically represents an n-ary interaction
@@ -98,7 +99,7 @@ NaryLink.prototype.addEvidence = function(interaction) {
 
 NaryLink.prototype.initSVG = function() {
 
-    this.rect = document.createElementNS(xiNET.svgns, "path");
+    this.rect = document.createElementNS(Config.svgns, "path");
     this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
     this.rect.setAttribute('opacity', 0.4);
     this.rect.setAttribute('stroke', NaryLink.naryColours(this.id));

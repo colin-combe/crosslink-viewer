@@ -14,6 +14,8 @@
 
 "use strict";
 
+var Config = require('../../controller/Config');
+
 var Link = function (){};
 
 //id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash

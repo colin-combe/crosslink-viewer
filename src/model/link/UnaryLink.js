@@ -182,11 +182,11 @@ UnaryLink.prototype.initSVG = function() {
     }
     
 	var path = this.fromInteractor.getAggregateSelfLinkPath();
-	this.line = document.createElementNS(xiNET.svgns, "path");
+	this.line = document.createElementNS(Config.svgns, "path");
 	this.line.setAttribute('d', path);
-	this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+	this.highlightLine = document.createElementNS(Config.svgns, 'path');
 	this.highlightLine.setAttribute('d', path);
-	this.thickLine = document.createElementNS(xiNET.svgns, 'path');
+	this.thickLine = document.createElementNS(Config.svgns, 'path');
 	this.thickLine.setAttribute('d', path);
    
     this.line.setAttribute("class", "link");

@@ -12,6 +12,7 @@
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Annotation = require('./Annotations');
+var Config = require('../../controller/Config');
 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
@@ -409,7 +410,7 @@ Interactor.prototype.setKeywords = function(keywords) {
         var sliceAngleDegrees = 359 / numberOfKeywords;
         for (var i = 0; i < numberOfKeywords; i++) {
             var anno = keywords[i];
-            var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
+            var annotPieSlice = document.createElementNS(Config.svgns, "path");
             annotPieSlice.setAttribute("class", "protein");
 
             //make pie slice
@@ -473,8 +474,8 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             var anno = posFeats[i];
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
-            var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
-            var annotColouredRect = document.createElementNS(xiNET.svgns, "path");
+            var annotPieSlice = document.createElementNS(Config.svgns, "path");
+            var annotColouredRect = document.createElementNS(Config.svgns, "path");
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
            // alert(this.form);

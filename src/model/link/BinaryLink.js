@@ -198,9 +198,9 @@ BinaryLink.prototype.initSVG = function() {
 		};
 	}
 	
-	this.line = document.createElementNS(xiNET.svgns, "line");
-	this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-	this.thickLine = document.createElementNS(xiNET.svgns, "line");
+	this.line = document.createElementNS(Config.svgns, "line");
+	this.highlightLine = document.createElementNS(Config.svgns, "line");
+	this.thickLine = document.createElementNS(Config.svgns, "line");
 
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");

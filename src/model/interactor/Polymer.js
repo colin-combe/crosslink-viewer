@@ -12,6 +12,7 @@
 
 var Interactor = require('./Interactor');
 var Rotator = require('../../controller/Rotator');
+var Config = require('../../controller/Config');
 
 Polymer.STICKHEIGHT = 20;//height of stick in pixels
 Polymer.MAXSIZE = 0; // residue count of longest sequence
@@ -104,14 +105,16 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
      * Lower group
      * svg group for elements that appear underneath links
      */
-    this.lowerGroup = document.createElementNS(xiNET.svgns, "g");
+    this.lowerGroup = document.createElementNS(Config.svgns, "g");
     this.lowerGroup.setAttribute("class", "protein lowerGroup");
  	
  	//make highlight
-    this.highlight = document.createElementNS(xiNET.svgns, "rect");
+    this.highlight = document.createElementNS(Config.svgns, "rect");
     //invariant attributes
-    if (xiNET.highlightColour !== undefined) {
-        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    console.log("FLAG1!");
+    if (Config.highlightColour !== undefined) {
+        this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
+        // this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
 	}
     this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
@@ -124,11 +127,11 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
 	this.lowerGroup.appendChild(this.highlight);   
     
     //domains in rectangle form (shown underneath links) 
-    this.rectDomains = document.createElementNS(xiNET.svgns, "g");
+    this.rectDomains = document.createElementNS(Config.svgns, "g");
     this.rectDomains.setAttribute("opacity", "0");
     this.lowerGroup.appendChild(this.rectDomains);
     
-    this.peptides = document.createElementNS(xiNET.svgns, "g");
+    this.peptides = document.createElementNS(Config.svgns, "g");
 	this.lowerGroup.appendChild(this.peptides);
 	
 	/*
@@ -136,17 +139,17 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
      * svg group for elements that appear above links
      */
      
-    this.upperGroup = document.createElementNS(xiNET.svgns, "g");
+    this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
     
     //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
+    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
+    this.intraLinks = document.createElementNS(Config.svgns, "g");
     this.upperGroup.appendChild(this.intraLinksHighlights);
 	this.upperGroup.appendChild(this.intraLinks);    
     
     //create label - we will move this svg element around when protein form changes
-    this.labelSVG = document.createElementNS(xiNET.svgns, "text");
+    this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
@@ -181,11 +184,11 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     this.upperGroup.appendChild(this.labelSVG);
    	
    	//ticks (and animo acid letters)
-    this.ticks = document.createElementNS(xiNET.svgns, "g");
+    this.ticks = document.createElementNS(Config.svgns, "g");
      
 	//make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
-	this.outline = document.createElementNS(xiNET.svgns, "rect");
+	this.outline = document.createElementNS(Config.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
@@ -197,7 +200,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     this.upperGroup.appendChild(this.outline);
     
     //domains as pie slices - shown on top of everything
-	this.circDomains = document.createElementNS(xiNET.svgns, "g");
+	this.circDomains = document.createElementNS(Config.svgns, "g");
     //~ this.circDomains.setAttribute("class", "protein circDomains");
 	this.circDomains.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.circDomains);
@@ -378,9 +381,9 @@ Polymer.prototype.setScaleGroup = function() {
 			}
 		}
 		if (pixPerRes > 8) {
-			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
+			var seqLabelGroup = document.createElementNS(Config.svgns, "g");
 			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
-			var seqLabel = document.createElementNS(xiNET.svgns, "text");
+			var seqLabel = document.createElementNS(Config.svgns, "text");
 			seqLabel.setAttribute('font-family', "'Courier New', monospace");
 			seqLabel.setAttribute('font-size', '10px');
 			seqLabel.setAttribute("text-anchor", "middle");
@@ -398,9 +401,9 @@ Polymer.prototype.setScaleGroup = function() {
 	}
 	
 	function scaleLabelAt(self, text, tickX) {
-		var scaleLabelGroup = document.createElementNS(xiNET.svgns, "g");
+		var scaleLabelGroup = document.createElementNS(Config.svgns, "g");
 		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-		var scaleLabel = document.createElementNS(xiNET.svgns, "text");
+		var scaleLabel = document.createElementNS(Config.svgns, "text");
 		scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
 		scaleLabel.setAttribute('font-family', "'Courier New', monospace");
 		scaleLabel.setAttribute('font-size', '14');
@@ -414,7 +417,7 @@ Polymer.prototype.setScaleGroup = function() {
 	}
 
 	function tickAt(self, tickX) {
-		var tick = document.createElementNS(xiNET.svgns, "line");
+		var tick = document.createElementNS(Config.svgns, "line");
 		tick.setAttribute("x1", tickX);
 		tick.setAttribute("y1", 5);
 		tick.setAttribute("x2", tickX);

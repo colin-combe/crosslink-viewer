@@ -43,7 +43,7 @@ xiNET.Controller.prototype.initMouseEvents = function() {
         this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
     }
               
-    //~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
+    //~ this.marquee = document.createElementNS(Config.svgns, 'rect');
     //~ this.marquee.setAttribute('class', 'marquee');
     //~ this.marquee.setAttribute('fill', 'red');
     
