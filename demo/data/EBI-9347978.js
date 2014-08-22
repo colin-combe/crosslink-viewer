@@ -1,0 +1,148 @@
+var miJson = {
+   "data":[
+      {
+         "object":"interactor",
+         "id":"1",
+         "sequence":"MSGIALSRLAQERKAWRKDHPFGFVAVPTKNPDGTMNLMNWECAIPGKKGTPWEGGLFKLRMLFKDDYPSSPPKCKFEPPLFHPNVYPSGTVCLSILEEDKDWRPAITIKQILLGIQELLNEPNIQDPAQAEAYTIYCQNRVEYEKRVRAQAKKFAPS",
+         "type":{
+            "id":"MI:0326",
+            "name":"protein"
+         },
+         "organism":{
+            "taxid":"9606",
+            "common":"human",
+            "scientific":"Homo sapiens"
+         },
+         "identifier":{
+            "db":"uniprotkb",
+            "id":"P63279"
+         },
+         "label":"ubc9_human"
+      },
+      {
+         "object":"interactor",
+         "id":"2",
+         "sequence":"SDQEAKPSTEDLGDKKEGEYIKLKVIGQDSSEIHFKVKMTTHLKKLKESYCQRQGVPMNSLRFLFEGQRIADNHTPKELGMEEEDVIEVYQEQTGG",
+         "type":{
+            "id":"MI:0326",
+            "name":"protein"
+         },
+         "organism":{
+            "taxid":"9606",
+            "common":"human",
+            "scientific":"Homo sapiens"
+         },
+         "identifier":{
+            "db":"uniprotkb",
+            "id":"P63165-PRO_0000035939"
+         },
+         "label":"p63165-pro_0000035939"
+      },
+      {
+         "object":"interaction",
+         "id":"3",
+         "interactionType":{
+            "id":"MI:0407",
+            "name":"direct interaction"
+         },
+         "experiment":{
+            "detmethod":{
+               "id":"MI:0364",
+               "name":"inferred by curator"
+            },
+            "host":{
+               "taxid":"9606",
+               "common":"human",
+               "scientific":"Homo sapiens"
+            },
+            "pubid":[
+               {
+                  "db":"pubmed",
+                  "id":"14681455"
+               }
+            ],
+            "sourceDatabase":{
+               "id":"MI:0471",
+               "name":"MINT, Dpt of Biology, University of Rome Tor Vergata"
+            }
+         },
+         "identifiers":[
+            {
+               "db":"intenz",
+               "id":"EC 6.3.2.-"
+            },
+            {
+               "db":"intact",
+               "id":"EBI-9347978"
+            },
+            {
+               "db":"wwpdb",
+               "id":"2vrr"
+            },
+            {
+               "db":"wwpdb",
+               "id":"2pe6"
+            },
+            {
+               "db":"reactome",
+               "id":"REACT_165180.2"
+            },
+            {
+               "db":"wwpdb",
+               "id":"2uyz"
+            }
+         ],
+         "participants":[
+            {
+               "interactorRef":"1",
+               "stoichiometry":"1",
+               "bioRole":{
+                  "id":"MI:0501",
+                  "name":"enzyme"
+               },
+               "bindingSites":[
+                  {
+                     "id":"4",
+                     "name":"sumo1 binding site (lys14\/cys93)",
+                     "type":{
+                        "id":"MI:1125",
+                        "name":"direct binding region"
+                     },
+                     "sequenceData":[
+                        "14-14",
+                        "93-93"
+                     ],
+                     "linkedFeatures":[
+                        "5"
+                     ]
+                  }
+               ]
+            },
+            {
+               "interactorRef":"2",
+               "stoichiometry":"1",
+               "bioRole":{
+                  "id":"MI:0499",
+                  "name":"unspecified role"
+               },
+               "bindingSites":[
+                  {
+                     "id":"5",
+                     "name":"ube2i binding site",
+                     "type":{
+                        "id":"MI:0117",
+                        "name":"binding-associated region"
+                     },
+                     "sequenceData":[
+                        "96-96"
+                     ],
+                     "linkedFeatures":[
+                        "4"
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+};
