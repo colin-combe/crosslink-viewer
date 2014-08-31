@@ -270,8 +270,10 @@ xiNET.Controller.prototype.init = function(width, height) {
             else {
                if (prot.toBlob) prot.toBlob();
             }
+            if (prot.lowerGroup){
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
+			}
         }
         this.autoLayout(width, height);
     }

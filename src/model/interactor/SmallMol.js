@@ -6,7 +6,7 @@
 //		
 //		SmallMol.js		
 //
-//		authors: Lutz Fischer, Colin Combe
+//		authors: Colin Combe
 
 "use strict";
 
@@ -16,7 +16,9 @@ function SmallMol(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
-    this.features = d3.map();  
+    //~ this.features = d3.map();  
+	//links
+    this.links = d3.map();
 }
 
 SmallMol.prototype.toJSON = function() {
@@ -40,9 +42,7 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
         this.name = name;
     }
    
-    //links
-    this.links = d3.map();
-    this.internalLink = null;
+     this.internalLink = null;
     // layout info
     this.x = null;
     this.y = null;

@@ -44,7 +44,8 @@ NaryLink.prototype.addEvidence = function(interaction) {
             
         for (var pi = 0; pi < interaction.participants.length; pi++){
             var sourceID = interaction.participants[pi].interactorRef;
-            var sourceInteractor = this.ctrl.interactors.get(sourceID);
+            console.log(sourceID);
+			var sourceInteractor = this.ctrl.interactors.get(sourceID);
                     
             var bindingSites = interaction.participants[pi].bindingSites;
             if (bindingSites){
@@ -77,7 +78,8 @@ NaryLink.prototype.addEvidence = function(interaction) {
                                 link = new UnaryLink(linkID, this.ctrl);
                                 fromInteractor.addLink(link);
                             }else {
-                                link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
+                                console.log(linkID);
+								link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
                                 fromInteractor.addLink(link);
                                 toInteractor.addLink(link);
                             }
@@ -93,7 +95,6 @@ NaryLink.prototype.addEvidence = function(interaction) {
 };
 
 NaryLink.prototype.initSVG = function() {
-
     this.rect = document.createElementNS(xiNET.svgns, "path");
     this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
     this.rect.setAttribute('opacity', 0.4);
@@ -260,8 +261,7 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
             // A single point SVG path does not get stroked, so the browser won't render something like the following:
             // return "M" + values[0] + "L" + values[0] + "Z";
             // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
-				// Col says - yes, we might care. E.g. case where id of an Unary interaction is 
-				//given as interactor in another interacton (interaction with a homodimer) 
+				// Col says - yes, we might care. 
             // Just something to think about!
             return;
         }
@@ -285,7 +285,7 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
         var interactors = this.interactors;
 
         var mapped = interactors.map(function(i) {
-            return [i.x, i.y];
+            return i.getPosition();
         });
 
         var hullValues = calculateHullPath(mapped);

@@ -157,7 +157,12 @@ Interactor.prototype.addFeature = function(feature) {
         var countSegments = segments.length;
 
         for (var i = 0; i < countSegments; i++) {
-            var segment = segments[i];
+            var segment;
+            if (typeof segments[i] === "string"){
+				segment = segments[i];
+			} else {
+				segment = segments[i].pos;
+			}
             var sequenceRegex = /(.+)-(.+)/;
             var match = sequenceRegex.exec(segment);
             var startRes = match[1] * 1;
@@ -201,6 +206,10 @@ Interactor.prototype.setSelected = function(select) {
 		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
     }
 };
+
+Interactor.prototype.getPosition = function(){
+	return [this.x, this.y];
+}
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 Interactor.prototype.setPosition = function(x, y) {

@@ -71,6 +71,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
         var interactors = self.interactors.values();
         var proteinCount = interactors.length;
         self.features = d3.map();       
+        self.complexes = d3.map();       
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
@@ -82,6 +83,12 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
             if (interaction.object === 'interaction') {
                 self.addInteraction(interaction);
             }
+        }
+        //init complexes
+        var complexes = self.complexes.values()
+        for (var c = 0; c < complexes.length; c++) {
+            complexes[c].initInteractor();
+            
         }
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
@@ -100,7 +107,22 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 		var pID = participant.interactorRef;
 		var interactor = this.interactors.get(pID);
 		if (typeof interactor === 'undefined') {
-			alert("Fail - no interactor with id " + pID);
+			//alert("Fail - no interactor with id " + pID);
+			//must be a complex
+			this.interactors.set(pID, new Complex(pID, this));
+			this.complexes.set(pID, new Complex(pID, this));
+			if (participant.bindingSites) {
+				var efCount = participant.bindingSites.length;
+				for (var ef = 0; ef < efCount; ef++){
+					var experimentalFeature = participant.bindingSites[ef];
+					interactor = this.interactors.get(experimentalFeature.sequenceData[0].interactorRef);
+					interactor.features.set(experimentalFeature.id, experimentalFeature);
+					this.features.set(experimentalFeature.id, 
+						{interactor:interactor.id,
+						 feature:experimentalFeature});
+					interactor.addFeature(experimentalFeature);	
+				}	
+			}		
 		}
 		if (participant.bindingSites) {
 			var efCount = participant.bindingSites.length;
@@ -134,7 +156,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
         }
     }
     
-	var linkId = xiNET.Link.getIdFromInteraction(interaction);
+	var linkId = "-" + xiNET.Link.getIdFromInteraction(interaction);
 	var link = this.links.get(linkId);
 	
 	var interactorIds = linkId.split('-');
@@ -143,25 +165,42 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
 		//~ var participants = interaction.participants;
 		//~ var participantCount = participants.length; //...no
 		var participantCount = interactorIds.length;
-		if (participantCount === 1) {
-			link = new UnaryLink(linkId, this);
-			link.notSubLink = true;
-		} else if (participantCount === 2) {
-			var participants = interaction.participants.sort(
-			function comparator(a, b) {
-				return a.interactorRef - b.interactorRef;
-				}
-			);		
-			link = new BinaryLink(linkId, this, 
-				this.interactors.get(interactorIds[0]),
-				this.interactors.get(interactorIds[1]));
-			link.notSubLink = true;
-		} else {
+		//~ if (participantCount === 1) {
+			//~ link = new UnaryLink(linkId, this);
+			//~ link.notSubLink = true;
+		//~ } else if (participantCount === 2) {
+			//~ var participants = interaction.participants.sort(
+			//~ function comparator(a, b) {
+				//~ return a.interactorRef - b.interactorRef;
+				//~ }
+			//~ );		
+			//~ link = new BinaryLink(linkId, this, 
+				//~ this.interactors.get(interactorIds[0]),
+				//~ this.interactors.get(interactorIds[1]));
+			//~ link.notSubLink = true;
+		//~ } else {
 			link = new NaryLink(linkId, this);
-		}
+		//~ }
         this.links.set(linkId, link);
-		for (var pi = 0; pi < participantCount; pi++) {
-			this.interactors.get(interactorIds[pi]).addLink(link);
+		for (var pi = 0; pi < interaction.participants.length; pi++) {
+			var participant = interaction.participants[pi];
+			var interactor = this.interactors.get(participant.interactorRef);
+			if (typeof interactor === 'undefined') {
+				//alert("Fail - no interactor with id " + pID);
+				//must be a complex
+				if (participant.bindingSites) {
+					var efCount = participant.bindingSites.length;
+					for (var ef = 0; ef < efCount; ef++){
+						var experimentalFeature = participant.bindingSites[ef];
+						interactor = this.interactors.get(experimentalFeature.sequenceData[0].interactorRef);
+						interactor.addLink(link);	
+					}	
+				}
+				//~ else {alert("Fail - complex without binding sites")}		
+			}
+			else {
+				interactor.addLink(link);
+			}
 		}
 	}
     //all other initialisation to do with links takes place within Links 

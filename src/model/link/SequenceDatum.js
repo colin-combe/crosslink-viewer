@@ -3,19 +3,14 @@
 //
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
-//
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 
 "use strict";
 
 /* construtor parameter is string with following format:
  *
  *              "?-?" = unknown 
- *              "n-n" = n-terminal range (to be represented as link to triangle beside n terminal)
- *              "c-c" = c-terminal range (to be represented as link to triangle beside c terminal)
+ *              "n-n" = n-terminal range (to be represented as link to box beside n terminal)
+ *              "c-c" = c-terminal range (to be represented as link to box beside c terminal)
  *              "123-123" = specific residue
  *              "123-456" = segment? don't say range
  *              "86..123-456..464" = segment with fuzzy boundaries
@@ -24,7 +19,13 @@
  *              "123->256" = range between 256 and interactor.sequence.length
  */
 
-function SequenceDatum(sequenceDatumString, interactor) {
+function SequenceDatum(sequenceDatumString) {
+	
+	//from a complex (bit of a hack)
+	if (typeof sequenceDatumString !== "string"){
+		sequenceDatumString = sequenceDatumString.pos;
+	}          
+	
     sequenceDatumString = sequenceDatumString.trim();
 
     this.uncertainStart = null;

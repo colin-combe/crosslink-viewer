@@ -7,7 +7,7 @@
 "use strict";
 
 // BinaryLink.js
-// the class representing an n-ary interaction
+// the class representing a binary interaction
 
 BinaryLink.prototype = new xiNET.Link();
 //used to calculate width of thivh background line
@@ -45,16 +45,15 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 		}    
 		  
 	 
-	 
-	 
-	 
-		 for (var pi = 0; pi < interaction.participants.length; pi++){
+		for (var pi = 0; pi < interaction.participants.length; pi++){
 			var sourceID = interaction.participants[pi].interactorRef;
 			var sourceInteractor = this.ctrl.interactors.get(sourceID);
-			if (sourceInteractor === this.fromInteractor) { 
+			console.log("yo!" + this.fromInteractor.id + ":" + sourceID);
+			if (sourceInteractor === this.fromInteractor) { //heres ur problem
 								//~ || sourceIntercator === this.toInteractor ) {
 				//~ var reversed = (sourceIntercator === this.toInteractor);			
 				var bindingSites = interaction.participants[pi].bindingSites;
+				console.log("yo");
 				if (bindingSites){
 					var bsCount = bindingSites.length;
 					for (var bsi = 0; bsi < bsCount; bsi++){
@@ -91,7 +90,7 @@ BinaryLink.prototype.addEvidence = function(interaction) {
 																	
 							var sequenceLink = this.sequenceLinks.get(seqLinkId);
 							if (typeof sequenceLink === 'undefined') {
-								//~ console.log(seqLinkId);
+								console.log("*" + seqLinkId);
 								sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
 								this.sequenceLinks.set(seqLinkId, sequenceLink);
 							}
@@ -425,24 +424,25 @@ BinaryLink.prototype.hide = function() {
 
 BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
+		var pos = interactor.getPosition();
         if (this.fromInteractor === interactor) {
-            this.line.setAttribute("x1", interactor.x);
-            this.line.setAttribute("y1", interactor.y);
-            this.highlightLine.setAttribute("x1", interactor.x);
-            this.highlightLine.setAttribute("y1", interactor.y);
+            this.line.setAttribute("x1", pos[0]);
+            this.line.setAttribute("y1", pos[1]);
+            this.highlightLine.setAttribute("x1", pos[0]);
+            this.highlightLine.setAttribute("y1", pos[1]);
             if (this.thickLineShown) {
-                this.thickLine.setAttribute("x1", interactor.x);
-                this.thickLine.setAttribute("y1", interactor.y);
+                this.thickLine.setAttribute("x1", pos[0]);
+                this.thickLine.setAttribute("y1", pos[1]);
             }
         }
         else {
-            this.line.setAttribute("x2", interactor.x);
-            this.line.setAttribute("y2", interactor.y);
-            this.highlightLine.setAttribute("x2", interactor.x);
-            this.highlightLine.setAttribute("y2", interactor.y);
+            this.line.setAttribute("x2", pos[0]);
+            this.line.setAttribute("y2", pos[1]);
+            this.highlightLine.setAttribute("x2", pos[0]);
+            this.highlightLine.setAttribute("y2", pos[1]);
             if (this.thickLineShown) {
-                this.thickLine.setAttribute("x2", interactor.x);
-                this.thickLine.setAttribute("y2", interactor.y);
+                this.thickLine.setAttribute("x2", pos[0]);
+                this.thickLine.setAttribute("y2", pos[1]);
             }
         }
     }

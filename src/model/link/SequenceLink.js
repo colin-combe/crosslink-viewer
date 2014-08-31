@@ -291,7 +291,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         function getPathSegments(midPoint, controlPoint, startRes, endRes, interactor, yOffset) {
             var startPoint, endPoint;
             if (interactor.form === 0) {
-                startPoint = [interactor.x, interactor.y];
+                startPoint = interactor.getPosition();
                 endPoint = startPoint;
             }
             else {
@@ -343,13 +343,13 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         //calculate mid points of from and to sequence data
         var fMid, tMid;
         if (fromInteractor.form === 0) {
-            fMid = [fromInteractor.x, fromInteractor.y];
+            fMid = fromInteractor.getPosition();
         }
         else {
             fMid = sequenceDataMidPoint(this.fromSequenceData, fromInteractor);
         }
         if (toInteractor.form === 0) {
-            tMid = [toInteractor.x, toInteractor.y];
+            tMid = toInteractor.getPosition();
         }
         else {
             tMid = sequenceDataMidPoint(this.toSequenceData, toInteractor);
