@@ -1,0 +1,17 @@
+{
+  "name": "ComplexViewer",
+  "version": "0.0.1",
+  "dependencies": {
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "package.json",
+    "bower.json",
+    "src",
+    "lib",
+    "build",
+    "vendor",
+    "components"
+  ]
+}

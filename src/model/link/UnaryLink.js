@@ -11,7 +11,11 @@
 
 "use strict";
 
-UnaryLink.prototype = new xiNET.Link();
+var Config = require('../../controller/Config');
+var Link = require('./Link');
+var SequenceLink = require('./SequenceLink');
+
+UnaryLink.prototype = new Link();
 
 function UnaryLink(id, xlvController) {
     this.id = id;
@@ -178,11 +182,11 @@ UnaryLink.prototype.initSVG = function() {
     }
     
 	var path = this.fromInteractor.getAggregateSelfLinkPath();
-	this.line = document.createElementNS(xiNET.svgns, "path");
+	this.line = document.createElementNS(Config.svgns, "path");
 	this.line.setAttribute('d', path);
-	this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+	this.highlightLine = document.createElementNS(Config.svgns, 'path');
 	this.highlightLine.setAttribute('d', path);
-	this.thickLine = document.createElementNS(xiNET.svgns, 'path');
+	this.thickLine = document.createElementNS(Config.svgns, 'path');
 	this.thickLine.setAttribute('d', path);
    
     this.line.setAttribute("class", "link");
@@ -192,7 +196,7 @@ UnaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -397,3 +401,5 @@ UnaryLink.prototype.setLinkCoordinates = function(interactor) {
 		//~ }
     //~ }
 };
+
+module.exports = UnaryLink;

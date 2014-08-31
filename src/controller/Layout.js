@@ -10,7 +10,10 @@
 
 "use strict";
 
-xiNET.Controller.prototype.autoLayout = function(width, height) {
+var Interactor = require('../model/interactor/Interactor');
+
+var autoLayout = function(width, height) {
+
     //functions used...
     function xForColumn(c) {
         return (c * ((/*2 **/ self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
@@ -314,6 +317,7 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
             var nodes = self.force.nodes();
+            // console.log("nodes", nodes);
             for (var n = 0; n < nodeCount; n++) {
                 var node = nodes[n];
                 var protein = self.interactors.get(node.id);
@@ -326,3 +330,5 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
         this.force.start();
     }
 };
+
+module.exports = autoLayout;

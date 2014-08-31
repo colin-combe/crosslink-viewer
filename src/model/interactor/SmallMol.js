@@ -10,6 +10,8 @@
 
 "use strict";
 
+var Config = require('../../controller/Config');
+
 SmallMol.prototype = new Interactor();
 
 function SmallMol(id, xlvController, json) {
@@ -62,12 +64,12 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
      * Lower group
      * svg group for elements that appear underneath links
      */
-    this.lowerGroup = document.createElementNS(xiNET.svgns, "g");
+    this.lowerGroup = document.createElementNS(Config.svgns, "g");
     this.lowerGroup.setAttribute("class", "protein lowerGroup");
  	//for polygon
  	var points = "0, -10  8.66,5 -8.66,5";
  	//make highlight
-    this.highlight = document.createElementNS(xiNET.svgns, "polygon");
+    this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
       //invariant attributes
     if (xiNET.highlightColour !== undefined) {
@@ -86,17 +88,17 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
      * svg group for elements that appear above links
      */
      
-    this.upperGroup = document.createElementNS(xiNET.svgns, "g");
+    this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
     
     //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
+    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
+    this.intraLinks = document.createElementNS(Config.svgns, "g");
     this.upperGroup.appendChild(this.intraLinksHighlights);
 	this.upperGroup.appendChild(this.intraLinks);    
     
     //create label - we will move this svg element around when protein form changes
-    this.labelSVG = document.createElementNS(xiNET.svgns, "text");
+    this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
@@ -133,15 +135,15 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
      
 	//make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
-	this.outline = document.createElementNS(xiNET.svgns, "rect");
+	this.outline = document.createElementNS(Config.svgns, "rect");
 	
 	    //make blob
     //~ if (this.accession.indexOf("CHEBI") !== -1) {
-        this.outline = document.createElementNS(xiNET.svgns, "polygon");
+        this.outline = document.createElementNS(Config.svgns, "polygon");
         this.outline.setAttribute("points", points);
-        //~ this.blobHighlight = document.createElementNS(xinet.svgns, "polygon");
+        //~ this.blobHighlight = document.createElementNS(Config.svgns, "polygon");
         //~ this.blobHighlight.setAttribute("points", points);
-        //~ this.parked = document.createElementNS(xinet.svgns, "polygon");
+        //~ this.parked = document.createElementNS(Config.svgns, "polygon");
         //~ this.parked.setAttribute("points", points);
     //~ }
 	
@@ -156,7 +158,7 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.upperGroup.appendChild(this.outline);
     
     //domains as pie slices - shown on top of everything
-	this.circDomains = document.createElementNS(xiNET.svgns, "g");
+	this.circDomains = document.createElementNS(Config.svgns, "g");
     //~ this.circDomains.setAttribute("class", "protein circDomains");
 	this.circDomains.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.circDomains);

@@ -10,10 +10,20 @@
 
 "use strict";
 
+var RGBColor = require('../../vendor/rgbcolor');
+var d3 = require('../../node_modules/d3/');
+var Interactor = require('../model/interactor/Interactor');
+var Refresh = require('./Refresh');
+var ReadMIJSON = require('./ReadMIJSON');
+var Link = require('../model/link/Link');
+var Layout = require('./Layout');
+var Config = require('./Config');
+// var MouseEvents = require('./MouseEvents');
+
 var xiNET = {}; //create xiNET's javascript namespace
 
-xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
+// Config.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
+// Config.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 
 xiNET.linkWidth = 1.3;// default line width
 
@@ -35,7 +45,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     
     //create SVG elemnent
-    this.svgElement = document.createElementNS(xiNET.svgns, "svg");
+    this.svgElement = document.createElementNS(Config.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     targetDiv.appendChild(this.svgElement);
     
@@ -58,7 +68,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
-    var background = document.createElementNS(xiNET.svgns, "rect");
+    var background = document.createElementNS(Config.svgns, "rect");
     background.setAttribute("id", "background_fill");
     background.setAttribute("x", 0);
     background.setAttribute("y", 0);
@@ -68,7 +78,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     background.setAttribute("fill", "#FFFFFF");
     this.svgElement.appendChild(background);
 
-    this.container = document.createElementNS(xiNET.svgns, "g");
+    this.container = document.createElementNS(Config.svgns, "g");
     this.container.setAttribute("id", "container");
 
     var useDefs = false;//show magnifier using use and defs elements - experimental
@@ -76,64 +86,66 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     var defs;
     if (useDefs === true) {
         //for magnifier... chrome only
-        defs = document.createElementNS(xiNET.svgns, "defs");
+        defs = document.createElementNS(Config.svgns, "defs");
         defs.appendChild(this.container);
     }
 
-    this.naryLinks = document.createElementNS(xiNET.svgns, "g");
+    this.naryLinks = document.createElementNS(Config.svgns, "g");
     this.naryLinks.setAttribute("id", "naryLinks");
     this.container.appendChild(this.naryLinks);
 	
-	this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
+	this.p_pLinksWide = document.createElementNS(Config.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
  
-    this.proteinLower = document.createElementNS(xiNET.svgns, "g");
+    this.proteinLower = document.createElementNS(Config.svgns, "g");
     this.proteinLower.setAttribute("id", "proteinLower");
     this.container.appendChild(this.proteinLower);
 
-    this.highlights = document.createElementNS(xiNET.svgns, "g");
+    this.highlights = document.createElementNS(Config.svgns, "g");
     this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
     this.container.appendChild(this.highlights);
 
-    this.res_resLinks = document.createElementNS(xiNET.svgns, "g");
+    this.res_resLinks = document.createElementNS(Config.svgns, "g");
     this.res_resLinks.setAttribute("id", "res_resLinks");
     this.container.appendChild(this.res_resLinks);
 
-    this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
+    this.p_pLinks = document.createElementNS(Config.svgns, "g");
     this.p_pLinks.setAttribute("id", "p_pLinks");
     this.container.appendChild(this.p_pLinks);
 
-    this.proteinUpper = document.createElementNS(xiNET.svgns, "g");
+    this.proteinUpper = document.createElementNS(Config.svgns, "g");
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
+
+
 
     if (useDefs === false) {//this is normal
         this.svgElement.appendChild(this.container);
     }
     else {//for use/defs magnifier - test code only
-        var use = document.createElementNS(xiNET.svgns, "use");
-        use.setAttributeNS(xiNET.xlinkNS, "href", "#container");
+        var use = document.createElementNS(Config.svgns, "use");
+        use.setAttributeNS(Config.xlinkNS, "href", "#container");
         this.svgElement.appendChild(use);
 
-        var cp = document.createElementNS(xiNET.svgns, "clipPath");
+        var cp = document.createElementNS(Config.svgns, "clipPath");
         cp.setAttribute('id', 'CP');
-        var c = document.createElementNS(xiNET.svgns, "circle");
+        var c = document.createElementNS(Config.svgns, "circle");
         c.setAttribute('cx', '341');
         c.setAttribute('cy', '192');
         c.setAttribute('r', '50');
         cp.appendChild(c);
         this.svgElement.appendChild(cp);
 
-        var mag = document.createElementNS(xiNET.svgns, 'g');
+        var mag = document.createElementNS(Config.svgns, 'g');
         mag.setAttribute('id', 'clippedI');
         mag.setAttribute('transform', 'translate(-341, -192) scale(2)');
-        var magUse = document.createElementNS(xiNET.svgns, "use");
-        magUse.setAttributeNS(xiNET.xlinkNS, "href", "#container");
+        var magUse = document.createElementNS(Config.svgns, "use");
+        magUse.setAttributeNS(Config.xlinkNS, "href", "#container");
         magUse.setAttribute("clip-path", "url(#CP)");
         magUse.setAttribute('opacity', '1.0');
         mag.appendChild(magUse);
-        var magFrame = document.createElementNS(xiNET.svgns, "circle");
+        var magFrame = document.createElementNS(Config.svgns, "circle");
         magFrame.setAttribute('cx', '341');
         magFrame.setAttribute('cy', '192');
         magFrame.setAttribute('r', '50');
@@ -147,7 +159,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     }
     //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
     //also more repsonsive / more control if we do out own
-    this.tooltip = document.createElementNS(xiNET.svgns, "text");
+    this.tooltip = document.createElementNS(Config.svgns, "text");
   //  this.tooltip.setAttribute('class', 'tooltip');
   //  this.tooltip.setAttribute('id', 'tooltip');
     this.tooltip.setAttribute('x', 0);
@@ -155,7 +167,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     var tooltipTextNode = document.createTextNode('tooltip');
     this.tooltip.appendChild(tooltipTextNode);
 
-    this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
+    this.tooltip_bg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
     this.tooltip_bg.setAttribute('id', 'tooltip_bg');
 
@@ -163,7 +175,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
 
-    this.tooltip_subBg = document.createElementNS(xiNET.svgns, "rect");
+    this.tooltip_subBg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
@@ -176,9 +188,49 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.svgElement.appendChild(this.tooltip);
 
     this.clear();
+
+
+    
+
 };
 
+// Link to prototype functions that exist in other files.
+// Eventually the files will accept this controller as an argument
+
+// From Refresh.js
+xiNET.Controller.prototype.checkLinks = Refresh.checkLinks;
+xiNET.Controller.prototype.scale = Refresh.scale;
+
+// From ReadMYJSON
+// xiNET.Controller.prototype.readMIJSON = function(value) {ReadMIJSON.readMIJSON(value, this);}
+xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
+
+xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
+xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
+xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
+
+// From Layout.js
+xiNET.Controller.prototype.autoLayout = Layout;
+
+// From MouseEvents
+//static var's signifying Controller's status
+xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
+xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
+xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+
+/**
+ * Sets the current transform matrix of an element. JOSH TODO
+ */
+xiNET.setCTM = function(element, matrix) {
+    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+    element.setAttribute("transform", s);
+};
+
+
 xiNET.Controller.prototype.clear = function() {
+
     this.initComplete = false;
     this.interactors = d3.map();
     this.links = d3.map();
@@ -280,7 +332,7 @@ xiNET.Controller.prototype.init = function(width, height) {
 //    this.message('#interactors: ' + this.interactors.values().length +
 //            '\n# links: ' + this.links.values().length);
 
-    this.initMouseEvents();
+    // this.initMouseEvents();
     if (typeof this.initTouchEvents === 'function'){
 		this.initTouchEvents();
 	}
@@ -409,3 +461,6 @@ xiNET.Controller.prototype.loadLayout = function() {
     }
     this.svgElement.unsuspendRedraw(suspendID);
 };
+
+module.exports = xiNET.Controller;
+

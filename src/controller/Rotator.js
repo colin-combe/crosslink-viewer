@@ -11,6 +11,8 @@
 
 "use strict";
 
+var Config = require('./Config');
+
 function Rotator(proteinRegion, upperOrLower, xlvController) {
     var self = this;
     this.ctrl = xlvController;
@@ -20,24 +22,24 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
     var RADIUS = 14;
     var SYMBOL_RADIUS = 20;// not really, gets scaled down
 
-    this.svg = document.createElementNS(xiNET.svgns, "g");
-    this.rotatorSymbol = document.createElementNS(xiNET.svgns, "g");
+    this.svg = document.createElementNS(Config.svgns, "g");
+    this.rotatorSymbol = document.createElementNS(Config.svgns, "g");
 
-    var rotatorCircle = document.createElementNS(xiNET.svgns, "circle");
+    var rotatorCircle = document.createElementNS(Config.svgns, "circle");
     rotatorCircle.setAttribute("r", RADIUS);
     rotatorCircle.setAttribute("stroke", "none");
     rotatorCircle.setAttribute("fill", "gray");
     rotatorCircle.setAttribute("fill-opacity", "0.0");
     this.svg.appendChild(rotatorCircle);
 
-    var symbolCircle = document.createElementNS(xiNET.svgns, "circle");
+    var symbolCircle = document.createElementNS(Config.svgns, "circle");
     symbolCircle.setAttribute("r", SYMBOL_RADIUS);
     symbolCircle.setAttribute("stroke", "black");
     symbolCircle.setAttribute("stroke-width", "1");
     symbolCircle.setAttribute("fill", "none");
     this.rotatorSymbol.appendChild(symbolCircle);
 
-    var arrow1 = document.createElementNS(xiNET.svgns, "path");
+    var arrow1 = document.createElementNS(Config.svgns, "path");
     //    arrow1.setAttribute("id","arrow");
     arrow1.setAttribute("d", "M 19.818182,-3 L 16,3.10345 L 23.636363,3.10345 L 19.818182,-3 z ");
     arrow1.setAttribute("stroke", "black");
@@ -45,7 +47,7 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
     arrow1.setAttribute("fill", "black");
 
     this.rotatorSymbol.appendChild(arrow1);
-    var arrow2 = document.createElementNS(xiNET.svgns, "path");
+    var arrow2 = document.createElementNS(Config.svgns, "path");
     //    arrow2.setAttribute("id","arrow");
     arrow2.setAttribute("d", "M 19.818182,-3 L 16,3.10345 L 23.636363,3.10345 L 19.818182,-3 z ");
     arrow2.setAttribute("stroke", "black");
@@ -57,7 +59,7 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
 
     this.rotatorSymbol.setAttribute("visibility", "hidden");
 
-    this.inner = document.createElementNS(xiNET.svgns, "g");
+    this.inner = document.createElementNS(Config.svgns, "g");
     this.inner.setAttribute("class","PV_rotator");
     this.inner.appendChild(this.rotatorSymbol);
 
@@ -98,3 +100,5 @@ Rotator.prototype.rotatorMouseDown = function (evt) {
     // rot.rotatorSymbol.setAttribute("visibility", "hidden");
     return false;
 }
+
+module.exports = Rotator;

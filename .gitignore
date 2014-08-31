@@ -1,2 +1,4 @@
 .svn
 /nbproject/
+node_modules
+bower_components
