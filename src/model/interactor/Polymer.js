@@ -810,4 +810,21 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
     return [x, y];
 };
 
+Polymer.prototype.getAnnotationRectPath = function(annotation) {
+    //domain as rectangle path
+    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
+    var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
+    //~ //Ouch!! Without brackets following may do string concatenation
+    var annotSize = (1 + (annotation.end - annotation.start));
+    var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE;
+    var rectPath = "M " + annotX + "," + bottom;
+    for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
+        var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
+        rectPath += " L " + step + "," + top;
+    }       
+    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
+        + " Z";
+    return rectPath;
+};
+
 module.exports = Polymer;

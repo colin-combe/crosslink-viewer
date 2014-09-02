@@ -30,6 +30,9 @@ module.exports = taskManager = function(grunt) {
         }
       }
     },
+    jshint: {
+      all: ['src/**/*.js']
+    },
     uglify: {
       options: {
         banner: '/*! <%= config.bower.name %>-<%= config.bower.version %> Built: <%= grunt.template.today("yyyy-mm-dd") %> */\n'

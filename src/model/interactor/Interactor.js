@@ -13,6 +13,8 @@
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Annotation = require('./Annotations');
 var Config = require('../../controller/Config');
+var $ = require('jquery-browserify');
+require('jsonview')($);
 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
@@ -27,7 +29,7 @@ function Interactor(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
-    this.features = d3.map();  
+    this.features = d3.map();
 }
 
 Interactor.prototype.toJSON = function() {
@@ -38,11 +40,12 @@ Interactor.prototype.toJSON = function() {
 };
 
 Interactor.prototype.mouseDown = function(evt) {
-           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
         if (this.ctrl.force !== undefined) {
             this.ctrl.force.stop();
         }
+
         this.ctrl.dragElement = this;
         //~ if (evt.ctrlKey === false) {
             this.ctrl.clearSelection();
@@ -195,14 +198,14 @@ Interactor.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.ctrl.selected.set(this.id, this);
         this.isSelected = true;
-		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		this.highlight.setAttribute("stroke", Config.selectedColour.toRGB());
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.ctrl.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
-		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+		this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
     }
 };
 
@@ -611,21 +614,21 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
     return approximatePiePath;
 };
 
-Interactor.prototype.getAnnotationRectPath = function(annotation) {
-    //domain as rectangle path
-    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
-    var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
-    //~ //Ouch!! Without brackets following may do string concatenation
-    var annotSize = (1 + (annotation.end - annotation.start));
-    var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE;
-    var rectPath = "M " + annotX + "," + bottom;
-    for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
-        var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
-        rectPath += " L " + step + "," + top;
-    }       
-    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
-        + " Z";
-    return rectPath;
-};
+// Interactor.prototype.getAnnotationRectPath = function(annotation) {
+//     //domain as rectangle path
+//     var bottom = Config.Polymer.STICKHEIGHT / 2, top = -Config.Polymer.STICKHEIGHT / 2;
+//     var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Config.Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
+//     //~ //Ouch!! Without brackets following may do string concatenation
+//     var annotSize = (1 + (annotation.end - annotation.start));
+//     var annotLength = annotSize * Config.Polymer.UNITS_PER_RESIDUE;
+//     var rectPath = "M " + annotX + "," + bottom;
+//     for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
+//         var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
+//         rectPath += " L " + step + "," + top;
+//     }       
+//     rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
+//         + " Z";
+//     return rectPath;
+// };
 
 module.exports = Interactor;

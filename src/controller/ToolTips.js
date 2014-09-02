@@ -8,7 +8,7 @@
 
 "use strict";
 
-xiNET.Controller.prototype.showTooltip = function(p)
+var showTooltip = function(p)
     {
         //TODO: if its going ot be off the right of the screen put it to left of the cursor
 //        var x = (Math.round(p.x / 10) * 10) + 0.5, y = (Math.round(p.y / 10) * 10) + 0.5;
@@ -23,7 +23,7 @@ xiNET.Controller.prototype.showTooltip = function(p)
         this.tooltip_subBg.setAttributeNS(null,"y", y + 28);
     };
 
-xiNET.Controller.prototype.setTooltip = function(text, colour) {
+var setTooltip = function(text, colour) {
     //TODO: format tooltips (line breaks)
     if (typeof text === 'undefined') text = "undefined";
     this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
@@ -49,8 +49,16 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 };
 
 
-xiNET.Controller.prototype.hideTooltip = function(evt){
+var hideTooltip = function(evt){
     this.tooltip.setAttributeNS(null,"visibility","hidden");
     this.tooltip_bg.setAttributeNS(null,"visibility","hidden");
     this.tooltip_subBg.setAttributeNS(null,"visibility","hidden");
 };
+
+module.exports = {
+    showTooltip: showTooltip,
+    setTooltip: setTooltip,
+    hideTooltip: hideTooltip
+}
+
+

@@ -9,15 +9,20 @@
 "use strict";
 
 //static var's signifying Controller's status
-xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
-xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+
+var MouseEventCodes = {}
+
+MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+MouseEventCodes.DRAGGING = 2;//set by mouse down on Protein or Link
+MouseEventCodes.ROTATING = 3;//set by mouse down on Rotator, drag?
+MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
 //listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
-xiNET.Controller.prototype.initMouseEvents = function() {
+
+var initMouseEvents = function() {
+
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {
@@ -53,7 +58,7 @@ xiNET.Controller.prototype.initMouseEvents = function() {
 /**
  * Handle mousedown event.
  */
-xiNET.Controller.prototype.mouseDown = function(evt) {
+var mouseDown = function(evt) {
     //prevent default, but allow propogation
     evt.preventDefault();
     //evt.returnValue = false;
@@ -63,6 +68,8 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
     }
 
     var p = this.getEventPoint(evt);// seems to be correct, see below
+    console.log("dragSTART");
+    conole.log("this.dragstart", this.mouseToSVG(p.x, p.y));
     this.dragStart = this.mouseToSVG(p.x, p.y);
 
     var rightClick; //which button has just been raised
@@ -73,7 +80,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 
     if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
 //        alert("here");
-//        this.state = xiNET.Controller.SELECTING;
+//        this.state = MouseEventCodes.SELECTING;
 ////        //      marquee.style.strokeDashoffset=0;
 //               this.marquee.setAttribute('x', 100);
 //    this.marquee.setAttribute('y', 100);
@@ -89,14 +96,14 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 ////            this.clearSelection();
 ////        }
     } else {
-    this.state = xiNET.Controller.PANNING;
+    this.state = MouseEventCodes.PANNING;
     this.panned = false;
     }
     return false;
 };
 
 // dragging/rotation/panning/selecting
-xiNET.Controller.prototype.mouseMove = function(evt) {
+var mouseMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     if (this.initComplete) { // just being cautious
         var p = this.getEventPoint(evt);// seems to be correct, see below
@@ -108,7 +115,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
-            if (this.state === xiNET.Controller.DRAGGING) {
+            if (this.state === MouseEventCodes.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
                 if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
@@ -138,7 +145,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                 this.dragStart = c;
             }
 
-            else if (this.state === xiNET.Controller.ROTATING) {
+            else if (this.state === MouseEventCodes.ROTATING) {
                 // Distance from mouse x and center of stick.
                 var _dx = c.x - this.dragElement.x
                 // Distance from mouse y and center of stick.
@@ -155,17 +162,17 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
                 if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = xiNET.Controller.DRAGGING;
+                    this.state = MouseEventCodes.DRAGGING;
 
                 }
             }
             this.svgElement.unsuspendRedraw(suspendID);
         }
 
-//    else if (this.state === xiNET.Controller.SELECTING) {
+//    else if (this.state === MouseEventCodes.SELECTING) {
 //        this.updateMarquee(this.marquee, c);
 //    }
-        else if (this.state === xiNET.Controller.PANNING) {
+        else if (this.state === MouseEventCodes.PANNING) {
             xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
@@ -177,7 +184,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
 
 // this ends all dragging and rotating
-xiNET.Controller.prototype.mouseUp = function(evt) {
+var mouseUp = function(evt) {
     var time = new Date().getTime();
     //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
     this.preventDefaultsAndStopPropagation(evt);
@@ -200,7 +207,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
         var suspendID = this.svgElement.suspendRedraw(5000);
 
         if (this.dragElement != null) { 
-            if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
+            if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
                 if (rightclick) { // RIGHT click
                     if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
                         if (this.dragElement.intra) {//if internal link
@@ -237,7 +244,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                 }
                 //~ this.checkLinks();
             }
-            else if (this.state === xiNET.Controller.ROTATING) {
+            else if (this.state === MouseEventCodes.ROTATING) {
                 //round protein rotation to nearest 5 degrees (looks neater)
                 this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
             }
@@ -252,11 +259,11 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                 //~ link.hidden = false;
             //~ }
             this.checkLinks();
-        } else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+        } else if (/*this.state !== MouseEventCodes.PANNING &&*/ evt.ctrlKey === false) {
             this.clearSelection();
         }
 
-        if (this.state === xiNET.Controller.SELECTING) {
+        if (this.state === MouseEventCodes.SELECTING) {
             clearInterval(this.marcher);
             this.svgElement.removeChild(this.marquee);
         }
@@ -265,14 +272,14 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 
         this.dragElement = null;
         this.whichRotator = -1;
-        this.state = xiNET.Controller.MOUSE_UP;
+        this.state = MouseEventCodes.MOUSE_UP;
 
     this.lastMouseUp = time;
     return false;
 };
 
 
-xiNET.Controller.prototype.updateMarquee = function(rect, p1) {
+var updateMarquee = function(rect, p1) {
     var p0 = this.dragStart;
     var xs = [p0.x, p1.x].sort(sortByNumber),
             ys = [p0.y, p1.y].sort(sortByNumber);
@@ -283,14 +290,14 @@ xiNET.Controller.prototype.updateMarquee = function(rect, p1) {
 }
 
 
-function sortByNumber(a, b) {
+var sortByNumber = function(a, b) {
     return a - b
 }
 
 /**
  * Handle mouse wheel event.
  */
-xiNET.Controller.prototype.mouseWheel = function(evt) {
+var mouseWheel = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     var delta;
     //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
@@ -310,7 +317,7 @@ xiNET.Controller.prototype.mouseWheel = function(evt) {
     return false;
 };
 
-xiNET.Controller.prototype.clearSelection = function() {
+var clearSelection = function() {
     var interactors = this.interactors.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
@@ -320,7 +327,7 @@ xiNET.Controller.prototype.clearSelection = function() {
 };
 
 //gets mouse position
-xiNET.Controller.prototype.getEventPoint = function(evt) {
+var getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
 //    var rect = this.container.getBoundingClientRect();
 //   p.x = evt.clientX - rect.left;
@@ -340,7 +347,7 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
 };
 
 
-function getScrollTop(){
+var getScrollTop = function(){
     if(typeof pageYOffset!= 'undefined'){
         //most browsers except IE before #9
         return pageYOffset;
@@ -354,7 +361,7 @@ function getScrollTop(){
 }
 
 // transform the mouse-position into a position on the svg
-xiNET.Controller.prototype.mouseToSVG = function(x, y) {
+var mouseToSVG = function(x, y) {
     var p = this.svgElement.createSVGPoint();
     p.x = x;
     p.y = y;
@@ -363,7 +370,7 @@ xiNET.Controller.prototype.mouseToSVG = function(x, y) {
 };
 
 //stop event propogation and defaults; only do what we ask
-xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
+var preventDefaultsAndStopPropagation = function(evt) {
     if (evt.stopPropagation)
         evt.stopPropagation();
     if (evt.cancelBubble != null)
@@ -373,10 +380,29 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
     //~ evt.returnValue = false;
 };
 
+
+
 /**
  * Sets the current transform matrix of an element.
  */
-xiNET.setCTM = function(element, matrix) {
-    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-    element.setAttribute("transform", s);
-};
+// var setCTM = function(element, matrix) {
+//     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+//     element.setAttribute("transform", s);
+// };
+
+module.exports = {
+    initMouseEvents: initMouseEvents,
+    mouseDown: mouseDown,
+    mouseMove: mouseMove,
+    mouseUp: mouseUp,
+    updateMarquee: updateMarquee,
+    mouseWheel: mouseWheel,
+    clearSelection: clearSelection,
+    getEventPoint: getEventPoint,
+    preventDefaultsAndStopPropagation: preventDefaultsAndStopPropagation,
+    // setCTM: setCTM,
+    getScrollTop: getScrollTop,
+    sortByNumber: sortByNumber,
+    mouseToSVG: mouseToSVG
+
+}

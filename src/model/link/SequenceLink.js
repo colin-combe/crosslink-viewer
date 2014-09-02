@@ -88,7 +88,7 @@ SequenceLink.prototype.initSVG = function() {
         this.uncertainGlyph.setAttribute("fill-opacity", "0.3");
         this.highlightGlyph.setAttribute("class", "link");
         this.highlightGlyph.setAttribute("fill", "none");
-        this.highlightGlyph.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke", Config.highlightColour.toRGB());
         this.highlightGlyph.setAttribute("stroke-width", "10");
         this.highlightGlyph.setAttribute("stroke-opacity", "0");
         if (typeof this.colour !== 'undefined') {
