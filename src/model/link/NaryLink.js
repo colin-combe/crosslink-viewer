@@ -11,6 +11,7 @@
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Link = require('./Link');
 var BinaryLink = require('./BinaryLink');
+var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 // NaryLink.js
@@ -126,10 +127,10 @@ NaryLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         //we will iterate through all interactors and sublinks and highlight them
         this.highlightInteractors(show);
-        var subLinks = this.subLinks.values();
-        for (var s = 0; s < subLinks.length; s++) {
-            subLinks[s].showHighlight(show);
-        }
+        //~ var subLinks = this.subLinks.values();
+        //~ for (var s = 0; s < subLinks.length; s++) {
+            //~ subLinks[s].showHighlight(show);
+        //~ }
     }
 };
 
@@ -290,7 +291,7 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
         var interactors = this.interactors;
 
         var mapped = interactors.map(function(i) {
-            return [i.x, i.y];
+            return i.getPosition();
         });
 
         var hullValues = calculateHullPath(mapped);
@@ -299,3 +300,5 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
         }
     }
 };
+
+module.exports = NaryLink;

@@ -10,6 +10,9 @@
 
 "use strict";
 
+var Interactor = require('./Interactor');
+var Config = require('../../controller/Config');
+
 Complex.prototype = new Interactor();
 
 function Complex(id, xlvController) {
@@ -263,3 +266,5 @@ Complex.prototype.toParked = function(svgP) {
 Complex.prototype.setPosition = function(x, y) {return [20,230]}
 Complex.prototype.getResidueCoordinates = function(x, y) {return [20,230]}
 Complex.prototype.showHighlight = function(x, y) {}
+
+module.exports = Complex;

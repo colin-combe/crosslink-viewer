@@ -10,6 +10,7 @@
 
 "use strict";
 
+var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
 SmallMol.prototype = new Interactor();
@@ -255,4 +256,4 @@ SmallMol.prototype.toParked = function(svgP) {
 			.duration(SmallMol.transitionTime);	
 };
 
-
+module.exports = SmallMol;
