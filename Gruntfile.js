@@ -23,12 +23,15 @@ module.exports = taskManager = function(grunt) {
         src: ['src/controller/Init.js'],
         dest: 'build/<%= config.bower.name %>-<%= config.bower.version %>.js',
         options: {
-          bundleOptions: {
+          browserifyOptions: {
             standalone: 'xiNET',
             debug: true
           }
         }
       }
+    },
+    jshint: {
+      all: ['src/**/*.js']
     },
     uglify: {
       options: {

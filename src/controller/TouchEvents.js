@@ -11,7 +11,10 @@
 
 //listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
-xiNET.Controller.prototype.initTouchEvents = function() {
+
+var TouchEvents = {};
+
+TouchEvents.initTouchEvents = function() {
     //add listeners
     var self = this;
     //touchstart
@@ -62,7 +65,7 @@ xiNET.Controller.prototype.initTouchEvents = function() {
 /**
  * Handle touchstart event.
  */
-xiNET.Controller.prototype.touchStart = function(evt) {
+TouchEvents.touchStart = function(evt) {
     //prevent default, but allow propogation
     evt.preventDefault();
     //~ //evt.returnValue = false;
@@ -80,7 +83,7 @@ xiNET.Controller.prototype.touchStart = function(evt) {
 };
 
 // dragging/rotation/panning/selecting
-xiNET.Controller.prototype.touchMove = function(evt) {
+TouchEvents.touchMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     this.message(this.dragStart);
     if (this.initComplete) { // just being cautious
@@ -167,7 +170,7 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
 
 // this ends all dragging and rotating
-xiNET.Controller.prototype.touchEnd = function(evt) {
+TouchEvents.touchEnd = function(evt) {
 	this.preventDefaultsAndStopPropagation(evt);
 	//    var suspendID = this.svgElement.suspendRedraw(5000);
 	if (this.dragElement != null) { 
@@ -212,7 +215,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 /**
  * Handle gesture change event.
  */
-xiNET.Controller.prototype.gestureChange = function(evt) {
+TouchEvents.gestureChange = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     var delta = evt.scale;
     //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
@@ -233,7 +236,7 @@ xiNET.Controller.prototype.gestureChange = function(evt) {
 };
 
 //gets mouse position
-xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
+TouchEvents.getTouchEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
 //    var rect = this.container.getBoundingClientRect();
 //   p.x = evt.clientX - rect.left;
@@ -254,3 +257,5 @@ xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
   //~ this.message(JSON.stringify(help, null, '\t'));//this.dragStart);
    return p;
 };
+
+module.exports = TouchEvents;

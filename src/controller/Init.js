@@ -18,7 +18,9 @@ var ReadMIJSON = require('./ReadMIJSON');
 var Link = require('../model/link/Link');
 var Layout = require('./Layout');
 var Config = require('./Config');
-// var MouseEvents = require('./MouseEvents');
+var MouseEvents = require('./MouseEvents');
+var ToolTips = require('./ToolTips');
+var TouchEvents = require('./TouchEvents');
 
 var xiNET = {}; //create xiNET's javascript namespace
 
@@ -33,6 +35,7 @@ xiNET.highlightColour = new RGBColor("#ffff99");//"#fdc086");//"yellow");
 xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
 
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
+
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
@@ -197,28 +200,38 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 // Link to prototype functions that exist in other files.
 // Eventually the files will accept this controller as an argument
 
-// From Refresh.js
+// Copy functions from Refresh.js to our prototype:
 xiNET.Controller.prototype.checkLinks = Refresh.checkLinks;
 xiNET.Controller.prototype.scale = Refresh.scale;
 
-// From ReadMYJSON
-// xiNET.Controller.prototype.readMIJSON = function(value) {ReadMIJSON.readMIJSON(value, this);}
+// Copy functions from ReadMIJSON.js to our prototype:
 xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
 
 xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
 xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
 xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
 
-// From Layout.js
+// Copy functions from Layout.js to our prototype:
 xiNET.Controller.prototype.autoLayout = Layout;
 
-// From MouseEvents
-//static var's signifying Controller's status
-xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
-xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xiNET.Controller.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+// Copy functions from ToolTips.js to our prototype:
+xiNET.Controller.prototype.showTooltip = ToolTips.showTooltip
+xiNET.Controller.prototype.setTooltip = ToolTips.setTooltip
+xiNET.Controller.prototype.hideTooltip = ToolTips.hideTooltip
+
+// Copy functions from TouchEvents.js to our prototype:
+for (var property in TouchEvents) {
+    if (TouchEvents.hasOwnProperty(property)) {
+        xiNET.Controller.prototype[property] = TouchEvents[property];
+    }
+}
+
+// Copy functions from MouseEvents.js to our prototype:
+for (var property in MouseEvents) {
+    if (MouseEvents.hasOwnProperty(property)) {
+        xiNET.Controller.prototype[property] = MouseEvents[property];
+    }
+}
 
 /**
  * Sets the current transform matrix of an element. JOSH TODO
@@ -332,10 +345,10 @@ xiNET.Controller.prototype.init = function(width, height) {
 //    this.message('#interactors: ' + this.interactors.values().length +
 //            '\n# links: ' + this.links.values().length);
 
-    // this.initMouseEvents();
-    if (typeof this.initTouchEvents === 'function'){
-		this.initTouchEvents();
-	}
+    this.initMouseEvents();
+ //    if (typeof this.initTouchEvents === 'function'){
+	// 	this.initTouchEvents();
+	// }
 }
 
 xiNET.Controller.prototype.parkAll = function() {
