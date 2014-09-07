@@ -69,7 +69,7 @@ var mouseDown = function(evt) {
 
     var p = this.getEventPoint(evt);// seems to be correct, see below
     console.log("dragSTART");
-    conole.log("this.dragstart", this.mouseToSVG(p.x, p.y));
+    console.log("this.dragstart", this.mouseToSVG(p.x, p.y));
     this.dragStart = this.mouseToSVG(p.x, p.y);
 
     var rightClick; //which button has just been raised
@@ -173,7 +173,7 @@ var mouseMove = function(evt) {
 //        this.updateMarquee(this.marquee, c);
 //    }
         else if (this.state === MouseEventCodes.PANNING) {
-            xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+            setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
             this.showTooltip(p);
@@ -385,10 +385,10 @@ var preventDefaultsAndStopPropagation = function(evt) {
 /**
  * Sets the current transform matrix of an element.
  */
-// var setCTM = function(element, matrix) {
-//     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-//     element.setAttribute("transform", s);
-// };
+ var setCTM = function(element, matrix) {
+     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+     element.setAttribute("transform", s);
+ };
 
 module.exports = {
     initMouseEvents: initMouseEvents,
@@ -400,7 +400,7 @@ module.exports = {
     clearSelection: clearSelection,
     getEventPoint: getEventPoint,
     preventDefaultsAndStopPropagation: preventDefaultsAndStopPropagation,
-    // setCTM: setCTM,
+    setCTM: setCTM,
     getScrollTop: getScrollTop,
     sortByNumber: sortByNumber,
     mouseToSVG: mouseToSVG

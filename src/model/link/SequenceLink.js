@@ -11,17 +11,23 @@ var SequenceDatum = require('./SequenceDatum');
 var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
-function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
+function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
-    this.interactorLink = interactorLink;
     this.evidences = d3.map();
-    this.intra = false;
-    if (typeof this.interactorLink !== 'undefined') {
-        if (this.interactorLink.fromProtein === this.interactorLink.toProtein) {
-            this.intra = true;
-        }
-    }
+    //~ this.intra = false;
+    //~ if (typeof this.interactorLink !== 'undefined') {
+        //~ if (this.interactorLink.fromProtein === this.interactorLink.toProtein) {
+            //~ this.intra = true;
+        //~ }
+    //~ }
+    
+    //TEMP
+    this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
+	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
+	//~ this.fromInteractor.addLink(this);
+	//~ this.toInteractor.addLink(this);
+	this.interactors = [this.fromInteractor, this.toInteractor];
 
     this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;
@@ -33,42 +39,19 @@ function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController)
     for (i = 0; i < seqDatumCount; i++) {
         this.toSequenceData.push(new SequenceDatum(toSeqData[i]));
     }
-    this.ambig = false;
+    //~ this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.dashed = false;
+    //~ this.dashed = false;
 }
 
 SequenceLink.prototype.addEvidence = function(interaction) {
 	if (this.evidences.has(interaction.id) === false) {
 		this.evidences.set(interaction.id, interaction);
-		//~ var from = this.interactorLink.fromInteractor, to = this.interactorLink.toInteractor;
-		//~ if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
-			//~ from = interaction.source;
-			//~ to = interaction.target;
-		//~ } else {
-			//~ from = interaction.target
-			//~ to = interaction.source;
-		//~ }
-
-		//~ if (typeof from.bindingSites !== 'undefined') {
-			//~ this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
-			//~ //    fromBindingSite = from.bindingSites[0];
-		//~ }
-		//~ if (typeof to.bindingSites !== 'undefined') {
-			//~ this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
-			//~ //    toBindingSite = to.bindingSites[0];
-		//~ }
-
-	//    if (typeof from.pointMutations !== 'undefined') {
-	//        this.fromInteractor.addFeature(from.pointMutations[0]);
-	//    }
-	//    if (typeof to.pointMutations !== 'undefined') {
-	//        this.toInteractor.addFeature(to.pointMutations[0]);
-	//    }
 	}
 };
+
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
         this.glyph = document.createElementNS(Config.svgns, "path");
@@ -138,19 +121,12 @@ SequenceLink.prototype.initSVG = function() {
         };
     }
 };
-//SequenceLink.prototype.getFromProtein = function() {
-//    return this.interactorLink.fromInteractor;
-//};
-//
-//SequenceLink.prototype.getToProtein = function() {
-//    return this.interactorLink.toInteractor;
-//};
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false; //TODO: tEMP HACK
-    }
+    //~ if (typeof andAlternatives === 'undefined') {
+        //~ andAlternatives = false; //TODO: tEMP HACK
+    //~ }
     if (this.shown) {
         if (show) {
             this.highlightGlyph.setAttribute("stroke-opacity", "1");
@@ -158,26 +134,27 @@ SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
             this.highlightGlyph.setAttribute("stroke-opacity", "0");
         }
     }
-    if (andAlternatives && this.ambig) {
-//TODO: we want to highlight smallest possible set of alternatives?
-        var mc = this.matches.length;
-        for (var m = 0; m < mc; m++) {
-            var match = this.matches[m];
-            if (match.isAmbig()) {
-                var rc = match.sequenceLinks.length;
-                for (var rl = 0; rl < rc; rl++) {
-                    var resLink = match.sequenceLinks[rl];
-                    resLink.showHighlight(show, false);
-                    resLink.interactorLink.showHighlight(show, false);
-                }
-            }
-        }
-    }
+    //~ if (andAlternatives && this.ambig) {
+//~ //TODO: we want to highlight smallest possible set of alternatives?
+        //~ var mc = this.matches.length;
+        //~ for (var m = 0; m < mc; m++) {
+            //~ var match = this.matches[m];
+            //~ if (match.isAmbig()) {
+                //~ var rc = match.sequenceLinks.length;
+                //~ for (var rl = 0; rl < rc; rl++) {
+                    //~ var resLink = match.sequenceLinks[rl];
+                    //~ resLink.showHighlight(show, false);
+                    //~ resLink.interactorLink.showHighlight(show, false);
+                //~ }
+            //~ }
+        //~ }
+    //~ }
 };
+
 //used when link clicked
 SequenceLink.prototype.showID = function() {
-    var fromInt = this.interactorLink.fromInteractor;
-    var toInt = this.interactorLink.toInteractor;
+    var fromInt = this.fromInteractor;
+    var toInt = this.toInteractor;
     var linkInfo = "<p><strong>" + fromInt.name + " (" + fromInt.accession
             + ") to" + ' ' + toInt.name + " (" + toInt.accession
             + ")</strong></p><p><strong>" + this.id + "</strong></p>";
@@ -187,7 +164,7 @@ SequenceLink.prototype.showID = function() {
 
 //used when filter changed
 SequenceLink.prototype.check = function(filter) {
-    //~ var filteredEvids = this.getFilteredEvidences();
+ 	   //~ var filteredEvids = this.getFilteredEvidences();
     //~ var evidCount = filteredEvids.length;
     //~ if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
         //~ this.hide();
@@ -259,9 +236,11 @@ SequenceLink.prototype.getFilteredEvidences = function() {
     }
     return filteredEvids;
 };
+
 SequenceLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
+  			  if (this.ctrl.initComplete) {
         if (!this.shown) {
+
             this.shown = true;
             if (typeof this.line === 'undefined') {
                 this.initSVG();
@@ -276,6 +255,7 @@ SequenceLink.prototype.show = function() {
         }
     }
 };
+
 SequenceLink.prototype.hide = function() {
     if (this.ctrl.initComplete) {
         if (this.shown) {
@@ -286,9 +266,10 @@ SequenceLink.prototype.hide = function() {
         }
     }
 };
+
 // update the links(polygons/lines) to fit to the protein
 SequenceLink.prototype.setLinkCoordinates = function(interactor) {
-	        function isNumber(thing) {
+	    function isNumber(thing) {
             return (!isNaN(parseFloat(thing)) && isFinite(thing));
         }
 
@@ -342,8 +323,8 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
     if (this.shown) { //don't waste time changing DOM if link is not visible
-        var fromInteractor = this.interactorLink.fromInteractor;
-        var toInteractor = this.interactorLink.toInteractor;
+        var fromInteractor = this.fromInteractor;
+        var toInteractor = this.toInteractor;
         //calculate mid points of from and to sequence data
         var fMid, tMid;
         if (fromInteractor.form === 0) {
@@ -379,12 +360,12 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out < 180) {
             fyOffset = -10;
         }
-        var fRotRad = (this.interactorLink.fromInteractor.rotation / 360) * Math.PI * 2;
+        var fRotRad = (this.fromInteractor.rotation / 360) * Math.PI * 2;
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
 //now for 'to' interactor
-        out = (abmpDeg - this.interactorLink.toInteractor.rotation);
+        out = (abmpDeg - this.toInteractor.rotation);
         if (out < 0) {
             out += 360;
         }

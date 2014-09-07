@@ -5,17 +5,19 @@
 //      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
 //      author: Colin Combe, Josh Heimbach
+//
+//		NaryLink.js
+//		graphically represents n-ary interaction
 
 "use strict";
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Link = require('./Link');
-var BinaryLink = require('./BinaryLink');
-var UnaryLink = require('./UnaryLink');
+var SequenceLink = require('./SequenceLink');
+//~ var BinaryLink = require('./BinaryLink');
+//~ var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
-// NaryLink.js
-// graphically represents an n-ary interaction
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 
 NaryLink.prototype = new Link();
@@ -23,10 +25,9 @@ NaryLink.prototype = new Link();
 function NaryLink(id, xlvController) {
     this.id = id;
     this.evidences = d3.map();
-    this.interactors = null;// will be new Array();//need order for binary links so use array
+    this.interactors = new Array();
     this.subLinks = d3.map();
     this.ctrl = xlvController;
-
     //this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
@@ -38,62 +39,53 @@ function NaryLink(id, xlvController) {
 
 NaryLink.prototype.addEvidence = function(interaction) {
     if (this.evidences.has(interaction.id) === false) {
-        this.evidences.set(interaction.id, interaction);
-    
-        //~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
+        this.evidences.set(interaction.id, interaction);   
+		//TODO
+        //~ if (this.evidences.values().length > xiNET.Link.maxNoEvidences) {//TODO: update d3 lib
             //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
         //~ }
-            
-        if (this.interactors === null){
-            this.initInteractors(interaction);
-        }    
-            
-        for (var pi = 0; pi < interaction.participants.length; pi++){
-            var sourceID = interaction.participants[pi].interactorRef;
-            var sourceInteractor = this.ctrl.interactors.get(sourceID);
-                    
-            var bindingSites = interaction.participants[pi].bindingSites;
-            if (bindingSites){
-                var bsCount = bindingSites.length;
-                for (var bsi = 0; bsi < bsCount; bsi++){
-
-                    var bindingSite = bindingSites[bsi];
-                    if (bindingSite.linkedFeatures){
-                        for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){                                 
-                            var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
-                            var targetInteractor = this.ctrl.interactors.get(target.interactor);
-                            var linkID, fromInteractor, toInteractor;   
-                            // these links are undirected and should have same ID regardless of which way round 
-                            // source and target are
-                            if (sourceID - 0 < target.interactor - 0) {
-                                linkID = sourceID + '-' + target.interactor;
-                                fromInteractor = sourceInteractor;
-                                toInteractor = targetInteractor; 
-                            } else {
-                                linkID = target.interactor + '-' + sourceID;
-                                fromInteractor = targetInteractor;
-                                toInteractor = sourceInteractor; 
-                            }
-                            
-                        }
-                                            
-                        var link = this.ctrl.links.get(linkID);
-                        if (typeof link === 'undefined') {
-                            if (fromInteractor === toInteractor){
-                                link = new UnaryLink(linkID, this.ctrl);
-                                fromInteractor.addLink(link);
-                            }else {
-                                link = new BinaryLink(linkID, this.ctrl, fromInteractor,toInteractor);
-                                fromInteractor.addLink(link);
-                                toInteractor.addLink(link);
-                            }
-                            this.ctrl.links.set(linkID, link);
-                        }
-                        this.subLinks.set(linkID, link);
-                        link.addEvidence(interaction);
-                    }
-                }
-            }
+        var participants = interaction.participants;
+        var participantCount = participants.length    
+        for (var pi = 0; pi < participantCount; pi++){
+			var participant = participants[pi];
+			var features =participant.experimentalFeatures;// = new Array(0);
+			//~ if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
+			//~ if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
+			var fCount = features.length;
+			for (var f = 0; f < fCount; f++){
+				var feature = features[f];
+				var fromSequenceData = feature.sequenceData;
+				
+				var linkedFeatureIDs = feature.linkedFeatures;
+				
+				var toSequenceData = new Array();
+				var linkedFeatureCount = linkedFeatureIDs.length;
+				for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+					var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
+					toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
+				}
+				//~ fromSequenceData = d3.set(fromSequenceData).values();
+				//~ fromSequenceData.sort();
+				//~ toSequenceData = d3.set(toSequenceData).values();
+				//~ toSequenceData.sort();
+				  
+				var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
+				var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
+				var seqLinkId;
+				if (start < end){
+					seqLinkId  =  start + '><' + end;
+				} else {
+					seqLinkId = end + '><' + start;
+				}
+				
+				var sequenceLink = this.subLinks.get(seqLinkId);
+				if (typeof sequenceLink === 'undefined') {
+					 //~ console.log("*" + seqLinkId);
+				sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
+					this.subLinks.set(seqLinkId, sequenceLink);
+				}
+				sequenceLink.addEvidence(interaction);					
+			}	
         }           
     }
 };
@@ -210,7 +202,6 @@ NaryLink.prototype.check = function() {
 
             //sequence links will have been hidden previously
             this.show();
-            return true;
         //~ }
         //~ else {
             //~ this.hide();
@@ -227,6 +218,16 @@ NaryLink.prototype.check = function() {
         //~ }
         //~ return showedResResLink;
     //~ }
+    
+    var subLinks = this.subLinks.values();
+    var slCount = subLinks.length ;
+    console.log("here");
+	for (var sli = 0; sli < slCount; sli++){
+		subLinks[sli].check();
+	}
+           
+    return true;
+    
 };
 
 NaryLink.prototype.show = function() {

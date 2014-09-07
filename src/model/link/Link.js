@@ -16,7 +16,9 @@
 
 var Config = require('../../controller/Config');
 
+
 var Link = function (){};
+//Link.maxNoEvidences = 0;
 
 //id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
 // Link.getIdFromInteraction = function(interaction){
@@ -43,28 +45,29 @@ var Link = function (){};
 // 	return linkId;	
 // }
 
-Link.prototype.initInteractors = function(interaction){
-    this.interactors = new Array();//order important for binary links
-    //sort participants by interactorRef
-    var participants = interaction.participants.sort(
-		function comparator(a, b) {
-			return a.interactorRef - b.interactorRef;
-		}
-	);
-    var participantCount = participants.length;
-    var pIDs = d3.set();//used to eliminate duplicates
-    for (var pi = 0; pi < participantCount; pi++) {
-		var pID = participants[pi].interactorRef;
-		if (pIDs.has(pID) === false){
-			pIDs.add(pID);
-			var interactor = this.ctrl.interactors.get(pID);
-			if (typeof interactor === 'undefined') {
-				alert("Fail - no interactor with id " + pID);
-			}
-			this.interactors.push(interactor);
-		}
-	}
-}
+//~ Link.prototype.initInteractors = function(interaction){
+    //~ this.interactors = new Array();//order important for binary links
+    //~ //sort participants by interactorRef
+    //~ var participants = interaction.participants.sort(
+		//~ function comparator(a, b) {
+			//~ return a.interactorRef - b.interactorRef;
+		//~ }
+	//~ );
+    //~ var participantCount = participants.length;
+    //~ var pIDs = d3.set();//used to eliminate duplicates
+    //~ for (var pi = 0; pi < participantCount; pi++) {
+		//~ var pID = participants[pi].interactorRef;
+		//~ if (pIDs.has(pID) === false){
+			//~ pIDs.add(pID);
+			//~ var interactor = this.ctrl.interactors.get(pID);
+			//~ if (typeof interactor === 'undefined') {
+				//~ alert("Fail - no interactor with id " + pID);
+			//~ }
+			//~ this.interactors.push(interactor);
+		//~ }
+	//~ }
+//~ }
+
 Link.prototype.highlightInteractors = function(show){	
 	var interactors = this.interactors;
 	for (var i = 0; i < interactors.length; i++) {
@@ -133,10 +136,10 @@ Link.prototype.showData = function() {
     if (document.getElementById('jsonHeading')) {	
 		document.getElementById('jsonHeading').innerHTML = this.id;
 	} 
-	if ($("#json")) { // json tree depends on jquery
-		$("#json").JSONView(this.evidences.values(), {collapsed: false, nl2br: true});
-		$('#json').JSONView('toggle', 2);
-	} 
+	//~ if ($("#json")) { // json tree depends on jquery
+		//~ $("#json").JSONView(this.evidences.values(), {collapsed: false, nl2br: true});
+		//~ $('#json').JSONView('toggle', 2);
+	//~ } 
 	//~ else {    
 		//~ var linkInfo = this.id;
 		//~ // "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession

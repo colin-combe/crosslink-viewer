@@ -16,7 +16,7 @@
  *              "86..123-456..464" = segment with fuzzy boundaries
  *              "86..123-456" = segment with one fuzzy boundary
  *              "<8-123" = uncertain start between 1 and 8 to 123
- *              "123->256" = range between 256 and interactor.sequence.length
+ *              "123->256" = runcertain end between 256 and interactor.sequence.length
  */
 
 function SequenceDatum(sequenceDatumString) {

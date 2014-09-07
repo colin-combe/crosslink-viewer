@@ -13,8 +13,8 @@
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Annotation = require('./Annotations');
 var Config = require('../../controller/Config');
-var $ = require('jquery-browserify');
-require('jsonview')($);
+//~ var $ = require('jquery-browserify');
+//~ require('jsonview')($);
 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
@@ -84,10 +84,10 @@ Interactor.prototype.showData = function(evt) {
     if (document.getElementById('jsonHeading')) {	
 		document.getElementById('jsonHeading').innerHTML = this.json.label;
 	} 
-	if ($ && $("#json")) { // json tree depends on jquery
-		$("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
-		$('#json').JSONView('toggle', 2);
-	}	
+	//~ if ($ && $("#json")) { // json tree depends on jquery
+		//~ $("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
+		//~ $('#json').JSONView('toggle', 2);
+	//~ }	
 }
 
 Interactor.prototype.mouseOver = function(evt) {
@@ -141,9 +141,6 @@ Interactor.prototype.getBlobRadius = function() {
 Interactor.prototype.addLink = function(link) {
     if (!this.links.has(link.id)) {
         this.links.set(link.id, link);
-    }
-    if (link.arity == 1) {
-        this.internalLink = link;
     }
 };
 
@@ -300,20 +297,21 @@ Interactor.prototype.setAllLineCoordinates = function() {
     var c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        if (link.fromInteractor){//TEMP
-			if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-				link.setLinkCoordinates(this);
-			}
-			else {
-				var resLinks = link.sequenceLinks.values();
+        link.setLinkCoordinates(this);
+        //~ if (link.fromInteractor){//TEMP
+			//~ if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
+				//~ link.setLinkCoordinates(this);
+			//~ }
+			//~ else {
+				var resLinks = link.subLinks.values();
 				var resLinkCount = resLinks.length;
 				for (var rl = 0; rl < resLinkCount; rl++) {
 					resLinks[rl].setLinkCoordinates(this);
 				}
-			}
-		} else {
-			link.setLinkCoordinates(this);
-		}
+			//~ }
+		//~ } else {
+			//~ link.setLinkCoordinates(this);
+		//~ }
     }
 };
 //~ 

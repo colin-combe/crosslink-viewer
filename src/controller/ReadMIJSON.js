@@ -10,8 +10,8 @@
 
 var SmallMol = require('../model/interactor/SmallMol');
 var Polymer = require('../model/interactor/Polymer');
-var NaryLink = require('../model/link/NaryLink');
 var Complex = require('../model/interactor/Complex');
+var NaryLink = require('../model/link/NaryLink');
 //~ var BinaryLink = require('../model/link/BinaryLink');
 //~ var UnaryLink = require('../model/link/UnaryLink');
 
@@ -76,16 +76,39 @@ var readMIJSON = function(miJson, controller) {
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
         Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 4000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
-        var interactors = self.interactors.values();
-        var proteinCount = interactors.length;
+        
         self.features = d3.map();       
-        self.complexes = d3.map();       
+        self.complexes = d3.map();  
+        
+        //add features from interactions   
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
-                self.addFeatures(interaction);
-            }
+				var participantCount = interaction.participants.length;
+				for (var pi = 0; pi < participantCount; pi++) {
+					var participant = interaction.participants[pi];
+					var features = new Array(0);
+					if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
+					if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
+					var fCount = features.length;
+					for (var f = 0; f < fCount; f++){
+						var feature = features[f];
+						//~ var sequenceData = feature.sequenceData;
+						//~ var sdCount = sequenceData.length;
+						//~ for (var sd = 0; sd < sdCount; sd++){
+							//~ var interactor = self.interactors.get(sequenceData[sd].interactorRef);
+							//~ interactor.features.set(feature.id, feature);
+							//~ self.features.set(feature.id, 
+								//~ {interactor:interactor.id,
+								 //~ feature:feature});
+							self.features.set(feature.id, feature);
+							//~ interactor.addFeature(feature);	
+						}
+					}		
+				}	
+	        }
         }
+        
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
@@ -98,59 +121,45 @@ var readMIJSON = function(miJson, controller) {
             complexes[c].initInteractor();
             
         }
+        var interactors = self.interactors.values();
+        var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
             prot.setPositionalFeatures(prot.customAnnotations);
         }
         self.init();
         self.checkLinks();
-    }
+    
 };
 
 var addFeatures = function(interaction) {
-    var participantCount = interaction.participants.length;
-    var pIDs = d3.set();
-    for (var pi = 0; pi < participantCount; pi++) {
-		var participant = interaction.participants[pi];
-		var pID = participant.interactorRef;
-		var interactor = this.interactors.get(pID);
-		if (typeof interactor === 'undefined') {
-			//alert("Fail - no interactor with id " + pID);
-			//must be a complex
-			this.interactors.set(pID, new Complex(pID, this));
-			this.complexes.set(pID, new Complex(pID, this));
-			if (participant.bindingSites) {
-				var efCount = participant.bindingSites.length;
-				for (var ef = 0; ef < efCount; ef++){
-					var experimentalFeature = participant.bindingSites[ef];
-					interactor = this.interactors.get(experimentalFeature.sequenceData[0].interactorRef);
-					interactor.features.set(experimentalFeature.id, experimentalFeature);
-					this.features.set(experimentalFeature.id, 
-						{interactor:interactor.id,
-						 feature:experimentalFeature});
-					interactor.addFeature(experimentalFeature);	
-				}	
-			}		
-		}
-		if (participant.bindingSites) {
-			var efCount = participant.bindingSites.length;
-			for (var ef = 0; ef < efCount; ef++){
-				var experimentalFeature = participant.bindingSites[ef];
-				interactor.features.set(experimentalFeature.id, experimentalFeature);
-				this.features.set(experimentalFeature.id, 
-					{interactor:interactor.id,
-					 feature:experimentalFeature});
-				interactor.addFeature(experimentalFeature);	
-			}	
-		}		
-	}	
+
 };
 
 // Moved from Link.js
-//id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
+
 var getIdFromInteraction = function(interaction){
-    var linkId = "";
-    //sort participants by interactorRef
+
+    return linkId;  
+}
+
+var addInteraction = function(interaction) {
+    
+    if (typeof interaction.confidences !== 'undefined') {
+        var confidences = interaction.confidences;
+        var confCount = confidences.length;
+        for (var c = 0; c < confCount; c++){
+            var conf = confidences[c];
+            if (conf.type === 'intact-miscore'){
+                interaction.score = conf.value * 1.0;
+            }
+        }
+    }
+    
+    // link id is particpant interactorRefs, in ascending order, 
+    // with duplicates eliminated, seperated by dash
+	var linkId = "";
+    // sort participants by interactorRef
     var participants = interaction.participants.sort(
         function comparator(a, b) {
             return a.interactorRef - b.interactorRef;
@@ -168,72 +177,26 @@ var getIdFromInteraction = function(interaction){
             linkId += pID;
         }
     }
-    return linkId;  
-}
-
-var addInteraction = function(interaction) {
-
-    //~ if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
-        //~ alert('missing interaction identifier');
-        //~ console.error(JSON.stringify(interaction));
-    //~ }
     
-    if (typeof interaction.confidences !== 'undefined') {
-        var confidences = interaction.confidences;
-        var confCount = confidences.length;
-        for (var c = 0; c < confCount; c++){
-            var conf = confidences[c];
-            if (conf.type === 'intact-miscore'){
-                interaction.score = conf.value * 1.0;
-            }
-        }
-    }
-    
-	var linkId = getIdFromInteraction(interaction);
-	var link = this.links.get(linkId);
+    var link = this.links.get(linkId);
 	
-	var interactorIds = linkId.split('-');
 	
     if (typeof link === 'undefined') {
-		//~ var participants = interaction.participants;
-		//~ var participantCount = participants.length; //...no
-		var participantCount = interactorIds.length;
-		//~ if (participantCount === 1) {
-			//~ link = new UnaryLink(linkId, this);
-			//~ link.notSubLink = true;
-		//~ } else if (participantCount === 2) {
-			//~ var participants = interaction.participants.sort(
-			//~ function comparator(a, b) {
-				//~ return a.interactorRef - b.interactorRef;
-				//~ }
-			//~ );		
-			//~ link = new BinaryLink(linkId, this, 
-				//~ this.interactors.get(interactorIds[0]),
-				//~ this.interactors.get(interactorIds[1]));
-			//~ link.notSubLink = true;
-		//~ } else {
-			link = new NaryLink(linkId, this);
-		//~ }
-        this.links.set(linkId, link);
-		for (var pi = 0; pi < interaction.participants.length; pi++) {
-			var participant = interaction.participants[pi];
-			var interactor = this.interactors.get(participant.interactorRef);
+		var interactorIds = linkId.split('-');
+		var iCount = interactorIds.length;
+		
+		link = new NaryLink(linkId, this);
+		this.links.set(linkId, link);
+		
+		for (var i = 0; i < iCount; i++) {
+			var interactor = this.interactors.get(interactorIds[i]);
 			if (typeof interactor === 'undefined') {
-				//alert("Fail - no interactor with id " + pID);
-				//must be a complex
-				if (participant.bindingSites) {
-					var efCount = participant.bindingSites.length;
-					for (var ef = 0; ef < efCount; ef++){
-						var experimentalFeature = participant.bindingSites[ef];
-						interactor = this.interactors.get(experimentalFeature.sequenceData[0].interactorRef);
-						interactor.addLink(link);	
-					}	
-				}
-				//~ else {alert("Fail - complex without binding sites")}		
+				//must be a previously unencountered complex
+				interactor = new Complex(pID, this);
+				this.interactors.set(pID, interactor);
 			}
-			else {
-				interactor.addLink(link);
-			}
+			interactor.addLink(link);
+			link.interactors.push(interactor);
 		}
 	}
     //all other initialisation to do with links takes place within Links 
@@ -297,4 +260,4 @@ var toJSON = function() {
         //~ }
     //~ }
 
-module.exports = {readMIJSON: readMIJSON, addFeatures: addFeatures, addInteraction: addInteraction, toJSON: toJSON};
+module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction, toJSON: toJSON};
