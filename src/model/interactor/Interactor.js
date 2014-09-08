@@ -25,12 +25,12 @@ Interactor.labelY = -5; //label Y offset, better if calc'd half height of label 
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 //~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
 
-function Interactor(id, xlvController, json) {
-    this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.ctrl = xlvController;
-    this.json = json;  
-    this.features = d3.map();
-}
+//~ function Interactor(id, xlvController, json) {
+    //~ this.id = id; // id may not be accession (multiple Segments with same accesssion)
+    //~ this.ctrl = xlvController;
+    //~ this.json = json;  
+    //~ this.features = d3.map();
+//~ }
 
 Interactor.prototype.toJSON = function() {
     return {
@@ -298,18 +298,19 @@ Interactor.prototype.setAllLineCoordinates = function() {
     for (var l = 0; l < c; l++) {
         var link = links[l];
         link.setLinkCoordinates(this);
-        //~ if (link.fromInteractor){//TEMP
-			//~ if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-				//~ link.setLinkCoordinates(this);
-			//~ }
-			//~ else {
+        if (link.fromInteractor){//TEMP
+			if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
+				link.setLinkCoordinates(this);
+			}
+			else {
 				var resLinks = link.subLinks.values();
 				var resLinkCount = resLinks.length;
 				for (var rl = 0; rl < resLinkCount; rl++) {
 					resLinks[rl].setLinkCoordinates(this);
 				}
-			//~ }
-		//~ } else {
+			}
+		} 
+		//~ else {
 			//~ link.setLinkCoordinates(this);
 		//~ }
     }

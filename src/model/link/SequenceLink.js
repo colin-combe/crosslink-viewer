@@ -8,6 +8,8 @@
 
 var Link = require('./Link');
 var SequenceDatum = require('./SequenceDatum');
+var BinaryLink = require('./BinaryLink');
+var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
@@ -22,12 +24,44 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
         //~ }
     //~ }
     
+    //TODO - not delaing with non-contiguous features
     //TEMP
     this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
 	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
+	this.interactors = [this.fromInteractor, this.toInteractor];
 	//~ this.fromInteractor.addLink(this);
 	//~ this.toInteractor.addLink(this);
-	this.interactors = [this.fromInteractor, this.toInteractor];
+	var binaryLinkID, fi, ti;   
+	// these links are undirected and should have same ID regardless of which way round 
+	// source and target are
+	if (this.fromInteractor.id  < this.toInteractor.id) {
+		binaryLinkID = this.fromInteractor.id + '-' + this.toInteractor.id;
+		fi = this.fromInteractor;
+		ti = this.toInteractor;
+	} else {
+		binaryLinkID = "-" + this.toInteractor.id + '-' + this.fromInteractor.id;
+		fi = this.toInteractor;
+		ti = this.fromInteractor;
+	}						
+	var link = this.ctrl.links.get(binaryLinkID);
+	if (typeof link === 'undefined') {
+		if (this.fromInteractor === this.toInteractor){
+			//~ link = new UnaryLink(binaryLinkID, this.ctrl);
+			//~ this.fromInteractor.addLink(link);
+		}else {
+			link = new BinaryLink(binaryLinkID, this.ctrl, fi, ti);
+			link.interactors = this.interactors
+			this.fromInteractor.binaryLinks.set(linkID, link);
+			this.toInteractor.binaryLinks.set(linkID, link);
+			//~ this.ctrl.links.set(binaryLinkID, link);
+		}
+	}
+	//~ this.subLinks.set(linkID, link);
+	//~ link.addEvidence(interaction);
+	
+	
+	
+	
 
     this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;

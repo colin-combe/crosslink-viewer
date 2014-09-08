@@ -4,7 +4,7 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		InteractorSet.js		
 //
 //		authors: Colin Combe
 
@@ -13,9 +13,9 @@
 var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+InteractorSet.prototype = new Interactor();
 
-function SmallMol(id, xlvController, json) {
+function InteractorSet(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
@@ -25,14 +25,14 @@ function SmallMol(id, xlvController, json) {
     this.selfLink = null;
 }
 
-SmallMol.prototype.toJSON = function() {
+InteractorSet.prototype.toJSON = function() {
     return {
         interactor: this.json
 		//~ id: this.id
     };
 };
 
-SmallMol.prototype.initInteractor = function(sequence, name, description, size)
+InteractorSet.prototype.initInteractor = function(sequence, name, description, size)
 {
     this.accession = this.json.identifier.id;
     this.name = name;
@@ -102,7 +102,7 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
-    this.labelSVG.setAttribute("fill", "black")
+    this.labelSVG.setAttribute("fill", "red")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
@@ -204,11 +204,11 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.isSelected = false;
 };
 
-SmallMol.prototype.getBlobRadius = function() {
+InteractorSet.prototype.getBlobRadius = function() {
     return 10;
 };
 
-SmallMol.prototype.setParked = function(bool, svgP) {
+InteractorSet.prototype.setParked = function(bool, svgP) {
     if (this.busy !== true) {
 		if (this.isParked === true && bool == false) {
 			this.isParked = false;
@@ -228,11 +228,11 @@ SmallMol.prototype.setParked = function(bool, svgP) {
 	}
 };
 
-SmallMol.prototype.setForm = function(form, svgP) {
+InteractorSet.prototype.setForm = function(form, svgP) {
 };
 
 
-SmallMol.prototype.toParked = function(svgP) {   
+InteractorSet.prototype.toParked = function(svgP) {   
     var c = this.links.values().length;
     for (var l = 0; l < c; l++) {
         var link = this.links.values()[l];
@@ -251,10 +251,10 @@ SmallMol.prototype.toParked = function(svgP) {
 		d3.select(this.outline).transition()
 			.attr("stroke-opacity", 0)
 			.attr("fill", "#EEEEEE")
-			.duration(SmallMol.transitionTime);	
+			.duration(InteractorSet.transitionTime);	
 		d3.select(this.circDomains).transition().attr("opacity", 0)
 			.attr("transform", "scale(1, 1)")
-			.duration(SmallMol.transitionTime);	
+			.duration(InteractorSet.transitionTime);	
 };
 
-module.exports = SmallMol;
+module.exports = InteractorSet;

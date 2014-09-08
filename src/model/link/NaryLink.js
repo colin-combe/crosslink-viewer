@@ -26,13 +26,12 @@ function NaryLink(id, xlvController) {
     this.id = id;
     this.evidences = d3.map();
     this.interactors = new Array();
-    this.subLinks = d3.map();
+    this.binaryLinks = d3.map();
+    this.unaryLinks = d3.map();
     this.ctrl = xlvController;
-    //this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    //this.thickLineShown = false;
     //layout stuff
     this.hidden = false;
 }
@@ -48,43 +47,39 @@ NaryLink.prototype.addEvidence = function(interaction) {
         var participantCount = participants.length    
         for (var pi = 0; pi < participantCount; pi++){
 			var participant = participants[pi];
-			var features =participant.experimentalFeatures;// = new Array(0);
+			var features = (participant.experimentalFeatures)? participant.experimentalFeatures : new Array(0); // ur here 
 			//~ if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
 			//~ if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
 			var fCount = features.length;
 			for (var f = 0; f < fCount; f++){
 				var feature = features[f];
 				var fromSequenceData = feature.sequenceData;
-				
-				var linkedFeatureIDs = feature.linkedFeatures;
-				
-				var toSequenceData = new Array();
-				var linkedFeatureCount = linkedFeatureIDs.length;
-				for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
-					var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
-					toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
-				}
-				//~ fromSequenceData = d3.set(fromSequenceData).values();
-				//~ fromSequenceData.sort();
-				//~ toSequenceData = d3.set(toSequenceData).values();
-				//~ toSequenceData.sort();
-				  
-				var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
-				var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
-				var seqLinkId;
-				if (start < end){
-					seqLinkId  =  start + '><' + end;
-				} else {
-					seqLinkId = end + '><' + start;
-				}
-				
-				var sequenceLink = this.subLinks.get(seqLinkId);
-				if (typeof sequenceLink === 'undefined') {
-					 //~ console.log("*" + seqLinkId);
-				sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
-					this.subLinks.set(seqLinkId, sequenceLink);
-				}
-				sequenceLink.addEvidence(interaction);					
+				if (feature.linkedFeatures) {
+					var linkedFeatureIDs = feature.linkedFeatures;
+					
+					var toSequenceData = new Array();
+					var linkedFeatureCount = linkedFeatureIDs.length;
+					for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+						var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
+						toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
+					}
+					//TODO: not dealing with non-contigouous features
+					var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
+					var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
+					var seqLinkId;
+					if (start < end){
+						seqLinkId  =  start + '><' + end;
+					} else {
+						seqLinkId = end + '><' + start;
+					}
+					
+					var sequenceLink = this.subLinks.get(seqLinkId);
+					if (typeof sequenceLink === 'undefined') {
+						sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
+						this.subLinks.set(seqLinkId, sequenceLink);
+					}
+					sequenceLink.addEvidence(interaction);		
+				}			
 			}	
         }           
     }
@@ -128,106 +123,14 @@ NaryLink.prototype.showHighlight = function(show) {
 
 
 NaryLink.prototype.check = function() {
-
-    
-    //~ var seqLinks = this.sequenceLinks.values();
-    //~ var seqLinkCount = seqLinks.length;
-    // if either end of interaction is 'parked', i.e. greyed out,
-    // or self-interactors are hidden and this is self interactor
-    // or this specific link is hidden
-    //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.ctrl.intraHidden && this.intra)
-            //~ || this.hidden) {
-        //~ //if both ends are blobs then hide interactor-level link
-        //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-            //~ this.hide();
-        //~ }
-        //~ //else loop through linked features hiding them
-        //~ else {
-            //~ for (var i = 0; i < seqLinkCount; i++) {
-                //~ seqLinks[i].hide();
-            //~ }
-        //~ }
-        //~ return false;
-    //~ }
-    //~ else // we need to check which interaction evidences match the filter criteria
-    //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-        //~ this.ambig = true;
-        //~ var filteredEvids = this.getFilteredEvidences();
-        //~ var evidCount = filteredEvids.length;
-        //~ for (var i = 0; i < evidCount; i++) {
-            //~ var evid = filteredEvids[i];
-            //~ if (typeof evid.expansion === 'undefined') {
-                //~ this.ambig = false;
-            //~ }
-        //~ }
-        //~ if (evidCount > 0) {
-            //~ //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-            //~ //thickLine
-            //~ if (evidCount > 1) {
-                //~ this.thickLineShown = true
-                //~ this.w = evidCount * (45 / NaryLink.maxNoEvidences);
-            //~ }
-            //~ else {
-//~ //                this.thickLineShown = false;//hack
-                //~ this.w = evidCount * (45 / NaryLink.maxNoEvidences);//hack
-            //~ }
-            //~ //ambig?
-            //~ this.dashedLine(this.ambig);
-
-            //sequence links will have been hidden previously
-            this.show();
-        //~ }
-        //~ else {
-            //~ this.hide();
-            //~ return false;
-        //~ }
-    //~ }
-    //~ else {//at least one end was in stick form
-        //~ this.hide();
-        //~ var showedResResLink = false
-        //~ for (var rl = 0; rl < seqLinkCount; rl++) {
-            //~ if (seqLinks[rl].check() === true) {
-                //~ showedResResLink = true;
-            //~ }
-        //~ }
-        //~ return showedResResLink;
-    //~ }
-    
+    this.show();
     var subLinks = this.subLinks.values();
     var slCount = subLinks.length ;
     console.log("here");
 	for (var sli = 0; sli < slCount; sli++){
 		subLinks[sli].check();
-	}
-           
+	}       
     return true;
-    
 };
 
 NaryLink.prototype.show = function() {

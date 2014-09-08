@@ -25,7 +25,11 @@ function Polymer(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
-    this.features = d3.map();  
+    //~ this.features = d3.map();  
+    //links
+    this.naryLinks = d3.map();
+    this.binaryLinks = d3.map();
+    this.selfLink = null;
 }
 
 Polymer.prototype.toJSON = function() {
@@ -79,9 +83,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     if (Polymer.MAXSIZE < this.size) {
         Polymer.MAXSIZE = this.size;
     }
-    //links
-    this.links = d3.map();
-    this.internalLink = null;
+
     // layout info
     this.x = null;
     this.y = null;

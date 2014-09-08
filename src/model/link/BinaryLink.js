@@ -15,7 +15,7 @@ var SequenceLink = require('./SequenceLink');
 
 BinaryLink.prototype = new Link();
 //used to calculate width of thivh background line
-BinaryLink.maxNoEvidences = 0;
+//~ BinaryLink.maxNoEvidences = 0;
 function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = d3.map();

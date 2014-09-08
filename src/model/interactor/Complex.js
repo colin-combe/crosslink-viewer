@@ -20,8 +20,10 @@ function Complex(id, xlvController) {
     this.ctrl = xlvController;
     //~ this.json = json;  
     //~ this.features = d3.map();  
-	//links
-    this.links = d3.map();
+    //links
+    this.naryLinks = d3.map();
+    this.binaryLinks = d3.map();
+    this.selfLink = null;
     this.form = 0;
 }
 

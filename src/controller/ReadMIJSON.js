@@ -11,56 +11,47 @@
 var SmallMol = require('../model/interactor/SmallMol');
 var Polymer = require('../model/interactor/Polymer');
 var Complex = require('../model/interactor/Complex');
+var InteractorSet = require('../model/interactor/InteractorSet');
 var NaryLink = require('../model/link/NaryLink');
-//~ var BinaryLink = require('../model/link/BinaryLink');
-//~ var UnaryLink = require('../model/link/UnaryLink');
 
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
-
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 	
-	//var interactorsMissingSequence = d3.set();
-    
-    // we iterate through the data three times, 
-    // once for interactors, once for features, and once for interactions
-    // (iteractors and interactions are mixed together in data,
-	// features are conatined in interactions)
-    
+	//interactors for which we can look up sequence and uniprot features
+	var uniprotInteractors = d3.set();
+     
     var data = miJson.data;
     var dataElementCount = data.length;
     for (var n = 0; n < dataElementCount; n++) {
         if (data[n].object === 'interactor') {
             var interactor = data[n];
-            var organismText = "no organism data";
-            if (interactor.organism) {
-                organismText = interactor.organism.scientific + '(' + interactor.organism.common + ')';
-            }
-            var description = interactor.type.name + ', '
-                    + organismText + ', '
-                    + interactor.identifier.id;
-
 			var p;
-             if (interactor.type.name === 'small molecule') {
+			if (interactor.type.name !== 'molecule set') {//ignore participant sets
+					p = new InteractorSet(interactor.id, this, interactor);
+			}
+			else if (interactor.type.name === 'small molecule') {
 				p = new SmallMol(interactor.id, this, interactor);
-			 } else {
+			} else {
 				p = new Polymer(interactor.id, this, interactor);
-			 }
-            this.interactors.set(interactor.id, p);
-            if (typeof interactor.sequence !== 'undefined') {
-                p.initInteractor(interactor.sequence, interactor.label, description);
-            }
-            else {
-                //~ if (interactor.identifier.db === 'uniprotkb') {
-                    //~ interactorsMissingSequence.add(interactor.identifier.id);
-                //~ }
-                //~ else {
-                    p.initInteractor('NO_SEQUENCE', interactor.label, description);
-                //~ }
-            }
+			}
+			this.interactors.set(interactor.id, p);
+			if (typeof interactor.sequence !== 'undefined') {
+				p.initInteractor(interactor.sequence, interactor.label);
+			}
+			else {
+				//~ if (interactor.identifier.db === 'uniprotkb') {
+					//~ interactorsMissingSequence.add(interactor.identifier.id);
+				//~ }
+				//~ else {
+					p.initInteractor('NO_SEQUENCE' * 10, interactor.label);
+				//~ }
+			}
+
         }
     }
+    
     var self = this;// the javascript bodge 
 
     //we will download missing sequences before doing second iteration to add links
@@ -75,8 +66,9 @@ var readMIJSON = function(miJson, controller) {
     
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
-        Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 4000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
+        Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 1000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         
+        //probably temp
         self.features = d3.map();       
         self.complexes = d3.map();  
         
@@ -93,22 +85,13 @@ var readMIJSON = function(miJson, controller) {
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
 						var feature = features[f];
-						//~ var sequenceData = feature.sequenceData;
-						//~ var sdCount = sequenceData.length;
-						//~ for (var sd = 0; sd < sdCount; sd++){
-							//~ var interactor = self.interactors.get(sequenceData[sd].interactorRef);
-							//~ interactor.features.set(feature.id, feature);
-							//~ self.features.set(feature.id, 
-								//~ {interactor:interactor.id,
-								 //~ feature:feature});
 							self.features.set(feature.id, feature);
-							//~ interactor.addFeature(feature);	
 						}
 					}		
 				}	
 	        }
         }
-        
+        //add interactions
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
@@ -121,12 +104,13 @@ var readMIJSON = function(miJson, controller) {
             complexes[c].initInteractor();
             
         }
-        var interactors = self.interactors.values();
-        var proteinCount = interactors.length;
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = interactors[p];
-            prot.setPositionalFeatures(prot.customAnnotations);
-        }
+        //show features
+        //~ var interactors = self.interactors.values();
+        //~ var proteinCount = interactors.length;
+        //~ for (var p = 0; p < proteinCount; p++) {
+            //~ var prot = interactors[p];
+            //~ prot.setPositionalFeatures(prot.customAnnotations);
+        //~ }
         self.init();
         self.checkLinks();
     
@@ -259,5 +243,35 @@ var toJSON = function() {
             //~ }, response, error_response);
         //~ }
     //~ }
+
+
+//~ 
+//~ function loadLayout(layoutDesc) {
+    //~ this.currentLayoutName = layoutDesc;
+    //~ if (layoutDesc != '') {
+        //~ var xmlhttp = new XMLHttpRequest();
+        //~ var url = "../searches/getLayout.php";
+        //~ var params = "sid=" + this.sid + "&desc=" + layoutDesc;
+        //~ xmlhttp.open("POST", url, true);
+        //~ xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        //~ xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+            //~ if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                //~ var response = xmlhttp.responseText;
+                //~ this.message("response:" + response, true);
+                //~ this.setLayout(response);
+                //~ this.loadLayout();
+                //~ //            var interactors = this.interactors.values();
+                //~ //            var proteinCount = interactors.length;
+                //~ //            for (var p = 0; p < proteinCount; p++) {
+                //~ //                var prot = interactors[p];
+                //~ //                prot.setAllLineCoordinates();
+                //~ //            }
+                //~ this.checkLinks();
+            //~ }
+        //~ };
+        //~ xmlhttp.send(params);
+    //~ }
+//~ }
+
 
 module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction, toJSON: toJSON};

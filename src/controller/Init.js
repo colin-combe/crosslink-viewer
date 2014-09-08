@@ -246,8 +246,9 @@ xiNET.Controller.prototype.clear = function() {
 
     this.initComplete = false;
     this.interactors = d3.map();
-    this.links = d3.map();
-    this.matches = d3.map();
+    this.naryLinks = d3.map();
+    this.binaryLinks = d3.map();
+    this.unaryLinks = d3.map();
     this.subgraphs = new Array();
     this.layoutXOffset = 0;
 
@@ -342,13 +343,10 @@ xiNET.Controller.prototype.init = function(width, height) {
         }
         this.autoLayout(width, height);
     }
-//    this.message('#interactors: ' + this.interactors.values().length +
-//            '\n# links: ' + this.links.values().length);
-
     this.initMouseEvents();
- //    if (typeof this.initTouchEvents === 'function'){
-	// 	this.initTouchEvents();
-	// }
+    if (typeof this.initTouchEvents === 'function'){
+	 	this.initTouchEvents();
+	}
 }
 
 xiNET.Controller.prototype.parkAll = function() {
@@ -456,7 +454,7 @@ xiNET.Controller.prototype.loadLayout = function() {
     // layout info for links (hidden / specified colour)
     for (var l in this.layout.links) {
         var linkState = this.layout.links[l];
-        var link = this.links.get(l);
+        var link = this.naryLinks.get(l);
         if (link !== undefined) {
             if (typeof linkState.hidden !== 'undefined')
                 link.hidden = linkState.hidden;
