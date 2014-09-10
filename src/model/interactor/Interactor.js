@@ -13,8 +13,8 @@
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Annotation = require('./Annotations');
 var Config = require('../../controller/Config');
-//~ var $ = require('jquery-browserify');
-//~ require('jsonview')($);
+var $ = require('jquery-browserify');
+require('jsonview')($);
 
 Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
@@ -25,12 +25,12 @@ Interactor.labelY = -5; //label Y offset, better if calc'd half height of label 
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 //~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
 
-//~ function Interactor(id, xlvController, json) {
-    //~ this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    //~ this.ctrl = xlvController;
-    //~ this.json = json;  
+function Interactor(id, xlvController, json) {
+    this.id = id; // id may not be accession (multiple Segments with same accesssion)
+    this.ctrl = xlvController;
+    this.json = json;  
     //~ this.features = d3.map();
-//~ }
+}
 
 Interactor.prototype.toJSON = function() {
     return {
@@ -138,11 +138,11 @@ Interactor.prototype.getBlobRadius = function() {
     //~ };
 //~ };
 
-Interactor.prototype.addLink = function(link) {
-    if (!this.links.has(link.id)) {
-        this.links.set(link.id, link);
-    }
-};
+//~ Interactor.prototype.addLink = function(link) {
+    //~ if (!this.links.has(link.id)) {
+        //~ this.links.set(link.id, link);
+    //~ }
+//~ };
 
 Interactor.prototype.addFeature = function(feature) {
     if (typeof feature !== 'undefined') {
@@ -353,12 +353,14 @@ Interactor.prototype.getSubgraph = function() {
 Interactor.prototype.addConnectedNodes = function(subgraph) {
 	this.subgraph = subgraph;
 	subgraph.nodes.set(this.id, this);
-    var count = this.links.values().length;
-    for (var i = 0; i < count; i++) {
-        var externalLink = this.links.values()[i];
-        if (subgraph.links.has(externalLink.id) === false) {
+	
+	var count = this.binaryLinks.values().length;
+    
+    for (var bi = 0; bi < count; bi++) {
+		var binaryLink = this.binaryLinks.values()[i];
+        if (subgraph.links.has(binaryLink.id) === false) {
 			//~ if (externalLink.check() === true) {
-        	subgraph.links.set(externalLink.id, externalLink);
+        	subgraph.links.set(binaryLink.id, binaryLink);
 			for (var i = 0; i < externalLink.interactors.length; i++) {
 				var otherEnd = externalLink.interactors[i];
 				otherEnd.addConnectedNodes(subgraph);
@@ -366,6 +368,26 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
 			//~ }
 		}
     }
+    
+    //~ if (!subgraph.links.has(link.id)) {
+                //~ subgraph.links.set(link.id, link);
+                //~ var otherEnd;
+                //~ if (link.getFromProtein() === this) {
+                    //~ otherEnd = link.getToProtein();
+                //~ }
+                //~ else {
+                    //~ otherEnd = link.getFromProtein();
+                //~ }
+                //~ if (otherEnd !== null) {
+					//~ if (!subgraph.nodes.has(otherEnd.id)) {
+						//~ subgraph.nodes.set(otherEnd.id, otherEnd);
+						//~ otherEnd.subgraph = subgraph;
+						//~ otherEnd.addConnectedNodes(subgraph);
+					//~ }
+				//~ }
+            //~ }
+    
+    
     //~ console.debug(subgraph.nodes.keys());
 };
 

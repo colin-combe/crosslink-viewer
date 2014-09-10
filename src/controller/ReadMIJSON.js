@@ -162,7 +162,7 @@ var addInteraction = function(interaction) {
         }
     }
     
-    var link = this.links.get(linkId);
+    var link = this.allNaryLinks.get(linkId);
 	
 	
     if (typeof link === 'undefined') {
@@ -170,16 +170,16 @@ var addInteraction = function(interaction) {
 		var iCount = interactorIds.length;
 		
 		link = new NaryLink(linkId, this);
-		this.links.set(linkId, link);
+		this.allNaryLinks.set(linkId, link);
 		
 		for (var i = 0; i < iCount; i++) {
 			var interactor = this.interactors.get(interactorIds[i]);
 			if (typeof interactor === 'undefined') {
 				//must be a previously unencountered complex
-				interactor = new Complex(pID, this);
-				this.interactors.set(pID, interactor);
+				interactor = new Complex(interactorIds[i], this);
+				this.interactors.set(interactorIds[i], interactor);
 			}
-			interactor.addLink(link);
+			interactor.naryLinks.set(linkId, link);
 			link.interactors.push(interactor);
 		}
 	}

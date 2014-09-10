@@ -243,13 +243,17 @@ xiNET.setCTM = function(element, matrix) {
 
 
 xiNET.Controller.prototype.clear = function() {
-
     this.initComplete = false;
+    
     this.interactors = d3.map();
-    this.naryLinks = d3.map();
-    this.binaryLinks = d3.map();
-    this.unaryLinks = d3.map();
+    
+    this.allNaryLinks = d3.map();
+    this.allBinaryLinks = d3.map();
+    this.allUnaryLinks = d3.map();
+    this.allSequenceLinks = d3.map();
+    
     this.subgraphs = new Array();
+    
     this.layoutXOffset = 0;
 
     this.proteinCount = 0;

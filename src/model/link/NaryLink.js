@@ -26,6 +26,7 @@ function NaryLink(id, xlvController) {
     this.id = id;
     this.evidences = d3.map();
     this.interactors = new Array();
+    this.sequenceLinks = d3.map();
     this.binaryLinks = d3.map();
     this.unaryLinks = d3.map();
     this.ctrl = xlvController;
@@ -73,10 +74,10 @@ NaryLink.prototype.addEvidence = function(interaction) {
 						seqLinkId = end + '><' + start;
 					}
 					
-					var sequenceLink = this.subLinks.get(seqLinkId);
+					var sequenceLink = this.sequenceLinks.get(seqLinkId);
 					if (typeof sequenceLink === 'undefined') {
 						sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
-						this.subLinks.set(seqLinkId, sequenceLink);
+						this.sequenceLinks.set(seqLinkId, sequenceLink);
 					}
 					sequenceLink.addEvidence(interaction);		
 				}			
@@ -124,7 +125,7 @@ NaryLink.prototype.showHighlight = function(show) {
 
 NaryLink.prototype.check = function() {
     this.show();
-    var subLinks = this.subLinks.values();
+    var subLinks = this.sequenceLinks.values();
     var slCount = subLinks.length ;
     console.log("here");
 	for (var sli = 0; sli < slCount; sli++){

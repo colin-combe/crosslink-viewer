@@ -43,7 +43,7 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
 		fi = this.toInteractor;
 		ti = this.fromInteractor;
 	}						
-	var link = this.ctrl.links.get(binaryLinkID);
+	var link = this.ctrl.allBinaryLinks.get(binaryLinkID);
 	if (typeof link === 'undefined') {
 		if (this.fromInteractor === this.toInteractor){
 			//~ link = new UnaryLink(binaryLinkID, this.ctrl);
@@ -51,8 +51,8 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
 		}else {
 			link = new BinaryLink(binaryLinkID, this.ctrl, fi, ti);
 			link.interactors = this.interactors
-			this.fromInteractor.binaryLinks.set(linkID, link);
-			this.toInteractor.binaryLinks.set(linkID, link);
+			this.fromInteractor.binaryLinks.set(binaryLinkID, link);
+			this.toInteractor.binaryLinks.set(binaryLinkID, link);
 			//~ this.ctrl.links.set(binaryLinkID, link);
 		}
 	}
