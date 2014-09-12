@@ -28,7 +28,7 @@ var readMIJSON = function(miJson, controller) {
         if (data[n].object === 'interactor') {
             var interactor = data[n];
 			var p;
-			if (interactor.type.name !== 'molecule set') {//ignore participant sets
+			if (interactor.type.name === 'molecule set') {//ignore participant sets
 					p = new InteractorSet(interactor.id, this, interactor);
 			}
 			else if (interactor.type.name === 'small molecule') {
@@ -45,7 +45,8 @@ var readMIJSON = function(miJson, controller) {
 					//~ interactorsMissingSequence.add(interactor.identifier.id);
 				//~ }
 				//~ else {
-					p.initInteractor('NO_SEQUENCE' * 10, interactor.label);
+					p.initInteractor('NO_SEQUENCE_NO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCE'
+					, interactor.label);
 				//~ }
 			}
 

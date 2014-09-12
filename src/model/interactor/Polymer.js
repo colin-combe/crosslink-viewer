@@ -29,6 +29,8 @@ function Polymer(id, xlvController, json) {
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
+    this.selfLinks = null;
+    this.sequenceLinks = d3.map();
     this.selfLink = null;
 }
 
@@ -590,23 +592,23 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
-			var links = self.links.values();
-			var c = links.length;
-			for (var l = 0; l < c; l++) {
-				var link = links[l];
-				//~ if (link.toInteractor === null || (link.getFromInteractor() === self && link.getToInteractor().form === 0) ||
-						//~ (link.getToInteractor() === self && link.getFromInteractor().form === 0) ||
-						//~ (link.getToInteractor() == link.getFromInteractor()))
-				if (link.sequenceLinks) {
-					// swap links - out with the old
-					var resLinks = link.sequenceLinks.values();
-					var resLinkCount = resLinks.length; 
-					for (var rl = 0; rl < resLinkCount; rl++) {
-						var resLink = resLinks[rl];
-							resLink.hide();
-					}
-				}
-			}
+			//~ var links = self.links.values();
+			//~ var c = links.length;
+			//~ for (var l = 0; l < c; l++) {
+				//~ var link = links[l];
+				//if (link.toInteractor === null || (link.getFromInteractor() === self && link.getToInteractor().form === 0) ||
+				//			(link.getToInteractor() === self && link.getFromInteractor().form === 0) ||
+				//			(link.getToInteractor() == link.getFromInteractor()))
+				//~ if (link.sequenceLinks) {
+					//~ // swap links - out with the old
+					//~ var resLinks = link.sequenceLinks.values();
+					//~ var resLinkCount = resLinks.length; 
+					//~ for (var rl = 0; rl < resLinkCount; rl++) {
+						//~ var resLink = resLinks[rl];
+							//~ resLink.hide();
+					//~ }
+				//~ }
+			//~ }
 			//bring in new 
 			self.form = 0;
 			self.checkLinks();
@@ -676,9 +678,9 @@ Polymer.prototype.toStick = function() {
 	this.upperRotator.svg.setAttribute("transform", 
 		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");
 	//remove prot-prot links - would it be better if checkLinks did this? - think not
-	var c = this.links.values().length;
+	var c = this.binaryLinks.values().length;
 	for (var l = 0; l < c; l++) {
-		var link = this.links.values()[l];
+		var link = this.binaryLinks.values()[l];
 		//out with the old
 		if (link.shown) {
 			link.hide();
@@ -695,7 +697,9 @@ Polymer.prototype.toStick = function() {
   
     var origStickZoom = this.stickZoom;	
 	this.stickZoom = 0;
-    this.checkLinks();
+    this.checkLinks(this.binaryLinks);
+	this.checkLinks(this.selfLink);
+	this.checkLinks(this.sequenceLinks);
 	this.stickZoom = origStickZoom;
  	
 	d3.select(this.circDomains).transition().attr("opacity", 0)

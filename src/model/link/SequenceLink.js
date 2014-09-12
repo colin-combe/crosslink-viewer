@@ -17,52 +17,13 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
     this.evidences = d3.map();
-    //~ this.intra = false;
-    //~ if (typeof this.interactorLink !== 'undefined') {
-        //~ if (this.interactorLink.fromProtein === this.interactorLink.toProtein) {
-            //~ this.intra = true;
-        //~ }
-    //~ }
-    
-    //TODO - not delaing with non-contiguous features
-    //TEMP
+    //TODO - not dealing with non-contiguous features
+    //TEMP - tidy this up
     this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
 	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
 	this.interactors = [this.fromInteractor, this.toInteractor];
 	//~ this.fromInteractor.addLink(this);
 	//~ this.toInteractor.addLink(this);
-	var binaryLinkID, fi, ti;   
-	// these links are undirected and should have same ID regardless of which way round 
-	// source and target are
-	if (this.fromInteractor.id  < this.toInteractor.id) {
-		binaryLinkID = this.fromInteractor.id + '-' + this.toInteractor.id;
-		fi = this.fromInteractor;
-		ti = this.toInteractor;
-	} else {
-		binaryLinkID = "-" + this.toInteractor.id + '-' + this.fromInteractor.id;
-		fi = this.toInteractor;
-		ti = this.fromInteractor;
-	}						
-	var link = this.ctrl.allBinaryLinks.get(binaryLinkID);
-	if (typeof link === 'undefined') {
-		if (this.fromInteractor === this.toInteractor){
-			//~ link = new UnaryLink(binaryLinkID, this.ctrl);
-			//~ this.fromInteractor.addLink(link);
-		}else {
-			link = new BinaryLink(binaryLinkID, this.ctrl, fi, ti);
-			link.interactors = this.interactors
-			this.fromInteractor.binaryLinks.set(binaryLinkID, link);
-			this.toInteractor.binaryLinks.set(binaryLinkID, link);
-			//~ this.ctrl.links.set(binaryLinkID, link);
-		}
-	}
-	//~ this.subLinks.set(linkID, link);
-	//~ link.addEvidence(interaction);
-	
-	
-	
-	
-
     this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;
     for (var i = 0; i < seqDatumCount; i++) {
@@ -78,6 +39,7 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //~ this.dashed = false;
+    this.initSVG();
 }
 
 SequenceLink.prototype.addEvidence = function(interaction) {
@@ -356,7 +318,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             }
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
-    if (this.shown) { //don't waste time changing DOM if link is not visible
+    //~ if (this.shown) { //don't waste time changing DOM if link is not visible
         var fromInteractor = this.fromInteractor;
         var toInteractor = this.toInteractor;
         //calculate mid points of from and to sequence data
@@ -471,7 +433,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         this.glyph.setAttribute("d", glyphPath);
         this.uncertainGlyph.setAttribute("d", uncertainGlyphPath);
         this.highlightGlyph.setAttribute("d", highlightGlyphPath);
-	}
+	//~ }
 
     
 };

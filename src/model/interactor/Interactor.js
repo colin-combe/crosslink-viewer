@@ -284,55 +284,83 @@ Interactor.rotatePointAboutPoint = function(p, o, theta) {
 }
 
 Interactor.prototype.checkLinks = function() {
-    var links = this.links.values();
-    var c = links.length;
-    for (var l = 0; l < c; l++) {
-        links[l].check();
-    }
+    function checkAll(linkMap){
+		var links = linkMap.values();
+		var c = links.length;
+		for (var l = 0; l < c; l++) {
+			links[l].check();
+		}	
+	}    
+    checkAll(this.naryLinks);
+    checkAll(this.binaryLinks);
+    if (this.selfLink !== null) {
+		this.selfLink.check();
+	}
 }
 
 // update all lines (e.g after a move)
 Interactor.prototype.setAllLineCoordinates = function() {
-    var links = this.links.values();
+    var links = this.naryLinks.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
-        var link = links[l];
-        link.setLinkCoordinates(this);
-        if (link.fromInteractor){//TEMP
-			if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-				link.setLinkCoordinates(this);
-			}
-			else {
-				var resLinks = link.subLinks.values();
-				var resLinkCount = resLinks.length;
-				for (var rl = 0; rl < resLinkCount; rl++) {
-					resLinks[rl].setLinkCoordinates(this);
-				}
-			}
-		} 
-		//~ else {
-			//~ link.setLinkCoordinates(this);
-		//~ }
+		//if interactor count > 2
+        links[l].setLinkCoordinates(this);
     }
-};
-//~ 
-Interactor.prototype.countExternalLinks = function() {
-    //~ //if (this.isParked) {
-    //~ //    return 0;
-    //~ //}
-    var countExternal = d3.set();
-    var c = this.links.keys().length;
+    
+    links = this.binaryLinks.values();
+    c = links.length;
     for (var l = 0; l < c; l++) {
-        var link = this.links.values()[l];
-        for (var i = 0; i < link.interactors.length; i++) {
-       //~ // {
-         //~ //   if (link.check() === true) {
-                countExternal.add(link.interactors[i].id);
-           //~ //}
-      //~ //  }
-		}
+        links[l].setLinkCoordinates(this);
     }
-    return countExternal.values().length - 1;
+    //~ 
+    links = this.sequenceLinks.values();
+    c = links.length;
+    for (var l = 0; l < c; l++) {
+        links[l].setLinkCoordinates(this);
+    }    
+    
+       //~ 
+    //~ var links = this.links.values();
+    //~ var c = links.length;
+    //~ for (var l = 0; l < c; l++) {
+        //~ var link = links[l];
+        //~ link.setLinkCoordinates(this);
+        //~ if (link.fromInteractor){//TEMP
+			//~ if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
+				//~ link.setLinkCoordinates(this);
+			//~ }
+			//~ else {
+				//~ var resLinks = link.subLinks.values();
+				//~ var resLinkCount = resLinks.length;
+				//~ for (var rl = 0; rl < resLinkCount; rl++) {
+					//~ resLinks[rl].setLinkCoordinates(this);
+				//~ }
+			//~ }
+		//~ } 
+		//~ // else {
+			//~ // link.setLinkCoordinates(this);
+		//~ // }
+    //~ }
+};
+
+Interactor.prototype.countExternalLinks = function() {
+    //~ // //if (this.isParked) {
+    //~ // //    return 0;
+    //~ // //}
+    //~ var countExternal = d3.set();
+    //~ var c = this.links.keys().length;
+    //~ for (var l = 0; l < c; l++) {
+        //~ var link = this.links.values()[l];
+        //~ for (var i = 0; i < link.interactors.length; i++) {
+       //~ // // {
+         //~ // //   if (link.check() === true) {
+                //~ countExternal.add(link.interactors[i].id);
+           //~ // //}
+      //~ // //  }
+		//~ }
+    //~ }
+    //~ return countExternal.values().length - 1;
+    return this.binaryLinks.length;
 };
 
 Interactor.prototype.getSubgraph = function() {
@@ -357,14 +385,16 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
 	var count = this.binaryLinks.values().length;
     
     for (var bi = 0; bi < count; bi++) {
-		var binaryLink = this.binaryLinks.values()[i];
+		var binaryLink = this.binaryLinks.values()[bi];
         if (subgraph.links.has(binaryLink.id) === false) {
 			//~ if (externalLink.check() === true) {
         	subgraph.links.set(binaryLink.id, binaryLink);
-			for (var i = 0; i < externalLink.interactors.length; i++) {
-				var otherEnd = externalLink.interactors[i];
-				otherEnd.addConnectedNodes(subgraph);
-			}
+			//~ for (var i = 0; i < externalLink.interactors.length; i++) {
+				var otherEnd = binaryLink.getOtherEnd(this);
+				 if (otherEnd) {
+					 otherEnd.addConnectedNodes(subgraph);
+				 }
+			//~ }
 			//~ }
 		}
     }

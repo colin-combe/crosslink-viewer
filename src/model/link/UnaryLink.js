@@ -31,7 +31,8 @@ function UnaryLink(id, xlvController) {
     this.thickLineShown = false;
     //layout stuff
     this.hidden = false;
-    this.arity = 1;
+    
+	//~ this.initSVG();
 }
 
 UnaryLink.prototype.addEvidence = function(interaction) {
@@ -90,87 +91,23 @@ UnaryLink.prototype.addEvidence = function(interaction) {
 				
 			}
 		}
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-		//~ var participants = interaction.participants;
-		//~ //u r here - going to need to set from/to from constructor
-		//~ // if (participants.length === 2) {//TEMP
-		//~ // if (participants[0].interactorRef < participants[1].interactorRef){
-			//~ // this.fromInteractor = this.ctrl.interactors.get(participants[0].interactorRef);
-			//~ // this.toInteractor = this.ctrl.interactors.get(participants[1].interactorRef); //its the object. not the ID number
-		//~ // } else {
-			//~ // this.fromInteractor = this.ctrl.interactors.get(participants[1].interactorRef);
-			//~ // this.toInteractor = this.ctrl.interactors.get(participants[0].interactorRef); //its the object. not the ID number
-		//~ // }
-		//~ var from = this.fromInteractor;
-		//~ var to = this.toInteractor
-		   //~ 
-		//~ var hasLinkedFeatures = false;
-		//~ //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
-		//~ //for time being one interaction can only result in at most one sequenceLink
-		//~ if (hasLinkedFeatures) {
-			//~ //LinkedFeatures not yet implemented in JAMI
-		//~ }
-		//~ //if no linked features may be able to make some assumptions about whats linked to what. 
-		//~ // If:
-		//~ // 1. it is not a product of expansion   
-		//~ // 2. there is no more than one binding site feature at each of interaction
-		//~ else if ((typeof interaction.expansion === 'undefined')
-				//~ && (typeof from.bindingSites === 'undefined'
-				//~ || from.bindingSites.length === 1)
-				//~ && (typeof to.bindingSites === 'undefined'
-				//~ || to.bindingSites.length === 1)
-				//~ ) {
-			//~ // first we need to know ID for sequenceLink, 
-			//~ // that means knowing the binding sites
-			//~ var fromBindingSite, toBindingSite;
-			//~ if (typeof from.bindingSites !== 'undefined') {
-				//~ fromBindingSite = from.bindingSites[0];
-			//~ }
-			//~ if (typeof to.bindingSites !== 'undefined') {
-				//~ toBindingSite = to.bindingSites[0];
-			//~ }
-			//~ var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
-					//~ fromBindingSite.sequenceData.sort() : ['?-?'];
-			//~ var toSequenceData = (typeof toBindingSite !== 'undefined') ?
-					//~ toBindingSite.sequenceData.sort() : ['?-?'];
-			//~ var seqLinkId = fromSequenceData.toString() + ':' +
+	 			
+		//~ if (this.sequenceLinks.values().length === 0) {
+			//~ var seqLinkId = '?-?:' +
 					//~ this.fromInteractor.id + ' to ' +
-					//~ toSequenceData.toString() + ':' + this.toInteractor.id;
-	//~ //        console.log(seqLinkId);
+					//~ '?-?:' + this.toInteractor.id;
+			//~ console.log(seqLinkId);
 			//~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
 			//~ if (typeof sequenceLink === 'undefined') {
-				//~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
+				//~ sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
 				//~ this.sequenceLinks.set(seqLinkId, sequenceLink);
 			//~ }
 			//~ sequenceLink.addEvidence(interaction);
-		//~ } else {
-			
-		if (this.sequenceLinks.values().length === 0) {
-			var seqLinkId = '?-?:' +
-					this.fromInteractor.id + ' to ' +
-					'?-?:' + this.toInteractor.id;
-			console.log(seqLinkId);
-			var sequenceLink = this.sequenceLinks.get(seqLinkId);
-			if (typeof sequenceLink === 'undefined') {
-				sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
-				this.sequenceLinks.set(seqLinkId, sequenceLink);
-			}
-			sequenceLink.addEvidence(interaction);
-		}
-		//~ 
-		//~ // }//end if participants.length === 2
+		//~ }
+
 	}
 };
+
 UnaryLink.prototype.initSVG = function() {
 	function trig(radius, angleDegrees) {
 		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
@@ -267,8 +204,8 @@ UnaryLink.prototype.showHighlight = function(show) {
 };
 
 UnaryLink.prototype.check = function() {
-	var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
+	//~ var seqLinks = this.sequenceLinks.values();
+    //~ var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
@@ -288,54 +225,8 @@ UnaryLink.prototype.check = function() {
         //~ return false;
     //~ }
     //~ else // we need to check which interaction evidences match the filter criteria
-    if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-        //~ this.ambig = true;
-        //~ var filteredEvids = this.getFilteredEvidences();
-        //~ var evidCount = filteredEvids.length;
-        //~ for (var i = 0; i < evidCount; i++) {
-            //~ var evid = filteredEvids[i];
-            //~ if (typeof evid.expansion === 'undefined') {
-                //~ this.ambig = false;
-            //~ }
-        //~ }
-        //~ if (evidCount > 0) {
-            //~ //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-            //~ //thickLine
-            //~ if (evidCount > 1) {
-                //~ this.thickLineShown = true
-                //~ this.w = evidCount * (45 / UnaryLink.maxNoEvidences);
-            //~ }
-            //~ else {
-//~ //                this.thickLineShown = false;//hack
-                //~ this.w = evidCount * (45 / UnaryLink.maxNoEvidences);//hack
-            //~ }
-            //~ //ambig?
-            //~ this.dashedLine(this.ambig);
+    if (this.fromInteractor.form === 0) {
+   
 
             //sequence links will have been hidden previously
             this.show();
@@ -348,13 +239,13 @@ UnaryLink.prototype.check = function() {
     }
     else {//at least one end was in stick form
         this.hide();
-        var showedResResLink = false
-        for (var rl = 0; rl < seqLinkCount; rl++) {
-            if (seqLinks[rl].check() === true) {
-                showedResResLink = true;
-            }
-        }
-        return showedResResLink;
+        //~ var showedResResLink = false
+        //~ for (var rl = 0; rl < seqLinkCount; rl++) {
+            //~ if (seqLinks[rl].check() === true) {
+                //~ showedResResLink = true;
+            //~ }
+        //~ }
+        return false;// showedResResLink;
     }
 };
 

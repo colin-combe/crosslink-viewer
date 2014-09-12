@@ -9,13 +9,24 @@
 "use strict";
 
 var checkLinks = function() {
+    function checkAll(linkMap){
+		var links = linkMap.values();
+		var c = links.length;
+		for (var l = 0; l < c; l++) {
+			links[l].check();
+		}	
+	}    
     if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);
-		var links = this.links.values();
-		var linkCount = links.length;
-		for (var l = 0; l < linkCount; l++) {
-			links[l].check();
-		}
+		//~ var links = this.allNaryLinks.values();
+		//~ var linkCount = links.length;
+		//~ for (var l = 0; l < linkCount; l++) {
+			//~ links[l].check();
+		//~ }
+		checkAll(this.allNaryLinks);
+		checkAll(this.allBinaryLinks);
+		checkAll(this.allUnaryLinks);
+		checkAll(this.allSequenceLinks);
 		this.svgElement.unsuspendRedraw(suspendID);
 	}
 };

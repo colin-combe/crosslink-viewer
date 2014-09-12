@@ -197,7 +197,7 @@ var autoLayout = function(width, height) {
                     pi++;
                     //TODO: change to actual json obj not string
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-                            + prot.links.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
+                            + prot.binaryLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
             }

@@ -20,7 +20,7 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = d3.map();
     this.interactors = null;
-    this.sequenceLinks = d3.map();
+    //~ this.sequenceLinks = d3.map();
     this.ctrl = xlvController;
     this.fromInteractor = fromI; //its the object. not the ID number
     this.toInteractor = toI; //its the object. not the ID number
@@ -284,10 +284,10 @@ BinaryLink.prototype.check = function() {
 	if (!this.fromInteractor) {//TEMP
 		return false;
 	}
-
-	
-    var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
+//~ 
+	//~ 
+    //~ var seqLinks = this.sequenceLinks.values();
+    //~ var seqLinkCount = seqLinks.length;
     // if either end of interaction is 'parked', i.e. greyed out,
     // or self-interactors are hidden and this is self interactor
     // or this specific link is hidden
@@ -367,13 +367,13 @@ BinaryLink.prototype.check = function() {
     }
     else {//at least one end was in stick form
         this.hide();
-        var showedResResLink = false
-        for (var rl = 0; rl < seqLinkCount; rl++) {
-            if (seqLinks[rl].check() === true) {
-                showedResResLink = true;
-            }
-        }
-        return showedResResLink;
+        //~ var showedResResLink = false
+        //~ for (var rl = 0; rl < seqLinkCount; rl++) {
+            //~ if (seqLinks[rl].check() === true) {
+                //~ showedResResLink = true;
+            //~ }
+        //~ }
+        return false;// showedResResLink;
     }
 };
 
