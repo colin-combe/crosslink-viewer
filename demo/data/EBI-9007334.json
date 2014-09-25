@@ -1,0 +1,161 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9P2T1"
+            }, 
+            "label": "gmpr2_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MPHIDNDVKLDFKDVLLRPKRSTLKSRSEVDLTRSFSFRNSKQTYSGVPIIAANMDTVGTFEMAKVLCKFSLFTAVHKHYSLVQWQEFAGQNPDCLEHLAASSGTGSSDFEQLEQILEAIPQVKYICLDVANGYSEHFVEFVKDVRKRFPQHTIMAGNVVTGEMVEELILSGADIIKVGIGPGSVCTTRKKTGVGYPQLSAVMECADAAHGLKGHIISDGGCSCPGDVAKAFGAGADFVMLGGMLAGHSESGGELIERDGKKYKLFYGMSSEMAMKKYAGGVAEYRASEGKTVEVPFKGDVEHTIRDILGGIRSTCTYVGAAKLKELSRRTTFIRVTQQVNPIFSEAC", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:16474"
+            }, 
+            "label": "nadph", 
+            "object": "interactor", 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0486", 
+                    "name": "UniProt"
+                }
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "wwpdb", 
+                    "id": "2A7R"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9007334"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2BZN"
+                }, 
+                {
+                    "db": "intenz", 
+                    "id": "1.7.1.7"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2C6Q"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_22008.1"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "4", 
+                            "name": "tetramerization region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "10-341"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0442", 
+                                "name": "sufficient binding region"
+                            }
+                        }, 
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "nadph binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "4"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "gmpr2 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "7"
+                }
+            ]
+        }
+    ]
+}

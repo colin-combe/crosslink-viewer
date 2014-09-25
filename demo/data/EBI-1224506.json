@@ -1,0 +1,369 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9UDW1"
+            }, 
+            "label": "qcr9_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAAATLTSKLYSLLFRRTSTFALTIIVGVMFFERAFDQGADAIYDHINEGKLWKHIKHKYENK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P31930"
+            }, 
+            "label": "qcr1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAASVVCRAATAGAQVLLRARRSPALLRTPALRSTATFAQALQFVPETQVSLLDNGLRVASEQSSQPTCTVGVWIDVGSRFETEKNNGAGYFLEHLAFKGTKNRPGSALEKEVESMGAHLNAYSTREHTAYYIKALSKDLPKAVELLGDIVQNCSLEDSQIEKERDVILREMQENDASMRDVVFNYLHATAFQGTPLAQAVEGPSENVRKLSRADLTEYLSTHYKAPRMVLAAAGGVEHQQLLDLAQKHLGGIPWTYAEDAVPTLTPCRFTGSEIRHRDDALPFAHVAIAVEGPGWASPDNVALQVANAIIGHYDCTYGGGVHLSSPLASGAVANKLCQSFQTFSICYAETGLLGAHFVCDRMKIDDMMFVLQGQWMRLCTSATESEVARGKNILRNALVSHLDGTTPVCEDIGRSLLTYGRRIPLAEWESRIAEVDASVVREICSKYIYDQCPAVAGYGPIEQLPDYNRIRSGMFWLRF", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "3", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O14949"
+            }, 
+            "label": "qcr8_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGREFGNLTRMRHVISYSLSPFEQRAYPHVFTKGIPNVLRRIRESFFRVVPQFVVFYLIYTWGTEEFERSKRKNPAAYENDK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "4", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O14957"
+            }, 
+            "label": "qcr10_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVTRFLGPRYRELVKNWVPTAYTWGAVGAVGLVWATDWRLILDWVPYINGKFKKDN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "5", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P07919"
+            }, 
+            "label": "qcr6_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGLEDEQKMLTESGDPEEEEEEEEELVDPLTTVREQCEQLEKCVKARERLELCDERVSSRSHTEEDCTEELFDFLHARDHCVAHKLFNNLK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "6", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P14927"
+            }, 
+            "label": "qcr7_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAGKQAVSASGKWLDGIRKWYYNAAGFNKLGLMRDDTIYEDEDVKEAIRRLPENLYNDRMFRIKRALDLNLKHQILPKEQWTKYEEENFYLEPYLKEVIRERKEREEWAKK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "7", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P00156"
+            }, 
+            "label": "cyb_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MTPMRKTNPLMKLINHSFIDLPTPSNISAWWNFGSLLGACLILQITTGLFLAMHYSPDASTAFSSIAHITRDVNYGWIIRYLHANGASMFFICLFLHIGRGLYYGSFLYSETWNIGIILLLATMATAFMGYVLPWGQMSFWGATVITNLLSAIPYIGTDLVQWIWGGYSVDSPTLTRFFTFHFILPFIIAALATLHLLFLHETGSNNPLGITSHSDKITFHPYYTIKDALGLLLFLLSLMTLTLFSPDLLGDPDNYTLANPLNTPPHIKPEWYFLFAYTILRSVPNKLGGVLALLLSILILAMIPILHMSKQQSMMFRPLSQSLYWLLAADLLILTWIGGQPVSYPFTIIGQVASVLYFTTILILMPTISLIENKMLKWA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "8", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P08574"
+            }, 
+            "label": "cy1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAAAAASLRGVVLGPRGAGLPGARARGLLCSARPGQLPLRTPQAVALSSKSGLSRGRKVMLSALGMLAAGGAGLAMALHSAVSASDLELHPPSYPWSHRGLLSSLDHTSIRRGFQVYKQVCASCHSMDFVAYRHLVGVCYTEDEAKELAAEVEVQDGPNEDGEMFMRPGKLFDYFPKPYPNSEAARAANNGALPPDLSYIVRARHGGEDYVFSLLTGYCEPPTGVSLREGLYFNPYFPGQAIAMAPPIYTDVLEFDDGTPATMSQIAKDVCTFLRWASEPEHDHRKRMGLKMLMMMALLVPLVYTIKRHKWSVLKSRKLAYRPPK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "9", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P22695"
+            }, 
+            "label": "qcr2_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MKLLTRAGSFSRFYSLKVAPKVKATAAPAGAPPQPQDLEFTKLPNGLVIASLENYSPVSRIGLFIKAGSRYEDFSNLGTTHLLRLTSSLTTKGASSFKITRGIEAVGGKLSVTATRENMAYTVECLRGDVDILMEFLLNVTTAPEFRRWEVADLQPQLKIDKAVAFQNPQTHVIENLHAAAYRNALANPLYCPDYRIGKVTSEELHYFVQNHFTSARMALIGLGVSHPVLKQVAEQFLNMRGGLGLSGAKANYRGGEIREQNGDSLVHAAFVAESAVAGSAEANAFSVLQHVLGAGPHVKRGSNTTSHLHQAVAKATQQPFDVSAFNASYSDSGLFGIYTISQATAAGDVIKAAYNQVKTIAQGNLSNTDVQAAKNKLKAGYLMSVESSECFLEEVGSQALVAGSYMPPSTVLQQIDSVANADIINAAKKFVSGQKSMAASGNLGHTPFVDEL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "10", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:30408"
+            }, 
+            "label": "fe-s cluster", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "11", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P47985-PRO_0000307241"
+            }, 
+            "label": "p47985-pro_0000307241", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MLSVASRSGPFAPVLSATSRGVAGALRPLVQATVPATPEQPVLDLKRPFLSRESLSGQAVRRPLVASVGLNVPASVCY", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "12", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P47985-PRO_0000030664"
+            }, 
+            "label": "p47985-pro_0000030664", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "SHTDIKVPDFSEYRRLEVLDSTKSSRESSEARKGFSYLVTGVTTVGVAYAAKNAVTQFVSSMSASADVLALAKIEIKLSDIPEGKNMAFKWRGKPLFVRHRTQKEIEQEAAVELSQLRDPQHDLDRVKKPEWVILIGVCTHLGCVPIANAGDFGGYYCPCHGSHYDASGRIRLGPAPLNLEVPTYEFTSDDMVIVG", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "13", 
+            "identifiers": [
+                {
+                    "db": "intenz", 
+                    "id": "1.10.2.2"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_6527.1"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-1224506"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "3", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "4", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "5", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "6", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "7", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "8", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "9", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "10"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "11"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "interactorRef": "12"
+                }
+            ]
+        }
+    ]
+}

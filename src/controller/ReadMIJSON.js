@@ -13,7 +13,10 @@ var Polymer = require('../model/interactor/Polymer');
 var Complex = require('../model/interactor/Complex');
 var InteractorSet = require('../model/interactor/InteractorSet');
 var NaryLink = require('../model/link/NaryLink');
-
+var SequenceLink = require('../model/link/SequenceLink');
+var BinaryLink = require('../model/link/BinaryLink');
+var UnaryLink = require('../model/link/UnaryLink');
+ 
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
     //just check that we've got a parsed javacsript object here, not a String
@@ -121,13 +124,6 @@ var addFeatures = function(interaction) {
 
 };
 
-// Moved from Link.js
-
-var getIdFromInteraction = function(interaction){
-
-    return linkId;  
-}
-
 var addInteraction = function(interaction) {
     
     if (typeof interaction.confidences !== 'undefined') {
@@ -162,16 +158,15 @@ var addInteraction = function(interaction) {
             linkId += pID;
         }
     }
-    
-    var link = this.allNaryLinks.get(linkId);
-	
-	
-    if (typeof link === 'undefined') {
+        
+    //init n-ary link
+    var nLink = this.allNaryLinks.get(linkId);
+	if (typeof nLink === 'undefined') {
 		var interactorIds = linkId.split('-');
 		var iCount = interactorIds.length;
 		
-		link = new NaryLink(linkId, this);
-		this.allNaryLinks.set(linkId, link);
+		nLink = new NaryLink(linkId, this);
+		this.allNaryLinks.set(linkId, nLink);
 		
 		for (var i = 0; i < iCount; i++) {
 			var interactor = this.interactors.get(interactorIds[i]);
@@ -180,20 +175,110 @@ var addInteraction = function(interaction) {
 				interactor = new Complex(interactorIds[i], this);
 				this.interactors.set(interactorIds[i], interactor);
 			}
-			interactor.naryLinks.set(linkId, link);
-			link.interactors.push(interactor);
+			interactor.naryLinks.set(linkId, nLink);
+			nLink.interactors.push(interactor);
 		}
 	}
-    //all other initialisation to do with links takes place within Links 
-    link.addEvidence(interaction);
-};
-
-var toJSON = function() {
-    return {
-        interactors: this.interactors,
-        features: this.features,
-		links: this.links,
-    };
+    nLink.addEvidence(interaction);
+    
+    //loop through particpants and features
+    //init binary, unary and sequence links, and make needed associations between them
+    var participants = interaction.participants;
+    var participantCount = participants.length    
+    for (var pi = 0; pi < participantCount; pi++){
+		var participant = participants[pi];
+		var features = new Array(0); 
+		if (participant.bindingSites) {
+			features = features.concat(participant.bindingSites);
+		}
+		if (participant.experimentalFeatures) {
+			features = features.concat(participant.experimentalFeatures);
+		}
+			
+		var fCount = features.length;
+		for (var f = 0; f < fCount; f++){
+			var feature = features[f];
+			var fromSequenceData = feature.sequenceData;
+			if (feature.linkedFeatures) {
+				var linkedFeatureIDs = feature.linkedFeatures;
+					
+				var toSequenceData = new Array();
+				var linkedFeatureCount = linkedFeatureIDs.length;
+				for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+					var linkedFeature = this.features.get(linkedFeatureIDs[lfi]);
+					toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
+				}
+				//TODO: *not dealing with non-contigouous features*			
+				//sequence link
+				var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
+				var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
+				var seqLinkId;
+				if (start < end){
+					seqLinkId  =  start + '><' + end;
+				} else {
+					seqLinkId = end + '><' + start;
+				}
+					
+				var sequenceLink = this.allSequenceLinks.get(seqLinkId);
+				if (typeof sequenceLink === 'undefined') {
+					sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this, interaction);
+					this.allSequenceLinks.set(seqLinkId, sequenceLink);
+				}
+				sequenceLink.addEvidence(interaction);	
+				sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+				sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+				nLink.sequenceLinks.set(seqLinkId, sequenceLink);
+				//binaryLink / /unaryLink
+				var linkID, fi, ti;   
+				// these links are undirected and should have same ID regardless of which way round 
+				// source and target are
+				if (sequenceLink.fromInteractor.id  < sequenceLink.toInteractor.id) {
+					linkID = sequenceLink.fromInteractor.id + '-' + sequenceLink.toInteractor.id;
+					fi = sequenceLink.fromInteractor;
+					ti = sequenceLink.toInteractor;
+				} else {
+					linkID = "-" + sequenceLink.toInteractor.id + '-' + sequenceLink.fromInteractor.id;
+					fi = sequenceLink.toInteractor;
+					ti = sequenceLink.fromInteractor;
+				}	
+					
+										
+				var link;
+				if (sequenceLink.fromInteractor === sequenceLink.toInteractor){
+					link = this.allUnaryLinks.get(linkID);
+					if (typeof link === 'undefined') {
+						link = new UnaryLink(linkID, this);
+						fi.selfLink = link;
+						link.fromInteractor = fi;
+						link.initSVG();
+						this.allUnaryLinks.set(linkID, link);
+					}
+					nLink.unaryLinks.set(linkID, link);
+				}
+				else {
+					link = this.allBinaryLinks.get(linkID);
+					if (typeof link === 'undefined') {
+						link = new BinaryLink(linkID, this, fi, ti);
+						fi.binaryLinks.set(linkID, link);
+						ti.binaryLinks.set(linkID, link);
+						this.allBinaryLinks.set(linkID, link);
+					}
+					nLink.binaryLinks.set(linkID, link);
+				}
+				link.interactors = sequenceLink.interactors;//hack
+				//~ link.addEvidence(interaction);			
+			}			
+		}	
+		//~ if (fCount === 0){
+			//~ if (nLink.interactors.length === 1) {
+				//~ var seqLinkId =  start + '><' + end;
+				//~ } else {
+					//~ seqLinkId = end + '><' + start;
+				//~ }			
+			//~ } else if (nLink.interactors.length === 1) {
+			//~ }
+		//~ }
+	}           
 };
 
     //~ function initProteinSequences() {
@@ -245,34 +330,4 @@ var toJSON = function() {
         //~ }
     //~ }
 
-
-//~ 
-//~ function loadLayout(layoutDesc) {
-    //~ this.currentLayoutName = layoutDesc;
-    //~ if (layoutDesc != '') {
-        //~ var xmlhttp = new XMLHttpRequest();
-        //~ var url = "../searches/getLayout.php";
-        //~ var params = "sid=" + this.sid + "&desc=" + layoutDesc;
-        //~ xmlhttp.open("POST", url, true);
-        //~ xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        //~ xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-            //~ if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                //~ var response = xmlhttp.responseText;
-                //~ this.message("response:" + response, true);
-                //~ this.setLayout(response);
-                //~ this.loadLayout();
-                //~ //            var interactors = this.interactors.values();
-                //~ //            var proteinCount = interactors.length;
-                //~ //            for (var p = 0; p < proteinCount; p++) {
-                //~ //                var prot = interactors[p];
-                //~ //                prot.setAllLineCoordinates();
-                //~ //            }
-                //~ this.checkLinks();
-            //~ }
-        //~ };
-        //~ xmlhttp.send(params);
-    //~ }
-//~ }
-
-
-module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction, toJSON: toJSON};
+module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction};

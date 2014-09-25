@@ -23,6 +23,7 @@ function InteractorSet(id, xlvController, json) {
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
     this.selfLink = null;
+    this.sequenceLinks = d3.map();
 }
 
 InteractorSet.prototype.toJSON = function() {
@@ -34,9 +35,9 @@ InteractorSet.prototype.toJSON = function() {
 
 InteractorSet.prototype.initInteractor = function(sequence, name, description, size)
 {
-    this.accession = this.json.identifier.id;
+    //this.accession = this.json.identifier.id;
     this.name = name;
-    this.organism = this.json.organism;
+    //this.organism = this.json.organism;
 	
 	this.size = 10;//HACK
 	

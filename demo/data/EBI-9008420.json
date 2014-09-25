@@ -1,0 +1,297 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:30413"
+            }, 
+            "label": "heme", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P68871"
+            }, 
+            "label": "hbb_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "3", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P69905"
+            }, 
+            "label": "hba_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0967", 
+                    "name": "CHEMBL database"
+                }
+            }, 
+            "id": "4", 
+            "identifiers": [
+                {
+                    "db": "chembl", 
+                    "id": "CHEMBL2095168"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "613978"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "603903"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_125222.1"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "611162"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_160621.1"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn1"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn2"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_125469.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_123853.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_161051.1"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn3"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "140700"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "603902"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "604131"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "613985"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9008420"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "141749"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "4"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "2"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "3", 
+                    "stoichiometry": "2"
+                }
+            ]
+        }
+    ]
+}

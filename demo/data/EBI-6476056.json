@@ -1,0 +1,858 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:16238"
+            }, 
+            "label": "fad", 
+            "object": "interactor", 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P69054"
+            }, 
+            "label": "dhsc_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MIRNVKKQRPVNLDLQTIRFPITAIASILHRVSGVITFVAVGILLWLLGTSLSSPEGFEQASAIMGSFFVKFIMWGILTALAYHVVVGIRHMMMDFGYLEETFEAGKRSAKISFVITVVLSLLAGVLVW", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "3", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P0AC44"
+            }, 
+            "label": "dhsd_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MVSNASALGRNGVHDFILVRATAIVLTLYIIYMVGFFATSGELTYEVWIGFFASAFTKVFTLLALFSILIHAWIGMWQVLTDYVKPLALRLMLQLVIVVALVVYVIYGFVVVWGV", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "4", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P07014"
+            }, 
+            "label": "sdhb_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MRLEFSIYRYNPDVDDAPRMQDYTLEADEGRDMMLLDALIQLKEKDPSLSFRRSCREGVCGSDGLNMNGKNGLACITPISALNQPGKKIVIRPLPGLPVIRDLVVDMGQFYAQYEKIKPYLLNNGQNPPAREHLQMPEQREKLDGLYECILCACCSTSCPSFWWNPDKFIGPAGLLAAYRFLIDSRDTETDSRLDGLSDAFSVFRCHSIMNCVSVCPKGLNPTRAIGHIKSMLLQRNA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "5", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P0AC41"
+            }, 
+            "label": "sdha_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MKLPVREFDAVVIGAGGAGMRAALQISQSGQTCALLSKVFPTRSHTVSAQGGITVALGNTHEDNWEWHMYDTVKGSDYIGDQDAIEYMCKTGPEAILELEHMGLPFSRLDDGRIYQRPFGGQSKNFGGEQAARTAAAADRTGHALLHTLYQQNLKNHTTIFSEWYALDLVKNQDGAVVGCTALCIETGEVVYFKARATVLATGGAGRIYQSTTNAHINTGDGVGMAIRAGVPVQDMEMWQFHPTGIAGAGVLVTEGCRGEGGYLLNKHGERFMERYAPNAKDLAGRDVVARSIMIEIREGRGCDGPWGPHAKLKLDHLGKEVLESRLPGILELSRTFAHVDPVKEPIPVIPTCHYMMGGIPTKVTGQALTVNEKGEDVVVPGLFAVGEIACVSVHGANRLGGNSLLDLVVFGRAAGLHLQESIAEQGALRDASESDVEASLDRLNRWNNNRNGEDPVAIRKALQECMQHNFSVFREGDAMAKGLEQLKVIRERLKNARLDDTSSEFNTQRVECLELDNLMETAYATAVSANFRTESRGAHSRFDFPDRDDENWLCHSLYLPESESMTRRSVNMEPKLRPAFPPKIRTY", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "6", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:30413"
+            }, 
+            "label": "heme", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "7", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:51381"
+            }, 
+            "label": "succinate salt", 
+            "object": "interactor", 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "8", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:33739"
+            }, 
+            "label": "fe2-s2", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "9", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:33725"
+            }, 
+            "label": "fe4-s4", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "10", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:47402"
+            }, 
+            "label": "fe3-s4", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "11", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:36141"
+            }, 
+            "label": "quinone", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "12", 
+            "identifiers": [
+                {
+                    "db": "wwpdb", 
+                    "id": "2wu2"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2wp9"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2ws3"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2acz"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2wdr"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2wdq"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "1nek"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-6476056"
+                }, 
+                {
+                    "db": "intenz", 
+                    "id": "1.3.5.1"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2wu5"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2wdv"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "13", 
+                            "linkedFeatures": [
+                                "14"
+                            ], 
+                            "name": "sdha binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "succinate binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "17", 
+                            "linkedFeatures": [
+                                "18"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "1-129"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "19", 
+                            "linkedFeatures": [
+                                "20"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "1-129"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "21", 
+                            "linkedFeatures": [
+                                "22"
+                            ], 
+                            "name": "heme binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "1-129"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "23", 
+                            "linkedFeatures": [
+                                "24"
+                            ], 
+                            "name": "quinone binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "1-129"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "25", 
+                            "linkedFeatures": [
+                                "26"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "18", 
+                            "linkedFeatures": [
+                                "17"
+                            ], 
+                            "name": "dhsc binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "27", 
+                            "linkedFeatures": [
+                                "28"
+                            ], 
+                            "name": "heme binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "29", 
+                            "linkedFeatures": [
+                                "30"
+                            ], 
+                            "name": "quinone binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "3", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "3", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "26", 
+                            "linkedFeatures": [
+                                "25"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "31", 
+                            "linkedFeatures": [
+                                "32"
+                            ], 
+                            "name": "dhsa binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "20", 
+                            "linkedFeatures": [
+                                "19"
+                            ], 
+                            "name": "dhsc binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "33", 
+                            "linkedFeatures": [
+                                "34"
+                            ], 
+                            "name": "fe2-s2 binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "35", 
+                            "linkedFeatures": [
+                                "36"
+                            ], 
+                            "name": "fe3-s4 binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "37", 
+                            "linkedFeatures": [
+                                "38"
+                            ], 
+                            "name": "quinone binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "39", 
+                            "linkedFeatures": [
+                                "40"
+                            ], 
+                            "name": "fe4-s4 binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "4", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "4", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "32", 
+                            "linkedFeatures": [
+                                "31"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "5", 
+                                    "pos": "1-588"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "14", 
+                            "linkedFeatures": [
+                                "13"
+                            ], 
+                            "name": "fad binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "5", 
+                                    "pos": "1-588"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "interactorRef": "5", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "22", 
+                            "linkedFeatures": [
+                                "21"
+                            ], 
+                            "name": "dhsc binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "28", 
+                            "linkedFeatures": [
+                                "27"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "6", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "16", 
+                            "linkedFeatures": [
+                                "15"
+                            ], 
+                            "name": "fad binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "7", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0579", 
+                        "name": "electron donor"
+                    }, 
+                    "interactorRef": "7", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "34", 
+                            "linkedFeatures": [
+                                "33"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "8", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "40", 
+                            "linkedFeatures": [
+                                "39"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "9", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "9", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "36", 
+                            "linkedFeatures": [
+                                "35"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "10", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "interactorRef": "10", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "38", 
+                            "linkedFeatures": [
+                                "37"
+                            ], 
+                            "name": "dhsb binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "11", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "30", 
+                            "linkedFeatures": [
+                                "29"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "11", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "24", 
+                            "linkedFeatures": [
+                                "23"
+                            ], 
+                            "name": "dhsc binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "11", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0580", 
+                        "name": "electron acceptor"
+                    }, 
+                    "interactorRef": "11", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}

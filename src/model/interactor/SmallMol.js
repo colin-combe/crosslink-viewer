@@ -23,6 +23,7 @@ function SmallMol(id, xlvController, json) {
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
     this.selfLink = null;
+    this.sequenceLinks = d3.map();
 }
 
 SmallMol.prototype.toJSON = function() {

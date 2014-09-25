@@ -16,14 +16,29 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
         <script type="text/javascript" src="../build/ComplexViewer-0.0.1.js"></script>
-        <!--data-->
-        <script type="text/javascript" src="./data/polII-TFIIF.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
 		<div id="networkContainer"></div>
 		<div id='controls'>
+			
+			<select id="dataSets" onChange="loadData();">
+				<option>./data/EBI-1202920.json</option>
+				<option>./data/EBI-6476056.json</option>  
+				<option>./data/EBI-9007334.json</option>  
+				<option>./data/EBI-9082861.json</option>  
+				<option>./data/EBI-9511172.json</option>
+				<option>./data/EBI-1224506.json</option> 
+				<option>./data/EBI-6672189.json</option> 
+				<option>./data/EBI-9008420.json</option> 
+				<option>./data/EBI-9347978.json</option>
+				<option>./data/allostery.json</option>
+				<option>./data/cks1-skp2.json</option>
+				<option>./data/polII-TFIIF.json</option>
+				<option>./data/herzog.json</option>
+			</select>
+			
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
@@ -36,9 +51,20 @@
 
         <script type="text/javascript">
                 //<![CDATA[
+                
+                function loadData(){
+					xlv.clear();
+					var dataSetsSelect = document.getElementById('dataSets');
+					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].innerHTML;
+				    d3.json(path, function(data) {
+						xlv.readMIJSON(data);
+					});            
+				}
+                
                 var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET(targetDiv);
-                xlv.readMIJSON(miJson);
+                loadData();
+                
                 //]]>
         </script>
 

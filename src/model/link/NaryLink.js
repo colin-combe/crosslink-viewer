@@ -13,9 +13,9 @@
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Link = require('./Link');
-var SequenceLink = require('./SequenceLink');
-var BinaryLink = require('./BinaryLink');
-var UnaryLink = require('./UnaryLink');
+//~ var SequenceLink = require('./SequenceLink');
+//~ var BinaryLink = require('./BinaryLink');
+//~ var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
@@ -37,113 +37,96 @@ function NaryLink(id, xlvController) {
     this.hidden = false;
 }
 
-NaryLink.prototype.addEvidence = function(interaction) {
-    if (this.evidences.has(interaction.id) === false) {
-        this.evidences.set(interaction.id, interaction);   
-		//TODO
-        //~ if (this.evidences.values().length > xiNET.Link.maxNoEvidences) {//TODO: update d3 lib
-            //~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
-        //~ }
-        var participants = interaction.participants;
-        var participantCount = participants.length    
-        for (var pi = 0; pi < participantCount; pi++){
-			var participant = participants[pi];
-			var features = (participant.experimentalFeatures)? participant.experimentalFeatures : new Array(0); // ur here 
+//~ NaryLink.prototype.addEvidence = function(interaction) { 
+    //~ if (this.evidences.has(interaction.id) === false) {
+        //~ this.evidences.set(interaction.id, interaction);   
+        //~ var participants = interaction.participants;
+        //~ var participantCount = participants.length    
+        //~ for (var pi = 0; pi < participantCount; pi++){
+			//~ var participant = participants[pi];
+			//var features = (participant.experimentalFeatures)? participant.experimentalFeatures : new Array(0); // ur here 
+			//~ var features = new Array(0); 
 			//~ if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
 			//~ if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
-			var fCount = features.length;
-			for (var f = 0; f < fCount; f++){
-				var feature = features[f];
-				var fromSequenceData = feature.sequenceData;
-				if (feature.linkedFeatures) {
-					var linkedFeatureIDs = feature.linkedFeatures;
-					
-					var toSequenceData = new Array();
-					var linkedFeatureCount = linkedFeatureIDs.length;
-					for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
-						var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
-						toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
-					}
-					
-					//TODO: *not dealing with non-contigouous features*
-					
-					//sequence link
-					var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
-					var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
-					var seqLinkId;
-					if (start < end){
-						seqLinkId  =  start + '><' + end;
-					} else {
-						seqLinkId = end + '><' + start;
-					}
-					
-					var sequenceLink = this.ctrl.allSequenceLinks.get(seqLinkId);
-					if (typeof sequenceLink === 'undefined') {
-						sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
-						this.ctrl.allSequenceLinks.set(seqLinkId, sequenceLink);
-					}
-					sequenceLink.addEvidence(interaction);	
-					sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
-					sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
-					
-					//binaryLink / /unaryLink
-					var linkID, fi, ti;   
-					// these links are undirected and should have same ID regardless of which way round 
-					// source and target are
-					if (sequenceLink.fromInteractor.id  < sequenceLink.toInteractor.id) {
-						linkID = sequenceLink.fromInteractor.id + '-' + sequenceLink.toInteractor.id;
-						fi = sequenceLink.fromInteractor;
-						ti = sequenceLink.toInteractor;
-					} else {
-						linkID = "-" + sequenceLink.toInteractor.id + '-' + sequenceLink.fromInteractor.id;
-						fi = sequenceLink.toInteractor;
-						ti = sequenceLink.fromInteractor;
-					}	
-					
-										
-					var link;
-					if (sequenceLink.fromInteractor === sequenceLink.toInteractor){
-						link = this.ctrl.allUnaryLinks.get(linkID);
-						if (typeof link === 'undefined') {
-							link = new UnaryLink(linkID, this.ctrl);
-							fi.selfLink = link;
-							link.fromInteractor = fi;
-							link.initSVG();
-							this.ctrl.allUnaryLinks.set(linkID, link);
-						}
-						this.unaryLinks.set(linkID, link);
-					}
-					else {
-						link = this.ctrl.allBinaryLinks.get(linkID);
-						if (typeof link === 'undefined') {
-							link = new BinaryLink(linkID, this.ctrl, fi, ti);
-							fi.binaryLinks.set(linkID, link);
-							ti.binaryLinks.set(linkID, link);
-							this.ctrl.allBinaryLinks.set(linkID, link);
-						}
-						this.binaryLinks.set(linkID, link);
-					}
-					link.interactors = sequenceLink.interactors;//hack
-					//~ link.addEvidence(interaction);
-
-
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-						
-				}			
-			}	
-        }           
-    }
-};
+			//~ var fCount = features.length;
+			//~ for (var f = 0; f < fCount; f++){
+				//~ var feature = features[f];
+				//~ var fromSequenceData = feature.sequenceData;
+				//~ if (feature.linkedFeatures) {
+					//~ var linkedFeatureIDs = feature.linkedFeatures;
+					//~ 
+					//~ var toSequenceData = new Array();
+					//~ var linkedFeatureCount = linkedFeatureIDs.length;
+					//~ for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+						//~ var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
+						//~ toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
+					//~ }
+					//~ 
+					//~ //TODO: *not dealing with non-contigouous features*
+					//~ 
+					//~ //sequence link
+					//~ var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
+					//~ var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
+					//~ var seqLinkId;
+					//~ if (start < end){
+						//~ seqLinkId  =  start + '><' + end;
+					//~ } else {
+						//~ seqLinkId = end + '><' + start;
+					//~ }
+					//~ 
+					//~ var sequenceLink = this.ctrl.allSequenceLinks.get(seqLinkId);
+					//~ if (typeof sequenceLink === 'undefined') {
+						//~ sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
+						//~ this.ctrl.allSequenceLinks.set(seqLinkId, sequenceLink);
+					//~ }
+					//~ sequenceLink.addEvidence(interaction);	
+					//~ sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+					//~ sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+					//~ 
+					//~ //binaryLink / /unaryLink
+					//~ var linkID, fi, ti;   
+					//~ // these links are undirected and should have same ID regardless of which way round 
+					//~ // source and target are
+					//~ if (sequenceLink.fromInteractor.id  < sequenceLink.toInteractor.id) {
+						//~ linkID = sequenceLink.fromInteractor.id + '-' + sequenceLink.toInteractor.id;
+						//~ fi = sequenceLink.fromInteractor;
+						//~ ti = sequenceLink.toInteractor;
+					//~ } else {
+						//~ linkID = "-" + sequenceLink.toInteractor.id + '-' + sequenceLink.fromInteractor.id;
+						//~ fi = sequenceLink.toInteractor;
+						//~ ti = sequenceLink.fromInteractor;
+					//~ }	
+					//~ 
+										//~ 
+					//~ var link;
+					//~ if (sequenceLink.fromInteractor === sequenceLink.toInteractor){
+						//~ link = this.ctrl.allUnaryLinks.get(linkID);
+						//~ if (typeof link === 'undefined') {
+							//~ link = new UnaryLink(linkID, this.ctrl);
+							//~ fi.selfLink = link;
+							//~ link.fromInteractor = fi;
+							//~ link.initSVG();
+							//~ this.ctrl.allUnaryLinks.set(linkID, link);
+						//~ }
+						//~ this.unaryLinks.set(linkID, link);
+					//~ }
+					//~ else {
+						//~ link = this.ctrl.allBinaryLinks.get(linkID);
+						//~ if (typeof link === 'undefined') {
+							//~ link = new BinaryLink(linkID, this.ctrl, fi, ti);
+							//~ fi.binaryLinks.set(linkID, link);
+							//~ ti.binaryLinks.set(linkID, link);
+							//~ this.ctrl.allBinaryLinks.set(linkID, link);
+						//~ }
+						//~ this.binaryLinks.set(linkID, link);
+					//~ }
+					//~ link.interactors = sequenceLink.interactors;//hack
+					//link.addEvidence(interaction);
+				//~ }			
+			//~ }	
+        //~ }           
+    //~ }
+//~ };
 
 NaryLink.prototype.initSVG = function() {
 

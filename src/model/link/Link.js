@@ -10,63 +10,30 @@
 //		The graphical representation of one or many interactions.
 //		One link represents all interactions with same particpants.
 //		E.g. psi-mi may conatins multiple experiments giving evidence for same interaction
-//		- using one glyph to represent them all prevents uppermost graphic from occluded those lower down 
+//		- using one glyph to represent them all prevents uppermost graphic from occluding those lower down 
 
 "use strict";
 
 var Config = require('../../controller/Config');
 
-
 var Link = function (){};
-//Link.maxNoEvidences = 0;
+Link.maxNoEvidences = 0;
 
-//id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
-// Link.getIdFromInteraction = function(interaction){
-// Link.getIdFromInteraction = function(interaction){ // JOSH TODO
-//     var linkId = "";
-//     //sort participants by interactorRef
-//     var participants = interaction.participants.sort(
-// 		function comparator(a, b) {
-// 			return a.interactorRef - b.interactorRef;
-// 		}
-// 	);
-//     var participantCount = participants.length;
-//     var pIDs = d3.set();//used to eliminate duplicates
-//     for (var pi = 0; pi < participantCount; pi++) {
-// 		var pID = participants[pi].interactorRef;
-// 		if (pIDs.has(pID) === false){
-// 			pIDs.add(pID);
-// 			if (pi > 0) {
-// 				linkId += "-"; 
-// 			}
-// 			linkId += pID;
-// 		}
-// 	}
-// 	return linkId;	
-// }
-
-//~ Link.prototype.initInteractors = function(interaction){
-    //~ this.interactors = new Array();//order important for binary links
-    //~ //sort participants by interactorRef
-    //~ var participants = interaction.participants.sort(
-		//~ function comparator(a, b) {
-			//~ return a.interactorRef - b.interactorRef;
-		//~ }
-	//~ );
-    //~ var participantCount = participants.length;
-    //~ var pIDs = d3.set();//used to eliminate duplicates
-    //~ for (var pi = 0; pi < participantCount; pi++) {
-		//~ var pID = participants[pi].interactorRef;
-		//~ if (pIDs.has(pID) === false){
-			//~ pIDs.add(pID);
-			//~ var interactor = this.ctrl.interactors.get(pID);
-			//~ if (typeof interactor === 'undefined') {
-				//~ alert("Fail - no interactor with id " + pID);
-			//~ }
-			//~ this.interactors.push(interactor);
-		//~ }
-	//~ }
-//~ }
+Link.prototype.addEvidence = function(interaction) {
+	if (!this.evidences) {
+		this.evidences = d3.map();
+	}
+	if (this.evidences.has(interaction.id) === false) {
+		this.evidences.set(interaction.id, interaction);
+		if (this.evidences.values().length > Link.maxNoEvidences) {
+			//values().length can be replaced with size() in newer d3 lib
+            Link.maxNoEvidences = this.evidences.values().length; 
+            return true;
+        }
+	} else {
+		return false;
+	}
+};
 
 Link.prototype.highlightInteractors = function(show){	
 	var interactors = this.interactors;
@@ -79,7 +46,7 @@ Link.prototype.highlightInteractors = function(show){
 Link.prototype.mouseDown = function(evt) {
     this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.ctrl.force !== undefined){
+    if (this.ctrl.force){
         this.ctrl.force.stop();
     }
     this.ctrl.dragElement = this;
@@ -136,44 +103,21 @@ Link.prototype.showData = function() {
     if (document.getElementById('jsonHeading')) {	
 		document.getElementById('jsonHeading').innerHTML = this.id;
 	} 
-	//~ if ($("#json")) { // json tree depends on jquery
-		//~ $("#json").JSONView(this.evidences.values(), {collapsed: false, nl2br: true});
-		//~ $('#json').JSONView('toggle', 2);
-	//~ } 
-	//~ else {    
-		//~ var linkInfo = this.id;
-		//~ // "<p><strong>" + this.fromInteractor.name + " (" + this.fromInteractor.accession
-				//~ // + ") to " + this.toInteractor.name + " (" + this.toInteractor.accession
-				//~ // + ")</strong></p>";
-		//~ linkInfo += "<pre>" + JSON.stringify(this, null, ' ') + "</pre>";
-		//~ this.ctrl.message(linkInfo);
-	//~ }
+    if (document.getElementById('json')) {	
+		document.getElementById('json').innerHTML = JSON.stringify(this.getFilteredEvidences());
+	} 
 };
 
 Link.prototype.toJSON = function() {
     return {
-        //~ evidences: this.evidences
-        id: this.id
+        id: this.id,
+        evidences: this.evidences
     };
 };
 
-
-
-//~ BinaryLink.prototype.getFilteredEvidences = function() {
-    //~ var seqLinks = this.sequenceLinks.values();
-    //~ var seqLinkCount = seqLinks.length;
-    //~ // use map to eliminate duplicates 
-    //~ // (which result from linked features resulting in multiple SequenceLinks for single interaction)
-    //~ var filteredEvids = d3.map();
-    //~ for (var i = 0; i < seqLinkCount; i++) {
-        //~ var seqLink = seqLinks[i];
-        //~ var seqLinkEvids = seqLink.getFilteredEvidences();
-        //~ var seqLinkEvidCount = seqLinkEvids.length;
-        //~ for (var j = 0; j < seqLinkEvidCount; j++) {
-            //~ filteredEvids.set(seqLinkEvids[j].identifiers[0].db + seqLinkEvids[j].identifiers[0].id, seqLinkEvids[j]);
-        //~ }
-    //~ }
-    //~ return filteredEvids.values();
-//~ };
+Link.prototype.getFilteredEvidences = function() {
+    //TODO - filtering
+    return this.evidences.values();
+};
 
 module.exports = Link;

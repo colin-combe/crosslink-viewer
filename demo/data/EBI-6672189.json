@@ -1,0 +1,107 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P0AFY8"
+            }, 
+            "label": "seqa_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MKTIEVDDELYSYIASHTKHIGESASDILRRMLKFSAASQPAAPVTKEVRVASPAIVEAKPVKTIKDKVRAMRELLLSDEYAEQKRAVNRFMLLLSTLYSLDAQAFAEATESLHGRTRVYFAADEQTLLKNGNQTKPKHVPGTPYWVITNTNTGRKCSMIEHIMQSMQFPAELIEKVCGTI", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "intact", 
+                "id": "EBI-6672067"
+            }, 
+            "label": "hemimeth_dna_random", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0681", 
+                "name": "double stranded deoxyribonucleic acid"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "wwpdb", 
+                    "id": "1xrx"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-6672189"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "1lrr"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1"
+                }
+            ]
+        }
+    ]
+}

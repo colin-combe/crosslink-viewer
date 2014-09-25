@@ -1,0 +1,157 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P63279"
+            }, 
+            "label": "ubc9_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSGIALSRLAQERKAWRKDHPFGFVAVPTKNPDGTMNLMNWECAIPGKKGTPWEGGLFKLRMLFKDDYPSSPPKCKFEPPLFHPNVYPSGTVCLSILEEDKDWRPAITIKQILLGIQELLNEPNIQDPAQAEAYTIYCQNRVEYEKRVRAQAKKFAPS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P63165-PRO_0000035939"
+            }, 
+            "label": "p63165-pro_0000035939", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "SDQEAKPSTEDLGDKKEGEYIKLKVIGQDSSEIHFKVKMTTHLKKLKESYCQRQGVPMNSLRFLFEGQRIADNHTPKELGMEEEDVIEVYQEQTGG", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0471", 
+                    "name": "MINT, Dpt of Biology, University of Rome Tor Vergata"
+                }
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "intenz", 
+                    "id": "EC 6.3.2.-"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9347978"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2vrr"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2pe6"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_165180.2"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2uyz"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "sumo1 binding site (lys14/cys93)", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "14-14"
+                                }, 
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "93-93"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:1125", 
+                                "name": "direct binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "ube2i binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "96-96"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}

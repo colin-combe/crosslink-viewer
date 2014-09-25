@@ -244,6 +244,19 @@ xiNET.setCTM = function(element, matrix) {
 
 xiNET.Controller.prototype.clear = function() {
     this.initComplete = false;
+ 	if (this.force) {
+		this.force.stop();
+	}
+ 	this.force = null;
+    var suspendID = this.svgElement.suspendRedraw(5000);
+    this.emptyElement(this.naryLinks);
+    this.emptyElement(this.p_pLinksWide);
+    this.emptyElement(this.highlights);
+    this.emptyElement(this.p_pLinks);
+    this.emptyElement(this.res_resLinks);
+    this.emptyElement(this.proteinLower);
+    this.emptyElement(this.proteinUpper);
+	this.svgElement.unsuspendRedraw(suspendID);
     
     this.interactors = d3.map();
     
@@ -266,21 +279,11 @@ xiNET.Controller.prototype.clear = function() {
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-
     this.tooltip.setAttribute('visibility', 'hidden');
     this.tooltip_bg.setAttribute('visibility', 'hidden');
 
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
-    //    var suspendID = this.svgElement.suspendRedraw(5000);
-    this.emptyElement(this.naryLinks);
-    this.emptyElement(this.p_pLinksWide);
-    this.emptyElement(this.highlights);
-    this.emptyElement(this.p_pLinks);
-    this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
-    this.emptyElement(this.proteinUpper);
-//    this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.emptyElement = function(element) {

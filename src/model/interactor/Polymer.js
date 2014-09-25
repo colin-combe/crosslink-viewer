@@ -29,7 +29,7 @@ function Polymer(id, xlvController, json) {
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
-    this.selfLinks = null;
+    this.selfLink = null;
     this.sequenceLinks = d3.map();
     this.selfLink = null;
 }

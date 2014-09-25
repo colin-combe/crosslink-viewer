@@ -16,7 +16,7 @@ var Config = require('../../controller/Config');
 var $ = require('jquery-browserify');
 require('jsonview')($);
 
-Interactor.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
+Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
 //~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 //~ Interactor.domainColours = d3.scale.category20c(); //
@@ -42,7 +42,7 @@ Interactor.prototype.toJSON = function() {
 Interactor.prototype.mouseDown = function(evt) {
         this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.ctrl.force !== undefined) {
+        if (this.ctrl.force) {
             this.ctrl.force.stop();
         }
 

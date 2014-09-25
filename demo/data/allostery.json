@@ -1,0 +1,257 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9Y3Y4"
+            }, 
+            "label": "Pygo1", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O00512"
+            }, 
+            "label": "Bcl9", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0363", 
+                    "name": "inferred by author"
+                }, 
+                "host": {
+                    "common": "Human", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "18498752"
+                    }
+                ]
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "rcsb pdb", 
+                    "id": "2VPD"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "InterPro": "IPR019787", 
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "Zinc finger, PHD-finger", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "333-398"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "174-205"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "id": "6", 
+            "identifier": {
+                "db": "intact", 
+                "id": "EBI-6146769"
+            }, 
+            "label": "H3K4me2", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "sequence": "ARTKQTARK", 
+            "type": {
+                "id": "MI:0327", 
+                "name": "peptide"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0363", 
+                    "name": "inferred by author"
+                }, 
+                "host": {
+                    "common": "Human", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "18498752"
+                    }
+                ]
+            }, 
+            "id": "7", 
+            "identifiers": [
+                {
+                    "db": "rcsb pdb", 
+                    "id": "2VPE"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "parameters": [
+                {
+                    "type": "Kd", 
+                    "unit": "M", 
+                    "value": "11.4x10^(-6) ~1.1"
+                }
+            ], 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "InterPro": "IPR019787", 
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "Zinc finger, PHD-finger", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "333-398"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "3", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "6", 
+                                    "pos": "1-7"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "6", 
+                    "ptms": [
+                        {
+                            "id": "10", 
+                            "name": "required-dimethyllys4", 
+                            "role": {
+                                "id": "MI:0638", 
+                                "name": "prerequisite-ptm"
+                            }, 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "6", 
+                                    "pos": "4-4"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MOD:00429", 
+                                "name": "dimethylated residue"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}
