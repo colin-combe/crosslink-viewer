@@ -55,6 +55,7 @@ Link.prototype.mouseDown = function(evt) {
     //store start location
     var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
     this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+    this.showData();
     return false;
 }
 
@@ -95,6 +96,7 @@ Link.prototype.touchStart = function(evt) {
     //store start location
     var p = this.ctrl.getTouchEventPoint(evt);// seems to be correct, see above
     this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+    this.showData();
     return false;
 }
 
@@ -104,7 +106,8 @@ Link.prototype.showData = function() {
 		document.getElementById('jsonHeading').innerHTML = this.id;
 	} 
     if (document.getElementById('json')) {	
-		document.getElementById('json').innerHTML = JSON.stringify(this.getFilteredEvidences());
+		document.getElementById('json').innerHTML = 
+			"<pre>" + JSON.stringify(this.filteredEvidence(), null, ' ') + "</pre>";
 	} 
 };
 
@@ -115,7 +118,7 @@ Link.prototype.toJSON = function() {
     };
 };
 
-Link.prototype.getFilteredEvidences = function() {
+Link.prototype.filteredEvidence = function() {
     //TODO - filtering
     return this.evidences.values();
 };

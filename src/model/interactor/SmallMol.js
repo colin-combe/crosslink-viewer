@@ -56,7 +56,6 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.stickZoom = 1;
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isParked = false;
-    this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
     this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
@@ -75,8 +74,8 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
       //invariant attributes
-    if (xiNET.highlightColour !== undefined) {
-        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    if (Config.highlightColour !== undefined) {
+        this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
 	}
     this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
@@ -140,33 +139,16 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
 	this.outline = document.createElementNS(Config.svgns, "rect");
 	
-	    //make blob
-    //~ if (this.accession.indexOf("CHEBI") !== -1) {
-        this.outline = document.createElementNS(Config.svgns, "polygon");
-        this.outline.setAttribute("points", points);
-        //~ this.blobHighlight = document.createElementNS(Config.svgns, "polygon");
-        //~ this.blobHighlight.setAttribute("points", points);
-        //~ this.parked = document.createElementNS(Config.svgns, "polygon");
-        //~ this.parked.setAttribute("points", points);
-    //~ }
-	
+	//make blob
+	this.outline = document.createElementNS(Config.svgns, "polygon");
+	this.outline.setAttribute("points", points);
+   
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("x", -r).attr("y", -r)
-			.attr("rx", r).attr("ry", r);
+			.attr("fill", "#ffffff");
     //append outline
     this.upperGroup.appendChild(this.outline);
-    
-    //domains as pie slices - shown on top of everything
-	this.circDomains = document.createElementNS(Config.svgns, "g");
-    //~ this.circDomains.setAttribute("class", "protein circDomains");
-	this.circDomains.setAttribute("opacity", 1);
-	this.upperGroup.appendChild(this.circDomains);
-
-    this.scaleLabels = new Array();
 
     // events
     var self = this;
@@ -210,23 +192,23 @@ SmallMol.prototype.getBlobRadius = function() {
 };
 
 SmallMol.prototype.setParked = function(bool, svgP) {
-    if (this.busy !== true) {
-		if (this.isParked === true && bool == false) {
-			this.isParked = false;
-			if (this.form === 0) {
-				this.toBlob(svgP);
-			}
-			else {
-				this.toStick();
-			}
-			this.scale();
-			this.setAllLineCoordinates();
-		}
-		else if (this.isParked === false && bool == true) {
-			this.isParked = true;
-			this.toParked(svgP);
-		}
-	}
+    //~ if (this.busy !== true) {
+		//~ if (this.isParked === true && bool == false) {
+			//~ this.isParked = false;
+			//~ if (this.form === 0) {
+				//~ this.toBlob(svgP);
+			//~ }
+			//~ else {
+				//~ this.toStick();
+			//~ }
+			//~ this.scale();
+			//~ this.setAllLineCoordinates();
+		//~ }
+		//~ else if (this.isParked === false && bool == true) {
+			//~ this.isParked = true;
+			//~ this.toParked(svgP);
+		//~ }
+	//~ }
 };
 
 SmallMol.prototype.setForm = function(form, svgP) {
@@ -234,28 +216,28 @@ SmallMol.prototype.setForm = function(form, svgP) {
 
 
 SmallMol.prototype.toParked = function(svgP) {   
-    var c = this.links.values().length;
-    for (var l = 0; l < c; l++) {
-        var link = this.links.values()[l];
-        //out with the old (i.e. all links)
-        link.hide();
-		if (link.sequenceLinks) {
-			var resLinks = link.sequenceLinks.values();
-			var resLinkCount = resLinks.length; 
-			for (var rl = 0; rl < resLinkCount; rl++) {
-				var resLink = resLinks[rl];
-				resLink.hide();
-			}
-		}
-	}       
-    
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0)
-			.attr("fill", "#EEEEEE")
-			.duration(SmallMol.transitionTime);	
-		d3.select(this.circDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(SmallMol.transitionTime);	
+    //~ var c = this.links.values().length;
+    //~ for (var l = 0; l < c; l++) {
+        //~ var link = this.links.values()[l];
+        //~ //out with the old (i.e. all links)
+        //~ link.hide();
+		//~ if (link.sequenceLinks) {
+			//~ var resLinks = link.sequenceLinks.values();
+			//~ var resLinkCount = resLinks.length; 
+			//~ for (var rl = 0; rl < resLinkCount; rl++) {
+				//~ var resLink = resLinks[rl];
+				//~ resLink.hide();
+			//~ }
+		//~ }
+	//~ }       
+    //~ 
+		//~ d3.select(this.outline).transition()
+			//~ .attr("stroke-opacity", 0)
+			//~ .attr("fill", "#EEEEEE")
+			//~ .duration(SmallMol.transitionTime);	
+		//~ d3.select(this.circDomains).transition().attr("opacity", 0)
+			//~ .attr("transform", "scale(1, 1)")
+			//~ .duration(SmallMol.transitionTime);	
 };
 
 module.exports = SmallMol;

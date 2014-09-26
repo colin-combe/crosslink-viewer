@@ -10,8 +10,8 @@
 
 "use strict";
 
-var RGBColor = require('../../vendor/rgbcolor');
-var d3 = require('../../node_modules/d3/');
+var RGBColor = require('../../vendor/rgbcolor');//maybe remove this
+var d3 = require('../../node_modules/d3/');// ../../vendor/d3?
 var Interactor = require('../model/interactor/Interactor');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');

@@ -67,14 +67,14 @@ var autoLayout = function(width, height) {
     var proteinCount = this.interactors.keys().length;
     if (proteinCount === 1) {
         var protein = this.interactors.values()[0];
-        protein.setPosition(width / 2, height / 4 * 3);
+        protein.setPosition(width / 2, height / 2);
         return;
     }
     else if (proteinCount === 2) {
         var p1 = this.interactors.values()[0];
-        p1.setPosition(width / 2, height / 2);
+        p1.setPosition(width / 2, height / 3 * 2);
         var p2 = this.interactors.values()[1];
-        p2.setPosition(width / 2, height - 32);
+        p2.setPosition(width / 2, height / 3 * 1);
         return;
     }
     else {

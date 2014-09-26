@@ -42,12 +42,6 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.initSVG();
 }
 
-SequenceLink.prototype.addEvidence = function(interaction) {
-	if (this.evidences.has(interaction.id) === false) {
-		this.evidences.set(interaction.id, interaction);
-	}
-};
-
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
         this.glyph = document.createElementNS(Config.svgns, "path");
@@ -147,90 +141,25 @@ SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
     //~ }
 };
 
-//used when link clicked
-SequenceLink.prototype.showID = function() {
-    var fromInt = this.fromInteractor;
-    var toInt = this.toInteractor;
-    var linkInfo = "<p><strong>" + fromInt.name + " (" + fromInt.accession
-            + ") to" + ' ' + toInt.name + " (" + toInt.accession
-            + ")</strong></p><p><strong>" + this.id + "</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
-    this.ctrl.message(linkInfo);
-};
-
 //used when filter changed
-SequenceLink.prototype.check = function(filter) {
- 	   //~ var filteredEvids = this.getFilteredEvidences();
-    //~ var evidCount = filteredEvids.length;
-    //~ if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
-        //~ this.hide();
-        //~ return false;
-    //~ }
-    //~ else {
-//~ //        this.ambig = true;
-//~ //        for (var i = 0; i < evidCount; i++) {
-//~ //            var evid = filteredEvids[i];
-//~ //            if (typeof evid.expansion === 'undefined') {
-//~ //                this.ambig = false;
-//~ //            }
-//~ //        } 
-//~ 
-//~ //            //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-//~ 
-//~ //            //thickLine
-//~ //            if (evidCount > 1) {
-//~ //                this.thickLineShown = true
-//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
-//~ //            }
-//~ //            else {
-//~ ////                this.thickLineShown = false;
-//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
-//~ //            }
-//~ //            //ambig?
-//~ //            this.dashedLine(this.ambig);
-
+SequenceLink.prototype.check = function() {
+    if (this.filteredEvidence().length > 0 && this.anyInteractorIsBar() === true) {
         this.show();
         return true;
-    //~ }
+	} else {
+		this.hide();
+		return false;
+	}
 };
 
-SequenceLink.prototype.getFilteredEvidences = function() {
-    var evids = this.evidences;
-    var evidCount = evids.length;
-    var filteredEvids = new Array();
-    for (var i = 0; i < evidCount; i++) {
-        var evid = evids[i];
-        if ((this.ctrl.hideExpanded === false || typeof evid.expansion === 'undefined')
-                && (typeof evid.score === 'undefined' || evid.score >= this.ctrl.cutOff)) {
-            filteredEvids.push(evid);
-        }
-    }
-    return filteredEvids;
+SequenceLink.prototype.anyInteractorIsBar = function() {
+	var ic = this.interactors.length;
+	for (var i = 0; i < ic; i++) {
+		if (this.interactors[i].form === 1) {
+			return true;
+		}
+	}
+    return false;
 };
 
 SequenceLink.prototype.show = function() {

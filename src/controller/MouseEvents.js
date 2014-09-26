@@ -231,7 +231,7 @@ var mouseUp = function(evt) {
                 }
                 else { //left click; show matches for link, toggle form for protein, switch stick scale
                     if (typeof this.dragElement.x === 'undefined') { //if not protein
-                        this.dragElement.showData();
+                        //~ this.dragElement.showData();
                     } else if (evt.shiftKey) { //if shift key
                         this.dragElement.switchStickScale(c);
                     } else {
@@ -267,12 +267,12 @@ var mouseUp = function(evt) {
             clearInterval(this.marcher);
             this.svgElement.removeChild(this.marquee);
         }
-    }
-        this.svgElement.unsuspendRedraw(suspendID);
-
-        this.dragElement = null;
-        this.whichRotator = -1;
-        this.state = MouseEventCodes.MOUSE_UP;
+		this.svgElement.unsuspendRedraw(suspendID);
+	}
+        
+	this.dragElement = null;
+	this.whichRotator = -1;
+	this.state = MouseEventCodes.MOUSE_UP;
 
     this.lastMouseUp = time;
     return false;
@@ -312,7 +312,7 @@ var mouseWheel = function(evt) {
     var p = this.getEventPoint(evt);// seems to be correct, see above
     var c = this.mouseToSVG(p.x, p.y);
     var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    xiNET.setCTM(g, g.getCTM().multiply(k));
+    setCTM(g, g.getCTM().multiply(k));
     this.scale();
     return false;
 };

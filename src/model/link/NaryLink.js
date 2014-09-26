@@ -7,7 +7,7 @@
 //      author: Colin Combe, Josh Heimbach
 //
 //		NaryLink.js
-//		graphically represents n-ary interaction
+//		graphically represents n-ary interactions
 
 "use strict";
 
@@ -37,118 +37,26 @@ function NaryLink(id, xlvController) {
     this.hidden = false;
 }
 
-//~ NaryLink.prototype.addEvidence = function(interaction) { 
-    //~ if (this.evidences.has(interaction.id) === false) {
-        //~ this.evidences.set(interaction.id, interaction);   
-        //~ var participants = interaction.participants;
-        //~ var participantCount = participants.length    
-        //~ for (var pi = 0; pi < participantCount; pi++){
-			//~ var participant = participants[pi];
-			//var features = (participant.experimentalFeatures)? participant.experimentalFeatures : new Array(0); // ur here 
-			//~ var features = new Array(0); 
-			//~ if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
-			//~ if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
-			//~ var fCount = features.length;
-			//~ for (var f = 0; f < fCount; f++){
-				//~ var feature = features[f];
-				//~ var fromSequenceData = feature.sequenceData;
-				//~ if (feature.linkedFeatures) {
-					//~ var linkedFeatureIDs = feature.linkedFeatures;
-					//~ 
-					//~ var toSequenceData = new Array();
-					//~ var linkedFeatureCount = linkedFeatureIDs.length;
-					//~ for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
-						//~ var linkedFeature = this.ctrl.features.get(linkedFeatureIDs[lfi]);
-						//~ toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
-					//~ }
-					//~ 
-					//~ //TODO: *not dealing with non-contigouous features*
-					//~ 
-					//~ //sequence link
-					//~ var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
-					//~ var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
-					//~ var seqLinkId;
-					//~ if (start < end){
-						//~ seqLinkId  =  start + '><' + end;
-					//~ } else {
-						//~ seqLinkId = end + '><' + start;
-					//~ }
-					//~ 
-					//~ var sequenceLink = this.ctrl.allSequenceLinks.get(seqLinkId);
-					//~ if (typeof sequenceLink === 'undefined') {
-						//~ sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, this.ctrl, interaction);
-						//~ this.ctrl.allSequenceLinks.set(seqLinkId, sequenceLink);
-					//~ }
-					//~ sequenceLink.addEvidence(interaction);	
-					//~ sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
-					//~ sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
-					//~ 
-					//~ //binaryLink / /unaryLink
-					//~ var linkID, fi, ti;   
-					//~ // these links are undirected and should have same ID regardless of which way round 
-					//~ // source and target are
-					//~ if (sequenceLink.fromInteractor.id  < sequenceLink.toInteractor.id) {
-						//~ linkID = sequenceLink.fromInteractor.id + '-' + sequenceLink.toInteractor.id;
-						//~ fi = sequenceLink.fromInteractor;
-						//~ ti = sequenceLink.toInteractor;
-					//~ } else {
-						//~ linkID = "-" + sequenceLink.toInteractor.id + '-' + sequenceLink.fromInteractor.id;
-						//~ fi = sequenceLink.toInteractor;
-						//~ ti = sequenceLink.fromInteractor;
-					//~ }	
-					//~ 
-										//~ 
-					//~ var link;
-					//~ if (sequenceLink.fromInteractor === sequenceLink.toInteractor){
-						//~ link = this.ctrl.allUnaryLinks.get(linkID);
-						//~ if (typeof link === 'undefined') {
-							//~ link = new UnaryLink(linkID, this.ctrl);
-							//~ fi.selfLink = link;
-							//~ link.fromInteractor = fi;
-							//~ link.initSVG();
-							//~ this.ctrl.allUnaryLinks.set(linkID, link);
-						//~ }
-						//~ this.unaryLinks.set(linkID, link);
-					//~ }
-					//~ else {
-						//~ link = this.ctrl.allBinaryLinks.get(linkID);
-						//~ if (typeof link === 'undefined') {
-							//~ link = new BinaryLink(linkID, this.ctrl, fi, ti);
-							//~ fi.binaryLinks.set(linkID, link);
-							//~ ti.binaryLinks.set(linkID, link);
-							//~ this.ctrl.allBinaryLinks.set(linkID, link);
-						//~ }
-						//~ this.binaryLinks.set(linkID, link);
-					//~ }
-					//~ link.interactors = sequenceLink.interactors;//hack
-					//link.addEvidence(interaction);
-				//~ }			
-			//~ }	
-        //~ }           
-    //~ }
-//~ };
-
 NaryLink.prototype.initSVG = function() {
-
-    this.rect = document.createElementNS(Config.svgns, "path");
-    this.rect.setAttribute('fill', NaryLink.naryColours(this.id));
-    this.rect.setAttribute('opacity', 0.4);
-    this.rect.setAttribute('stroke', NaryLink.naryColours(this.id));
-    this.rect.setAttribute('stroke-linejoin', 'round');
-    this.rect.setAttribute('stroke-width', 40);
+    this.path = document.createElementNS(Config.svgns, "path");
+    this.path.setAttribute('fill', NaryLink.naryColours(this.id));
+    this.path.setAttribute('opacity', 0.3);
+    this.path.setAttribute('stroke', NaryLink.naryColours(this.id));
+    this.path.setAttribute('stroke-linejoin', 'round');
+    this.path.setAttribute('stroke-width', 40);
 
     //set the events for it
     var self = this;
-    this.rect.onmousedown = function(evt) {
+    this.path.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
-    this.rect.onmouseover = function(evt) {
+    this.path.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
-    this.rect.onmouseout = function(evt) {
+    this.path.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-    this.rect.ontouchstart = function(evt) {
+    this.path.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
 };
@@ -166,13 +74,7 @@ NaryLink.prototype.showHighlight = function(show) {
 
 
 NaryLink.prototype.check = function() {
-    this.show();
-    //~ var subLinks = this.sequenceLinks.values();
-    //~ var slCount = subLinks.length ;
-    //~ console.log("here");
-	//~ for (var sli = 0; sli < slCount; sli++){
-		//~ subLinks[sli].check();
-	//~ }       
+    this.show();  
     return true;
 };
 
@@ -180,12 +82,12 @@ NaryLink.prototype.show = function() {
     if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
-            if (typeof this.rect === 'undefined') {
+            if (typeof this.path === 'undefined') {
                 this.initSVG();
             }
-            // this.rect.setAttribute("stroke-width", this.ctrl.z * 1);
+            // this.path.setAttribute("stroke-width", this.ctrl.z * 1);
             this.setLinkCoordinates();
-            this.ctrl.naryLinks.appendChild(this.rect);
+            this.ctrl.naryLinks.appendChild(this.path);
         }
     }
 };
@@ -197,7 +99,7 @@ NaryLink.prototype.hide = function() {
             //~ this.ctrl.p_pLinksWide.removeChild(this.thickLine);
         //~ }
         //this.ctrl.highlights.removeChild(this.highlightLine);
-        //~ this.ctrl.p_pLinks.removeChild(this.rect);
+        //~ this.ctrl.p_pLinks.removeChild(this.path);
     //~ }
 };
 
@@ -213,9 +115,9 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
             // A single point SVG path does not get stroked, so the browser won't render something like the following:
             // return "M" + values[0] + "L" + values[0] + "Z";
             // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
-				// Col says - yes, we might care. E.g. case where id of an Unary interaction is 
-				//given as interactor in another interacton (interaction with a homodimer) 
-            // Just something to think about!
+            
+            //josh, see hack in getMappedCoordinates()
+            
             return;
         }
 
@@ -235,17 +137,46 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 
     if (this.shown) {//don't waste time changing DOM if link not visible
 
-        var interactors = this.interactors;
+      
+        //~ var mapped = interactors.map(function(i) {
+            //~ return i.getPosition();
+        //~ });
 
-        var mapped = interactors.map(function(i) {
-            return i.getPosition();
-        });
+		var mapped = this.getMappedCoordinates();
 
         var hullValues = calculateHullPath(mapped);
         if (hullValues) {
-            this.rect.setAttribute('d', hullValues);
+            this.path.setAttribute('d', hullValues);
         }
+        else {
+		    this.path.setAttribute('d', '');	//shouldn't happen
+		}
     }
 };
+
+NaryLink.prototype.getMappedCoordinates = function() {
+	var interactors = this.interactors;
+	var mapped = new Array();
+	var ic = interactors.length;
+	for (var i = 0; i < ic; i ++) {
+		var interactor = interactors[i];
+		if (interactor.form === 1){
+			var start = interactor.getResidueCoordinates(0);
+			var end = interactor.getResidueCoordinates(interactor.size);
+			if (!isNaN(start[0]) && !isNaN(start[1]) && 
+								!isNaN(end[0]) && !isNaN(end[1])){
+				mapped.push(start);
+				mapped.push(end);
+			} else {
+				mapped.push(interactor.getPosition());
+			}
+		} else {
+			mapped.push(interactor.getPosition());
+		}
+	}
+	//hack
+	if (mapped.length === 1) mapped.push(interactors[0].getPosition());
+	return mapped;
+}
 
 module.exports = NaryLink;

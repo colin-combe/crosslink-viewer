@@ -625,44 +625,44 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 };
 
 Polymer.prototype.toParked = function(svgP) {   
-    var c = this.links.values().length;
-    for (var l = 0; l < c; l++) {
-        var link = this.links.values()[l];
-        //out with the old (i.e. all links)
-        link.hide();
-		if (link.sequenceLinks) {
-			var resLinks = link.sequenceLinks.values();
-			var resLinkCount = resLinks.length; 
-			for (var rl = 0; rl < resLinkCount; rl++) {
-				var resLink = resLinks[rl];
-				resLink.hide();
-			}
-		}
-    }       
-    
-    if (this.form === 1){
-		this.toCircle(svgP);
-		var r = this.getBlobRadius();
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0).attr("fill-opacity", 1)
-			.attr("fill", "#EEEEEE")
-			.attr("x", -r).attr("y", -r)
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("rx", r).attr("ry", r)
-			.duration(Polymer.transitionTime);	
-		d3.select(this.rectDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Polymer.transitionTime);
-	}
-	else {
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0)
-			.attr("fill", "#EEEEEE")
-			.duration(Polymer.transitionTime);	
-		d3.select(this.circDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Polymer.transitionTime);	
-	}
+    //~ var c = this.links.values().length;
+    //~ for (var l = 0; l < c; l++) {
+        //~ var link = this.links.values()[l];
+        //~ //out with the old (i.e. all links)
+        //~ link.hide();
+		//~ if (link.sequenceLinks) {
+			//~ var resLinks = link.sequenceLinks.values();
+			//~ var resLinkCount = resLinks.length; 
+			//~ for (var rl = 0; rl < resLinkCount; rl++) {
+				//~ var resLink = resLinks[rl];
+				//~ resLink.hide();
+			//~ }
+		//~ }
+    //~ }       
+    //~ 
+    //~ if (this.form === 1){
+		//~ this.toCircle(svgP);
+		//~ var r = this.getBlobRadius();
+		//~ d3.select(this.outline).transition()
+			//~ .attr("stroke-opacity", 0).attr("fill-opacity", 1)
+			//~ .attr("fill", "#EEEEEE")
+			//~ .attr("x", -r).attr("y", -r)
+			//~ .attr("width", r * 2).attr("height", r * 2)
+			//~ .attr("rx", r).attr("ry", r)
+			//~ .duration(Polymer.transitionTime);	
+		//~ d3.select(this.rectDomains).transition().attr("opacity", 0)
+			//~ .attr("transform", "scale(1, 1)")
+			//~ .duration(Polymer.transitionTime);
+	//~ }
+	//~ else {
+		//~ d3.select(this.outline).transition()
+			//~ .attr("stroke-opacity", 0)
+			//~ .attr("fill", "#EEEEEE")
+			//~ .duration(Polymer.transitionTime);	
+		//~ d3.select(this.circDomains).transition().attr("opacity", 0)
+			//~ .attr("transform", "scale(1, 1)")
+			//~ .duration(Polymer.transitionTime);	
+	//~ }
 };
 
 Polymer.prototype.toStick = function() {

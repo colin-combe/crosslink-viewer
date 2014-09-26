@@ -10,32 +10,21 @@
 
 "use strict";
 
-var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
+var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');//Josh - should path for this be ../../../vendor...?
 var Annotation = require('./Annotations');
 var Config = require('../../controller/Config');
-var $ = require('jquery-browserify');
-require('jsonview')($);
+//~ var $ = require('jquery-browserify');
+//~ require('jsonview')($);
 
 Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
-//~ Interactor.domainColours = d3.scale.category20c(); //
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
-//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
 
-function Interactor(id, xlvController, json) {
-    this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.ctrl = xlvController;
-    this.json = json;  
-    //~ this.features = d3.map();
-}
+function Interactor() {}
 
 Interactor.prototype.toJSON = function() {
     return {
         interactor: this.json
-		//~ id: this.id
     };
 };
 
@@ -82,18 +71,18 @@ Interactor.prototype.touchStart = function(evt) {
 
 Interactor.prototype.showData = function(evt) {
     if (document.getElementById('jsonHeading')) {	
-		document.getElementById('jsonHeading').innerHTML = this.json.label;
+		document.getElementById('jsonHeading').innerHTML = this.id;
 	} 
-	//~ if ($ && $("#json")) { // json tree depends on jquery
-		//~ $("#json").JSONView({interactor:this.json, features: this.features.values()}, {collapsed: false, nl2br: true});
-		//~ $('#json').JSONView('toggle', 2);
-	//~ }	
+    if (document.getElementById('json')) {	
+		document.getElementById('json').innerHTML = 
+			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
+	} 
 }
 
 Interactor.prototype.mouseOver = function(evt) {
         this.ctrl.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.ctrl.setTooltip(this.tooltip);
+        this.ctrl.setTooltip(this.id);
         return false;
 };
 
@@ -136,12 +125,6 @@ Interactor.prototype.getBlobRadius = function() {
         //~ flipped: this.isFlipped,
         //~ annot: this.customAnnotations
     //~ };
-//~ };
-
-//~ Interactor.prototype.addLink = function(link) {
-    //~ if (!this.links.has(link.id)) {
-        //~ this.links.set(link.id, link);
-    //~ }
 //~ };
 
 Interactor.prototype.addFeature = function(feature) {
@@ -230,15 +213,16 @@ Interactor.prototype.setPosition = function(x, y) {
 				+ " scale(" + (this.ctrl.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.ctrl.z) + ") ");
-		if (this.internalLink != null) {
-			if (typeof this.internalLink.thickLine !== 'undefined') {
-				this.internalLink.thickLine.setAttribute("transform", "translate(" + this.x
+		if (this.selfLink != null) {
+			var selfLink = this.selfLink;
+			if (typeof selfLink.thickLine !== 'undefined') {
+				selfLink.thickLine.setAttribute("transform", "translate(" + this.x
 						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
 			}
-				this.internalLink.line.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			selfLink.line.setAttribute("transform", "translate(" + this.x
+					+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			selfLink.highlightLine.setAttribute("transform", "translate(" + this.x
+					+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
 		}
 	}
 };
@@ -293,6 +277,7 @@ Interactor.prototype.checkLinks = function() {
 	}    
     checkAll(this.naryLinks);
     checkAll(this.binaryLinks);
+    checkAll(this.sequenceLinks);
     if (this.selfLink !== null) {
 		this.selfLink.check();
 	}
