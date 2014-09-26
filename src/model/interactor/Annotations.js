@@ -8,15 +8,13 @@
 
 "use strict";
 
-//~ var RGBColor = require('../../../vendor/rgbcolor');
-
 //constructor for annotations
 function Annotation(annotName, startRes, endRes, colour, notes) {
     this.name = annotName;
     this.start = startRes;
     this.end = endRes;
     if (colour !== undefined && colour !== null) {
-        this.colour = colour;//new RGBColor(colour);
+        this.colour = colour;
     }
     this.notes = notes;
 }

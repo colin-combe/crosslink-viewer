@@ -35,6 +35,8 @@ function NaryLink(id, xlvController) {
     this.shown = false;
     //layout stuff
     this.hidden = false;
+    
+    this.initSVG();
 }
 
 NaryLink.prototype.initSVG = function() {
@@ -136,21 +138,11 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
     };
 
     if (this.shown) {//don't waste time changing DOM if link not visible
-
-      
-        //~ var mapped = interactors.map(function(i) {
-            //~ return i.getPosition();
-        //~ });
-
 		var mapped = this.getMappedCoordinates();
-
         var hullValues = calculateHullPath(mapped);
         if (hullValues) {
             this.path.setAttribute('d', hullValues);
         }
-        else {
-		    this.path.setAttribute('d', '');	//shouldn't happen
-		}
     }
 };
 
@@ -174,7 +166,7 @@ NaryLink.prototype.getMappedCoordinates = function() {
 			mapped.push(interactor.getPosition());
 		}
 	}
-	//hack
+	//hack - not saying this best way to deal with this
 	if (mapped.length === 1) mapped.push(interactors[0].getPosition());
 	return mapped;
 }

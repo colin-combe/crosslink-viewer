@@ -33,21 +33,9 @@ SmallMol.prototype.toJSON = function() {
     };
 };
 
-SmallMol.prototype.initInteractor = function(sequence, name, description, size)
+SmallMol.prototype.initInteractor = function(name)
 {
-    this.accession = this.json.identifier.id;
     this.name = name;
-    this.organism = this.json.organism;
-	
-	this.size = 10;//HACK
-	
-    this.description = description;
-    this.tooltip = this.description;
-    if (this.name == null) {
-        this.name = name;
-    }
-   
-     this.internalLink = null;
     // layout info
     this.x = null;
     this.y = null;
@@ -57,11 +45,12 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isParked = false;
     this.isSelected = false;
+    
+    this.size = 10;//layout is using this
+    
     //annotation scheme
     this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
 	    
-	var r = this.getBlobRadius();
-
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -73,11 +62,8 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
-      //invariant attributes
-    if (Config.highlightColour !== undefined) {
-        this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
-	}
-    this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("stroke", Config.highlightColour);
+	this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
     //this.highlight.setAttribute("fill-opacity", 1);   
     //attributes that may change
@@ -108,33 +94,14 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-    //choose label text
-    if (this.name !== null & this.name !== "") {
-        this.labelText = this.name;
-    }
-    else if (description != null & description !== "") {
-        this.labelText = description;
-        this.name = description;
-    }
-    else if (this.accession != null & this.accession !== "") {
-        this.labelText = this.accession;
-    }
-    else {
-		this.labelText  = this.id;
-	}
-    if (this.labelText.length > 25) {
-        this.labelText = this.labelText.substr(0, 16) + "...";
-    }
-    if (typeof this.labeling !== 'undefined') {
-        this.labelText = '[' + this.labeling + '] ' + this.labelText;
-    }
+    
+    this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (r + 5) + " " + Interactor.labelY + ")");
+		"translate( -" + (15) + " " + Interactor.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
-   	
-     
+   	 
 	//make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
 	this.outline = document.createElementNS(Config.svgns, "rect");
@@ -187,33 +154,8 @@ SmallMol.prototype.initInteractor = function(sequence, name, description, size)
     this.isSelected = false;
 };
 
-SmallMol.prototype.getBlobRadius = function() {
-    return 10;
-};
-
-SmallMol.prototype.setParked = function(bool, svgP) {
-    //~ if (this.busy !== true) {
-		//~ if (this.isParked === true && bool == false) {
-			//~ this.isParked = false;
-			//~ if (this.form === 0) {
-				//~ this.toBlob(svgP);
-			//~ }
-			//~ else {
-				//~ this.toStick();
-			//~ }
-			//~ this.scale();
-			//~ this.setAllLineCoordinates();
-		//~ }
-		//~ else if (this.isParked === false && bool == true) {
-			//~ this.isParked = true;
-			//~ this.toParked(svgP);
-		//~ }
-	//~ }
-};
-
 SmallMol.prototype.setForm = function(form, svgP) {
 };
-
 
 SmallMol.prototype.toParked = function(svgP) {   
     //~ var c = this.links.values().length;

@@ -46,7 +46,7 @@ var autoLayout = function(width, height) {
             reorderedNodes.push(currentNode.id);
             for (var l = 0; l < currentNode.links.values().length; l++) {
                 var link = currentNode.links.values()[l];
-                if (link.isBinary && link.check() === true) {
+                if (/*link.isBinary && */link.check() === true) {
                     var nextNode = link.getOtherEnd(currentNode);
                     if (reorderedNodes.indexOf(nextNode.id) === -1) {
                         //                    alert("here");
@@ -163,11 +163,12 @@ var autoLayout = function(width, height) {
                         y = yForRow(row);
                         var lastNodeY = yForRow(row + ((nodeCount - n) * 2));
                         if ((lastNodeY + this.maxBlobRadius) > height) {
-                            column++;
                             row = 1;
-                            if (proteinCount < 60) {
+                            column++;
+                            if (((column - 0.5) % 2) === 0) {row += 1} 
+                            //~ if (proteinCount < 60) {
                                 row++;
-                            }
+                            //~ }
                             x = xForColumn(column);
                             y = yForRow(row);
                         }
@@ -218,8 +219,9 @@ var autoLayout = function(width, height) {
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
                 var protein = this.interactors.get(node.id);
-                var nx = node.x;
-                var ny = node.y;
+                var nx = node.x + Math.random - 0.5;
+                var ny = node.y + Math.random - 0.5;
+                
                 protein.setPosition(nx + this.layoutXOffset, ny);
                 protein.setAllLineCoordinates(false);
             }
@@ -260,9 +262,9 @@ var autoLayout = function(width, height) {
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
 //            if (link.check() === true) { //not needed due to way subgraphs init'ed
-               if (link.isBinary === true){
-					var fromProt = link.fromInteractor;
-					var toProt = link.toInteractor;
+               //~ if (link.isBinary === true){
+					var fromProt = link.interactors[0];
+					var toProt = link.interactors[1];
 					var source = protLookUp[fromProt.id];
 					var target = protLookUp[toProt.id];
 
@@ -279,7 +281,7 @@ var autoLayout = function(width, height) {
 							alert("NOT RIGHT");
 						}
 					}
-				} else {
+				//~ } else {
 					//~ for (var i = 0; i < link.evidences.values().length; i++) {
 					//~ var participants = link.evidences.values()[i].participants;
 					//~ var participantCount = participants.length; 
@@ -300,7 +302,7 @@ var autoLayout = function(width, height) {
 						//~ }				
 					//~ }
 				//~ }
-				}
+				//~ }
                 //        } // closing unused link.check()
             }
         }

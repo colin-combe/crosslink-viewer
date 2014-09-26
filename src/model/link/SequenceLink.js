@@ -61,7 +61,7 @@ SequenceLink.prototype.initSVG = function() {
         this.uncertainGlyph.setAttribute("fill-opacity", "0.3");
         this.highlightGlyph.setAttribute("class", "link");
         this.highlightGlyph.setAttribute("fill", "none");
-        this.highlightGlyph.setAttribute("stroke", Config.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke", Config.highlightColour);
         this.highlightGlyph.setAttribute("stroke-width", "10");
         this.highlightGlyph.setAttribute("stroke-opacity", "0");
         if (typeof this.colour !== 'undefined') {
@@ -87,12 +87,12 @@ SequenceLink.prototype.initSVG = function() {
         };
         this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.removeChild(self.glyph);
-            self.ctrl.res_resLinks.appendChild(self.glyph);
-            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.glyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.glyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -163,13 +163,9 @@ SequenceLink.prototype.anyInteractorIsBar = function() {
 };
 
 SequenceLink.prototype.show = function() {
-  			  if (this.ctrl.initComplete) {
+  	if (this.ctrl.initComplete) {
         if (!this.shown) {
-
-            this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
+			this.shown = true;
             this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);

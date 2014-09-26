@@ -183,14 +183,14 @@ Interactor.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.ctrl.selected.set(this.id, this);
         this.isSelected = true;
-		this.highlight.setAttribute("stroke", Config.selectedColour.toRGB());
+		this.highlight.setAttribute("stroke", Config.selectedColour);
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.ctrl.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
-		this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
+		this.highlight.setAttribute("stroke", Config.highlightColour);
     }
 };
 
@@ -303,29 +303,6 @@ Interactor.prototype.setAllLineCoordinates = function() {
     for (var l = 0; l < c; l++) {
         links[l].setLinkCoordinates(this);
     }    
-    
-       //~ 
-    //~ var links = this.links.values();
-    //~ var c = links.length;
-    //~ for (var l = 0; l < c; l++) {
-        //~ var link = links[l];
-        //~ link.setLinkCoordinates(this);
-        //~ if (link.fromInteractor){//TEMP
-			//~ if (link.fromInteractor.form === 0 && link.toInteractor.form === 0) {
-				//~ link.setLinkCoordinates(this);
-			//~ }
-			//~ else {
-				//~ var resLinks = link.subLinks.values();
-				//~ var resLinkCount = resLinks.length;
-				//~ for (var rl = 0; rl < resLinkCount; rl++) {
-					//~ resLinks[rl].setLinkCoordinates(this);
-				//~ }
-			//~ }
-		//~ } 
-		//~ // else {
-			//~ // link.setLinkCoordinates(this);
-		//~ // }
-    //~ }
 };
 
 Interactor.prototype.countExternalLinks = function() {
@@ -612,32 +589,7 @@ Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     //~ console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
         //~ + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
     return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-        + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z";
-        
-        
-    //~ 
-            //~ //make pie slice
-//~ 
-            //~ var startAngle = i * sliceAngleDegrees;
-            //~ var endAngle = startAngle + sliceAngleDegrees;
-//~ 
-            //~ var radius = this.getBlobRadius() - 2;
-            //~ function trig(radius, angleDegrees) {
-                //~ //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-                //~ var radians = (angleDegrees / 360) * Math.PI * 2;
-                //~ return {
-                    //~ x: (radius * Math.cos(radians)),
-                    //~ y: (radius * Math.sin(radians))
-                //~ };
-            //~ }
-            //~ var arcStart = trig(radius, startAngle - 90);
-            //~ var arcEnd = trig(radius, endAngle - 90);
-            //~ var largeArch = 0;
-            //~ if ((endAngle - startAngle) > 180)
-                //~ largeArch = 1;
-            //~ annotPieSlice.setAttribute("d", "M0,0 L" + arcStart.x + "," +
-                    //~ arcStart.y + " A" + radius + "," + radius + " 0 " +
-                    //~ largeArch + ",1 " + arcEnd.x + "," + arcEnd.y + " z");  
+        + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z"; 
 };
 
 Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {

@@ -18,11 +18,6 @@ var checkLinks = function() {
 	}    
     if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);
-		//~ var links = this.allNaryLinks.values();
-		//~ var linkCount = links.length;
-		//~ for (var l = 0; l < linkCount; l++) {
-			//~ links[l].check();
-		//~ }
 		checkAll(this.allNaryLinks);
 		checkAll(this.allBinaryLinks);
 		checkAll(this.allUnaryLinks);

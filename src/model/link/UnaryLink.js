@@ -17,35 +17,21 @@ var SequenceLink = require('./SequenceLink');
 
 UnaryLink.prototype = new Link();
 
-function UnaryLink(id, xlvController) {
+function UnaryLink(id, xlvController, interactor) {
     this.id = id;
     this.evidences = d3.map();
-    this.interactors = null;
-    this.sequenceLinks = d3.map();
+	this.interactors = [interactor];
     this.ctrl = xlvController;
-
-    //this.ambig = false;
-    this.tooltip = this.id;
-    //used to avoid some unnecessary manipulation of DOM
+	//used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.thickLineShown = false;
     //layout stuff
     this.hidden = false;
-    
-	//~ this.initSVG();
+    this.initSVG();
 }
 
 UnaryLink.prototype.initSVG = function() {
-	function trig(radius, angleDegrees) {
-		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		var radians = (angleDegrees / 360) * Math.PI * 2;
-		return {
-			x: (radius * Math.cos(radians)),
-			y: -(radius * Math.sin(radians))
-		};
-    }
-    
-	var path = this.fromInteractor.getAggregateSelfLinkPath();
+	var path = this.interactors[0].getAggregateSelfLinkPath();
 	this.line = document.createElementNS(Config.svgns, "path");
 	this.line.setAttribute('d', path);
 	this.highlightLine = document.createElementNS(Config.svgns, 'path');
@@ -60,7 +46,7 @@ UnaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour);
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -131,48 +117,13 @@ UnaryLink.prototype.showHighlight = function(show) {
 };
 
 UnaryLink.prototype.check = function() {
-	//~ var seqLinks = this.sequenceLinks.values();
-    //~ var seqLinkCount = seqLinks.length;
-    // if either end of interaction is 'parked', i.e. greyed out,
-    // or self-interactors are hidden and this is self interactor
-    // or this specific link is hidden
-    //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.ctrl.intraHidden && this.intra)
-            //~ || this.hidden) {
-        //~ //if both ends are blobs then hide interactor-level link
-        //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-            //~ this.hide();
-        //~ }
-        //~ //else loop through linked features hiding them
-        //~ else {
-            //~ for (var i = 0; i < seqLinkCount; i++) {
-                //~ seqLinks[i].hide();
-            //~ }
-        //~ }
-        //~ return false;
-    //~ }
-    //~ else // we need to check which interaction evidences match the filter criteria
-    if (this.fromInteractor.form === 0) {
-   
-
-            //sequence links will have been hidden previously
-            this.show();
-            return true;
-        //~ }
-        //~ else {
-            //~ this.hide();
-            //~ return false;
-        //~ }
+	if (this.interactors[0].form !== 1) {
+        this.show();
+         return true;
     }
-    else {//at least one end was in stick form
+    else {
         this.hide();
-        //~ var showedResResLink = false
-        //~ for (var rl = 0; rl < seqLinkCount; rl++) {
-            //~ if (seqLinks[rl].check() === true) {
-                //~ showedResResLink = true;
-            //~ }
-        //~ }
-        return false;// showedResResLink;
+        return false;
     }
 };
 
@@ -181,10 +132,10 @@ UnaryLink.prototype.show = function() {
 		// resembles Refresh.js, scale() function
         if (!this.shown) {
             this.shown = true;
-			this.line.setAttribute("transform", "translate(" + this.fromInteractor.x
-					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.highlightLine.setAttribute("transform", "translate(" + this.fromInteractor.x
-					+ " " + this.fromInteractor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			this.line.setAttribute("transform", "translate(" + this.interactors[0].x
+					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
+			this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
+					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
 			this.ctrl.highlights.appendChild(this.highlightLine);
 			this.ctrl.p_pLinks.appendChild(this.line);
         }

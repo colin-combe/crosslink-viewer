@@ -64,7 +64,7 @@ Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.ctrl.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
-    this.ctrl.setTooltip(this.tooltip);
+    this.ctrl.setTooltip(this.id);
     return false;
 }
 
@@ -121,6 +121,17 @@ Link.prototype.toJSON = function() {
 Link.prototype.filteredEvidence = function() {
     //TODO - filtering
     return this.evidences.values();
+    //if it has an intact-miscore copy it to somewhere more convenient to access (for score-slider)
+    //~ if (typeof interaction.confidences !== 'undefined') {
+        //~ var confidences = interaction.confidences;
+        //~ var confCount = confidences.length;
+        //~ for (var c = 0; c < confCount; c++){
+            //~ var conf = confidences[c];
+            //~ if (conf.type === 'intact-miscore'){
+                //~ interaction.score = conf.value * 1.0;
+            //~ }
+        //~ }
+    //~ } 
 };
 
 module.exports = Link;

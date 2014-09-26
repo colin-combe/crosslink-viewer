@@ -115,10 +115,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "rect");
     //invariant attributes
-    if (Config.highlightColour !== undefined) {
-        this.highlight.setAttribute("stroke", Config.highlightColour.toRGB());
-        // this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-	}
+    this.highlight.setAttribute("stroke", Config.highlightColour);
     this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
     //this.highlight.setAttribute("fill-opacity", 1);   
@@ -592,24 +589,6 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
-			//~ var links = self.links.values();
-			//~ var c = links.length;
-			//~ for (var l = 0; l < c; l++) {
-				//~ var link = links[l];
-				//if (link.toInteractor === null || (link.getFromInteractor() === self && link.getToInteractor().form === 0) ||
-				//			(link.getToInteractor() === self && link.getFromInteractor().form === 0) ||
-				//			(link.getToInteractor() == link.getFromInteractor()))
-				//~ if (link.sequenceLinks) {
-					//~ // swap links - out with the old
-					//~ var resLinks = link.sequenceLinks.values();
-					//~ var resLinkCount = resLinks.length; 
-					//~ for (var rl = 0; rl < resLinkCount; rl++) {
-						//~ var resLink = resLinks[rl];
-							//~ resLink.hide();
-					//~ }
-				//~ }
-			//~ }
-			//bring in new 
 			self.form = 0;
 			self.checkLinks();
 			self.stickZoom = originalStickZoom;

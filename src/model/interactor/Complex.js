@@ -36,8 +36,9 @@ Complex.prototype.toJSON = function() {
 Complex.prototype.initInteractor = function(naryLink)
 {
     this.naryLink = naryLink;
-	this.isParked = false;
-    this.isSelected = false;
+	naryLink.path.setAttribute('stroke', 'black');
+    naryLink.path.setAttribute('stroke-linejoin', 'round');
+    naryLink.path.setAttribute('stroke-width', 40);
 };
 
 Complex.prototype.getPosition = function(){

@@ -14,118 +14,19 @@ var SequenceLink = require('./SequenceLink');
 // the class representing a binary interaction
 
 BinaryLink.prototype = new Link();
-//used to calculate width of thivh background line
-//~ BinaryLink.maxNoEvidences = 0;
+
 function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = d3.map();
-    this.interactors = null;
-    //~ this.sequenceLinks = d3.map();
+    this.interactors = [fromI, toI];	
+    this.sequenceLinks = d3.map();
     this.ctrl = xlvController;
-    this.fromInteractor = fromI; //its the object. not the ID number
-    this.toInteractor = toI; //its the object. not the ID number
     this.ambig = false;
-    this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.thickLineShown = false;
-    //layout stuff
-    this.hidden = false;
-    this.evidenceCount = 0;
-    
-    this.isBinary = true;
 }
 
-//~ BinaryLink.prototype.addEvidence = function(interaction) {
-	//~ if (this.evidences.has(interaction.id) === false) {
-		//~ this.evidences.set(interaction.id, interaction);
-//~ 
-			//~ 
-		//~ if (this.interactors === null){
-			//~ this.initInteractors(interaction);
-		//~ }    
-		  //~ 
-	 //~ 
-		//~ for (var pi = 0; pi < interaction.participants.length; pi++){
-			//~ var sourceID = interaction.participants[pi].interactorRef;
-			//~ var sourceInteractor = this.ctrl.interactors.get(sourceID);
-			//~ console.log("yo!" + this.fromInteractor.id + ":" + sourceID);
-			//~ if (sourceInteractor === this.fromInteractor) { //heres ur problem
-				//~ var bindingSites = interaction.participants[pi].bindingSites;
-				//~ console.log("yo");
-				//~ if (bindingSites){
-					//~ var bsCount = bindingSites.length;
-					//~ for (var bsi = 0; bsi < bsCount; bsi++){
-//~ 
-						//~ var bindingSite = bindingSites[bsi];
-						//~ var fromSequenceData = bindingSite.sequenceData;
-						//~ if (!fromSequenceData) {
-							//~ fromSequenceData = ['?-?'];
-						//~ }
-						//~ if (bindingSite.linkedFeatures){
-							//~ var toSequenceData = new Array();
-							//~ for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-								//~ var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
-								//~ var targetInteractor = this.ctrl.interactors.get(target.interactor);
-								//~ if (targetInteractor === this.toInteractor) {
-									//~ var feature = target.feature;
-									//~ toSequenceData = toSequenceData.concat(feature.sequenceData);
-								//~ }
-							//~ }
-							//~ 
-							//~ if (toSequenceData.length === 0) {
-								//~ toSequenceData = ['?-?'];
-							//~ }
-							//~ 
-							//~ fromSequenceData = d3.set(fromSequenceData).values();
-							//~ fromSequenceData.sort();
-							//~ toSequenceData = d3.set(toSequenceData).values();
-							//~ toSequenceData.sort();
-							  //~ 
-							//~ var seqLinkId = fromSequenceData.toString() + ':' +
-									//~ this.fromInteractor.id + '><' +
-									//~ toSequenceData.toString() + ':' + this.toInteractor.id;
-							//~ 
-																	//~ 
-							//~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
-							//~ if (typeof sequenceLink === 'undefined') {
-								//~ console.log("*" + seqLinkId);
-								//~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
-								//~ this.sequenceLinks.set(seqLinkId, sequenceLink);
-							//~ }
-							//~ sequenceLink.addEvidence(interaction);					
-						//~ }
-					//~ }
-				//~ }
-				//~ 
-			//~ }
-		//~ }
-		
-		//~ if (this.sequenceLinks.values().length === 0) {
-			//~ var seqLinkId = '?-?:' +
-					//~ this.fromInteractor.id + ' to ' +
-					//~ '?-?:' + this.toInteractor.id;
-			//~ console.log(seqLinkId);
-			//~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
-			//~ if (typeof sequenceLink === 'undefined') {
-				//~ sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
-				//~ this.sequenceLinks.set(seqLinkId, sequenceLink);
-			//~ }
-			//~ sequenceLink.addEvidence(interaction);
-		//~ }
-	//~ }
-//~ };
-
 BinaryLink.prototype.initSVG = function() {
-	function trig(radius, angleDegrees) {
-		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		var radians = (angleDegrees / 360) * Math.PI * 2;
-		return {
-			x: (radius * Math.cos(radians)),
-			y: -(radius * Math.sin(radians))
-		};
-	}
-	
 	this.line = document.createElementNS(Config.svgns, "line");
 	this.highlightLine = document.createElementNS(Config.svgns, "line");
 	this.thickLine = document.createElementNS(Config.svgns, "line");
@@ -137,7 +38,7 @@ BinaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour);
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -208,35 +109,10 @@ BinaryLink.prototype.showHighlight = function(show) {
 };
 
 BinaryLink.prototype.check = function() {
-	
-	//if (participants.length !== 2) {//TEMP
-	if (!this.fromInteractor) {//TEMP
-		return false;
-	}
-//~ 
-	//~ 
-    //~ var seqLinks = this.sequenceLinks.values();
-    //~ var seqLinkCount = seqLinks.length;
-    // if either end of interaction is 'parked', i.e. greyed out,
-    // or self-interactors are hidden and this is self interactor
-    // or this specific link is hidden
-    //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.ctrl.intraHidden && this.intra)
-            //~ || this.hidden) {
-        //~ //if both ends are blobs then hide interactor-level link
-        //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-            //~ this.hide();
-        //~ }
-        //~ //else loop through linked features hiding them
-        //~ else {
-            //~ for (var i = 0; i < seqLinkCount; i++) {
-                //~ seqLinks[i].hide();
-            //~ }
-        //~ }
-        //~ return false;
-    //~ }
-    //~ else // we need to check which interaction evidences match the filter criteria
-    if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
+	//~ if (!this.fromInteractor) {//TEMP HACK
+		//~ return false;
+	//~ }
+    if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
         //~ this.ambig = true;
         //~ var filteredEvids = this.getFilteredEvidences();
         //~ var evidCount = filteredEvids.length;
@@ -288,41 +164,16 @@ BinaryLink.prototype.check = function() {
             //sequence links will have been hidden previously
             this.show();
             return true;
-        //~ }
-        //~ else {
-            //~ this.hide();
-            //~ return false;
-        //~ }
+
     }
     else {//at least one end was in stick form
         this.hide();
-        //~ var showedResResLink = false
-        //~ for (var rl = 0; rl < seqLinkCount; rl++) {
-            //~ if (seqLinks[rl].check() === true) {
-                //~ showedResResLink = true;
-            //~ }
-        //~ }
-        return false;// showedResResLink;
+        return false;
     }
 };
 
-//~ BinaryLink.prototype.dashedLine = function(dash) {
-    //~ if (typeof this.line === 'undefined') {
-        //~ this.initSVG();
-    //~ }
-    //~ if (dash) {// && !this.dashed) {
-        //~ this.dashed = true;
-        //~ this.line.setAttribute("stroke-dasharray", (4 * this.ctrl.z) + ", " + (4 * this.ctrl.z));
-    //~ }
-    //~ else if (!dash) {// && this.dashed) {
-        //~ this.dashed = false;
-        //~ this.line.removeAttribute("stroke-dasharray");
-    //~ }
-//~ };
-
 BinaryLink.prototype.show = function() {
     if (this.ctrl.initComplete) {
-// TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
@@ -330,8 +181,8 @@ BinaryLink.prototype.show = function() {
             }
 			this.line.setAttribute("stroke-width", this.ctrl.z * 1);
 			this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
-			this.setLinkCoordinates(this.fromInteractor);
-			this.setLinkCoordinates(this.toInteractor);
+			this.setLinkCoordinates(this.interactors[0]);
+			this.setLinkCoordinates(this.interactors[1]);
 			if (this.thickLineShown) {
 				this.ctrl.p_pLinksWide.appendChild(this.thickLine);
 			}
@@ -358,7 +209,7 @@ BinaryLink.prototype.hide = function() {
 BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
 		var pos = interactor.getPosition();
-        if (this.fromInteractor === interactor) {
+        if (this.interactors[0] === interactor) {
             this.line.setAttribute("x1", pos[0]);
             this.line.setAttribute("y1", pos[1]);
             this.highlightLine.setAttribute("x1", pos[0]);
@@ -381,8 +232,8 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     }
 };
 
-BinaryLink.prototype.getOtherEnd = function(protein) {
-    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
+BinaryLink.prototype.getOtherEnd = function(interactor) {
+    return ((this.interactors[0] === interactor) ? this.interactors[1] : this.interactors[0]);
 };
 
 module.exports = BinaryLink;
