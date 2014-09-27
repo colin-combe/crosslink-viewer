@@ -158,17 +158,6 @@ UnaryLink.prototype.setLinkCoordinates = function(interactor) {
 	//actually don't currently need to do anything here,
 	//interactor.setPosition is doing it for self links
 	//TODO: tidy this up
-	
-    //~ if (this.shown) {//don't waste time changing DOM if link not visible
-		//~ this.line.setAttribute("x1", interactor.x);
-		//~ this.line.setAttribute("y1", interactor.y);
-		//~ this.highlightLine.setAttribute("x1", interactor.x);
-		//~ this.highlightLine.setAttribute("y1", interactor.y);
-		//~ if (this.thickLineShown) {
-			//~ this.thickLine.setAttribute("x1", interactor.x);
-			//~ this.thickLine.setAttribute("y1", interactor.y);
-		//~ }
-    //~ }
 };
 
 module.exports = UnaryLink;

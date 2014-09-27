@@ -150,6 +150,7 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 };
 
 NaryLink.prototype.getMappedCoordinates = function() {
+	//TODO - 'orbit' nodes - i.e. several nodes around interactor positions to give margin
 	var interactors = this.interactors;
 	var mapped = new Array();
 	var ic = interactors.length;

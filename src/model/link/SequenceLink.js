@@ -16,15 +16,12 @@ SequenceLink.prototype = new Link();
 function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
-    this.evidences = d3.map();
-    //TODO - not dealing with non-contiguous features
+    //TODO - not dealing with non-contiguous features in different interactors
     //TEMP - tidy this up
     this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
 	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
 	this.interactors = [this.fromInteractor, this.toInteractor];
-	//~ this.fromInteractor.addLink(this);
-	//~ this.toInteractor.addLink(this);
-    this.fromSequenceData = new Array();
+	this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;
     for (var i = 0; i < seqDatumCount; i++) {
         this.fromSequenceData.push(new SequenceDatum(fromSeqData[i]));
@@ -34,11 +31,8 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     for (i = 0; i < seqDatumCount; i++) {
         this.toSequenceData.push(new SequenceDatum(toSeqData[i]));
     }
-    //~ this.ambig = false;
-    this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    //~ this.dashed = false;
     this.initSVG();
 }
 

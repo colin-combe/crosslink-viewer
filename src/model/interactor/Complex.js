@@ -28,7 +28,6 @@ function Complex(id, xlvController) {
 
 Complex.prototype.toJSON = function() {
     return {
-        //~ interactor: this.json
 		id: this.id
     };
 };
@@ -50,17 +49,9 @@ Complex.prototype.getPosition = function(){
 		ySum += mapped[m][1];
 	}
 	return [xSum / mc, ySum / mc];
-	
-	//~ return [200, 230];
 };
 
-Complex.prototype.getBlobRadius = function() {
-    return 10;//hack
-};
-
-Complex.prototype.setParked = function(bool, svgP) {};
 Complex.prototype.setForm = function(form, svgP) {};
-Complex.prototype.toParked = function(svgP) {};
 Complex.prototype.setPosition = function(x, y) {};
 Complex.prototype.getResidueCoordinates = function(x, y) {return this.getPosition()};
 Complex.prototype.showHighlight = function() {};
