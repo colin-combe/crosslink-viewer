@@ -144,6 +144,9 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
             this.path.setAttribute('d', hullValues);
         }
     }
+    if (this.complex){
+		this.complex.setAllLinkCoordinates();
+	}
 };
 
 NaryLink.prototype.getMappedCoordinates = function() {

@@ -11,11 +11,10 @@
 "use strict";
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');//Josh - should path for this be ../../../vendor...?
-var Annotation = require('./Annotations');
+var Feature = require('./Feature');
 var Config = require('../../controller/Config');
-//~ var $ = require('jquery-browserify');
-//~ require('jsonview')($);
 
+//josh - should these be moved to Config.js?
 Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
 Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
@@ -238,7 +237,7 @@ Interactor.prototype.setParked = function(bool, svgP) {
 				this.toStick();
 			}
 			this.scale();
-			this.setAllLineCoordinates();
+			this.setAllLinkCoordinates();
 		}
 		else if (this.isParked === false && bool == true) {
 			this.isParked = true;
@@ -284,7 +283,7 @@ Interactor.prototype.checkLinks = function() {
 }
 
 // update all lines (e.g after a move)
-Interactor.prototype.setAllLineCoordinates = function() {
+Interactor.prototype.setAllLinkCoordinates = function() {
     var links = this.naryLinks.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
@@ -305,6 +304,7 @@ Interactor.prototype.setAllLineCoordinates = function() {
     }    
 };
 
+//TODO: following 3 functions are used by layout and need work
 Interactor.prototype.countExternalLinks = function() {
     //~ // //if (this.isParked) {
     //~ // //    return 0;

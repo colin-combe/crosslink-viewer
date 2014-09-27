@@ -76,8 +76,12 @@ var readMIJSON = function(miJson, controller) {
 				for (var pi = 0; pi < participantCount; pi++) {
 					var participant = interaction.participants[pi];
 					var features = new Array(0);
-					if (participant.bindingSites) {features = features.concat(participant.bindingSites);}
-					if (participant.experimentalFeatures) {features = features.concat(participant.experimentalFeatures);}
+					if (participant.bindingSites) {
+						features = features.concat(participant.bindingSites);
+					}
+					if (participant.experimentalFeatures) {
+						features = features.concat(participant.experimentalFeatures);
+					}
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
 						var feature = features[f];
@@ -105,7 +109,8 @@ var readMIJSON = function(miJson, controller) {
 					naryLink = self.allNaryLinks.get(nLinkId);
 				}
 			}						
-            complexes[c].initInteractor(naryLink);           
+            complexes[c].initInteractor(naryLink);
+            naryLink.complex = complexes[c];           
         }
         //show features
         //~ var interactors = self.interactors.values();
@@ -211,6 +216,7 @@ var addInteraction = function(interaction) {
 			self.allSequenceLinks.set(seqLinkId, sequenceLink);
 		}
 		sequenceLink.addEvidence(interaction);	
+		//TODO - get rid of following
 		sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
 		sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
 		nLink.sequenceLinks.set(seqLinkId, sequenceLink);
@@ -265,6 +271,7 @@ var addInteraction = function(interaction) {
     var participantCount = participants.length    
     for (var pi = 0; pi < participantCount; pi++){
 		var participant = participants[pi];
+		//TODO: check if participant is complex - need to change logic if is
 		var features = new Array(0); 
 		if (participant.bindingSites) {
 			features = features.concat(participant.bindingSites);

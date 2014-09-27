@@ -9,7 +9,7 @@
 "use strict";
 
 //constructor for annotations
-function Annotation(annotName, startRes, endRes, colour, notes) {
+function Feature(annotName, startRes, endRes, colour, notes) {
     this.name = annotName;
     this.start = startRes;
     this.end = endRes;
@@ -19,4 +19,4 @@ function Annotation(annotName, startRes, endRes, colour, notes) {
     this.notes = notes;
 }
 
-module.exports = Annotation;
+module.exports = Feature;

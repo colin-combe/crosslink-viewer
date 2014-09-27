@@ -175,7 +175,7 @@ var autoLayout = function(width, height) {
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
-                    p.setAllLineCoordinates();
+                    p.setAllLinkCoordinates();
                 }
              }
         }
@@ -223,7 +223,7 @@ var autoLayout = function(width, height) {
                 var ny = node.y + Math.random() - 0.5;
                 
                 protein.setPosition(nx + this.layoutXOffset, ny);
-                protein.setAllLineCoordinates(false);
+                protein.setAllLinkCoordinates(false);
             }
         }
         //do force directed layout
@@ -328,7 +328,7 @@ var autoLayout = function(width, height) {
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx + self.layoutXOffset, ny + yForRow(1));
-                protein.setAllLineCoordinates();
+                protein.setAllLinkCoordinates();
             }
         });
         this.force.start();

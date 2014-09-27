@@ -128,10 +128,10 @@ var mouseMove = function(evt) {
                         nx = ox - dx;
                         ny = oy - dy;
                         protein.setPosition(nx, ny);
-                        protein.setAllLineCoordinates();
+                        protein.setAllLinkCoordinates();
                     }
                     for (i = 0; i < nodeCount; i++) {
-                        nodes[i].setAllLineCoordinates();
+                        nodes[i].setAllLinkCoordinates();
                     }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
@@ -140,7 +140,7 @@ var mouseMove = function(evt) {
                     nx = ox - dx;
                     ny = oy - dy;
                     this.dragElement.setPosition(nx, ny);
-                    this.dragElement.setAllLineCoordinates();
+                    this.dragElement.setAllLinkCoordinates();
                 }
                 this.dragStart = c;
             }
@@ -157,7 +157,7 @@ var mouseMove = function(evt) {
                 }
                 var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
                 this.dragElement.setRotation(centreToMouseAngleDegrees);
-                this.dragElement.setAllLineCoordinates();
+                this.dragElement.setAllLinkCoordinates();
             }
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first

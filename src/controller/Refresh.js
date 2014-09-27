@@ -37,7 +37,7 @@ var scale = function() {
             var prot = interactors[p];
             prot.setPosition(prot.x, prot.y); // this rescales the protein //TODO: check if this always need to happen
             if (prot.form !== 0)
-                prot.setAllLineCoordinates();
+                prot.setAllLinkCoordinates();
         }
 
         var links = this.links.values();

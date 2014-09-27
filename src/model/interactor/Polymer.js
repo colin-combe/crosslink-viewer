@@ -317,7 +317,7 @@ Polymer.prototype.switchStickScale = function(svgP) {
     // when setting the form of prot's,
     // remember following doesn't happen when you just call toStick();
     this.scale();
-    this.setAllLineCoordinates();
+    this.setAllLinkCoordinates();
 };
 
 Polymer.prototype.scale = function() {
@@ -438,7 +438,7 @@ Polymer.prototype.setParked = function(bool, svgP) {
 				this.toStick();
 			}
 			this.scale();
-			this.setAllLineCoordinates();
+			this.setAllLinkCoordinates();
 		}
 		else if (this.isParked === false && bool == true) {
 			this.isParked = true;
@@ -586,7 +586,7 @@ Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 		self.setRotation(rot);
 	 
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-		self.setAllLineCoordinates();
+		self.setAllLinkCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
 			self.form = 0;
@@ -739,7 +739,7 @@ Polymer.prototype.toStick = function() {
 		var currentLength = lengthInterpol(cubicInOut(interp));
 		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-		self.setAllLineCoordinates();
+		self.setAllLinkCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
 			self.busy = false;
