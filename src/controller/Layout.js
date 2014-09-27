@@ -219,8 +219,8 @@ var autoLayout = function(width, height) {
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
                 var protein = this.interactors.get(node.id);
-                var nx = node.x + Math.random - 0.5;
-                var ny = node.y + Math.random - 0.5;
+                var nx = node.x + Math.random() - 0.5;
+                var ny = node.y + Math.random() - 0.5;
                 
                 protein.setPosition(nx + this.layoutXOffset, ny);
                 protein.setAllLineCoordinates(false);

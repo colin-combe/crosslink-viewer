@@ -174,10 +174,31 @@ var addInteraction = function(interaction) {
 	};
 	
 	function getSequenceLink(fromSequenceData, toSequenceData){
-		//TODO: *not dealing with non-contigouous features*			
-		//sequence link
-		var start =  fromSequenceData[0].interactorRef + ":" + fromSequenceData[0].pos;
-		var end = toSequenceData[0].interactorRef + ":" + toSequenceData[0].pos;
+		function seqDataComparator(a, b){
+			if (a.interactorRef != b.interactorRef){
+				return a.interactorRef - b.interactorRef;
+			} else if (a.pos < b.pos){
+				return -1;
+			}
+			else {
+				return 1;
+			}
+		}
+		function seqDataToString(seqData){
+			var string = "";
+			for (var s = 0; s < seqData.length; s++){
+				if (s > 0){
+					string += ';';
+				}
+				var seq = seqData[s];
+				string += seq.interactorRef + ':' + seq.pos;
+			}
+			return string;
+		}
+		fromSequenceData = fromSequenceData.sort(seqDataComparator);
+		toSequenceData = toSequenceData.sort(seqDataComparator);
+		var start =  seqDataToString(fromSequenceData);
+		var end =  seqDataToString(toSequenceData);
 		var seqLinkId;
 		if (start < end){
 			seqLinkId  =  start + '><' + end;
@@ -236,7 +257,7 @@ var addInteraction = function(interaction) {
 	
 	var self = this;
     //init n-ary link
-    var nLink = getNaryLink(interaction);//note - this var gets used by the get*Link function above    
+    var nLink = getNaryLink(interaction);//note - this var gets used by the get*Link functions above    
     // loop through particpants and features
     // init binary, unary and sequence links, 
     // and make needed associations between these and containing naryLink
