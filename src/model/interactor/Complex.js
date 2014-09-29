@@ -24,20 +24,15 @@ function Complex(id, xlvController) {
     this.selfLink = null;
     this.sequenceLinks = d3.map();
     this.form = 0;
+    this.type = 'complex';
 }
-
-Complex.prototype.toJSON = function() {
-    return {
-		id: this.id
-    };
-};
 
 Complex.prototype.initInteractor = function(naryLink)
 {
     this.naryLink = naryLink;
 	naryLink.path.setAttribute('stroke', 'black');
     naryLink.path.setAttribute('stroke-linejoin', 'round');
-    naryLink.path.setAttribute('stroke-width', 40);
+    naryLink.path.setAttribute('stroke-width', 8);
 };
 
 Complex.prototype.getPosition = function(){

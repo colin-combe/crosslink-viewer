@@ -10,7 +10,7 @@
 
 "use strict";
 
-var d3 = require('../../node_modules/d3/');// ../../vendor/d3?
+var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
 var Interactor = require('../model/interactor/Interactor');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
@@ -184,6 +184,9 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.clear();
 };
 
+//josh - what can we do about the following, I think its a bit confusing / hard to maintain
+// would one big file be better?
+
 // Link to prototype functions that exist in other files.
 // Eventually the files will accept this controller as an argument
 
@@ -196,7 +199,6 @@ xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
 
 xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
 xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
-xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
 
 // Copy functions from Layout.js to our prototype:
 xiNET.Controller.prototype.autoLayout = Layout;
@@ -294,8 +296,7 @@ xiNET.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(2000 / Math.PI);//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000)
-   // Interactor.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Interactor.LABELMAXLENGTH) / Interactor.MAXSIZE;//TODO: fix that -350 hack
-    
+
     this.initComplete = true;
 
     if (typeof this.layout !== 'undefined' && this.layout != null) {
@@ -310,7 +311,6 @@ xiNET.Controller.prototype.init = function(width, height) {
 		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
-           // prot.initStick();//needed, todo - remove
             if (this.interactors.keys().length < 3) {
                if (prot.toStick) prot.toStick();
             }

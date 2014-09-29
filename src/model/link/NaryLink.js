@@ -13,12 +13,12 @@
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
 var Link = require('./Link');
-//~ var SequenceLink = require('./SequenceLink');
-//~ var BinaryLink = require('./BinaryLink');
-//~ var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
+var Interactor = require('../interactor/Interactor');
 
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]);//d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
+NaryLink.orbitNodes = 16;
+NaryLink.orbitRadius = 20;
 
 NaryLink.prototype = new Link();
 
@@ -34,18 +34,14 @@ function NaryLink(id, xlvController) {
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //layout stuff
-    this.hidden = false;
-    
+    this.hidden = false;  
     this.initSVG();
 }
 
 NaryLink.prototype.initSVG = function() {
     this.path = document.createElementNS(Config.svgns, "path");
     this.path.setAttribute('fill', NaryLink.naryColours(this.id));
-    this.path.setAttribute('opacity', 0.3);
-    this.path.setAttribute('stroke', NaryLink.naryColours(this.id));
-    this.path.setAttribute('stroke-linejoin', 'round');
-    this.path.setAttribute('stroke-width', 40);
+    this.path.setAttribute('fill-opacity', 0.3);
 
     //set the events for it
     var self = this;
@@ -65,12 +61,7 @@ NaryLink.prototype.initSVG = function() {
 
 NaryLink.prototype.showHighlight = function(show) {
     if (this.shown) {
-        //we will iterate through all interactors and sublinks and highlight them
         this.highlightInteractors(show);
-        //~ var subLinks = this.subLinks.values();
-        //~ for (var s = 0; s < subLinks.length; s++) {
-            //~ subLinks[s].showHighlight(show);
-        //~ }
     }
 };
 
@@ -84,10 +75,7 @@ NaryLink.prototype.show = function() {
     if (this.ctrl.initComplete) {
         if (!this.shown) {
             this.shown = true;
-            if (typeof this.path === 'undefined') {
-                this.initSVG();
-            }
-            // this.path.setAttribute("stroke-width", this.ctrl.z * 1);
+            this.path.setAttribute("stroke-width", this.ctrl.z * 1);
             this.setLinkCoordinates();
             this.ctrl.naryLinks.appendChild(this.path);
         }
@@ -95,50 +83,27 @@ NaryLink.prototype.show = function() {
 };
 
 NaryLink.prototype.hide = function() {
-    //~ if (this.shown) {
-        //~ this.shown = false;
-        //~ if (this.thickLineShown) {
-            //~ this.ctrl.p_pLinksWide.removeChild(this.thickLine);
-        //~ }
-        //this.ctrl.highlights.removeChild(this.highlightLine);
-        //~ this.ctrl.p_pLinks.removeChild(this.path);
-    //~ }
+    if (this.ctrl.initComplete) {
+		if (this.shown) {
+			this.shown = false;
+			if (this.thickLineShown) {
+				this.ctrl.p_pLinksWide.removeChild(this.thickLine);
+			}
+			this.ctrl.p_pLinks.removeChild(this.path);
+		}
+	}
 };
 
 NaryLink.prototype.setLinkCoordinates = function(interactor) {
-
     // Uses d3.geom.hull to calculate a bounding path around an array of vertices 
     var calculateHullPath = function(values) {
-        
-        // d3.geom.hull does not like a situation where there are less than three points. 
-        if (values.length == 2) {
-            return "M" + values[0] + "L" + values[1] + "Z";
-        } else if (values.length == 1) {
-            // A single point SVG path does not get stroked, so the browser won't render something like the following:
-            // return "M" + values[0] + "L" + values[0] + "Z";
-            // A possible fix would be to transform the point into a tiny box, but do we care? Should single nodes get links?
-            
-            //josh, see hack in getMappedCoordinates()
-            
-            return;
-        }
-
-        // If all points are 0,0 then we can't have a path! (This breaks the d3 hull function)
-        var haspoints = values.some(function(nextpoint) {
-            return nextpoint.some(function(coordinate) {
-                return coordinate !== 0;
-            })
-        });
-
-        if (haspoints) {
-            var calced = d3.geom.hull(values);
-            return "M" + calced.join("L") + "Z";
-        }
-
+		var calced = d3.geom.hull(values);
+		self.hull = calced;//hack?
+		return "M" + calced.join("L") + "Z";
     };
-
+	var self = this;// TODO: - tidy hack above
     if (this.shown) {//don't waste time changing DOM if link not visible
-		var mapped = this.getMappedCoordinates();
+		var mapped = this.orbitNodes(this.getMappedCoordinates());
         var hullValues = calculateHullPath(mapped);
         if (hullValues) {
             this.path.setAttribute('d', hullValues);
@@ -150,7 +115,6 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 };
 
 NaryLink.prototype.getMappedCoordinates = function() {
-	//TODO - 'orbit' nodes - i.e. several nodes around interactor positions to give margin
 	var interactors = this.interactors;
 	var mapped = new Array();
 	var ic = interactors.length;
@@ -170,9 +134,23 @@ NaryLink.prototype.getMappedCoordinates = function() {
 			mapped.push(interactor.getPosition());
 		}
 	}
-	//hack - not saying this best way to deal with this
-	if (mapped.length === 1) mapped.push(interactors[0].getPosition());
 	return mapped;
 }
+
+//'orbit' nodes - several nodes around interactor positions to give margin
+NaryLink.prototype.orbitNodes = function(mapped) {
+	var orbitNodes = new Array();
+	var mc = mapped.length;
+	for (var mi = 0; mi < mc; mi++){
+		var m = mapped[mi];
+		for (var o = 0; o < NaryLink.orbitNodes; o++){
+			var angle = (360 / NaryLink.orbitNodes) * o;
+			var p = [m[0] + NaryLink.orbitRadius, m[1]];
+			orbitNodes.push(Interactor.rotatePointAboutPoint(p, m, angle));
+		}
+	}
+	return orbitNodes;
+}
+
 
 module.exports = NaryLink;

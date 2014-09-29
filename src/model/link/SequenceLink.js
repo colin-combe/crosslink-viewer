@@ -107,10 +107,7 @@ SequenceLink.prototype.initSVG = function() {
 };
 
 //andAlternatives means highlight alternative links in case of site ambiguity
-SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
-    //~ if (typeof andAlternatives === 'undefined') {
-        //~ andAlternatives = false; //TODO: tEMP HACK
-    //~ }
+SequenceLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
             this.highlightGlyph.setAttribute("stroke-opacity", "1");
@@ -118,21 +115,6 @@ SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
             this.highlightGlyph.setAttribute("stroke-opacity", "0");
         }
     }
-    //~ if (andAlternatives && this.ambig) {
-//~ //TODO: we want to highlight smallest possible set of alternatives?
-        //~ var mc = this.matches.length;
-        //~ for (var m = 0; m < mc; m++) {
-            //~ var match = this.matches[m];
-            //~ if (match.isAmbig()) {
-                //~ var rc = match.sequenceLinks.length;
-                //~ for (var rl = 0; rl < rc; rl++) {
-                    //~ var resLink = match.sequenceLinks[rl];
-                    //~ resLink.showHighlight(show, false);
-                    //~ resLink.interactorLink.showHighlight(show, false);
-                //~ }
-            //~ }
-        //~ }
-    //~ }
 };
 
 //used when filter changed

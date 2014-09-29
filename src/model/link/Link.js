@@ -69,22 +69,13 @@ Link.prototype.mouseOver = function(evt){
 }
 
 Link.prototype.mouseOut = function(evt){
-    //console.log("clickable mouse out");
     this.ctrl.preventDefaultsAndStopPropagation(evt);
-    //    if (this.ctrl.dragElement == undefined) {
     this.showHighlight(false, true);
-    //    } else {
-    //        if (this.ctrl.dragElement != this){// todo: improve, actually needs to know
-    //            // if drag element is part of dragging subgraph
-    //            this.showHighlight(false, true);
-    //        }
-    //    }
     this.ctrl.hideTooltip();
     return false;
 }
 
 Link.prototype.touchStart = function(evt) {
-//    //console.log("clickable mouse down");
     this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
     if (this.ctrl.force !== undefined){
@@ -111,17 +102,9 @@ Link.prototype.showData = function() {
 	} 
 };
 
-Link.prototype.toJSON = function() {
-    return {
-        id: this.id,
-        evidences: this.evidences
-    };
-};
-
 Link.prototype.filteredEvidence = function() {
     //TODO - filtering
     return this.evidences.values();
-    //if it has an intact-miscore copy it to somewhere more convenient to access (for score-slider)
     //~ if (typeof interaction.confidences !== 'undefined') {
         //~ var confidences = interaction.confidences;
         //~ var confCount = confidences.length;

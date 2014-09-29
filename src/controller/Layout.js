@@ -285,7 +285,6 @@ var autoLayout = function(width, height) {
 					//~ for (var i = 0; i < link.evidences.values().length; i++) {
 					//~ var participants = link.evidences.values()[i].participants;
 					//~ var participantCount = participants.length; 
-					//~ //TODO: if evidence.check() ==== true
 					//~ var fakeHub = this.interactors.get(participants[0].interactorRef);
 					//~ var fromProt = fakeHub;
 					//~ var source = protLookUp[fromProt.id];

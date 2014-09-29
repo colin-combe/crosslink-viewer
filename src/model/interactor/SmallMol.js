@@ -26,13 +26,6 @@ function SmallMol(id, xlvController, json) {
     this.sequenceLinks = d3.map();
 }
 
-SmallMol.prototype.toJSON = function() {
-    return {
-        interactor: this.json
-		//~ id: this.id
-    };
-};
-
 SmallMol.prototype.initInteractor = function(name)
 {
     this.name = name;
@@ -46,11 +39,8 @@ SmallMol.prototype.initInteractor = function(name)
     this.isParked = false;
     this.isSelected = false;
     
-    this.size = 10;//layout is using this
-    
-    //annotation scheme
-    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
-	    
+    this.size = 10;//hack, layout is using this
+       
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -155,31 +145,6 @@ SmallMol.prototype.initInteractor = function(name)
 };
 
 SmallMol.prototype.setForm = function(form, svgP) {
-};
-
-SmallMol.prototype.toParked = function(svgP) {   
-    //~ var c = this.links.values().length;
-    //~ for (var l = 0; l < c; l++) {
-        //~ var link = this.links.values()[l];
-        //~ //out with the old (i.e. all links)
-        //~ link.hide();
-		//~ if (link.sequenceLinks) {
-			//~ var resLinks = link.sequenceLinks.values();
-			//~ var resLinkCount = resLinks.length; 
-			//~ for (var rl = 0; rl < resLinkCount; rl++) {
-				//~ var resLink = resLinks[rl];
-				//~ resLink.hide();
-			//~ }
-		//~ }
-	//~ }       
-    //~ 
-		//~ d3.select(this.outline).transition()
-			//~ .attr("stroke-opacity", 0)
-			//~ .attr("fill", "#EEEEEE")
-			//~ .duration(SmallMol.transitionTime);	
-		//~ d3.select(this.circDomains).transition().attr("opacity", 0)
-			//~ .attr("transform", "scale(1, 1)")
-			//~ .duration(SmallMol.transitionTime);	
 };
 
 module.exports = SmallMol;

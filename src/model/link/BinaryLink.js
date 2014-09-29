@@ -9,6 +9,10 @@
 var Config = require('../../controller/Config');
 var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
+//josh - following are libraries and should be in 'vendor'?
+//  but I don't know how to set up the dependency if its there
+var Intersection = require('../../controller/Intersection');
+var Point2D = require('../../controller/Point2D');
 
 // BinaryLink.js
 // the class representing a binary interaction
@@ -209,27 +213,67 @@ BinaryLink.prototype.hide = function() {
 BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
 		var pos = interactor.getPosition();
-        if (this.interactors[0] === interactor) {
-            this.line.setAttribute("x1", pos[0]);
-            this.line.setAttribute("y1", pos[1]);
-            this.highlightLine.setAttribute("x1", pos[0]);
-            this.highlightLine.setAttribute("y1", pos[1]);
-            if (this.thickLineShown) {
-                this.thickLine.setAttribute("x1", pos[0]);
-                this.thickLine.setAttribute("y1", pos[1]);
-            }
-        }
-        else {
-            this.line.setAttribute("x2", pos[0]);
-            this.line.setAttribute("y2", pos[1]);
-            this.highlightLine.setAttribute("x2", pos[0]);
-            this.highlightLine.setAttribute("y2", pos[1]);
-            if (this.thickLineShown) {
-                this.thickLine.setAttribute("x2", pos[0]);
-                this.thickLine.setAttribute("y2", pos[1]);
-            }
-        }
-    }
+        if (interactor.type !== 'complex'){
+			if (this.interactors[0] === interactor) {
+				this.line.setAttribute("x1", pos[0]);
+				this.line.setAttribute("y1", pos[1]);
+				this.highlightLine.setAttribute("x1", pos[0]);
+				this.highlightLine.setAttribute("y1", pos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x1", pos[0]);
+					this.thickLine.setAttribute("y1", pos[1]);
+				}
+			}
+			else {
+				this.line.setAttribute("x2", pos[0]);
+				this.line.setAttribute("y2", pos[1]);
+				this.highlightLine.setAttribute("x2", pos[0]);
+				this.highlightLine.setAttribute("y2", pos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x2", pos[0]);
+					this.thickLine.setAttribute("y2", pos[1]);
+				}
+			}
+		}else {//interactor is a complex
+			var otherEndPos = this.getOtherEnd(interactor).getPosition();
+			var naryPath = interactor.naryLink.hull;
+			var iPath = new Array();
+			for (var pi = 0; pi < naryPath.length; pi++) {
+				var p = naryPath[pi];
+				iPath.push(new Point2D(p[0],p[1]));
+			}
+			var a1 = new Point2D(pos[0], pos[1]);
+			var a2 = new Point2D(otherEndPos[0], otherEndPos[1]);
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var newPos;
+			if (intersect.points[0]){
+				newPos = [intersect.points[0].x,intersect.points[0].y]; 
+			} else {
+				newPos = pos;
+			} 
+			if (this.interactors[0] === interactor) {
+				this.line.setAttribute("x1", newPos[0]);
+				this.line.setAttribute("y1", newPos[1]);
+				this.highlightLine.setAttribute("x1", newPos[0]);
+				this.highlightLine.setAttribute("y1", newPos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x1", newPos[0]);
+					this.thickLine.setAttribute("y1", newPos[1]);
+				}
+			}
+			else {
+				this.line.setAttribute("x2", newPos[0]);
+				this.line.setAttribute("y2", newPos[1]);
+				this.highlightLine.setAttribute("x2", newPos[0]);
+				this.highlightLine.setAttribute("y2", newPos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x2", newPos[0]);
+					this.thickLine.setAttribute("y2", newPos[1]);
+				}
+			}
+		
+		}
+	}
 };
 
 BinaryLink.prototype.getOtherEnd = function(interactor) {

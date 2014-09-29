@@ -21,12 +21,6 @@ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 
 function Interactor() {}
 
-Interactor.prototype.toJSON = function() {
-    return {
-        interactor: this.json
-    };
-};
-
 Interactor.prototype.mouseDown = function(evt) {
         this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
@@ -92,40 +86,6 @@ Interactor.prototype.mouseOut = function(evt) {
         return false;
 };
 
-Interactor.prototype.getBlobRadius = function() {
-    if (this.accession.indexOf("CHEBI") !== -1) {
-        return 10;
-    }
-    else if (this.json.type.name === 'peptide' || this.json.type.name === 'single stranded deoxyribonucleic acid'){
-        return 5;
-    }
-    else {
-        return Math.sqrt(this.size / 3 / Math.PI);
-    }
-};
-
-//only output the info needed to reproduce the layout
-//~ Interactor.prototype.toJSON = function() {
-    //~ return {
-        //~ //for saved interactors
-        //~ //        name: this.name,
-        //~ //        accession: this.accession,
-        //~ //        description: this.description,
-        //~ //        sequence: this.sequence,
-        //~ //        processedDAS: this.processedDAS,
-        //~ //for saved layout
-        //~ //        name: this.name,
-        //~ x: this.x,
-        //~ y: this.y,
-        //~ rot: this.rotation,
-        //~ form: this.form,
-        //~ stickZoom: this.stickZoom,
-        //~ parked: this.isParked,
-        //~ flipped: this.isFlipped,
-        //~ annot: this.customAnnotations
-    //~ };
-//~ };
-
 Interactor.prototype.addFeature = function(feature) {
     if (typeof feature !== 'undefined') {
         var annotName = "";
@@ -154,8 +114,6 @@ Interactor.prototype.addFeature = function(feature) {
             var startRes = match[1] * 1;
             var endRes = match[2] * 1;
             if (isNaN(startRes) === false && isNaN(endRes) === false) {
-//                console.log(segment.range);
-//                console.log(match);
                 var annotation = new Annotation(annotName, startRes, endRes, colour);
                 if (this.customAnnotations == null) {
                     this.customAnnotations = new Array();
@@ -212,37 +170,6 @@ Interactor.prototype.setPosition = function(x, y) {
 				+ " scale(" + (this.ctrl.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.ctrl.z) + ") ");
-		if (this.selfLink != null) {
-			var selfLink = this.selfLink;
-			if (typeof selfLink.thickLine !== 'undefined') {
-				selfLink.thickLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			}
-			selfLink.line.setAttribute("transform", "translate(" + this.x
-					+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			selfLink.highlightLine.setAttribute("transform", "translate(" + this.x
-					+ " " + this.y + ")" + " scale(" + (this.ctrl.z) + ")");
-		}
-	}
-};
-
-Interactor.prototype.setParked = function(bool, svgP) {
-    if (this.busy !== true) {
-		if (this.isParked === true && bool == false) {
-			this.isParked = false;
-			if (this.form === 0) {
-				this.toBlob(svgP);
-			}
-			else {
-				this.toStick();
-			}
-			this.scale();
-			this.setAllLinkCoordinates();
-		}
-		else if (this.isParked === false && bool == true) {
-			this.isParked = true;
-			this.toParked(svgP);
-		}
 	}
 };
 
@@ -259,8 +186,9 @@ Interactor.prototype.getAggregateSelfLinkPath = function() {
 		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
+//Josh - this gets used from a couple of different files, where do you think it should go?
 Interactor.rotatePointAboutPoint = function(p, o, theta) {
-	theta = (theta / 360) * Math.PI * 2;
+	theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
 	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
 	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
 	return [rx, ry];
@@ -289,14 +217,17 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     for (var l = 0; l < c; l++) {
 		//if interactor count > 2
         links[l].setLinkCoordinates(this);
-    }
-    
+    }    
     links = this.binaryLinks.values();
     c = links.length;
     for (var l = 0; l < c; l++) {
-        links[l].setLinkCoordinates(this);
+        var link = links[l];
+        link.setLinkCoordinates(this);
+        link.setLinkCoordinates(link.getOtherEnd(this));
     }
-    //~ 
+    if (this.selfLink) {
+		this.selfLink.setLinkCoordinates(this); 
+	}
     links = this.sequenceLinks.values();
     c = links.length;
     for (var l = 0; l < c; l++) {
@@ -304,24 +235,8 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     }    
 };
 
-//TODO: following 3 functions are used by layout and need work
+//TODO: following 3 functions are used by auto layout and need work
 Interactor.prototype.countExternalLinks = function() {
-    //~ // //if (this.isParked) {
-    //~ // //    return 0;
-    //~ // //}
-    //~ var countExternal = d3.set();
-    //~ var c = this.links.keys().length;
-    //~ for (var l = 0; l < c; l++) {
-        //~ var link = this.links.values()[l];
-        //~ for (var i = 0; i < link.interactors.length; i++) {
-       //~ // // {
-         //~ // //   if (link.check() === true) {
-                //~ countExternal.add(link.interactors[i].id);
-           //~ // //}
-      //~ // //  }
-		//~ }
-    //~ }
-    //~ return countExternal.values().length - 1;
     return this.binaryLinks.length;
 };
 
@@ -331,10 +246,7 @@ Interactor.prototype.getSubgraph = function() {
             nodes: d3.map(),
             links: d3.map()
         };
-        //if (this.isParked === false) {
-            //~ this.subgraph = 
-            this.addConnectedNodes(subgraph);
-        //}
+        this.addConnectedNodes(subgraph);
         this.ctrl.subgraphs.push(subgraph); 
     }
     return this.subgraph;
@@ -342,48 +254,20 @@ Interactor.prototype.getSubgraph = function() {
 
 Interactor.prototype.addConnectedNodes = function(subgraph) {
 	this.subgraph = subgraph;
-	subgraph.nodes.set(this.id, this);
-	
+	subgraph.nodes.set(this.id, this);	
 	var count = this.binaryLinks.values().length;
-    
     for (var bi = 0; bi < count; bi++) {
 		var binaryLink = this.binaryLinks.values()[bi];
         if (subgraph.links.has(binaryLink.id) === false) {
-			//~ if (externalLink.check() === true) {
         	subgraph.links.set(binaryLink.id, binaryLink);
-			//~ for (var i = 0; i < externalLink.interactors.length; i++) {
 				var otherEnd = binaryLink.getOtherEnd(this);
 				 if (otherEnd) {
 					 otherEnd.addConnectedNodes(subgraph);
 				 }
-			//~ }
-			//~ }
 		}
     }
-    
-    //~ if (!subgraph.links.has(link.id)) {
-                //~ subgraph.links.set(link.id, link);
-                //~ var otherEnd;
-                //~ if (link.getFromProtein() === this) {
-                    //~ otherEnd = link.getToProtein();
-                //~ }
-                //~ else {
-                    //~ otherEnd = link.getFromProtein();
-                //~ }
-                //~ if (otherEnd !== null) {
-					//~ if (!subgraph.nodes.has(otherEnd.id)) {
-						//~ subgraph.nodes.set(otherEnd.id, otherEnd);
-						//~ otherEnd.subgraph = subgraph;
-						//~ otherEnd.addConnectedNodes(subgraph);
-					//~ }
-				//~ }
-            //~ }
-    
-    
     //~ console.debug(subgraph.nodes.keys());
 };
-
-// Pulled from Annotations.js
 
 Interactor.prototype.setAnnotations = function(pos, group, category) {
     //clear
@@ -408,76 +292,6 @@ Interactor.prototype.setAnnotations = function(pos, group, category) {
                     this.setPositionalFeatures(positional.get(category));
                 }
             }
-        }
-    }
-    else {
-        if (g !== undefined) {
-            var keywords = g['keywords'];
-            if (keywords !== undefined) {
-                this.setKeywords(keywords.get(category));
-            }
-        }
-    }
-};
-
-Interactor.prototype.setKeywords = function(keywords) {
-    function trig(radius, angleDegrees) {
-        //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-        var radians = (angleDegrees / 360) * Math.PI * 2;
-        return {
-            x: (radius * Math.cos(radians)),
-            y: (radius * Math.sin(radians))
-        };
-    }
-    
-    if (keywords !== undefined && keywords !== null) {
-        var numberOfKeywords = keywords.length;
-        var sliceAngleDegrees = 359 / numberOfKeywords;
-        for (var i = 0; i < numberOfKeywords; i++) {
-            var anno = keywords[i];
-            var annotPieSlice = document.createElementNS(Config.svgns, "path");
-            annotPieSlice.setAttribute("class", "protein");
-
-            //make pie slice
-
-            var startAngle = i * sliceAngleDegrees;
-            var endAngle = startAngle + sliceAngleDegrees;
-
-            var radius = this.getBlobRadius() - 2;
-            var arcStart = trig(radius, startAngle - 90);
-            var arcEnd = trig(radius, endAngle - 90);
-            var largeArch = 0;
-            if ((endAngle - startAngle || endAngle == startAngle) > 180)
-                largeArch = 1;
-            annotPieSlice.setAttribute("d", "M0,0 L" + arcStart.x + "," +
-                    arcStart.y + " A" + radius + "," + radius + " 0 " +
-                    largeArch + ",1 " + arcEnd.x + "," + arcEnd.y + " z");
-
-            //style 'em
-            annotPieSlice.setAttribute("stroke", "none");
-            var c;
-            //temp
-            if (anno.colour == null) { //check why == needed here
-                c = new RGBColor(Interactor.domainColours(anno.name));
-            }
-            else {
-                c = anno.colour;
-            }
-            annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotPieSlice.setAttribute("fill-opacity", "0.85");
-
-            var text = anno.name;
-            annotPieSlice.name = text;
-            var xlv = this.ctrl;
-            var self = this;
-            annotPieSlice.onmouseover = function(evt) {
-                //    for magnifier experiment
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-                xlv.setTooltip(el.name, el.getAttribute('fill'));// anno.colour);
-                self.showHighlight(true);
-            };
-            this.circDomains.appendChild(annotPieSlice);
         }
     }
 };
@@ -610,22 +424,5 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
     approximatePiePath += "  Z";
     return approximatePiePath;
 };
-
-// Interactor.prototype.getAnnotationRectPath = function(annotation) {
-//     //domain as rectangle path
-//     var bottom = Config.Polymer.STICKHEIGHT / 2, top = -Config.Polymer.STICKHEIGHT / 2;
-//     var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Config.Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
-//     //~ //Ouch!! Without brackets following may do string concatenation
-//     var annotSize = (1 + (annotation.end - annotation.start));
-//     var annotLength = annotSize * Config.Polymer.UNITS_PER_RESIDUE;
-//     var rectPath = "M " + annotX + "," + bottom;
-//     for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
-//         var step = annotX + (annotLength * (sia / Interactor.stepsInArc));
-//         rectPath += " L " + step + "," + top;
-//     }       
-//     rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
-//         + " Z";
-//     return rectPath;
-// };
 
 module.exports = Interactor;

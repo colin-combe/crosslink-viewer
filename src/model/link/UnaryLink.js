@@ -155,9 +155,14 @@ UnaryLink.prototype.hide = function() {
 };
 
 UnaryLink.prototype.setLinkCoordinates = function(interactor) {
-	//actually don't currently need to do anything here,
-	//interactor.setPosition is doing it for self links
-	//TODO: tidy this up
+			if (typeof this.thickLine !== 'undefined') {
+				this.thickLine.setAttribute("transform", "translate(" + interactor.x
+						+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			}
+			this.line.setAttribute("transform", "translate(" + interactor.x
+					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+			this.highlightLine.setAttribute("transform", "translate(" + interactor.x
+					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
 };
 
 module.exports = UnaryLink;

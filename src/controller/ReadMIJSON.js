@@ -307,11 +307,12 @@ var addInteraction = function(interaction) {
 				var interactor = nLink.interactors[0];
 				var fromSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
 				var toSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
+				//sequnce link
 				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
+				//unary link
 				getUnaryLink(sequenceLink.fromInteractor);			
 			} 
 			else if (nLink.interactors.length === 2) {
-				//TODO: introduce binaryLink if nLink.interactors.length == 2 but no linked features
 				//sequence link
 				var fromSequenceData = [{interactorRef:nLink.interactors[0].id, pos:'?-?'}];
 				var toSequenceData = [{interactorRef:nLink.interactors[1].id, pos:'?-?'}];
