@@ -6,7 +6,11 @@
 
 "use strict";
 
-SequenceLink.prototype = new xiNET.Link();
+var Link = require('./Link');
+var SequenceDatum = require('./SequenceDatum');
+var Config = require('../../controller/Config');
+
+SequenceLink.prototype = new Link();
 function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
@@ -67,9 +71,9 @@ SequenceLink.prototype.addEvidence = function(interaction) {
 };
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
-        this.glyph = document.createElementNS(xiNET.svgns, "path");
-        this.uncertainGlyph = document.createElementNS(xiNET.svgns, "path");
-        this.highlightGlyph = document.createElementNS(xiNET.svgns, "path");
+        this.glyph = document.createElementNS(Config.svgns, "path");
+        this.uncertainGlyph = document.createElementNS(Config.svgns, "path");
+        this.highlightGlyph = document.createElementNS(Config.svgns, "path");
         this.glyph.setAttribute("stroke-linecap", "round");
         this.uncertainGlyph.setAttribute("stroke-linecap", "round");
         this.highlightGlyph.setAttribute("stroke-linecap", "round");
@@ -84,7 +88,7 @@ SequenceLink.prototype.initSVG = function() {
         this.uncertainGlyph.setAttribute("fill-opacity", "0.3");
         this.highlightGlyph.setAttribute("class", "link");
         this.highlightGlyph.setAttribute("fill", "none");
-        this.highlightGlyph.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke", Config.highlightColour.toRGB());
         this.highlightGlyph.setAttribute("stroke-width", "10");
         this.highlightGlyph.setAttribute("stroke-opacity", "0");
         if (typeof this.colour !== 'undefined') {
@@ -456,3 +460,5 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
 
     
 };
+
+module.exports = SequenceLink;

@@ -8,8 +8,14 @@
 
 "use strict";
 
+var Polymer = require('../model/interactor/Polymer');
+var NaryLink = require('../model/link/NaryLink');
+var BinaryLink = require('../model/link/BinaryLink');
+var UnaryLink = require('../model/link/UnaryLink');
+
 // reads our MI JSON format 
-xiNET.Controller.prototype.readMIJSON = function(miJson) {
+var readMIJSON = function(miJson, controller) {
+
     //just check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 	
@@ -92,7 +98,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson) {
     }
 };
 
-xiNET.Controller.prototype.addFeatures = function(interaction) {
+var addFeatures = function(interaction) {
     var participantCount = interaction.participants.length;
     var pIDs = d3.set();
     for (var pi = 0; pi < participantCount; pi++) {
@@ -116,8 +122,33 @@ xiNET.Controller.prototype.addFeatures = function(interaction) {
 	}	
 };
 
-xiNET.Controller.prototype.addInteraction = function(interaction) {
-    
+// Moved from Link.js
+//id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
+var getIdFromInteraction = function(interaction){
+    var linkId = "";
+    //sort participants by interactorRef
+    var participants = interaction.participants.sort(
+        function comparator(a, b) {
+            return a.interactorRef - b.interactorRef;
+        }
+    );
+    var participantCount = participants.length;
+    var pIDs = d3.set();//used to eliminate duplicates
+    for (var pi = 0; pi < participantCount; pi++) {
+        var pID = participants[pi].interactorRef;
+        if (pIDs.has(pID) === false){
+            pIDs.add(pID);
+            if (pi > 0) {
+                linkId += "-"; 
+            }
+            linkId += pID;
+        }
+    }
+    return linkId;  
+}
+
+var addInteraction = function(interaction) {
+
     if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
         alert('missing interaction identifier');
         console.error(JSON.stringify(interaction));
@@ -134,7 +165,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
         }
     }
     
-	var linkId = xiNET.Link.getIdFromInteraction(interaction);
+	var linkId = getIdFromInteraction(interaction);
 	var link = this.links.get(linkId);
 	
 	var interactorIds = linkId.split('-');
@@ -168,7 +199,7 @@ xiNET.Controller.prototype.addInteraction = function(interaction) {
     link.addEvidence(interaction);
 };
 
-xiNET.Controller.prototype.toJSON = function() {
+var toJSON = function() {
     return {
         interactors: this.interactors,
         features: this.features,
@@ -225,3 +256,4 @@ xiNET.Controller.prototype.toJSON = function() {
         //~ }
     //~ }
 
+module.exports = {readMIJSON: readMIJSON, addFeatures: addFeatures, addInteraction: addInteraction, toJSON: toJSON};

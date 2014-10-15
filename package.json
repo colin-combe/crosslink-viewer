@@ -1,0 +1,31 @@
+{
+  "name": "ComplexViewer",
+  "version": "0.0.1",
+  "description": "TBD",
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-cli": ">=0.1.6",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-browserify": "*",
+    "grunt-bower-task": "git://github.com/creatorrr/grunt-bower-task.git",
+    "grunt-notify": "~0.3.1",
+    "grunt-contrib-jshint": "~0.10.0"
+  },
+  "scripts": {
+    "start": "node ./node_modules/grunt-cli/bin/grunt",
+    "setup": "node ./node_modules/grunt-cli/bin/grunt setup",
+    "test": "node ./node_modules/grunt-cli/bin/grunt test"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "colorbrewer": "0.0.1",
+    "d3": "~3.4.11",
+    "grunt-contrib-jshint": "~0.10.0",
+    "jquery": "~2.1.1",
+    "jsonview": "~1.2.0",
+    "jquery-browserify": "~1.8.1"
+  }
+}

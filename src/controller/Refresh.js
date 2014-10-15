@@ -8,7 +8,7 @@
 
 "use strict";
 
-xiNET.Controller.prototype.checkLinks = function() {
+var checkLinks = function() {
     if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);
 		var links = this.links.values();
@@ -20,7 +20,7 @@ xiNET.Controller.prototype.checkLinks = function() {
 	}
 };
 
-xiNET.Controller.prototype.scale = function() {
+var scale = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
     if (this.initComplete) {
         this.z = this.container.getScreenCTM().inverse().a;
@@ -68,3 +68,5 @@ xiNET.Controller.prototype.scale = function() {
     }
     this.svgElement.unsuspendRedraw(suspendID);
 };
+
+module.exports = {checkLinks: checkLinks, scale: scale};
