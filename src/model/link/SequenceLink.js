@@ -8,22 +8,20 @@
 
 var Link = require('./Link');
 var SequenceDatum = require('./SequenceDatum');
+var BinaryLink = require('./BinaryLink');
+var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
-function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController) {
+function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
-    this.interactorLink = interactorLink;
-    this.evidences = d3.map();
-    this.intra = false;
-    if (typeof this.interactorLink !== 'undefined') {
-        if (this.interactorLink.fromProtein === this.interactorLink.toProtein) {
-            this.intra = true;
-        }
-    }
-
-    this.fromSequenceData = new Array();
+    //TODO - not dealing with non-contiguous features in different interactors
+    //TEMP - tidy this up
+    this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
+	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
+	this.interactors = [this.fromInteractor, this.toInteractor];
+	this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;
     for (var i = 0; i < seqDatumCount; i++) {
         this.fromSequenceData.push(new SequenceDatum(fromSeqData[i]));
@@ -33,42 +31,11 @@ function SequenceLink(id, interactorLink, fromSeqData, toSeqData, xlvController)
     for (i = 0; i < seqDatumCount; i++) {
         this.toSequenceData.push(new SequenceDatum(toSeqData[i]));
     }
-    this.ambig = false;
-    this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.dashed = false;
+    this.initSVG();
 }
 
-SequenceLink.prototype.addEvidence = function(interaction) {
-	if (this.evidences.has(interaction.id) === false) {
-		this.evidences.set(interaction.id, interaction);
-		//~ var from = this.interactorLink.fromInteractor, to = this.interactorLink.toInteractor;
-		//~ if (interaction.source.identifier.id === this.interactorLink.fromInteractor.id) {
-			//~ from = interaction.source;
-			//~ to = interaction.target;
-		//~ } else {
-			//~ from = interaction.target
-			//~ to = interaction.source;
-		//~ }
-
-		//~ if (typeof from.bindingSites !== 'undefined') {
-			//~ this.interactorLink.fromInteractor.addFeature(from.bindingSites[0]);
-			//~ //    fromBindingSite = from.bindingSites[0];
-		//~ }
-		//~ if (typeof to.bindingSites !== 'undefined') {
-			//~ this.interactorLink.toInteractor.addFeature(to.bindingSites[0]);
-			//~ //    toBindingSite = to.bindingSites[0];
-		//~ }
-
-	//    if (typeof from.pointMutations !== 'undefined') {
-	//        this.fromInteractor.addFeature(from.pointMutations[0]);
-	//    }
-	//    if (typeof to.pointMutations !== 'undefined') {
-	//        this.toInteractor.addFeature(to.pointMutations[0]);
-	//    }
-	}
-};
 SequenceLink.prototype.initSVG = function() {
     if (typeof this.glyph === 'undefined') {
         this.glyph = document.createElementNS(Config.svgns, "path");
@@ -81,6 +48,7 @@ SequenceLink.prototype.initSVG = function() {
         this.glyph.setAttribute("fill", "#E08214");
         this.glyph.setAttribute("opacity", "0.6");
         this.glyph.setAttribute("stroke", "#A08214");
+        this.glyph.setAttribute("stroke-width", "2");
         this.uncertainGlyph.setAttribute("class", "link");
         this.uncertainGlyph.setAttribute("fill", "#A01284");
         this.uncertainGlyph.setAttribute("stroke", "#A01284");
@@ -88,7 +56,7 @@ SequenceLink.prototype.initSVG = function() {
         this.uncertainGlyph.setAttribute("fill-opacity", "0.3");
         this.highlightGlyph.setAttribute("class", "link");
         this.highlightGlyph.setAttribute("fill", "none");
-        this.highlightGlyph.setAttribute("stroke", Config.highlightColour.toRGB());
+        this.highlightGlyph.setAttribute("stroke", Config.highlightColour);
         this.highlightGlyph.setAttribute("stroke-width", "10");
         this.highlightGlyph.setAttribute("stroke-opacity", "0");
         if (typeof this.colour !== 'undefined') {
@@ -114,12 +82,12 @@ SequenceLink.prototype.initSVG = function() {
         };
         this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.removeChild(self.glyph);
-            self.ctrl.res_resLinks.appendChild(self.glyph);
-            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.glyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.glyph);
+            //~ self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
+            //~ self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -138,19 +106,9 @@ SequenceLink.prototype.initSVG = function() {
         };
     }
 };
-//SequenceLink.prototype.getFromProtein = function() {
-//    return this.interactorLink.fromInteractor;
-//};
-//
-//SequenceLink.prototype.getToProtein = function() {
-//    return this.interactorLink.toInteractor;
-//};
 
 //andAlternatives means highlight alternative links in case of site ambiguity
-SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false; //TODO: tEMP HACK
-    }
+SequenceLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
             this.highlightGlyph.setAttribute("stroke-opacity", "1");
@@ -158,115 +116,34 @@ SequenceLink.prototype.showHighlight = function(show, andAlternatives) {
             this.highlightGlyph.setAttribute("stroke-opacity", "0");
         }
     }
-    if (andAlternatives && this.ambig) {
-//TODO: we want to highlight smallest possible set of alternatives?
-        var mc = this.matches.length;
-        for (var m = 0; m < mc; m++) {
-            var match = this.matches[m];
-            if (match.isAmbig()) {
-                var rc = match.sequenceLinks.length;
-                for (var rl = 0; rl < rc; rl++) {
-                    var resLink = match.sequenceLinks[rl];
-                    resLink.showHighlight(show, false);
-                    resLink.interactorLink.showHighlight(show, false);
-                }
-            }
-        }
-    }
-};
-//used when link clicked
-SequenceLink.prototype.showID = function() {
-    var fromInt = this.interactorLink.fromInteractor;
-    var toInt = this.interactorLink.toInteractor;
-    var linkInfo = "<p><strong>" + fromInt.name + " (" + fromInt.accession
-            + ") to" + ' ' + toInt.name + " (" + toInt.accession
-            + ")</strong></p><p><strong>" + this.id + "</strong></p>";
-    linkInfo += "<pre>" + JSON.stringify(this.getFilteredEvidences(), null, '\t') + "</pre>";
-    this.ctrl.message(linkInfo);
 };
 
 //used when filter changed
-SequenceLink.prototype.check = function(filter) {
-    //~ var filteredEvids = this.getFilteredEvidences();
-    //~ var evidCount = filteredEvids.length;
-    //~ if (evidCount === 0 || this.hidden || this.interactorLink.hidden) {
-        //~ this.hide();
-        //~ return false;
-    //~ }
-    //~ else {
-//~ //        this.ambig = true;
-//~ //        for (var i = 0; i < evidCount; i++) {
-//~ //            var evid = filteredEvids[i];
-//~ //            if (typeof evid.expansion === 'undefined') {
-//~ //                this.ambig = false;
-//~ //            }
-//~ //        } 
-//~ 
-//~ //            //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-//~ 
-//~ //            //thickLine
-//~ //            if (evidCount > 1) {
-//~ //                this.thickLineShown = true
-//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
-//~ //            }
-//~ //            else {
-//~ ////                this.thickLineShown = false;
-//~ //                this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
-//~ //            }
-//~ //            //ambig?
-//~ //            this.dashedLine(this.ambig);
-
+SequenceLink.prototype.check = function() {
+    if (this.filteredEvidence().length > 0 && this.anyInteractorIsBar() === true) {
         this.show();
         return true;
-    //~ }
+	} else {
+		this.hide();
+		return false;
+	}
 };
 
-SequenceLink.prototype.getFilteredEvidences = function() {
-    var evids = this.evidences;
-    var evidCount = evids.length;
-    var filteredEvids = new Array();
-    for (var i = 0; i < evidCount; i++) {
-        var evid = evids[i];
-        if ((this.ctrl.hideExpanded === false || typeof evid.expansion === 'undefined')
-                && (typeof evid.score === 'undefined' || evid.score >= this.ctrl.cutOff)) {
-            filteredEvids.push(evid);
-        }
-    }
-    return filteredEvids;
+SequenceLink.prototype.anyInteractorIsBar = function() {
+	var ic = this.interactors.length;
+	for (var i = 0; i < ic; i++) {
+		if (this.interactors[i].form === 1) {
+			return true;
+		}
+	}
+    return false;
 };
+
 SequenceLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
+  	if (this.ctrl.initComplete) {
         if (!this.shown) {
-            this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
-            this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
+			this.shown = true;
+            //this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);
             this.setLinkCoordinates();
@@ -276,6 +153,7 @@ SequenceLink.prototype.show = function() {
         }
     }
 };
+
 SequenceLink.prototype.hide = function() {
     if (this.ctrl.initComplete) {
         if (this.shown) {
@@ -286,16 +164,17 @@ SequenceLink.prototype.hide = function() {
         }
     }
 };
+
 // update the links(polygons/lines) to fit to the protein
 SequenceLink.prototype.setLinkCoordinates = function(interactor) {
-	        function isNumber(thing) {
+	    function isNumber(thing) {
             return (!isNaN(parseFloat(thing)) && isFinite(thing));
         }
 
         function getPathSegments(midPoint, controlPoint, startRes, endRes, interactor, yOffset) {
             var startPoint, endPoint;
             if (interactor.form === 0) {
-                startPoint = [interactor.x, interactor.y];
+                startPoint = interactor.getPosition();
                 endPoint = startPoint;
             }
             else {
@@ -341,19 +220,19 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             }
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
-    if (this.shown) { //don't waste time changing DOM if link is not visible
-        var fromInteractor = this.interactorLink.fromInteractor;
-        var toInteractor = this.interactorLink.toInteractor;
+    //~ if (this.shown) { //don't waste time changing DOM if link is not visible
+        var fromInteractor = this.fromInteractor;
+        var toInteractor = this.toInteractor;
         //calculate mid points of from and to sequence data
         var fMid, tMid;
         if (fromInteractor.form === 0) {
-            fMid = [fromInteractor.x, fromInteractor.y];
+            fMid = fromInteractor.getPosition();
         }
         else {
             fMid = sequenceDataMidPoint(this.fromSequenceData, fromInteractor);
         }
         if (toInteractor.form === 0) {
-            tMid = [toInteractor.x, toInteractor.y];
+            tMid = toInteractor.getPosition();
         }
         else {
             tMid = sequenceDataMidPoint(this.toSequenceData, toInteractor);
@@ -379,12 +258,12 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out < 180) {
             fyOffset = -10;
         }
-        var fRotRad = (this.interactorLink.fromInteractor.rotation / 360) * Math.PI * 2;
+        var fRotRad = (this.fromInteractor.rotation / 360) * Math.PI * 2;
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
 //now for 'to' interactor
-        out = (abmpDeg - this.interactorLink.toInteractor.rotation);
+        out = (abmpDeg - this.toInteractor.rotation);
         if (out < 0) {
             out += 360;
         }
@@ -456,7 +335,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         this.glyph.setAttribute("d", glyphPath);
         this.uncertainGlyph.setAttribute("d", uncertainGlyphPath);
         this.highlightGlyph.setAttribute("d", highlightGlyphPath);
-	}
+	//~ }
 
     
 };

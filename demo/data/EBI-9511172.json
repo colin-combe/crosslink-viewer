@@ -1,0 +1,149 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q12809"
+            }, 
+            "label": "kcnh2_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MPVRRGHVAPQNTFLDTIIRKFEGQSRKFIIANARVENCAVIYCNDGFCELCGYSRAEVMQRPCTCDFLHGPRTQRRAAAQIAQALLGAEERKVEIAFYRKDGSCFLCLVDVVPVKNEDGAVIMFILNFEVVMEKDMVGSPAHDTNHRGPPTSWLAPGRAKTFRLKLPALLALTARESSVRSGGAGGAGAPGAVVVDVDLTPAAPSSESLALDEVTAMDNHVAGLGPAEERRALVGPGSPPRSAPGQLPSPRAHSLNPDASGSSCSLARTRSRESCASVRRASSADDIEAMRAGVLPPPPRHASTGAMHPLRSGLLNSTSDSDLVRYRTISKIPQITLNFVDLKGDPFLASPTSDREIIAPKIKERTHNVTEKVTQVLSLGADVLPEYKLQAPRIHRWTILHYSPFKAVWDWLILLLVIYTAVFTPYSAAFLLKETEEGPPATECGYACQPLAVVDLIVDIMFIVDILINFRTTYVNANEEVVSHPGRIAVHYFKGWFLIDMVAAIPFDLLIFGSGSEELIGLLKTARLLRLVRVARKLDRYSEYGAAVLFLLMCTFALIAHWLACIWYAIGNMEQPHMDSRIGWLHNLGDQIGKPYNSSGLGGPSIKDKYVTALYFTFSSLTSVGFGNVSPNTNSEKIFSICVMLIGSLMYASIFGNVSAIIQRLYSGTARYHTQMLRVREFIRFHQIPNPLRQRLEEYFQHAWSYTNGIDMNAVLKGFPECLQADICLHLNRSLLQHCKPFRGATKGCLRALAMKFKTTHAPPGDTLVHAGDLLTALYFISRGSIEILRGDVVVAILGKNDIFGEPLNLYARPGKSNGDVRALTYCDLHKIHRDDLLEVLDMYPEFSDHFWSSLEITFNLRDTNMIPGSPGSTELEGGFSRQRKRKLSFRRRTDKDTEQPGEVSALGPGRAGAGPSSRGRPGGPWGESPSSGPSSPESSEDEGPGRSSSPLRLVPFSSPRPPGEPPGGEPLMEDCEKSSDTCNPLSGAFSGVSNIFSFWGDSRGRQYQELPRCPAPTPSLLNIPLSSPGRRPRGDVESRLDALQRQLNRLETRLSADMATVLQLLQRQMTLVPPAYSAVTTPGPGPTSTSPLLPVSPLPTLTLDSLSQVSQFMACEELPPGAPELPQEGPTRRLSLPGQLGALTSQPLHRHGSDPGS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P15382"
+            }, 
+            "label": "kcne1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MILSNTTAVTPFLTKLWQETVQQGGNMSGLARRSPRSSDGKLEALYVLMVLGFFGFFTLGIMLSYIRSKKLEHSNDPFNVYIESDAWQEKDKAYVQARVLESYRSCYVVENHLAIEQPNTHLPETKPSP", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "omim", 
+                    "id": "152427"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "609620"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_76615.1"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9511172"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "613688"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "kcne1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "4"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "kcnh2 bindingregion", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "2", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "stoichiometry": "4"
+                }
+            ]
+        }
+    ]
+}

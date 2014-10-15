@@ -1,0 +1,72 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P12004"
+            }, 
+            "label": "pcna_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MFEARLVQGSILKKVLEALKDLINEACWDISSSGVNLQSMDSSHVSLVQLTLRSEGFDTYRCDRNLAMGVNLTSMSKILKCAGNEDIITLRAEDNADTLALVFEAPNQEKVSDYEMKLMDLDVEQLGIPEQEYSCVVKMPSGEFARICRDLSHIGDAVVISCAKDGVKFSASGELGNGNIKLSQTSNVDKEEEAVTIEMNEPVQLTFALRYLNFFTKATPLSSTVTLSMSADVPLVVEYKIADMGHLKYYLAPKIEDEEGS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0364", 
+                    "name": "inferred by curator"
+                }, 
+                "host": {
+                    "common": "human", 
+                    "scientific": "Homo sapiens", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "14681455"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "2", 
+            "identifiers": [
+                {
+                    "db": "reactome", 
+                    "id": "REACT_2542.1"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-1202920"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1", 
+                    "stoichiometry": "3"
+                }
+            ]
+        }
+    ]
+}

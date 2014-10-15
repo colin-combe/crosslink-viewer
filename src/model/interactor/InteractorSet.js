@@ -4,7 +4,7 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		InteractorSet.js		
 //
 //		authors: Colin Combe
 
@@ -13,9 +13,9 @@
 var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+InteractorSet.prototype = new Interactor();
 
-function SmallMol(id, xlvController, json) {
+function InteractorSet(id, xlvController, json) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
@@ -26,9 +26,28 @@ function SmallMol(id, xlvController, json) {
     this.sequenceLinks = d3.map();
 }
 
-SmallMol.prototype.initInteractor = function(name)
+InteractorSet.prototype.toJSON = function() {
+    return {
+        interactor: this.json
+		//~ id: this.id
+    };
+};
+
+InteractorSet.prototype.initInteractor = function(sequence, name, description, size)
 {
+    //this.accession = this.json.identifier.id;
     this.name = name;
+    //this.organism = this.json.organism;
+	
+	this.size = 10;//HACK
+	
+    this.description = description;
+    this.tooltip = this.description;
+    if (this.name == null) {
+        this.name = name;
+    }
+   
+     this.internalLink = null;
     // layout info
     this.x = null;
     this.y = null;
@@ -37,10 +56,13 @@ SmallMol.prototype.initInteractor = function(name)
     this.stickZoom = 1;
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isParked = false;
+    this.isFlipped = false;
     this.isSelected = false;
-    
-    this.size = 10;//hack, layout is using this
-       
+    //annotation scheme
+    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
+	    
+	var r = this.getBlobRadius();
+
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -52,8 +74,11 @@ SmallMol.prototype.initInteractor = function(name)
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
-    this.highlight.setAttribute("stroke", Config.highlightColour);
-	this.highlight.setAttribute("stroke-width", "5");   
+      //invariant attributes
+    if (xiNET.highlightColour !== undefined) {
+        this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+	}
+    this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
     //this.highlight.setAttribute("fill-opacity", 1);   
     //attributes that may change
@@ -78,34 +103,70 @@ SmallMol.prototype.initInteractor = function(name)
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
-    this.labelSVG.setAttribute("fill", "black")
+    this.labelSVG.setAttribute("fill", "red")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-    
-    this.labelText = this.name;
+    //choose label text
+    if (this.name !== null & this.name !== "") {
+        this.labelText = this.name;
+    }
+    else if (description != null & description !== "") {
+        this.labelText = description;
+        this.name = description;
+    }
+    else if (this.accession != null & this.accession !== "") {
+        this.labelText = this.accession;
+    }
+    else {
+		this.labelText  = this.id;
+	}
+    if (this.labelText.length > 25) {
+        this.labelText = this.labelText.substr(0, 16) + "...";
+    }
+    if (typeof this.labeling !== 'undefined') {
+        this.labelText = '[' + this.labeling + '] ' + this.labelText;
+    }
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (15) + " " + Interactor.labelY + ")");
+		"translate( -" + (r + 5) + " " + Interactor.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
-   	 
+   	
+     
 	//make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
 	this.outline = document.createElementNS(Config.svgns, "rect");
 	
-	//make blob
-	this.outline = document.createElementNS(Config.svgns, "polygon");
-	this.outline.setAttribute("points", points);
-   
+	    //make blob
+    //~ if (this.accession.indexOf("CHEBI") !== -1) {
+        this.outline = document.createElementNS(Config.svgns, "polygon");
+        this.outline.setAttribute("points", points);
+        //~ this.blobHighlight = document.createElementNS(Config.svgns, "polygon");
+        //~ this.blobHighlight.setAttribute("points", points);
+        //~ this.parked = document.createElementNS(Config.svgns, "polygon");
+        //~ this.parked.setAttribute("points", points);
+    //~ }
+	
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff");
+			.attr("fill", "#ffffff")
+			.attr("width", r * 2).attr("height", r * 2)
+			.attr("x", -r).attr("y", -r)
+			.attr("rx", r).attr("ry", r);
     //append outline
     this.upperGroup.appendChild(this.outline);
+    
+    //domains as pie slices - shown on top of everything
+	this.circDomains = document.createElementNS(Config.svgns, "g");
+    //~ this.circDomains.setAttribute("class", "protein circDomains");
+	this.circDomains.setAttribute("opacity", 1);
+	this.upperGroup.appendChild(this.circDomains);
+
+    this.scaleLabels = new Array();
 
     // events
     var self = this;
@@ -144,7 +205,57 @@ SmallMol.prototype.initInteractor = function(name)
     this.isSelected = false;
 };
 
-SmallMol.prototype.setForm = function(form, svgP) {
+InteractorSet.prototype.getBlobRadius = function() {
+    return 10;
 };
 
-module.exports = SmallMol;
+InteractorSet.prototype.setParked = function(bool, svgP) {
+    if (this.busy !== true) {
+		if (this.isParked === true && bool == false) {
+			this.isParked = false;
+			if (this.form === 0) {
+				this.toBlob(svgP);
+			}
+			else {
+				this.toStick();
+			}
+			this.scale();
+			this.setAllLineCoordinates();
+		}
+		else if (this.isParked === false && bool == true) {
+			this.isParked = true;
+			this.toParked(svgP);
+		}
+	}
+};
+
+InteractorSet.prototype.setForm = function(form, svgP) {
+};
+
+
+InteractorSet.prototype.toParked = function(svgP) {   
+    var c = this.links.values().length;
+    for (var l = 0; l < c; l++) {
+        var link = this.links.values()[l];
+        //out with the old (i.e. all links)
+        link.hide();
+		if (link.sequenceLinks) {
+			var resLinks = link.sequenceLinks.values();
+			var resLinkCount = resLinks.length; 
+			for (var rl = 0; rl < resLinkCount; rl++) {
+				var resLink = resLinks[rl];
+				resLink.hide();
+			}
+		}
+	}       
+    
+		d3.select(this.outline).transition()
+			.attr("stroke-opacity", 0)
+			.attr("fill", "#EEEEEE")
+			.duration(InteractorSet.transitionTime);	
+		d3.select(this.circDomains).transition().attr("opacity", 0)
+			.attr("transform", "scale(1, 1)")
+			.duration(InteractorSet.transitionTime);	
+};
+
+module.exports = InteractorSet;

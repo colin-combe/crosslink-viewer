@@ -9,195 +9,28 @@
 var Config = require('../../controller/Config');
 var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
+//josh - following are libraries and should be in 'vendor'?
+//  but I don't know how to set up the dependency if its there
+var Intersection = require('../../controller/Intersection');
+var Point2D = require('../../controller/Point2D');
 
 // BinaryLink.js
-// the class representing an n-ary interaction
+// the class representing a binary interaction
 
 BinaryLink.prototype = new Link();
-//used to calculate width of thivh background line
-BinaryLink.maxNoEvidences = 0;
+
 function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = d3.map();
-    this.interactors = null;
+    this.interactors = [fromI, toI];	
     this.sequenceLinks = d3.map();
     this.ctrl = xlvController;
-    this.fromInteractor = fromI; //its the object. not the ID number
-    this.toInteractor = toI; //its the object. not the ID number
     this.ambig = false;
-    this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.thickLineShown = false;
-    //layout stuff
-    this.hidden = false;
-    this.evidenceCount = 0;
-    
-    this.isBinary = true;
 }
 
-BinaryLink.prototype.addEvidence = function(interaction) {
-	if (this.evidences.has(interaction.id) === false) {
-		this.evidences.set(interaction.id, interaction);
-		
-		//~ if (this.evidences.values().length > NaryLink.maxNoEvidences) {//TODO: update d3 lib
-			//~ xiNET.Link.maxNoEvidences = this.evidences.values().length; //values().length can be replaced with size() in newer d3 lib
-		//~ }
-			
-		if (this.interactors === null){
-			this.initInteractors(interaction);
-		}    
-		  
-	 
-	 
-	 
-	 
-		 for (var pi = 0; pi < interaction.participants.length; pi++){
-			var sourceID = interaction.participants[pi].interactorRef;
-			var sourceInteractor = this.ctrl.interactors.get(sourceID);
-			if (sourceInteractor === this.fromInteractor) { 
-								//~ || sourceIntercator === this.toInteractor ) {
-				//~ var reversed = (sourceIntercator === this.toInteractor);			
-				var bindingSites = interaction.participants[pi].bindingSites;
-				if (bindingSites){
-					var bsCount = bindingSites.length;
-					for (var bsi = 0; bsi < bsCount; bsi++){
-
-						var bindingSite = bindingSites[bsi];
-						var fromSequenceData = bindingSite.sequenceData;
-						if (!fromSequenceData) {
-							fromSequenceData = ['?-?'];
-						}
-						if (bindingSite.linkedFeatures){
-							var toSequenceData = new Array();
-							for (var fi = 0; fi < bindingSite.linkedFeatures.length; fi++){									
-								var target = this.ctrl.features.get(bindingSite.linkedFeatures[fi]); 
-								var targetInteractor = this.ctrl.interactors.get(target.interactor);
-								if (targetInteractor === this.toInteractor) {
-									var feature = target.feature;
-									toSequenceData = toSequenceData.concat(feature.sequenceData);
-								}
-							}
-							
-							if (toSequenceData.length === 0) {
-								toSequenceData = ['?-?'];
-							}
-							
-							fromSequenceData = d3.set(fromSequenceData).values();
-							fromSequenceData.sort();
-							toSequenceData = d3.set(toSequenceData).values();
-							toSequenceData.sort();
-							  
-							var seqLinkId = fromSequenceData.toString() + ':' +
-									this.fromInteractor.id + '><' +
-									toSequenceData.toString() + ':' + this.toInteractor.id;
-							
-																	
-							var sequenceLink = this.sequenceLinks.get(seqLinkId);
-							if (typeof sequenceLink === 'undefined') {
-								//~ console.log(seqLinkId);
-								sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
-								this.sequenceLinks.set(seqLinkId, sequenceLink);
-							}
-							sequenceLink.addEvidence(interaction);					
-						}
-					}
-				}
-				
-			}
-		}
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-		//~ var participants = interaction.participants;
-		//~ //u r here - going to need to set from/to from constructor
-		//~ // if (participants.length === 2) {//TEMP
-		//~ // if (participants[0].interactorRef < participants[1].interactorRef){
-			//~ // this.fromInteractor = this.ctrl.interactors.get(participants[0].interactorRef);
-			//~ // this.toInteractor = this.ctrl.interactors.get(participants[1].interactorRef); //its the object. not the ID number
-		//~ // } else {
-			//~ // this.fromInteractor = this.ctrl.interactors.get(participants[1].interactorRef);
-			//~ // this.toInteractor = this.ctrl.interactors.get(participants[0].interactorRef); //its the object. not the ID number
-		//~ // }
-		//~ var from = this.fromInteractor;
-		//~ var to = this.toInteractor
-		   //~ 
-		//~ var hasLinkedFeatures = false;
-		//~ //when LinkedFeatures implemented then one interaction may result in many sequenceLinks
-		//~ //for time being one interaction can only result in at most one sequenceLink
-		//~ if (hasLinkedFeatures) {
-			//~ //LinkedFeatures not yet implemented in JAMI
-		//~ }
-		//~ //if no linked features may be able to make some assumptions about whats linked to what. 
-		//~ // If:
-		//~ // 1. it is not a product of expansion   
-		//~ // 2. there is no more than one binding site feature at each of interaction
-		//~ else if ((typeof interaction.expansion === 'undefined')
-				//~ && (typeof from.bindingSites === 'undefined'
-				//~ || from.bindingSites.length === 1)
-				//~ && (typeof to.bindingSites === 'undefined'
-				//~ || to.bindingSites.length === 1)
-				//~ ) {
-			//~ // first we need to know ID for sequenceLink, 
-			//~ // that means knowing the binding sites
-			//~ var fromBindingSite, toBindingSite;
-			//~ if (typeof from.bindingSites !== 'undefined') {
-				//~ fromBindingSite = from.bindingSites[0];
-			//~ }
-			//~ if (typeof to.bindingSites !== 'undefined') {
-				//~ toBindingSite = to.bindingSites[0];
-			//~ }
-			//~ var fromSequenceData = (typeof fromBindingSite !== 'undefined') ?
-					//~ fromBindingSite.sequenceData.sort() : ['?-?'];
-			//~ var toSequenceData = (typeof toBindingSite !== 'undefined') ?
-					//~ toBindingSite.sequenceData.sort() : ['?-?'];
-			//~ var seqLinkId = fromSequenceData.toString() + ':' +
-					//~ this.fromInteractor.id + ' to ' +
-					//~ toSequenceData.toString() + ':' + this.toInteractor.id;
-	//~ //        console.log(seqLinkId);
-			//~ var sequenceLink = this.sequenceLinks.get(seqLinkId);
-			//~ if (typeof sequenceLink === 'undefined') {
-				//~ sequenceLink = new SequenceLink(seqLinkId, this, fromSequenceData, toSequenceData, this.ctrl, interaction);
-				//~ this.sequenceLinks.set(seqLinkId, sequenceLink);
-			//~ }
-			//~ sequenceLink.addEvidence(interaction);
-		//~ } else {
-			
-		if (this.sequenceLinks.values().length === 0) {
-			var seqLinkId = '?-?:' +
-					this.fromInteractor.id + ' to ' +
-					'?-?:' + this.toInteractor.id;
-			console.log(seqLinkId);
-			var sequenceLink = this.sequenceLinks.get(seqLinkId);
-			if (typeof sequenceLink === 'undefined') {
-				sequenceLink = new SequenceLink(seqLinkId, this, ['?-?'], ['?-?'], this.ctrl, interaction);
-				this.sequenceLinks.set(seqLinkId, sequenceLink);
-			}
-			sequenceLink.addEvidence(interaction);
-		}
-		//~ 
-		//~ // }//end if participants.length === 2
-	}
-};
-
 BinaryLink.prototype.initSVG = function() {
-	function trig(radius, angleDegrees) {
-		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		var radians = (angleDegrees / 360) * Math.PI * 2;
-		return {
-			x: (radius * Math.cos(radians)),
-			y: -(radius * Math.sin(radians))
-		};
-	}
-	
 	this.line = document.createElementNS(Config.svgns, "line");
 	this.highlightLine = document.createElementNS(Config.svgns, "line");
 	this.thickLine = document.createElementNS(Config.svgns, "line");
@@ -209,7 +42,7 @@ BinaryLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", Config.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", Config.highlightColour);
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -280,35 +113,10 @@ BinaryLink.prototype.showHighlight = function(show) {
 };
 
 BinaryLink.prototype.check = function() {
-	
-	//if (participants.length !== 2) {//TEMP
-	if (!this.fromInteractor) {//TEMP
-		return false;
-	}
-
-	
-    var seqLinks = this.sequenceLinks.values();
-    var seqLinkCount = seqLinks.length;
-    // if either end of interaction is 'parked', i.e. greyed out,
-    // or self-interactors are hidden and this is self interactor
-    // or this specific link is hidden
-    //~ if (this.fromInteractor.isParked || this.toInteractor.isParked
-            //~ || (this.ctrl.intraHidden && this.intra)
-            //~ || this.hidden) {
-        //~ //if both ends are blobs then hide interactor-level link
-        //~ if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
-            //~ this.hide();
-        //~ }
-        //~ //else loop through linked features hiding them
-        //~ else {
-            //~ for (var i = 0; i < seqLinkCount; i++) {
-                //~ seqLinks[i].hide();
-            //~ }
-        //~ }
-        //~ return false;
-    //~ }
-    //~ else // we need to check which interaction evidences match the filter criteria
-    if (this.fromInteractor.form === 0 && this.toInteractor.form === 0) {
+	//~ if (!this.fromInteractor) {//TEMP HACK
+		//~ return false;
+	//~ }
+    if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
         //~ this.ambig = true;
         //~ var filteredEvids = this.getFilteredEvidences();
         //~ var evidCount = filteredEvids.length;
@@ -360,41 +168,16 @@ BinaryLink.prototype.check = function() {
             //sequence links will have been hidden previously
             this.show();
             return true;
-        //~ }
-        //~ else {
-            //~ this.hide();
-            //~ return false;
-        //~ }
+
     }
     else {//at least one end was in stick form
         this.hide();
-        var showedResResLink = false
-        for (var rl = 0; rl < seqLinkCount; rl++) {
-            if (seqLinks[rl].check() === true) {
-                showedResResLink = true;
-            }
-        }
-        return showedResResLink;
+        return false;
     }
 };
 
-//~ BinaryLink.prototype.dashedLine = function(dash) {
-    //~ if (typeof this.line === 'undefined') {
-        //~ this.initSVG();
-    //~ }
-    //~ if (dash) {// && !this.dashed) {
-        //~ this.dashed = true;
-        //~ this.line.setAttribute("stroke-dasharray", (4 * this.ctrl.z) + ", " + (4 * this.ctrl.z));
-    //~ }
-    //~ else if (!dash) {// && this.dashed) {
-        //~ this.dashed = false;
-        //~ this.line.removeAttribute("stroke-dasharray");
-    //~ }
-//~ };
-
 BinaryLink.prototype.show = function() {
     if (this.ctrl.initComplete) {
-// TODO: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
@@ -402,8 +185,8 @@ BinaryLink.prototype.show = function() {
             }
 			this.line.setAttribute("stroke-width", this.ctrl.z * 1);
 			this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
-			this.setLinkCoordinates(this.fromInteractor);
-			this.setLinkCoordinates(this.toInteractor);
+			this.setLinkCoordinates(this.interactors[0]);
+			this.setLinkCoordinates(this.interactors[1]);
 			if (this.thickLineShown) {
 				this.ctrl.p_pLinksWide.appendChild(this.thickLine);
 			}
@@ -429,31 +212,72 @@ BinaryLink.prototype.hide = function() {
 
 BinaryLink.prototype.setLinkCoordinates = function(interactor) {
     if (this.shown) {//don't waste time changing DOM if link not visible
-        if (this.fromInteractor === interactor) {
-            this.line.setAttribute("x1", interactor.x);
-            this.line.setAttribute("y1", interactor.y);
-            this.highlightLine.setAttribute("x1", interactor.x);
-            this.highlightLine.setAttribute("y1", interactor.y);
-            if (this.thickLineShown) {
-                this.thickLine.setAttribute("x1", interactor.x);
-                this.thickLine.setAttribute("y1", interactor.y);
-            }
-        }
-        else {
-            this.line.setAttribute("x2", interactor.x);
-            this.line.setAttribute("y2", interactor.y);
-            this.highlightLine.setAttribute("x2", interactor.x);
-            this.highlightLine.setAttribute("y2", interactor.y);
-            if (this.thickLineShown) {
-                this.thickLine.setAttribute("x2", interactor.x);
-                this.thickLine.setAttribute("y2", interactor.y);
-            }
-        }
-    }
+		var pos = interactor.getPosition();
+        if (interactor.type !== 'complex'){
+			if (this.interactors[0] === interactor) {
+				this.line.setAttribute("x1", pos[0]);
+				this.line.setAttribute("y1", pos[1]);
+				this.highlightLine.setAttribute("x1", pos[0]);
+				this.highlightLine.setAttribute("y1", pos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x1", pos[0]);
+					this.thickLine.setAttribute("y1", pos[1]);
+				}
+			}
+			else {
+				this.line.setAttribute("x2", pos[0]);
+				this.line.setAttribute("y2", pos[1]);
+				this.highlightLine.setAttribute("x2", pos[0]);
+				this.highlightLine.setAttribute("y2", pos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x2", pos[0]);
+					this.thickLine.setAttribute("y2", pos[1]);
+				}
+			}
+		}else {//interactor is a complex
+			var otherEndPos = this.getOtherEnd(interactor).getPosition();
+			var naryPath = interactor.naryLink.hull;
+			var iPath = new Array();
+			for (var pi = 0; pi < naryPath.length; pi++) {
+				var p = naryPath[pi];
+				iPath.push(new Point2D(p[0],p[1]));
+			}
+			var a1 = new Point2D(pos[0], pos[1]);
+			var a2 = new Point2D(otherEndPos[0], otherEndPos[1]);
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var newPos;
+			if (intersect.points[0]){
+				newPos = [intersect.points[0].x,intersect.points[0].y]; 
+			} else {
+				newPos = pos;
+			} 
+			if (this.interactors[0] === interactor) {
+				this.line.setAttribute("x1", newPos[0]);
+				this.line.setAttribute("y1", newPos[1]);
+				this.highlightLine.setAttribute("x1", newPos[0]);
+				this.highlightLine.setAttribute("y1", newPos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x1", newPos[0]);
+					this.thickLine.setAttribute("y1", newPos[1]);
+				}
+			}
+			else {
+				this.line.setAttribute("x2", newPos[0]);
+				this.line.setAttribute("y2", newPos[1]);
+				this.highlightLine.setAttribute("x2", newPos[0]);
+				this.highlightLine.setAttribute("y2", newPos[1]);
+				if (this.thickLineShown) {
+					this.thickLine.setAttribute("x2", newPos[0]);
+					this.thickLine.setAttribute("y2", newPos[1]);
+				}
+			}
+		
+		}
+	}
 };
 
-BinaryLink.prototype.getOtherEnd = function(protein) {
-    return ((this.fromInteractor === protein) ? this.toInteractor : this.fromInteractor);
+BinaryLink.prototype.getOtherEnd = function(interactor) {
+    return ((this.interactors[0] === interactor) ? this.interactors[1] : this.interactors[0]);
 };
 
 module.exports = BinaryLink;

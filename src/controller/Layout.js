@@ -46,7 +46,7 @@ var autoLayout = function(width, height) {
             reorderedNodes.push(currentNode.id);
             for (var l = 0; l < currentNode.links.values().length; l++) {
                 var link = currentNode.links.values()[l];
-                if (link.isBinary && link.check() === true) {
+                if (/*link.isBinary && */link.check() === true) {
                     var nextNode = link.getOtherEnd(currentNode);
                     if (reorderedNodes.indexOf(nextNode.id) === -1) {
                         //                    alert("here");
@@ -67,14 +67,14 @@ var autoLayout = function(width, height) {
     var proteinCount = this.interactors.keys().length;
     if (proteinCount === 1) {
         var protein = this.interactors.values()[0];
-        protein.setPosition(width / 2, height / 4 * 3);
+        protein.setPosition(width / 2, height / 2);
         return;
     }
     else if (proteinCount === 2) {
         var p1 = this.interactors.values()[0];
-        p1.setPosition(width / 2, height / 2);
+        p1.setPosition(width / 2, height / 3 * 2);
         var p2 = this.interactors.values()[1];
-        p2.setPosition(width / 2, height - 32);
+        p2.setPosition(width / 2, height / 3 * 1);
         return;
     }
     else {
@@ -163,18 +163,19 @@ var autoLayout = function(width, height) {
                         y = yForRow(row);
                         var lastNodeY = yForRow(row + ((nodeCount - n) * 2));
                         if ((lastNodeY + this.maxBlobRadius) > height) {
-                            column++;
                             row = 1;
-                            if (proteinCount < 60) {
+                            column++;
+                            if (((column - 0.5) % 2) === 0) {row += 1} 
+                            //~ if (proteinCount < 60) {
                                 row++;
-                            }
+                            //~ }
                             x = xForColumn(column);
                             y = yForRow(row);
                         }
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
-                    p.setAllLineCoordinates();
+                    p.setAllLinkCoordinates();
                 }
              }
         }
@@ -197,7 +198,7 @@ var autoLayout = function(width, height) {
                     pi++;
                     //TODO: change to actual json obj not string
                     json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-                            + prot.links.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
+                            + prot.binaryLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
                     json += "}";
                 }
             }
@@ -218,10 +219,11 @@ var autoLayout = function(width, height) {
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
                 var protein = this.interactors.get(node.id);
-                var nx = node.x;
-                var ny = node.y;
+                var nx = node.x + Math.random() - 0.5;
+                var ny = node.y + Math.random() - 0.5;
+                
                 protein.setPosition(nx + this.layoutXOffset, ny);
-                protein.setAllLineCoordinates(false);
+                protein.setAllLinkCoordinates(false);
             }
         }
         //do force directed layout
@@ -260,9 +262,9 @@ var autoLayout = function(width, height) {
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
 //            if (link.check() === true) { //not needed due to way subgraphs init'ed
-               if (link.isBinary === true){
-					var fromProt = link.fromInteractor;
-					var toProt = link.toInteractor;
+               //~ if (link.isBinary === true){
+					var fromProt = link.interactors[0];
+					var toProt = link.interactors[1];
 					var source = protLookUp[fromProt.id];
 					var target = protLookUp[toProt.id];
 
@@ -279,26 +281,27 @@ var autoLayout = function(width, height) {
 							alert("NOT RIGHT");
 						}
 					}
-				} else {
-					for (var i = 0; i < link.evidences.values().length; i++) {
-					var participants = link.evidences.values()[i].participants;
-					var participantCount = participants.length; 
-					//TODO: if evidence.check() ==== true
-					var fakeHub = this.interactors.get(participants[0].interactorRef);
-					var fromProt = fakeHub;
-					var source = protLookUp[fromProt.id];
-					for (var p = 1; p < participantCount; p++){
-						var participant = this.interactors.get(participants[p].interactorRef);
-						var toProt = participant;
-						var target = protLookUp[toProt.id];
-						var linkObj = {};
-						linkObj.source = source;
-						linkObj.target = target;
-						linkObj.id = link.id;
-						layoutObj.links.push(linkObj);						
-					}
-				}
-			}
+				//~ } else {
+					//~ for (var i = 0; i < link.evidences.values().length; i++) {
+					//~ var participants = link.evidences.values()[i].participants;
+					//~ var participantCount = participants.length; 
+					//~ var fakeHub = this.interactors.get(participants[0].interactorRef);
+					//~ var fromProt = fakeHub;
+					//~ var source = protLookUp[fromProt.id];
+					//~ for (var p = 1; p < participantCount; p++){
+						//~ var participant = this.interactors.get(participants[p].interactorRef);
+						//~ var toProt = participant;
+						//~ if (typeof toProt !== "undefined") {
+							//~ var target = protLookUp[toProt.id];
+							//~ var linkObj = {};
+							//~ linkObj.source = source;
+							//~ linkObj.target = target;
+							//~ linkObj.id = link.id;
+							//~ layoutObj.links.push(linkObj);		
+						//~ }				
+					//~ }
+				//~ }
+				//~ }
                 //        } // closing unused link.check()
             }
         }
@@ -324,7 +327,7 @@ var autoLayout = function(width, height) {
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx + self.layoutXOffset, ny + yForRow(1));
-                protein.setAllLineCoordinates();
+                protein.setAllLinkCoordinates();
             }
         });
         this.force.start();

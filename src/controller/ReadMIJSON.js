@@ -8,252 +8,320 @@
 
 "use strict";
 
+var SmallMol = require('../model/interactor/SmallMol');
 var Polymer = require('../model/interactor/Polymer');
+var Complex = require('../model/interactor/Complex');
+var InteractorSet = require('../model/interactor/InteractorSet');
 var NaryLink = require('../model/link/NaryLink');
+var SequenceLink = require('../model/link/SequenceLink');
 var BinaryLink = require('../model/link/BinaryLink');
 var UnaryLink = require('../model/link/UnaryLink');
-
+ 
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
-
-    //just check that we've got a parsed javacsript object here, not a String
+    //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 	
-	//var interactorsMissingSequence = d3.set();
-    
-    // we iterate through the data three times, 
-    // once for interactors, once for features, and once for interactions
-    // (iteractors and interactions are mixed together in data,
-	// features are conatined in interactions)
-    
+	//interactors for which we can look up sequence and uniprot features
+	var uniprotInteractors = d3.set();
+     
     var data = miJson.data;
     var dataElementCount = data.length;
     for (var n = 0; n < dataElementCount; n++) {
         if (data[n].object === 'interactor') {
             var interactor = data[n];
-            var organismText = "no organism data";
-            if (interactor.organism) {
-                organismText = interactor.organism.scientific + '(' + interactor.organism.common + ')';
-            }
-            var description = interactor.type.name + ', '
-                    + organismText + ', '
-                    + interactor.identifier.id;
-
 			var p;
-             if (interactor.type.name === 'small molecule') {
+			if (interactor.type.name === 'molecule set') {//ignore participant sets
+				p = new InteractorSet(interactor.id, this, interactor);
+			}
+			else if (interactor.type.name === 'small molecule') {
 				p = new SmallMol(interactor.id, this, interactor);
-			 } else {
+				p.initInteractor(interactor.label);
+			} else {
 				p = new Polymer(interactor.id, this, interactor);
-			 }
-            this.interactors.set(interactor.id, p);
-            if (typeof interactor.sequence !== 'undefined') {
-                p.initInteractor(interactor.sequence, interactor.label, description);
-            }
-            else {
-                //~ if (interactor.identifier.db === 'uniprotkb') {
-                    //~ interactorsMissingSequence.add(interactor.identifier.id);
-                //~ }
-                //~ else {
-                    p.initInteractor('NO_SEQUENCE', interactor.label, description);
-                //~ }
-            }
+				//TODO - get features and sequences from uniprot webservice
+				//~ if (interactor.identifier.db === 'uniprotkb') { 
+					//~ uniprotInteractors.add
+				//temp
+				if (typeof interactor.sequence !== 'undefined') {
+					p.initInteractor(interactor.sequence, interactor.label);
+				}
+				else {
+					//hack
+					p.initInteractor('NO_SEQUENCE_NO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCE_NO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCE'
+						, interactor.label);
+				}
+			}
+			this.interactors.set(interactor.id, p);
         }
     }
-    var self = this;// the javascript bodge 
-
-    //we will download missing sequences before doing second iteration to add links
-    //~ if (interactorsMissingSequence.values().length === 0) {//if no missing sequences
-        addInteractions();
-		//~ this.message(this.links);
-    //~ }
-    //~ else {
-        //~ this.message(interactorsMissingSequence);
-        //~ initProteinSequences();//calls addInteractions when complete
-    //~ }
+    
+    var self = this;
+	//TODO - get features and sequences from uniprot webservice, will call addInteractions when finished		
+    addInteractions();
     
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
-        Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 4000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
-        var interactors = self.interactors.values();
-        var proteinCount = interactors.length;
+        Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 1000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
+        
+        //temp?
         self.features = d3.map();       
+        self.complexes = d3.map();  
+        
+        //create indexed collection of features from interactions   
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
-                self.addFeatures(interaction);
-            }
+				var participantCount = interaction.participants.length;
+				for (var pi = 0; pi < participantCount; pi++) {
+					var participant = interaction.participants[pi];
+					var features = new Array(0);
+					if (participant.bindingSites) {
+						features = features.concat(participant.bindingSites);
+					}
+					if (participant.experimentalFeatures) {
+						features = features.concat(participant.experimentalFeatures);
+					}
+					var fCount = features.length;
+					for (var f = 0; f < fCount; f++){
+						var feature = features[f];
+						self.features.set(feature.id, feature);
+					}		
+				}	
+	        }
         }
+        //add interactions
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
             if (interaction.object === 'interaction') {
                 self.addInteraction(interaction);
             }
         }
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = interactors[p];
-            prot.setPositionalFeatures(prot.customAnnotations);
+        //init complexes
+        var complexes = self.complexes.values()
+        for (var c = 0; c < complexes.length; c++) {
+			var interactionId = complexes[c].id;
+			var naryLink;
+			for (var l = 0; l < dataElementCount; l++) {
+				var interaction = data[l];
+				if (interaction.id == interactionId) {
+					var nLinkId = getIdFromInteraction(interaction);
+					naryLink = self.allNaryLinks.get(nLinkId);
+				}
+			}						
+            complexes[c].initInteractor(naryLink);
+            naryLink.complex = complexes[c];           
         }
+        //show features
+        //~ var interactors = self.interactors.values();
+        //~ var proteinCount = interactors.length;
+        //~ for (var p = 0; p < proteinCount; p++) {
+            //~ var prot = interactors[p];
+            //~ prot.setPositionalFeatures(prot.customAnnotations);
+        //~ }
         self.init();
-        self.checkLinks();
-    }
+        self.checkLinks();   
+	}
 };
 
-var addFeatures = function(interaction) {
-    var participantCount = interaction.participants.length;
-    var pIDs = d3.set();
-    for (var pi = 0; pi < participantCount; pi++) {
-		var participant = interaction.participants[pi];
-		var pID = participant.interactorRef;
-		var interactor = this.interactors.get(pID);
-		if (typeof interactor === 'undefined') {
-			alert("Fail - no interactor with id " + pID);
+// naryLink id is particpant interactorRefs, in ascending order, 
+// with duplicates eliminated, seperated by dash
+var getIdFromInteraction = function(interaction) {
+	var nLinkId = "";
+	// sort participants by interactorRef
+	var participants = interaction.participants.sort(
+		function comparator(a, b) {
+			return a.interactorRef - b.interactorRef;
 		}
-		if (participant.bindingSites) {
-			var efCount = participant.bindingSites.length;
-			for (var ef = 0; ef < efCount; ef++){
-				var experimentalFeature = participant.bindingSites[ef];
-				interactor.features.set(experimentalFeature.id, experimentalFeature);
-				this.features.set(experimentalFeature.id, 
-					{interactor:interactor.id,
-					 feature:experimentalFeature});
-				interactor.addFeature(experimentalFeature);	
-			}	
-		}		
-	}	
+	);
+	var participantCount = participants.length;
+	var pIDs = d3.set();//used to eliminate duplicates
+	//make id
+	for (var pi = 0; pi < participantCount; pi++) {
+		var pID = participants[pi].interactorRef;
+		if (pIDs.has(pID) === false){
+			pIDs.add(pID);
+			if (pi > 0) {
+				nLinkId += "-"; 
+			}
+			nLinkId += pID;
+		}
+	}		
+	return nLinkId;
 };
-
-// Moved from Link.js
-//id is particpant interactorRefs, in ascending order, with duplicates eliminated, seperated by dash
-var getIdFromInteraction = function(interaction){
-    var linkId = "";
-    //sort participants by interactorRef
-    var participants = interaction.participants.sort(
-        function comparator(a, b) {
-            return a.interactorRef - b.interactorRef;
-        }
-    );
-    var participantCount = participants.length;
-    var pIDs = d3.set();//used to eliminate duplicates
-    for (var pi = 0; pi < participantCount; pi++) {
-        var pID = participants[pi].interactorRef;
-        if (pIDs.has(pID) === false){
-            pIDs.add(pID);
-            if (pi > 0) {
-                linkId += "-"; 
-            }
-            linkId += pID;
-        }
-    }
-    return linkId;  
-}
 
 var addInteraction = function(interaction) {
-
-    if (typeof interaction.identifiers === 'undefined' || interaction.identifiers.length === 0){
-        alert('missing interaction identifier');
-        console.error(JSON.stringify(interaction));
-    }
-    
-    if (typeof interaction.confidences !== 'undefined') {
-        var confidences = interaction.confidences;
-        var confCount = confidences.length;
-        for (var c = 0; c < confCount; c++){
-            var conf = confidences[c];
-            if (conf.type === 'intact-miscore'){
-                interaction.score = conf.value * 1.0;
-            }
-        }
-    }
-    
-	var linkId = getIdFromInteraction(interaction);
-	var link = this.links.get(linkId);
-	
-	var interactorIds = linkId.split('-');
-	
-    if (typeof link === 'undefined') {
-		//~ var participants = interaction.participants;
-		//~ var participantCount = participants.length; //...no
-		var participantCount = interactorIds.length;
-		if (participantCount === 1) {
-			link = new UnaryLink(linkId, this);
-			link.notSubLink = true;
-		} else if (participantCount === 2) {
-			var participants = interaction.participants.sort(
-			function comparator(a, b) {
-				return a.interactorRef - b.interactorRef;
+	function getNaryLink(){
+		var nLinkId = getIdFromInteraction(interaction);
+		var nLink = self.allNaryLinks.get(nLinkId);
+		if (typeof nLink === 'undefined') {
+			//doesn't already exist, make new nLink
+			var interactorIds = nLinkId.split('-');
+			var iCount = interactorIds.length;
+			
+			nLink = new NaryLink(nLinkId, self);
+			self.allNaryLinks.set(nLinkId, nLink);
+			
+			for (var i = 0; i < iCount; i++) {
+				var interactor = self.interactors.get(interactorIds[i]);
+				if (typeof interactor === 'undefined') {
+					//must be a previously unencountered complex
+					interactor = new Complex(interactorIds[i], self);
+					self.interactors.set(interactorIds[i], interactor);
+					self.complexes.set(interactorIds[i], interactor);
 				}
-			);		
-			link = new BinaryLink(linkId, this, 
-				this.interactors.get(interactorIds[0]),
-				this.interactors.get(interactorIds[1]));
-			link.notSubLink = true;
+				interactor.naryLinks.set(nLinkId, nLink);
+				nLink.interactors.push(interactor);
+			}
+		}
+		nLink.addEvidence(interaction);
+		return nLink;
+	};
+	
+	function getSequenceLink(fromSequenceData, toSequenceData){
+		function seqDataComparator(a, b){
+			if (a.interactorRef != b.interactorRef){
+				return a.interactorRef - b.interactorRef;
+			} else if (a.pos < b.pos){
+				return -1;
+			}
+			else {
+				return 1;
+			}
+		}
+		function seqDataToString(seqData){
+			var string = "";
+			for (var s = 0; s < seqData.length; s++){
+				if (s > 0){
+					string += ';';
+				}
+				var seq = seqData[s];
+				string += seq.interactorRef + ':' + seq.pos;
+			}
+			return string;
+		}
+		fromSequenceData = fromSequenceData.sort(seqDataComparator);
+		toSequenceData = toSequenceData.sort(seqDataComparator);
+		var start =  seqDataToString(fromSequenceData);
+		var end =  seqDataToString(toSequenceData);
+		var seqLinkId;
+		if (start < end){
+			seqLinkId  =  start + '><' + end;
 		} else {
-			link = new NaryLink(linkId, this);
+			seqLinkId = end + '><' + start;
+		}			
+		var sequenceLink = self.allSequenceLinks.get(seqLinkId);
+		if (typeof sequenceLink === 'undefined') {
+			sequenceLink = new SequenceLink(seqLinkId, fromSequenceData, toSequenceData, self, interaction);
+			self.allSequenceLinks.set(seqLinkId, sequenceLink);
 		}
-        this.links.set(linkId, link);
-		for (var pi = 0; pi < participantCount; pi++) {
-			this.interactors.get(interactorIds[pi]).addLink(link);
+		sequenceLink.addEvidence(interaction);	
+		//TODO - get rid of following
+		sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+		sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+		nLink.sequenceLinks.set(seqLinkId, sequenceLink);
+		return sequenceLink;						
+	};
+	
+	function getUnaryLink(interactor){
+		var linkID = '-' + interactor.id + '-' + interactor.id
+		var link = self.allUnaryLinks.get(linkID);
+		if (typeof link === 'undefined') {
+			link = new UnaryLink(linkID, self, interactor);
+			self.allUnaryLinks.set(linkID, link);
+			interactor.selfLink = link;
 		}
+		nLink.unaryLinks.set(linkID, link);			
+		link.addEvidence(interaction);			
+		return link;
+	};
+	
+	function getBinaryLink(sourceInteractor, targetInteractor){
+		var linkID, fi, ti;   
+		// these links are undirected and should have same ID regardless of which way round 
+		// source and target are
+		if (sourceInteractor.id  < targetInteractor.id) {
+			linkID = '-' + sourceInteractor.id + '-' + targetInteractor.id;
+			fi = sourceInteractor;
+			ti = targetInteractor;
+		} else {
+			linkID = "-" + targetInteractor.id + '-' + sourceInteractor.id;
+			fi = targetInteractor;
+			ti = sourceInteractor;
+		}			
+		var link = self.allBinaryLinks.get(linkID);
+		if (typeof link === 'undefined') {
+			link = new BinaryLink(linkID, self, fi, ti);
+			fi.binaryLinks.set(linkID, link);
+			ti.binaryLinks.set(linkID, link);
+			self.allBinaryLinks.set(linkID, link);
+		}
+		nLink.binaryLinks.set(linkID, link);
+		link.addEvidence(interaction);		
+		return link;
 	}
-    //all other initialisation to do with links takes place within Links 
-    link.addEvidence(interaction);
+	
+	var self = this;
+    //init n-ary link
+    var nLink = getNaryLink(interaction);//note - this var gets used by the get*Link functions above    
+    // loop through particpants and features
+    // init binary, unary and sequence links, 
+    // and make needed associations between these and containing naryLink
+    var participants = interaction.participants;
+    var participantCount = participants.length    
+    for (var pi = 0; pi < participantCount; pi++){
+		var participant = participants[pi];
+		//TODO: check if participant is complex - need to change logic if is
+		var features = new Array(0); 
+		if (participant.bindingSites) {
+			features = features.concat(participant.bindingSites);
+		}
+		if (participant.experimentalFeatures) {
+			features = features.concat(participant.experimentalFeatures);
+		}
+		var fCount = features.length;
+		var linkedFeaturesFound = false;
+		for (var f = 0; f < fCount; f++){
+			var feature = features[f];
+			var fromSequenceData = feature.sequenceData;
+			if (feature.linkedFeatures) {
+				linkedFeaturesFound = true;
+				var linkedFeatureIDs = feature.linkedFeatures;
+				var toSequenceData = new Array();
+				var linkedFeatureCount = linkedFeatureIDs.length;
+				for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+					var linkedFeature = this.features.get(linkedFeatureIDs[lfi]);
+					toSequenceData = toSequenceData.concat(linkedFeature.sequenceData)
+				}
+				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);						
+				if (sequenceLink.fromInteractor === sequenceLink.toInteractor){
+					getUnaryLink(sequenceLink.fromInteractor);
+				}
+				else {
+					getBinaryLink(sequenceLink.fromInteractor, sequenceLink.toInteractor);
+				}
+			}			
+		}	
+		if (linkedFeaturesFound === false){
+			if (nLink.interactors.length === 1) {
+				var interactor = nLink.interactors[0];
+				var fromSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
+				var toSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
+				//sequnce link
+				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
+				//unary link
+				getUnaryLink(sequenceLink.fromInteractor);			
+			} 
+			else if (nLink.interactors.length === 2) {
+				//sequence link
+				var fromSequenceData = [{interactorRef:nLink.interactors[0].id, pos:'?-?'}];
+				var toSequenceData = [{interactorRef:nLink.interactors[1].id, pos:'?-?'}];
+				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
+				//binaryLink
+				getBinaryLink(sequenceLink.fromInteractor, sequenceLink.toInteractor);			
+			}
+		}
+	}           
 };
 
-var toJSON = function() {
-    return {
-        interactors: this.interactors,
-        features: this.features,
-		links: this.links,
-    };
-};
-
-    //~ function initProteinSequences() {
-        //~ var server_url = 'http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/';
-        //~ var client = JSDAS.Simple.getClient(server_url);
-        //~ // This function will be executed in case of error
-        //~ var error_response = function(e) {
-            //~ //we need to parse id out of URL, this is not ideal
-            //~ var id = e.url.substring(e.url.lastIndexOf('=') + 1);
-            //~ console.error('Sequence DAS lookup FAILED for ' + id);
-            //~ console.error(e.url);
-            //~ var p = self.interactors.get(id);
-            //~ p.initProtein('MISSING');
-            //~ interactorsMissingSequence.remove(id);
-            //~ self.message('<p>Waiting on sequence DAS response for: '
-                    //~ + interactorsMissingSequence.values().toString() + '</p>');
-            //~ if (interactorsMissingSequence.values().length === 0) {
-                //~ self.message('<p>All DAS sequence queries returned</p>');
-                //~ addInteractions();
-			//~ //	this.message(this);
-            //~ }
-        //~ };
-        //~ 
-        //~ // This function inits the protein with sequence
-        //~ var response = function(res) {
-            //~ var id = res.SEQUENCE[0].id;
-            //~ var seq = res.SEQUENCE[0].textContent;
-            //~ var label = res.SEQUENCE[0].label;
-            //~ var prot = self.interactors.get(id);
-            //~ prot.initProtein(seq, label, id);
-            //~ interactorsMissingSequence.remove(id);
-            //~ self.message('<p>Waiting on sequence DAS response for: '
-                    //~ + interactorsMissingSequence.values().toString() + '</p>');
-            //~ if (interactorsMissingSequence.values().length === 0) {
-                //~ self.message('<p>All sequences downloaded from DAS</p>');
-                //~ addInteractions();
-            //~ }
-        //~ };
-//~ 
-        //~ //send off the DAS sequence requests
-        //~ var keys = interactorsMissingSequence.values();
-        //~ var proteinCount = keys.length;
-        //~ for (var p = 0; p < proteinCount; p++) {
-            //~ var accession = keys[p];
-            //~ //Asking the client to retrieve the sequence
-            //~ client.sequence({
-                //~ segment: accession
-            //~ }, response, error_response);
-        //~ }
-    //~ }
-
-module.exports = {readMIJSON: readMIJSON, addFeatures: addFeatures, addInteraction: addInteraction, toJSON: toJSON};
+module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction};

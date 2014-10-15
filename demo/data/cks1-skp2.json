@@ -1,0 +1,256 @@
+{
+    "data": [
+        {
+            "id": "1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q13309"
+            }, 
+            "label": "Skp2", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P61024"
+            }, 
+            "label": "Cks1", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0363", 
+                    "name": "inferred by author"
+                }, 
+                "host": {
+                    "common": "Human", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "16209941"
+                    }
+                ]
+            }, 
+            "id": "3", 
+            "identifiers": [
+                {
+                    "db": "rcsb pdb", 
+                    "id": "2ASS"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "parameters": [
+                {
+                    "type": "Kd", 
+                    "unit": "M", 
+                    "value": "0.006x10^(-6) ~0.001"
+                }
+            ], 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "1", 
+                    "otherFeatures": [
+                        {
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "region", 
+                            "sequenceData": [
+                                "89-424"
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "2", 
+                    "otherFeatures": [
+                        {
+                            "InterPro": "IPR000789", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "Cyclin-dependent kinase, regulatory subunit", 
+                            "sequenceData": [
+                                "5-73"
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "id": "6", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P46527"
+            }, 
+            "label": "p27Kip1", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0363", 
+                    "name": "inferred by author"
+                }, 
+                "host": {
+                    "common": "Human", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "16209941"
+                    }
+                ]
+            }, 
+            "id": "7", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6859798"
+                }, 
+                {
+                    "db": "rcsb pdb", 
+                    "id": "2AST"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-20900-2"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "parameters": [
+                {
+                    "type": "Kd", 
+                    "unit": "M", 
+                    "value": "7x10^(-6) ~1"
+                }
+            ], 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "3", 
+                    "otherFeatures": [
+                        {
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "region", 
+                            "sequenceData": [
+                                "89-424", 
+                                "5-73"
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "interactorRef": "6", 
+                    "otherFeatures": [
+                        {
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "DEG_SCF_SKP2-CKS1_1", 
+                            "sequenceData": [
+                                "181-190"
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "ptms": [
+                        {
+                            "id": "10", 
+                            "name": "required-phosphothr187", 
+                            "role": {
+                                "id": "MI:0638", 
+                                "name": "prerequisite-ptm"
+                            }, 
+                            "sequenceData": [
+                                "187-187"
+                            ], 
+                            "type": {
+                                "id": "MOD:00696", 
+                                "name": "phosphorylated residue"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}

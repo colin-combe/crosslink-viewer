@@ -69,7 +69,7 @@ var mouseDown = function(evt) {
 
     var p = this.getEventPoint(evt);// seems to be correct, see below
     console.log("dragSTART");
-    conole.log("this.dragstart", this.mouseToSVG(p.x, p.y));
+    console.log("this.dragstart", this.mouseToSVG(p.x, p.y));
     this.dragStart = this.mouseToSVG(p.x, p.y);
 
     var rightClick; //which button has just been raised
@@ -128,10 +128,10 @@ var mouseMove = function(evt) {
                         nx = ox - dx;
                         ny = oy - dy;
                         protein.setPosition(nx, ny);
-                        protein.setAllLineCoordinates();
+                        protein.setAllLinkCoordinates();
                     }
                     for (i = 0; i < nodeCount; i++) {
-                        nodes[i].setAllLineCoordinates();
+                        nodes[i].setAllLinkCoordinates();
                     }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
@@ -140,7 +140,7 @@ var mouseMove = function(evt) {
                     nx = ox - dx;
                     ny = oy - dy;
                     this.dragElement.setPosition(nx, ny);
-                    this.dragElement.setAllLineCoordinates();
+                    this.dragElement.setAllLinkCoordinates();
                 }
                 this.dragStart = c;
             }
@@ -157,7 +157,7 @@ var mouseMove = function(evt) {
                 }
                 var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
                 this.dragElement.setRotation(centreToMouseAngleDegrees);
-                this.dragElement.setAllLineCoordinates();
+                this.dragElement.setAllLinkCoordinates();
             }
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
@@ -173,7 +173,7 @@ var mouseMove = function(evt) {
 //        this.updateMarquee(this.marquee, c);
 //    }
         else if (this.state === MouseEventCodes.PANNING) {
-            xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+            setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
             this.showTooltip(p);
@@ -231,7 +231,7 @@ var mouseUp = function(evt) {
                 }
                 else { //left click; show matches for link, toggle form for protein, switch stick scale
                     if (typeof this.dragElement.x === 'undefined') { //if not protein
-                        this.dragElement.showData();
+                        //~ this.dragElement.showData();
                     } else if (evt.shiftKey) { //if shift key
                         this.dragElement.switchStickScale(c);
                     } else {
@@ -267,12 +267,12 @@ var mouseUp = function(evt) {
             clearInterval(this.marcher);
             this.svgElement.removeChild(this.marquee);
         }
-    }
-        this.svgElement.unsuspendRedraw(suspendID);
-
-        this.dragElement = null;
-        this.whichRotator = -1;
-        this.state = MouseEventCodes.MOUSE_UP;
+		this.svgElement.unsuspendRedraw(suspendID);
+	}
+        
+	this.dragElement = null;
+	this.whichRotator = -1;
+	this.state = MouseEventCodes.MOUSE_UP;
 
     this.lastMouseUp = time;
     return false;
@@ -312,7 +312,7 @@ var mouseWheel = function(evt) {
     var p = this.getEventPoint(evt);// seems to be correct, see above
     var c = this.mouseToSVG(p.x, p.y);
     var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    xiNET.setCTM(g, g.getCTM().multiply(k));
+    setCTM(g, g.getCTM().multiply(k));
     this.scale();
     return false;
 };
@@ -385,10 +385,10 @@ var preventDefaultsAndStopPropagation = function(evt) {
 /**
  * Sets the current transform matrix of an element.
  */
-// var setCTM = function(element, matrix) {
-//     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-//     element.setAttribute("transform", s);
-// };
+ var setCTM = function(element, matrix) {
+     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+     element.setAttribute("transform", s);
+ };
 
 module.exports = {
     initMouseEvents: initMouseEvents,
@@ -400,7 +400,7 @@ module.exports = {
     clearSelection: clearSelection,
     getEventPoint: getEventPoint,
     preventDefaultsAndStopPropagation: preventDefaultsAndStopPropagation,
-    // setCTM: setCTM,
+    setCTM: setCTM,
     getScrollTop: getScrollTop,
     sortByNumber: sortByNumber,
     mouseToSVG: mouseToSVG

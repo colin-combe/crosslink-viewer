@@ -10,8 +10,7 @@
 
 "use strict";
 
-var RGBColor = require('../../vendor/rgbcolor');
-var d3 = require('../../node_modules/d3/');
+var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
 var Interactor = require('../model/interactor/Interactor');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
@@ -24,15 +23,7 @@ var TouchEvents = require('./TouchEvents');
 
 var xiNET = {}; //create xiNET's javascript namespace
 
-// Config.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-// Config.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
-
-xiNET.linkWidth = 1.3;// default line width
-
-// highlight and selection colours are static
-// (because all instances of xiNET should use same colours for this)
-xiNET.highlightColour = new RGBColor("#ffff99");//"#fdc086");//"yellow");
-xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
+//~ xiNET.linkWidth = 1.3;// default line width
 
 xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
 
@@ -191,11 +182,10 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.svgElement.appendChild(this.tooltip);
 
     this.clear();
-
-
-    
-
 };
+
+//josh - what can we do about the following, I think its a bit confusing / hard to maintain
+// would one big file be better?
 
 // Link to prototype functions that exist in other files.
 // Eventually the files will accept this controller as an argument
@@ -209,7 +199,6 @@ xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
 
 xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
 xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
-xiNET.Controller.prototype.toJSON = ReadMIJSON.toJSON;
 
 // Copy functions from Layout.js to our prototype:
 xiNET.Controller.prototype.autoLayout = Layout;
@@ -243,12 +232,30 @@ xiNET.setCTM = function(element, matrix) {
 
 
 xiNET.Controller.prototype.clear = function() {
-
     this.initComplete = false;
+ 	if (this.force) {
+		this.force.stop();
+	}
+ 	this.force = null;
+    var suspendID = this.svgElement.suspendRedraw(5000);
+    this.emptyElement(this.naryLinks);
+    this.emptyElement(this.p_pLinksWide);
+    this.emptyElement(this.highlights);
+    this.emptyElement(this.p_pLinks);
+    this.emptyElement(this.res_resLinks);
+    this.emptyElement(this.proteinLower);
+    this.emptyElement(this.proteinUpper);
+	this.svgElement.unsuspendRedraw(suspendID);
+    
     this.interactors = d3.map();
-    this.links = d3.map();
-    this.matches = d3.map();
+    
+    this.allNaryLinks = d3.map();
+    this.allBinaryLinks = d3.map();
+    this.allUnaryLinks = d3.map();
+    this.allSequenceLinks = d3.map();
+    
     this.subgraphs = new Array();
+    
     this.layoutXOffset = 0;
 
     this.proteinCount = 0;
@@ -261,40 +268,17 @@ xiNET.Controller.prototype.clear = function() {
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-
     this.tooltip.setAttribute('visibility', 'hidden');
     this.tooltip_bg.setAttribute('visibility', 'hidden');
 
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
-    //    var suspendID = this.svgElement.suspendRedraw(5000);
-    this.emptyElement(this.naryLinks);
-    this.emptyElement(this.p_pLinksWide);
-    this.emptyElement(this.highlights);
-    this.emptyElement(this.p_pLinks);
-    this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
-    this.emptyElement(this.proteinUpper);
-//    this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.emptyElement = function(element) {
     while (element.lastChild) {
         element.removeChild(element.lastChild);
     }
-};
-
-xiNET.Controller.prototype.message = function(text, preformatted) {
-    //~ if (typeof this.messageElement !== 'undefined') {
-        //~ if (typeof text === "object") {
-            //~ text = JSON.stringify(text, null, ' ');
-            //~ text = text.replace(/\\u0000/gi, '');
-            //~ preformatted = true;
-        //~ }
-        //~ if (preformatted)
-            //~ text = "<pre>" + text + "</pre>";
-        //~ this.messageElement.innerHTML = text;
-    //~ }
 };
 
 xiNET.Controller.prototype.init = function(width, height) {
@@ -312,8 +296,7 @@ xiNET.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(2000 / Math.PI);//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000)
-   // Interactor.UNITS_PER_RESIDUE = (((width - 350)  * 0.5) - Interactor.LABELMAXLENGTH) / Interactor.MAXSIZE;//TODO: fix that -350 hack
-    
+
     this.initComplete = true;
 
     if (typeof this.layout !== 'undefined' && this.layout != null) {
@@ -328,36 +311,24 @@ xiNET.Controller.prototype.init = function(width, height) {
 		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
-           // prot.initStick();//needed, todo - remove
             if (this.interactors.keys().length < 3) {
                if (prot.toStick) prot.toStick();
             }
             else {
                if (prot.toBlob) prot.toBlob();
             }
+            if (prot.lowerGroup){
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
+			}
         }
         this.autoLayout(width, height);
     }
-//    this.message('#interactors: ' + this.interactors.values().length +
-//            '\n# links: ' + this.links.values().length);
-
     this.initMouseEvents();
- //    if (typeof this.initTouchEvents === 'function'){
-	// 	this.initTouchEvents();
-	// }
+    if (typeof this.initTouchEvents === 'function'){
+	 	this.initTouchEvents();
+	}
 }
-
-xiNET.Controller.prototype.parkAll = function() {
-    var prots = this.proteins.values();
-    var protCount = prots.length;
-    for (var p = 0; p < protCount; p++) {
-        var protein = prots[p];
-        if (protein.isParked === false)
-            protein.toggleParked();
-    }
-};
 
 xiNET.Controller.prototype.resetZoom = function() {
     //    var conBBox = this.container.getBBox();
@@ -375,102 +346,41 @@ xiNET.Controller.prototype.resetZoom = function() {
     }
 };
 
-xiNET.Controller.prototype.getLayout = function() {
-    var myJSONText = JSON.stringify(this, null, '\t');
-    var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
-    var layout = myJSONText.replace(/\\u0000/gi, '');
-    //+ "\n{co:" + this.cutOff +"}";
-    return layout;
+xiNET.Controller.prototype.setCutOff = function(cutOff) {
+    this.cutOff = cutOff;
+    this.checkLinks();
 };
 
-xiNET.Controller.prototype.setLayout = function(layoutJSON) {
-    this.layout = typeof layoutJSON !== 'object' ? JSON.parse(decodeURIComponent(layoutJSON)) : layoutJSON;
-};
+//~ xiNET.Controller.prototype.hideInternal = function(bool) {
+    //~ this.intraHidden = bool;
+    //~ this.checkLinks();
+//~ };
+//~ 
+//~ xiNET.Controller.prototype.hideAmbig = function(bool) {
+    //~ this.ambigHidden = bool;
+    //~ this.checkLinks();
+//~ };
 
-xiNET.Controller.prototype.loadLayout = function() {
-    var suspendID = this.svgElement.suspendRedraw(5000);
-    for (var prot in this.layout.interactors) {
-        var protState = this.layout.interactors[prot];
-        var protein = this.interactors.get(prot);
-        if (protein !== undefined) {
-            protein.setPosition(protState["x"], protState["y"]);
-            // protein.toStick();
-            //~ if (typeof protState.annot !== 'undefined' && protState.annot != null) {
-                //~ if (protState.annot.length > 0) {
-                    //~ protein.customAnnotations = protState.annot;
-                    //~ protein.setPositionalFeatures(protein.customAnnotations);
-                //~ }
-            //~ }
-            
-            //~ if (protState["form"] === 1) {
-                if (typeof protState["stickZoom"] !== 'undefined') {
-                    protein.stickZoom = protState["stickZoom"];
-                    //~ protein.scale();
-                }
-                //~ protein.setRotation(protein.rotation);
-            //~ }
-            
-            if (typeof protState['rot'] !== 'undefined') {
-                protein.rotation = protState["rot"];
-            }
-
-            if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
-                protein.toStick();
-            }
-            else {
-                protein.toBlob();
-            }
-            
-			protein.setAllLineCoordinates();// watch out for this
-
-            if (typeof protState["parked"] !== 'undefined') {
-                protein.setParked(protState["parked"]);
-            }
-            if (protState["flipped"]) { //TODO: fix this
-                protein.toggleFlipped(); // change to setFlipped(protState["flipped"])
-            }
-            //~ if (protState["processedDAS"]) {
-                //~ protein.processedDAS = d3.map(protState["processedDAS"]);
-            //~ }
-            this.proteinLower.appendChild(protein.lowerGroup);
-            this.proteinUpper.appendChild(protein.upperGroup);
-        }
-    }
-
-    // incase interactors have been added which are not included in layout -
-    var interactors = this.interactors.values();
-    var proteinCount = interactors.length;
-    for (var p = 0; p < proteinCount; p++) {
-        prot = interactors[p];
-        if (prot.x == null) {
-            //prot.initStick();
-            prot.toBlob();
-            prot.setPosition(20, 20);
-            this.proteinLower.appendChild(prot.lowerGroup);
-            this.proteinUpper.appendChild(prot.upperGroup);
-        }
-    }
-
-    // layout info for links (hidden / specified colour)
-    for (var l in this.layout.links) {
-        var linkState = this.layout.links[l];
-        var link = this.links.get(l);
-        if (link !== undefined) {
-            if (typeof linkState.hidden !== 'undefined')
-                link.hidden = linkState.hidden;
-            var c = linkState.colour;
-            if (typeof c !== 'undefined') {
-                var resLinks = link.sequenceLinks.values();
-                var resLinkCount = resLinks.length;
-                for (var r = 0; r < resLinkCount; r++) {
-                    var resLink = resLinks[r];
-                    resLink.initSVG();
-                    resLink.line.setAttribute('stroke', 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')');
-                }
-            }
-        }
-    }
-    this.svgElement.unsuspendRedraw(suspendID);
+xiNET.Controller.prototype.exportSVG = function() {
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
+    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
+    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
+    //    .replace(/xmlns:svg=/gi,"xmlns=")
+    //    .replace(/svg:/gi,"")
+    .replace(/<rect .*?\/rect>/i, "");//takes out background fill
+    
+    //~ var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+	//~ saveAs(blob, "xiNET_output.svg");
+	
+	var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+    + svgXml;
+	
+	var xmlAsUrl;
+    //xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
+    xmlAsUrl += encodeURIComponent(xml);
+    var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
 
 module.exports = xiNET.Controller;
