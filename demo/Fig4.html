@@ -9,32 +9,7 @@
 		<link rel="stylesheet" href="./css/bootstrap.css">
 		<link rel="stylesheet" href="./css/flat-ui.css" >
 		<link rel="stylesheet" href="./css/demo.css">
-        <!--libraries-->
-        <script type="text/javascript" src="./lib/d3.js"></script>
-        <script type="text/javascript" src="./lib/colorbrewer.js"></script>
-        <script type="text/javascript" src="./lib/jsdas.js"></script>
-        <script type="text/javascript" src="./lib/Blob.js"></script>
-       	<script type="text/javascript" src="./lib/FileSaver.js"></script>
-        <script type="text/javascript" src="./lib/rgbcolor.js"></script>
-        <script type="text/javascript" src="./lib/prototype.js"></script>
-        <script type="text/javascript" src="./lib/slider.js"></script>
-        <!--xiNET-->
-        <script type="text/javascript" src="./js/controller/Init.js"></script>
-        <script type="text/javascript" src="./js/controller/MouseEvents.js"></script>
-        <script type="text/javascript" src="./js/controller/Layout.js"></script>
-        <script type="text/javascript" src="./js/controller/Refresh.js"></script>
-        <script type="text/javascript" src="./js/controller/ToolTips.js"></script>
-        <script type="text/javascript" src="./js/model/Match.js"></script>
-        <script type="text/javascript" src="./js/model/Link.js"></script>
-        <script type="text/javascript" src="./js/model/Protein.js"></script>
-        <script type="text/javascript" src="./js/model/Protein_printAnnotationInfo.js"></script>
-        <script type="text/javascript" src="./js/model/Annotations.js"></script>
-        <script type="text/javascript" src="./js/model/ProteinLink.js"></script>
-        <script type="text/javascript" src="./js/model/ResidueLink.js"></script>
-        <script type="text/javascript" src="./js/controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="./js/controller/Rotator.js"></script>
-        <script type="text/javascript" src="./js/controller/DASUtil.js"></script>
-        <script type="text/javascript" src="./js/controller/ReadCSV.js"></script>
+        <script type="text/javascript" src="../build/xiNET_1.0.0.js"></script>
     </head>
     <body>
 	<div id="outerDiv">
@@ -251,19 +226,19 @@ xlv.addMatch("595292",[184],"595300",[423],105666457,7.122282069502989,2,2,"KSMo
 						document.getElementById('scoreLabel1').innerHTML = (xlv.scores.min - 0.01).toFixed(2);
 						document.getElementById('scoreLabel2').innerHTML = (xlv.scores.max + 0.01).toFixed(2) + '&nbsp;&nbsp;';
 						document.getElementById('debug1').innerHTML = 'Cut-Off:' + (xlv.scores.min - 0.01).toFixed(2);
-						new Control.Slider('handle1', 'track1', {
-							sliderValue: 0,
-							onSlide: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
-								xlv.setCutOff(cut);
-							},
-							onChange: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
-								xlv.setCutOff(cut);
-							}
-						});
+						//~ new Control.Slider('handle1', 'track1', {
+							//~ sliderValue: 0,
+							//~ onSlide: function(v) {
+								//~ var cut = calcCutOff(v);
+								//~ document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
+								//~ xlv.setCutOff(cut);
+							//~ },
+							//~ onChange: function(v) {
+								//~ var cut = calcCutOff(v);
+								//~ document.getElementById('debug1').innerHTML = 'Cut-Off: ' + cut.toFixed(2);
+								//~ xlv.setCutOff(cut);
+							//~ }
+						//~ });
 						function calcCutOff(v) {
 							var result = (v * (xlv.scores.max - xlv.scores.min + 0.02)) + xlv.scores.min - 0.01;
 							return result;

@@ -93,9 +93,6 @@ ResidueLink.prototype.initSVG = function() {
 			self.touchStart(evt);
 		};
     }
-    if (this.intra === true) {
-        //~ this.setUpCurve();
-    }
     this.isSelected = false;
 };
 
