@@ -11,6 +11,7 @@ java -jar compiler.jar \
 --js=../vendor/FileSaver.js \
 --js=../src/controller/Init.js \
 --js=../src/controller/MouseEvents.js \
+--js=../src/controller/TouchEvents.js \
 --js=../src/controller/Layout.js \
 --js=../src/controller/Refresh.js \
 --js=../src/controller/ToolTips.js \
