@@ -26,4 +26,4 @@ java -jar compiler.jar \
 --js=../src/controller/DASUtil.js \
 --js=../src/controller/ReadCSV.js \
 --js=../src/controller/Fasta.js \
---js_output_file=./xiNET_1.0.0.js;
+--js_output_file=./xiNET_1.0.1.js;
