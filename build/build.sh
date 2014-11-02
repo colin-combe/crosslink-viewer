@@ -5,7 +5,6 @@ java -jar compiler.jar --version
 java -jar compiler.jar \
 --js=../vendor/d3.js \
 --js=../vendor/colorbrewer.js \
---js=../vendor/jsdas.js \
 --js=../vendor/rgbcolor.js \
 --js=../vendor/Blob.js \
 --js=../vendor/FileSaver.js \
