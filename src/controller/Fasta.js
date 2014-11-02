@@ -99,7 +99,7 @@ xiNET.Controller.prototype.readFasta = function(file){
 		var name = ident;
 		var iBar = ident.indexOf("|");
 		if (iBar !== -1) {
-			splitOnBar = ident.split("|");
+			var splitOnBar = ident.split("|");
 			if (splitOnBar.length === 3) {
 				name = splitOnBar[2];
 				var iUnderscore = name.indexOf("_");

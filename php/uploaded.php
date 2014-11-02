@@ -22,37 +22,37 @@
 			$annot = $line['annot'];
 			echo ('<title> xiNET | ' . $filename . '</title>');
         ?>
-        <link rel="stylesheet" href="../css/xiNET.css">
-		<link rel="stylesheet" href="../css/bootstrap.css">
-		<link rel="stylesheet" href="../css/flat-ui.css" >
-		<link rel="stylesheet" href="../css/demo.css">
+        <link rel="stylesheet" href="../demo/css/xiNET.css">
+		<link rel="stylesheet" href="../demo/css/bootstrap.css">
+		<link rel="stylesheet" href="../demo/css/flat-ui.css" >
+		<link rel="stylesheet" href="../demo/css/demo.css">
         <!--libraries-->
-        <script type="text/javascript" src="../lib/d3.js"></script>
-        <script type="text/javascript" src="../lib/colorbrewer.js"></script>
-        <script type="text/javascript" src="../lib/jsdas.js"></script>
-        <script type="text/javascript" src="../lib/Blob.js"></script>
-       	<script type="text/javascript" src="../lib/FileSaver.js"></script>
-        <script type="text/javascript" src="../lib/rgbcolor.js"></script>             
-        <script type="text/javascript" src="../lib/prototype.js"></script>
-        <script type="text/javascript" src="../lib/slider.js"></script>
+        <script type="text/javascript" src="../vendor/d3.js"></script>
+        <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
+        <script type="text/javascript" src="../vendor/jsdas.js"></script>
+        <script type="text/javascript" src="../vendor/Blob.js"></script>
+       	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
+        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>             
+        <script type="text/javascript" src="../vendor/prototype.js"></script>
+        <script type="text/javascript" src="../vendor/slider.js"></script>
         <!--xiNET-->
-        <script type="text/javascript" src="../js/controller/Init.js"></script>
-        <script type="text/javascript" src="../js/controller/MouseEvents.js"></script>
-        <script type="text/javascript" src="../js/controller/Layout.js"></script>
-        <script type="text/javascript" src="../js/controller/Refresh.js"></script>
-        <script type="text/javascript" src="../js/controller/ToolTips.js"></script>
-        <script type="text/javascript" src="../js/model/Match.js"></script>
-        <script type="text/javascript" src="../js/model/Link.js"></script>
-        <script type="text/javascript" src="../js/model/Protein.js"></script>
-       	<script type="text/javascript" src="../js/model/Protein_printAnnotationInfo.js"></script>
-        <script type="text/javascript" src="../js/model/Annotations.js"></script>
-        <script type="text/javascript" src="../js/model/ProteinLink.js"></script>
-        <script type="text/javascript" src="../js/model/ResidueLink.js"></script>
-        <script type="text/javascript" src="../js/controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="../js/controller/Rotator.js"></script>
-        <script type="text/javascript" src="../js/controller/DASUtil.js"></script>
-        <script type="text/javascript" src="../js/controller/ReadCSV.js"></script>
-        <script type="text/javascript" src="../js/controller/Fasta.js"></script>
+        <script type="text/javascript" src="../src/controller/Init.js"></script>
+        <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
+        <script type="text/javascript" src="../src/controller/Layout.js"></script>
+        <script type="text/javascript" src="../src/controller/Refresh.js"></script>
+        <script type="text/javascript" src="../src/controller/ToolTips.js"></script>
+        <script type="text/javascript" src="../src/model/Match.js"></script>
+        <script type="text/javascript" src="../src/model/Link.js"></script>
+        <script type="text/javascript" src="../src/model/Protein.js"></script>
+       	<script type="text/javascript" src="../src/model/Protein_printAnnotationInfo.js"></script>
+        <script type="text/javascript" src="../src/model/Annotations.js"></script>
+        <script type="text/javascript" src="../src/model/ProteinLink.js"></script>
+        <script type="text/javascript" src="../src/model/ResidueLink.js"></script>
+        <script type="text/javascript" src="../src/controller/ExternalControls.js"></script>
+        <script type="text/javascript" src="../src/controller/Rotator.js"></script>
+        <script type="text/javascript" src="../src/controller/DASUtil.js"></script>
+        <script type="text/javascript" src="../src/controller/ReadCSV.js"></script>
+        <script type="text/javascript" src="../src/controller/Fasta.js"></script>
     </head>
     <body>
 	<div id="outerDiv">
@@ -69,7 +69,7 @@
 						<div class="selected" id="handle1"></div> 
 					</div> <!-- track1 sliderbar -->
 					<p class="scoreLabel" id="scoreLabel2"></p>
-					<p id="debug1">&nbsp;&nbsp;Score Cut-Off:</p>
+					<p id="debug1" style="display:inline-block">&nbsp;&nbsp;Score Cut-Off:</p>
 				</div> <!-- outlined scoreSlider -->
 				<div class="controlGroup"><p>Self-links&nbsp;
 					<input checked="checked" id="internal" onclick=
