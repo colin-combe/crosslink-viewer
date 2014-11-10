@@ -222,26 +222,26 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
-//            if (link.check() === true) { //not needed due to way subgraphs are initialised
-                var fromProt = link.fromProtein;
-                var toProt = link.toProtein;
-                var source = protLookUp[fromProt.id];
-                var target = protLookUp[toProt.id];
+				var fromProt = link.fromProtein;
+				var toProt = link.toProtein;
+				if (toProt) {
+					var source = protLookUp[fromProt.id];
+					var target = protLookUp[toProt.id];
 
-                if (source !== target) {
+					if (source !== target) {
 
-                    if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-                        var linkObj = {};
-                        linkObj.source = source;
-                        linkObj.target = target;
-                        linkObj.id = link.id;
-                        layoutObj.links.push(linkObj);
-                    }
-                    else {
-                        alert("NOT RIGHT");
-                    }
+						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+							var linkObj = {};
+							linkObj.source = source;
+							linkObj.target = target;
+							linkObj.id = link.id;
+							layoutObj.links.push(linkObj);
+						}
+						else {
+							alert("NOT RIGHT");
+						}
+					}
                 }
-                //        } // closing unused link.check()
             }
         }
         var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
