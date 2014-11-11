@@ -1,0 +1,134 @@
+Type,Location,Protein1,LinkPos1,Domain,Protein2,LinkPos2,Domain,Confidence
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,23,N-terminal region,sp|P41895|Tfg1,61,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,23,N-terminal region,sp|P41895|Tfg1,126,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41895|Tfg1,72,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41895|Tfg1,89,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41895|Tfg1,108,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41895|Tfg1,72,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41895|Tfg1,89,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41895|Tfg1,108,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,72,N-terminal region,sp|P41895|Tfg1,89,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,72,N-terminal region,sp|P41895|Tfg1,91,N-terminal region,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,120,Dimerization domain,sp|P41895|Tfg1,394,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,120,Dimerization domain,sp|P41895|Tfg1,400,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,124,Dimerization domain,sp|P41895|Tfg1,394,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,126,Dimerization domain,sp|P41895|Tfg1,142,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,126,Dimerization domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,161,Dimerization domain,sp|P41895|Tfg1,169,Insertion,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,169,Insertion,sp|P41895|Tfg1,184,Insertion,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,169,Insertion,sp|P41895|Tfg1,195,Insertion,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,169,Insertion,sp|P41895|Tfg1,289,Insertion,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,169,Insertion,sp|P41895|Tfg1,416,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,169,Insertion,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,333,Dimerization domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,394,Dimerization domain,sp|P41895|Tfg1,400,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,394,Dimerization domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,400,Dimerization domain,sp|P41895|Tfg1,416,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,400,Dimerization domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,411,Charged domain,sp|P41895|Tfg1,416,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,411,Charged domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,411,Charged domain,sp|P41895|Tfg1,527,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,415,Charged domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,416,Charged domain,sp|P41895|Tfg1,426,Charged domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,426,Charged domain,sp|P41895|Tfg1,527,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P41895|Tfg1,537,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P41895|Tfg1,574,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P41895|Tfg1,575,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P41895|Tfg1,614,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P41895|Tfg1,724,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,604,,sp|P41895|Tfg1,625,,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,704,,sp|P41895|Tfg1,719,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,711,WH domain,sp|P41895|Tfg1,719,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,712,WH domain,sp|P41895|Tfg1,720,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,719,WH domain,sp|P41895|Tfg1,724,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41895|Tfg1,720,WH domain,sp|P41895|Tfg1,733,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,80,Dimerization domain,sp|P41896|Tfg2,245,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,80,Dimerization domain,sp|P41896|Tfg2,279,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,80,Dimerization domain,sp|P41896|Tfg2,319,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,94,Dimerization domain,sp|P41896|Tfg2,99,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,99,Dimerization domain,sp|P41896|Tfg2,127,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,142,Dimerization domain,sp|P41896|Tfg2,147,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,142,Dimerization domain,sp|P41896|Tfg2,156,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,142,Dimerization domain,sp|P41896|Tfg2,172,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,142,Dimerization domain,sp|P41896|Tfg2,186,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,142,Dimerization domain,sp|P41896|Tfg2,206,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,147,,sp|P41896|Tfg2,163,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,147,,sp|P41896|Tfg2,164,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,148,,sp|P41896|Tfg2,163,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,148,,sp|P41896|Tfg2,185,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,163,,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,172,,sp|P41896|Tfg2,186,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,179,,sp|P41896|Tfg2,186,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,179,,sp|P41896|Tfg2,206,Dimerization domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,245,Linker,sp|P41896|Tfg2,279,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,245,Linker,sp|P41896|Tfg2,290,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,245,Linker,sp|P41896|Tfg2,319,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,249,Linker,sp|P41896|Tfg2,279,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,249,Linker,sp|P41896|Tfg2,357,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,279,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,286,Linker,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,297,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,316,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,319,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,341,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,357,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,279,Linker,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,286,Linker,sp|P41896|Tfg2,319,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,290,Linker,sp|P41896|Tfg2,319,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,296,WH domain,sp|P41896|Tfg2,335,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,296,WH domain,sp|P41896|Tfg2,357,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,296,WH domain,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,297,WH domain,sp|P41896|Tfg2,335,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,297,WH domain,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,319,WH domain,sp|P41896|Tfg2,330,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,330,WH domain,sp|P41896|Tfg2,342,WH domain,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,335,WH domain,sp|P41896|Tfg2,357,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,335,WH domain,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,342,WH domain,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P41896|Tfg2,356,,sp|P41896|Tfg2,359,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,100,,sp|P35189|Tfg3,166,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,149,,sp|P35189|Tfg3,161,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,149,,sp|P35189|Tfg3,166,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,149,,sp|P35189|Tfg3,181,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,161,,sp|P35189|Tfg3,166,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,166,,sp|P35189|Tfg3,181,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,166,,sp|P35189|Tfg3,240,,High
+Intra-protein ,Within TFIIF,sp|P35189|Tfg3,181,,sp|P35189|Tfg3,240,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41896|Tfg2,235,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41896|Tfg2,245,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,60,N-terminal region,sp|P41896|Tfg2,249,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41896|Tfg2,99,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41896|Tfg2,235,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41896|Tfg2,245,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,61,N-terminal region,sp|P41896|Tfg2,249,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,72,N-terminal region,sp|P41896|Tfg2,235,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,89,N-terminal region,sp|P41896|Tfg2,94,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,89,N-terminal region,sp|P41896|Tfg2,99,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,89,N-terminal region,sp|P41896|Tfg2,103,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,89,N-terminal region,sp|P41896|Tfg2,235,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,91,N-terminal region,sp|P41896|Tfg2,103,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,108,Dimerization domain,sp|P41896|Tfg2,147,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,108,Dimerization domain,sp|P41896|Tfg2,156,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,108,Dimerization domain,sp|P41896|Tfg2,279,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,108,Dimerization domain,sp|P41896|Tfg2,319,WH domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,124,Dimerization domain,sp|P41896|Tfg2,127,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,125,Dimerization domain,sp|P41896|Tfg2,127,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,126,Dimerization domain,sp|P41896|Tfg2,127,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,126,Dimerization domain,sp|P41896|Tfg2,279,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,142,Dimerization domain,sp|P41896|Tfg2,80,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,333,Dimerization domain,sp|P41896|Tfg2,142,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,333,Dimerization domain,sp|P41896|Tfg2,179,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,333,Dimerization domain,sp|P41896|Tfg2,290,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,333,Dimerization domain,sp|P41896|Tfg2,297,WH domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,394,Dimerization domain,sp|P41896|Tfg2,127,Dimerization domain,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,394,Dimerization domain,sp|P41896|Tfg2,245,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,394,Dimerization domain,sp|P41896|Tfg2,279,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,426,Charged domain,sp|P41896|Tfg2,279,Linker,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,426,Charged domain,sp|P41896|Tfg2,357,,High
+Inter-protein ,Within TFIIF,sp|P41896|Tfg2,359,,sp|P35189|Tfg3,166,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,426,Charged domain,sp|P35189|Tfg3,166,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P35189|Tfg3,149,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P35189|Tfg3,166,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,527,,sp|P35189|Tfg3,181,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,614,,sp|P35189|Tfg3,149,,High
+Inter-protein ,Within TFIIF,sp|P41895|Tfg1,614,,sp|P35189|Tfg3,166,,High
