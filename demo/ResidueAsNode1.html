@@ -25,8 +25,8 @@
 	var color = d3.scale.category20();
 	 
 	var force = d3.layout.force()
-	.charge(-5)
-	.linkDistance(5)
+	.charge(-120)
+	.linkDistance(30)
 	.size([width, height]);
 	 
 	var svg = d3.select("body").append("svg")
@@ -40,8 +40,8 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	
 	for (var r = 0; r < rowCount; r++) {
 		var row = parsedCSV[r];
-		nodeSet.add(row.Protein1);// + "_" + row.LinkPos1);
-		nodeSet.add(row.Protein2);// + "_" + row.LinkPos2);
+		nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
+		nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
 	}
 	
 	var ni = 0;
@@ -51,51 +51,32 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	var nodeArray = nodeSet.values();
 	var linkedResCount = nodeArray.length;
 	for (var n = 0; n < linkedResCount; n++){
-		for (var m = 0; m < 200; m ++) {
-			nodeLookup.set(nodeArray[n] + "_" + m, ((n * 200) + m));
-			nodes.push({
-					name:nodeArray[n] + "_" + m,
-					x: n * 60,
-					y: m*2,
-					px: n * 60,
-					py: m*2
-					});
-		}
+		nodeLookup.set(nodeArray[n], n);
+		nodes.push({name:nodeArray[n]});
 	}
 	
 	var links = [];
-	for (var n = 0; n < linkedResCount; n++){
-			for (var m = 0; m < 199; m ++) {
-					var linkObj = {};
-					linkObj.source =  nodeLookup.get(nodeArray[n] + "_" + m);
-					linkObj.target =  nodeLookup.get(nodeArray[n] + "_" + ((m * 1) + 1));
-					linkObj.id = linkObj.source + "_to_" + linkObj.target;
-					//~ console.log(nodeArray[n] + "\t" + linkObj.id);
-					links.push(linkObj);
-			}
+	for (var r = 0; r < rowCount; r++) {
+		var row = parsedCSV[r];
+		var source = nodeLookup.get(row.Protein1 + "_" + row.LinkPos1);
+		var target = nodeLookup.get(row.Protein2 + "_" + row.LinkPos2); 
+					if (source !== target) {
+						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+							var linkObj = {};
+							linkObj.source = source;
+							linkObj.target = target;
+							linkObj.id = source + "_to_" + target;
+							links.push(linkObj);
+						}
+						else {
+							alert("NOT RIGHT");
+						}
+					}
 	}
 	
-		//~ for (var r = 0; r < rowCount; r++) {
-		//~ var row = parsedCSV[r];
-		//~ var source = nodeLookup.get(row.Protein1 + "_" + row.LinkPos1);
-		//~ var target = nodeLookup.get(row.Protein2 + "_" + row.LinkPos2); 
-					//~ if (source !== target) {
-						//~ if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-							//~ var linkObj = {};
-							//~ linkObj.source = source;
-							//~ linkObj.target = target;
-							//~ linkObj.id = source + "_to_" + target;
-							//~ links.push(linkObj);
-						//~ }
-						//~ else {
-							//~ alert("NOT RIGHT");
-						//~ }
-					//~ }
-	//~ }
 	
-	
-	//~ console.log(JSON.stringify(nodeLookup));
-	//~ console.log(JSON.stringify(nodes));
+	console.log(JSON.stringify(nodeSet));
+	console.log(JSON.stringify(nodes));
 	
 	
 		 force
@@ -107,15 +88,13 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 		.data(links)
 		.enter().append("line")
 		.attr("class", "link")
-		.style("stroke-width", function(d) { return 2});//Math.sqrt(d.value); });
+		.style("stroke-width", function(d) { return Math.sqrt(d.value); });
 		 
 		var node = svg.selectAll(".node")
 		.data(nodes)
 		.enter().append("circle")
 		.attr("class", "node")
 		.attr("r", 5)
-		.attr("cx", function(d) { return d.px})
-		.attr("cy", function(d) { return d.py})
 		.style("fill", function(d) { return color(d.name.substring(d.name.lastIndexOf('|'),
 														d.name.lastIndexOf('_'))); })
 		.call(force.drag);
