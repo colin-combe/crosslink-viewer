@@ -13,56 +13,114 @@
 function xiNET_Storage() {}
 xiNET_Storage.ns = "xiNET."
 
-xiNET_Storage.getUniProtTxt(accession){
+xiNET_Storage.getUniProtTxt = function (accession, callback){
 	function uniprotWebService(){
 		var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
-		
-		
-		
-		
-		//~ d3.xml(url, function (xml){
-			//~ var uniprotJson = xml2json(xml, '');
-			//~ 
-			//~ if(typeof(Storage) !== "undefined") {
-				//~ localStorage.setItem(accession, uniprotJson);
-			//~ }
-			//~ 
-			//~ //console.log(JSON.stringify(JSON.parse(uniprotJson)), null, "\t"));	
-			//~ // console.log(xml2json(xml));	
-		//~ });
-		
-		return "bogus";
+		d3.text(url, function (txt){
+			console.log(accession + " retrieved from UniProt.");
+			if(typeof(Storage) !== "undefined") {
+				localStorage.setItem(xiNET_Storage.ns  + "UniProtKB."+ accession, txt);
+				console.log(accession + " UniProt added to local storage.");
+			}
+			callback(txt)
+		});
 	}
 	
-	var ns = xiNET_Storage.ns
 	if(typeof(Storage) !== "undefined") {
 		// Code for localStorage/sessionStorage.
 		console.log("Local storage found.");
 		// Retrieve
-		var stored = localStorage.getItem(ns + accession);
-		if (typeof stored !== 'undefined'){
-			console.log(accession + " from local storage.");
-			console.log(JSON.stringify(JSON.parse(stored)), null, "\t"));
-			return stored;	
+		var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
+		if (stored){
+			console.log(accession + " UniProt from local storage.");
+			callback(stored);	
 		}
 		else {
-			// Store
-			var retireved = uniprotWebService(accession);
-			localStorage.setItem(ns + accession, retrieved);
-			console.log(ns + accession + " to local storage.");
-			console.log(JSON.stringify(JSON.parse(retreived)), null, "\t"));		
-			return retrieved;
+			console.log(accession + " UniProt not in local storage.");
+			uniprotWebService();
 		}
 	}
 	else {
-		// Sorry! No Web Storage support..
 		console.log("No local storage found.");
-		var retireved = uniprotWebService(accession);
-		console.log(JSON.stringify(JSON.parse(retreived)), null, "\t"));		
-		return retrieved;
+		uniprotWebService();
 	}	
 }
 
-xiNET_Storage.getSequence(accession){}
-xiNET_Storage.getUniProtFeatures(accession){}
-xiNET_Storage.getSuperFamFeatures(accession){}
+xiNET_Storage.getSequence = function (accession, callback){
+	xiNET_Storage.getUniProtTxt(accession, function(txt){
+			var sequence = "";
+			var lines = txt.split('\n');
+			var lineCount = lines.length;
+			for (var l = 0; l < lineCount; l++){
+				var line = lines[l];
+				if (line.indexOf("SQ") === 0){
+					//sequence = line;
+					l++;
+					for (l; l < lineCount; l++){
+						line = lines[l];
+						sequence += line;
+					}
+				}
+			}
+			callback(sequence.replace(/[^A-Z]/g, ''));
+		}
+	);
+}
+
+xiNET_Storage.getUniProtFeatures = function (accession, callback){
+	xiNET_Storage.getUniProtTxt(accession, function(txt){
+			var features = new Array();
+			var lines = txt.split('\n');
+			var lineCount = lines.length;
+			for (var l = 0; l < lineCount; l++){
+				var line = lines[l];
+				if (line.indexOf("FT") === 0){
+					//sequence = line;
+					l++;
+					for (l; l < lineCount; l++){
+						line = lines[l];
+						sequence += line;
+					}
+				}
+			}
+			callback(sequence.replace(/[^A-Z]/g, ''));
+		}
+	);
+}
+
+xiNET_Storage.getSuperFamFeatures = function (accession, callback){
+	function superFamDAS(){
+		var url = "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
+		d3.xml(url, function (xml){
+			console.log(accession + " SuperFamDAS  retrieved.");
+			if(typeof(Storage) !== "undefined") {
+				localStorage.setItem(xiNET_Storage.ns  + "SuperFamDAS." + accession, xml);
+				console.log(accession + " SuperFamDAS added to local storage.");
+			}
+			console.log(new XMLSerializer().serializeToString(xml));
+			callback(xml2json(xml))
+		});
+	}
+	
+	
+	
+	
+	if(typeof(Storage) !== "undefined") {
+		// Code for localStorage/sessionStorage.
+		console.log("Local storage found.");
+		// Retrieve
+		var stored = localStorage.getItem(xiNET_Storage.ns + "SuperFamDAS."  + accession);
+		if (stored){
+			console.log(accession + " SuperFamDAS from local storage.");
+			callback(stored);	
+		}
+		else {
+			console.log(accession + " SuperFamDAS not in local storage.");
+			superFamDAS();
+		}
+	}
+	else {
+		console.log("No local storage found.");
+		superFamDAS();
+	}
+}
