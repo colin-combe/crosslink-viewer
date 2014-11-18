@@ -14,7 +14,8 @@
 
 </style>
 <body>
-<script src="../vendor/d3.js"></script>
+<script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
+<script type="text/javascript" src="../vendor/d3.js"></script>
 <script type="text/javascript" src="../vendor/hive.js"></script>
 <script>
 	
@@ -42,23 +43,52 @@ var svg = d3.select("body").append("svg")
 
 d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
 
-	//~ var nodeSet = d3.set();
-	//~ var rowCount = parsedCSV.length;
-	//~ 
-	//~ for (var r = 0; r < rowCount; r++) {
-		//~ var row = parsedCSV[r];
-		//~ nodeSet.add(row.Protein1);// + "_" + row.LinkPos1);
-		//~ nodeSet.add(row.Protein2);// + "_" + row.LinkPos2);
-	//~ }
-	//~ 
+	var proteinSequences = d3.map();
+	
+	var rowCount = parsedCSV.length;
+	for (var r = 0; r < rowCount; r++) {
+		var row = parsedCSV[r];
+		var id1 = row.Protein1;
+		if (id1.indexOf('|') !== -1){
+			id1 = id1.split('|')[1];
+		}
+		var id2 = row.Protein1;
+		if (id2.indexOf('|') !== -1){
+			id2 = id2.split('|')[1];
+		}
+		proteinSequences.set(id1, '');
+		proteinSequences.set(id2, '');
+	}
+	
+	var proteinIDs = proteinSequences.keys();
+	var proteinCount = proteinIDs.length;
+	var retrievedCount = 0;
+	
+	for (var p = 0; p < proteinCount; p++ ) {
+		var id = proteinIDs[p];
+		
+		xiNET_Storage.getSequence(id, function (acc, sq){
+			retrievedCount++;
+			proteinSequences.set(acc, sq);
+			if (retrievedCount === proteinCount){
+				//we're done getting sequence info, init fig
+				console.log(proteinSequences);
+				
+				
+				
+			}	
+		});
+	}
+});	
+	
 	//~ var ni = 0;
 	//~ var nodeLookup = d3.map();
-	//~ 
-	//~ var nodes = new Array();
 	//~ var nodeArray = nodeSet.values();
-	//~ var linkedResCount = nodeArray.length;
-	//~ for (var n = 0; n < linkedResCount; n++){
-		//~ for (var m = 0; m < 200; m ++) {
+	
+	//~ var nodes = new Array();
+	
+	//~ var nodeCount = nodeArray.length;
+	//~ for (var n = 0; n < nodeCount; n++){
 			//~ nodeLookup.set(nodeArray[n] + "_" + m, ((n * 200) + m));
 			//~ nodes.push({
 					//~ name:nodeArray[n] + "_" + m,
@@ -67,7 +97,6 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 					//~ px: n * 60,
 					//~ py: m*2
 					//~ });
-		//~ }
 	//~ }
 	//~ 
 	//~ var links = [];
@@ -80,7 +109,7 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 					//~ links.push(linkObj);
 			//~ }
 	//~ }
-});
+
 	
 	//~ console.log(JSON.stringify(nodeLookup));
 	//~ console.log(JSON.stringify(nodes));

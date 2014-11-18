@@ -22,7 +22,7 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 				localStorage.setItem(xiNET_Storage.ns  + "UniProtKB."+ accession, txt);
 				console.log(accession + " UniProt added to local storage.");
 			}
-			callback(txt)
+			callback(accession, txt)
 		});
 	}
 	
@@ -33,7 +33,7 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 		var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
 		if (stored){
 			console.log(accession + " UniProt from local storage.");
-			callback(stored);	
+			callback(accession, stored);	
 		}
 		else {
 			console.log(accession + " UniProt not in local storage.");
@@ -47,7 +47,7 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 }
 
 xiNET_Storage.getSequence = function (accession, callback){
-	xiNET_Storage.getUniProtTxt(accession, function(txt){
+	xiNET_Storage.getUniProtTxt(accession, function(accession, txt){
 			var sequence = "";
 			var lines = txt.split('\n');
 			var lineCount = lines.length;
@@ -62,7 +62,7 @@ xiNET_Storage.getSequence = function (accession, callback){
 					}
 				}
 			}
-			callback(sequence.replace(/[^A-Z]/g, ''));
+			callback(accession, sequence.replace(/[^A-Z]/g, ''));
 		}
 	);
 }
