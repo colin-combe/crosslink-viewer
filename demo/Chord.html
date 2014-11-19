@@ -98,7 +98,7 @@ d3.csv("./data/Pol2.csv", function (parsedCSV){
 			}
 
 			var links = new Array();
-			for (var r = 0; r < rowCount; r++) {
+			for (var r = 0; r < -1; r++){//rowCount; r++) {
 				var row = parsedCSV[r];
 					//~ var linkObj = {};
 					//~ linkObj.source =  nodes[nodeLookup.get(row.Protein1 + "_" + row.LinkPos1)];
@@ -111,7 +111,7 @@ d3.csv("./data/Pol2.csv", function (parsedCSV){
 					//~ var imp =  toRes;
 					//~ var node = classes[fromRes - 1];
 					var node = classes[nodeLookup.get(accessionFromId(row.Protein1) + "_" + row.LinkPos1)];
-					var imp = classes[nodeLookup.get(accessionFromId(row.Protein2) + "_" + row.LinkPos2)];
+					var imp = nodeLookup.get(accessionFromId(row.Protein2) + "_" + row.LinkPos2);
 				
 					if (node.imports.indexOf(imp) == -1) {
 						node.imports.push(imp);	
@@ -168,8 +168,8 @@ var packages = {
     return imports;
   }
 };	
-			  var nodes = cluster.nodes(packages.root(classes)),
-				  links = packages.imports(nodes);
+			  var nodes = classes;//, //cluster.nodes(packages.root(classes)),
+				  //links = packages.imports(nodes);
 
 		 
 			 //console.log(JSON.stringify(links));
