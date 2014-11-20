@@ -3,25 +3,28 @@
          
 <style>
 
-.node {
-  font: 10px sans-serif;
+.link {
+  fill: none;
+  stroke-width: 1px;
+  stroke: #666;
 }
 
+.node {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.label{
+	font-family: "Lato", sans-serif; 
+	text-anchor:end;
+}
 </style>
 <body>
 <script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
 <script type="text/javascript" src="../vendor/d3.js"></script>
 <script>
  	"use strict";
-           
 
-	function accessionFromId(id){
-		if (id.indexOf('|') !== -1){
-			return id.split('|')[1];
-		} else {
-			return id;
-		}	
-	}
 
 var diameter = 960,
     radius = diameter / 2,
@@ -59,10 +62,8 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	var rowCount = parsedCSV.length;
 	for (var r = 0; r < rowCount; r++) {
 		var row = parsedCSV[r];
-		var id1 = accessionFromId(row.Protein1);
-		var id2 = accessionFromId(row.Protein2);
-		proteinSequences.set(id1, '');
-		proteinSequences.set(id2, '');
+		proteinSequences.set(row.Protein1, '');
+		proteinSequences.set(row.Protein2, '');
 	}
 	
 	var proteinIDs = proteinSequences.keys();
@@ -110,8 +111,8 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 					//~ var toRes = link.ToRes * 1;				
 					//~ var imp =  toRes;
 					//~ var node = classes[fromRes - 1];
-					var node = classes[nodeLookup.get(accessionFromId(row.Protein1) + "_" + row.LinkPos1)];
-					var imp = accessionFromId(row.Protein2) + "_" + row.LinkPos2;
+					var node = classes[nodeLookup.get(row.Protein1 + "_" + row.LinkPos1)];
+					var imp = row.Protein2 + "_" + row.LinkPos2;
 					console.log(imp);
 					if (node.imports.indexOf(imp) == -1) {
 						node.imports.push(imp);	
