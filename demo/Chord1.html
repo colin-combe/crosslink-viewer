@@ -12116,17 +12116,11 @@ var packages = {
 };
 //~ d3.json("readme-flare-imports.json", function(notClasses, error) {
 	
-	//alert(error);
-	console.log(classes[0]);
+
+ var nodes = cluster.nodes(packages.root(classes)); 
+//console.log(JSON.stringify(nodes[0]));
+  var links = packages.imports(nodes);
  
-  var nodes = cluster.nodes(packages.root(classes)),
-      links = packages.imports(nodes);
- 
- 
-// var nodes = [];
-// var links = {};
- 
- //console.log(JSON.stringify(links));
 
   svg.selectAll(".link")
       .data(bundle(links))

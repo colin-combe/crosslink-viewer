@@ -2,16 +2,21 @@
 <meta charset="utf-8">
 <style>
 
+.link {
+  fill: none;
+  stroke-width: 1px;
+  stroke: #666;
+}
+
 .node {
-  stroke: #fff;
+  stroke: #000;
   stroke-width: 1.5px;
 }
 
-.link {
-  fill: none;
-  stroke: #bbb;
+.label{
+	font-family: "Lato", sans-serif; 
+	text-anchor:end;
 }
-
 </style>
 <body>
 <script src="../vendor/d3.js"></script>
@@ -19,19 +24,18 @@
 	
 	"use strict";
 
-	var width = 800,//d3.select("body").style("width"),
-	height = 600;//d3.select("body").style("height");
+	var width = document.documentElement.clientWidth,
+	height = document.documentElement.clientHeight;
 	 
-	var color = d3.scale.category20();
-	 
-	var force = d3.layout.force()
-	.charge(-120)
-	.linkDistance(30)
-	.size([width, height]);
+
 	 
 	var svg = d3.select("body").append("svg")
 	.attr("width", width)
 	.attr("height", height);
+	var color = d3.scale.ordinal()
+  .domain(["sp|P35189|Tfg3", "sp|P41895|Tfg1", "sp|P41896|Tfg2"])
+  .range(["#f7f7f7", "#67a9cf" , "#ef8a62"]);
+  
 	
 d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
 
@@ -65,7 +69,7 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 							var linkObj = {};
 							linkObj.source = source;
 							linkObj.target = target;
-							linkObj.id = source + "_to_" + target;
+							linkObj.id = row.Protein1 + "_" + row.LinkPos1 + "_to_" + row.Protein2 + "_" + row.LinkPos2;
 							links.push(linkObj);
 						}
 						else {
@@ -78,6 +82,17 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	console.log(JSON.stringify(nodeSet));
 	console.log(JSON.stringify(nodes));
 	
+	        var k = Math.sqrt(nodes.length / ((width) * height));
+
+	var force = d3.layout.force()
+	.charge(-200)
+	//~ .linkDistance(30)
+// mike suggests:
+    //~ .charge(-10 / k)
+    //~ .gravity(100 * k)
+   .gravity(0.1)
+.linkDistance(60)
+	.size([width, height]);
 	
 		 force
 		.nodes(nodes)
@@ -87,32 +102,45 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 		var link = svg.selectAll(".link")
 		.data(links)
 		.enter().append("line")
-		.attr("class", "link")
-		.style("stroke-width", function(d) { return Math.sqrt(d.value); });
+		.attr("class", "link");
+
+		svg.selectAll(".link").append("title")
+			.text(function(d) { return d.id; });
+		
+		// Create the groups under svg
+		var gnodes = svg.selectAll('g.gnode')
+		  .data(nodes)
+		  .enter()
+		  .append('g')
+		  .attr("class", "gnode")
+			.call(force.drag);
+		// Add one circle in each group
+		var node = gnodes.append("circle")
+		  .attr("class", "node")
+		  .attr("r", 5)
+		  .style("fill", function(d) { return color(d.name.split('_')[0]); });
+		 // 
+
+		// Append the labels to each group
+		var labels = gnodes.append("text").attr("class", "label")
+		  .text(function(d) { return d.name.split('_')[1]; })
+		  .attr("transform", "translate(-7, 5)")
+		  ;
 		 
-		var node = svg.selectAll(".node")
-		.data(nodes)
-		.enter().append("circle")
-		.attr("class", "node")
-		.attr("r", 5)
-		.style("fill", function(d) { return color(d.name.substring(d.name.lastIndexOf('|'),
-														d.name.lastIndexOf('_'))); })
-		.call(force.drag);
-		 
-		//~ node.append("title")
-		//~ .text(function(d) { return d.name; });
+		 gnodes.append("title")
+			 .text(function(d) { return d.name; });
 		 
 		force.on("tick", function() {
-		link.attr("x1", function(d) { return d.source.x; })
-		.attr("y1", function(d) { return d.source.y; })
-		.attr("x2", function(d) { return d.target.x; })
-		.attr("y2", function(d) { return d.target.y; });
-		 
-		node.attr("cx", function(d) { return d.x; })
-		.attr("cy", function(d) { return d.y; });
+			link.attr("x1", function(d) { return d.source.x; })
+			.attr("y1", function(d) { return d.source.y; })
+			.attr("x2", function(d) { return d.target.x; })
+			.attr("y2", function(d) { return d.target.y; });
+			 
+			// Translate the groups
+			  gnodes.attr("transform", function(d) { 
+				return 'translate(' + [d.x, d.y] + ')'; 
+			  });    
 		});
 });
-
-
 
 </script>

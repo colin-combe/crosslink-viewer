@@ -11,9 +11,19 @@
 "use strict";
 
 function xiNET_Storage() {}
-xiNET_Storage.ns = "xiNET."
 
-xiNET_Storage.getUniProtTxt = function (accession, callback){
+xiNET_Storage.ns = "xiNET.";
+
+xiNET_Storage.accessionFromId = function (id){
+	if (id.indexOf('|') !== -1){
+		return id.split('|')[1];
+	} else {
+		return id;
+	}	
+}
+
+xiNET_Storage.getUniProtTxt = function (id, callback){
+	var accession = xiNET_Storage.accessionFromId(id);
 	function uniprotWebService(){
 		var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
 		d3.text(url, function (txt){
@@ -22,7 +32,7 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 				localStorage.setItem(xiNET_Storage.ns  + "UniProtKB."+ accession, txt);
 				console.log(accession + " UniProt added to local storage.");
 			}
-			callback(accession, txt)
+			callback(id, txt)
 		});
 	}
 	
@@ -33,7 +43,7 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 		var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
 		if (stored){
 			console.log(accession + " UniProt from local storage.");
-			callback(accession, stored);	
+			callback(id, stored);	
 		}
 		else {
 			console.log(accession + " UniProt not in local storage.");
@@ -46,7 +56,8 @@ xiNET_Storage.getUniProtTxt = function (accession, callback){
 	}	
 }
 
-xiNET_Storage.getSequence = function (accession, callback){
+xiNET_Storage.getSequence = function (id, callback){
+	var accession = xiNET_Storage.accessionFromId(id);
 	xiNET_Storage.getUniProtTxt(accession, function(accession, txt){
 			var sequence = "";
 			var lines = txt.split('\n');
@@ -62,13 +73,14 @@ xiNET_Storage.getSequence = function (accession, callback){
 					}
 				}
 			}
-			callback(accession, sequence.replace(/[^A-Z]/g, ''));
+			callback(id, sequence.replace(/[^A-Z]/g, ''));
 		}
 	);
 }
 
-xiNET_Storage.getUniProtFeatures = function (accession, callback){
-	xiNET_Storage.getUniProtTxt(accession, function(txt){
+xiNET_Storage.getUniProtFeatures = function (id, callback){
+	var accession = xiNET_Storage.accessionFromId(id);
+		xiNET_Storage.getUniProtTxt(accession, function(txt){
 			var features = new Array();
 			var lines = txt.split('\n');
 			var lineCount = lines.length;
@@ -88,8 +100,9 @@ xiNET_Storage.getUniProtFeatures = function (accession, callback){
 	);
 }
 
-xiNET_Storage.getSuperFamFeatures = function (accession, callback){
-	function superFamDAS(){
+xiNET_Storage.getSuperFamFeatures = function (id, callback){
+	var accession = xiNET_Storage.accessionFromId(id);
+		function superFamDAS(){
 		var url = "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
 		d3.xml(url, function (xml){
 			console.log(accession + " SuperFamDAS  retrieved.");
