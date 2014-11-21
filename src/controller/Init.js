@@ -303,6 +303,11 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
     var rows = d3.csv.parseRows(annotations);
     
     var headers = rows[0];
+    
+    for (var h = 0; h < headers.length; h++) {
+		headers[h] = headers[h].trim();	
+	}
+    
     //~ console.log(headers.toString());
     
     var iProtId = headers.indexOf('ProteinId');
