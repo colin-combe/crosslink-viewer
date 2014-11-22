@@ -15,6 +15,9 @@
 
 .label{
 	font-family: "Lato", sans-serif; 
+<!--
+	text-anchor:start;
+-->
 }
 
 </style>
@@ -51,7 +54,7 @@
 		.interpolate("bundle")
 		.tension(.45)
 		.radius(function(d) { return d.y; })
-		.angle(function(d) { return (d.x + 90) / 180 * Math.PI; });
+		.angle(function(d) { return d.x / 180 * Math.PI; });
 
 	d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
 
@@ -81,21 +84,45 @@
 					var nodeLookup = d3.map();
 					var ni = 0;
 					var classes = [];
-					for (var q = 0; q < proteinCount; q++) {
-						var protAcc = proteinIDs[q];
-						var seq = proteinSequences.get(protAcc);
-						for(var i = 1; i < seq.length + 1; i++) {
-							var node = {};
-							node.name =  protAcc + '_' + (i);
-							node.residueNumber = i;
-							node.imports = [];
-							classes.push(node);
-							
-							nodeLookup.set(protAcc + '_' + (i), ni);
-							ni ++
+					//~ for (var q = 0; q < proteinCount; q++) {
+						//~ var protAcc = proteinIDs[q];
+						//~ var seq = proteinSequences.get(protAcc);
+						//~ for(var i = 1; i < seq.length + 1; i++) {
+							//~ var node = {};
+							//~ node.name =  protAcc + '_' + (i);
+							//~ node.residueNumber = i;
+							//~ node.imports = [];
+							//~ classes.push(node);
+							//~ 
+							//~ nodeLookup.set(protAcc + '_' + (i), ni);
+							//~ ni ++
+						//~ }
+					//~ }
+					
+					
+					
+					var nodeSet = d3.set();
+					
+					for (var r = 0; r < rowCount; r++) {
+						var row = parsedCSV[r];
+						if (row.Protein1 !== row.Protein2) {
+							nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
+							nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
 						}
 					}
-
+					
+					var nodeArray = nodeSet.values();
+					nodeArray = nodeArray.sort();
+					var linkedResCount = nodeArray.length;
+					for (var n = 0; n < linkedResCount; n++){
+							var node = {};
+							node.name =  nodeArray[n];
+							node.residueNumber = nodeArray[n].split('_')[1]  - 0;
+							node.imports = [];
+						nodeLookup.set(nodeArray[n],  n);
+						classes.push(node);
+					}
+										
 					var links = new Array();
 					for (var r = 0; r < rowCount; r++) {
 						var row = parsedCSV[r];
@@ -113,17 +140,13 @@
 							}
 						}
 					}
-	 
-
 
 					var nodes = cluster.nodes(packages.root(classes));
-					//  console.log(JSON.stringify(nodes[0]));
 					var  links = packages.imports(nodes);
 
-			 
 					svg.selectAll(".link")
 						.data(bundle(links))
-					  .enter().append("path")
+						.enter().append("path")
 						.attr("class", "link")
 						.attr("d", line);
 
@@ -136,7 +159,7 @@
 					  .enter()
 					  .append('g')
 					  .attr("class", "gnode")
-					  .attr("transform", function(d) { return "rotate(" + (d.x) + ")translate(" + d.y + ")"; });
+					  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
 					  
 					// Add one circle in each group
 					var node = gnodes.append("circle")
@@ -149,10 +172,12 @@
 						.text(function(d) { return d.name.split('_')[1]; })
 						.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
 						.attr("transform", function(d) { return d.x < 180 ? "translate(7, 5)" : "rotate(180) translate(-7, 5) "; });
+									//~ .attr("transform", "translate(7, 5)")
+					  // ;
 					 
 					 gnodes.append("title")
 						 .text(function(d) { return d.name; });
-				  
+					  
 				}
 			});	
 		}

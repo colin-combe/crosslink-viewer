@@ -26,8 +26,8 @@
 	
 	"use strict";
 
-	var width = document.documentElement.clientWidth,
-	height = document.documentElement.clientHeight,
+	var width = document.documentElement.clientWidth * 0.9,
+	height = document.documentElement.clientHeight * 0.9,
 	smallestDimension = (width < height)? width:height,
 	innerRadius = 40,
     outerRadius = (smallestDimension / 2) - 20;
@@ -40,8 +40,8 @@
 		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(-1, -1)");
 
 	var color = d3.scale.ordinal()
-  .domain(["sp|P35189|Tfg3", "sp|P41895|Tfg1", "sp|P41896|Tfg2"])
-  .range(["#f7f7f7", "#67a9cf" , "#ef8a62"]);
+		.domain(["sp|P35189|Tfg3", "sp|P41895|Tfg1", "sp|P41896|Tfg2"])
+		.range(["#f7f7f7", "#67a9cf" , "#ef8a62"]);
   
 	d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
 
@@ -71,8 +71,10 @@
 					var nodeSet = d3.set();
 					for (var r = 0; r < rowCount; r++) {
 						var row = parsedCSV[r];
-						nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
-						nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
+						if (row.Protein1 != row.Protein2) {
+							nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
+							nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
+						}
 					}				
 
 					var nodeArray = nodeSet.values();
@@ -90,7 +92,7 @@
 						nodes.push({
 								name:name,
 								x: (protI) % 3,
-								y: ((1 / protLength) * res)
+								y: ((1 / 615 /*protLength*/) * res)
 								});
 					}		
 					
@@ -124,22 +126,7 @@
 						.attr("d", d3.hive.link()
 						.angle(function(d) { return angle(d.x); })
 						.radius(function(d) { return radius(d.y); }))
-						//~ .on("mouseover", function(d) {
-							//~ d3.select(this)
-								//~ .transition()
-								//~ .duration(150)
-								//~ .style("stroke-width",  function (dl) {
-									   //~ console.log(d.id);
-									   //~ return 5;
-									//~ }
-							//~ )
-						//~ })
-						//~ .on("mouseout", function(){
-							//~ d3.select(this)
-								//~ .style("stroke-width", 1.5)
-							//~ d3.selectAll(".link")
-								//~ .style("stroke-width", 1.5)
-						//~ });
+
 		svg.selectAll(".link").append("title")
 			.text(function(d) { return d.id; });
 		

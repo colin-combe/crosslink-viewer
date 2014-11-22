@@ -44,8 +44,10 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	
 	for (var r = 0; r < rowCount; r++) {
 		var row = parsedCSV[r];
+		if (row.Protein1 !== row.Protein2) {
 		nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
 		nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
+		}
 	}
 	
 	var ni = 0;
@@ -62,20 +64,22 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	var links = [];
 	for (var r = 0; r < rowCount; r++) {
 		var row = parsedCSV[r];
-		var source = nodeLookup.get(row.Protein1 + "_" + row.LinkPos1);
-		var target = nodeLookup.get(row.Protein2 + "_" + row.LinkPos2); 
-					if (source !== target) {
-						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-							var linkObj = {};
-							linkObj.source = source;
-							linkObj.target = target;
-							linkObj.id = row.Protein1 + "_" + row.LinkPos1 + "_to_" + row.Protein2 + "_" + row.LinkPos2;
-							links.push(linkObj);
-						}
-						else {
-							alert("NOT RIGHT");
-						}
-					}
+		if (row.Protein1 !== row.Protein2) {
+			var source = nodeLookup.get(row.Protein1 + "_" + row.LinkPos1);
+			var target = nodeLookup.get(row.Protein2 + "_" + row.LinkPos2); 
+			if (source !== target) {
+				if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+					var linkObj = {};
+					linkObj.source = source;
+					linkObj.target = target;
+					linkObj.id = row.Protein1 + "_" + row.LinkPos1 + "_to_" + row.Protein2 + "_" + row.LinkPos2;
+					links.push(linkObj);
+				}
+				else {
+					alert("NOT RIGHT");
+				}
+			}
+		}
 	}
 	
 	
