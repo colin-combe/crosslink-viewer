@@ -1,29 +1,20 @@
 <!DOCTYPE html>
-<meta charset="utf-8">    
-<style>
-
-.link {
-  fill: none;
-  stroke-width: 1px;
-  stroke: #666;
-}
-
-.node {
-  stroke: #000;
-  stroke-width: 1.5px;
-}
-
-.label{
-	font-family: "Lato", sans-serif; 
-<!--
-	text-anchor:start;
--->
-}
-
-</style>
+<meta charset="utf-8">
 <body>
-<script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
-<script type="text/javascript" src="../vendor/d3.js"></script>
+<button type="button" id="exportSVG" onclick="exportSVG()" style="float:right;">Export SVG</button> 
+<div id="networkContainer"></div>	
+<script type="text/javascript">
+function exportSVG() {
+	var svgXml = document.getElementById('networkContainer').innerHTML;
+	var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+		+ svgXml;
+	var xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,' + encodeURIComponent(xml);
+	var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
+};
+</script>
+<script type="text/javascript" src="../../src/controller/xiNET_Storage.js"></script>
+<script type="text/javascript" src="../../vendor/d3.js"></script>
 <script>
  	"use strict";
 
@@ -33,7 +24,7 @@
 	var diameter = smallestDimension,
 		radius = diameter / 2,
 		innerRadius = radius - 120;        
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#networkContainer").append("svg")
 		.attr("width", diameter)
 		.attr("height", diameter)
 		.append("g")
@@ -54,9 +45,9 @@
 		.interpolate("bundle")
 		.tension(.45)
 		.radius(function(d) { return d.y; })
-		.angle(function(d) { return d.x / 180 * Math.PI; });
+		.angle(function(d) { return (d.x + 90) / 180 * Math.PI; });
 
-	d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
+	d3.csv("./../data/tfiif_highConf.csv", function (parsedCSV){	
 
 		var proteinSequences = d3.map();
 		
@@ -84,45 +75,21 @@
 					var nodeLookup = d3.map();
 					var ni = 0;
 					var classes = [];
-					//~ for (var q = 0; q < proteinCount; q++) {
-						//~ var protAcc = proteinIDs[q];
-						//~ var seq = proteinSequences.get(protAcc);
-						//~ for(var i = 1; i < seq.length + 1; i++) {
-							//~ var node = {};
-							//~ node.name =  protAcc + '_' + (i);
-							//~ node.residueNumber = i;
-							//~ node.imports = [];
-							//~ classes.push(node);
-							//~ 
-							//~ nodeLookup.set(protAcc + '_' + (i), ni);
-							//~ ni ++
-						//~ }
-					//~ }
-					
-					
-					
-					var nodeSet = d3.set();
-					
-					for (var r = 0; r < rowCount; r++) {
-						var row = parsedCSV[r];
-						if (row.Protein1 !== row.Protein2) {
-							nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
-							nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
+					for (var q = 0; q < proteinCount; q++) {
+						var protAcc = proteinIDs[q];
+						var seq = proteinSequences.get(protAcc);
+						for(var i = 1; i < seq.length + 1; i++) {
+							var node = {};
+							node.name =  protAcc + '_' + (i);
+							node.residueNumber = i;
+							node.imports = [];
+							classes.push(node);
+							
+							nodeLookup.set(protAcc + '_' + (i), ni);
+							ni ++
 						}
 					}
-					
-					var nodeArray = nodeSet.values();
-					nodeArray = nodeArray.sort();
-					var linkedResCount = nodeArray.length;
-					for (var n = 0; n < linkedResCount; n++){
-							var node = {};
-							node.name =  nodeArray[n];
-							node.residueNumber = nodeArray[n].split('_')[1]  - 0;
-							node.imports = [];
-						nodeLookup.set(nodeArray[n],  n);
-						classes.push(node);
-					}
-										
+
 					var links = new Array();
 					for (var r = 0; r < rowCount; r++) {
 						var row = parsedCSV[r];
@@ -140,18 +107,52 @@
 							}
 						}
 					}
+	 
+
 
 					var nodes = cluster.nodes(packages.root(classes));
+					//  console.log(JSON.stringify(nodes[0]));
 					var  links = packages.imports(nodes);
 
+			 
 					svg.selectAll(".link")
 						.data(bundle(links))
-						.enter().append("path")
+					  .enter().append("path")
 						.attr("class", "link")
-						.attr("d", line);
+						.attr("d", line)
+						.attr("fill", "none")
+						.attr("stroke-width", "1px")
+						.attr("stroke", "#666");
 
 					svg.selectAll(".link").append("title")
 						.text(function(d) { return d.id; });
+							  
+					svg.selectAll('n')
+					  .data(nodes)
+					  .enter()
+					  .append('circle')
+					  .attr("class", "n")
+					   .attr("r", 2)
+					   .style("fill", function(d) { return color(d.name.split('_')[0]); })
+					  .attr("transform", function(d) { return "rotate(" + (d.x) + ")translate(" + d.y + ")"; });
+					
+					
+					svg.selectAll('.label').data(nodes.filter(function (d) {return (d.name.split('_')[1]) %  50 === 0}))
+						.enter().append("g")
+						//~ .attr("class", "node")
+						.attr("transform", function(d) { return "rotate(" + (d.x) + ")translate(" + d.y + ")"; })
+						.append("text")
+						//~ .attr("dx", function(d) { return (d.x < 90 || d.x > 270) ? 8 : -8; })
+						.attr("dy", ".31em")
+						.attr("text-anchor", function(d) { return (d.x < 90 || d.x > 270) ? "start" : "end"; })
+						.attr("transform", function(d) { return (d.x < 90 || d.x > 270) ? "translate(8, 5)" : "rotate(180) translate(-8, 5) "; })
+						.attr("class", "label")
+						.attr("font-family", '"Lato", sans-serif')
+						.text(function(d) { return d.name.split('_')[1]; });
+					//~ .append("text").attr("class", "label")
+						//~ .text(function(d) { "YO"})//return d.name.split('_')[1]; })
+						//~ .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+						//~ .attr("transform", function(d) { return d.x < 180 ? "translate(7, 5)" : "rotate(180) translate(-7, 5) "; });
 							  
 					// Create the groups under svg
 					var gnodes = svg.selectAll('g.gnode')
@@ -159,25 +160,25 @@
 					  .enter()
 					  .append('g')
 					  .attr("class", "gnode")
-					  .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
+					  .attr("transform", function(d) { return "rotate(" + (d.x) + ")translate(" + d.y + ")"; });
 					  
 					// Add one circle in each group
 					var node = gnodes.append("circle")
 					  .attr("class", "node")
 					  .attr("r", 5)
+					  .attr("stroke", "#000")
+					  .attr("stroke-width", "1.5px")
 					  .style("fill", function(d) { return color(d.name.split('_')[0]); });
 
 					// Append the labels to each group
-					var labels = gnodes.append("text").attr("class", "label")
-						.text(function(d) { return d.name.split('_')[1]; })
-						.attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-						.attr("transform", function(d) { return d.x < 180 ? "translate(7, 5)" : "rotate(180) translate(-7, 5) "; });
-									//~ .attr("transform", "translate(7, 5)")
-					  // ;
-					 
+					//~ var labels = gnodes.append("text").attr("class", "label")
+						//~ .text(function(d) { return d.name.split('_')[1]; })
+						//~ .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+						//~ .attr("transform", function(d) { return d.x < 180 ? "translate(7, 5)" : "rotate(180) translate(-7, 5) "; });
+					 //~ 
 					 gnodes.append("title")
-						 .text(function(d) { return d.name; });
-					  
+						 .text(function(d) { return d.x; });
+				  
 				}
 			});	
 		}

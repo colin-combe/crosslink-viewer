@@ -1,54 +1,79 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Clustered Network</title>
-    
-<script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
-    <script type="text/javascript" src="../vendor/d3.js"></script>
-    <style type="text/css">
-svg {
-  border: 1px solid #ccc;
+<meta charset="utf-8">    
+<style>
+
+.link {
+  fill: none;
+  stroke-width: 1px;
+  stroke: #666;
 }
-body {
-  font: 10px sans-serif;
-}
-circle.node {
-  fill: lightsteelblue;
-  stroke: #fff;
+
+.node {
+  stroke: #000;
   stroke-width: 1.5px;
 }
-path.hull {
-  fill: lightsteelblue;
-  fill-opacity: 0.3;
-}
-line.link {
-  stroke: #333;
-  stroke-opacity: 0.5;
-  pointer-events: none;
-}
-    </style>
-  </head>
-  <body>
-    <script type="text/javascript">
-		
-	"use strict";
-           
 
-	function accessionFromId(id){
-		if (id.indexOf('|') !== -1){
-			return id.split('|')[1];
-		} else {
-			return id;
-		}	
-	}
+.label{
+	font-family: "Lato", sans-serif; 
+	text-anchor: end;
+}
+
+</style>
+<body>
+
+<button type="button" id="exportSVG" onclick="exportSVG()" style="float:right;">
+					Export SVG
+</button> 
+  
+<script type="text/javascript">//<![CDATA[
+	
+function exportSVG() {
+var svgXml = svg.innerHTML;
+//   alert(rawSVG);
+var args = [];
+args.source = svgXml;
+var prettyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
++ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
++ svgXml;//markup_beauty(args);
+
+//    alert("/");
+
+var xmlAsUrl;
+//    if (this.messageElement != null) { // if running in Col's developemnt PHP version
+//        // this will make it really open in new window, instead of download
+//        xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
+//    //       xmlAsUrl = 'data:image/svg+xml;filename=ProteinViewExport.svg,'
+//    }
+//    else {
+xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
+//    }
+xmlAsUrl += encodeURIComponent(prettyXml);
+var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
+};
+</script>
+
+<script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
+<script type="text/javascript" src="../vendor/d3.js"></script>
+<script>
+ 	"use strict";
 		
 		
-var width = 960,     // svg width
-    height = 600,     // svg height
+var width = document.documentElement.clientWidth,
+	height = document.documentElement.clientHeight,
     dr = 4,      // default point radius
     off = 15,    // cluster hull offset
     expand = {}, // expanded clusters
     data, net, force, hullg, hull, linkg, link, nodeg, node;
+
+var svg = d3.select("body").append("svg")
+	.attr("width", width)
+	.attr("height", height)
+	.append("g");
+
+var color = d3.scale.ordinal()
+	.domain(["sp|P35189|Tfg3", "sp|P41895|Tfg1", "sp|P41896|Tfg2"])
+	.range(["#f7f7f7", "#67a9cf" , "#ef8a62"]);
+
 
 var curve = d3.svg.line()
     .interpolate("cardinal-closed")
@@ -173,12 +198,6 @@ function drawCluster(d) {
 }
 
 // --------------------------------------------------------
-
-var body = d3.select("body");
-
-var vis = body.append("svg")
-   .attr("width", width)
-   .attr("height", height);
    
 d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){	
 
@@ -187,8 +206,8 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 	var rowCount = parsedCSV.length;
 	for (var r = 0; r < rowCount; r++) {
 		var row = parsedCSV[r];
-		var id1 = accessionFromId(row.Protein1);
-		var id2 = accessionFromId(row.Protein2);
+		var id1 = row.Protein1;
+		var id2 = row.Protein2;
 		proteinSequences.set(id1, '');
 		proteinSequences.set(id2, '');
 	}
@@ -231,6 +250,8 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 								var linkObj = {};
 								linkObj.source =  nodes[nodeLookup.get(currentAcc + "_" + r)];
 								linkObj.target =  nodes[nodeLookup.get(currentAcc + "_" + ((r * 1) + 1))];
+								linkObj.backbone = true;
+								
 								//~ linkObj.id = linkObj.source + "_to_" + linkObj.target;
 								//~ console.log(nodeArray[n] + "\t" + linkObj.id);
 								links.push(linkObj);
@@ -241,35 +262,25 @@ d3.csv("./data/tfiif_highConf.csv", function (parsedCSV){
 				for (var r = 0; r < rowCount; r++) {
 					var row = parsedCSV[r];
 					var linkObj = {};
-					linkObj.source =  nodes[nodeLookup.get(accessionFromId(row.Protein1) + "_" + row.LinkPos1)];
-					linkObj.target =  nodes[nodeLookup.get(accessionFromId(row.Protein2) + "_" + row.LinkPos2)];
+					linkObj.source =  nodes[nodeLookup.get(row.Protein1 + "_" + row.LinkPos1)];
+					linkObj.target =  nodes[nodeLookup.get(row.Protein2 + "_" + row.LinkPos2)];
 					//linkObj.id = linkObj.source + "_to_" + linkObj.target;
 					links.push(linkObj);					
 				}
 				
 								
-				  hullg = vis.append("g");
-				  linkg = vis.append("g");
-				  nodeg = vis.append("g");
+				  hullg = svg.append("g");
+				  linkg = svg.append("g");
+				  nodeg = svg.append("g");
 
 				data = {nodes: nodes, links: links};
 
 				  init(ni);
 
-				  vis.attr("opacity", 1e-6)
-					.transition()
-					  .duration(1000)
-					  .attr("opacity", 1);
+
 								
 							}
 						});
-//~ d3.json("miserables.json", function(json) {
-  //~ data = json;
-  //~ for (var i=0; i<data.links.length; ++i) {
-    //~ o = data.links[i];
-    //~ o.source = data.nodes[o.source];
-    //~ o.target = data.nodes[o.target];
-  //~ }
 
 	}
 });
@@ -279,15 +290,18 @@ function init(ni) {
 
   net = network(data, net, getGroup, expand);
 var k = Math.sqrt(ni / ((width) * height));
+
+	console.log(ni);
+
   force = d3.layout.force()
       .nodes(net.nodes)
       .links(net.links)
       .size([width, height])
-      .linkDistance(7)
+      .linkDistance(5)//function (d) {if (d.backbone) return 5; else return 25;})
       .charge(-0.75)
 	.gravity(0.001)
-	    //~ .charge(-10 / k)
-    //~ .gravity(100 * k)
+	  //~ .charge(-10 / k)
+     //~ .gravity(100 * k)
       .start();
 
   hullg.selectAll("path.hull").remove();
@@ -309,17 +323,33 @@ var k = Math.sqrt(ni / ((width) * height));
       .attr("y2", function(d) { return d.target.y; })
       .style("stroke-width", function(d) { return d.size || 1; });
 
-  node = nodeg.selectAll("circle.node").data(net.nodes, nodeid);
-  node.exit().remove();
-  node.enter().append("circle")
-      .attr("class", function(d) { return "node" + (d.size?"":" leaf"); })
-      .attr("r", function(d) { return 5;})//d.size ? d.size + dr : dr+1; })
-      .attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; })
-      .style("fill", function(d) { return fill(d.group); })
-      .on("dblclick", function(d) {
+		// Create the groups under svg
+		var gnodes = svg.selectAll('g.gnode')
+		  .data(net.nodes)
+		  .enter()
+		  .append('g')
+		  .attr("class", "gnode")		  
+		  .on("dblclick", function(d) {
         if (d.size) { expand[d.group] = true; init(); }
-      });
+      })
+			.call(force.drag);
+		// Add one circle in each group
+		var node = gnodes.append("circle")
+		  .attr("class", "node")
+		  .attr("r", 5)
+		  .style("fill", function(d) {
+			  console.log(d);
+			   return color(d.group); });
+		 // 
+
+		// Append the labels to each group
+		var labels = gnodes.append("text").attr("class", "label")
+		  .text(function(d) { return (d.name)? d.name.split('_')[1] : "PROTEIN GROUP" ; })
+		  .attr("transform", "translate(-7, 5)")
+		  ;
+		 
+		gnodes.append("title")
+			 .text(function(d) { return d.name; });
 
   node.call(force.drag);
 
@@ -334,8 +364,10 @@ var k = Math.sqrt(ni / ((width) * height));
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
 
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+	// Translate the groups
+	  gnodes.attr("transform", function(d) { 
+		return 'translate(' + [d.x, d.y] + ')'; 
+	  }); 
   });
 }
 
