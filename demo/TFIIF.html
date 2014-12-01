@@ -9,16 +9,13 @@
 		<link rel="stylesheet" href="./css/bootstrap.css">
 		<link rel="stylesheet" href="./css/flat-ui.css" >
 		<link rel="stylesheet" href="./css/demo.css">
-<!--
-        <script type="text/javascript" src="../build/xiNET_1.0.0.js"></script>
--->
         <!--libraries-->
         <script type="text/javascript" src="../vendor/d3.js"></script>
         <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
         <script type="text/javascript" src="../vendor/jsdas.js"></script>
         <script type="text/javascript" src="../vendor/Blob.js"></script>
        	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
-        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
+        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>             
         <!--xiNET-->
         <script type="text/javascript" src="../src/controller/Init.js"></script>
         <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
@@ -41,7 +38,6 @@
     <body>
 	<div id="outerDiv">
 			<div class="controls">
-
 				<button class="btn btn-inverse help" onclick="toggleHelpPanel()">Help</button>
 				<button class="btn btn-inverse exportsvg" onclick="xlv.exportSVG('networkSVG');">Export Graphic</button>
 				<button class="btn btn-inverse autolayout" onclick="xlv.autoLayout();">Auto Layout</button>
@@ -52,11 +48,7 @@
 					type="checkbox"></p>
 				</div>
 				
-				 <div class="controlGroup"><p>Ambiguous&nbsp;
-					<input checked="checked" id="ambig" onclick=
-						"xlv.hideAmbig(!document.getElementById('ambig').checked)" 
-					type="checkbox"></p>
-                </div>
+
 			</div>
 					
 			<div id="networkContainer"></div>
@@ -122,25 +114,22 @@
 
 		<script type="text/javascript">
                 //<![CDATA[
-                
-                            
-						//~ document.onkeypress = function (e) {
-									//e = e || window.event;
-									//alert(e.keyCode);
-									//~ xlv.exportSVG('networkSVG');
-						//~ };
-                                
+                                            
+				//~ document.onkeypress = function (e) {
+						//~ xlv.exportSVG('networkSVG');
+				//~ };
                                 
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
-				d3.text('./data/Herzog.csv', "text/csv", function(text) {
-					xlv.readCSV(text);
-				});				
+				d3.text('./data/tfiif_highConf.csv', "text/csv", function(text) {
+					d3.text('./data/tfiif_annot.csv', "text/csv", function(annot) {
+						xlv.readCSV(text,annot);
+					});	
 				
-		
-                //]]>
+				});				
+
         </script>
 		<script type="text/javascript">
 				//<![CDATA[
