@@ -4,6 +4,11 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var rows = d3.csv.parseRows(csvContents);
     
     var headers = rows[0];
+    
+    for (var h = 0; h < headers.length; h++) {
+		headers[h] = headers[h].trim();	
+	}
+    
     console.log(headers.toString());
     
     var iProt1 = headers.indexOf('Protein1');
@@ -216,8 +221,8 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		if (manualAnnotations){
 			xlv.addAnnotations(manualAnnotations);
 		}
-		//else {
+		else {
 			new xiNET.DASUtil(xlv);
-		//}
+		}
     }
 };

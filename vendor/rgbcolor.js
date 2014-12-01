@@ -12,7 +12,10 @@ function RGBColor(color_string)
     if (color_string.charAt(0) == '#') { // remove # if any
         color_string = color_string.substr(1,6);
     }
-
+    
+	//Col edit: also strip out leading 0x
+    color_string = color_string.replace(/0x/,'');
+    
     color_string = color_string.replace(/ /g,'');
     color_string = color_string.toLowerCase();
 

@@ -138,7 +138,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             
             this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
            // alert(this.form);
-            if (this.form === 0) { // ** UR HERE **
+            if (this.form === 0) { 
 				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
 				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 			} else {
@@ -167,9 +167,9 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             else {
                 c = anno.colour;
             }
-            annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            annotPieSlice.setAttribute("fill", c.toRGB());//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
             annotPieSlice.setAttribute("fill-opacity", "0.5");
-            annotColouredRect.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            annotColouredRect.setAttribute("fill", c.toRGB());// "rgb(" + c.r + "," + c.g + "," + c.b + ")");
             annotColouredRect.setAttribute("fill-opacity", "0.5");
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
