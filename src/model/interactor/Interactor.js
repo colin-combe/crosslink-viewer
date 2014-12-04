@@ -22,8 +22,9 @@ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 function Interactor() {}
 
 Interactor.prototype.addStoichiometryLabel = function(stoich) {
-	console.log(this.labelTextNode);
-	this.labelSVG.innerHTML =  this.labelSVG.innerHTML + '['+stoich+']';
+	if (this.labelSVG) {//complexes don't have labels yet
+		this.labelSVG.innerHTML =  this.labelSVG.innerHTML + '['+stoich+']';
+	}
 }
 
 Interactor.prototype.mouseDown = function(evt) {

@@ -140,14 +140,6 @@ var getIdFromInteraction = function(interaction) {
 	for (var pi = 0; pi < participantCount; pi++) {
 		var pID = participants[pi].interactorRef;
 		
-		if (participants[pi].stoichiometry){
-			// the ".xlv." in the next line is wrong, its the var name used for the controller in packaged.html 
-			var interactor = self.xlv.interactors.get(pID); 
-			if (interactor) {//hmmm... if it was a complex its not going to be that collection yet
-				interactor.addStoichiometryLabel(participants[pi].stoichiometry);
-			}
-		}
-		
 		if (pIDs.has(pID) === false){
 			pIDs.add(pID);
 			if (pi > 0) {
@@ -161,7 +153,7 @@ var getIdFromInteraction = function(interaction) {
 
 var addInteraction = function(interaction) {
 	function getNaryLink(){
-		var nLinkId = self.getIdFromInteraction(interaction);
+		var nLinkId = getIdFromInteraction(interaction);
 		var nLink = self.allNaryLinks.get(nLinkId);
 		if (typeof nLink === 'undefined') {
 			//doesn't already exist, make new nLink
@@ -179,8 +171,7 @@ var addInteraction = function(interaction) {
 					self.interactors.set(interactorIds[i], interactor);
 					self.complexes.set(interactorIds[i], interactor);
 				}
-				interactor.naryLinks.set(nLinkId, nLink);
-				
+				interactor.naryLinks.set(nLinkId, nLink);				
 				nLink.interactors.push(interactor);
 			}
 		}
@@ -281,6 +272,12 @@ var addInteraction = function(interaction) {
     var participantCount = participants.length    
     for (var pi = 0; pi < participantCount; pi++){
 		var participant = participants[pi];
+						
+		if (participant.stoichiometry){
+			var interactor = self.interactors.get(participant.interactorRef); 
+			interactor.addStoichiometryLabel(participants[pi].stoichiometry);
+		}
+		
 		//TODO: check if participant is complex - need to change logic if is
 		var features = new Array(0); 
 		if (participant.bindingSites) {
@@ -313,4 +310,4 @@ var addInteraction = function(interaction) {
 	}           
 };
 
-module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction, getIdFromInteraction: getIdFromInteraction};
+module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction};

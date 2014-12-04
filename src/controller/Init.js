@@ -196,7 +196,6 @@ xiNET.Controller.prototype.scale = Refresh.scale;
 
 // Copy functions from ReadMIJSON.js to our prototype:
 xiNET.Controller.prototype.readMIJSON = ReadMIJSON.readMIJSON;
-xiNET.Controller.prototype.getIdFromInteraction = ReadMIJSON.getIdFromInteraction;
 
 xiNET.Controller.prototype.addFeatures = ReadMIJSON.addFeatures;
 xiNET.Controller.prototype.addInteraction = ReadMIJSON.addInteraction;
