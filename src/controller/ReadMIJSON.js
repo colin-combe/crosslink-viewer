@@ -31,7 +31,7 @@ var readMIJSON = function(miJson, controller) {
         if (data[n].object === 'interactor') {
             var interactor = data[n];
 			var p;
-			if (interactor.type.name === 'molecule set') {//ignore participant sets
+			if (interactor.type.name === 'molecule set') {//ignore interactor sets
 				p = new InteractorSet(interactor.id, this, interactor);
 			}
 			else if (interactor.type.name === 'small molecule') {
@@ -139,6 +139,15 @@ var getIdFromInteraction = function(interaction) {
 	//make id
 	for (var pi = 0; pi < participantCount; pi++) {
 		var pID = participants[pi].interactorRef;
+		
+		if (participants[pi].stoichiometry){
+			// the ".xlv." in the next line is wrong, its the var name used for the controller in packaged.html 
+			var interactor = self.xlv.interactors.get(pID); 
+			if (interactor) {//hmmm... if it was a complex its not going to be that collection yet
+				interactor.addStoichiometryLabel(participants[pi].stoichiometry);
+			}
+		}
+		
 		if (pIDs.has(pID) === false){
 			pIDs.add(pID);
 			if (pi > 0) {
@@ -152,7 +161,7 @@ var getIdFromInteraction = function(interaction) {
 
 var addInteraction = function(interaction) {
 	function getNaryLink(){
-		var nLinkId = getIdFromInteraction(interaction);
+		var nLinkId = self.getIdFromInteraction(interaction);
 		var nLink = self.allNaryLinks.get(nLinkId);
 		if (typeof nLink === 'undefined') {
 			//doesn't already exist, make new nLink
@@ -171,6 +180,7 @@ var addInteraction = function(interaction) {
 					self.complexes.set(interactorIds[i], interactor);
 				}
 				interactor.naryLinks.set(nLinkId, nLink);
+				
 				nLink.interactors.push(interactor);
 			}
 		}
@@ -280,12 +290,10 @@ var addInteraction = function(interaction) {
 			features = features.concat(participant.experimentalFeatures);
 		}
 		var fCount = features.length;
-		//~ var linkedFeaturesFound = false;
 		for (var f = 0; f < fCount; f++){
 			var feature = features[f];
 			var fromSequenceData = feature.sequenceData;
 			if (feature.linkedFeatures) {
-				//~ linkedFeaturesFound = true;
 				var linkedFeatureIDs = feature.linkedFeatures;
 				var toSequenceData = new Array();
 				var linkedFeatureCount = linkedFeatureIDs.length;
@@ -302,27 +310,7 @@ var addInteraction = function(interaction) {
 				}
 			}			
 		}	
-		
-		//~ if (linkedFeaturesFound === false){
-			//~ if (nLink.interactors.length === 1) {
-				//~ var interactor = nLink.interactors[0];
-				//~ var fromSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
-				//~ var toSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
-				//~ //sequnce link
-				//~ var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
-				//~ //unary link
-				//~ getUnaryLink(sequenceLink.fromInteractor);			
-			//~ } 
-			//~ else if (nLink.interactors.length === 2) {
-				//~ //sequence link
-				//~ var fromSequenceData = [{interactorRef:nLink.interactors[0].id, pos:'?-?'}];
-				//~ var toSequenceData = [{interactorRef:nLink.interactors[1].id, pos:'?-?'}];
-				//~ var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
-				//~ //binaryLink
-				//~ getBinaryLink(sequenceLink.fromInteractor, sequenceLink.toInteractor);			
-			//~ }
-		//~ }
 	}           
 };
 
-module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction};
+module.exports = {readMIJSON: readMIJSON, addInteraction: addInteraction, getIdFromInteraction: getIdFromInteraction};

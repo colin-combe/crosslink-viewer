@@ -21,6 +21,11 @@ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 
 function Interactor() {}
 
+Interactor.prototype.addStoichiometryLabel = function(stoich) {
+	console.log(this.labelTextNode);
+	this.labelSVG.innerHTML =  this.labelSVG.innerHTML + '['+stoich+']';
+}
+
 Interactor.prototype.mouseDown = function(evt) {
         this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
