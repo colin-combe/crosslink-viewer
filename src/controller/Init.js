@@ -342,7 +342,9 @@ xiNET.Controller.prototype.resetZoom = function() {
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];
         prot.stickZoom = 1;
-        prot.scale();
+        if (prot.scale) {
+			prot.scale();
+		}
     }
 };
 
