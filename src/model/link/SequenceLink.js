@@ -48,6 +48,7 @@ SequenceLink.prototype.initSVG = function() {
         this.glyph.setAttribute("fill", "#E08214");
         this.glyph.setAttribute("opacity", "0.6");
         this.glyph.setAttribute("stroke", "#A08214");
+        this.glyph.setAttribute("stroke-width", "2");
         this.uncertainGlyph.setAttribute("class", "link");
         this.uncertainGlyph.setAttribute("fill", "#A01284");
         this.uncertainGlyph.setAttribute("stroke", "#A01284");
@@ -142,7 +143,7 @@ SequenceLink.prototype.show = function() {
   	if (this.ctrl.initComplete) {
         if (!this.shown) {
 			this.shown = true;
-            this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
+            //this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);
             this.setLinkCoordinates();
