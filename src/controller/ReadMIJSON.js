@@ -280,12 +280,12 @@ var addInteraction = function(interaction) {
 			features = features.concat(participant.experimentalFeatures);
 		}
 		var fCount = features.length;
-		var linkedFeaturesFound = false;
+		//~ var linkedFeaturesFound = false;
 		for (var f = 0; f < fCount; f++){
 			var feature = features[f];
 			var fromSequenceData = feature.sequenceData;
 			if (feature.linkedFeatures) {
-				linkedFeaturesFound = true;
+				//~ linkedFeaturesFound = true;
 				var linkedFeatureIDs = feature.linkedFeatures;
 				var toSequenceData = new Array();
 				var linkedFeatureCount = linkedFeatureIDs.length;
@@ -302,25 +302,26 @@ var addInteraction = function(interaction) {
 				}
 			}			
 		}	
-		if (linkedFeaturesFound === false){
-			if (nLink.interactors.length === 1) {
-				var interactor = nLink.interactors[0];
-				var fromSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
-				var toSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
-				//sequnce link
-				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
-				//unary link
-				getUnaryLink(sequenceLink.fromInteractor);			
-			} 
-			else if (nLink.interactors.length === 2) {
-				//sequence link
-				var fromSequenceData = [{interactorRef:nLink.interactors[0].id, pos:'?-?'}];
-				var toSequenceData = [{interactorRef:nLink.interactors[1].id, pos:'?-?'}];
-				var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
-				//binaryLink
-				getBinaryLink(sequenceLink.fromInteractor, sequenceLink.toInteractor);			
-			}
-		}
+		
+		//~ if (linkedFeaturesFound === false){
+			//~ if (nLink.interactors.length === 1) {
+				//~ var interactor = nLink.interactors[0];
+				//~ var fromSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
+				//~ var toSequenceData = [{interactorRef:interactor.id, pos:'?-?'}];
+				//~ //sequnce link
+				//~ var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
+				//~ //unary link
+				//~ getUnaryLink(sequenceLink.fromInteractor);			
+			//~ } 
+			//~ else if (nLink.interactors.length === 2) {
+				//~ //sequence link
+				//~ var fromSequenceData = [{interactorRef:nLink.interactors[0].id, pos:'?-?'}];
+				//~ var toSequenceData = [{interactorRef:nLink.interactors[1].id, pos:'?-?'}];
+				//~ var sequenceLink = getSequenceLink(fromSequenceData, toSequenceData);
+				//~ //binaryLink
+				//~ getBinaryLink(sequenceLink.fromInteractor, sequenceLink.toInteractor);			
+			//~ }
+		//~ }
 	}           
 };
 
