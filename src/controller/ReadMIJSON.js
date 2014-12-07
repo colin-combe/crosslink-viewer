@@ -7,7 +7,7 @@
 //    author: Colin Combe
 
 "use strict";
-//var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer'); //not working
+var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var Feature = require('../model/interactor/Feature');
 var SmallMol = require('../model/interactor/SmallMol');
 var Polymer = require('../model/interactor/Polymer');
@@ -60,13 +60,13 @@ var readMIJSON = function(miJson, controller) {
     var self = this;
 	//TODO - get features and sequences from uniprot webservice, will call addInteractions when finished		
     addInteractions();
-    
+
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
         Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 1000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
         self.features = d3.map();       
         self.complexes = d3.map();  
-        var domainColours =  d3.scale.category10();//d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+        var domainColours =  d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
         //create indexed collection of features from interactions   
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
