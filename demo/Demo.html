@@ -137,7 +137,7 @@
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
-				d3.text('./data/tfiif_highConf.csv', "text/csv", function(text) {
+				d3.text('./data/polII.csv', "text/csv", function(text) {
 					xlv.readCSV(text);
 				});				
 				

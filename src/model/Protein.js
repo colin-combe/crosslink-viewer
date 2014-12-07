@@ -24,52 +24,8 @@ function Protein(id, xinetController, acc, name) {
     this.xlv = xinetController;
     this.accession = acc;
     this.name = name;
-    this.tooltip = this.name + ' [' + this.id + '] ' + this.accession;
-}
-
-//sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
-Protein.prototype.initProtein = function(sequence, name, description, size) {
-    if (this.name == null) {
-        this.name = name;
-    }
-    this.description = description;
+    this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
     
-    this.tooltip = this.name + ' [' + this.id + ']';
-    if (typeof this.description !== 'undefined' && this.description != '' 
-			&& this.description !== null){
-				this.tooltip += ' ' + this.description;
-	}  
-    
-    //check for labeling modifications in sequence now, we're about to lose this info
-    if (/\d/.test(sequence)) {//is there a digit in the sequence?
-        this.labeling = '';// as in silac labelling
-        if (sequence.indexOf('K4') !== -1)
-            this.labeling += 'K4';
-        if (sequence.indexOf('K6') !== -1)
-            this.labeling += 'K6';
-        if (sequence.indexOf('K8') !== -1)
-            this.labeling += 'K8';
-        if (sequence.indexOf('K10') !== -1)
-            this.labeling += 'R4';
-        if (sequence.indexOf('R6') !== -1)
-            this.labeling += 'R6';
-        if (sequence.indexOf('R8') !== -1)
-            this.labeling += 'R8';
-        if (sequence.indexOf('R10') !== -1)
-            this.labeling += 'R10';
-    }
-    //remove modification site info from sequence
-    this.sequence = sequence.replace(/[^A-Z]/g, '');
-    if (typeof size != "undefined") {
-		this.size = size;
-	}
-	else {
-		this.size = this.sequence.length;
-	}
-    // keep track of largest protein size - used for initial scaling of bars
-    if (Protein.MAXSIZE < this.size) {
-        Protein.MAXSIZE = this.size;
-    }
     //links
     this.proteinLinks = d3.map();
     this.internalLink = null;
@@ -89,9 +45,7 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
 	//~ this.mouseoverControls = new MouseoverControls(this, this.xlv);
 	this.lowerRotator = new Rotator(this, 0, this.xlv);
 	this.upperRotator = new Rotator(this, 1, this.xlv);
-    
-    var r = this.getBlobRadius();
-	
+          
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -101,19 +55,12 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
  	
  	//make highlight
     this.highlight = document.createElementNS(xiNET.svgns, "rect");
-    //invariant attributes
     if (xiNET.highlightColour !== undefined) {
         this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
 	}
     this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
-    //this.highlight.setAttribute("fill-opacity", 1);   
-    //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0)
-		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
-		.attr("x", -r - 2.5).attr("y", -r - 2.5)
-		.attr("rx", r + 2.5).attr("ry", r + 2.5);
-	this.lowerGroup.appendChild(this.highlight);   
+    this.lowerGroup.appendChild(this.highlight);   
     
     //domains in rectangle form (shown underneath links) 
     this.rectDomains = document.createElementNS(xiNET.svgns, "g");
@@ -150,10 +97,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
     }
-    else if (description != null & description !== "") {
-        this.labelText = description;
-        this.name = description;
-    }
     else if (this.accession != null & this.accession !== "") {
         this.labelText = this.accession;
     }
@@ -163,13 +106,10 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     if (this.labelText.length > 25) {
         this.labelText = this.labelText.substr(0, 16) + "...";
     }
-    if (typeof this.labeling !== 'undefined') {
-        this.labelText = '[' + this.labeling + '] ' + this.labelText;
-    }
-    this.labelTextNode = document.createTextNode(this.labelText);
+	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (r + 5) + " " + Protein.labelY + ")");
+		"translate( -" + (5) + " " + Protein.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
    	
    	//ticks (and animo acid letters)
@@ -180,12 +120,6 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
 	this.outline = document.createElementNS(xiNET.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
-    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("x", -r).attr("y", -r)
-			.attr("rx", r).attr("ry", r);
-    //append outline
     this.upperGroup.appendChild(this.outline);
     
     //domains as pie slices - shown on top of everything
@@ -207,30 +141,55 @@ Protein.prototype.initProtein = function(sequence, name, description, size) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-    };
-     
+    };     
     this.upperGroup.ontouchstart = function(evt) {
 		self.xlv.message("protein touch start");
 		self.touchStart(evt);
     };
     //~ this.upperGroup.ontouchmove = function(evt) {};
-	//~ this.upperGroup.ontouchend = function(evt) {
-		//~ self.xlv.message("protein touch end");
-		//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchenter = function(evt) {
-        //~ self.message("protein touch enter");
-    	//~ self.touchStart(evt);
-    //~ };
-    //~ this.upperGroup.ontouchleave = function(evt) {
-        //~ self.message("protein touch leave");
-    	//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchcancel = function(evt) {
-        //~ self.message("protein touch cancel");
-    	//~ self.mouseOut(evt);
-    //~ };
+	//~ this.upperGroup.ontouchend = function(evt) {};
+    //~ this.upperGroup.ontouchenter = function(evt) {};
+    //~ this.upperGroup.ontouchleave = function(evt) {};
+    //~ this.upperGroup.ontouchcancel = function(evt) {};
     this.isSelected = false;
+	this.showHighlight(false);
+}
+
+//sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
+Protein.prototype.initProtein = function(sequence){//, name, description, size) {
+    //check for labeling modifications in sequence now, we're about to lose this info
+    if (/\d/.test(sequence)) {//is there a digit in the sequence?
+        this.labeling = '';// as in silac labelling
+        if (sequence.indexOf('K4') !== -1)
+            this.labeling += 'K4';
+        if (sequence.indexOf('K6') !== -1)
+            this.labeling += 'K6';
+        if (sequence.indexOf('K8') !== -1)
+            this.labeling += 'K8';
+        if (sequence.indexOf('K10') !== -1)
+            this.labeling += 'R4';
+        if (sequence.indexOf('R6') !== -1)
+            this.labeling += 'R6';
+        if (sequence.indexOf('R8') !== -1)
+            this.labeling += 'R8';
+        if (sequence.indexOf('R10') !== -1)
+            this.labeling += 'R10';
+    }
+    if (typeof this.labeling !== 'undefined') {
+        this.labelSVG.innerHTML = '[' + this.labeling + '] ' + this.labelSVG.innerHTML;
+    }
+    
+    
+    //remove modification site info from sequence
+    this.sequence = sequence.replace(/[^A-Z]/g, '');
+    this.size = this.sequence.length;
+	// keep track of largest protein size - used for initial scaling of bars
+    if (Protein.MAXSIZE < this.size) {
+        Protein.MAXSIZE = this.size;
+    }
+
+	this.setForm(this.form);
+	if (this.internalLink) this.internalLink.initSVG();
 };
 
 Protein.prototype.mouseDown = function(evt) {
@@ -609,7 +568,7 @@ Protein.prototype.toggleFlipped = function() {
 Protein.prototype.setParked = function(bool, svgP) {
     if (this.busy !== true) {
 		if (this.isParked === true && bool == false) {
-			this.isParked = false;
+			this.isParked = false; //u r here
 			if (this.form === 0) {
 				this.toBlob(svgP);
 			}
@@ -627,7 +586,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 };
 
 Protein.prototype.setForm = function(form, svgP) {
-    if (this.busy !== true) {
+    if (!this.busy) {
 		if (this.isParked) {
 			this.setParked(false);
 		}
@@ -644,8 +603,8 @@ Protein.prototype.setForm = function(form, svgP) {
 };
 
 Protein.prototype.toBlob = function(svgP) {
-	if (this.form === 1){ //this is causing from parked it below to run when tool opens 
-		this.toCircle(svgP);
+	this.toCircle(svgP);
+	if (!this.isParked){ //this is causing from parked it below to run when tool opens 
 		var r = this.getBlobRadius();
 		
 		var self = this;
@@ -677,8 +636,8 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 	this.busy = true;
 	this.removePeptides();
 	//this.mouseoverControls.remove();
-	this.upperGroup.removeChild(this.lowerRotator.svg);
-	this.upperGroup.removeChild(this.upperRotator.svg);  
+	if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
+	if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
@@ -698,7 +657,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4)
 				.each("end", 
 					function () {
-						self.upperGroup.removeChild(self.ticks);
+						if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
 					}
 				);
 	
@@ -788,10 +747,11 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 	// update(1);
  
 	function update(interp) {
-		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
-		
+		//~ if (self.isParked === false) { //that wont work
+			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+			var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+			self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		//~ }
 		if (xInterpol !== null){
 			self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
 		}

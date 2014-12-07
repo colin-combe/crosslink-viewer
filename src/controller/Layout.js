@@ -308,12 +308,12 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
 
     //functions used...
     function xForColumn(c) {
-        return (c * ((2 * self.maxBlobRadius) + Protein.LABELMAXLENGTH)) - self.maxBlobRadius;
+        return (c * ((2 * 30) + Protein.LABELMAXLENGTH)) - 30;
     }
     ;
 
     function yForRow(r) {
-        return (r * self.maxBlobRadius);
+        return (r * 30);
     }
     ;
 };

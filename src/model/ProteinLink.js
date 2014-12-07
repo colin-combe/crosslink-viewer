@@ -19,7 +19,7 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.xlv = xlvController;
     this.fromProtein = fromP; //its the object. not the ID number
     this.toProtein = toP; //its the object. not the ID number
-    this.intra = false;// TODO: remove this
+    this.intra = false;// TODO: remove this?
     if (this.fromProtein === this.toProtein) {
         this.intra = true;
     }
@@ -30,18 +30,6 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.dashed = false;
     //layout stuff
     this.hidden = false;
-    this.initSVG();
-}
-
-ProteinLink.prototype.initSVG = function() {
-    function trig(radius, angleDegrees) {
-		//x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		var radians = (angleDegrees / 360) * Math.PI * 2;
-		return {
-			x: (radius * Math.cos(radians)),
-			y: -(radius * Math.sin(radians))
-		};
-    }
     
     if (!this.intra) {
         this.line = document.createElementNS(xiNET.svgns, "line");
@@ -56,7 +44,6 @@ ProteinLink.prototype.initSVG = function() {
         this.fatLine = document.createElementNS(xiNET.svgns, 'path');
         this.fatLine.setAttribute('d', path);
     }
-
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
@@ -118,6 +105,32 @@ ProteinLink.prototype.initSVG = function() {
     };
     
     this.isSelected = false;
+    this.initSVG();
+}
+
+ProteinLink.prototype.initSVG = function() {
+    //~ function trig(radius, angleDegrees) {
+		//~ //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+		//~ var radians = (angleDegrees / 360) * Math.PI * 2;
+		//~ return {
+			//~ x: (radius * Math.cos(radians)),
+			//~ y: -(radius * Math.sin(radians))
+		//~ };
+    //~ }
+    
+    if (!this.intra) {
+        //~ this.line = document.createElementNS(xiNET.svgns, "line");
+        //~ this.highlightLine = document.createElementNS(xiNET.svgns, "line");
+        //~ this.fatLine = document.createElementNS(xiNET.svgns, "line");
+    } else {
+        var path = this.fromProtein.getAggregateSelfLinkPath();
+        //~ this.line = document.createElementNS(xiNET.svgns, "path");
+        this.line.setAttribute('d', path);
+        //~ this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
+        this.highlightLine.setAttribute('d', path);
+        //~ this.fatLine = document.createElementNS(xiNET.svgns, 'path');
+        this.fatLine.setAttribute('d', path);
+    }
 }
 ;
 ProteinLink.prototype.getFromProtein = function() {
