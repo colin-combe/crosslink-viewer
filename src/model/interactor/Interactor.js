@@ -11,7 +11,6 @@
 "use strict";
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');//Josh - should path for this be ../../../vendor...?
-var Feature = require('./Feature');
 var Config = require('../../controller/Config');
 
 //josh - should these be moved to Config.js?
@@ -22,8 +21,8 @@ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 function Interactor() {}
 
 Interactor.prototype.addStoichiometryLabel = function(stoich) {
-	if (this.labelSVG) {//complexes don't have labels yet
-		this.labelSVG.innerHTML =  this.labelSVG.innerHTML + '['+stoich+']';
+	if (this.labelSVG) {//complexes don't have labels (yet?)
+		this.labelSVG.innerHTML =  this.labelSVG.innerHTML + ' ['+stoich+']';
 	}
 }
 
@@ -91,44 +90,6 @@ Interactor.prototype.mouseOut = function(evt) {
         this.ctrl.hideTooltip();
         return false;
 };
-
-Interactor.prototype.addFeature = function(feature) {
-    if (typeof feature !== 'undefined') {
-        var annotName = "";
-        if (typeof feature.name !== 'undefined') {
-            annotName += feature.name + ', ';
-        }
-        if (typeof feature.type !== 'undefined') {
-            annotName += feature.type.name;
-        }
-        if (typeof feature.detmethod !== 'undefined') {
-            annotName += ', ' + feature.detmethod.name;
-        }
-        var colour = Interactor.domainColours(feature.type.name);
-        var segments = feature.sequenceData;
-        var countSegments = segments.length;
-
-        for (var i = 0; i < countSegments; i++) {
-            var segment;
-            if (typeof segments[i] === "string"){
-				segment = segments[i];
-			} else {
-				segment = segments[i].pos;
-			}
-            var sequenceRegex = /(.+)-(.+)/;
-            var match = sequenceRegex.exec(segment);
-            var startRes = match[1] * 1;
-            var endRes = match[2] * 1;
-            if (isNaN(startRes) === false && isNaN(endRes) === false) {
-                var annotation = new Annotation(annotName, startRes, endRes, colour);
-                if (this.customAnnotations == null) {
-                    this.customAnnotations = new Array();
-                }
-                this.customAnnotations.push(annotation);
-            }
-        }
-    }
-}
 
 Interactor.prototype.showHighlight = function(show) {
     if (show === true) {
@@ -275,33 +236,6 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
     //~ console.debug(subgraph.nodes.keys());
 };
 
-Interactor.prototype.setAnnotations = function(pos, group, category) {
-    //clear
-    while (this.circDomains.firstChild) {
-        this.circDomains.removeChild(this.circDomains.firstChild);
-    }
-    while (this.rectDomains.firstChild) {
-        this.rectDomains.removeChild(this.rectDomains.firstChild);
-    }
-    while (this.rectDomainsMouseEvents.firstChild) {
-        this.rectDomainsMouseEvents.removeChild(this.rectDomainsMouseEvents.firstChild);
-    }
-    var g = this.processedDAS.get(group);
-    if (pos === true) {
-        if (category === 'none') {
-            this.setPositionalFeatures(this.customAnnotatiuons);
-        }
-        else {
-            if (g !== undefined) {
-                var positional = g['positional'];
-                if (positional !== undefined) {
-                    this.setPositionalFeatures(positional.get(category));
-                }
-            }
-        }
-    }
-};
-
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
@@ -353,9 +287,10 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             else {
                 c = anno.colour;
             }
-            annotPieSlice.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            //console.log(JSON.stringify(c));
+            annotPieSlice.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
             annotPieSlice.setAttribute("fill-opacity", "1");
-            annotColouredRect.setAttribute("fill", "rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            annotColouredRect.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
             annotColouredRect.setAttribute("fill-opacity", "1");
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";

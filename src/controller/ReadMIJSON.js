@@ -7,7 +7,8 @@
 //    author: Colin Combe
 
 "use strict";
-
+//var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer'); //not working
+var Feature = require('../model/interactor/Feature');
 var SmallMol = require('../model/interactor/SmallMol');
 var Polymer = require('../model/interactor/Polymer');
 var Complex = require('../model/interactor/Complex');
@@ -63,11 +64,9 @@ var readMIJSON = function(miJson, controller) {
     function addInteractions() {
         var width = self.svgElement.parentNode.clientWidth;
         Polymer.UNITS_PER_RESIDUE = ((width / 2)) / 1000;//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000);
-        
-        //temp?
         self.features = d3.map();       
         self.complexes = d3.map();  
-        
+        var domainColours =  d3.scale.category10();//d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
         //create indexed collection of features from interactions   
         for (var l = 0; l < dataElementCount; l++) {
             var interaction = data[l];
@@ -86,6 +85,39 @@ var readMIJSON = function(miJson, controller) {
 					for (var f = 0; f < fCount; f++){
 						var feature = features[f];
 						self.features.set(feature.id, feature);
+						// add features to interactors/participants/nodes
+						var annotName = "";
+						if (typeof feature.name !== 'undefined') {
+							annotName += feature.name + ', ';
+						}
+						if (typeof feature.type !== 'undefined') {
+							annotName += feature.type.name;
+						}
+						if (typeof feature.detmethod !== 'undefined') {
+							annotName += ', ' + feature.detmethod.name;
+						}
+						var colour = domainColours(feature.name);
+						// the id info we need is inside sequenceData att
+						if (feature.sequenceData) {
+							//~ console.log(JSON.stringify(feature, null, '\t'));
+							var seqData = feature.sequenceData;
+							var seqDataCount = seqData.length;
+							for (var sdi = 0; sdi < seqDataCount; sdi++) {
+								var seqDatum = seqData[sdi];
+								var interactor = self.interactors.get(seqDatum.interactorRef);
+								var sequenceRegex = /(.+)-(.+)/;
+								var match = sequenceRegex.exec(seqDatum.pos);
+								var startRes = match[1] * 1;
+								var endRes = match[2] * 1;
+								if (isNaN(startRes) === false && isNaN(endRes) === false) {
+									var annotation = new Feature(annotName, startRes, endRes, colour);
+									if (interactor.miFeatures == null) {
+										interactor.miFeatures = new Array();
+									}
+									interactor.miFeatures.push(annotation);
+								}
+							}
+						}
 					}		
 				}	
 	        }
@@ -113,12 +145,12 @@ var readMIJSON = function(miJson, controller) {
             naryLink.complex = complexes[c];           
         }
         //show features
-        //~ var interactors = self.interactors.values();
-        //~ var proteinCount = interactors.length;
-        //~ for (var p = 0; p < proteinCount; p++) {
-            //~ var prot = interactors[p];
-            //~ prot.setPositionalFeatures(prot.customAnnotations);
-        //~ }
+        var interactors = self.interactors.values();
+        var proteinCount = interactors.length;
+        for (var p = 0; p < proteinCount; p++) {
+            var prot = interactors[p];
+            prot.setPositionalFeatures(prot.miFeatures);
+        }
         self.init();
         self.checkLinks();   
 	}
