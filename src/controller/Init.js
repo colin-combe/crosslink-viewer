@@ -356,10 +356,10 @@ xiNET.Controller.prototype.init = function(width, height) {
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
             if (this.proteins.keys().length < 3) {
-                prot.toStick();
+                prot.setForm(1);
             }
             else {
-                prot.toBlob();
+                prot.setForm(0);
             }
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);

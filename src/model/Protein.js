@@ -187,7 +187,6 @@ Protein.prototype.initProtein = function(sequence){//, name, description, size) 
     if (Protein.MAXSIZE < this.size) {
         Protein.MAXSIZE = this.size;
     }
-
 	this.setForm(this.form);
 	if (this.internalLink) this.internalLink.initSVG();
 };
@@ -570,7 +569,15 @@ Protein.prototype.setParked = function(bool, svgP) {
 		if (this.isParked === true && bool == false) {
 			this.isParked = false; //u r here
 			if (this.form === 0) {
-				this.toBlob(svgP);
+				//~ this.toBlob(svgP);
+				d3.select(this.outline).transition()
+					.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+					.attr("fill", "#ffffff")
+					.duration(Protein.transitionTime);
+				this.checkLinks();
+				d3.select(this.circDomains).transition().attr("opacity", 1)
+					.attr("transform", "scale(1, 1)")
+					.duration(Protein.transitionTime);
 			}
 			else {
 				this.toStick();
@@ -580,13 +587,49 @@ Protein.prototype.setParked = function(bool, svgP) {
 		}
 		else if (this.isParked === false && bool == true) {
 			this.isParked = true;
-			this.toParked(svgP);
+			var c = this.proteinLinks.values().length;
+			for (var l = 0; l < c; l++) {
+				var link = this.proteinLinks.values()[l];
+				//out with the old (i.e. all links)
+				link.hide();
+				var resLinks = link.residueLinks.values();
+				var resLinkCount = resLinks.length; 
+				for (var rl = 0; rl < resLinkCount; rl++) {
+					var resLink = resLinks[rl];
+						resLink.hide();
+				}
+				
+			}       
+			
+			if (this.form === 1){
+				this.toCircle(svgP);
+				var r = this.getBlobRadius();
+				d3.select(this.outline).transition()
+					.attr("stroke-opacity", 0).attr("fill-opacity", 1)
+					.attr("fill", "#EEEEEE")
+					.attr("x", -r).attr("y", -r)
+					.attr("width", r * 2).attr("height", r * 2)
+					.attr("rx", r).attr("ry", r)
+					.duration(Protein.transitionTime);	
+				d3.select(this.rectDomains).transition().attr("opacity", 0)
+					.attr("transform", "scale(1, 1)")
+					.duration(Protein.transitionTime);
+			}
+			else {
+				d3.select(this.outline).transition()
+					.attr("stroke-opacity", 0)
+					.attr("fill", "#EEEEEE")
+					.duration(Protein.transitionTime);	
+				d3.select(this.circDomains).transition().attr("opacity", 0)
+					.attr("transform", "scale(1, 1)")
+					.duration(Protein.transitionTime);	
+			}
 		}
 	}
 };
 
 Protein.prototype.setForm = function(form, svgP) {
-    if (!this.busy) {
+    if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);
 		}
@@ -596,46 +639,34 @@ Protein.prototype.setForm = function(form, svgP) {
 				this.toStick();
 			}
 			else {
-				this.toBlob(svgP);
+				//this.toBlob(svgP);
+				this.toCircle(svgP);
+				var r = this.getBlobRadius();
+				
+				var self = this;
+				d3.select(this.outline).transition()
+					.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+					.attr("fill", "#ffffff")
+					.attr("x", -r).attr("y", -r)
+					.attr("width", r * 2).attr("height", r * 2)
+					.attr("rx", r).attr("ry", r)
+					.duration(Protein.transitionTime);
+
+				d3.select(this.rectDomains).transition().attr("opacity", 0)
+					.attr("transform", "scale(1, 1)")
+					.duration(Protein.transitionTime);
+					
+				d3.select(this.circDomains).transition().attr("opacity", 1)
+					.attr("transform", "scale(1, 1)")
+					.duration(Protein.transitionTime);
 			}
 		}
 	}
 };
 
-Protein.prototype.toBlob = function(svgP) {
-	this.toCircle(svgP);
-	if (!this.isParked){ //this is causing from parked it below to run when tool opens 
-		var r = this.getBlobRadius();
-		
-		var self = this;
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.attr("x", -r).attr("y", -r)
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("rx", r).attr("ry", r)
-			.duration(Protein.transitionTime);
-
-		d3.select(this.rectDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Protein.transitionTime);
-	}
-	else {//from parked
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.duration(Protein.transitionTime);
-		this.checkLinks();
-	}
-	d3.select(this.circDomains).transition().attr("opacity", 1)
-		.attr("transform", "scale(1, 1)")
-		.duration(Protein.transitionTime);
-};
-
 Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
 	this.busy = true;
 	this.removePeptides();
-	//this.mouseoverControls.remove();
 	if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
 	if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);  
 			    
@@ -796,42 +827,7 @@ Protein.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form ar
 };
 
 Protein.prototype.toParked = function(svgP) {   
-    var c = this.proteinLinks.values().length;
-    for (var l = 0; l < c; l++) {
-        var link = this.proteinLinks.values()[l];
-        //out with the old (i.e. all links)
-        link.hide();
-		var resLinks = link.residueLinks.values();
-		var resLinkCount = resLinks.length; 
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var resLink = resLinks[rl];
-				resLink.hide();
-		}
-    }       
-    
-    if (this.form === 1){
-		this.toCircle(svgP);
-		var r = this.getBlobRadius();
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0).attr("fill-opacity", 1)
-			.attr("fill", "#EEEEEE")
-			.attr("x", -r).attr("y", -r)
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("rx", r).attr("ry", r)
-			.duration(Protein.transitionTime);	
-		d3.select(this.rectDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Protein.transitionTime);
-	}
-	else {
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 0)
-			.attr("fill", "#EEEEEE")
-			.duration(Protein.transitionTime);	
-		d3.select(this.circDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Protein.transitionTime);	
-	}
+
 };
 
 Protein.prototype.toStick = function() {
