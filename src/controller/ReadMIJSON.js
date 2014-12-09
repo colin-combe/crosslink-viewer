@@ -17,11 +17,14 @@ var NaryLink = require('../model/link/NaryLink');
 var SequenceLink = require('../model/link/SequenceLink');
 var BinaryLink = require('../model/link/BinaryLink');
 var UnaryLink = require('../model/link/UnaryLink');
+//var Expand = require ('./Expand'); the lodash lib is missing from repo I think, commented out so can still build
  
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
     //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
+
+    //~ Expand.matrix(miJson);	
      
     var data = miJson.data;
     var dataElementCount = data.length;
