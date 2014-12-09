@@ -8,6 +8,9 @@ var matrix = function(json) {
 	var interactions = _.where(json.data, {object: "interaction"});
 	var interactors = _.where(json.data, {object: "interactor"});
 
+	var newParticipants = [];
+	var newInteractors = [];
+
 	// Loop through our interaction objects
 	_.each(interactions, function(interaction) {
 
@@ -18,6 +21,7 @@ var matrix = function(json) {
 			}
 		});
 
+		console.log("participants to expand", participantsToExpand);
 		// Loop through our participants that need expanding
 		_.each(participantsToExpand, function(participant) {
 
@@ -33,16 +37,22 @@ var matrix = function(json) {
 					var clonedInteractor = _.cloneDeep(foundInteractor);
 					clonedInteractor.id = clonedInteractor.id + "_" + i;
 
+					console.log("cloned interactor", clonedInteractor);
+
 					// Push the cloned interactor back onto our JSON object
 					json.data.push(clonedInteractor);
+					newInteractors.push(clonedInteractor);
 
 					// Now clone the participant and link it to the new cloned itneractor
 					var clonedParticipant = _.cloneDeep(participant);
 					clonedParticipant.interactorRef = clonedInteractor.id;
 					clonedParticipant.id = clonedParticipant.id + "_" + i;
 
+					console.log("cloned participant", clonedParticipant);
+
 					// We need to relink to our binding site IDs:
 					_.each(clonedParticipant.bindingSites, function(bindingSite) {
+
 						bindingSite.id = bindingSite.id + "_" + i;
 
 						// Also, adjust our sequence data
@@ -54,6 +64,7 @@ var matrix = function(json) {
 					});
 
 					interaction.participants.push(clonedParticipant);
+					newParticipants.push(clonedParticipant);
 
 				}
 			}
@@ -61,6 +72,9 @@ var matrix = function(json) {
 		});
 
 	});
+
+	console.log("newInteractors", newInteractors);
+	console.log("newParticipants", newParticipants);
 
 	return json
 }
