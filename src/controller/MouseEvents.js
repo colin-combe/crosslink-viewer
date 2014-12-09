@@ -223,7 +223,7 @@ var mouseUp = function(evt) {
                             this.checkLinks();
                         }
                     } else {//right click on protein
-                        this.dragElement.setParked(!this.dragElement.isParked, c);
+                    //    this.dragElement.setParked(!this.dragElement.isParked, c);
                     }
                 }
                 else if (middleclick) {

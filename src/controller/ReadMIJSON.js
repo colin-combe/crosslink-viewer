@@ -70,7 +70,7 @@ var readMIJSON = function(miJson, controller) {
 		}
 	}
 	
-	//add interactions
+	//add naryLinks and participants
 	for (var l = 0; l < dataElementCount; l++) {
 		var interaction = data[l];
 		if (interaction.object === 'interaction') {
@@ -78,34 +78,12 @@ var readMIJSON = function(miJson, controller) {
 			var participantCount = jsonParticipants.length    
 			
 			//init n-ary link
-			//var nLink = getNaryLink(interaction);//note - this var gets used by the get*Link functions below    
-			var pIDs = d3.set();//used to eliminate duplicates
-			//make id
-			for (var pi = 0; pi < participantCount; pi++) {
-				var pID = jsonParticipants[pi].interactorRef 
-						+ "(" + jsonParticipants[pi].id + ")";;
-				pIDs.add(pID);
-			}
-			// sort participant IDs
-			pIDs = pIDs.values().sort();
-			var nLinkId =  pIDs.join('-');
+			var nLinkId = getNaryLinkIdFromInteraction(interaction)
 			var nLink = self.allNaryLinks.get(nLinkId);
 			if (typeof nLink === 'undefined') {
 				//doesn't already exist, make new nLink
 				nLink = new NaryLink(nLinkId, self);
 				self.allNaryLinks.set(nLinkId, nLink);
-				
-				//~ for (var i = 0; i < pIDs.length; i++) {
-					//~ var p = self.interactors.get(interactorIds[i]);
-					//~ if (typeof interactor === 'undefined') {
-						//~ //must be a previously unencountered complex
-						//~ interactor = new Complex(interactorIds[i], self);
-						//~ self.interactors.set(interactorIds[i], interactor);
-						//~ self.complexes.set(interactorIds[i], interactor);
-					//~ }
-					//~ interactor.naryLinks.set(nLinkId, nLink);				
-					//~ nLink.interactors.push(interactor);
-				//~ }
 			}
 			nLink.addEvidence(interaction);
 			
@@ -142,7 +120,8 @@ var readMIJSON = function(miJson, controller) {
 					self.participants.set(participantId, participant);
 				}
 				
-				//TODO: tidy up whats happening in NLink re interactor/participant
+				participant.naryLinks.set(nLinkId, nLink);				
+				//TODO: tidy up whats happening in NaryLink re interactor/participant terminology
 				if (nLink.interactors.indexOf(participant) === -1){
 					nLink.interactors.push(participant);
 				}				
@@ -155,15 +134,15 @@ var readMIJSON = function(miJson, controller) {
 		}
 	}
 
+	// loop through particpants and features
+	// init binary, unary and sequence links, 
+	// and make needed associations between these and containing naryLink		
 	for (var l = 0; l < dataElementCount; l++) {
 			var interaction = data[l];
 			if (interaction.object === 'interaction') {
 				var jsonParticipants = interaction.participants;
 				var participantCount = jsonParticipants.length    
 		
-			// loop through particpants and features
-			// init binary, unary and sequence links, 
-			// and make needed associations between these and containing naryLink
 			for (var pi = 0; pi < participantCount; pi++){
 				var jsonParticipant = jsonParticipants[pi];			
 				var features = new Array(0); 
@@ -217,61 +196,20 @@ var readMIJSON = function(miJson, controller) {
 
 	self.init();
 	self.checkLinks();   
-//};
 
-	// naryLink id is particpant interactorRefs, in ascending order, 
-	// with duplicates eliminated, seperated by dash
-	//~ function getIdFromInteraction(interaction) {
-		//~ var nLinkId = "";
-		//~ // sort participants by interactorRef
-		//~ var participants = interaction.participants.sort(
-			//~ function comparator(a, b) {
-				//~ return a.interactorRef - b.interactorRef;
-			//~ }
-		//~ );
-		//~ var participantCount = participants.length;
-		//~ var pIDs = d3.set();//used to eliminate duplicates
-		//~ //make id
-		//~ for (var pi = 0; pi < participantCount; pi++) {
-			//~ var pID = participants[pi].interactorRef;
-			//~ 
-			//~ if (pIDs.has(pID) === false){
-				//~ pIDs.add(pID);
-				//~ if (pi > 0) {
-					//~ nLinkId += "-"; 
-				//~ }
-				//~ nLinkId += pID;
-			//~ }
-		//~ }		
-		//~ return nLinkId;
-	//~ };
-//~ 
-	//~ function getNaryLink(){
-		//~ var nLinkId = getIdFromInteraction(interaction);
-		//~ var nLink = self.allNaryLinks.get(nLinkId);
-		//~ if (typeof nLink === 'undefined') {
-			//~ //doesn't already exist, make new nLink
-			//~ var interactorIds = nLinkId.split('-');
-			//~ var iCount = interactorIds.length;
-			//~ 
-			//~ nLink = new NaryLink(nLinkId, self);
-			//~ self.allNaryLinks.set(nLinkId, nLink);
-			//~ 
-			//~ for (var i = 0; i < iCount; i++) {
-				//~ var interactor = self.interactors.get(interactorIds[i]);
-				//~ if (typeof interactor === 'undefined') {
-					//~ //must be a previously unencountered complex
-					//~ interactor = new Complex(interactorIds[i], self);
-					//~ self.interactors.set(interactorIds[i], interactor);
-					//~ self.complexes.set(interactorIds[i], interactor);
-				//~ }
-				//~ interactor.naryLinks.set(nLinkId, nLink);				
-				//~ nLink.interactors.push(interactor);
-			//~ }
-		//~ }
-		//~ nLink.addEvidence(interaction);
-		//~ return nLink;
-	//~ };
+	function getNaryLinkIdFromInteraction(interaction) {
+		var pIDs = d3.set();//used to eliminate duplicates
+		//make id
+		for (var pi = 0; pi < participantCount; pi++) {
+			var pID = jsonParticipants[pi].interactorRef 
+					+ "(" + jsonParticipants[pi].id + ")";;
+			pIDs.add(pID);
+		}
+		// sort participant IDs
+		pIDs = pIDs.values().sort();
+		return  pIDs.join('-');
+	};
+	
 	
 	function getSequenceLink(fromSequenceData, toSequenceData){
 		//~ function seqDataComparator(a, b){
@@ -314,6 +252,8 @@ var readMIJSON = function(miJson, controller) {
 		//TODO - get rid of following
 		sequenceLink.fromInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
 		sequenceLink.toInteractor.sequenceLinks.set(seqLinkId, sequenceLink);
+		var nLinkId = getNaryLinkIdFromInteraction(interaction);
+		var nLink = self.allNaryLinks.get(nLinkId);
 		nLink.sequenceLinks.set(seqLinkId, sequenceLink);
 		return sequenceLink;						
 	};
@@ -326,7 +266,9 @@ var readMIJSON = function(miJson, controller) {
 			self.allUnaryLinks.set(linkID, link);
 			interactor.selfLink = link;
 		}
-		//~ nLink.unaryLinks.set(linkID, link);			
+		var nLinkId = getNaryLinkIdFromInteraction(interaction);
+		var nLink = self.allNaryLinks.get(nLinkId);
+		nLink.unaryLinks.set(linkID, link);			
 		link.addEvidence(interaction);			
 		return link;
 	};
@@ -351,7 +293,9 @@ var readMIJSON = function(miJson, controller) {
 			ti.binaryLinks.set(linkID, link);
 			self.allBinaryLinks.set(linkID, link);
 		}
-		//~ nLink.binaryLinks.set(linkID, link);
+		var nLinkId = getNaryLinkIdFromInteraction(interaction);
+		var nLink = self.allNaryLinks.get(nLinkId);
+		nLink.binaryLinks.set(linkID, link);
 		link.addEvidence(interaction);		
 		return link;
 	}
