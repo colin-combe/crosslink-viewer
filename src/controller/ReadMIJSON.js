@@ -17,11 +17,14 @@ var NaryLink = require('../model/link/NaryLink');
 var SequenceLink = require('../model/link/SequenceLink');
 var BinaryLink = require('../model/link/BinaryLink');
 var UnaryLink = require('../model/link/UnaryLink');
+var Expand = require ('./Expand');
  
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
     //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
+
+    Expand.matrix(miJson);
 	
 	//interactors for which we can look up sequence and uniprot features
 	var uniprotInteractors = d3.set();
