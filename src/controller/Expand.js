@@ -4,8 +4,6 @@ var _ = require('lodash');
 
 var matrix = function(json) {
 
-	console.log("matrix loaded", json);
-
 	// We'll need collections of our interactions and interactors for later..
 	var interactions = _.where(json.data, {object: "interaction"});
 	var interactors = _.where(json.data, {object: "interactor"});
