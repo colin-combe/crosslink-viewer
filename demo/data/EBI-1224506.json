@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_Q9UDW1", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "Q9UDW1"
@@ -20,7 +20,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P31930", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P31930"
@@ -39,7 +39,7 @@
             }
         }, 
         {
-            "id": "3", 
+            "id": "uniprotkb_O14949", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "O14949"
@@ -58,7 +58,7 @@
             }
         }, 
         {
-            "id": "4", 
+            "id": "uniprotkb_O14957", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "O14957"
@@ -77,7 +77,7 @@
             }
         }, 
         {
-            "id": "5", 
+            "id": "uniprotkb_P07919", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P07919"
@@ -96,7 +96,7 @@
             }
         }, 
         {
-            "id": "6", 
+            "id": "uniprotkb_P14927", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P14927"
@@ -115,7 +115,7 @@
             }
         }, 
         {
-            "id": "7", 
+            "id": "uniprotkb_P00156", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P00156"
@@ -134,7 +134,7 @@
             }
         }, 
         {
-            "id": "8", 
+            "id": "uniprotkb_P08574", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P08574"
@@ -153,7 +153,7 @@
             }
         }, 
         {
-            "id": "9", 
+            "id": "uniprotkb_P22695", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P22695"
@@ -172,7 +172,7 @@
             }
         }, 
         {
-            "id": "10", 
+            "id": "chebi_CHEBI:30408", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:30408"
@@ -190,7 +190,7 @@
             }
         }, 
         {
-            "id": "11", 
+            "id": "uniprotkb_P47985-PRO_0000307241", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P47985-PRO_0000307241"
@@ -209,7 +209,7 @@
             }
         }, 
         {
-            "id": "12", 
+            "id": "uniprotkb_P47985-PRO_0000030664", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P47985-PRO_0000030664"
@@ -249,7 +249,7 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "13", 
+            "id": "intenz_1.10.2.2", 
             "identifiers": [
                 {
                     "db": "intenz", 
@@ -275,7 +275,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "1", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9UDW1", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -283,7 +294,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "2", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "2", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P31930", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -291,7 +313,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "3", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "3", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_O14949", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -299,7 +332,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "4", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "4", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_O14957", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -307,7 +351,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "5", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "5", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P07919", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -315,7 +370,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "6", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "6", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P14927", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -323,7 +389,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "7", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "7", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P00156", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -331,7 +408,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "8", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "8", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P08574", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -339,7 +427,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "9", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "9", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P22695", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -347,21 +446,54 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "10"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "10", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:30408"
                 }, 
                 {
                     "bioRole": {
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "11"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "11", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P47985-PRO_0000307241"
                 }, 
                 {
                     "bioRole": {
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "12"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "12", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P47985-PRO_0000030664"
                 }
             ]
         }

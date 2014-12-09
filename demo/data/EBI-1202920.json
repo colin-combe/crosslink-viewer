@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_P12004", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P12004"
@@ -41,7 +41,7 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "2", 
+            "id": "reactome_REACT_2542.1", 
             "identifiers": [
                 {
                     "db": "reactome", 
@@ -63,7 +63,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "1", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P12004", 
                     "stoichiometry": "3"
                 }
             ]

@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_P01127", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P01127"
@@ -20,7 +20,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P09619", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P09619"
@@ -39,7 +39,7 @@
             }
         }, 
         {
-            "id": "3", 
+            "id": "uniprotkb_P16234", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P16234"
@@ -79,7 +79,7 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "4", 
+            "id": "wwpdb_1pdg", 
             "identifiers": [
                 {
                     "db": "wwpdb", 
@@ -135,14 +135,15 @@
                 {
                     "bindingSites": [
                         {
-                            "id": "5", 
+                            "id": "2", 
                             "linkedFeatures": [
-                                "6"
+                                "3"
                             ], 
                             "name": "pdgf receptor alpha binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_P01127", 
+                                    "participantRef": "1", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -153,11 +154,12 @@
                         }, 
                         {
                             "InterPro": "IPR000072", 
-                            "id": "7", 
+                            "id": "4", 
                             "name": "dimerisation domain", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_P01127", 
+                                    "participantRef": "1", 
                                     "pos": "83-182"
                                 }
                             ], 
@@ -167,14 +169,15 @@
                             }
                         }, 
                         {
-                            "id": "8", 
+                            "id": "5", 
                             "linkedFeatures": [
-                                "9"
+                                "6"
                             ], 
                             "name": "pdgf receptor beta binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_P01127", 
+                                    "participantRef": "1", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -188,20 +191,32 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "1", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P01127", 
                     "stoichiometry": "2"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "10", 
+                            "id": "8", 
                             "linkedFeatures": [
-                                "11"
+                                "9"
                             ], 
                             "name": "pdgf receptor alpha binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P09619", 
+                                    "participantRef": "7", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -211,14 +226,15 @@
                             }
                         }, 
                         {
-                            "id": "9", 
+                            "id": "6", 
                             "linkedFeatures": [
-                                "8"
+                                "5"
                             ], 
                             "name": "pdgfb binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P09619", 
+                                    "participantRef": "7", 
                                     "pos": "1-529"
                                 }
                             ], 
@@ -232,20 +248,32 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "2", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "7", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P09619", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "6", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "5"
+                                "2"
                             ], 
                             "name": "pdgfb binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
+                                    "interactorRef": "uniprotkb_P16234", 
+                                    "participantRef": "10", 
                                     "pos": "1-524"
                                 }
                             ], 
@@ -255,14 +283,15 @@
                             }
                         }, 
                         {
-                            "id": "11", 
+                            "id": "9", 
                             "linkedFeatures": [
-                                "10"
+                                "8"
                             ], 
                             "name": "pdgf receptor beta binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
+                                    "interactorRef": "uniprotkb_P16234", 
+                                    "participantRef": "10", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -276,7 +305,18 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "3", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "10", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P16234", 
                     "stoichiometry": "1"
                 }
             ]

@@ -318,7 +318,7 @@ var mouseWheel = function(evt) {
 };
 
 var clearSelection = function() {
-    var interactors = this.interactors.values();
+    var interactors = this.participants.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];

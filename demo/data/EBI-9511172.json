@@ -1,38 +1,38 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_P63279", 
             "identifier": {
                 "db": "uniprotkb", 
-                "id": "Q12809"
+                "id": "P63279"
             }, 
-            "label": "kcnh2_human", 
+            "label": "ubc9_human", 
             "object": "interactor", 
             "organism": {
                 "common": "human", 
                 "scientific": "Homo sapiens", 
                 "taxid": "9606"
             }, 
-            "sequence": "MPVRRGHVAPQNTFLDTIIRKFEGQSRKFIIANARVENCAVIYCNDGFCELCGYSRAEVMQRPCTCDFLHGPRTQRRAAAQIAQALLGAEERKVEIAFYRKDGSCFLCLVDVVPVKNEDGAVIMFILNFEVVMEKDMVGSPAHDTNHRGPPTSWLAPGRAKTFRLKLPALLALTARESSVRSGGAGGAGAPGAVVVDVDLTPAAPSSESLALDEVTAMDNHVAGLGPAEERRALVGPGSPPRSAPGQLPSPRAHSLNPDASGSSCSLARTRSRESCASVRRASSADDIEAMRAGVLPPPPRHASTGAMHPLRSGLLNSTSDSDLVRYRTISKIPQITLNFVDLKGDPFLASPTSDREIIAPKIKERTHNVTEKVTQVLSLGADVLPEYKLQAPRIHRWTILHYSPFKAVWDWLILLLVIYTAVFTPYSAAFLLKETEEGPPATECGYACQPLAVVDLIVDIMFIVDILINFRTTYVNANEEVVSHPGRIAVHYFKGWFLIDMVAAIPFDLLIFGSGSEELIGLLKTARLLRLVRVARKLDRYSEYGAAVLFLLMCTFALIAHWLACIWYAIGNMEQPHMDSRIGWLHNLGDQIGKPYNSSGLGGPSIKDKYVTALYFTFSSLTSVGFGNVSPNTNSEKIFSICVMLIGSLMYASIFGNVSAIIQRLYSGTARYHTQMLRVREFIRFHQIPNPLRQRLEEYFQHAWSYTNGIDMNAVLKGFPECLQADICLHLNRSLLQHCKPFRGATKGCLRALAMKFKTTHAPPGDTLVHAGDLLTALYFISRGSIEILRGDVVVAILGKNDIFGEPLNLYARPGKSNGDVRALTYCDLHKIHRDDLLEVLDMYPEFSDHFWSSLEITFNLRDTNMIPGSPGSTELEGGFSRQRKRKLSFRRRTDKDTEQPGEVSALGPGRAGAGPSSRGRPGGPWGESPSSGPSSPESSEDEGPGRSSSPLRLVPFSSPRPPGEPPGGEPLMEDCEKSSDTCNPLSGAFSGVSNIFSFWGDSRGRQYQELPRCPAPTPSLLNIPLSSPGRRPRGDVESRLDALQRQLNRLETRLSADMATVLQLLQRQMTLVPPAYSAVTTPGPGPTSTSPLLPVSPLPTLTLDSLSQVSQFMACEELPPGAPELPQEGPTRRLSLPGQLGALTSQPLHRHGSDPGS", 
+            "sequence": "MSGIALSRLAQERKAWRKDHPFGFVAVPTKNPDGTMNLMNWECAIPGKKGTPWEGGLFKLRMLFKDDYPSSPPKCKFEPPLFHPNVYPSGTVCLSILEEDKDWRPAITIKQILLGIQELLNEPNIQDPAQAEAYTIYCQNRVEYEKRVRAQAKKFAPS", 
             "type": {
                 "id": "MI:0326", 
                 "name": "protein"
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P63165-PRO_0000035939", 
             "identifier": {
                 "db": "uniprotkb", 
-                "id": "P15382"
+                "id": "P63165-PRO_0000035939"
             }, 
-            "label": "kcne1_human", 
+            "label": "p63165-pro_0000035939", 
             "object": "interactor", 
             "organism": {
                 "common": "human", 
                 "scientific": "Homo sapiens", 
                 "taxid": "9606"
             }, 
-            "sequence": "MILSNTTAVTPFLTKLWQETVQQGGNMSGLARRSPRSSDGKLEALYVLMVLGFFGFFTLGIMLSYIRSKKLEHSNDPFNVYIESDAWQEKDKAYVQARVLESYRSCYVVENHLAIEQPNTHLPETKPSP", 
+            "sequence": "SDQEAKPSTEDLGDKKEGEYIKLKVIGQDSSEIHFKVKMTTHLKKLKESYCQRQGVPMNSLRFLFEGQRIADNHTPKELGMEEEDVIEVYQEQTGG", 
             "type": {
                 "id": "MI:0326", 
                 "name": "protein"
@@ -56,31 +56,35 @@
                     }
                 ], 
                 "sourceDatabase": {
-                    "id": "MI:0469", 
-                    "name": "European Bioinformatics Institute"
+                    "id": "MI:0471", 
+                    "name": "MINT, Dpt of Biology, University of Rome Tor Vergata"
                 }
             }, 
-            "id": "3", 
+            "id": "intenz_EC 6.3.2.-", 
             "identifiers": [
                 {
-                    "db": "omim", 
-                    "id": "152427"
-                }, 
-                {
-                    "db": "omim", 
-                    "id": "609620"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_76615.1"
+                    "db": "intenz", 
+                    "id": "EC 6.3.2.-"
                 }, 
                 {
                     "db": "intact", 
-                    "id": "EBI-9511172"
+                    "id": "EBI-9347978"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "613688"
+                    "db": "wwpdb", 
+                    "id": "2vrr"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2pe6"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_165180.2"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2uyz"
                 }
             ], 
             "interactionType": {
@@ -92,42 +96,60 @@
                 {
                     "bindingSites": [
                         {
-                            "id": "4", 
+                            "id": "2", 
                             "linkedFeatures": [
-                                "5"
+                                "3"
                             ], 
-                            "name": "kcne1 binding region", 
+                            "name": "sumo1 binding site (lys14/cys93)", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
-                                    "pos": "?-?"
+                                    "interactorRef": "uniprotkb_P63279", 
+                                    "participantRef": "1", 
+                                    "pos": "14-14"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_P63279", 
+                                    "participantRef": "1", 
+                                    "pos": "93-93"
                                 }
                             ], 
                             "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
+                                "id": "MI:1125", 
+                                "name": "direct binding region"
                             }
                         }
                     ], 
                     "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
+                        "id": "MI:0501", 
+                        "name": "enzyme"
                     }, 
-                    "interactorRef": "1", 
-                    "stoichiometry": "4"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P63279", 
+                    "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "5", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "4"
+                                "2"
                             ], 
-                            "name": "kcnh2 bindingregion", 
+                            "name": "ube2i binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
-                                    "pos": "?-?"
+                                    "interactorRef": "uniprotkb_P63165-PRO_0000035939", 
+                                    "participantRef": "4", 
+                                    "pos": "96-96"
                                 }
                             ], 
                             "type": {
@@ -140,8 +162,19 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "2", 
-                    "stoichiometry": "4"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "4", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P63165-PRO_0000035939", 
+                    "stoichiometry": "1"
                 }
             ]
         }

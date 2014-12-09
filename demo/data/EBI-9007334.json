@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_Q9P2T1", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "Q9P2T1"
@@ -20,7 +20,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "chebi_CHEBI:16474", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:16474"
@@ -54,7 +54,7 @@
                     "name": "UniProt"
                 }
             }, 
-            "id": "3", 
+            "id": "wwpdb_2A7R", 
             "identifiers": [
                 {
                     "db": "wwpdb", 
@@ -90,11 +90,12 @@
                 {
                     "bindingSites": [
                         {
-                            "id": "4", 
+                            "id": "2", 
                             "name": "tetramerization region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_Q9P2T1", 
+                                    "participantRef": "1", 
                                     "pos": "10-341"
                                 }
                             ], 
@@ -104,14 +105,15 @@
                             }
                         }, 
                         {
-                            "id": "5", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "6"
+                                "4"
                             ], 
                             "name": "nadph binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_Q9P2T1", 
+                                    "participantRef": "1", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -125,20 +127,32 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "1", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9P2T1", 
                     "stoichiometry": "4"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "6", 
+                            "id": "4", 
                             "linkedFeatures": [
-                                "5"
+                                "3"
                             ], 
                             "name": "gmpr2 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "chebi_CHEBI:16474", 
+                                    "participantRef": "5", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -152,7 +166,18 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "2", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "5", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:16474", 
                     "stoichiometry": "7"
                 }
             ]
