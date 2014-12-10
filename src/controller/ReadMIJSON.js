@@ -25,7 +25,7 @@ var readMIJSON = function(miJson, controller) {
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 
     Expand.matrix(miJson);
-	
+    
 	//interactors for which we can look up sequence and uniprot features
 	var uniprotInteractors = d3.set();
      
