@@ -248,7 +248,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             abmpDeg += 360;
         }
 
-//out is value we use to decide which side of bat the link glyph is drawn
+//out is value we use to decide which side of bar the link glyph is drawn
 //first for 'from' interactor
         var out = (abmpDeg - fromInteractor.rotation);
         if (out < 0) {

@@ -17,14 +17,14 @@ var NaryLink = require('../model/link/NaryLink');
 var SequenceLink = require('../model/link/SequenceLink');
 var BinaryLink = require('../model/link/BinaryLink');
 var UnaryLink = require('../model/link/UnaryLink');
-//~ var Expand = require ('./Expand');
+var Expand = require ('./Expand');
  
 // reads our MI JSON format 
 var readMIJSON = function(miJson, controller) {
     //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 
-    //~ Expand.matrix(miJson);
+    Expand.matrix(miJson);
          
     var data = miJson.data;
     var dataElementCount = data.length;
@@ -61,6 +61,9 @@ var readMIJSON = function(miJson, controller) {
 				if (participant.experimentalFeatures) {
 					features = features.concat(participant.experimentalFeatures);
 				}
+				if (participant.ptms) {
+					features = features.concat(participant.ptms);
+				}
 				var fCount = features.length;
 				for (var f = 0; f < fCount; f++){
 					var feature = features[f];
@@ -87,6 +90,7 @@ var readMIJSON = function(miJson, controller) {
 			}
 			nLink.addEvidence(interaction);
 			
+			//init participants
 			for (var pi = 0; pi < participantCount; pi++){
 				var jsonParticipant = jsonParticipants[pi];
 				
@@ -104,17 +108,17 @@ var readMIJSON = function(miJson, controller) {
 					if (intRef.indexOf('chebi') === 0) {
 						//its a small mol
 						participant = new SmallMol(participantId, this, interactor);
-						participant.initInteractor(interactor.label + ' (' + partRef + ')');
+						participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
 					} else {
 						//console.log(JSON.stringify(intRef));
 						//unwisely jump to conclusion its a polymer
 						participant = new Polymer(participantId, this, interactor);
 						if (typeof interactor.sequence !== 'undefined') {
-							participant.initInteractor(interactor.sequence, interactor.label + ' (' + partRef + ')');
+							participant.initInteractor(interactor.sequence, interactor.label);// + ' (' + partRef + ')');
 						}
 						else {
 							//hack - should look it up using accession number
-							participant.initInteractor('NO_SEQUENCE', interactor.label + ' (' + partRef + ')');
+							participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
 						}
 					}
 					self.participants.set(participantId, participant);
@@ -126,7 +130,7 @@ var readMIJSON = function(miJson, controller) {
 					nLink.interactors.push(participant);
 				}				
 				
-				if (jsonParticipant.stoichiometry){
+				if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
 					var interactor = self.participants.get(participantId); 
 					interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
 				}
@@ -151,6 +155,9 @@ var readMIJSON = function(miJson, controller) {
 				}
 				if (jsonParticipant.experimentalFeatures) {
 					features = features.concat(jsonParticipant.experimentalFeatures);
+				}
+				if (jsonParticipant.ptms) {
+					features = features.concat(jsonParticipant.ptms);
 				}
 				
 				var fCount = features.length;
