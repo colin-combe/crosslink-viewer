@@ -18,8 +18,8 @@ function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
     this.ctrl = xlvController;
     //TODO - not dealing with non-contiguous features in different interactors
     //TEMP - tidy this up
-    this.fromInteractor = this.ctrl.interactors.get(fromSeqData[0].interactorRef); 
-	this.toInteractor = this.ctrl.interactors.get(toSeqData[0].interactorRef); 
+    this.fromInteractor = this.ctrl.participants.get(fromSeqData[0].interactorRef + '(' + fromSeqData[0].participantRef + ')'); 
+	this.toInteractor = this.ctrl.participants.get(toSeqData[0].interactorRef+ '(' + toSeqData[0].participantRef + ')'); 
 	this.interactors = [this.fromInteractor, this.toInteractor];
 	this.fromSequenceData = new Array();
     var seqDatumCount = fromSeqData.length;
@@ -248,7 +248,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             abmpDeg += 360;
         }
 
-//out is value we use to decide which side of bat the link glyph is drawn
+//out is value we use to decide which side of bar the link glyph is drawn
 //first for 'from' interactor
         var out = (abmpDeg - fromInteractor.rotation);
         if (out < 0) {

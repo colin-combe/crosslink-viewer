@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "chebi_CHEBI:16238", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:16238"
@@ -14,7 +14,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P69054", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P69054"
@@ -33,7 +33,7 @@
             }
         }, 
         {
-            "id": "3", 
+            "id": "uniprotkb_P0AC44", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P0AC44"
@@ -52,7 +52,7 @@
             }
         }, 
         {
-            "id": "4", 
+            "id": "uniprotkb_P07014", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P07014"
@@ -71,7 +71,7 @@
             }
         }, 
         {
-            "id": "5", 
+            "id": "uniprotkb_P0AC41", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P0AC41"
@@ -90,7 +90,7 @@
             }
         }, 
         {
-            "id": "6", 
+            "id": "chebi_CHEBI:30413", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:30413"
@@ -108,7 +108,7 @@
             }
         }, 
         {
-            "id": "7", 
+            "id": "chebi_CHEBI:51381", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:51381"
@@ -121,7 +121,7 @@
             }
         }, 
         {
-            "id": "8", 
+            "id": "chebi_CHEBI:33739", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:33739"
@@ -139,7 +139,7 @@
             }
         }, 
         {
-            "id": "9", 
+            "id": "chebi_CHEBI:33725", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:33725"
@@ -157,7 +157,7 @@
             }
         }, 
         {
-            "id": "10", 
+            "id": "chebi_CHEBI:47402", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:47402"
@@ -175,7 +175,7 @@
             }
         }, 
         {
-            "id": "11", 
+            "id": "chebi_CHEBI:36141", 
             "identifier": {
                 "db": "chebi", 
                 "id": "CHEBI:36141"
@@ -214,7 +214,7 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "12", 
+            "id": "wwpdb_2wu2", 
             "identifiers": [
                 {
                     "db": "wwpdb", 
@@ -270,14 +270,15 @@
                 {
                     "bindingSites": [
                         {
-                            "id": "13", 
+                            "id": "2", 
                             "linkedFeatures": [
-                                "14"
+                                "3"
                             ], 
                             "name": "sdha binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "chebi_CHEBI:16238", 
+                                    "participantRef": "1", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -287,14 +288,15 @@
                             }
                         }, 
                         {
-                            "id": "15", 
+                            "id": "4", 
                             "linkedFeatures": [
-                                "16"
+                                "5"
                             ], 
                             "name": "succinate binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "chebi_CHEBI:16238", 
+                                    "participantRef": "1", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -308,19 +310,31 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "1"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:16238"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "17", 
+                            "id": "7", 
                             "linkedFeatures": [
-                                "18"
+                                "8"
                             ], 
                             "name": "dhsd binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P69054", 
+                                    "participantRef": "6", 
                                     "pos": "1-129"
                                 }
                             ], 
@@ -330,14 +344,15 @@
                             }
                         }, 
                         {
-                            "id": "19", 
+                            "id": "9", 
                             "linkedFeatures": [
-                                "20"
+                                "10"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P69054", 
+                                    "participantRef": "6", 
                                     "pos": "1-129"
                                 }
                             ], 
@@ -347,14 +362,15 @@
                             }
                         }, 
                         {
-                            "id": "21", 
+                            "id": "11", 
                             "linkedFeatures": [
-                                "22"
+                                "12"
                             ], 
                             "name": "heme binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P69054", 
+                                    "participantRef": "6", 
                                     "pos": "1-129"
                                 }
                             ], 
@@ -364,14 +380,15 @@
                             }
                         }, 
                         {
-                            "id": "23", 
+                            "id": "13", 
                             "linkedFeatures": [
-                                "24"
+                                "14"
                             ], 
                             "name": "quinone binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P69054", 
+                                    "participantRef": "6", 
                                     "pos": "1-129"
                                 }
                             ], 
@@ -385,20 +402,50 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "2", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "6", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P69054", 
                     "stoichiometry": "3"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "25", 
+                            "id": "16", 
                             "linkedFeatures": [
-                                "26"
+                                "17"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
+                                    "interactorRef": "uniprotkb_P0AC44", 
+                                    "participantRef": "15", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "dhsc binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0AC44", 
+                                    "participantRef": "15", 
                                     "pos": "1-115"
                                 }
                             ], 
@@ -410,13 +457,125 @@
                         {
                             "id": "18", 
                             "linkedFeatures": [
-                                "17"
+                                "19"
+                            ], 
+                            "name": "heme binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0AC44", 
+                                    "participantRef": "15", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "20", 
+                            "linkedFeatures": [
+                                "21"
+                            ], 
+                            "name": "quinone binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0AC44", 
+                                    "participantRef": "15", 
+                                    "pos": "1-115"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "15", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P0AC44", 
+                    "stoichiometry": "3"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "17", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "23", 
+                            "linkedFeatures": [
+                                "24"
+                            ], 
+                            "name": "dhsa binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
                             ], 
                             "name": "dhsc binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
-                                    "pos": "1-115"
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
+                                    "pos": "1-238"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "25", 
+                            "linkedFeatures": [
+                                "26"
+                            ], 
+                            "name": "fe2-s2 binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
+                                    "pos": "1-238"
                                 }
                             ], 
                             "type": {
@@ -429,11 +588,12 @@
                             "linkedFeatures": [
                                 "28"
                             ], 
-                            "name": "heme binding site", 
+                            "name": "fe3-s4 binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
-                                    "pos": "1-115"
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
+                                    "pos": "1-238"
                                 }
                             ], 
                             "type": {
@@ -449,34 +609,8 @@
                             "name": "quinone binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "3", 
-                                    "pos": "1-115"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }
-                    ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "interactorRef": "3", 
-                    "stoichiometry": "3"
-                }, 
-                {
-                    "bindingSites": [
-                        {
-                            "id": "26", 
-                            "linkedFeatures": [
-                                "25"
-                            ], 
-                            "name": "dhsd binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
                                     "pos": "1-238"
                                 }
                             ], 
@@ -490,95 +624,11 @@
                             "linkedFeatures": [
                                 "32"
                             ], 
-                            "name": "dhsa binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
-                                    "pos": "1-238"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "20", 
-                            "linkedFeatures": [
-                                "19"
-                            ], 
-                            "name": "dhsc binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
-                                    "pos": "1-238"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "33", 
-                            "linkedFeatures": [
-                                "34"
-                            ], 
-                            "name": "fe2-s2 binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
-                                    "pos": "1-238"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "35", 
-                            "linkedFeatures": [
-                                "36"
-                            ], 
-                            "name": "fe3-s4 binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
-                                    "pos": "1-238"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "37", 
-                            "linkedFeatures": [
-                                "38"
-                            ], 
-                            "name": "quinone binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "4", 
-                                    "pos": "1-238"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "39", 
-                            "linkedFeatures": [
-                                "40"
-                            ], 
                             "name": "fe4-s4 binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "4", 
+                                    "interactorRef": "uniprotkb_P07014", 
+                                    "participantRef": "22", 
                                     "pos": "1-238"
                                 }
                             ], 
@@ -592,20 +642,32 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "4", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "22", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P07014", 
                     "stoichiometry": "3"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "32", 
+                            "id": "24", 
                             "linkedFeatures": [
-                                "31"
+                                "23"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "5", 
+                                    "interactorRef": "uniprotkb_P0AC41", 
+                                    "participantRef": "33", 
                                     "pos": "1-588"
                                 }
                             ], 
@@ -615,14 +677,15 @@
                             }
                         }, 
                         {
-                            "id": "14", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "13"
+                                "2"
                             ], 
                             "name": "fad binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "5", 
+                                    "interactorRef": "uniprotkb_P0AC41", 
+                                    "participantRef": "33", 
                                     "pos": "1-588"
                                 }
                             ], 
@@ -636,20 +699,32 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "5", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "33", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P0AC41", 
                     "stoichiometry": "3"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "22", 
+                            "id": "12", 
                             "linkedFeatures": [
-                                "21"
+                                "11"
                             ], 
                             "name": "dhsc binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "6", 
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "34", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -659,14 +734,15 @@
                             }
                         }, 
                         {
-                            "id": "28", 
+                            "id": "19", 
                             "linkedFeatures": [
-                                "27"
+                                "18"
                             ], 
                             "name": "dhsd binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "6", 
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "34", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -680,20 +756,32 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "6", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "34", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:30413", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "16", 
+                            "id": "5", 
                             "linkedFeatures": [
-                                "15"
+                                "4"
                             ], 
                             "name": "fad binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "7", 
+                                    "interactorRef": "chebi_CHEBI:51381", 
+                                    "participantRef": "35", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -707,20 +795,32 @@
                         "id": "MI:0579", 
                         "name": "electron donor"
                     }, 
-                    "interactorRef": "7", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "35", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:51381", 
                     "stoichiometry": "3"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "34", 
+                            "id": "26", 
                             "linkedFeatures": [
-                                "33"
+                                "25"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "8", 
+                                    "interactorRef": "chebi_CHEBI:33739", 
+                                    "participantRef": "36", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -734,20 +834,32 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "8", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "36", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:33739", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "40", 
+                            "id": "32", 
                             "linkedFeatures": [
-                                "39"
+                                "31"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "9", 
+                                    "interactorRef": "chebi_CHEBI:33725", 
+                                    "participantRef": "37", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -761,20 +873,32 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "9", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "37", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:33725", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "36", 
+                            "id": "28", 
                             "linkedFeatures": [
-                                "35"
+                                "27"
                             ], 
                             "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "10", 
+                                    "interactorRef": "chebi_CHEBI:47402", 
+                                    "participantRef": "38", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -788,37 +912,32 @@
                         "id": "MI:0682", 
                         "name": "cofactor"
                     }, 
-                    "interactorRef": "10", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "38", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:47402", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
-                        {
-                            "id": "38", 
-                            "linkedFeatures": [
-                                "37"
-                            ], 
-                            "name": "dhsb binding site", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "11", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
                         {
                             "id": "30", 
                             "linkedFeatures": [
                                 "29"
                             ], 
-                            "name": "dhsd binding site", 
+                            "name": "dhsb binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "11", 
+                                    "interactorRef": "chebi_CHEBI:36141", 
+                                    "participantRef": "39", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -828,14 +947,33 @@
                             }
                         }, 
                         {
-                            "id": "24", 
+                            "id": "21", 
                             "linkedFeatures": [
-                                "23"
+                                "20"
+                            ], 
+                            "name": "dhsd binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:36141", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "14", 
+                            "linkedFeatures": [
+                                "13"
                             ], 
                             "name": "dhsc binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "11", 
+                                    "interactorRef": "chebi_CHEBI:36141", 
+                                    "participantRef": "39", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -849,7 +987,18 @@
                         "id": "MI:0580", 
                         "name": "electron acceptor"
                     }, 
-                    "interactorRef": "11", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "39", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "chebi_CHEBI:36141", 
                     "stoichiometry": "1"
                 }
             ]

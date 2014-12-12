@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_P63279", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P63279"
@@ -20,7 +20,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P63165-PRO_0000035939", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P63165-PRO_0000035939"
@@ -60,7 +60,7 @@
                     "name": "MINT, Dpt of Biology, University of Rome Tor Vergata"
                 }
             }, 
-            "id": "3", 
+            "id": "intenz_EC 6.3.2.-", 
             "identifiers": [
                 {
                     "db": "intenz", 
@@ -96,18 +96,20 @@
                 {
                     "bindingSites": [
                         {
-                            "id": "4", 
+                            "id": "2", 
                             "linkedFeatures": [
-                                "5"
+                                "3"
                             ], 
                             "name": "sumo1 binding site (lys14/cys93)", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_P63279", 
+                                    "participantRef": "1", 
                                     "pos": "14-14"
                                 }, 
                                 {
-                                    "interactorRef": "1", 
+                                    "interactorRef": "uniprotkb_P63279", 
+                                    "participantRef": "1", 
                                     "pos": "93-93"
                                 }
                             ], 
@@ -121,20 +123,32 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "interactorRef": "1", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P63279", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "5", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "4"
+                                "2"
                             ], 
                             "name": "ube2i binding site", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "2", 
+                                    "interactorRef": "uniprotkb_P63165-PRO_0000035939", 
+                                    "participantRef": "4", 
                                     "pos": "96-96"
                                 }
                             ], 
@@ -148,7 +162,18 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "2", 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "4", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P63165-PRO_0000035939", 
                     "stoichiometry": "1"
                 }
             ]

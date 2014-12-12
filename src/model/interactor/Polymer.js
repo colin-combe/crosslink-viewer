@@ -431,44 +431,31 @@ Polymer.prototype.setForm = function(form, svgP) {
 				this.toStick();
 			}
 			else {
-				this.toBlob(svgP);
+				this.toCircle(svgP);
+				var r = this.getBlobRadius();
+				
+				var self = this;
+				d3.select(this.outline).transition()
+					.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+					.attr("fill", "#ffffff")
+					.attr("x", -r).attr("y", -r)
+					.attr("width", r * 2).attr("height", r * 2)
+					.attr("rx", r).attr("ry", r)
+					.duration(Polymer.transitionTime);
+
+				d3.select(this.rectDomains).transition().attr("opacity", 0)
+					.attr("transform", "scale(1, 1)")
+					.duration(Polymer.transitionTime);
+					
+				d3.select(this.circDomains).transition().attr("opacity", 1)
+					.attr("transform", "scale(1, 1)")
+					.duration(Polymer.transitionTime);
 			}
 		}
 	}
 };
 
-Polymer.prototype.toBlob = function(svgP) {
-	if (this.form === 1){ 
-		this.toCircle(svgP);
-		var r = this.getBlobRadius();
-		
-		var self = this;
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.attr("x", -r).attr("y", -r)
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("rx", r).attr("ry", r)
-			.duration(Polymer.transitionTime);
-
-		d3.select(this.rectDomains).transition().attr("opacity", 0)
-			.attr("transform", "scale(1, 1)")
-			.duration(Polymer.transitionTime);
-	}
-	else {//from parked
-		d3.select(this.outline).transition()
-			.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.duration(Polymer.transitionTime);
-		this.checkLinks();
-	}
-	d3.select(this.circDomains).transition().attr("opacity", 1)
-		.attr("transform", "scale(1, 1)")
-		.duration(Polymer.transitionTime);
-};
-
-Polymer.prototype.toCircle = function(svgP) {// both 'blob' and 'parked' form are circles   
-	this.busy = true;
+Polymer.prototype.toCircle = function(svgP) {
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    

@@ -64,16 +64,16 @@ var autoLayout = function(width, height) {
     if (!width) width = this.svgElement.parentNode.clientWidth;
     if (!height) height = this.svgElement.parentNode.clientHeight;
 
-    var proteinCount = this.interactors.keys().length;
+    var proteinCount = this.participants.keys().length;
     if (proteinCount === 1) {
-        var protein = this.interactors.values()[0];
+        var protein = this.participants.values()[0];
         protein.setPosition(width / 2, height / 2);
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = this.interactors.values()[0];
+        var p1 = this.participants.values()[0];
         p1.setPosition(width / 2, height / 3 * 2);
-        var p2 = this.interactors.values()[1];
+        var p2 = this.participants.values()[1];
         p2.setPosition(width / 2, height / 3 * 1);
         return;
     }
@@ -82,7 +82,7 @@ var autoLayout = function(width, height) {
         //Init subgraphs
         //clear subgraphs
         this.subgraphs.length = 0;
-        var prots = this.interactors.values();
+        var prots = this.participants.values();
         var proteinCount = prots.length;
         for (var p = 0; p < proteinCount; p++) {
             prots[p].subgraph = null;
@@ -141,7 +141,7 @@ var autoLayout = function(width, height) {
                     nodes = reorderedNodes(linearGraphs[g]);
                 }
                 for (var n = 0; n < nodeCount; n++) {
-                    var p = this.interactors.get(nodes[n]);
+                    var p = this.participants.get(nodes[n]);
                     var x, y;
                     if (p.isParked === true) {
                         parkedRow++;
@@ -190,7 +190,7 @@ var autoLayout = function(width, height) {
                 var nodes = nonLinearGraphs[g].nodes.values();
                 var nodeCount = nodes.length;
                 for (var n = 0; n < nodeCount; n++) {
-                    var prot = this.interactors.get(nodes[n].id);
+                    var prot = this.participants.get(nodes[n].id);
 //                prot.fixed = false;
                     if (pi > 0){
                         json += ",";
@@ -218,7 +218,7 @@ var autoLayout = function(width, height) {
             var nodeCount = nodes.length;
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = this.interactors.get(node.id);
+                var protein = this.participants.get(node.id);
                 var nx = node.x + Math.random() - 0.5;
                 var ny = node.y + Math.random() - 0.5;
                 
@@ -242,7 +242,7 @@ var autoLayout = function(width, height) {
             var nodes = nonLinearGraphs[g].nodes.values();
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
-                var prot = this.interactors.get(nodes[n].id);
+                var prot = this.participants.get(nodes[n].id);
 //        if (prot.fixed === false) {
                 protLookUp[prot.id] = pi;
                 pi++;
@@ -285,11 +285,11 @@ var autoLayout = function(width, height) {
 					//~ for (var i = 0; i < link.evidences.values().length; i++) {
 					//~ var participants = link.evidences.values()[i].participants;
 					//~ var participantCount = participants.length; 
-					//~ var fakeHub = this.interactors.get(participants[0].interactorRef);
+					//~ var fakeHub = this.participants.get(participants[0].interactorRef);
 					//~ var fromProt = fakeHub;
 					//~ var source = protLookUp[fromProt.id];
 					//~ for (var p = 1; p < participantCount; p++){
-						//~ var participant = this.interactors.get(participants[p].interactorRef);
+						//~ var participant = this.participants.get(participants[p].interactorRef);
 						//~ var toProt = participant;
 						//~ if (typeof toProt !== "undefined") {
 							//~ var target = protLookUp[toProt.id];
@@ -323,7 +323,7 @@ var autoLayout = function(width, height) {
             // console.log("nodes", nodes);
             for (var n = 0; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = self.interactors.get(node.id);
+                var protein = self.participants.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx + self.layoutXOffset, ny + yForRow(1));

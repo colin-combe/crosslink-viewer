@@ -223,7 +223,7 @@ var mouseUp = function(evt) {
                             this.checkLinks();
                         }
                     } else {//right click on protein
-                        this.dragElement.setParked(!this.dragElement.isParked, c);
+                    //    this.dragElement.setParked(!this.dragElement.isParked, c);
                     }
                 }
                 else if (middleclick) {
@@ -318,7 +318,7 @@ var mouseWheel = function(evt) {
 };
 
 var clearSelection = function() {
-    var interactors = this.interactors.values();
+    var interactors = this.participants.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];

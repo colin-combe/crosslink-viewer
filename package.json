@@ -25,7 +25,10 @@
     "d3": "~3.4.11",
     "grunt-contrib-jshint": "~0.10.0",
     "jquery": "~2.1.1",
+    "jquery-browserify": "~1.8.1",
     "jsonview": "~1.2.0",
-    "jquery-browserify": "~1.8.1"
+    "lodash": "^2.4.1",
+    "mocha": "^2.0.1",
+    "underscore": "^1.7.0"
   }
 }

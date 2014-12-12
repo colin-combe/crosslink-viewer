@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_P0AFY8", 
             "identifier": {
                 "db": "uniprotkb", 
                 "id": "P0AFY8"
@@ -20,7 +20,7 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "intact_EBI-6672067", 
             "identifier": {
                 "db": "intact", 
                 "id": "EBI-6672067"
@@ -59,7 +59,7 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "3", 
+            "id": "wwpdb_1xrx", 
             "identifiers": [
                 {
                     "db": "wwpdb", 
@@ -85,21 +85,54 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "1"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P0AFY8"
                 }, 
                 {
                     "bioRole": {
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "2"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "2", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "intact_EBI-6672067"
                 }, 
                 {
                     "bioRole": {
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "1"
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "id": "3", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P0AFY8"
                 }
             ]
         }

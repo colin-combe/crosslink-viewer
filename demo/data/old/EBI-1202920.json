@@ -41,12 +41,8 @@
                     "name": "European Bioinformatics Institute"
                 }
             }, 
-            "id": "protein ontology_PR:000026440", 
+            "id": "reactome_REACT_2542.1", 
             "identifiers": [
-                {
-                    "db": "protein ontology", 
-                    "id": "PR:000026440"
-                }, 
                 {
                     "db": "reactome", 
                     "id": "REACT_2542.1"

@@ -247,7 +247,7 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.proteinUpper);
 	this.svgElement.unsuspendRedraw(suspendID);
     
-    this.interactors = d3.map();
+    this.participants = d3.map();
     
     this.allNaryLinks = d3.map();
     this.allBinaryLinks = d3.map();
@@ -303,7 +303,7 @@ xiNET.Controller.prototype.init = function(width, height) {
         this.loadLayout();
     } else {
         //make inital form sticks or blobs
-        var interactors = this.interactors.values();
+        var interactors = this.participants.values();
         var proteinCount = interactors.length;
         for (var p = 0; p < proteinCount; p++) { //temp
 			var prot = interactors[p];
@@ -311,7 +311,7 @@ xiNET.Controller.prototype.init = function(width, height) {
 		}
         for (var p = 0; p < proteinCount; p++) {
             var prot = interactors[p];
-            if (this.interactors.keys().length < 3) {
+            if (this.participants.keys().length < 3) {
                if (prot.toStick) prot.toStick();
             }
             else {
@@ -337,12 +337,14 @@ xiNET.Controller.prototype.resetZoom = function() {
     //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
-    var interactors = this.interactors.values();
+    var interactors = this.participants.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];
         prot.stickZoom = 1;
-        prot.scale();
+        if (prot.scale) {
+			prot.scale();
+		}
     }
 };
 
