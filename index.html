@@ -8,8 +8,8 @@
         <meta name="xiNET Interaction Viewer" content="xiNET Interaction Viewer">
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
-        <link rel="stylesheet" href="./css/demo.css">
-        <link rel='stylesheet' type='text/css' href='./css/XLV.css'/>
+        <link rel="stylesheet" href="./demo/css/demo.css">
+        <link rel='stylesheet' type='text/css' href='./demo/css/XLV.css'/>
 <!--
         <link rel='stylesheet' type='text/css' href='../vendor/jsonview/jquery.jsonview.css'/>
 -->
@@ -17,7 +17,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
-        <script type="text/javascript" src="../build/ComplexViewer-0.0.1.js"></script>
+        <script type="text/javascript" src="./build/ComplexViewer-0.0.1.js"></script>
     </head>
     <body>
 
@@ -26,12 +26,12 @@
 		<div id='controls'>
 			
 			<select id="dataSets" onChange="loadData();">
-				<option>./data/EBI-1202920.json</option>  
-				<option>./data/EBI-9082861.json</option>
-				<option>./data/old/EBI-9082861.json</option>
-				<option>./data/EBI-9008420.json</option> 
-				<option>./data/EBI-6554207.json</option>  
-				<option>./data/EBI-8869931.json</option> 
+				<option value="./demo/data/EBI-1202920.json">EBI-1202920.json</option>  
+				<option value="./demo/data/EBI-9082861.json">EBI-9082861.json</option>
+				<option value="./demo/data/old/EBI-9082861.json">Old EBI-9082861.json</option>
+				<option value="./demo/data/EBI-9008420.json">EBI-9008420.json</option> 
+				<option value="./demo/data/EBI-6554207.json">EBI-6554207.json</option>  
+				<option value="./demo/data/EBI-8869931.json">EBI-8869931.json</option> 
 <!--
 				<option>./data/cks1-skp2.json</option>
 				<option>./data/allostery.json</option>			
@@ -56,7 +56,7 @@
                 function loadData(){
 					xlv.clear();
 					var dataSetsSelect = document.getElementById('dataSets');
-					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].innerHTML;
+					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
 				    d3.json(path, function(data) {
 						xlv.readMIJSON(data);
 					});            
