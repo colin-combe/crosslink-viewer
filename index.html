@@ -39,10 +39,12 @@
 				<option>./data/herzog.json</option>
 -->
 			</select>
-			
+
+			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Use matrix expansion			
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
+
 		</div>
         <div id="networkCaption">
 			<h2 id="jsonHeading"></h2> 
@@ -56,13 +58,15 @@
                 function loadData(){
 					xlv.clear();
 					var dataSetsSelect = document.getElementById('dataSets');
+					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
 				    d3.json(path, function(data) {
-						xlv.readMIJSON(data);
+						xlv.readMIJSON(data, matrixExpansion);
 					});            
 				}
                 
                 var targetDiv = document.getElementById('networkContainer');
+
                 xlv = new xiNET(targetDiv);
                 loadData();
                 
