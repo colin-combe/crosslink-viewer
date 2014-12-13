@@ -15,6 +15,7 @@
         <script type="text/javascript" src="../vendor/Blob.js"></script>
        	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
         <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
+        <script type="text/javascript" src="../vendor/xml2json.js"></script>   
         <!--xiNET-->
         <script type="text/javascript" src="../src/controller/Init.js"></script>
         <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
@@ -24,7 +25,7 @@
         <script type="text/javascript" src="../src/model/Match.js"></script>
         <script type="text/javascript" src="../src/model/Link.js"></script>
         <script type="text/javascript" src="../src/model/Protein.js"></script>
-        <script type="text/javascript" src="../src/model/Annotations.js"></script>
+        <script type="text/javascript" src="../src/model/Annotation.js"></script>
         <script type="text/javascript" src="../src/model/ProteinLink.js"></script>
         <script type="text/javascript" src="../src/model/ResidueLink.js"></script>
         <script type="text/javascript" src="../src/controller/ExternalControls.js"></script>
@@ -132,7 +133,7 @@
 		<script type="text/javascript">
                 //<![CDATA[
                 
-                if (localStorage) localStorage.clear();
+                //if (localStorage) localStorage.clear();
                 
                 var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
@@ -144,6 +145,7 @@
 				//~ d3.text('./data/jan/Mono_Xlinks.csv', "text/csv", function(text) {
 				d3.text('./data/jan/Y_shape.csv', "text/csv", function(text) {
 					xlv.readCSV(text);
+					xlv.annotationSet('superFam');
 				});				
 	
                 //]]>

@@ -6,22 +6,7 @@
 
 "use strict";
 
-xiNET.Controller.prototype.changeAnnotations = function(choice, opt) {
-    var positional = true;
-    if (choice !== 1) {
-        positional = false;
-    }
-    if (typeof opt !== 'undefined' && opt != null){
-        var group = opt.options[opt.selectedIndex].parentNode.label;
-        var category = opt.options[opt.selectedIndex].value;
-    }
-    var proteins = this.proteins.values();
-    var proteinCount = proteins.length;
-    for (var p = 0; p < proteinCount; p++) {
-        proteins[p].setAnnotations(positional, group, category);
-    }
-};
-
+// text filter currently not working
 xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
     this.textFilterRegex = new Array();
     this.textFilterRegexNOT = new Array();

@@ -8,10 +8,10 @@
 <script>
 	"use strict";
 	if (localStorage) localStorage.clear();
-	xiNET_Storage.getUniProtTxt('P12345', function (txt) {d3.select('#storageMessage').text(txt);} );
-	xiNET_Storage.getSuperFamFeatures('P12345', function (features) {
+	xiNET_Storage.getUniProtTxt('P12345', function (id, txt) {d3.select('#storageMessage').text(txt);} );
+	xiNET_Storage.getSuperFamFeatures('P12345', function (id, features) {
 		//d3.select('#storageMessage').text(JSON.stringify(features));
 	} );
-	xiNET_Storage.getSequence('P12345', function (sq) {console.log(sq);} );
+	xiNET_Storage.getSequence('P12345', function (id, sq) {console.log(sq);} );
 	
 </script>

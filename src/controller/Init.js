@@ -300,27 +300,47 @@ xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, s
 
 // add all matches with single call, arg is an array of arrays
 xiNET.Controller.prototype.addAnnotations = function(annotations) {
-    var rows = d3.csv.parseRows(annotations);
-    
+    var rows = d3.csv.parseRows(annotations);   
     var headers = rows[0];
-    
     for (var h = 0; h < headers.length; h++) {
 		headers[h] = headers[h].trim();	
 	}
-    
-    //~ console.log(headers.toString());
-    
     var iProtId = headers.indexOf('ProteinId');
     var iAnnotName = headers.indexOf('AnnotName');
     var iStartRes = headers.indexOf('StartRes');
     var iEndRes = headers.indexOf('EndRes');
-    var iColour = headers.indexOf('Color');    
-        
+    var iColour = headers.indexOf('Color');            
     var l = rows.length;
     for (var i = 1; i < l; i++) {
-        //        alert(matches[i]);
         this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
 							rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
+    }
+}
+
+xiNET.Controller.prototype.annotationSet = function(annotationSetName) {
+    var prots = this.proteins.values(); 
+    var protCount = prots.length;
+    var self = this;
+    for (var p = 0; p < protCount; p++) {
+        var protein = prots[p];
+        if (annotationSetName.toUpperCase() === "CUSTOM") {
+            protein.setPositionalFeatures(protein.customAnnotations);
+        }
+        else if (annotationSetName.toUpperCase() === "SUPERFAM" || annotationSetName.toUpperCase() === "SUPERFAMILY"){
+			xiNET_Storage.getSuperFamFeatures(protein.id, function (id, fts){
+				var p = self.proteins.get(id);
+				p.setPositionalFeatures(fts);
+			});
+		} 
+		else if (annotationSetName.toUpperCase() === "UNIPROT" || annotationSetName.toUpperCase() === "UNIPROTKB") {
+			xiNET_Storage.getUniProtFeatures(protein.id, function (id, fts){
+				var p = self.proteins.get(id);
+				p.setPositionalFeatures(fts);
+			});
+		}
+		else {
+			protein.setPositionalFeatures([])
+		}
     }
 }
 
@@ -377,35 +397,6 @@ xiNET.Controller.prototype.init = function(width, height) {
     if (typeof this.initTouchEvents === 'function'){
 		this.initTouchEvents();
 	}
-}
-
-
-xiNET.Controller.prototype.getGeneName = function(pi) {
-    var prot = this.proteins.values()[pi];
-    var xmlhttp = new XMLHttpRequest();
-    var url = "http://129.215.14.148/jb/uniprot/sequence.php?id=" + prot.accession + "&dat";
-    var params = "";//;
-    xmlhttp.open("GET", url, true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            var response = xmlhttp.responseText;
-           var gnRegex = /GN( *)(.*)/g
-           var gn = gnRegex.exec(response)[2];
-           //alert(gn);
-           xlv.geneNames.set(prot.accession, gn);
-
-            var proteins = xlv.proteins.values();
-            var protIndex = proteins.indexOf(prot);
-            if (protIndex < proteins.length - 1) {
-                xlv.getGeneName(protIndex + 1);
-            }
-            else {
-                xlv.message(xlv.geneNames);
-            }
-        }
-    };
-    xmlhttp.send(params);
 }
 
 xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
