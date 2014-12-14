@@ -208,6 +208,8 @@ Protein.prototype.initProtein = function(sequence){//, name, description, size) 
 		.attr("transform", "scale(1, 1)")
 		.duration(Protein.transitionTime);
 	if (this.internalLink) this.internalLink.initSVG();
+	//occasional bug seems to make following necessary
+	this.setPosition(this.x, this.y);
 };
 
 Protein.prototype.mouseDown = function(evt) {
@@ -868,10 +870,6 @@ Protein.prototype.toCircle = function(svgP) {
 			return false;
 		}
 	}
-};
-
-Protein.prototype.toParked = function(svgP) {   
-
 };
 
 Protein.prototype.toStick = function() {

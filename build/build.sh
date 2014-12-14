@@ -17,13 +17,11 @@ java -jar compiler.jar \
 --js=../src/model/Match.js \
 --js=../src/model/Link.js \
 --js=../src/model/Protein.js \
---js=../src/model/Protein_printAnnotationInfo.js \
---js=../src/model/Annotations.js \
+--js=../src/model/Annotation.js \
 --js=../src/model/ProteinLink.js \
 --js=../src/model/ResidueLink.js \
 --js=../src/controller/ExternalControls.js \
 --js=../src/controller/Rotator.js \
---js=../src/controller/DASUtil.js \
 --js=../src/controller/ReadCSV.js \
 --js=../src/controller/Fasta.js \
---js_output_file=./xiNET_1.0.1.js;
+--js_output_file=./xiNET_1.0.2.js;
