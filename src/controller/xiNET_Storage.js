@@ -1,4 +1,4 @@
-//    xiNET Interaction Viewer
+//    xiNET Cross-link Viewer
 //    Copyright 2014 Rappsilber Laboratory
 //
 //    This product includes software developed at
@@ -27,10 +27,10 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 	function uniprotWebService(){
 		var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
 		d3.text(url, function (txt){
-			console.log(accession + " retrieved from UniProt.");
+			//~ console.log(accession + " retrieved from UniProt.");
 			if(typeof(Storage) !== "undefined") {
 				localStorage.setItem(xiNET_Storage.ns  + "UniProtKB."+ accession, txt);
-				console.log(accession + " UniProt added to local storage.");
+				//~ console.log(accession + " UniProt added to local storage.");
 			}
 			callback(id, txt)
 		});
@@ -38,20 +38,20 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 	
 	if(typeof(Storage) !== "undefined") {
 		// Code for localStorage/sessionStorage.
-		console.log("Local storage found.");
+		//~ console.log("Local storage found.");
 		// Retrieve
 		var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
 		if (stored){
-			console.log(accession + " UniProt from local storage.");
+			//~ console.log(accession + " UniProt from local storage.");
 			callback(id, stored);	
 		}
 		else {
-			console.log(accession + " UniProt not in local storage.");
+			//~ console.log(accession + " UniProt not in local storage.");
 			uniprotWebService();
 		}
 	}
 	else {
-		console.log("No local storage found.");
+		//~ console.log("No local storage found.");
 		uniprotWebService();
 	}	
 }
@@ -80,60 +80,85 @@ xiNET_Storage.getSequence = function (id, callback){
 
 xiNET_Storage.getUniProtFeatures = function (id, callback){
 	var accession = xiNET_Storage.accessionFromId(id);
-		xiNET_Storage.getUniProtTxt(accession, function(txt){
+		xiNET_Storage.getUniProtTxt(id, function(id, txt){
 			var features = new Array();
 			var lines = txt.split('\n');
 			var lineCount = lines.length;
 			for (var l = 0; l < lineCount; l++){
 				var line = lines[l];
 				if (line.indexOf("FT") === 0){
-					//sequence = line;
-					l++;
-					for (l; l < lineCount; l++){
-						line = lines[l];
-						sequence += line;
+					var fields = line.split(/\s{2,}/g);
+					if (fields.length > 4 && fields[1] !== 'CHAIN') {	
+						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
 					}
 				}
 			}
-			callback(sequence.replace(/[^A-Z]/g, ''));
+			callback(id, features);
 		}
 	);
 }
 
 xiNET_Storage.getSuperFamFeatures = function (id, callback){
 	var accession = xiNET_Storage.accessionFromId(id);
-		function superFamDAS(){
+	function superFamDAS(){
 		var url = "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
 		d3.xml(url, function (xml){
-			console.log(accession + " SuperFamDAS  retrieved.");
+			xml = new XMLSerializer().serializeToString(xml);
+			//~ console.log(accession + " SuperFamDAS  retrieved.");
 			if(typeof(Storage) !== "undefined") {
 				localStorage.setItem(xiNET_Storage.ns  + "SuperFamDAS." + accession, xml);
-				console.log(accession + " SuperFamDAS added to local storage.");
+				//~ console.log(accession + " SuperFamDAS added to local storage.");
 			}
-			console.log(new XMLSerializer().serializeToString(xml));
-			callback(xml2json(xml))
+			parseSuperFamDAS(xml);
 		});
 	}
 	
-	
-	
+	function parseSuperFamDAS (dasXml){
+		//~ console.log(dasXml);
+		if (window.DOMParser)
+		{
+			  var parser=new DOMParser();
+			  var xmlDoc=parser.parseFromString(dasXml,"text/xml");
+		}
+		else // Internet Explorer
+		{
+		  var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+		  xmlDoc.async=false;
+		  xmlDoc.loadXML(dasXml);
+		}
+		var features = new Array();
+		var xmlFeatures = xmlDoc.getElementsByTagName('FEATURE');
+		var featureCount = xmlFeatures.length;
+		for (var f = 0; f < featureCount; f++) {
+			var xmlFeature = xmlFeatures[f]; 
+			var type = xmlFeature.getElementsByTagName('TYPE')[0];//might need to watch for text nodes getting mixed in here 
+			var category = type.getAttribute('category')
+			if (category === 'miscellaneous') {
+				var name = type.getAttribute('id');
+				var start = xmlFeature.getElementsByTagName('START')[0].textContent;
+				var end = xmlFeature.getElementsByTagName('END')[0].textContent;
+				features.push(new Annotation(name, start, end));
+			}
+		} 
+		//~ console.log(JSON.stringify(features));
+		callback(id, features);
+  	}
 	
 	if(typeof(Storage) !== "undefined") {
-		// Code for localStorage/sessionStorage.
-		console.log("Local storage found.");
+		//~ console.log("Local storage found.");
 		// Retrieve
 		var stored = localStorage.getItem(xiNET_Storage.ns + "SuperFamDAS."  + accession);
 		if (stored){
-			console.log(accession + " SuperFamDAS from local storage.");
-			callback(stored);	
+			//~ console.log(accession + " SuperFamDAS from local storage.");
+			parseSuperFamDAS(stored);	
 		}
 		else {
-			console.log(accession + " SuperFamDAS not in local storage.");
+			//~ console.log(accession + " SuperFamDAS not in local storage.");
 			superFamDAS();
 		}
 	}
 	else {
-		console.log("No local storage found.");
+		//~ console.log("No local storage found.");
 		superFamDAS();
 	}
 }
