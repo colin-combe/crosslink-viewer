@@ -191,6 +191,10 @@ xiNET.Controller.prototype.clear = function() {
     Protein.MAXSIZE = 0;
 
     this.layout = null;
+    if (typeof this.force !== 'undefined' && this.force != null) {
+        this.force.stop();
+    }
+    this.force = null;
     this.z = 1;
     this.scores = null;
     this.selected = d3.map();

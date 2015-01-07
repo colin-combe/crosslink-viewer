@@ -30,8 +30,8 @@ function Protein(id, xinetController, acc, name) {
     this.proteinLinks = d3.map();
     this.internalLink = null;
     // layout info
-    this.x = 40;
-    this.y = 40;
+    this.x = null;40;
+    this.y = null;40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -187,29 +187,31 @@ Protein.prototype.initProtein = function(sequence){//, name, description, size) 
     if (Protein.MAXSIZE < this.size) {
         Protein.MAXSIZE = this.size;
     }
-	//this.setForm(this.form);
-	this.toCircle();
-	var r = this.getBlobRadius();
+    this.setForm(this.form);
+    //this.setAllLineCoordinates();
+	//this.setForm(this.form);//some hacks here that need sorted out, 
+	// saved layouts will come back with eveyrthing circles
+	//~ this.toCircle();
+	//~ var r = this.getBlobRadius();	
+	//~ var self = this;
+	//~ d3.select(this.outline)
+		//~ .attr("stroke-opacity", 1).attr("fill-opacity", 1)
+		//~ .attr("fill", "#ffffff")
+		//~ .attr("x", -r).attr("y", -r)
+		//~ .attr("width", r * 2).attr("height", r * 2)
+		//~ .attr("rx", r).attr("ry", r);
+//~ 
+	//~ d3.select(this.rectDomains).attr("opacity", 0)
+		//~ .attr("transform", "scale(1, 1)");
+		//~ 
+	//~ d3.select(this.circDomains).attr("opacity", 1)
+		//~ .attr("transform", "scale(1, 1)");
+		//~ 
+	//~ if (this.internalLink) this.internalLink.initSVG();
+	//~ var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+	//~ var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(-(r + 5), Protein.labelY);
+	//~ this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
 	
-	var self = this;
-	d3.select(this.outline).transition()
-		.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-		.attr("fill", "#ffffff")
-		.attr("x", -r).attr("y", -r)
-		.attr("width", r * 2).attr("height", r * 2)
-		.attr("rx", r).attr("ry", r)
-		.duration(Protein.transitionTime);
-
-	d3.select(this.rectDomains).transition().attr("opacity", 0)
-		.attr("transform", "scale(1, 1)")
-		.duration(Protein.transitionTime);
-		
-	d3.select(this.circDomains).transition().attr("opacity", 1)
-		.attr("transform", "scale(1, 1)")
-		.duration(Protein.transitionTime);
-	if (this.internalLink) this.internalLink.initSVG();
-	//occasional bug seems to make following necessary
-	this.setPosition(this.x, this.y);
 };
 
 Protein.prototype.mouseDown = function(evt) {
@@ -435,7 +437,7 @@ Protein.prototype.setPosition = function(x, y) {
 
 Protein.rotOffset = 25 * 0.7; // see Rotator.js
 Protein.minXDist = 30;
-Protein.prototype.switchStickScale = function(svgP) {//TODO: yeah... the following is a mess
+Protein.prototype.switchStickScale = function(svgP) {
     if (this.isParked) {
         this.toggleParked();
     }
@@ -676,7 +678,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 };
 
 Protein.prototype.setForm = function(form, svgP) {
-    if (this.busy !== true) {
+    //~ if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);
 		}
@@ -707,10 +709,10 @@ Protein.prototype.setForm = function(form, svgP) {
 					.duration(Protein.transitionTime);
 			}
 		}
-	}
+	//~ }
 };
 
-Protein.prototype.toCircle = function(svgP) {  
+Protein.prototype.toCircle = function(){//svgP) {  
 	this.busy = true;
 	this.removePeptides();
 	if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
@@ -801,12 +803,12 @@ Protein.prototype.toCircle = function(svgP) {
 					function () {
 						//d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));//mistake - this doesn't work 
 						//oh dear, this is a mess...
-						for (var b = 0; b < ca; b++) {
-							var annoB = annots[b];
-							if (this === annoB.pieSlice){
-								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
-							}
-						}
+						//~ for (var b = 0; b < ca; b++) {
+							//~ var annoB = annots[b];
+							//~ if (this === annoB.pieSlice){
+								//~ d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+							//~ }
+						//~ }
 					}
 				);
 			d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
@@ -821,17 +823,18 @@ Protein.prototype.toCircle = function(svgP) {
 	  return update(elapsed / Protein.transitionTime);
 	});
  
-	// update(1);
- 
 	function update(interp) {
 		//~ if (self.isParked === false) { //that wont work
 			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
 			var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
 			self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
 		//~ }
-		if (xInterpol !== null){
-			self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
-		}
+		//~ if (xInterpol !== null){
+			//~ self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+		//~ }
+		//~ else {
+			//~ self.setPosition(self.getX(), self.getY());
+		//~ }
 		
 	   	var rot = rotationInterpol(cubicInOut(interp));
 		self.setRotation(rot);
@@ -859,6 +862,7 @@ Protein.prototype.toCircle = function(svgP) {
 			}
 			//bring in new 
 			self.form = 0;
+			//~ self.setPosition(self.x, self.y);
 			self.checkLinks();
 			self.stickZoom = originalStickZoom;
 			self.rotation = originalRotation;
@@ -871,6 +875,10 @@ Protein.prototype.toCircle = function(svgP) {
 		}
 	}
 };
+
+Protein.prototype.getX = function() {return this.x;}
+
+Protein.prototype.getY = function() {return this.y;}
 
 Protein.prototype.toStick = function() {
 	this.busy = true;

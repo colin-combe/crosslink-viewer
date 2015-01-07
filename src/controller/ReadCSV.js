@@ -64,9 +64,9 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		iScore = headers.indexOf('ld-Score');
 	}
 	
-	// if a Fasta file has been provided then this.proteins will not be empty
+	// if a Fasta file has been provided then this.proteins will not be empty - PROBLEM!!
     var countRows = rows.length;
-	if (this.proteins.keys().length === 0) {
+	//~ if (this.proteins.keys().length === 0) {
 		//No protein data. We will need to look up accession numbers to get sequences.
 		
 		//We are going to encounter things like proteins with 
@@ -75,10 +75,10 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 		addProteins(iProt2, this);
 		addCSVLinks(this);
 		//~ initProteins(this);	
-	} else {
+	//~ } else {
 		//We already had protein data - can just add links.
-		addCSVLinks(this);
-	}
+		//~ addCSVLinks(this);
+	//~ }
 	
     function addProteins(columnIndex, self) {
         for (var row = 1; row < countRows; row++) {
@@ -214,14 +214,14 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 					m[iPepSeq1],m[iPepSeq2]);
 			}
 		}
-		var protCount = self.proteins.values().length;
-		var prots = self.proteins.values();
-		for (var p = 0; p < protCount; p++) {
-			var prot = prots[p];
-			if (prot.proteinLinks.keys().length === 0) {
-				self.proteins.remove(prot.id);
-			}
-		}       
+		//~ var protCount = self.proteins.values().length;
+		//~ var prots = self.proteins.values();
+		//~ for (var p = 0; p < protCount; p++) {
+			//~ var prot = prots[p];
+			//~ if (prot.proteinLinks.keys().length === 0) {
+				//~ self.proteins.remove(prot.id);
+			//~ }
+		//~ }       
         self.init();
         if (typeof initSlider === "function"){
 			initSlider();
