@@ -20,4 +20,5 @@ Build Process
 This starts a grunt task to watch the /src folder for changes. When a file changes (is saved), grunt will browserify the folder and save the compiled version in /build.
 
 To build the minified version in /build, run:
+
 1. $ grunt package
