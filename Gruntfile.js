@@ -7,16 +7,6 @@ module.exports = taskManager = function(grunt) {
     config: {
       "package": grunt.file.readJSON('package.json')
     },
-    bower: {
-      install: {
-        options: {
-          targetDir: 'bower_components',
-          layout: 'byType',
-          install: true,
-          cleanup: true
-        }
-      }
-    },
     browserify: {
       all: {
         src: ['src/controller/Init.js'],
@@ -70,7 +60,7 @@ module.exports = taskManager = function(grunt) {
     plugin = plugins[_i];
     grunt.loadNpmTasks(plugin);
   }
-  grunt.registerTask('setup', ['bower:install', 'browserify']);
+  grunt.registerTask('setup', 'browserify');
   grunt.registerTask('package', ['browserify', 'uglify']);
   grunt.registerTask('build', ['browserify']);
   grunt.registerTask('do', ['build', 'notify']);
