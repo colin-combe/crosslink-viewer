@@ -5,8 +5,7 @@ module.exports = taskManager = function(grunt) {
   var module, modules, plugin, plugins, _i, _len;
   grunt.initConfig({
     config: {
-      "package": grunt.file.readJSON('package.json'),
-      bower: grunt.file.readJSON('bower.json')
+      "package": grunt.file.readJSON('package.json')
     },
     bower: {
       install: {
@@ -21,7 +20,7 @@ module.exports = taskManager = function(grunt) {
     browserify: {
       all: {
         src: ['src/controller/Init.js'],
-        dest: 'build/<%= config.bower.name %>-<%= config.bower.version %>.js',
+        dest: 'build/<%= config.package.name %>.js',
         options: {
           browserifyOptions: {
             standalone: 'xiNET',
@@ -35,11 +34,11 @@ module.exports = taskManager = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! <%= config.bower.name %>-<%= config.bower.version %> Built: <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= config.package.name %> Built: <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       all: {
-        src: 'build/<%= config.bower.name %>-<%= config.bower.version %>.js',
-        dest: 'build/<%= config.bower.name %>-<%= config.bower.version %>.min.js'
+        src: 'build/<%= config.package.name %>.js',
+        dest: 'build/<%= config.package.name %>.min.js'
       }
     },
     watch: {
