@@ -5,8 +5,7 @@ module.exports = taskManager = function(grunt) {
   var module, modules, plugin, plugins, _i, _len;
   grunt.initConfig({
     config: {
-      "package": grunt.file.readJSON('package.json'),
-      bower: grunt.file.readJSON('bower.json')
+      "package": grunt.file.readJSON('package.json')
     },
     bower: {
       install: {
