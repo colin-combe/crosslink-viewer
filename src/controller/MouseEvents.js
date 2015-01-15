@@ -298,23 +298,23 @@ var sortByNumber = function(a, b) {
  * Handle mouse wheel event.
  */
 var mouseWheel = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
-    var delta;
-    //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
-    if (evt.wheelDelta) {
-        delta = evt.wheelDelta / 3600; // Chrome/Safari
-    }
-    else {
-        delta = evt.detail / -90; // Mozilla
-    }
-    var z = 1 + delta;
-    var g = this.container;
-    var p = this.getEventPoint(evt);// seems to be correct, see above
-    var c = this.mouseToSVG(p.x, p.y);
-    var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    setCTM(g, g.getCTM().multiply(k));
-    this.scale();
-    return false;
+    //~ this.preventDefaultsAndStopPropagation(evt);
+    //~ var delta;
+    //~ //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
+    //~ if (evt.wheelDelta) {
+        //~ delta = evt.wheelDelta / 3600; // Chrome/Safari
+    //~ }
+    //~ else {
+        //~ delta = evt.detail / -90; // Mozilla
+    //~ }
+    //~ var z = 1 + delta;
+    //~ var g = this.container;
+    //~ var p = this.getEventPoint(evt);// seems to be correct, see above
+    //~ var c = this.mouseToSVG(p.x, p.y);
+    //~ var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
+    //~ setCTM(g, g.getCTM().multiply(k));
+    //~ this.scale();
+    //~ return false;
 };
 
 var clearSelection = function() {
