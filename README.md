@@ -13,8 +13,11 @@ Build Process
 
 
 1. Clone the repository.
-2. cd /interaction-viewer
-3. sudo npm install
-4. npm start
+2. $ cd /interaction-viewer
+3. $ sudo npm install
+4. $ npm start
 
 This starts a grunt task to watch the /src folder for changes. When a file changes (is saved), grunt will browserify the folder and save the compiled version in /build.
+
+To build the minified version in /build, run:
+1. $ grunt package

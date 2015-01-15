@@ -20,12 +20,11 @@ var UnaryLink = require('../model/link/UnaryLink');
 var Expand = require ('./Expand');
  
 // reads our MI JSON format 
-var readMIJSON = function(miJson, expand) {
+var readMIJSON = function(miJson) {
     //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 
-    //if (expand) 
-		Expand.matrix(miJson);
+	Expand.matrix(miJson);
          
     var data = miJson.data;
     var dataElementCount = data.length;
