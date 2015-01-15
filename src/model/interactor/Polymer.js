@@ -456,6 +456,7 @@ Polymer.prototype.setForm = function(form, svgP) {
 };
 
 Polymer.prototype.toCircle = function(svgP) {
+	svgP = null;// temp hack
 	this.upperGroup.removeChild(this.lowerRotator.svg);
 	this.upperGroup.removeChild(this.upperRotator.svg);  
 			    

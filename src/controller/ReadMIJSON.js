@@ -24,8 +24,8 @@ var readMIJSON = function(miJson, expand) {
     //check that we've got a parsed javacsript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 
-    expand ? Expand.matrix(miJson) : null;
-    // Expand.matrix(miJson);
+    //if (expand) 
+		Expand.matrix(miJson);
          
     var data = miJson.data;
     var dataElementCount = data.length;

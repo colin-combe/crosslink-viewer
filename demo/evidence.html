@@ -8,8 +8,8 @@
         <meta name="xiNET Interaction Viewer" content="xiNET Interaction Viewer">
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
-        <link rel="stylesheet" href="./demo/css/demo.css">
-        <link rel='stylesheet' type='text/css' href='./demo/css/XLV.css'/>
+        <link rel="stylesheet" href="./css/demo.css">
+        <link rel='stylesheet' type='text/css' href='./css/XLV.css'/>
 <!--
         <link rel='stylesheet' type='text/css' href='../vendor/jsonview/jquery.jsonview.css'/>
 -->
@@ -17,7 +17,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
-        <script type="text/javascript" src="./build/ComplexViewer-0.0.1.js"></script>
+        <script type="text/javascript" src="../build/ComplexViewer-0.0.1.js"></script>
     </head>
     <body>
 
@@ -26,25 +26,17 @@
 		<div id='controls'>
 			
 			<select id="dataSets" onChange="loadData();">
-				<option>./data/complex/EBI-1202920.json</option>  
-				<option>./data/complex/EBI-9082861.json</option>
-				<option>./data/old/EBI-9082861.json</option>
-				<option>./data/complex/EBI-9008420.json</option> 
-				<option>./data/complex/EBI-6554207.json</option>  
-				<option>./data/complex/EBI-8869931.json</option> 
 <!--
-				<option>./data/cks1-skp2.json</option>
-				<option>./data/allostery.json</option>			
-				<option>./data/polII-TFIIF.json</option>
-				<option>./data/herzog.json</option>
+				<option>./data/evidence/21988832_01.json</option>
 -->
+				<option>./data/evidence/22843697.json</option>
+				<option>./data/evidence/24315095.json</option> 
+				<option>./data/evidence/10679202.json</option>  
 			</select>
-
-			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Use matrix expansion			
+			
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
-
 		</div>
         <div id="networkCaption">
 			<h2 id="jsonHeading"></h2> 
@@ -58,15 +50,13 @@
                 function loadData(){
 					xlv.clear();
 					var dataSetsSelect = document.getElementById('dataSets');
-					var matrixExpansion = document.getElementById("chkexpansion").checked;
-					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
+					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].innerHTML;
 				    d3.json(path, function(data) {
-						xlv.readMIJSON(data, true);
+						xlv.readMIJSON(data, false);
 					});            
 				}
                 
                 var targetDiv = document.getElementById('networkContainer');
-
                 xlv = new xiNET(targetDiv);
                 loadData();
                 
