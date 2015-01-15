@@ -49,7 +49,7 @@ module.exports = taskManager = function(grunt) {
       watch: {
         options: {
           title: 'Build Complete',
-          message: 'Finished building build/<%= config.bower.name %>-<%= config.bower.version %>.js'
+          message: 'Finished building build/<%= config.package.name %>.js'
         }
       }
     }
