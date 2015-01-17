@@ -10,9 +10,6 @@
         <!-- css -->
         <link rel="stylesheet" href="./demo/css/demo.css">
         <link rel='stylesheet' type='text/css' href='./demo/css/XLV.css'/>
-<!--
-        <link rel='stylesheet' type='text/css' href='../vendor/jsonview/jquery.jsonview.css'/>
--->
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -32,14 +29,9 @@
 				<option>./demo/data/complex/EBI-9008420.json</option> 
 				<option>./demo/data/complex/EBI-6554207.json</option>  
 				<option>./demo/data/complex/EBI-8869931.json</option>
-<!--
-				<option>./data/cks1-skp2.json</option>
-				<option>./data/allostery.json</option>			
-				<option>./data/polII-TFIIF.json</option>
-				<option>./data/herzog.json</option>
--->
 			</select>
 		
+			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoichiometry expansion
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
@@ -56,10 +48,11 @@
                 
                 function loadData(){
 					xlv.clear();
+					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var dataSetsSelect = document.getElementById('dataSets');
 					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
 				    d3.json(path, function(data) {
-						xlv.readMIJSON(data);
+						xlv.readMIJSON(data, matrixExpansion);
 					});            
 				}
                 

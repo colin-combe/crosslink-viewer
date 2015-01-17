@@ -20,11 +20,11 @@ var UnaryLink = require('../model/link/UnaryLink');
 var Expand = require ('./Expand');
  
 // reads our MI JSON format 
-var readMIJSON = function(miJson) {
-    //check that we've got a parsed javacsript object here, not a String
+var readMIJSON = function(miJson, expand) {
+    //check that we've got a parsed javascript object here, not a String
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
 
-	Expand.matrix(miJson);
+	expand ? Expand.matrix(miJson) : null;
          
     var data = miJson.data;
     var dataElementCount = data.length;
@@ -39,7 +39,7 @@ var readMIJSON = function(miJson) {
     }
     
     var self = this;
-	Polymer.UNITS_PER_RESIDUE = self.svgElement.parentNode.clientWidth / 2000;
+	Polymer.UNITS_PER_RESIDUE = self.svgElement.parentNode.clientWidth / 3000;
 	
 	self.features = d3.map();
 	
@@ -102,10 +102,12 @@ var readMIJSON = function(miJson) {
 				}
 				var participantId =  intRef + "(" + partRef + ")";   
 				var participant = self.participants.get(participantId);
-				//only deal with SmallMols and Polymers 
 				if (typeof participant === 'undefined'){
 					var interactor = interactors.get(intRef);
-					if (intRef.indexOf('chebi') === 0) {
+					if (interactor.type.name === 'molecule set') {
+						participant = new InteractorSet(participantId, this, interactor);
+					}
+					else if (interactor.type.name === 'small molecule') {
 						//its a small mol
 						participant = new SmallMol(participantId, this, interactor);
 						participant.initInteractor(interactor.label);// + ' (' + partRef + ')');

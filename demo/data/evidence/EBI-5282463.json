@@ -1,0 +1,791 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9HB75", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9HB75"
+            }, 
+            "label": "pidd1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAATVEGPELEAAAAAGDASEDSDAGSRALPFLGGNRLSLDLYPGGCQQLLHLCVQQPLQLLQVEFLRLSTHEDPQLLEATLAQLPQSLSCLRSLVLKGGQRRDTLGACLRGALTNLPAGLSGLAHLAHLDLSFNSLETLPACVLQMRGLGALLLSHNCLSELPEALGALPALTFLTVTHNRLQTLPPALGALSTLQRLDLSQNLLDTLPPEIGGLGSLLELNLASNRLQSLPASLAGLRSLRLLVLHSNLLASVPADLARLPLLTRLDLRDNQLRDLPPELLDAPFVRLQGNPLGEASPDAPSSPVAALIPEMPRLFLTSDLDSFPVTPQGCSVTLACGVRLQFPAGATATPITIRYRLLLPEPGLVPLGPHDALLSHVLELQPHGVAFQQDVGLWLLFTPPQARRCREVVVRTRNDNSWGDLETYLEEEAPQRLWAHCQVPHFSWFLVVSRPVSNACLVPPEGTLLCSSGHPGVKVIFPPGATEEPRRVSMQVVRMAGRELQALLGEPEAAVSPLLCLSQSGPPSFLQPVTVQLPLPSGITGLSLDRSRLHLLYWAPPAATWDDITAQVVLELTHLYARFQVTHFSWYWLWYTTKNCVGGLARKAWERLRLHRVNLIALQRRRDPEQVLLQCLPRNKVDATLRRLLERYRGPEPSDTVEMFEGEEFFAAFERGIDVDADRPDCVEGRICFVFYSHLKNVKEVYVTTTLDREAQAVRGQVSFYRGAVPVRVPEEAEAARQRKGADALWMATLPIKLPRLRGSEGPRRGAGLSLAPLNLGDAETGFLTQSNLLSVAGRLGLDWPAVALHLGVSYREVQRIRHEFRDDLDEQIRHMLFSWAERQAGQPGAVGLLVQALEQSDRQDVAEEVRAVLELGRRKYQDSIRRMGLAPKDPALPGSSAPQPPEPAQA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_P04233", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P04233"
+            }, 
+            "label": "hg2a_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MHRRRSRSCREDQKPVMDDQRDLISNNEQLPMLGRRPGAPESKCSRGALYTGFSILVTLLLAGQATTAYFLYQQQGRLDKLTVTSQNLQLENLRMKLPKPPKPVSKMRMATPLLMQALPMGALPQGPMQNATKYGNMTEDHVMHLLQNADPLKVYPPLKGSFPENLRHLKNTMETIDWKVFESWMHHWLLFEMSRHSLEQKPTDAPPKVLTKCQEEVSHIPAVHPGSFRPKCDENGNYLPLQCYGSIGYCWCVFPNGTEVPNTRSRGHHNCSESLELEDPSSGLGVTKQDLGPVPM", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282474", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282474"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "2", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P04233"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_O00602", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O00602"
+            }, 
+            "label": "fcn1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MELSGATMARGLAVLLVLFLHIKNLPAQAADTCPEVKVVGLEGSDKLTILRGCPGLPGAPGPKGEAGVIGERGERGLPGAPGKAGPVGPKGDRGEKGMRGEKGDAGQSQSCATGPRNCKDLLDRGYFLSGWHTIYLPDCRPLTVLCDMDTDGGGWTVFQRRMDGSVDFYRDWAAYKQGFGSQLGEFWLGNDNIHALTAQGSSELRVDLVDFEGNHQFAKYKSFKVADEAEKYKLVLGAFVGGSAGNSLTGHNNNFFSTKDQDNDVSSSNCAEKFQGAWWYADCHASNLNGLYLMGPHESYANGINWSAAKGYKYSYKVSEMKVRPA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282477", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282477"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "3", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_O00602"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "4", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_A0AVT1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "A0AVT1"
+            }, 
+            "label": "uba6_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MEGSEPVAAHQGEEASCSSWGTGSTNKNLPIMSTASVEIDDALYSRQRYVLGDTAMQKMAKSHVFLSGMGGLGLEIAKNLVLAGIKAVTIHDTEKCQAWDLGTNFFLSEDDVVNKRNRAEAVLKHIAELNPYVHVTSSSVPFNETTDLSFLDKYQCVVLTEMKLPLQKKINDFCRSQCPPIKFISADVHGIWSRLFCDFGDEFEVLDTTGEEPKEIFISNITQANPGIVTCLENHPHKLETGQFLTFREINGMTGLNGSIQQITVISPFSFSIGDTTELEPYLHGGIAVQVKTPKTVFFESLERQLKHPKCLIVDFSNPEAPLEIHTAMLALDQFQEKYSRKPNVGCQQDSEELLKLATSISETLEEKPDVNADIVHWLSWTAQGFLSPLAAAVGGVASQEVLKAVTGKFSPLCQWLYLEAADIVESLGKPECEEFLPRGDRYDALRACIGDTLCQKLQNLNIFLVGCGAIGCEMLKNFALLGVGTSKEKGMITVTDPDLIEKSNLNRQFLFRPHHIQKPKSYTAADATLKINSQIKIDAHLNKVCPTTETIYNDEFYTKQDVIITALDNVEARRYVDSRCLANLRPLLDSGTMGTKGHTEVIVPHLTESYNSHRDPPEEEIPFCTLKSFPAAIEHTIQWARDKFESSFSHKPSLFNKFWQTYSSAEEVLQKIQSGHSLEGCFQVIKLLSRRPRNWSQCVELARLKFEKYFNHKALQLLHCFPLDIRLKDGSLFWQSPKRPPSPIKFDLNEPLHLSFLQNAAKLYATVYCIPFAEEDLSADALLNILSEVKIQEFKPSNKVVQTDETARKPDHVPISSEDERNAIFQLEKAILSNEATKSDLQMAVLSFEKDDDHNGHIDFITAASNLRAKMYSIEPADRFKTKRIAGKIIPAIATTTATVSGLVALEMIKVTGGYPFEAYKNCFLNLAIPIVVFTETTEVRKTKIRNGISFTIWDRWTVHGKEDFTLLDFINAVKEKYGIEPTMVVQGVKMLYVPVMPGHAKRLKLTMHKLVKPTTEKKYVDLTVSFAPDIDGDEDLPGPPVRYYFSHDTD", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282513", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282513"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "5", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "6", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_A0AVT1"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_Q53Z42", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q53Z42"
+            }, 
+            "label": "q53z42_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAVMAPRTLVLLLSGALALTQTWAGSHSMRYFFTSVSRPGRGEPRFIAVGYVDDTQFVRFDSDAASQRMEPRAPWIEQEGPEYWDGETRKVKAHSQTHRVDLGTLRGYYNQSEAGSHTVQRMYGCDVGSDWRFLRGYHQYAYDGKDYIALKEDLRSWTAADMAAQTTKHKWEAAHVAEQLRAYLEGTCVEWLRRYLENGKETLQRTDAPKTHMTHHAVSDHEATLRCWALSFYPAEITLTWQRDGEDQTQDTELVETRPAGDGTFQKWAAVVVPSGQEQRYTCHVQHEGLPKPLTLRWEPSSQPTIPIVGIIAGLVLFGAVITGAVVAAVMWRRKSSDRKGGSYSQAASSDSAQGSDVSLTACKV", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282559", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282559"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "7", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q53Z42"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "8", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_Q7Z333", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q7Z333"
+            }, 
+            "label": "setx_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSTCCWCTPGGASTIDFLKRYASNTPSGEFQTADEDLCYCLECVAEYHKARDELPFLHEVLWELETLRLINHFEKSMKAEIGDDDELYIVDNNGEMPLFDITGQDFENKLRVPLLEILKYPYLLLHERVNELCVEALCRMEQANCSFQVFDKHPGIYLFLVHPNEMVRRWAILTARNLGKVDRDDYYDLQEVLLCLFKVIELGLLESPDIYTSSVLEKGKLILLPSHMYDTTNYKSYWLGICMLLTILEEQAMDSLLLGSDKQNDFMQSILHTMEREADDDSVDPFWPALHCFMVILDRLGSKVWGQLMDPIVAFQTIINNASYNREIRHIRNSSVRTKLEPESYLDDMVTCSQIVYNYNPEKTKKDSGWRTAICPDYCPNMYEEMETLASVLQSDIGQDMRVHNSTFLWFIPFVQSLMDLKDLGVAYIAQVVNHLYSEVKEVLNQTDAVCDKVTEFFLLILVSVIELHRNKKCLHLLWVSSQQWVEAVVKCAKLPTTAFTRSSEKSSGNCSKGTAMISSLSLHSMPSNSVQLAYVQLIRSLLKEGYQLGQQSLCKRFWDKLNLFLRGNLSLGWQLTSQETHELQSCLKQIIRNIKFKAPPCNTFVDLTSACKISPASYNKEESEQMGKTSRKDMHCLEASSPTFSKEPMKVQDSVLIKADNTIEGDNNEQNYIKDVKLEDHLLAGSCLKQSSKNIFTERAEDQIKISTRKQKSVKEISSYTPKDCTSRNGPERGCDRGIIVSTRLLTDSSTDALEKVSTSNEDFSLKDDALAKTSKRKTKVQKDEICAKLSHVIKKQHRKSTLVDNTINLDENLTVSNIESFYSRKDTGVQKGDGFIHNLSLDPSGVLDDKNGEQKSQNNVLPKEKQLKNEELVIFSFHENNCKIQEFHVDGKELIPFTEMTNASEKKSSPFKDLMTVPESRDEEMSNSTSVIYSNLTREQAPDISPKSDTLTDSQIDRDLHKLSLLAQASVITFPSDSPQNSSQLQRKVKEDKRCFTANQNNVGDTSRGQVIIISDSDDDDDERILSLEKLTKQDKICLEREHPEQHVSTVNSKEEKNPVKEEKTETLFQFEESDSQCFEFESSSEVFSVWQDHPDDNNSVQDGEKKCLAPIANTTNGQGCTDYVSEVVKKGAEGIEEHTRPRSISVEEFCEIEVKKPKRKRSEKPMAEDPVRPSSSVRNEGQSDTNKRDLVGNDFKSIDRRTSTPNSRIQRATTVSQKKSSKLCTCTEPIRKVPVSKTPKKTHSDAKKGQNRSSNYLSCRTTPAIVPPKKFRQCPEPTSTAEKLGLKKGPRKAYELSQRSLDYVAQLRDHGKTVGVVDTRKKTKLISPQNLSVRNNKKLLTSQELQMQRQIRPKSQKNRRRLSDCESTDVKRAGSHTAQNSDIFVPESDRSDYNCTGGTEVLANSNRKQLIKCMPSEPETIKAKHGSPATDDACPLNQCDSVVLNGTVPTNEVIVSTSEDPLGGGDPTARHIEMAALKEGEPDSSSDAEEDNLFLTQNDPEDMDLCSQMENDNYKLIELIHGKDTVEVEEDSVSRPQLESLSGTKCKYKDCLETTKNQGEYCPKHSEVKAADEDVFRKPGLPPPASKPLRPTTKIFSSKSTSRIAGLSKSLETSSALSPSLKNKSKGIQSILKVPQPVPLIAQKPVGEMKNSCNVLHPQSPNNSNRQGCKVPFGESKYFPSSSPVNILLSSQSVSDTFVKEVLKWKYEMFLNFGQCGPPASLCQSISRPVPVRFHNYGDYFNVFFPLMVLNTFETVAQEWLNSPNRENFYQLQVRKFPADYIKYWEFAVYLEECELAKQLYPKENDLVFLAPERINEEKKDTERNDIQDLHEYHSGYVHKFRRTSVMRNGKTECYLSIQTQENFPANLNELVNCIVISSLVTTQRKLKAMSLLGSRNQLARAVLNPNPMDFCTKDLLTTTSERIIAYLRDFNEDQKKAIETAYAMVKHSPSVAKICLIHGPPGTGKSKTIVGLLYRLLTENQRKGHSDENSNAKIKQNRVLVCAPSNAAVDELMKKIILEFKEKCKDKKNPLGNCGDINLVRLGPEKSINSEVLKFSLDSQVNHRMKKELPSHVQAMHKRKEFLDYQLDELSRQRALCRGGREIQRQELDENISKVSKERQELASKIKEVQGRPQKTQSIIILESHIICCTLSTSGGLLLESAFRGQGGVPFSCVIVDEAGQSCEIETLTPLIHRCNKLILVGDPKQLPPTVISMKAQEYGYDQSMMARFCRLLEENVEHNMISRLPILQLTVQYRMHPDICLFPSNYVYNRNLKTNRQTEAIRCSSDWPFQPYLVFDVGDGSERRDNDSYINVQEIKLVMEIIKLIKDKRKDVSFRNIGIITHYKAQKTMIQKDLDKEFDRKGPAEVDTVDAFQGRQKDCVIVTCVRANSIQGSIGFLASLQRLNVTITRAKYSLFILGHLRTLMENQHWNQLIQDAQKRGAIIKTCDKNYRHDAVKILKLKPVLQRSLTHPPTIAPEGSRPQGGLPSSKLDSGFAKTSVAASLYHTPSDSKEITLTVTSKDPERPPVHDQLQDPRLLKRMGIEVKGGIFLWDPQPSSPQHPGATPPTGEPGFPVVHQDLSHIQQPAAVVAALSSHKPPVRGEPPAASPEASTCQSKCDDPEEELCHRREARAFSEGEQEKCGSETHHTRRNSRWDKRTLEQEDSSSKKRKLL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282581", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282581"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "9", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q7Z333"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "10", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_P10644", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P10644"
+            }, 
+            "label": "kap0_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MESGSTAASEEARSLRECELYVQKHNIQALLKDSIVQLCTARPERPMAFLREYFERLEKEEAKQIQNLQKAGTRTDSREDEISPPPPNPVVKGRRRRGAISAEVYTEEDAASYVRKVIPKDYKTMAALAKAIEKNVLFSHLDDNERSDIFDAMFSVSFIAGETVIQQGDEGDNFYVIDQGETDVYVNNEWATSVGEGGSFGELALIYGTPRAATVKAKTNVKLWGIDRDSYRRILMGSTLRKRKMYEEFLSKVSILESLDKWERLTVADALEPVQFEDGQKIVVQGEPGDEFFIILEGSAAVLQRRSENEEFVEVGRLGPSDYFGEIALLMNRPRAATVVARGPLKCVKLDRPRFERVLGPCSDILKRNIQQYNSFVSLSV", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282761", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282761"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "11", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P10644"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "12", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_P63104", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P63104"
+            }, 
+            "label": "1433z_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDKNELVQKAKLAEQAERYDDMAACMKSVTEQGAELSNEERNLLSVAYKNVVGARRSSWRVVSSIEQKTEGAEKKQQMAREYREKIETELRDICNDVLSLLEKFLIPNASQAESKVFYLKMKGDYYRYLAEVAAGDDKKGIVDQSQQAYQEAFEISKKEMQPTHPIRLGLALNFSVFYYEILNSPEKACSLAKTAFDEAIAELDTLSEESYKDSTLIMQLLRDNLTLWTSDTQGDEAEAGEGGEN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282764", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282764"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "13", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "14", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P63104"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_P04075", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P04075"
+            }, 
+            "label": "aldoa_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MPYQYPALTPEQKKELSDIAHRIVAPGKGILAADESTGSIAKRLQSIGTENTEENRRFYRQLLLTADDRVNPCIGGVILFHETLYQKADDGRPFPQVIKSKGGVVGIKVDKGVVPLAGTNGETTTQGLDGLSERCAQYKKDGADFAKWRCVLKIGEHTPSALAIMENANVLARYASICQQNGIVPIVEPEILPDGDHDLKRCQYVTEKVLAAVYKALSDHHIYLEGTLLKPNMVTPGHACTQKFSHEEIAMATVTALRRTVPPAVTGITFLSGGQSEEEASINLNAINKCPLLKPWALTFSYGRALQASALKAWGGKKENLKAAQEEYVKRALANSLACQGKYTPSGQAGAAASESLFVSNHAY", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0018", 
+                    "name": "two hybrid"
+                }, 
+                "host": {
+                    "common": "yeast", 
+                    "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                    "taxid": "559292"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "unassigned655"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-5282463"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-5282767", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-5282767"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "15", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9HB75"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "16", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0078", 
+                            "name": "nucleotide sequence identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P04075"
+                }
+            ]
+        }
+    ]
+}

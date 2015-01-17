@@ -1,1 +1,2853 @@
-{"data":[{"object":"interactor","id":"uniprotkb_Q9GZM8","sequence":"MDGEDIPDFSSLKEETAYWKELSLKYKQSFQEARDELVEFQEGSRELEAELEAQLVQAEQRNRDLQADNQRLKYEVEALKEKLEHQYAQSYKQVSVLEDDLSQTRAIKEQLHKYVRELEQANDDLERAKRATIVSLEDFEQRLNQAIERNAFLESELDEKESLLVSVQRLKDEARDLRQELAVRERQQEVTRKSAPSSPTLDCEKMDSAVQASLSLPATPVGKGTENTFPSPKAIPNGFGTSPLTPSARISALNIVGDLLRKVGALESKLAACRNFAKDQASRKSYISGNVNCGVLNGNGTKFSRSGHTSFFDKGAVNGFDPAPPPPGLGSSRPSSAPGMLPLSV","type":{"id":"MI:0326","name":"protein"},"organism":{"taxid":"9606","common":"human","scientific":"Homo sapiens"},"identifier":{"db":"uniprotkb","id":"Q9GZM8"},"label":"ndel1_human"},{"object":"interaction","id":"intact_EBI-6388934","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0071","name":"molecular sieving"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2A"]},"identifiers":[{"db":"intact","id":"EBI-6388934"},{"db":"imex","id":"IM-18003-1"}],"participants":[{"id":"1","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"2","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"1"}]}]},{"id":"3","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"4","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"3"}]}]}]},{"object":"interactor","id":"uniprotkb_Q9NXR1","sequence":"MEDSGKTFSSEEEEANYWKDLAMTYKQRAENTQEELREFQEGSREYEAELETQLQQIETRNRDLLSENNRLRMELETIKEKFEVQHSEGYRQISALEDDLAQTKAIKDQLQKYIRELEQANDDLERAKRATIMSLEDFEQRLNQAIERNAFLESELDEKENLLESVQRLKDEARDLRQELAVQQKQEKPRTPMPSSVEAERTDTAVQATGSVPSTPIAHRGPSSSLNTPGSFRRGLDDSTGGTPLTPAARISALNIVGDLLRKVGALESKLASCRNLVYDQSPNRTGGPASGRSSKNRDGGERRPSSTSVPLGDKGLGKRLEFGKPPSHMSSSPLPSAQGVVKMLL","type":{"id":"MI:0326","name":"protein"},"organism":{"taxid":"9606","common":"human","scientific":"Homo sapiens"},"identifier":{"db":"uniprotkb","id":"Q9NXR1"},"label":"nde1_human"},{"object":"interaction","id":"intact_EBI-6388942","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0071","name":"molecular sieving"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2A"]},"identifiers":[{"db":"intact","id":"EBI-6388942"},{"db":"imex","id":"IM-18003-2"}],"participants":[{"id":"5","interactorRef":"uniprotkb_Q9NXR1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"6","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"5"}]}]},{"id":"7","interactorRef":"uniprotkb_Q9NXR1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"8","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"7"}]}]}]},{"object":"interaction","id":"intact_EBI-6389133","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 2B"]},"identifiers":[{"db":"intact","id":"EBI-6389133"},{"db":"imex","id":"IM-18003-9"}],"participants":[{"id":"9","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"10","name":"lys-20","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"20-20","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["11"]},{"id":"12","name":"lys-25","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"25-25","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["13"]},{"id":"14","name":"ser-90","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"90-90","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["15"]},{"id":"16","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}]},{"id":"17","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["18"]},{"id":"19","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["20"]},{"id":"21","name":"lys-80","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"80-80","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["22"]},{"id":"23","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"9"}],"linkedFeatures":["24"]}]},{"id":"25","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"24","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["23"]},{"id":"13","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["12"]},{"id":"15","name":"ser-95","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"95-95","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["14"]},{"id":"18","name":"tyr-114","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"114-114","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["17"]},{"id":"26","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}]},{"id":"22","name":"lys-82","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"82-82","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["21"]},{"id":"20","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["19"]},{"id":"11","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"25"}],"linkedFeatures":["10"]}]}]},{"object":"interaction","id":"intact_EBI-6389174","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 2D, Supp. Table 2."]},"identifiers":[{"db":"intact","id":"EBI-6389174"},{"db":"imex","id":"IM-18003-10"}],"participants":[{"id":"27","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"28","name":"tyr-114","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"114-114","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}],"linkedFeatures":["29"]},{"id":"30","name":"ser-95","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"95-95","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}],"linkedFeatures":["31"]},{"id":"32","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}],"linkedFeatures":["33"]},{"id":"34","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}]},{"id":"35","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}],"linkedFeatures":["36"]},{"id":"37","name":"lys-82","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"82-82","interactorRef":"uniprotkb_Q9GZM8","participantRef":"27"}],"linkedFeatures":["38"]}]},{"id":"39","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"40","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["41"]},{"id":"31","name":"ser-90","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"90-90","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["30"]},{"id":"29","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["28"]},{"id":"33","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["32"]},{"id":"38","name":"lys-80","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"80-80","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["37"]},{"id":"42","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}]},{"id":"36","name":"lys-20","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"20-20","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["35"]},{"id":"43","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"39"}],"linkedFeatures":["44"]}]},{"id":"45","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"46","name":"tyr-114","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"114-114","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}],"linkedFeatures":["47"]},{"id":"48","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}]},{"id":"49","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}],"linkedFeatures":["50"]},{"id":"51","name":"lys-82","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"82-82","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}],"linkedFeatures":["52"]},{"id":"53","name":"ser-95","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"95-95","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}],"linkedFeatures":["54"]},{"id":"55","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"45"}],"linkedFeatures":["56"]}]},{"id":"57","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"41","name":"lys-29","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"29-29","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["40"]},{"id":"52","name":"lys-80","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"80-80","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["51"]},{"id":"50","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["49"]},{"id":"58","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}]},{"id":"54","name":"ser-90","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"90-90","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["53"]},{"id":"47","name":"lys-27","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"27-27","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["46"]},{"id":"44","name":"lys-113","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"113-113","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["43"]},{"id":"56","name":"lys-29","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"29-29","interactorRef":"uniprotkb_Q9GZM8","participantRef":"57"}],"linkedFeatures":["55"]}]}]},{"object":"interaction","id":"intact_EBI-6389059","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 2D, Supplemental Table 2"]},"identifiers":[{"db":"intact","id":"EBI-6389059"},{"db":"imex","id":"IM-18003-8"}],"participants":[{"id":"59","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"60","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"59"}]},{"id":"61","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"59"}],"linkedFeatures":["62"]},{"id":"63","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"59"}],"linkedFeatures":["64"]},{"id":"65","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"59"}],"linkedFeatures":["66"]},{"id":"67","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"59"}],"linkedFeatures":["68"]}]},{"id":"69","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"70","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["71"]},{"id":"62","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["61"]},{"id":"64","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["63"]},{"id":"72","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}]},{"id":"73","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["74"]},{"id":"68","name":"lys-170","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"170-170","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["67"]},{"id":"66","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["65"]},{"id":"75","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["76"]},{"id":"77","name":"lys-81","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"81-81","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["78"]},{"id":"79","name":"lys-79","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"79-79","interactorRef":"uniprotkb_Q9NXR1","participantRef":"69"}],"linkedFeatures":["80"]}]},{"id":"81","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"82","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["83"]},{"id":"71","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["70"]},{"id":"78","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["77"]},{"id":"84","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["85"]},{"id":"86","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}]},{"id":"87","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["88"]},{"id":"89","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["90"]},{"id":"76","name":"lys-112","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"112-112","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["75"]},{"id":"74","name":"lys-26","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"26-26","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["73"]},{"id":"80","name":"lys-81","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"81-81","interactorRef":"uniprotkb_Q9NXR1","participantRef":"81"}],"linkedFeatures":["79"]}]},{"id":"91","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"90","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"91"}],"linkedFeatures":["89"]},{"id":"88","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"91"}],"linkedFeatures":["87"]},{"id":"92","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"91"}]},{"id":"83","name":"lys-170","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"170-170","interactorRef":"uniprotkb_Q9NXR1","participantRef":"91"}],"linkedFeatures":["82"]},{"id":"85","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"91"}],"linkedFeatures":["84"]}]}]},{"object":"interaction","id":"intact_EBI-6389028","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 2D, Supplemental Table 2"]},"identifiers":[{"db":"intact","id":"EBI-6389028"},{"db":"imex","id":"IM-18003-7"}],"participants":[{"id":"93","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"94","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"93"}],"linkedFeatures":["95"]},{"id":"96","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"93"}],"linkedFeatures":["97"]},{"id":"98","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"93"}]},{"id":"99","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"93"}],"linkedFeatures":["100"]},{"id":"101","name":"lys-270","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"270-270","interactorRef":"uniprotkb_Q9NXR1","participantRef":"93"}],"linkedFeatures":["102"]}]},{"id":"103","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"104","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"103"}]},{"id":"97","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"103"}],"linkedFeatures":["96"]},{"id":"102","name":"lys-170","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"170-170","interactorRef":"uniprotkb_Q9NXR1","participantRef":"103"}],"linkedFeatures":["101"]},{"id":"100","name":"lys-315","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"315-315","interactorRef":"uniprotkb_Q9NXR1","participantRef":"103"}],"linkedFeatures":["99"]},{"id":"95","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"103"}],"linkedFeatures":["94"]}]}]},{"object":"interaction","id":"intact_EBI-6389311","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 6, Supp. Table 2"]},"identifiers":[{"db":"intact","id":"EBI-6389311"},{"db":"imex","id":"IM-18003-11"}],"participants":[{"id":"105","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"106","name":"lys-107","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"107-107","interactorRef":"uniprotkb_Q9NXR1","participantRef":"105"}],"linkedFeatures":["107"]},{"id":"108","name":"lys-170","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"170-170","interactorRef":"uniprotkb_Q9NXR1","participantRef":"105"}],"linkedFeatures":["109"]}]},{"id":"110","interactorRef":"uniprotkb_Q9GZM8","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"107","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"110"}],"linkedFeatures":["106"]},{"id":"109","name":"lys-17","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"17-17","interactorRef":"uniprotkb_Q9GZM8","participantRef":"110"}],"linkedFeatures":["108"]}]}]},{"object":"interaction","id":"intact_EBI-6389324","interactionType":{"id":"MI:0915","name":"physical association"},"experiment":{"detmethod":{"id":"MI:0030","name":"cross-linking study"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"experimentModifications":["Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"],"figures":["Fig. 6 and Supp Table 2"]},"identifiers":[{"db":"intact","id":"EBI-6389324"},{"db":"imex","id":"IM-18003-12"}],"participants":[{"id":"111","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"2","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"112","name":"ser-196","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"196-196","interactorRef":"uniprotkb_Q9NXR1","participantRef":"111"}],"linkedFeatures":["113"]}]},{"id":"114","interactorRef":"uniprotkb_Q9GZM8","stoichiometry":"2","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"113","name":"lys-108","type":{"id":"MI:0912","name":"spdp cross linker"},"sequenceData":[{"pos":"108-108","interactorRef":"uniprotkb_Q9GZM8","participantRef":"114"}],"linkedFeatures":["112"]}]}]},{"object":"interaction","id":"intact_EBI-6388959","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0067","name":"light scattering"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2B"]},"identifiers":[{"db":"intact","id":"EBI-6388959"},{"db":"imex","id":"IM-18003-4"}],"participants":[{"id":"115","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"116","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"115"}]}]},{"id":"117","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"118","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"117"}]}]}]},{"object":"interaction","id":"intact_EBI-6388957","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0067","name":"light scattering"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2B"]},"identifiers":[{"db":"intact","id":"EBI-6388957"},{"db":"imex","id":"IM-18003-3"}],"participants":[{"id":"119","interactorRef":"uniprotkb_Q9NXR1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"120","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"119"}]}]},{"id":"121","interactorRef":"uniprotkb_Q9NXR1","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0396","name":"predetermined participant"}],"experimentalFeatures":[{"id":"122","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"121"}]}]}]},{"object":"interaction","id":"intact_EBI-6388989","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0808","name":"comigration in sds page"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2B"]},"identifiers":[{"db":"intact","id":"EBI-6388989"},{"db":"imex","id":"IM-18003-6"}],"participants":[{"id":"123","interactorRef":"uniprotkb_Q9GZM8","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"124","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9GZM8","participantRef":"123"}]}]}]},{"object":"interaction","id":"intact_EBI-6388987","interactionType":{"id":"MI:0407","name":"direct interaction"},"experiment":{"detmethod":{"id":"MI:0808","name":"comigration in sds page"},"host":{"taxid":"83333","common":"ecoli","scientific":"Escherichia coli (strain K12)"},"pubid":[{"db":"pubmed","id":"22843697"}],"sourceDatabase":{"id":"MI:0469","name":"European Bioinformatics Institute"},"figures":["Fig. 2D"]},"identifiers":[{"db":"intact","id":"EBI-6388987"},{"db":"imex","id":"IM-18003-5"}],"participants":[{"id":"125","interactorRef":"uniprotkb_Q9NXR1","stoichiometry":"2","bioRole":{"id":"MI:0499","name":"unspecified role"},"expRole":{"id":"MI:0497","name":"neutral component"},"identificationMethods":[{"id":"MI:0102","name":"sequence tag identification"}],"experimentalFeatures":[{"id":"126","name":"n-terminal","type":{"id":"MI:0521","name":"his tag"},"sequenceData":[{"pos":"n-n","interactorRef":"uniprotkb_Q9NXR1","participantRef":"125"}]}]}]}]}
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9GZM8", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9GZM8"
+            }, 
+            "label": "ndel1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDGEDIPDFSSLKEETAYWKELSLKYKQSFQEARDELVEFQEGSRELEAELEAQLVQAEQRNRDLQADNQRLKYEVEALKEKLEHQYAQSYKQVSVLEDDLSQTRAIKEQLHKYVRELEQANDDLERAKRATIVSLEDFEQRLNQAIERNAFLESELDEKESLLVSVQRLKDEARDLRQELAVRERQQEVTRKSAPSSPTLDCEKMDSAVQASLSLPATPVGKGTENTFPSPKAIPNGFGTSPLTPSARISALNIVGDLLRKVGALESKLAACRNFAKDQASRKSYISGNVNCGVLNGNGTKFSRSGHTSFFDKGAVNGFDPAPPPPGLGSSRPSSAPGMLPLSV", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0071", 
+                    "name": "molecular sieving"
+                }, 
+                "figures": [
+                    "Fig. 2A"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388934", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388934"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-1"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "2", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "1", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "4", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "3", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "3", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_Q9NXR1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NXR1"
+            }, 
+            "label": "nde1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MEDSGKTFSSEEEEANYWKDLAMTYKQRAENTQEELREFQEGSREYEAELETQLQQIETRNRDLLSENNRLRMELETIKEKFEVQHSEGYRQISALEDDLAQTKAIKDQLQKYIRELEQANDDLERAKRATIMSLEDFEQRLNQAIERNAFLESELDEKENLLESVQRLKDEARDLRQELAVQQKQEKPRTPMPSSVEAERTDTAVQATGSVPSTPIAHRGPSSSLNTPGSFRRGLDDSTGGTPLTPAARISALNIVGDLLRKVGALESKLASCRNLVYDQSPNRTGGPASGRSSKNRDGGERRPSSTSVPLGDKGLGKRLEFGKPPSHMSSSPLPSAQGVVKMLL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0071", 
+                    "name": "molecular sieving"
+                }, 
+                "figures": [
+                    "Fig. 2A"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388942", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388942"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-2"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "6", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "5", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "5", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "8", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "7", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "7", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 2B"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389133", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389133"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-9"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "lys-20", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "20-20"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "12", 
+                            "linkedFeatures": [
+                                "13"
+                            ], 
+                            "name": "lys-25", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "25-25"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "14", 
+                            "linkedFeatures": [
+                                "15"
+                            ], 
+                            "name": "ser-90", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "90-90"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "16", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "17", 
+                            "linkedFeatures": [
+                                "18"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "19", 
+                            "linkedFeatures": [
+                                "20"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "21", 
+                            "linkedFeatures": [
+                                "22"
+                            ], 
+                            "name": "lys-80", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "80-80"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "23", 
+                            "linkedFeatures": [
+                                "24"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "9", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "9", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "24", 
+                            "linkedFeatures": [
+                                "23"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "13", 
+                            "linkedFeatures": [
+                                "12"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "14"
+                            ], 
+                            "name": "ser-95", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "95-95"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "18", 
+                            "linkedFeatures": [
+                                "17"
+                            ], 
+                            "name": "tyr-114", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "114-114"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "26", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "22", 
+                            "linkedFeatures": [
+                                "21"
+                            ], 
+                            "name": "lys-82", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "82-82"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "20", 
+                            "linkedFeatures": [
+                                "19"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "11", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "25", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "25", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 2D, Supp. Table 2."
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389174", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389174"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-10"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "28", 
+                            "linkedFeatures": [
+                                "29"
+                            ], 
+                            "name": "tyr-114", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "114-114"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "30", 
+                            "linkedFeatures": [
+                                "31"
+                            ], 
+                            "name": "ser-95", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "95-95"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "32", 
+                            "linkedFeatures": [
+                                "33"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "34", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "35", 
+                            "linkedFeatures": [
+                                "36"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "37", 
+                            "linkedFeatures": [
+                                "38"
+                            ], 
+                            "name": "lys-82", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "27", 
+                                    "pos": "82-82"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "27", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "40", 
+                            "linkedFeatures": [
+                                "41"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "31", 
+                            "linkedFeatures": [
+                                "30"
+                            ], 
+                            "name": "ser-90", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "90-90"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "29", 
+                            "linkedFeatures": [
+                                "28"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "33", 
+                            "linkedFeatures": [
+                                "32"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "38", 
+                            "linkedFeatures": [
+                                "37"
+                            ], 
+                            "name": "lys-80", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "80-80"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "42", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "36", 
+                            "linkedFeatures": [
+                                "35"
+                            ], 
+                            "name": "lys-20", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "20-20"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "43", 
+                            "linkedFeatures": [
+                                "44"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "39", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "39", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "46", 
+                            "linkedFeatures": [
+                                "47"
+                            ], 
+                            "name": "tyr-114", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "114-114"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "48", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "49", 
+                            "linkedFeatures": [
+                                "50"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "51", 
+                            "linkedFeatures": [
+                                "52"
+                            ], 
+                            "name": "lys-82", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "82-82"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "53", 
+                            "linkedFeatures": [
+                                "54"
+                            ], 
+                            "name": "ser-95", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "95-95"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "55", 
+                            "linkedFeatures": [
+                                "56"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "45", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "45", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "41", 
+                            "linkedFeatures": [
+                                "40"
+                            ], 
+                            "name": "lys-29", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "29-29"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "52", 
+                            "linkedFeatures": [
+                                "51"
+                            ], 
+                            "name": "lys-80", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "80-80"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "50", 
+                            "linkedFeatures": [
+                                "49"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "58", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "54", 
+                            "linkedFeatures": [
+                                "53"
+                            ], 
+                            "name": "ser-90", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "90-90"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "47", 
+                            "linkedFeatures": [
+                                "46"
+                            ], 
+                            "name": "lys-27", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "27-27"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "44", 
+                            "linkedFeatures": [
+                                "43"
+                            ], 
+                            "name": "lys-113", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "113-113"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "56", 
+                            "linkedFeatures": [
+                                "55"
+                            ], 
+                            "name": "lys-29", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "57", 
+                                    "pos": "29-29"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "57", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 2D, Supplemental Table 2"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389059", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389059"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-8"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "60", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "59", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "61", 
+                            "linkedFeatures": [
+                                "62"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "59", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "63", 
+                            "linkedFeatures": [
+                                "64"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "59", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "65", 
+                            "linkedFeatures": [
+                                "66"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "59", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "67", 
+                            "linkedFeatures": [
+                                "68"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "59", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "59", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "70", 
+                            "linkedFeatures": [
+                                "71"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "62", 
+                            "linkedFeatures": [
+                                "61"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "64", 
+                            "linkedFeatures": [
+                                "63"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "72", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "73", 
+                            "linkedFeatures": [
+                                "74"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "68", 
+                            "linkedFeatures": [
+                                "67"
+                            ], 
+                            "name": "lys-170", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "170-170"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "66", 
+                            "linkedFeatures": [
+                                "65"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "75", 
+                            "linkedFeatures": [
+                                "76"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "77", 
+                            "linkedFeatures": [
+                                "78"
+                            ], 
+                            "name": "lys-81", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "81-81"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "79", 
+                            "linkedFeatures": [
+                                "80"
+                            ], 
+                            "name": "lys-79", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "69", 
+                                    "pos": "79-79"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "69", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "82", 
+                            "linkedFeatures": [
+                                "83"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "71", 
+                            "linkedFeatures": [
+                                "70"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "78", 
+                            "linkedFeatures": [
+                                "77"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "84", 
+                            "linkedFeatures": [
+                                "85"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "86", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "87", 
+                            "linkedFeatures": [
+                                "88"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "89", 
+                            "linkedFeatures": [
+                                "90"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "76", 
+                            "linkedFeatures": [
+                                "75"
+                            ], 
+                            "name": "lys-112", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "112-112"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "74", 
+                            "linkedFeatures": [
+                                "73"
+                            ], 
+                            "name": "lys-26", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "26-26"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "80", 
+                            "linkedFeatures": [
+                                "79"
+                            ], 
+                            "name": "lys-81", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "81", 
+                                    "pos": "81-81"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "81", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "90", 
+                            "linkedFeatures": [
+                                "89"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "91", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "88", 
+                            "linkedFeatures": [
+                                "87"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "91", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "92", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "91", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "83", 
+                            "linkedFeatures": [
+                                "82"
+                            ], 
+                            "name": "lys-170", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "91", 
+                                    "pos": "170-170"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "85", 
+                            "linkedFeatures": [
+                                "84"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "91", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "91", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 2D, Supplemental Table 2"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389028", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389028"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-7"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "94", 
+                            "linkedFeatures": [
+                                "95"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "93", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "96", 
+                            "linkedFeatures": [
+                                "97"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "93", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "98", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "93", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "99", 
+                            "linkedFeatures": [
+                                "100"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "93", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "101", 
+                            "linkedFeatures": [
+                                "102"
+                            ], 
+                            "name": "lys-270", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "93", 
+                                    "pos": "270-270"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "93", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "104", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "103", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }, 
+                        {
+                            "id": "97", 
+                            "linkedFeatures": [
+                                "96"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "103", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "102", 
+                            "linkedFeatures": [
+                                "101"
+                            ], 
+                            "name": "lys-170", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "103", 
+                                    "pos": "170-170"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "100", 
+                            "linkedFeatures": [
+                                "99"
+                            ], 
+                            "name": "lys-315", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "103", 
+                                    "pos": "315-315"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "95", 
+                            "linkedFeatures": [
+                                "94"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "103", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "103", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 6, Supp. Table 2"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389311", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389311"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-11"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "106", 
+                            "linkedFeatures": [
+                                "107"
+                            ], 
+                            "name": "lys-107", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "105", 
+                                    "pos": "107-107"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "108", 
+                            "linkedFeatures": [
+                                "109"
+                            ], 
+                            "name": "lys-170", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "105", 
+                                    "pos": "170-170"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "105", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "107", 
+                            "linkedFeatures": [
+                                "106"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "110", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }, 
+                        {
+                            "id": "109", 
+                            "linkedFeatures": [
+                                "108"
+                            ], 
+                            "name": "lys-17", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "110", 
+                                    "pos": "17-17"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "110", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0030", 
+                    "name": "cross-linking study"
+                }, 
+                "experimentModifications": [
+                    "Cross-linking agent - bis(sulfosuccinimidyl)suberate (BS3)"
+                ], 
+                "figures": [
+                    "Fig. 6 and Supp Table 2"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6389324", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6389324"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-12"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "112", 
+                            "linkedFeatures": [
+                                "113"
+                            ], 
+                            "name": "ser-196", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "111", 
+                                    "pos": "196-196"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "111", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "113", 
+                            "linkedFeatures": [
+                                "112"
+                            ], 
+                            "name": "lys-108", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "114", 
+                                    "pos": "108-108"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0912", 
+                                "name": "spdp cross linker"
+                            }
+                        }
+                    ], 
+                    "id": "114", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8", 
+                    "stoichiometry": "2"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0067", 
+                    "name": "light scattering"
+                }, 
+                "figures": [
+                    "Fig. 2B"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388959", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388959"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-4"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "116", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "115", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "115", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "118", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "117", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "117", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0067", 
+                    "name": "light scattering"
+                }, 
+                "figures": [
+                    "Fig. 2B"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388957", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388957"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-3"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "120", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "119", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "119", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "122", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "121", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "121", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0396", 
+                            "name": "predetermined participant"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0808", 
+                    "name": "comigration in sds page"
+                }, 
+                "figures": [
+                    "Fig. 2B"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388989", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388989"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-6"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "124", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9GZM8", 
+                                    "participantRef": "123", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "123", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9GZM8"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0808", 
+                    "name": "comigration in sds page"
+                }, 
+                "figures": [
+                    "Fig. 2D"
+                ], 
+                "host": {
+                    "common": "ecoli", 
+                    "scientific": "Escherichia coli (strain K12)", 
+                    "taxid": "83333"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "22843697"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:0469", 
+                    "name": "European Bioinformatics Institute"
+                }
+            }, 
+            "id": "intact_EBI-6388987", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6388987"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-18003-5"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0497", 
+                        "name": "neutral component"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "126", 
+                            "name": "n-terminal", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NXR1", 
+                                    "participantRef": "125", 
+                                    "pos": "n-n"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0521", 
+                                "name": "his tag"
+                            }
+                        }
+                    ], 
+                    "id": "125", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0102", 
+                            "name": "sequence tag identification"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9NXR1", 
+                    "stoichiometry": "2"
+                }
+            ]
+        }
+    ]
+}

@@ -330,7 +330,7 @@ var clearSelection = function() {
 var getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
 //    var rect = this.container.getBoundingClientRect();
-//   p.x = evt.clientX - rect.left;
+//    p.x = evt.clientX - rect.left;
 //    p.y = evt.clientY - rect.top;
     var element = this.svgElement.parentNode;
     var top = 0, left = 0;

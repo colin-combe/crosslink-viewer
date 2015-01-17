@@ -10,14 +10,11 @@
         <!-- css -->
         <link rel="stylesheet" href="./css/demo.css">
         <link rel='stylesheet' type='text/css' href='./css/XLV.css'/>
-<!--
-        <link rel='stylesheet' type='text/css' href='../vendor/jsonview/jquery.jsonview.css'/>
--->
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
-        <script type="text/javascript" src="../build/ComplexViewer-0.0.1.js"></script>
+        <script type="text/javascript" src="../build/complexviewer.js"></script>
     </head>
     <body>
 
@@ -26,14 +23,18 @@
 		<div id='controls'>
 			
 			<select id="dataSets" onChange="loadData();">
-<!--
-				<option>./data/evidence/21988832_01.json</option>
--->
+				<option>./data/evidence/EBI-5282463.json</option>
+				<option>./data/evidence/EBI-6050724.json</option> 
 				<option>./data/evidence/22843697.json</option>
 				<option>./data/evidence/24315095.json</option> 
 				<option>./data/evidence/10679202.json</option>  
+				<option>./data/evidence/PolII-TFIIF.json</option>  
+				<option>./data/evidence/Herzog.json</option>  
+				<option>./data/evidence/allostery.json</option>  
+				<option>./data/evidence/Cks1-Skp2.json</option>  
 			</select>
 			
+			<input onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoichiometry expansion
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
@@ -49,10 +50,11 @@
                 
                 function loadData(){
 					xlv.clear();
+					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var dataSetsSelect = document.getElementById('dataSets');
 					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].innerHTML;
 				    d3.json(path, function(data) {
-						xlv.readMIJSON(data, false);
+						xlv.readMIJSON(data, matrixExpansion);
 					});            
 				}
                 

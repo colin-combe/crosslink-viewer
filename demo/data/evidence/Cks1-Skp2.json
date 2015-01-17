@@ -1,12 +1,12 @@
 {
     "data": [
         {
-            "id": "1", 
+            "id": "uniprotkb_Q13309", 
             "identifier": {
                 "db": "uniprotkb", 
-                "id": "Q9Y3Y4"
+                "id": "Q13309"
             }, 
-            "label": "Pygo1", 
+            "label": "Skp2", 
             "object": "interactor", 
             "organism": {
                 "common": "Human", 
@@ -18,12 +18,12 @@
             }
         }, 
         {
-            "id": "2", 
+            "id": "uniprotkb_P61024", 
             "identifier": {
                 "db": "uniprotkb", 
-                "id": "O00512"
+                "id": "P61024"
             }, 
-            "label": "Bcl9", 
+            "label": "Cks1", 
             "object": "interactor", 
             "organism": {
                 "common": "Human", 
@@ -47,120 +47,15 @@
                 "pubid": [
                     {
                         "db": "pubmed", 
-                        "id": "18498752"
+                        "id": "16209941"
                     }
                 ]
             }, 
-            "id": "3", 
+            "id": "rcsb pdb_2ASS", 
             "identifiers": [
                 {
                     "db": "rcsb pdb", 
-                    "id": "2VPD"
-                }
-            ], 
-            "interactionType": {
-                "id": "MI:0407", 
-                "name": "direct interaction"
-            }, 
-            "object": "interaction", 
-            "participants": [
-                {
-                    "bindingSites": [
-                        {
-                            "InterPro": "IPR019787", 
-                            "id": "4", 
-                            "linkedFeatures": [
-                                "5"
-                            ], 
-                            "name": "Zinc finger, PHD-finger", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "1", 
-                                    "pos": "333-398"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0116", 
-                                "name": "sufficient binding region"
-                            }
-                        }
-                    ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "interactorRef": "1", 
-                    "stoichiometry": "1"
-                }, 
-                {
-                    "bindingSites": [
-                        {
-                            "id": "5", 
-                            "linkedFeatures": [
-                                "4"
-                            ], 
-                            "name": "region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "2", 
-                                    "pos": "174-205"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0116", 
-                                "name": "sufficient binding region"
-                            }
-                        }
-                    ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "interactorRef": "2", 
-                    "stoichiometry": "1"
-                }
-            ]
-        }, 
-        {
-            "id": "6", 
-            "identifier": {
-                "db": "intact", 
-                "id": "EBI-6146769"
-            }, 
-            "label": "H3K4me2", 
-            "object": "interactor", 
-            "organism": {
-                "common": "Human", 
-                "taxid": "9606"
-            }, 
-            "sequence": "ARTKQTARK", 
-            "type": {
-                "id": "MI:0327", 
-                "name": "peptide"
-            }
-        }, 
-        {
-            "experiment": {
-                "detmethod": {
-                    "id": "MI:0363", 
-                    "name": "inferred by author"
-                }, 
-                "host": {
-                    "common": "Human", 
-                    "taxid": "9606"
-                }, 
-                "pubid": [
-                    {
-                        "db": "pubmed", 
-                        "id": "18498752"
-                    }
-                ]
-            }, 
-            "id": "7", 
-            "identifiers": [
-                {
-                    "db": "rcsb pdb", 
-                    "id": "2VPE"
+                    "id": "2ASS"
                 }
             ], 
             "interactionType": {
@@ -172,50 +67,33 @@
                 {
                     "type": "Kd", 
                     "unit": "M", 
-                    "value": "11.4x10^(-6) ~1.1"
+                    "value": "0.006x10^(-6) ~0.001"
                 }
             ], 
             "participants": [
                 {
-                    "bindingSites": [
-                        {
-                            "InterPro": "IPR019787", 
-                            "id": "8", 
-                            "linkedFeatures": [
-                                "9"
-                            ], 
-                            "name": "Zinc finger, PHD-finger", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "1", 
-                                    "pos": "333-398"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0116", 
-                                "name": "sufficient binding region"
-                            }
-                        }
-                    ], 
                     "bioRole": {
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "3", 
-                    "stoichiometry": "1"
-                }, 
-                {
-                    "bindingSites": [
+                    "expRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q13309", 
+                    "otherFeatures": [
                         {
-                            "id": "9", 
+                            "id": "2", 
                             "linkedFeatures": [
-                                "8"
+                                "3"
                             ], 
                             "name": "region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "6", 
-                                    "pos": "1-7"
+                                    "interactorRef": "uniprotkb_Q13309", 
+                                    "participantRef": "1", 
+                                    "pos": "89-424"
                                 }
                             ], 
                             "type": {
@@ -224,28 +102,189 @@
                             }
                         }
                     ], 
+                    "stoichiometry": "1"
+                }, 
+                {
                     "bioRole": {
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "interactorRef": "6", 
+                    "expRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "4", 
+                    "interactorRef": "uniprotkb_P61024", 
+                    "otherFeatures": [
+                        {
+                            "InterPro": "IPR000789", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "Cyclin-dependent kinase, regulatory subunit", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P61024", 
+                                    "participantRef": "4", 
+                                    "pos": "5-73"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_P46527", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P46527"
+            }, 
+            "label": "p27Kip1", 
+            "object": "interactor", 
+            "organism": {
+                "common": "Human", 
+                "taxid": "9606"
+            }, 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0363", 
+                    "name": "inferred by author"
+                }, 
+                "host": {
+                    "common": "Human", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "16209941"
+                    }
+                ]
+            }, 
+            "id": "intact_EBI-6859798", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6859798"
+                }, 
+                {
+                    "db": "rcsb pdb", 
+                    "id": "2AST"
+                }, 
+                {
+                    "db": "imex", 
+                    "id": "IM-20900-2"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "parameters": [
+                {
+                    "type": "Kd", 
+                    "unit": "M", 
+                    "value": "7x10^(-6) ~1"
+                }
+            ], 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "5", 
+                    "interactorRef": "rcsb pdb_2ASS", 
+                    "otherFeatures": [
+                        {
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "region", 
+                            "sequenceData": [
+                                {
+                                    "pos": "89-424"
+                                }, 
+                                {
+                                    "pos": "5-73"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_P46527", 
+                    "otherFeatures": [
+                        {
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "DEG_SCF_SKP2-CKS1_1", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P46527", 
+                                    "participantRef": "8", 
+                                    "pos": "181-190"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0116", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
                     "ptms": [
                         {
-                            "id": "10", 
-                            "name": "required-dimethyllys4", 
+                            "id": "9", 
+                            "name": "required-phosphothr187", 
                             "role": {
                                 "id": "MI:0638", 
                                 "name": "prerequisite-ptm"
                             }, 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "6", 
-                                    "pos": "4-4"
+                                    "interactorRef": "uniprotkb_P46527", 
+                                    "participantRef": "8", 
+                                    "pos": "187-187"
                                 }
                             ], 
                             "type": {
-                                "id": "MOD:00429", 
-                                "name": "dimethylated residue"
+                                "id": "MOD:00696", 
+                                "name": "phosphorylated residue"
                             }
                         }
                     ], 
