@@ -1,0 +1,347 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9QXY2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9QXY2"
+            }, 
+            "label": "srcn1_rat", 
+            "object": "interactor", 
+            "organism": {
+                "common": "rat", 
+                "scientific": "Rattus norvegicus (Rat)", 
+                "taxid": "10116"
+            }, 
+            "sequence": "MQPWQCLRRFALAWWERTAEGRARSPREEVGPRDPGGRGEPDPERSSPPMLSADDAEYPREYRTLGGGGSGGSGGRRFSNVGLVHTSERRHTVIAAQSLEALSGLQKADADRKRDAFMDHLKSKYPQHALALRGQQDRMREQQPNYWSFKTRSSRHTQGAQPGLADQAAKLSYASAESLETMSEAELPLGFSRMNRFRQSLPLSRSASQTKLRSPGVLFLQFGEETRRVHITHEVSSLDTLHALIAHMFPQKLTMGMLKSPNTAILIKDEARNVFYELEDVRDIQDRSIIKIYRKEPLYAAFPGSHLTNGDLRREMVYASRESSPTRRLNNLSPASHLASSSPPPGLPSGLPSGLPSGSPSRSRLSYAGGRPPSYAGSPVHHAAERLGGAPTSQGVSPSPSAILERRDVKPDEDLAGKAGGMVLVKGEGLYADPYGLLHEGRLSLAAAAGDPFAYPGAGGLYKRGSVRSLSTYSAAALQSDLEDSLYKAGAGGPLYGDGYGFRLPPSSPQKLADVSAPSGGPPPPHSPYSGPPSRGSPVRQSFRKDSGSSSVFAESPGGKARSTGASTAGAPPSELFPGPGERSLVGFGPPVPAKDTETRERMEAMEKQIASLTGLVQSALLRGSEPETPSEKIEGSNGAATPSAPVCGSGSRSSGATPVSGPPPPAVSSTPAGQPTAVSRLQMQMHLRGLQNSASDLRGQLQQLRKLQLQNQESVRALLKRTEAELSMRVSEAARRQEDPLQRQRTLVEEERLRYLNDEELITQQLNDLEKSVEKIQRDVAHNHRLVPGPELEEKALVLKQLGETLTELKAHFPGLQSKMRVVLRVEVEAVKFLKEEPQRLDGLLKRCRVVTDTLAQIRRQVDEGVWPPPNNLLNQSPKKVAAETDFSKGLDFEIPPPSPPLNLHELSGPAEGTPLTPKSGNPTKGLDAPSKRNMDKAVSVEAAERDWEEKRAALTQYSAKDINRLLEETQAELLKAIPDLDCASKTHPGPTPTPDHKPPKAPHGQKAAPRTEPSGRRGSDELTVPRYRTEKPSKSPPPPPPRRSFPSSHGLTTTRTGEVVVTSKKDSVFIKKAESEELEIQKPQVKLRRAVSEVVRPASTPPIMASAIKDEDDEERIIAELESGGGSVPPMKVVTPGASRLKAAQGPAGSPDKGKHGKQRTEYMRIQAQQQVRVGYQAPRPLEGCTPRLCYMPLS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_D3ZGE6", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "D3ZGE6"
+            }, 
+            "label": "d3zge6_rat", 
+            "object": "interactor", 
+            "organism": {
+                "common": "rat", 
+                "scientific": "Rattus norvegicus (Rat)", 
+                "taxid": "10116"
+            }, 
+            "sequence": "MWKASAGHAVSITQDDGGADDWETDPDFVNDVSEKEQRWGAKTVQGSGHQEHINIHKLRENVFQEHQTLKEKELETGPKASHGYGGKFGVEQDRMDKSAVGHEYQSKLSKHCSQVDSVRGFGGKFGVQMDRVDQSAVGFEYQGKTEKHASQKDYSSGFGGKYGVQADRVDKSAVGFDYQGKTEKHESQKDYSKGFGGKYGIDKDKVDKSAVGFEYQGKTEKHESQKDYAKGFGGKYGVQKDRMDKNASTFEEVVQVPSAYQKTVPIEAVTSKTSNIRANFENLAKEREQEDRRKAEAERAQRMAQERQEQEEARRKLEEQARAKKQTPPASPSPQPAEDRPPSSPIYEDAAPLKAEPSYGSSEPEPEYSTEAAGLPEASNQQGLAYTSEPVYETTEVPGHYQAEDDTYDGYESDLGITAIALYDYQAAGDDEISFDPDDVITNIEMIDDGWWRGVCKGRYGLFPANYVELRQ", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0006", 
+                    "name": "anti bait coimmunoprecipitation"
+                }, 
+                "figures": [
+                    "6b"
+                ], 
+                "host": {
+                    "cellType": {
+                        "id": "ACC 305", 
+                        "name": "Transformed human primary embryonal kidney cells."
+                    }, 
+                    "common": "human-293", 
+                    "scientific": "Homo sapiens transformed primary embryonal kidney cells", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "21725361"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-6050724"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:1262", 
+                    "name": "I2D"
+                }
+            }, 
+            "id": "intact_EBI-6050745", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6050745"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "1", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9QXY2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "2", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_D3ZGE6"
+                }
+            ]
+        }, 
+        {
+            "id": "uniprotkb_Q9QWI6-2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9QWI6-2"
+            }, 
+            "label": "q9qwi6-2", 
+            "object": "interactor", 
+            "organism": {
+                "common": "mouse", 
+                "scientific": "Mus musculus", 
+                "taxid": "10090"
+            }, 
+            "sequence": "MGNAPSQDPERSSPPMLSADDAEYPREYRTLGGGGGGGSGGRRFSNVGLVHTSERRHTVIAAQSLEALSGLQKADADRKRDAFMDHLKSKYPQHALALRGQQDRMREQVGGWTVDPVCLLSSLCSHLHGDSTPSGAGQPAQQPNYWSFKTRSSRHTQGAQPGLADQAAKLSYASAESLETMSEAELPLGFSRMNRFRQSLPLSRSASQTKLRSPGVLFLQFGEETRRVHITHEVSSLDTLHALIAHMFPQKLTMGMLKSPNTAILIKDEARNVFYELEDVRDIQDRSIIKIYRKEPLYAAFPGSHLTNGDLRREMVYASRESSPTRRLNNLSPASHLASSSPPPGLPSGLPSGLPSGSPSRSRLSYAGGRPPSYAGSPVHHAAERLGGAPTGQGVSPSPSAILERRDVKPDEDLAGKAGGMVLVKGEGLYADPYGLLHEGRLSLAAAAETHSHTRARAACTSGVPCALSAPTPLPRCSPTWRTRCTRRALAALYGDGYGFRLPPSSPQKLADVSAPSGGPPPPHSPYSGPPSRGSPVRQSFRKDSGSSSVFAESPGGKARSTGSASTAGAPPSELFPGPGERSLVGFGPPVPAKDTETRERMEAMEKQIASLTGLVQSALLRGSEPETPSEKVEGSNGAATPSAPVCGSGSKSSGATPVSGPPPPSASSTPAGQPTAVSRLQMQLHLRGLQNSASDLRGQLQQLRNVQLQNQESVRALLKPTEADVSMRVSEAARRQEDPLQRQRTLVEEERLRYLNDEELITQQLNDLEKSVEKIQRDVAHNHRLMPGPELEEKALVLKQLGETLTELKAHFPGLQSKMRVVLRVEVEAVKFLKEEPQRLDGLLKRCRGVTDTLAQIRRQVDEGMWPPPNNLLNQSPKKVAAETDFSKGLDFEIPPPSPPLNLHELSGPAEGTPLTPKSTNPTKCLDASSKRNTDKAVSVEAAERDWEEKRAALTQYSAKDINRLLEETQAELLKAIPDLDCASKTHPGPAPTPDHKPPKAPHGQKAAPRTEPSGRRGSDELTVPRYRTEKPSKSPPPPPPRRSFPSSHGLTTTRTGEVVVTSKKDSVFIKKAESEELEVQKPQVKLRRAVSEVVRPASTPPIMASAIKDEDDEERIIAELESGGSSVPPMKVVTPGASRLKAAQGPAGSPDKGKHGKQRTEYMRIQAQQQATKPSKEVSGPNETSSPGSEKPSGSRTSIPVLTSFGARNSSISF", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0007", 
+                    "name": "anti tag coimmunoprecipitation"
+                }, 
+                "figures": [
+                    "6c"
+                ], 
+                "host": {
+                    "cellType": {
+                        "id": "ACC 305", 
+                        "name": "Transformed human primary embryonal kidney cells."
+                    }, 
+                    "common": "human-293", 
+                    "scientific": "Homo sapiens transformed primary embryonal kidney cells", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "21725361"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-6050724"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:1262", 
+                    "name": "I2D"
+                }
+            }, 
+            "id": "intact_EBI-6060606", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6060606"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "name": "region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_D3ZGE6", 
+                                    "participantRef": "3", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0429", 
+                                "name": "necessary binding region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "experimentalFeatures": [
+                        {
+                            "id": "4", 
+                            "name": "region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_D3ZGE6", 
+                                    "participantRef": "3", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0732", 
+                                "name": "red fluorescent protein tag"
+                            }
+                        }
+                    ], 
+                    "id": "3", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_D3ZGE6"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "6", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9QWI6-2"
+                }
+            ]
+        }, 
+        {
+            "experiment": {
+                "detmethod": {
+                    "id": "MI:0006", 
+                    "name": "anti bait coimmunoprecipitation"
+                }, 
+                "figures": [
+                    "6d"
+                ], 
+                "host": {
+                    "cellType": {
+                        "id": "ACC 305", 
+                        "name": "Transformed human primary embryonal kidney cells."
+                    }, 
+                    "common": "human-293", 
+                    "scientific": "Homo sapiens transformed primary embryonal kidney cells", 
+                    "taxid": "9606"
+                }, 
+                "pubid": [
+                    {
+                        "db": "pubmed", 
+                        "id": "21725361"
+                    }, 
+                    {
+                        "db": "intact", 
+                        "id": "EBI-6050724"
+                    }
+                ], 
+                "sourceDatabase": {
+                    "id": "MI:1262", 
+                    "name": "I2D"
+                }
+            }, 
+            "id": "intact_EBI-6081078", 
+            "identifiers": [
+                {
+                    "db": "intact", 
+                    "id": "EBI-6081078"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "id": "7", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_Q9QWI6-2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "id": "8", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0113", 
+                            "name": "western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_D3ZGE6"
+                }
+            ]
+        }
+    ]
+}

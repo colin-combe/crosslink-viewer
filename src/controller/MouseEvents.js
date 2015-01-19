@@ -209,22 +209,22 @@ var mouseUp = function(evt) {
         if (this.dragElement != null) { 
             if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
                 if (rightclick) { // RIGHT click
-                    if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                        if (this.dragElement.intra) {//if internal link
-                            if (this.dragElement.proteinLink)
-                                this.dragElement.proteinLink.fromProtein.toggleFlipped();
-                        } else {
-                            if (this.dragElement.hidden !== undefined) {//if ProteinLink
-                                this.dragElement.hidden = true;
-                            } else {//its a residue link
-                                this.dragElement.proteinLink.hidden = true;
-                            }
-                            this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-                            this.checkLinks();
-                        }
-                    } else {//right click on protein
-                    //    this.dragElement.setParked(!this.dragElement.isParked, c);
-                    }
+                    //~ if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
+                        //~ if (this.dragElement.intra) {//if internal link
+                            //~ if (this.dragElement.proteinLink)
+                                //~ this.dragElement.proteinLink.fromProtein.toggleFlipped();
+                        //~ } else {
+                            //~ if (this.dragElement.hidden !== undefined) {//if ProteinLink
+                                //~ this.dragElement.hidden = true;
+                            //~ } else {//its a residue link
+                                //~ this.dragElement.proteinLink.hidden = true;
+                            //~ }
+                            //~ this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
+                            //~ this.checkLinks();
+                        //~ }
+                    //~ } else {//right click on protein
+                    //~ //    this.dragElement.setParked(!this.dragElement.isParked, c);
+                    //~ }
                 }
                 else if (middleclick) {
                     //can't be used? problem with IE (scroll thingy)
@@ -298,23 +298,23 @@ var sortByNumber = function(a, b) {
  * Handle mouse wheel event.
  */
 var mouseWheel = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
-    var delta;
-    //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
-    if (evt.wheelDelta) {
-        delta = evt.wheelDelta / 3600; // Chrome/Safari
-    }
-    else {
-        delta = evt.detail / -90; // Mozilla
-    }
-    var z = 1 + delta;
-    var g = this.container;
-    var p = this.getEventPoint(evt);// seems to be correct, see above
-    var c = this.mouseToSVG(p.x, p.y);
-    var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    setCTM(g, g.getCTM().multiply(k));
-    this.scale();
-    return false;
+    //~ this.preventDefaultsAndStopPropagation(evt);
+    //~ var delta;
+    //~ //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
+    //~ if (evt.wheelDelta) {
+        //~ delta = evt.wheelDelta / 3600; // Chrome/Safari
+    //~ }
+    //~ else {
+        //~ delta = evt.detail / -90; // Mozilla
+    //~ }
+    //~ var z = 1 + delta;
+    //~ var g = this.container;
+    //~ var p = this.getEventPoint(evt);// seems to be correct, see above
+    //~ var c = this.mouseToSVG(p.x, p.y);
+    //~ var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
+    //~ setCTM(g, g.getCTM().multiply(k));
+    //~ this.scale();
+    //~ return false;
 };
 
 var clearSelection = function() {
@@ -330,7 +330,7 @@ var clearSelection = function() {
 var getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
 //    var rect = this.container.getBoundingClientRect();
-//   p.x = evt.clientX - rect.left;
+//    p.x = evt.clientX - rect.left;
 //    p.y = evt.clientY - rect.top;
     var element = this.svgElement.parentNode;
     var top = 0, left = 0;
