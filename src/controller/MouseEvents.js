@@ -209,22 +209,22 @@ var mouseUp = function(evt) {
         if (this.dragElement != null) { 
             if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
                 if (rightclick) { // RIGHT click
-                    if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                        if (this.dragElement.intra) {//if internal link
-                            if (this.dragElement.proteinLink)
-                                this.dragElement.proteinLink.fromProtein.toggleFlipped();
-                        } else {
-                            if (this.dragElement.hidden !== undefined) {//if ProteinLink
-                                this.dragElement.hidden = true;
-                            } else {//its a residue link
-                                this.dragElement.proteinLink.hidden = true;
-                            }
-                            this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-                            this.checkLinks();
-                        }
-                    } else {//right click on protein
-                    //    this.dragElement.setParked(!this.dragElement.isParked, c);
-                    }
+                    //~ if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
+                        //~ if (this.dragElement.intra) {//if internal link
+                            //~ if (this.dragElement.proteinLink)
+                                //~ this.dragElement.proteinLink.fromProtein.toggleFlipped();
+                        //~ } else {
+                            //~ if (this.dragElement.hidden !== undefined) {//if ProteinLink
+                                //~ this.dragElement.hidden = true;
+                            //~ } else {//its a residue link
+                                //~ this.dragElement.proteinLink.hidden = true;
+                            //~ }
+                            //~ this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
+                            //~ this.checkLinks();
+                        //~ }
+                    //~ } else {//right click on protein
+                    //~ //    this.dragElement.setParked(!this.dragElement.isParked, c);
+                    //~ }
                 }
                 else if (middleclick) {
                     //can't be used? problem with IE (scroll thingy)

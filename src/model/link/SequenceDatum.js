@@ -6,27 +6,26 @@
 
 "use strict";
 
-/* construtor parameter is string with following format:
+/* construtor parameter sequenceDatumString is string with following format:
  *
  *              "?-?" = unknown 
  *              "n-n" = n-terminal range (to be represented as link to box beside n terminal)
  *              "c-c" = c-terminal range (to be represented as link to box beside c terminal)
  *              "123-123" = specific residue
- *              "123-456" = segment? don't say range
- *              "86..123-456..464" = segment with fuzzy boundaries
- *              "86..123-456" = segment with one fuzzy boundary
+ *              "123-456" = segment? (don't say range)
+ *              "86..123-456..464" = segment with uncertain boundaries
+ *              "86..123-456" = segment with one uncertain boundary
  *              "<8-123" = uncertain start between 1 and 8 to 123
- *              "123->256" = runcertain end between 256 and interactor.sequence.length
+ *              "123->256" = uncertain end between 256 and interactor.sequence.length
  */
 
-function SequenceDatum(sequenceDatumString) {
-	
+function SequenceDatum(node, sequenceDatumString) {
+	this.node = node;
 	//from a complex (bit of a hack)
-	if (typeof sequenceDatumString !== "string"){
-		sequenceDatumString = sequenceDatumString.pos;
-	}          
-	
-    sequenceDatumString = sequenceDatumString.trim();
+	//~ if (typeof sequenceDatumString !== "string"){
+		//~ sequenceDatumString = sequenceDatumString.pos;
+	//~ }          
+	sequenceDatumString = sequenceDatumString.trim();
 
     this.uncertainStart = null;
     this.start = '?';
@@ -54,41 +53,8 @@ function SequenceDatum(sequenceDatumString) {
         this.end = secondPart.substring(0, firstDotPosition) * 1;
         this.uncertainEnd = secondPart.substring(firstDotPosition + 2) * 1;
     }
-    
-//        var match = /(.+)-(.+)/.exec(fromSequenceData[0]);
-//    this.fromStartRes = match[1];
-//    this.fromEndRes = match[2];
-//    match = /(.+)-(.+)/.exec(toSequenceData[0]);
-//    this.toStartRes = match[1];
-//    this.toEndRes = match[2];
-
-
-
-//    var sum = 0, count = 0;
-//    if (range.uncertainStart !== null) {
-//        sum += range.uncertainStart;
-//        count++;
-//    }
-//    if (range.start !== null) {
-//        sum += range.start;
-//        count++;
-//    }
-//    if (range.end !== null) {
-//        sum += range.end;
-//        count++;
-//    }
-//    if (range.uncertainEnd !== null) {
-//        sum += range.uncertainEnd;
-//        count++;
-//    }
-//    this.midPoint = sum / count;
-
-//    console.log(sequenceDatumString);
-//    console.log(JSON.stringify(this));
 }
 
-//there was confusion...
-//
 //On 06/06/13 09:22, marine@ebi.ac.uk wrote:
 //> Concerning the ranges, I think there was a confusion :
 //>

@@ -233,6 +233,20 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
 				 }
 		}
     }
+    //~ count = this.nLinks.values().length;
+    //~ for (var ni = 0; ni < count; ni++) {
+		//~ var naryLink = this.naryLinks.values()[ni];
+        //~ if (subgraph.links.has(binaryLink.id) === false) {
+        	//~ subgraph.links.set(binaryLink.id, binaryLink);
+				//~ var otherEnd = binaryLink.getOtherEnd(this);
+				 //~ if (otherEnd) {
+					 //~ otherEnd.addConnectedNodes(subgraph);
+				 //~ }
+		//~ }
+    //~ }
+    
+    
+    
     //~ console.debug(subgraph.nodes.keys());
 };
 

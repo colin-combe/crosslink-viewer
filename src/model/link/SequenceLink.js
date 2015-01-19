@@ -13,25 +13,21 @@ var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
-function SequenceLink(id, fromSeqData, toSeqData, xlvController) {
+function SequenceLink(id, fromFeatPos, toFeatPos, xlvController) {
     this.id = id;
     this.ctrl = xlvController;
+    this.fromSequenceData = fromFeatPos;
+    this.toSequenceData = toFeatPos;
     //TODO - not dealing with non-contiguous features in different interactors
     //TEMP - tidy this up
-    this.fromInteractor = this.ctrl.participants.get(fromSeqData[0].interactorRef + '(' + fromSeqData[0].participantRef + ')'); 
-	this.toInteractor = this.ctrl.participants.get(toSeqData[0].interactorRef+ '(' + toSeqData[0].participantRef + ')'); 
-	this.interactors = [this.fromInteractor, this.toInteractor];
-	this.fromSequenceData = new Array();
-    var seqDatumCount = fromSeqData.length;
-    for (var i = 0; i < seqDatumCount; i++) {
-        this.fromSequenceData.push(new SequenceDatum(fromSeqData[i]));
-    }
-    this.toSequenceData = new Array();
-    seqDatumCount = toSeqData.length;
-    for (i = 0; i < seqDatumCount; i++) {
-        this.toSequenceData.push(new SequenceDatum(toSeqData[i]));
-    }
-    //used to avoid some unnecessary manipulation of DOM
+    var fromInteractor = this.fromSequenceData[0].node;
+	var toInteractor = this.toSequenceData[0].node;
+	this.interactors = [fromInteractor, toInteractor];
+	//TODO - get rid of following
+	fromInteractor.sequenceLinks.set(id, this);
+	toInteractor.sequenceLinks.set(id, this);
+		
+	//used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.initSVG();
 }
@@ -221,8 +217,8 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
     //~ if (this.shown) { //don't waste time changing DOM if link is not visible
-        var fromInteractor = this.fromInteractor;
-        var toInteractor = this.toInteractor;
+        var fromInteractor = this.fromSequenceData[0].node;
+        var toInteractor = this.toSequenceData[0].node;
         //calculate mid points of from and to sequence data
         var fMid, tMid;
         if (fromInteractor.form === 0) {
@@ -258,12 +254,12 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out < 180) {
             fyOffset = -10;
         }
-        var fRotRad = (this.fromInteractor.rotation / 360) * Math.PI * 2;
+        var fRotRad = (fromInteractor.rotation / 360) * Math.PI * 2;
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
 //now for 'to' interactor
-        out = (abmpDeg - this.toInteractor.rotation);
+        out = (abmpDeg - toInteractor.rotation);
         if (out < 0) {
             out += 360;
         }
