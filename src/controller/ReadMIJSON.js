@@ -26,7 +26,6 @@ var readMIJSON = function(miJson, expand) {
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
     //default is to expand
 	if (typeof expand === 'undefined'){expand = true;}
-
 	var data = miJson.data;
     var dataElementCount = data.length;
     var self = this;
@@ -57,6 +56,9 @@ var readMIJSON = function(miJson, expand) {
 				}
 				if (jsonParticipant.ptms) {
 					features = features.concat(jsonParticipant.ptms);
+				}
+				if (jsonParticipant.otherFeatures) {
+					features = features.concat(jsonParticipant.otherFeatures);
 				}
 				
 				var fCount = features.length;
@@ -151,6 +153,9 @@ var readMIJSON = function(miJson, expand) {
 					}
 					if (participant.ptms) {
 						features = features.concat(participant.ptms);
+					}
+					if (participant.otherFeatures) {
+						features = features.concat(participant.otherFeatures);
 					}
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
@@ -279,6 +284,9 @@ var readMIJSON = function(miJson, expand) {
 					}
 					if (participant.ptms) {
 						features = features.concat(participant.ptms);
+					}
+					if (participant.otherFeatures) {
+						features = features.concat(participant.otherFeatures);
 					}
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
