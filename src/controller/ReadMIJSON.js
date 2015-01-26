@@ -180,6 +180,9 @@ var readMIJSON = function(miJson, expand) {
 					//doesn't already exist, make new nLink
 					nLink = new NaryLink(nLinkId, self);
 					self.allNaryLinks.set(nLinkId, nLink);
+					//alot of time is being spent on creating these IDs, stash them in the interaction object?
+					interaction.naryId =  nLinkId;
+
 				}
 				nLink.addEvidence(interaction);
 				
@@ -368,6 +371,9 @@ var readMIJSON = function(miJson, expand) {
 	
 
 	function getNaryLinkIdFromInteraction(interaction) {
+		if (interaction.naryId) {
+			return interaction.naryId;
+		}
 		var jsonParticipants = interaction.participants;
 		var participantCount = jsonParticipants.length    
 			
