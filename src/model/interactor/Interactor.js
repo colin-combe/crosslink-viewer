@@ -195,11 +195,13 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     if (this.selfLink) {
 		this.selfLink.setLinkCoordinates(this); 
 	}
-    links = this.sequenceLinks.values();
-    c = links.length;
-    for (var l = 0; l < c; l++) {
-        links[l].setLinkCoordinates(this);
-    }    
+	if (this.form === 1){
+		links = this.sequenceLinks.values();
+		c = links.length;
+		for (var l = 0; l < c; l++) {
+			links[l].setLinkCoordinates(this);
+		}    
+	}
 };
 
 //TODO: following 3 functions are used by auto layout and need work

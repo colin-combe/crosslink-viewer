@@ -29,7 +29,7 @@ function SequenceLink(id, fromFeatPos, toFeatPos, xlvController) {
 		
 	//used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.initSVG();
+    //this.initSVG();
 }
 
 SequenceLink.prototype.initSVG = function() {
@@ -138,6 +138,9 @@ SequenceLink.prototype.anyInteractorIsBar = function() {
 SequenceLink.prototype.show = function() {
   	if (this.ctrl.initComplete) {
         if (!this.shown) {
+			if (!this.glyph){
+				this.initSVG();
+			}
 			this.shown = true;
             //this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
             this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
@@ -327,7 +330,11 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             highlightGlyphPath += getPathSegments(triPointMid, ttMid,
                     highlightStartRes, highlightEndRes, toInteractor, tyOffset);
         }
-
+		
+		if (!this.glyph){
+			this.initSVG();
+		}
+		
         this.glyph.setAttribute("d", glyphPath);
         this.uncertainGlyph.setAttribute("d", uncertainGlyphPath);
         this.highlightGlyph.setAttribute("d", highlightGlyphPath);
