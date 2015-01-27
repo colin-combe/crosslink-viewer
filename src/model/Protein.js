@@ -156,7 +156,7 @@ function Protein(id, xinetController, acc, name) {
 }
 
 //sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
-Protein.prototype.initProtein = function(sequence){//, name, description, size) {
+Protein.prototype.setSequence = function(sequence){//, name, description, size) {
     //check for labeling modifications in sequence now, we're about to lose this info
     if (/\d/.test(sequence)) {//is there a digit in the sequence?
         this.labeling = '';// as in silac labelling

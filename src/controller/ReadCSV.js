@@ -1,4 +1,4 @@
-//    xiNET cross-link Viewer
+//    xiNET Cross-link Viewer
 //    Copyright 2013 Rappsilber Laboratory
 //
 //    This product includes software developed at
@@ -7,19 +7,16 @@
 //    author: Colin Combe
 //
 //    ReadCSV.js
+
 "use strict";
 
 xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
-    var rows = d3.csv.parseRows(csvContents);
-    
+    var rows = d3.csv.parseRows(csvContents);    
     var headers = rows[0];
-    
     for (var h = 0; h < headers.length; h++) {
 		headers[h] = headers[h].trim();	
 	}
-    
-    console.log(headers.toString());
-    
+    //console.log(headers.toString());
     var iProt1 = headers.indexOf('Protein1');
     var iRes1 = headers.indexOf('PepPos1');
     var iProt2 = headers.indexOf('Protein2');
@@ -31,7 +28,6 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
     var iLinkPosition2 = headers.indexOf('LinkPos2');
     var iPepSeq2 = headers.indexOf('PepSeq2');
     var iType = headers.indexOf('Type');//for xQuest looplinks and monolinks 
-    
     //missing Protein column
     if (iProt1 === -1){
 		alert("Failed to read column 'Protein1' from CSV file");
@@ -104,10 +100,10 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 						var protein = new Protein(id, self, acc, name);
 						self.proteins.set(id, protein);
 						
-						protein.initProtein("SEQUENCE-MISSING");
+						//protein.setSequence("SEQUENCE-MISSING");
 						
 						xiNET_Storage.getSequence(id, function(ident, seq){
-								self.proteins.get(ident).initProtein(seq);
+								self.proteins.get(ident).setSequence(seq);
 							}
 						);
 						
