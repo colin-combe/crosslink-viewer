@@ -385,10 +385,10 @@ xiNET.Controller.prototype.init = function(width, height) {
         //make inital form sticks or blobs
         var proteins = this.proteins.values();
         var proteinCount = proteins.length;
-        for (var p = 0; p < proteinCount; p++) { //temp
-			var prot = proteins[p];
-            prot.setPosition(0, 0);
-		}
+        //~ for (var p = 0; p < proteinCount; p++) { //temp
+			//~ var prot = proteins[p];
+            //~ prot.setPosition(0, 0);
+		//~ }
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
             if (this.proteins.keys().length < 3) {

@@ -106,13 +106,6 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 								self.proteins.get(ident).setSequence(seq);
 							}
 						);
-						
-						//~ var accLookupEntry = accLookupMap.get(acc);
-						//~ if (typeof accLookupEntry === "undefined") {
-							//~ accLookupMap.set(acc, [id]);
-						//~ }else{
-							//~ accLookupEntry.push(id);
-						//~ }
 					}
 				}
             }

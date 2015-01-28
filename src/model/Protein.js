@@ -297,6 +297,9 @@ Protein.prototype.mouseOut = function(evt) {
 };
 
 Protein.prototype.getBlobRadius = function() {
+	if (!this.size){
+		 return 10; 
+	}
     return Math.sqrt(this.size / Math.PI);
 };
 
@@ -747,15 +750,16 @@ Protein.prototype.toCircle = function(){//svgP) {
 		.attr("rx", r + 2.5).attr("ry", r + 2.5)
 		.duration(Protein.transitionTime);		   
 
-	d3.select(this.upperGroup).transition().attr("transform", 
-			"translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
-			.duration(Protein.transitionTime);
-	
-	d3.select(this.lowerGroup).transition().attr("transform", 
-		"translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
-			.duration(Protein.transitionTime);
+	//U R HERE - what was following for?
+	//~ d3.select(this.upperGroup).transition().attr("transform", 
+			//~ "translate(" + this.x + " " + this.y + ")" 
+			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			//~ .duration(Protein.transitionTime);
+	//~ 
+	//~ d3.select(this.lowerGroup).transition().attr("transform", 
+		//~ "translate(" + this.x + " " + this.y + ")" 
+			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
+			//~ .duration(Protein.transitionTime);
 	
 	 if (this.internalLink != null) {
 		var resLinks = this.internalLink.residueLinks.values();
