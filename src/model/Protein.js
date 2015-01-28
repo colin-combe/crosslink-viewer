@@ -30,8 +30,8 @@ function Protein(id, xinetController, acc, name) {
     this.proteinLinks = d3.map();
     this.internalLink = null;
     // layout info
-    this.x = null;40;
-    this.y = null;40;
+    this.x = 40;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -234,16 +234,17 @@ Protein.prototype.mouseDown = function(evt) {
         var message = "";
 		//heading, including PDB link
 		message += "<h5>" + this.name + " &nbsp;&nbsp;[" + this.id + "] </h5><p>";
-		if (typeof this.accession !== "undefined") {
+		if (this.accession) {
 			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
 					+ this.accession + "' target='_blank'>PDB</a></p>";
 		}
 		this.xlv.message(message);
 		var self = this;
-		xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-			self.xlv.message(message + "<pre>" + txt + "</pre>");
-		});
-		        
+		if (this.accession){
+			xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
+				self.xlv.message(message + "<pre>" + txt + "</pre>");
+			});
+		}
         return false;
 };
 

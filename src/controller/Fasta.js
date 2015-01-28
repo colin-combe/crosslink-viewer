@@ -9,6 +9,7 @@ xiNET.Controller.prototype.readFasta = function(file){
 	var tempDescription;
 	var tempSeq;
 	var iFirstSpace;
+	//Also adds reversed / decoys
 	for(var i = 0;i < line_array.length;i++){
 		var line = "" + line_array[i];
 		// semi-colons indicate comments, ignore them
@@ -16,11 +17,20 @@ xiNET.Controller.prototype.readFasta = function(file){
 			// greater-than indicates description line
 			if(line.indexOf(">") === 0){
 				if (tempIdentifier !== null) {
-					var prot = new Protein(tempIdentifier, this);
-					prot.initProtein(tempSeq.trim(), 
-									nameFromIdentifier(tempIdentifier), 
-									tempDescription);
+					var prot = new Protein(tempIdentifier, this, null, nameFromIdentifier(tempIdentifier));
+					prot.setSequence(tempSeq.trim());
 					this.proteins.set(tempIdentifier, prot);
+					
+					var decRevProt = new Protein("decoy_reverse_" + tempIdentifier, 
+						this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+					decRevProt.setSequence(tempSeq.trim().split("").reverse().join(""));
+					this.proteins.set("decoy_reverse_" + tempIdentifier, decRevProt);
+						
+					var revProt = new Protein("reverse_" + tempIdentifier, 
+						this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+					revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
+					this.proteins.set("reverse_" + tempIdentifier, revProt);			
+					
 					tempSeq = "";
 				}
 				iFirstSpace = line.indexOf(" ");
@@ -35,65 +45,19 @@ xiNET.Controller.prototype.readFasta = function(file){
 		}
 	}	
 	//there will be one protein still to be added when we get to end
-	var prot = new Protein(tempIdentifier, this);
-	prot.initProtein(tempSeq.trim(), 
-				nameFromIdentifier(tempIdentifier), 
-				tempDescription);
+	var prot = new Protein(tempIdentifier, this, null, nameFromIdentifier(tempIdentifier));
+	prot.setSequence(tempSeq.trim());
 	this.proteins.set(tempIdentifier, prot);
+	
+	var decRevProt = new Protein("decoy_reverse_" + tempIdentifier, 
+		this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+	decRevProt.setSequence(tempSeq.trim().split("").reverse().join(""));
+	this.proteins.set("decoy_reverse_" + tempIdentifier, decRevProt);
 		
-	//add reversed
-	for(var i = 0;i < line_array.length;i++){
-		var line = "" + line_array[i];
-		// semi-colons indicate comments, ignore them
-		if(line.indexOf(";") !== 0){
-			// greater-than indicates description line
-			if(line.indexOf(">") === 0){
-				if (tempIdentifier !== null) {
-					tempIdentifier = "decoy_reverse_" + tempIdentifier;
-					var prot = new Protein(tempIdentifier, this);
-					prot.initProtein(tempSeq.trim().split("").reverse().join(""), 
-									"DECOY_" + nameFromIdentifier(tempIdentifier), 
-									"DECOY. " + tempDescription);
-					this.proteins.set(tempIdentifier, prot);
-					tempSeq = "";
-				}
-				iFirstSpace = line.indexOf(" ");
-				if (iFirstSpace === -1 ) iFirstSpace = line.length;
-				tempIdentifier = line.substring(1, iFirstSpace).trim().replace(/(['"])/g, '');
-				tempDescription = line.substring(iFirstSpace).trim();
-				//console.log(tempIdentifier);
-			}
-			else{
-				tempSeq += line.trim();			
-			}		
-		}
-	}
-	for(var i = 0;i < line_array.length;i++){
-		var line = "" + line_array[i];
-		// semi-colons indicate comments, ignore them
-		if(line.indexOf(";") !== 0){
-			// greater-than indicates description line
-			if(line.indexOf(">") === 0){
-				if (tempIdentifier !== null) {
-					tempIdentifier = "reverse_" + tempIdentifier;
-					var prot = new Protein(tempIdentifier, this);
-					prot.initProtein(tempSeq.trim().split("").reverse().join(""), 
-									"DECOY_" + nameFromIdentifier(tempIdentifier), 
-									"DECOY. " + tempDescription);
-					this.proteins.set(tempIdentifier, prot);
-					tempSeq = "";
-				}
-				iFirstSpace = line.indexOf(" ");
-				if (iFirstSpace === -1 ) iFirstSpace = line.length;
-				tempIdentifier = line.substring(1, iFirstSpace).trim().replace(/(['"])/g, '');
-				tempDescription = line.substring(iFirstSpace).trim();
-		//				console.log(tempIdentifier);
-			}
-			else{
-				tempSeq += line.trim();			
-			}		
-		}
-	}		
+	var revProt = new Protein("reverse_" + tempIdentifier, 
+		this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+	revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
+	this.proteins.set("reverse_" + tempIdentifier, revProt);			
 	
 	function nameFromIdentifier(ident){
 		var name = ident;

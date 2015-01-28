@@ -266,29 +266,31 @@ xiNET.Controller.prototype.addMatches = function(matches) {
 //TODO: make start and end res last args
 xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
     var protein = this.proteins.get(protId);
-	//lets just check a few things here...
-	// we're using human (starts at 1) numbering
-	if (startRes == null && endRes == null) {
-		startRes = 1;
-		endRes = protein.size;
-	}
-	else if (startRes == null)
-		startRes = endRes;
-	else if (endRes == null)
-		endRes = startRes;
+    if (protein) {
+		//lets just check a few things here...
+		// we're using human (starts at 1) numbering
+		if (startRes == null && endRes == null) {
+			startRes = 1;
+			endRes = protein.size;
+		}
+		else if (startRes == null)
+			startRes = endRes;
+		else if (endRes == null)
+			endRes = startRes;
 
-	if (startRes > endRes) {
-		var temp = startRes;
-		startRes = endRes;
-		endRes = temp;
-	}
+		if (startRes > endRes) {
+			var temp = startRes;
+			startRes = endRes;
+			endRes = temp;
+		}
 
-	var annotation = new Annotation(annotName, startRes, endRes, colour);
-	if (protein.customAnnotations == null) {
-		protein.customAnnotations = new Array();
+		var annotation = new Annotation(annotName, startRes, endRes, colour);
+		if (protein.customAnnotations == null) {
+			protein.customAnnotations = new Array();
+		}
+		protein.customAnnotations.push(annotation);
+		protein.setPositionalFeatures(protein.customAnnotations);
 	}
-	protein.customAnnotations.push(annotation);
-	protein.setPositionalFeatures(protein.customAnnotations);
 }
 
 xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
@@ -311,9 +313,19 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
 	}
     var iProtId = headers.indexOf('ProteinId');
     var iAnnotName = headers.indexOf('AnnotName');
+    if (iAnnotName === -1) {
+		iAnnotName = headers.indexOf('Name')
+	}
     var iStartRes = headers.indexOf('StartRes');
+    if (iStartRes === -1) {
+		iStartRes = headers.indexOf('StartResidue')
+	}
     var iEndRes = headers.indexOf('EndRes');
-    var iColour = headers.indexOf('Color');            
+    if (iEndRes === -1) {
+		iEndRes = headers.indexOf('EndResidue')
+	}
+    var iColour = headers.indexOf('Color');    
+
     var l = rows.length;
     for (var i = 1; i < l; i++) {
         this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
@@ -363,7 +375,7 @@ xiNET.Controller.prototype.init = function(width, height) {
     this.svgElement.setAttribute("style", "display:block;");
 
     this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-    Protein.UNITS_PER_RESIDUE = ((width / 2)) / 2000;//(((width - 350)  * 0.5) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
+    Protein.UNITS_PER_RESIDUE = (((width - 350)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
 
     this.initComplete = true;
 

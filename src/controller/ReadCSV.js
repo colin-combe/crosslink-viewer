@@ -210,6 +210,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 					m[iPepSeq1],m[iPepSeq2]);
 			}
 		}
+		
 		//~ var protCount = self.proteins.values().length;
 		//~ var prots = self.proteins.values();
 		//~ for (var p = 0; p < protCount; p++) {
@@ -218,6 +219,7 @@ xiNET.Controller.prototype.readCSV = function(csvContents, manualAnnotations) {
 				//~ self.proteins.remove(prot.id);
 			//~ }
 		//~ }       
+		
         self.init();
         if (typeof initSlider === "function"){
 			initSlider();
