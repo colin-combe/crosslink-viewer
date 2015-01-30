@@ -195,13 +195,11 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     if (this.selfLink) {
 		this.selfLink.setLinkCoordinates(this); 
 	}
-	if (this.form === 1){
-		links = this.sequenceLinks.values();
-		c = links.length;
-		for (var l = 0; l < c; l++) {
-			links[l].setLinkCoordinates(this);
-		}    
-	}
+	links = this.sequenceLinks.values();
+	c = links.length;
+	for (var l = 0; l < c; l++) {
+		links[l].setLinkCoordinates(this);
+	}    
 };
 
 //TODO: following 3 functions are used by auto layout and need work
@@ -209,35 +207,24 @@ Interactor.prototype.countExternalLinks = function() {
     return this.binaryLinks.length;
 };
 
-Interactor.prototype.getSubgraph = function() {
-    if (this.subgraph == null) { // don't check for undefined here
-        var subgraph = {
-            nodes: d3.map(),
-            links: d3.map()
-        };
-        this.addConnectedNodes(subgraph);
-        this.ctrl.subgraphs.push(subgraph); 
-    }
-    return this.subgraph;
-};
-
-Interactor.prototype.addConnectedNodes = function(subgraph) {
-	this.subgraph = subgraph;
-	subgraph.nodes.set(this.id, this);	
-	var count = this.binaryLinks.values().length;
-    for (var bi = 0; bi < count; bi++) {
-		var binaryLink = this.binaryLinks.values()[bi];
-        if (subgraph.links.has(binaryLink.id) === false) {
-        	subgraph.links.set(binaryLink.id, binaryLink);
-				var otherEnd = binaryLink.getOtherEnd(this);
-				 if (otherEnd) {
-					 otherEnd.addConnectedNodes(subgraph);
-				 }
-		}
-    }
-    //~ count = this.nLinks.values().length;
-    //~ for (var ni = 0; ni < count; ni++) {
-		//~ var naryLink = this.naryLinks.values()[ni];
+//~ Interactor.prototype.getSubgraph = function() {
+    //~ if (this.subgraph == null) { // don't check for undefined here
+        //~ var subgraph = {
+            //~ nodes: d3.map(),
+            //~ links: d3.map()
+        //~ };
+        //~ this.addConnectedNodes(subgraph);
+        //~ this.ctrl.subgraphs.push(subgraph); 
+    //~ }
+    //~ return this.subgraph;
+//~ };
+//~ 
+//~ Interactor.prototype.addConnectedNodes = function(subgraph) {
+	//~ this.subgraph = subgraph;
+	//~ subgraph.nodes.set(this.id, this);	
+	//~ var count = this.binaryLinks.values().length;
+    //~ for (var bi = 0; bi < count; bi++) {
+		//~ var binaryLink = this.binaryLinks.values()[bi];
         //~ if (subgraph.links.has(binaryLink.id) === false) {
         	//~ subgraph.links.set(binaryLink.id, binaryLink);
 				//~ var otherEnd = binaryLink.getOtherEnd(this);
@@ -246,11 +233,19 @@ Interactor.prototype.addConnectedNodes = function(subgraph) {
 				 //~ }
 		//~ }
     //~ }
-    
-    
-    
-    //~ console.debug(subgraph.nodes.keys());
-};
+    //~ // count = this.nLinks.values().length;
+    //~ // for (var ni = 0; ni < count; ni++) {
+		//~ // var naryLink = this.naryLinks.values()[ni];
+        //~ // if (subgraph.links.has(binaryLink.id) === false) {
+        	//~ // subgraph.links.set(binaryLink.id, binaryLink);
+				//~ // var otherEnd = binaryLink.getOtherEnd(this);
+				 //~ // if (otherEnd) {
+					 //~ // otherEnd.addConnectedNodes(subgraph);
+				 //~ // }
+		//~ // }
+    //~ // }
+    //~ // console.debug(subgraph.nodes.keys());
+//~ };
 
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
