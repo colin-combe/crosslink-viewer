@@ -14,49 +14,48 @@ var Interactor = require('../model/interactor/Interactor');
 
 var autoLayout = function(width, height) {
 
-    //functions used...
-    function xForColumn(c) {
-        return (c * ((/*2 **/ self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
-    };
-
-    function yForRow(r) {
-        return (r * self.maxBlobRadius);
-    };
+    //~ function xForColumn(c) {
+        //~ return (c * ((/*2 **/ self.maxBlobRadius) + Interactor.LABELMAXLENGTH)) - self.maxBlobRadius;
+    //~ };
+//~ 
+    //~ function yForRow(r) {
+        //~ return (r * self.maxBlobRadius);
+    //~ };
         
-    function reorderedNodes(linearGraph) {
-        var reorderedNodes = [];
-        appendNode(getStartNode());
-        return reorderedNodes;
-
-        function getStartNode() {
-            var ns = linearGraph.nodes.values();
-            var count = ns.length;
-            //                    alert (nodeCount);
-            for (var n = 0; n < count; n++) {
-                if (ns[n].countExternalLinks() < 2) {
-                    //                            alert("got start");
-                    return ns[n];
-                }
-            }
-            console.error("missed linear subgraph start");
-            return null;
-        }
-
-        function appendNode(currentNode) {
-            reorderedNodes.push(currentNode.id);
-            for (var l = 0; l < currentNode.links.values().length; l++) {
-                var link = currentNode.links.values()[l];
-                if (/*link.isBinary && */link.check() === true) {
-                    var nextNode = link.getOtherEnd(currentNode);
-                    if (reorderedNodes.indexOf(nextNode.id) === -1) {
-                        //                    alert("here");
-                        appendNode(nextNode);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    //~ function reorderedNodes(linearGraph) {
+        //~ var reorderedNodes = [];
+        //~ appendNode(getStartNode());
+        //~ return reorderedNodes;
+//~ 
+        //~ function getStartNode() {
+            //~ var ns = linearGraph.nodes.values();
+            //~ var count = ns.length;
+            //~ //                    alert (nodeCount);
+            //~ for (var n = 0; n < count; n++) {
+                //~ if (ns[n].countExternalLinks() < 2) {
+                    //~ //                            alert("got start");
+                    //~ return ns[n];
+                //~ }
+            //~ }
+            //~ console.error("missed linear subgraph start");
+            //~ return null;
+        //~ }
+//~ 
+        //~ function appendNode(currentNode) {
+            //~ reorderedNodes.push(currentNode.id);
+            //~ for (var l = 0; l < currentNode.links.values().length; l++) {
+                //~ var link = currentNode.links.values()[l];
+                //~ if (/*link.isBinary && */link.check() === true) {
+                    //~ var nextNode = link.getOtherEnd(currentNode);
+                    //~ if (reorderedNodes.indexOf(nextNode.id) === -1) {
+                        //~ //                    alert("here");
+                        //~ appendNode(nextNode);
+                        //~ break;
+                    //~ }
+                //~ }
+            //~ }
+        //~ }
+    //~ }
     
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
@@ -319,7 +318,7 @@ var autoLayout = function(width, height) {
                 .gravity(85 * k)
                 .linkDistance(linkDistance)
                 .charge(-18 / k)
-                .size([gWidth - xForColumn(1), height - yForRow(2)]);
+                .size([width, height]);
         var nodeCount = this.force.nodes().length;
         var forceLinkCount = this.force.links().length;
         this.force.on("tick", function(e) {
@@ -330,7 +329,7 @@ var autoLayout = function(width, height) {
                 var protein = self.participants.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx + self.layoutXOffset, ny + yForRow(1));
+                protein.setPosition(nx, ny);
                 protein.setAllLinkCoordinates();
             }
         });
