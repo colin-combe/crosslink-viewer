@@ -188,7 +188,7 @@ xiNET.Controller.prototype.clear = function() {
 
     this.proteinCount = 0;
     this.maxBlobRadius = 30;
-    Protein.MAXSIZE = 0;
+    Protein.MAXSIZE = 100;
 
     this.layout = null;
     if (typeof this.force !== 'undefined' && this.force != null) {
@@ -385,10 +385,6 @@ xiNET.Controller.prototype.init = function(width, height) {
         //make inital form sticks or blobs
         var proteins = this.proteins.values();
         var proteinCount = proteins.length;
-        //~ for (var p = 0; p < proteinCount; p++) { //temp
-			//~ var prot = proteins[p];
-            //~ prot.setPosition(0, 0);
-		//~ }
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
             if (this.proteins.keys().length < 3) {
@@ -402,13 +398,6 @@ xiNET.Controller.prototype.init = function(width, height) {
         }
         this.autoLayout(width, height);
     }
-    this.message('Proteins: ' + this.proteins.values().length +
-            '. Protein-protein links: ' + this.proteinLinks.values().length);
-
-    //temp
-	//    this.geneNames = d3.map();
-	//    this.getGeneName(0);
-	//this.checkLinks();
     this.initMouseEvents();
     if (typeof this.initTouchEvents === 'function'){
 		this.initTouchEvents();

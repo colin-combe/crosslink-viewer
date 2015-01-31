@@ -23,5 +23,4 @@ java -jar compiler.jar \
 --js=../src/controller/ExternalControls.js \
 --js=../src/controller/Rotator.js \
 --js=../src/controller/ReadCSV.js \
---js=../src/controller/Fasta.js \
 --js_output_file=./xiNET_1.0.2.js;

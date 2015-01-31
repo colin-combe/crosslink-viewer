@@ -31,7 +31,6 @@
         <script type="text/javascript" src="../src/controller/Rotator.js"></script>
         <script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
         <script type="text/javascript" src="../src/controller/ReadCSV.js"></script>
-        <script type="text/javascript" src="../src/controller/Fasta.js"></script>
     </head>
     <body>
 	<div id="outerDiv">
@@ -135,12 +134,9 @@
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
-				d3.text('./data/results.fasta', "text/plain", function(text) {
-					xlv.readFasta(text);
-					//hideDecoy(true);
-					//must read data file after completing fasta file parse
-					d3.text('./data/results.csv', "text/csv", function(text) {
-						xlv.readCSV(text);
+				d3.text('./data/results.fasta', "text/plain", function(fasta) {
+					d3.text('./data/results.csv', "text/csv", function(csv) {
+						xlv.readCSV(csv, fasta);
 					});				
 				});							
 				

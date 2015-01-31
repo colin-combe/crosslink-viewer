@@ -8,7 +8,7 @@
 "use strict";
 
 Protein.STICKHEIGHT = 20; 		// height of stick in pixels
-Protein.MAXSIZE = 0; 			// residue count of longest sequence
+Protein.MAXSIZE = 100; 			// residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)
 Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
 Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
@@ -32,6 +32,7 @@ function Protein(id, xinetController, acc, name) {
     // layout info
     this.x = 40;
     this.y = 40;
+    this.size = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -109,7 +110,7 @@ function Protein(id, xinetController, acc, name) {
 	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (5) + " " + Protein.labelY + ")");
+		"translate( -" + (5) + " " + Protein.labelY + ") rotate(0) scale(1, 1)");
     this.upperGroup.appendChild(this.labelSVG);
    	
    	//ticks (and animo acid letters)
@@ -129,7 +130,11 @@ function Protein(id, xinetController, acc, name) {
 	this.upperGroup.appendChild(this.circDomains);
 
     this.scaleLabels = new Array();
-
+	//this.setRotation(this.rotation);
+	//~ var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+	//~ var k = this.xlv.svgElement.createSVGMatrix().rotate(0).translate(0, Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+	//~ this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
+	
     // events
     var self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
@@ -146,11 +151,6 @@ function Protein(id, xinetController, acc, name) {
 		self.xlv.message("protein touch start");
 		self.touchStart(evt);
     };
-    //~ this.upperGroup.ontouchmove = function(evt) {};
-	//~ this.upperGroup.ontouchend = function(evt) {};
-    //~ this.upperGroup.ontouchenter = function(evt) {};
-    //~ this.upperGroup.ontouchleave = function(evt) {};
-    //~ this.upperGroup.ontouchcancel = function(evt) {};
     this.isSelected = false;
 	this.showHighlight(false);
 }
@@ -373,42 +373,42 @@ Protein.prototype.setSelected = function(select) {
 };
 
 Protein.prototype.setRotation = function(angle) {
-    this.rotation = angle % 360;
-    if (this.rotation < 0) {
-        this.rotation += 360;
-	}
-    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
-    this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
-
-    var svg = this.xlv.svgElement;    
-	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
-	var labelTransform = d3.transform(transformToContainingGroup);
-	var sll = this.scaleLabels.length;
-	if (this.rotation >= 90 && this.rotation < 270) {
-			var k = svg.createSVGMatrix()
-						.translate(Math.abs(labelTransform.translate[0]), -Protein.labelY)
-						.rotate(180, 0, 0);
-			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.form ===1){
-				for (var i = 0; i < sll; i++) {
-					   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
-					}
-					this.ticks.setAttribute("transform", "scale(1,-1)");
-			}
-	}
-    else {
-    		var k = svg.createSVGMatrix()
-						.translate(-(Math.abs(labelTransform.translate[0])), Protein.labelY);
-			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.form ===1){
-				for (var j = 0; j < sll; j++) {
-					this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
-				}
-				this.ticks.setAttribute("transform", "scale(1,1)");
-			}
-	}
+    //~ this.rotation = angle % 360;
+    //~ if (this.rotation < 0) {
+        //~ this.rotation += 360;
+	//~ }
+    //~ this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+    //~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+//~ 
+    //~ var svg = this.xlv.svgElement;    
+	//~ var transformToContainingGroup = this.labelSVG.getAttribute("transform");
+	//~ var labelTransform = d3.transform(transformToContainingGroup);
+	//~ var sll = this.scaleLabels.length;
+	//~ if (this.rotation >= 90 && this.rotation < 270) {
+			//~ var k = svg.createSVGMatrix()
+						//~ .translate(Math.abs(labelTransform.translate[0]), -Protein.labelY)
+						//~ .rotate(180, 0, 0);
+			//~ this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+			//~ if (this.form ===1){
+				//~ for (var i = 0; i < sll; i++) {
+					   //~ this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
+					//~ }
+					//~ this.ticks.setAttribute("transform", "scale(1,-1)");
+			//~ }
+	//~ }
+    //~ else {
+    		//~ var k = svg.createSVGMatrix()
+						//~ .translate(-(Math.abs(labelTransform.translate[0])), Protein.labelY);
+			//~ this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+			//~ if (this.form ===1){
+				//~ for (var j = 0; j < sll; j++) {
+					//~ this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
+				//~ }
+				//~ this.ticks.setAttribute("transform", "scale(1,1)");
+			//~ }
+	//~ }
 };
 
 // more accurately described as setting transform for top svg elements (sets scale also)
@@ -559,7 +559,7 @@ Protein.prototype.setScaleGroup = function() {
 				}
 			}
 		}
-		if (pixPerRes > 8) {
+		if (pixPerRes >= 8 && this.sequence) {
 			var seqLabelGroup = document.createElementNS(xiNET.svgns, "g");
 			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
 			var seqLabel = document.createElementNS(xiNET.svgns, "text");
@@ -749,19 +749,8 @@ Protein.prototype.toCircle = function(){//svgP) {
 		.attr("x", -r - 2.5).attr("y", -r - 2.5)
 		.attr("rx", r + 2.5).attr("ry", r + 2.5)
 		.duration(Protein.transitionTime);		   
-
-	//U R HERE - what was following for?
-	//~ d3.select(this.upperGroup).transition().attr("transform", 
-			//~ "translate(" + this.x + " " + this.y + ")" 
-			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
-			//~ .duration(Protein.transitionTime);
-	//~ 
-	//~ d3.select(this.lowerGroup).transition().attr("transform", 
-		//~ "translate(" + this.x + " " + this.y + ")" 
-			//~ + " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")")
-			//~ .duration(Protein.transitionTime);
 	
-	 if (this.internalLink != null) {
+	if (this.internalLink != null) {
 		var resLinks = this.internalLink.residueLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
@@ -806,14 +795,12 @@ Protein.prototype.toCircle = function(){//svgP) {
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Protein.transitionTime).each("end", 
 					function () {
-						//d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(anno));//mistake - this doesn't work 
-						//oh dear, this is a mess...
-						//~ for (var b = 0; b < ca; b++) {
-							//~ var annoB = annots[b];
-							//~ if (this === annoB.pieSlice){
-								//~ d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
-							//~ }
-						//~ }
+						for (var b = 0; b < ca; b++) {
+							var annoB = annots[b];
+							if (this === annoB.pieSlice){
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+							}
+						}
 					}
 				);
 			d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
@@ -829,17 +816,17 @@ Protein.prototype.toCircle = function(){//svgP) {
 	});
  
 	function update(interp) {
-		//~ if (self.isParked === false) { //that wont work
-			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-			var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-			self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
-		//~ }
-		//~ if (xInterpol !== null){
-			//~ self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
-		//~ }
-		//~ else {
-			//~ self.setPosition(self.getX(), self.getY());
-		//~ }
+		//~ // if (self.isParked === false) { //that wont work
+			//~ var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+			//~ var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+			//~ self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		//~ // }
+		//~ // if (xInterpol !== null){
+			//~ // self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+		//~ // }
+		//~ // else {
+			//~ // self.setPosition(self.getX(), self.getY());
+		//~ // }
 		
 	   	var rot = rotationInterpol(cubicInOut(interp));
 		self.setRotation(rot);

@@ -161,20 +161,28 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
             layoutObj.NAME = "ALL";
             layoutObj.children = children;
             for (var g = 0; g < nonLinearGraphs.length; g++) {
-                var nodes = nonLinearGraphs[g].nodes.values();
-                var nodeCount = nodes.length;
-                for (var n = 0; n < nodeCount; n++) {
-                    var prot = this.proteins.get(nodes[n].id);
-                    layoutObj.children.push(prot);
-                }
-            }
+				var nodes = nonLinearGraphs[g].nodes.values();
+				var nodeCount = nodes.length;
+				for (var n = 0; n < nodeCount; n++) {
+					var prot = this.proteins.get(nodes[n].id);
+					var nodeObj = {};
+					nodeObj.id = prot.id;
+					nodeObj.x = prot.x - this.layoutXOffset;
+					nodeObj.y = prot.y;
+					nodeObj.px = prot.x - this.layoutXOffset;
+					nodeObj.py = prot.y;
+					nodeObj.linkCount = prot.proteinLinks.keys().length;
+					nodeObj.size = 30;
+					layoutObj.children.push(nodeObj);
+				}
+			}
             var packLayout = d3.layout.pack()
                     .size([width - this.layoutXOffset, height])
                     .value(function(d) {
 						return d.size;
 					})
                     .sort(function comparator(a, b) {
-						return (b.proteinLinks.keys().length) - (a.proteinLinks.keys().length);
+						return (b.linkCount) - (a.linkCount);
 					});
             var nodes = packLayout.nodes(layoutObj);
             var nodeCount = nodes.length;

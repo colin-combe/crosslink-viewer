@@ -31,7 +31,6 @@
         <script type="text/javascript" src="../src/controller/Rotator.js"></script>
         <script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
         <script type="text/javascript" src="../src/controller/ReadCSV.js"></script>
-        <script type="text/javascript" src="../src/controller/Fasta.js"></script>
     </head>
     <body>
 	<div id="outerDiv">
@@ -142,19 +141,19 @@
 						document.getElementById('scoreLabel1').innerHTML = xlv.scores.min.toFixed(2);
 						document.getElementById('scoreLabel2').innerHTML = xlv.scores.max.toFixed(2) + '&nbsp;&nbsp;';
 						document.getElementById('debug1').innerHTML = 'Score Cut-Off:' + xlv.scores.min.toFixed(2);
-						new Control.Slider('handle1', 'track1', {
-							sliderValue: 0,
-							onSlide: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Score Cut-Off: ' + cut;
-								xlv.setCutOff(cut);
-							},
-							onChange: function(v) {
-								var cut = calcCutOff(v);
-								document.getElementById('debug1').innerHTML = 'Score Cut-Off: ' + cut;
-								xlv.setCutOff(cut);
-							}
-						});
+						//~ new Control.Slider('handle1', 'track1', {
+							//~ sliderValue: 0,
+							//~ onSlide: function(v) {
+								//~ var cut = calcCutOff(v);
+								//~ document.getElementById('debug1').innerHTML = 'Score Cut-Off: ' + cut;
+								//~ xlv.setCutOff(cut);
+							//~ },
+							//~ onChange: function(v) {
+								//~ var cut = calcCutOff(v);
+								//~ document.getElementById('debug1').innerHTML = 'Score Cut-Off: ' + cut;
+								//~ xlv.setCutOff(cut);
+							//~ }
+						//~ });
 						function calcCutOff(v) {
 							var result = (v * (xlv.scores.max - xlv.scores.min)) + xlv.scores.min;
 							result = result.toFixed(2);
