@@ -99,7 +99,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.mouseMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-    if (this.initComplete) { // just being cautious
+  //  if (this.initComplete) { // just being cautious
         var p = this.getEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
 
@@ -184,7 +184,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
         else {
             this.showTooltip(p);
         }
-    }
+   // }
     return false;
 };
 
@@ -241,10 +241,12 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 					} else if (evt.shiftKey) { //if shift key
 						this.dragElement.switchStickScale(c);
 					} else {
-						if (this.dragElement.form === 0) {
-							this.dragElement.setForm(1, c);
-						} else {
-							this.dragElement.setForm(0, c);
+						if (this.initComplete === true){
+							if (this.dragElement.form === 0) {
+								this.dragElement.setForm(1, c);
+							} else {
+								this.dragElement.setForm(0, c);
+							}
 						}
 					}
 				}

@@ -8,7 +8,7 @@
 "use strict";
 
 xiNET.Controller.prototype.checkLinks = function() {
-    if (this.initComplete) {
+    //if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);
 		var links = this.proteinLinks.values();
 		var linkCount = links.length;
@@ -16,12 +16,12 @@ xiNET.Controller.prototype.checkLinks = function() {
 			links[l].check();
 		}
 		this.svgElement.unsuspendRedraw(suspendID);
-	}
+	//}
 };
 
 xiNET.Controller.prototype.scale = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
-    if (this.initComplete) {
+    //if (this.initComplete) {
         this.z = this.container.getScreenCTM().inverse().a;
 
         var proteins = this.proteins.values();
@@ -64,7 +64,7 @@ xiNET.Controller.prototype.scale = function() {
                 }
             }
         }
-    }
+    //}
     this.svgElement.unsuspendRedraw(suspendID);
 };
 

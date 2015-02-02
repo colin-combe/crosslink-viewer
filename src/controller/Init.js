@@ -377,7 +377,7 @@ xiNET.Controller.prototype.init = function(width, height) {
     this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
     Protein.UNITS_PER_RESIDUE = (((width - 350)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
 
-    this.initComplete = true;
+    //~ this.initComplete = true;
 
     if (typeof this.layout !== 'undefined' && this.layout != null) {
         this.loadLayout();
@@ -387,12 +387,12 @@ xiNET.Controller.prototype.init = function(width, height) {
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-            if (this.proteins.keys().length < 3) {
-                prot.setForm(1);
-            }
-            else {
-                prot.setForm(0);
-            }
+            //~ if (this.proteins.keys().length < 3) {
+                //~ prot.setForm(1);
+            //~ }
+            //~ else {
+                //~ prot.setForm(0);
+            //~ }
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }

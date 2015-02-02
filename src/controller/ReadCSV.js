@@ -163,11 +163,14 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 					if (!self.proteins.has(id)) {
 						var protein = new Protein(id, self, acc, name);
 						self.proteins.set(id, protein);
-						
-						//protein.setSequence("SEQUENCE-MISSING");
+						var countSequences = 0;
 						
 						xiNET_Storage.getSequence(id, function(ident, seq){
-								//self.proteins.get(ident).setSequence(seq);
+								self.proteins.get(ident).setSequence(seq);
+								countSequences++;
+								if (countSequences === self.proteins.keys().length){
+									self.initComplete = true;
+								}
 							}
 						);
 					}

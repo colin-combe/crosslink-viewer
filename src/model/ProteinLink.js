@@ -481,7 +481,7 @@ ProteinLink.prototype.dashedLine = function(dash) {
     }
 };
 ProteinLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    //~ if (this.xlv.initComplete) {
         // TODO?: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
@@ -526,7 +526,7 @@ ProteinLink.prototype.show = function() {
                 this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
             }
         }
-    }
+    //~ }
 };
 ProteinLink.prototype.hide = function() {
     if (this.shown) {
