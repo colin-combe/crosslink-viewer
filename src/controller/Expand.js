@@ -33,49 +33,32 @@ var matrix = function(json) {
 
 				for (var i = 0; i < participant.stoichiometry - 1; i++) {
 
-					/********** INTERACTOR **********/
-
-						// Clone our interactor and increment its ID
-						//~ var clonedInteractor = _.cloneDeep(foundInteractor);
-						//~ clonedInteractor.id = clonedInteractor.id + "_" + i;
-						//~ clonedInteractor.label = clonedInteractor.label + "_" + i;
-//~ 
-						//~ // Push the cloned interactor back onto our JSON object
-						//~ json.data.push(clonedInteractor);
-						//~ newInteractors.push(clonedInteractor);
-
-
 					/********** PARTICIPANTS **********/
-						// Now clone the participant and link it to the new cloned interactor
-						var clonedParticipant = _.cloneDeep(participant);
-						
-						//~ clonedParticipant.interactorRef = clonedInteractor.id;
-						clonedParticipant.id = clonedParticipant.id + "_" + i;
+					// Now clone the participant and link it to the new cloned interactor
+					var clonedParticipant = _.cloneDeep(participant);
+					
+					//~ clonedParticipant.interactorRef = clonedInteractor.id;
+					clonedParticipant.id = clonedParticipant.id + "_" + i;
 
-						// Store a reference from where we were cloned
-						clonedParticipant.cloneParentID = participant.id;
-						clonedParticipant.cloneIteration = i;
-						participant.cloned = true
+					// Store a reference from where we were cloned
+					clonedParticipant.cloneParentID = participant.id;
+					clonedParticipant.cloneIteration = i;
+					participant.cloned = true
 
-						// We need to relink to our binding site IDs:
-						_.each(clonedParticipant.bindingSites, function(bindingSite) {
+					// We need to relink to our binding site IDs:
+					_.each(clonedParticipant.features, function(feature) {
 
+						feature.clonedfrom = feature.id;
+						feature.id = feature.id + "_" + i;
 
-							bindingSite.clonedfrom = bindingSite.id;
-							bindingSite.id = bindingSite.id + "_" + i;
-
-							// Also, adjust our sequence data
-							_.each(bindingSite.sequenceData, function(sequenceData) {
-								sequenceData.participantRef = clonedParticipant.id;
-								//~ sequenceData.interactorRef = clonedInteractor.id;
-							});
-
-
+						// Also, adjust our sequence data
+						_.each(feature.sequenceData, function(sequenceData) {
+							sequenceData.participantRef = clonedParticipant.id;
+							//~ sequenceData.interactorRef = clonedInteractor.id;
 						});
-
-
-						interaction.participants.push(clonedParticipant);
-						newParticipants.push(clonedParticipant);
+					});
+					interaction.participants.push(clonedParticipant);
+					newParticipants.push(clonedParticipant);
 
 				}
 			}
@@ -83,51 +66,40 @@ var matrix = function(json) {
 		});
 
 		// Get ALL of our binding sites:
-		var bindingSiteMap = d3.map();
+		var featureMap = d3.map();
 
 		_.each(interaction.participants, function(participant) {
 
-			_.each(participant.bindingSites, function(bindingSite) {
-
-				bindingSite.parentParticipant = participant.id;
-
-				bindingSiteMap.set(bindingSite.id, bindingSite);
-
+			_.each(participant.features, function(feature) {
+				feature.parentParticipant = participant.id;
+				featureMap.set(feature.id, feature);
 			});
 
 		});
 
 
-		var values = bindingSiteMap.values();
+		var values = featureMap.values();
 
-		_.each(values, function(bindingSite) {
+		_.each(values, function(feature) {
 
-			if (bindingSite.clonedfrom) {
+			if (feature.clonedfrom) {
 				// Find all binding sites that have a linked feature to me and add the clone id
-				_.each(values, function(nBindingSite) {
+				_.each(values, function(nFeature) {
 
-					var linkedFeatures = nBindingSite.linkedFeatures;
+					var linkedFeatures = nFeature.linkedFeatures;
 
-					if (_.contains(linkedFeatures, bindingSite.clonedfrom)) {
+					if (_.contains(linkedFeatures, feature.clonedfrom)) {
+						var clonedFeature = _.cloneDeep(nFeature);
+						clonedFeature.id = nFeature.id + "_" + feature.id;
+						clonedFeature.linkedFeatures = []
+						clonedFeature.linkedFeatures.push(feature.id);
 
-						var clonedBindingSite = _.cloneDeep(nBindingSite);
-						
-						clonedBindingSite.id = nBindingSite.id + "_" + bindingSite.id;
-						clonedBindingSite.linkedFeatures = []
-						clonedBindingSite.linkedFeatures.push(bindingSite.id);
-
-						var parts = _.findWhere(interaction.participants, {id: clonedBindingSite.parentParticipant});
-						parts.bindingSites.push(clonedBindingSite);
-
-
+						var parts = _.findWhere(interaction.participants, {id: clonedFeature.parentParticipant});
+						parts.features.push(clonedFeature);
 					}
-
 				});
-
 			}
-
 		});
-
 	});
 
 

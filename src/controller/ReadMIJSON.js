@@ -35,6 +35,7 @@ var readMIJSON = function(miJson, expand) {
 	//self.complexes = d3.map();  
 	
 	expand? readStoichExpanded() : readStoichUnexpanded();	
+	// readStoichUnexpanded();
 	
 	// loop through particpants and features
 	// init binary, unary and sequence links, 
@@ -48,18 +49,7 @@ var readMIJSON = function(miJson, expand) {
 			for (var pi = 0; pi < participantCount; pi++){
 				var jsonParticipant = jsonParticipants[pi];			
 				var features = new Array(0); 
-				if (jsonParticipant.bindingSites) {
-					features = features.concat(jsonParticipant.bindingSites);
-				}
-				if (jsonParticipant.experimentalFeatures) {
-					features = features.concat(jsonParticipant.experimentalFeatures);
-				}
-				if (jsonParticipant.ptms) {
-					features = features.concat(jsonParticipant.ptms);
-				}
-				if (jsonParticipant.otherFeatures) {
-					features = features.concat(jsonParticipant.otherFeatures);
-				}
+				if (jsonParticipant.features) features = jsonParticipant.features;
 				
 				var fCount = features.length;
 				for (var f = 0; f < fCount; f++){
@@ -134,7 +124,7 @@ var readMIJSON = function(miJson, expand) {
 			}
 		}
 		
-		Expand.matrix(miJson);
+		miJson = Expand.matrix(miJson);
 				
 		//create indexed collection of all features from interactions
 		// - still seems like a good starting point?  
@@ -145,18 +135,8 @@ var readMIJSON = function(miJson, expand) {
 				for (var pi = 0; pi < participantCount; pi++) {
 					var participant = interaction.participants[pi];
 					var features = new Array(0);
-					if (participant.bindingSites) {
-						features = features.concat(participant.bindingSites);
-					}
-					if (participant.experimentalFeatures) {
-						features = features.concat(participant.experimentalFeatures);
-					}
-					if (participant.ptms) {
-						features = features.concat(participant.ptms);
-					}
-					if (participant.otherFeatures) {
-						features = features.concat(participant.otherFeatures);
-					}
+					if (participant.features) features = participant.features;
+
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
 						var feature = features[f];
@@ -279,18 +259,19 @@ var readMIJSON = function(miJson, expand) {
 				for (var pi = 0; pi < participantCount; pi++) {
 					var participant = interaction.participants[pi];
 					var features = new Array(0);
-					if (participant.bindingSites) {
-						features = features.concat(participant.bindingSites);
-					}
-					if (participant.experimentalFeatures) {
-						features = features.concat(participant.experimentalFeatures);
-					}
-					if (participant.ptms) {
-						features = features.concat(participant.ptms);
-					}
-					if (participant.otherFeatures) {
-						features = features.concat(participant.otherFeatures);
-					}
+					// if (participant.bindingSites) {
+					// 	features = features.concat(participant.bindingSites);
+					// }
+					// if (participant.experimentalFeatures) {
+					// 	features = features.concat(participant.experimentalFeatures);
+					// }
+					// if (participant.ptms) {
+					// 	features = features.concat(participant.ptms);
+					// }
+					// if (participant.otherFeatures) {
+					// 	features = features.concat(participant.otherFeatures);
+					// }
+					if (participant.features) features = participant.features;
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){
 						var feature = features[f];
