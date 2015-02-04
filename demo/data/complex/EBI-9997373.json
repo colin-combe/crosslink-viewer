@@ -1,1 +1,300 @@
-{"data":[{"object":"interactor","id":"rnacentral_URS0000348061","type":{"id":"MI:0320","name":"ribonucleic acid"},"organism":{"taxid":"4932","common":"yeasx","scientific":"Saccharomyces cerevisiae (Baker's yeast)"},"identifier":{"db":"rnacentral","id":"URS0000348061"},"label":"tlc1_yeast_rna"},{"object":"interactor","id":"uniprotkb_P17214","sequence":"MDNEEVNEECMRLFFKNARAHLDKHLTSRLTCDENAYITFRCFLDGIHRKSTRFLEELLLKQENMYHNNNYERINDSVIPLVLKLLWLQIHEPTLQWFEHWFHDIMRLSNRRKFRVFRIFQKKMIQFFKITHRYYYDIIEHLCAKYDMNSVISNALFAKLNLMQYTDGLSTHEKIILNTSNPLTFSIVISLQRCVINLGSTHFYKTLLNKPSNKPKSVEGFEKSIRYLNIASLYLPAVGDTYFQRAKIYLITGKFSLYFFELVRGALVRIPSKCALNNLKDFILTPDFPERRRLMKKLAILVSKDLKGEKSFFEGQIVLQFLSIVEHTLVPQSWNASRASNCWLLKEHLQMAALKYHSGNINVILENLAATMGSFDLMFTTRKSKEQKNKLKYADLSERQVFFLDLSFDFIANIIDVVIKPSWQKNMEDFRYLAIIRLLMCWIKSYRSILQYTHRHRKFCTSFALLLNDLINSPLNCSGNIYSHRPKRSYLFREDIIFREFSCINFALTDFNDDYVYDSPDMINNIIGCPTLTKVLSPKEECVLRIRSIIFSGMKFLEKNDTGVIWNASKYKFDLISPNIKIKRQIALSEISSKINVKTQQERVVSSRKVEAKRDEQQRKRAGKIAVTELEKQFANVRRTKKLSPLPEKDGVSSELVKHAASRGRKTITGPLSSDFLSYPDEAIDADEDITVQVPDTPT","type":{"id":"MI:0326","name":"protein"},"organism":{"taxid":"559292","common":"yeast","scientific":"Saccharomyces cerevisiae (strain ATCC 204508 \/ S288c)"},"identifier":{"db":"uniprotkb","id":"P17214"},"label":"est1_yeast"},{"object":"interactor","id":"uniprotkb_Q06163","sequence":"MKILFEFIQDKLDIDLQTNSTYKENLKCGHFNGLDEILTTCFALPNSRKIALPCLPGDLSHKAVIDHCIIYLLTGELYNNVLTFGYKIARNEDVNNSLFCHSANVNVTLLKGAAWKMFHSLVGTYAFVDLLINYTVIQFNGQFFTQIVGNRCNEPHLPPKWAQRSSSSSATAAQIKQLTEPVTNKQFLHKLNINSSSFFPYSKILPSSSSIKKLTDLREAIFPTNLVKIPQRLKVRINLTLQKLLKRHKRLNYVSILNSICPPLEGTVLDLSHLSRQSPKERVLKFIIVILQKLLPQEMFGSKKNKGKIIKNLNLLLSLPLNGYLPFDSLLKKLRLKDFRWLFISDIWFTKHNFENLNQLAICFISWLFRQLIPKIIQTFFYCTEISSTVTIVYFRHDTWNKLITPFIVEYFKTYLVENNVCRNHNSYTLSNFNHSKMRIIPKKSNNEFRIIAIPCRGADEEEFTIYKENHKNAIQPTQKILEYLRNKRPTSFTKIYSPTQIADRIKEFKQRLLKKFNNVLPELYFMKFDVKSCYDSIPRMECMRILKDALKNENGFFVRSQYFFNTNTGVLKLFNVVNASRVPKPYELYIDNVRTVHLSNQDVINVVEMEIFKTALWVEDKCYIREDGLFQGSSLSAPIVDLVYDDLLEFYSEFKASPSQDTLILKLADDFLIISTDQQQVINIKKLAMGGFQKYNAKANRDKILAVSSQSDDDTVIQFCAMHIFVKELEVWKHSSTMNNFHIRSKSSKGIFRSLIALFNTRISYKTIDTNLNSTNTVLMQIDHVVKNISECYKSAFKDLSINVTQNMQFHSFLQRIIEMTVSGCPITKCDPLIEYEVRFTILNGFLESLSSNTSKFKDNIILLRKEIQHLQAYIYIYIHIVN","type":{"id":"MI:0326","name":"protein"},"organism":{"taxid":"559292","common":"yeast","scientific":"Saccharomyces cerevisiae (strain ATCC 204508 \/ S288c)"},"identifier":{"db":"uniprotkb","id":"Q06163"},"label":"tert_yeast"},{"object":"interactor","id":"uniprotkb_Q03096","sequence":"MPKVILESHSKPTDSVFLQPWIKALIEDNSEHDQYHPSGHVIPSLTKQDLALPHMSPTILTNPCHFAKITKFYNVCDYKVYASIRDSSHQILVEFSQECVSNFERTHNCRITSETTNCLMIIGDADLVYVTNSRAMSHFKICLSNISSKEIVPVLNVNQATIFDIDQVGSLSTFPFVYKYL","type":{"id":"MI:0326","name":"protein"},"organism":{"taxid":"559292","common":"yeast","scientific":"Saccharomyces cerevisiae (strain ATCC 204508 \/ S288c)"},"identifier":{"db":"uniprotkb","id":"Q03096"},"label":"est3_yeast"},{"object":"interaction","id":"intenz_2.7.7.49","interactionType":{"id":"MI:0915","name":"physical association"},"complexType":{"id":"MI:1302","name":"stable complex"},"evidenceType":{"id":"ECO:0000306","name":"inference from background scientific knowledge used in manual assertion"},"organism":{"taxid":"559292","common":"yeast","scientific":"Saccharomyces cerevisiae (strain ATCC 204508 \/ S288c)"},"identifiers":[{"db":"intenz","id":"2.7.7.49"},{"db":"intact","id":"EBI-9997373"}],"participants":[{"id":"1","interactorRef":"rnacentral_URS0000348061","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"bindingSites":[{"id":"2","name":"est1 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"657-674","interactorRef":"rnacentral_URS0000348061","participantRef":"1"}],"linkedFeatures":["3"]},{"id":"4","name":"est2 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"728-864","interactorRef":"rnacentral_URS0000348061","participantRef":"1"}],"linkedFeatures":["5"]}]},{"id":"6","interactorRef":"uniprotkb_P17214","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"bindingSites":[{"id":"3","name":"tlc1 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"?-?","interactorRef":"uniprotkb_P17214","participantRef":"6"}],"linkedFeatures":["2"]},{"id":"7","name":"est3 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"?-?","interactorRef":"uniprotkb_P17214","participantRef":"6"}],"linkedFeatures":["8"]}]},{"id":"9","interactorRef":"uniprotkb_Q06163","stoichiometry":"1","bioRole":{"id":"MI:0501","name":"enzyme"},"bindingSites":[{"id":"5","name":"tlc1 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"?-?","interactorRef":"uniprotkb_Q06163","participantRef":"9"}],"linkedFeatures":["4"]},{"id":"10","name":"est3 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"1-162","interactorRef":"uniprotkb_Q06163","participantRef":"9"}],"linkedFeatures":["11"]}]},{"id":"12","interactorRef":"uniprotkb_Q03096","stoichiometry":"1","bioRole":{"id":"MI:0499","name":"unspecified role"},"bindingSites":[{"id":"11","name":"est2 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"?-?","interactorRef":"uniprotkb_Q03096","participantRef":"12"}],"linkedFeatures":["10"]},{"id":"8","name":"est1 binding region","type":{"id":"MI:0117","name":"binding-associated region"},"sequenceData":[{"pos":"?-?","interactorRef":"uniprotkb_Q03096","participantRef":"12"}],"linkedFeatures":["7"]}]}]}]}
+{
+    "data": [
+        {
+            "id": "rnacentral_URS0000348061", 
+            "identifier": {
+                "db": "rnacentral", 
+                "id": "URS0000348061"
+            }, 
+            "label": "tlc1_yeast_rna", 
+            "object": "interactor", 
+            "organism": {
+                "common": "yeasx", 
+                "scientific": "Saccharomyces cerevisiae (Baker's yeast)", 
+                "taxid": "4932"
+            }, 
+            "type": {
+                "id": "MI:0320", 
+                "name": "ribonucleic acid"
+            }
+        }, 
+        {
+            "id": "uniprotkb_P17214", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P17214"
+            }, 
+            "label": "est1_yeast", 
+            "object": "interactor", 
+            "organism": {
+                "common": "yeast", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                "taxid": "559292"
+            }, 
+            "sequence": "MDNEEVNEECMRLFFKNARAHLDKHLTSRLTCDENAYITFRCFLDGIHRKSTRFLEELLLKQENMYHNNNYERINDSVIPLVLKLLWLQIHEPTLQWFEHWFHDIMRLSNRRKFRVFRIFQKKMIQFFKITHRYYYDIIEHLCAKYDMNSVISNALFAKLNLMQYTDGLSTHEKIILNTSNPLTFSIVISLQRCVINLGSTHFYKTLLNKPSNKPKSVEGFEKSIRYLNIASLYLPAVGDTYFQRAKIYLITGKFSLYFFELVRGALVRIPSKCALNNLKDFILTPDFPERRRLMKKLAILVSKDLKGEKSFFEGQIVLQFLSIVEHTLVPQSWNASRASNCWLLKEHLQMAALKYHSGNINVILENLAATMGSFDLMFTTRKSKEQKNKLKYADLSERQVFFLDLSFDFIANIIDVVIKPSWQKNMEDFRYLAIIRLLMCWIKSYRSILQYTHRHRKFCTSFALLLNDLINSPLNCSGNIYSHRPKRSYLFREDIIFREFSCINFALTDFNDDYVYDSPDMINNIIGCPTLTKVLSPKEECVLRIRSIIFSGMKFLEKNDTGVIWNASKYKFDLISPNIKIKRQIALSEISSKINVKTQQERVVSSRKVEAKRDEQQRKRAGKIAVTELEKQFANVRRTKKLSPLPEKDGVSSELVKHAASRGRKTITGPLSSDFLSYPDEAIDADEDITVQVPDTPT", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q06163", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q06163"
+            }, 
+            "label": "tert_yeast", 
+            "object": "interactor", 
+            "organism": {
+                "common": "yeast", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                "taxid": "559292"
+            }, 
+            "sequence": "MKILFEFIQDKLDIDLQTNSTYKENLKCGHFNGLDEILTTCFALPNSRKIALPCLPGDLSHKAVIDHCIIYLLTGELYNNVLTFGYKIARNEDVNNSLFCHSANVNVTLLKGAAWKMFHSLVGTYAFVDLLINYTVIQFNGQFFTQIVGNRCNEPHLPPKWAQRSSSSSATAAQIKQLTEPVTNKQFLHKLNINSSSFFPYSKILPSSSSIKKLTDLREAIFPTNLVKIPQRLKVRINLTLQKLLKRHKRLNYVSILNSICPPLEGTVLDLSHLSRQSPKERVLKFIIVILQKLLPQEMFGSKKNKGKIIKNLNLLLSLPLNGYLPFDSLLKKLRLKDFRWLFISDIWFTKHNFENLNQLAICFISWLFRQLIPKIIQTFFYCTEISSTVTIVYFRHDTWNKLITPFIVEYFKTYLVENNVCRNHNSYTLSNFNHSKMRIIPKKSNNEFRIIAIPCRGADEEEFTIYKENHKNAIQPTQKILEYLRNKRPTSFTKIYSPTQIADRIKEFKQRLLKKFNNVLPELYFMKFDVKSCYDSIPRMECMRILKDALKNENGFFVRSQYFFNTNTGVLKLFNVVNASRVPKPYELYIDNVRTVHLSNQDVINVVEMEIFKTALWVEDKCYIREDGLFQGSSLSAPIVDLVYDDLLEFYSEFKASPSQDTLILKLADDFLIISTDQQQVINIKKLAMGGFQKYNAKANRDKILAVSSQSDDDTVIQFCAMHIFVKELEVWKHSSTMNNFHIRSKSSKGIFRSLIALFNTRISYKTIDTNLNSTNTVLMQIDHVVKNISECYKSAFKDLSINVTQNMQFHSFLQRIIEMTVSGCPITKCDPLIEYEVRFTILNGFLESLSSNTSKFKDNIILLRKEIQHLQAYIYIYIHIVN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q03096", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q03096"
+            }, 
+            "label": "est3_yeast", 
+            "object": "interactor", 
+            "organism": {
+                "common": "yeast", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                "taxid": "559292"
+            }, 
+            "sequence": "MPKVILESHSKPTDSVFLQPWIKALIEDNSEHDQYHPSGHVIPSLTKQDLALPHMSPTILTNPCHFAKITKFYNVCDYKVYASIRDSSHQILVEFSQECVSNFERTHNCRITSETTNCLMIIGDADLVYVTNSRAMSHFKICLSNISSKEIVPVLNVNQATIFDIDQVGSLSTFPFVYKYL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000306", 
+                "name": "inference from background scientific knowledge used in manual assertion"
+            }, 
+            "id": "intenz_2.7.7.49", 
+            "identifiers": [
+                {
+                    "db": "intenz", 
+                    "id": "2.7.7.49"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9997373"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "yeast", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
+                "taxid": "559292"
+            }, 
+            "participants": [
+                {
+                    "bindingSites": [
+                        {
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "est1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "rnacentral_URS0000348061", 
+                                    "participantRef": "1", 
+                                    "pos": "657-674"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "est2 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "rnacentral_URS0000348061", 
+                                    "participantRef": "1", 
+                                    "pos": "728-864"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "1", 
+                    "interactorRef": "rnacentral_URS0000348061", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "tlc1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P17214", 
+                                    "participantRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "est3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P17214", 
+                                    "participantRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "6", 
+                    "interactorRef": "uniprotkb_P17214", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "tlc1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q06163", 
+                                    "participantRef": "9", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "est3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q06163", 
+                                    "participantRef": "9", 
+                                    "pos": "1-162"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "id": "9", 
+                    "interactorRef": "uniprotkb_Q06163", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "11", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "est2 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q03096", 
+                                    "participantRef": "12", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "est1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q03096", 
+                                    "participantRef": "12", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "12", 
+                    "interactorRef": "uniprotkb_Q03096", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}

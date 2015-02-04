@@ -20,25 +20,6 @@
             }
         }, 
         {
-            "id": "uniprotkb_P09619", 
-            "identifier": {
-                "db": "uniprotkb", 
-                "id": "P09619"
-            }, 
-            "label": "pgfrb_human", 
-            "object": "interactor", 
-            "organism": {
-                "common": "human", 
-                "scientific": "Homo sapiens", 
-                "taxid": "9606"
-            }, 
-            "sequence": "MRLPGAMPALALKGELLLLSLLLLLEPQISQGLVVTPPGPELVLNVSSTFVLTCSGSAPVVWERMSQEPPQEMAKAQDGTFSSVLTLTNLTGLDTGEYFCTHNDSRGLETDERKRLYIFVPDPTVGFLPNDAEELFIFLTEITEITIPCRVTDPQLVVTLHEKKGDVALPVPYDHQRGFSGIFEDRSYICKTTIGDREVDSDAYYVYRLQVSSINVSVNAVQTVVRQGENITLMCIVIGNEVVNFEWTYPRKESGRLVEPVTDFLLDMPYHIRSILHIPSAELEDSGTYTCNVTESVNDHQDEKAINITVVESGYVRLLGEVGTLQFAELHRSRTLQVVFEAYPPPTVLWFKDNRTLGDSSAGEIALSTRNVSETRYVSELTLVRVKVAEAGHYTMRAFHEDAEVQLSFQLQINVPVRVLELSESHPDSGEQTVRCRGRGMPQPNIIWSACRDLKRCPRELPPTLLGNSSEEESQLETNVTYWEEEQEFEVVSTLRLQHVDRPLSVRCTLRNAVGQDTQEVIVVPHSLPFKVVVISAILALVVLTIISLIILIMLWQKKPRYEIRWKVIESVSSDGHEYIYVDPMQLPYDSTWELPRDQLVLGRTLGSGAFGQVVEATAHGLSHSQATMKVAVKMLKSTARSSEKQALMSELKIMSHLGPHLNVVNLLGACTKGGPIYIITEYCRYGDLVDYLHRNKHTFLQHHSDKRRPPSAELYSNALPVGLPLPSHVSLTGESDGGYMDMSKDESVDYVPMLDMKGDVKYADIESSNYMAPYDNYVPSAPERTCRATLINESPVLSYMDLVGFSYQVANGMEFLASKNCVHRDLAARNVLICEGKLVKICDFGLARDIMRDSNYISKGSTFLPLKWMAPESIFNSLYTTLSDVWSFGILLWEIFTLGGTPYPELPMNEQFYNAIKRGYRMAQPAHASDEIYEIMQKCWEEKFEIRPPFSQLVLLLERLLGEGYKKKYQQVDEEFLRSDHPAILRSQARLPGFHGLRSPLDTSSVLYTAVQPNEGDNDYIIPLPDPKPEVADEGPLEGSPSLASSTLNEVNTSSTISCDSPLEPQDEPEPEPQLELQVEPEPELEQLPDSGCPAPRAEAEDSFL", 
-            "type": {
-                "id": "MI:0326", 
-                "name": "protein"
-            }
-        }, 
-        {
             "id": "uniprotkb_P16234", 
             "identifier": {
                 "db": "uniprotkb", 
@@ -58,36 +39,42 @@
             }
         }, 
         {
-            "experiment": {
-                "detmethod": {
-                    "id": "MI:0364", 
-                    "name": "inferred by curator"
-                }, 
-                "host": {
-                    "common": "human", 
-                    "scientific": "Homo sapiens", 
-                    "taxid": "9606"
-                }, 
-                "pubid": [
-                    {
-                        "db": "pubmed", 
-                        "id": "14681455"
-                    }
-                ], 
-                "sourceDatabase": {
-                    "id": "MI:0469", 
-                    "name": "European Bioinformatics Institute"
-                }
+            "id": "uniprotkb_P09619", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P09619"
             }, 
-            "id": "chembl compound_CHEMBL2095189", 
+            "label": "pgfrb_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MRLPGAMPALALKGELLLLSLLLLLEPQISQGLVVTPPGPELVLNVSSTFVLTCSGSAPVVWERMSQEPPQEMAKAQDGTFSSVLTLTNLTGLDTGEYFCTHNDSRGLETDERKRLYIFVPDPTVGFLPNDAEELFIFLTEITEITIPCRVTDPQLVVTLHEKKGDVALPVPYDHQRGFSGIFEDRSYICKTTIGDREVDSDAYYVYRLQVSSINVSVNAVQTVVRQGENITLMCIVIGNEVVNFEWTYPRKESGRLVEPVTDFLLDMPYHIRSILHIPSAELEDSGTYTCNVTESVNDHQDEKAINITVVESGYVRLLGEVGTLQFAELHRSRTLQVVFEAYPPPTVLWFKDNRTLGDSSAGEIALSTRNVSETRYVSELTLVRVKVAEAGHYTMRAFHEDAEVQLSFQLQINVPVRVLELSESHPDSGEQTVRCRGRGMPQPNIIWSACRDLKRCPRELPPTLLGNSSEEESQLETNVTYWEEEQEFEVVSTLRLQHVDRPLSVRCTLRNAVGQDTQEVIVVPHSLPFKVVVISAILALVVLTIISLIILIMLWQKKPRYEIRWKVIESVSSDGHEYIYVDPMQLPYDSTWELPRDQLVLGRTLGSGAFGQVVEATAHGLSHSQATMKVAVKMLKSTARSSEKQALMSELKIMSHLGPHLNVVNLLGACTKGGPIYIITEYCRYGDLVDYLHRNKHTFLQHHSDKRRPPSAELYSNALPVGLPLPSHVSLTGESDGGYMDMSKDESVDYVPMLDMKGDVKYADIESSNYMAPYDNYVPSAPERTCRATLINESPVLSYMDLVGFSYQVANGMEFLASKNCVHRDLAARNVLICEGKLVKICDFGLARDIMRDSNYISKGSTFLPLKWMAPESIFNSLYTTLSDVWSFGILLWEIFTLGGTPYPELPMNEQFYNAIKRGYRMAQPAHASDEIYEIMQKCWEEKFEIRPPFSQLVLLLERLLGEGYKKKYQQVDEEFLRSDHPAILRSQARLPGFHGLRSPLDTSSVLYTAVQPNEGDNDYIIPLPDPKPEVADEGPLEGSPSLASSTLNEVNTSSTISCDSPLEPQDEPEPEPQLELQVEPEPELEQLPDSGCPAPRAEAEDSFL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "omim_228550", 
             "identifiers": [
                 {
-                    "db": "chembl compound", 
-                    "id": "CHEMBL2095189"
+                    "db": "omim", 
+                    "id": "228550"
                 }, 
                 {
                     "db": "omim", 
-                    "id": "607907"
+                    "id": "131440"
                 }, 
                 {
                     "db": "omim", 
@@ -95,35 +82,39 @@
                 }, 
                 {
                     "db": "omim", 
-                    "id": "607174"
+                    "id": "615483"
                 }, 
                 {
                     "db": "omim", 
-                    "id": "131440"
+                    "id": "607907"
                 }, 
                 {
-                    "db": "intenz", 
-                    "id": "2.7.10.1"
+                    "db": "omim", 
+                    "id": "607174"
                 }, 
                 {
                     "db": "wwpdb", 
                     "id": "1pdg"
                 }, 
                 {
+                    "db": "intenz", 
+                    "id": "2.7.10.1"
+                }, 
+                {
                     "db": "reactome", 
                     "id": "REACT_17875.1"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "615483"
+                    "db": "reactome", 
+                    "id": "REACT_17544.1"
+                }, 
+                {
+                    "db": "chembl target", 
+                    "id": "CHEMBL2095189"
                 }, 
                 {
                     "db": "intact", 
                     "id": "EBI-9082861"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_17544.1"
                 }
             ], 
             "interactionType": {
@@ -131,6 +122,11 @@
                 "name": "physical association"
             }, 
             "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
             "participants": [
                 {
                     "bindingSites": [
@@ -153,7 +149,15 @@
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
-                        }, 
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_P01127", 
+                    "otherFeatures": [
                         {
                             "InterPro": "IPR000072", 
                             "id": "6", 
@@ -174,36 +178,69 @@
                             }
                         }
                     ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "expRole": {
-                        "id": "MI:0497", 
-                        "name": "neutral component"
-                    }, 
-                    "id": "1", 
-                    "identificationMethods": [
-                        {
-                            "id": "MI:0396", 
-                            "name": "predetermined participant"
-                        }
-                    ], 
-                    "interactorRef": "uniprotkb_P01127", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "3", 
+                                "2", 
+                                "5"
+                            ], 
+                            "name": "complex binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P16234", 
+                                    "participantRef": "8", 
+                                    "pos": "1-524"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
                             "id": "9", 
                             "linkedFeatures": [
                                 "10"
+                            ], 
+                            "name": "pdgf receptor beta binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P16234", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_P16234", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bindingSites": [
+                        {
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
                             ], 
                             "name": "pdgf receptor alpha binding region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "uniprotkb_P09619", 
-                                    "participantRef": "8", 
+                                    "participantRef": "11", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -213,15 +250,17 @@
                             }
                         }, 
                         {
-                            "id": "3", 
+                            "id": "5", 
                             "linkedFeatures": [
+                                "3", 
+                                "4", 
                                 "2"
                             ], 
                             "name": "complex binding region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "uniprotkb_P09619", 
-                                    "participantRef": "8", 
+                                    "participantRef": "11", 
                                     "pos": "1-529"
                                 }
                             ], 
@@ -235,82 +274,17 @@
                         "id": "MI:0501", 
                         "name": "enzyme"
                     }, 
-                    "expRole": {
-                        "id": "MI:0497", 
-                        "name": "neutral component"
-                    }, 
-                    "id": "8", 
-                    "identificationMethods": [
-                        {
-                            "id": "MI:0396", 
-                            "name": "predetermined participant"
-                        }
-                    ], 
+                    "id": "11", 
                     "interactorRef": "uniprotkb_P09619", 
                     "stoichiometry": "1"
                 }, 
                 {
                     "bindingSites": [
                         {
-                            "id": "4", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "2"
-                            ], 
-                            "name": "complex binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P16234", 
-                                    "participantRef": "11", 
-                                    "pos": "1-524"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "id": "10", 
-                            "linkedFeatures": [
-                                "9"
-                            ], 
-                            "name": "pdgf receptor beta binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P16234", 
-                                    "participantRef": "11", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }
-                    ], 
-                    "bioRole": {
-                        "id": "MI:0501", 
-                        "name": "enzyme"
-                    }, 
-                    "expRole": {
-                        "id": "MI:0497", 
-                        "name": "neutral component"
-                    }, 
-                    "id": "11", 
-                    "identificationMethods": [
-                        {
-                            "id": "MI:0396", 
-                            "name": "predetermined participant"
-                        }
-                    ], 
-                    "interactorRef": "uniprotkb_P16234", 
-                    "stoichiometry": "1"
-                }, 
-                {
-                    "bindingSites": [
-                        {
-                            "id": "5", 
-                            "linkedFeatures": [
+                                "5", 
+                                "4", 
                                 "2"
                             ], 
                             "name": "complex binding region", 
@@ -325,7 +299,15 @@
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
-                        }, 
+                        }
+                    ], 
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "12", 
+                    "interactorRef": "uniprotkb_P01127", 
+                    "otherFeatures": [
                         {
                             "InterPro": "IPR000072", 
                             "id": "7", 
@@ -346,22 +328,6 @@
                             }
                         }
                     ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "expRole": {
-                        "id": "MI:0497", 
-                        "name": "neutral component"
-                    }, 
-                    "id": "12", 
-                    "identificationMethods": [
-                        {
-                            "id": "MI:0396", 
-                            "name": "predetermined participant"
-                        }
-                    ], 
-                    "interactorRef": "uniprotkb_P01127", 
                     "stoichiometry": "1"
                 }
             ]
