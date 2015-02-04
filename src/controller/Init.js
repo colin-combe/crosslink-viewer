@@ -163,7 +163,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 
     this.tooltip_bg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_bg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
 
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
@@ -173,7 +173,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 
