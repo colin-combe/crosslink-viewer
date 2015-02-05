@@ -1,148 +1,134 @@
 "use strict";
 
-var _ = require('lodash');
 var d3 = require('d3');
 
 var matrix = function(json) {
 	var startTime =  +new Date();
+
 	// We'll need collections of our interactions and interactors for later..
-	var interactions = _.where(json.data, {object: "interaction"});
-	var interactors = _.where(json.data, {object: "interactor"});
+	var interactions = json.data.filter(function(interaction) {
+		return interaction.object == "interaction";
+	})
+
+	var interactors = json.data.filter(function(interactor) {
+		return interactor.object == "interactor";
+	})
 
 	var newParticipants = [];
 	var newInteractors = [];
 
-	// Loop through our interaction objects
-	_.each(interactions, function(interaction) {
+	// Loop through our interactions
+	interactions.forEach(function(interaction) {
 
 		// Get a collection of participants where the stoichiometry is greater than one.
-		var participantsToExpand = _.filter(interaction.participants, function(participant) {
+		var participantsToExpand = interaction.participants.filter(function(participant) {
 			if (participant.stoichiometry > 1) {
 				return participant;
 			}
-		});
+		})
 
 		// Loop through our participants that need expanding
-		_.each(participantsToExpand, function(participant) {
+		participantsToExpand.forEach(function(participant) {
 
 			// Do we have an interactor? TODO: Will his affect complexes?
-			var foundInteractor = _.findWhere(interactors, {id: participant.interactorRef});
+			var foundInteractor = findFirstObjWithAttr(interactors, "id", participant.interactorRef);
 
-			// If we found an interactor, then time to clone!
+			// If we found an interactor then we need to clone it.
 			if (foundInteractor) {
 
 				for (var i = 0; i < participant.stoichiometry - 1; i++) {
-
-					/********** INTERACTOR **********/
-
-						// Clone our interactor and increment its ID
-						//~ var clonedInteractor = _.cloneDeep(foundInteractor);
-						//~ clonedInteractor.id = clonedInteractor.id + "_" + i;
-						//~ clonedInteractor.label = clonedInteractor.label + "_" + i;
-//~ 
-						//~ // Push the cloned interactor back onto our JSON object
-						//~ json.data.push(clonedInteractor);
-						//~ newInteractors.push(clonedInteractor);
-
-
 					/********** PARTICIPANTS **********/
-						// Now clone the participant and link it to the new cloned interactor
-						var clonedParticipant = _.cloneDeep(participant);
-						
-						//~ clonedParticipant.interactorRef = clonedInteractor.id;
-						clonedParticipant.id = clonedParticipant.id + "_" + i;
+					// Now clone the participant and link it to the new cloned interactor
+					// This method of cloning appears to work so far.
+					var clonedParticipant = JSON.parse(JSON.stringify(participant));
+					
+					//~ clonedParticipant.interactorRef = clonedInteractor.id;
+					clonedParticipant.id = clonedParticipant.id + "_" + i;
 
-						// Store a reference from where we were cloned
-						clonedParticipant.cloneParentID = participant.id;
-						clonedParticipant.cloneIteration = i;
-						participant.cloned = true
+					// Store a reference from where we were cloned
+					clonedParticipant.cloneParentID = participant.id;
+					clonedParticipant.cloneIteration = i;
+					participant.cloned = true
 
-						// We need to relink to our binding site IDs:
-						_.each(clonedParticipant.bindingSites, function(bindingSite) {
+					// We need to relink to our binding site IDs:
+					if (clonedParticipant.features) {
+						clonedParticipant.features.forEach(function(feature) {
 
-
-							bindingSite.clonedfrom = bindingSite.id;
-							bindingSite.id = bindingSite.id + "_" + i;
+							feature.clonedfrom = feature.id;
+							feature.id = feature.id + "_" + i;
 
 							// Also, adjust our sequence data
-							_.each(bindingSite.sequenceData, function(sequenceData) {
+							feature.sequenceData.forEach(function(sequenceData) {
 								sequenceData.participantRef = clonedParticipant.id;
 								//~ sequenceData.interactorRef = clonedInteractor.id;
 							});
-
-
 						});
+					}
 
-
-						interaction.participants.push(clonedParticipant);
-						newParticipants.push(clonedParticipant);
+					interaction.participants.push(clonedParticipant);
+					newParticipants.push(clonedParticipant);
 
 				}
 			}
-
 		});
 
-		// Get ALL of our binding sites:
-		var bindingSiteMap = d3.map();
-
-		_.each(interaction.participants, function(participant) {
-
-			_.each(participant.bindingSites, function(bindingSite) {
-
-				bindingSite.parentParticipant = participant.id;
-
-				bindingSiteMap.set(bindingSite.id, bindingSite);
-
-			});
-
-		});
-
-
-		var values = bindingSiteMap.values();
-
-		_.each(values, function(bindingSite) {
-
-			if (bindingSite.clonedfrom) {
-				// Find all binding sites that have a linked feature to me and add the clone id
-				_.each(values, function(nBindingSite) {
-
-					var linkedFeatures = nBindingSite.linkedFeatures;
-
-					if (_.contains(linkedFeatures, bindingSite.clonedfrom)) {
-
-						var clonedBindingSite = _.cloneDeep(nBindingSite);
-						
-						clonedBindingSite.id = nBindingSite.id + "_" + bindingSite.id;
-						clonedBindingSite.linkedFeatures = []
-						clonedBindingSite.linkedFeatures.push(bindingSite.id);
-
-						var parts = _.findWhere(interaction.participants, {id: clonedBindingSite.parentParticipant});
-						parts.bindingSites.push(clonedBindingSite);
-
-
-					}
-
+		// Get ALL of our features.
+		var featureMap = d3.map();
+		interaction.participants.forEach(function(participant) {
+			if (participant.features) {
+				participant.features.forEach(function(feature) {
+					feature.parentParticipant = participant.id;
+					featureMap.set(feature.id, feature);
 				});
-
 			}
-
 		});
 
+
+		var values = featureMap.values();
+
+		values.forEach(function(feature) {
+			if (feature.clonedfrom) {
+				// Find all binding sites that have a linked feature to me and add the clone id
+				values.forEach(function(nFeature) {
+					var linkedFeatures = nFeature.linkedFeatures;
+					if (linkedFeatures) {
+						if (linkedFeatures.indexOf(feature.clonedfrom) > -1) {
+							var clonedFeature = JSON.parse(JSON.stringify(nFeature));
+							clonedFeature.id = nFeature.id + "_" + feature.id;
+							clonedFeature.linkedFeatures = []
+							clonedFeature.linkedFeatures.push(feature.id);
+
+							var parts = findFirstObjWithAttr(interaction.participants, "id", clonedFeature.parentParticipant);
+							parts.features.push(clonedFeature);
+						}
+					}
+				});
+			}
+		});
 	});
 
 
 	//clear stoich info from participant?
-	_.each(interactions, function(interaction) {
-		_.each(interaction.participants, function(participant) {
+	interactions.forEach(function(interaction) {
+		interaction.participants.forEach(function(participant) {
 			participant.stoichiometry = null;
 		});
 	});
 
 	//actually the expansion code doesn't seem to take up that much time
 	//console.log("Expand time:" + ( +new Date() - startTime));
-
 	return json
 }
+
+// Returns the first object in an array that has an attribute with a matching value.
+function findFirstObjWithAttr(collection, attribute, value) {
+    for(var i = 0; i < collection.length; i += 1) {
+        if(collection[i][attribute] === value) {
+            return collection[i];
+        }
+    }
+}
+
 
 module.exports = {
     matrix: matrix,
