@@ -1,6 +1,5 @@
 "use strict";
 
-// var _ = require('lodash');
 var d3 = require('d3');
 
 var matrix = function(json) {
@@ -73,9 +72,8 @@ var matrix = function(json) {
 			}
 		});
 
-		// Get ALL of our binding sites:
+		// Get ALL of our features.
 		var featureMap = d3.map();
-
 		interaction.participants.forEach(function(participant) {
 			if (participant.features) {
 				participant.features.forEach(function(feature) {
