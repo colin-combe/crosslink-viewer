@@ -129,7 +129,6 @@ function findFirstObjWithAttr(collection, attribute, value) {
     }
 }
 
-
 module.exports = {
-    matrix: matrix,
+    matrix: matrix
 }
