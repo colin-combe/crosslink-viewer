@@ -30,6 +30,10 @@ var autoLayout = function(width, height) {
         p1.setPosition(width / 2, height / 3 * 2);
         var p2 = this.participants.values()[1];
         p2.setPosition(width / 2, height / 3 * 1);
+        
+        p1.setAllLinkCoordinates();
+        p2.setAllLinkCoordinates();
+        
         return;
     }
     else {
