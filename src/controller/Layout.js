@@ -10,8 +10,6 @@
 
 "use strict";
 
-//var Interactor = require('../model/interactor/Interactor');
-
 var autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
@@ -23,6 +21,7 @@ var autoLayout = function(width, height) {
     if (proteinCount === 1) {
         var protein = this.participants.values()[0];
         protein.setPosition(width / 2, height / 2);
+        protein.setAllLinkCoordinates();
         return;
     }
     else if (proteinCount === 2) {
