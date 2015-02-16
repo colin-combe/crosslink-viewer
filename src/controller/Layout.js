@@ -58,7 +58,7 @@ var autoLayout = function(width, height) {
             json += "]}";
             var jsonObj = JSON.parse(json);
             var packLayout = d3.layout.pack()
-                    .size([width - this.layoutXOffset, height])
+                    .size([width, height])
                     .value(function(d) {
 						return d.size;
 					})
@@ -74,7 +74,7 @@ var autoLayout = function(width, height) {
                 var nx = node.x + Math.random() - 0.5;
                 var ny = node.y + Math.random() - 0.5;
                 
-                protein.setPosition(nx + this.layoutXOffset, ny);
+                protein.setPosition(nx, ny);
                 protein.setAllLinkCoordinates(false);
             }
         }
@@ -95,9 +95,9 @@ var autoLayout = function(width, height) {
 			pi++;
 			var nodeObj = {};
 			nodeObj.id = prot.id;
-			nodeObj.x = prot.x - this.layoutXOffset;
+			nodeObj.x = prot.x;
 			nodeObj.y = prot.y;
-			nodeObj.px = prot.x - this.layoutXOffset;
+			nodeObj.px = prot.x;
 			nodeObj.py = prot.y;
 			layoutObj.nodes.push(nodeObj);
 		}
