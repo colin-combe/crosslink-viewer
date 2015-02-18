@@ -47,7 +47,7 @@ function exportSVG() {
 		.radius(function(d) { return d.y; })
 		.angle(function(d) { return d.x / 180 * Math.PI; });
 
-	d3.csv("../data/tfiif_highConf.csv", function (parsedCSV){	
+	d3.csv("../data/TFIIF_highConf.csv", function (parsedCSV){	
 
 		var proteinSequences = d3.map();
 		
@@ -92,18 +92,33 @@ function exportSVG() {
 					
 					
 					
-					var nodeSet = d3.set();
+					var nodeSet = d3.map();
 					
 					for (var r = 0; r < rowCount; r++) {
 						var row = parsedCSV[r];
 						if (row.Protein1 !== row.Protein2) {
-							nodeSet.add(row.Protein1 + "_" + row.LinkPos1);
-							nodeSet.add(row.Protein2 + "_" + row.LinkPos2);
+							nodeSet.set(row.Protein1 + "_" + row.LinkPos1, row.LinkPos1 - 0);
+							nodeSet.set(row.Protein2 + "_" + row.LinkPos2,  row.LinkPos2 - 0);
 						}
 					}
 					
-					var nodeArray = nodeSet.values();
-					nodeArray = nodeArray.sort();
+					var nodeArray = nodeSet.keys();
+					nodeArray = nodeArray.sort(function(a, b) {
+						var nameA = a.split('_')[0];
+						var resA = a.split('_')[1]  - 0;
+						var nameB = b.split('_')[0];
+						var resB = b.split('_')[1]  - 0;
+						if (nameA > nameB){
+								return 1;
+						} else if (nameB > nameA) {
+							return -1;
+						}
+						else 
+						{
+							return resA - resB;
+						}
+					});
+     
 					var linkedResCount = nodeArray.length;
 					for (var n = 0; n < linkedResCount; n++){
 							var node = {};
@@ -113,6 +128,21 @@ function exportSVG() {
 						nodeLookup.set(nodeArray[n],  n);
 						classes.push(node);
 					}
+					
+					//~ classes.sort(function(a, b) {
+						//~ var nameA = a.name.split('_')[0];
+						//~ var nameB = b.name.split('_')[0];
+						//~ if (nameA > nameB){
+								//~ return 1;
+						//~ } else if (nameB > nameA) {
+							//~ return -1;
+						//~ }
+						//~ else 
+						//~ {
+							//~ return a.residueNumber - b.residueNumber;
+						//~ }
+					//~ });
+     
 										
 					var links = new Array();
 					for (var r = 0; r < rowCount; r++) {
