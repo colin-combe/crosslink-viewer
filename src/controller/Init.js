@@ -298,6 +298,7 @@ xiNET.Controller.prototype.resetZoom = function() {
         prot.stickZoom = 1;
         if (prot.scale) {
 			prot.scale();
+			prot.setAllLinkCoordinates();
 		}
     }
 };
@@ -306,16 +307,6 @@ xiNET.Controller.prototype.setCutOff = function(cutOff) {
     this.cutOff = cutOff;
     this.checkLinks();
 };
-
-//~ xiNET.Controller.prototype.hideInternal = function(bool) {
-    //~ this.intraHidden = bool;
-    //~ this.checkLinks();
-//~ };
-//~ 
-//~ xiNET.Controller.prototype.hideAmbig = function(bool) {
-    //~ this.ambigHidden = bool;
-    //~ this.checkLinks();
-//~ };
 
 xiNET.Controller.prototype.exportSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
