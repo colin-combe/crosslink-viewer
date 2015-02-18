@@ -11,6 +11,7 @@
 "use strict";
 
 xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
+    var self = this;
     var rows = d3.csv.parseRows(csv);    
     var headers = rows[0];
     for (var h = 0; h < headers.length; h++) {
@@ -61,7 +62,7 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 	}
 	
 	var countRows = rows.length;
-	if (fasta){
+	if (fasta){ //FASTA file provided
 		var line_array = fasta.split("\n");
 		var tempIdentifier = null;
 		var tempDescription;
@@ -74,18 +75,19 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 				// greater-than indicates description line
 				if(line.indexOf(">") === 0){
 					if (tempIdentifier !== null) {
+						var name = nameFromIdentifier(tempIdentifier);
 						//accession number is null
-						var prot = new Protein(tempIdentifier, this, null, nameFromIdentifier(tempIdentifier));
+						var prot = new Protein(tempIdentifier, this, null, name);
 						prot.setSequence(tempSeq.trim());
 						this.proteins.set(tempIdentifier, prot);
 						
 						//Also adds xQuest reversed & decoys 
 						var decRevProt = new Protein("decoy_reverse_" + tempIdentifier, 
-							this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+							this, null, "DECOY_" + name);
 						decRevProt.setSequence(tempSeq.trim().split("").reverse().join(""));
 						this.proteins.set("decoy_reverse_" + tempIdentifier, decRevProt);
 						var revProt = new Protein("reverse_" + tempIdentifier, 
-							this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+							this, null, "DECOY_" + name);
 						revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
 						this.proteins.set("reverse_" + tempIdentifier, revProt);			
 						
@@ -102,45 +104,66 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 				}		
 			}
 		}	
+		name = nameFromIdentifier(tempIdentifier);
 		//there will be one protein still to be added when we get to end
-		var prot = new Protein(tempIdentifier, this, null, nameFromIdentifier(tempIdentifier));
+		var prot = new Protein(tempIdentifier, this, null, name);
 		prot.setSequence(tempSeq.trim());
 		this.proteins.set(tempIdentifier, prot);
 		//same for xQuest decoys
 		var decRevProt = new Protein("decoy_reverse_" + tempIdentifier, 
-			this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+			this, null, "DECOY_" + name);
 		decRevProt.setSequence(tempSeq.trim().split("").reverse().join(""));
 		this.proteins.set("decoy_reverse_" + tempIdentifier, decRevProt);			
 		var revProt = new Protein("reverse_" + tempIdentifier, 
-			this, null, "DECOY_" + nameFromIdentifier(tempIdentifier));
+			this, null, "DECOY_" + name);
 		revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
-		this.proteins.set("reverse_" + tempIdentifier, revProt);					
-	}
-	else {
-		//we are going to encounter proteins with 
-		//different ids/names but the same accession number.		
-		addProteins(iProt1, this);
-		addProteins(iProt2, this);
-	}
-	addCSVLinks(this);
-	//take out unlinked
-	var prots = this.proteins.values();
-	var protCount = prots.length;
-	for (var p = 0; p < protCount; p++) {
-		var prot = prots[p];
-		if (prot.proteinLinks.keys().length === 0) {
-			this.proteins.remove(prot.id);
+		this.proteins.set("reverse_" + tempIdentifier, revProt);	
+	
+		//read links
+		addCSVLinks();	
+    	//take out unlinked
+		var prots = this.proteins.values();
+		var protCount = prots.length;
+		for (var p = 0; p < protCount; p++) {
+			var prot = prots[p];
+			if (prot.proteinLinks.keys().length === 0) {
+				this.proteins.remove(prot.id);
+			}
 		}
-	}  
-    this.init();
-    if (typeof initSlider === "function"){
-		initSlider();
+		initProteins();
 	}
-	if (annotations){
-		self.addAnnotations(annotations);
+	else { // no FASTA file 
+		//we may encounter proteins with 
+		//different ids/names but the same accession number.		
+		addProteins(iProt1);
+		addProteins(iProt2);
+		var prots = this.proteins.values();
+		var protCount = prots.length;
+		var countSequences = 0;
+		for (var p = 0; p < protCount; p++){
+			var id = prots[p].id;
+			xiNET_Storage.getSequence(id, function(ident, seq){
+					self.proteins.get(ident).setSequence(seq);
+					countSequences++;
+					if (countSequences === protCount){
+						self.initProteins();
+					}
+				}
+			);
+		}
+		addCSVLinks();
 	}
 	
-    function addProteins(columnIndex, self) {
+	this.initLayout();
+	
+    //~ if (typeof initSlider === "function"){
+		//~ initSlider();
+	//~ }
+	//~ if (annotations){
+		//~ self.addAnnotations(annotations);
+	//~ }
+	
+    function addProteins(columnIndex) {
         for (var row = 1; row < countRows; row++) {
             var prots = rows[row][columnIndex].replace(/(['"])/g, '');
             var accArray = prots.split(/[;,]/);
@@ -163,22 +186,12 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 					if (!self.proteins.has(id)) {
 						var protein = new Protein(id, self, acc, name);
 						self.proteins.set(id, protein);
-						var countSequences = 0;
-						
-						xiNET_Storage.getSequence(id, function(ident, seq){
-								self.proteins.get(ident).setSequence(seq);
-								countSequences++;
-								if (countSequences === self.proteins.keys().length){
-									self.initComplete = true;
-								}
-							}
-						);
 					}
 				}
             }
         }
     }
-
+	
 	function nameFromIdentifier(ident){
 		var name = ident;
 		var iBar = ident.indexOf("|");
@@ -195,7 +208,7 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 		return name;		
 	}
 
-    function addCSVLinks(self) {
+    function addCSVLinks() {
         var prot1, prot2, id, score;
 		for (var row = 1; row < countRows; row++) {
 			prot1 = rows[row][iProt1];

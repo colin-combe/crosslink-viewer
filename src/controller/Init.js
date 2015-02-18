@@ -11,54 +11,84 @@
 "use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
-
 xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
-
 xiNET.linkWidth = 1.3;// default line width
-xiNET.homodimerLinkWidth = 2;// default line width
-
+xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global
 // (because all instances of xiNET should use same colours for this)
-xiNET.highlightColour = new RGBColor("#fdc086");//"yellow");
-xiNET.selectedColour = new RGBColor("#ffff99");//"yellow");
-xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");//"#8c510a");//"#d8b365");//("#1b9e77");//"#beaed4");//"#8dd3c7");//#8073AC'");//
-xiNET.defaultInterLinkColour = new RGBColor("#35978f");//"#01665e");//"#5ab4ac");//"#7570b3");//"#fdc086");//"#bebada");//#E08214");//
-xiNET.homodimerLinkColour = new RGBColor("#a50f15");//"#e41a1c");
+xiNET.highlightColour = new RGBColor("#fdc086");
+xiNET.selectedColour = new RGBColor("#ffff99");
+xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
+xiNET.defaultInterLinkColour = new RGBColor("#35978f");
+xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 
-xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
+xiNET.Controller = function(targetDiv) {
+	// targetDiv could be div itself or id of div - lets deal with that
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
-	
-	//these attributes are used by checkboxes to hide self links or ambiguous links
-	this.intraHidden = false;
-	this.ambigHidden = false;
-	
-    this.fields = {}; //used by text search
-    this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
-    
+	this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
-    targetDiv.appendChild(this.svgElement);
-    
-    //are we panning?
-    this.panning = false;
-    // if we are dragging something at the moment - this will be the element that is draged
-    this.dragElement = null;
-    // are we dragging at the moment?
-    this.dragging = false;
-    // from where did we start dragging
-    this.dragStart = {};
-    // are we rotating at the moment
-    this.rotating = false;
-
+    this.svgElement.setAttribute("width", "100%");
+    this.svgElement.setAttribute("height", "100%");
+    this.svgElement.setAttribute("style", "display:block;");
     // disable right click context menu (we wish to put right click to our own purposes)
     this.svgElement.oncontextmenu = function() {
         return false;
     };
-
+    //add mouse listeners
+    var self = this;
+    this.svgElement.onmousedown = function(evt) {
+        self.mouseDown(evt);
+    };
+    this.svgElement.onmousemove = function(evt) {
+        self.mouseMove(evt);
+    };
+    this.svgElement.onmouseup = function(evt) {
+        self.mouseUp(evt);
+    };
+    // even though we don't use jquery, see:
+    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
+    this.svgElement.onmouseout = function(evt) {
+        self.hideTooltip(evt);
+    };   
+	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
+	}
+	else if (document.addEventListener) { //WC3 browsers
+		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
+	}        	  
+    this.lastMouseUp = new Date().getTime();
+    //add touch listeners
+    var self = this;
+    //touchstart
+    this.svgElement.ontouchstart = function(evt) {
+ 		self.message("touch start");
+        self.touchStart(evt);
+    };
+    //touchmove
+    this.svgElement.ontouchmove = function(evt) {
+ 		//~ self.message("touch move");
+		//~ console.debug("move");
+        self.touchMove(evt);
+    };
+    //touchend
+    this.svgElement.ontouchend = function(evt) {
+        self.message("touch end");
+        self.touchEnd(evt);
+    };
+    
+    targetDiv.appendChild(this.svgElement);
+    
+	//these attributes are used by checkboxes to hide self links or ambiguous links
+	this.intraHidden = false;//TODO - fix confusing double negative
+	this.ambigHidden = false;	
+    this.fields = {}; //used by text search
+        
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
@@ -71,18 +101,9 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     background.setAttribute("fill-opacity", "1");
     background.setAttribute("fill", "#FFFFFF");
     this.svgElement.appendChild(background);
-
+	// various groups needed
     this.container = document.createElementNS(xiNET.svgns, "g");
     this.container.setAttribute("id", "container");
-
-    var useDefs = false;//show magnifier using use and defs elements - experimental
-    // see https://bugzilla.mozilla.org/show_bug.cgi?id=265895
-    var defs;
-    if (useDefs === true) {
-        //for magnifier... chrome only
-        defs = document.createElementNS(xiNET.svgns, "defs");
-        defs.appendChild(this.container);
-    }
 
     this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
@@ -108,56 +129,18 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
 
-    if (useDefs === false) {//this is normal
-        this.svgElement.appendChild(this.container);
-    }
-    else {//for use/defs magnifier - test code only
-        var use = document.createElementNS(xiNET.svgns, "use");
-        use.setAttributeNS(xiNET.xlinkNS, "href", "#container");
-        this.svgElement.appendChild(use);
-
-        var cp = document.createElementNS(xiNET.svgns, "clipPath");
-        cp.setAttribute('id', 'CP');
-        var c = document.createElementNS(xiNET.svgns, "circle");
-        c.setAttribute('cx', '341');
-        c.setAttribute('cy', '192');
-        c.setAttribute('r', '50');
-        cp.appendChild(c);
-        this.svgElement.appendChild(cp);
-
-        var mag = document.createElementNS(xiNET.svgns, 'g');
-        mag.setAttribute('id', 'clippedI');
-        mag.setAttribute('transform', 'translate(-341, -192) scale(2)');
-        var magUse = document.createElementNS(xiNET.svgns, "use");
-        magUse.setAttributeNS(xiNET.xlinkNS, "href", "#container");
-        magUse.setAttribute("clip-path", "url(#CP)");
-        magUse.setAttribute('opacity', '1.0');
-        mag.appendChild(magUse);
-        var magFrame = document.createElementNS(xiNET.svgns, "circle");
-        magFrame.setAttribute('cx', '341');
-        magFrame.setAttribute('cy', '192');
-        magFrame.setAttribute('r', '50');
-        magFrame.setAttribute('fill', 'none');
-        magFrame.setAttribute('stroke', 'gray');
-        magFrame.setAttribute('stroke-with', 'gray');
-        mag.appendChild(magFrame);
-
-        this.svgElement.appendChild(mag);
-        this.svgElement.appendChild(defs);
-    }
-    //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
+    this.svgElement.appendChild(this.container);
+    //showing title as tooltips is NOT part of svg spec (even though browsers do this)
     //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(xiNET.svgns, "text");
-  //  this.tooltip.setAttribute('class', 'tooltip');
-  //  this.tooltip.setAttribute('id', 'tooltip');
-    this.tooltip.setAttribute('x', 0);
+	this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
     var tooltipTextNode = document.createTextNode('tooltip');
     this.tooltip.appendChild(tooltipTextNode);
 
     this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_bg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
 
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
@@ -167,7 +150,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 
@@ -179,7 +162,23 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 };
 
 xiNET.Controller.prototype.clear = function() {
+    var suspendID = this.svgElement.suspendRedraw(5000);
+    this.emptyElement(this.p_pLinksWide);
+    this.emptyElement(this.highlights);
+    this.emptyElement(this.p_pLinks);
+    this.emptyElement(this.res_resLinks);
+    this.emptyElement(this.proteinLower);
+    this.emptyElement(this.proteinUpper);
+    this.svgElement.unsuspendRedraw(suspendID);    
+    
     this.initComplete = false;
+    
+    this.panning = false;
+    this.dragElement = null;
+    this.dragging = false;
+    this.dragStart = {};
+    this.rotating = false;
+    
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
     this.matches = d3.map();
@@ -200,20 +199,11 @@ xiNET.Controller.prototype.clear = function() {
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-
     this.tooltip.setAttribute('visibility', 'hidden');
     this.tooltip_bg.setAttribute('visibility', 'hidden');
 
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
-    //    var suspendID = this.svgElement.suspendRedraw(5000);
-    this.emptyElement(this.p_pLinksWide);
-    this.emptyElement(this.highlights);
-    this.emptyElement(this.p_pLinks);
-    this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
-    this.emptyElement(this.proteinUpper);
-//    this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.emptyElement = function(element) {
@@ -325,6 +315,9 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
 		iEndRes = headers.indexOf('EndResidue')
 	}
     var iColour = headers.indexOf('Color');    
+    if (iColour === -1) {
+		iColour = headers.indexOf('Colour')
+	}
 
     var l = rows.length;
     for (var i = 1; i < l; i++) {
@@ -360,25 +353,8 @@ xiNET.Controller.prototype.annotationSet = function(annotationSetName) {
     }
 }
 
-xiNET.Controller.prototype.init = function(width, height) {
-    //initial dimensions
-    var containingDiv = this.svgElement.parentNode;
-    if (typeof containingDiv !== 'undefined' && containingDiv != null) {
-        width = containingDiv.clientWidth;
-        height = containingDiv.clientHeight;
-    } else {
-        width = 800;
-        height = 480;
-    }
-    this.svgElement.setAttribute("width", "100%");
-    this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("style", "display:block;");
-
-    this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-    Protein.UNITS_PER_RESIDUE = (((width - 350)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
-
-    //~ this.initComplete = true;
-
+//this can be done before all proteins have their sequences
+xiNET.Controller.prototype.initLayout = function(width, height) {
     if (typeof this.layout !== 'undefined' && this.layout != null) {
         this.loadLayout();
     } else {
@@ -398,11 +374,28 @@ xiNET.Controller.prototype.init = function(width, height) {
         }
         this.autoLayout(width, height);
     }
-    this.initMouseEvents();
-    if (typeof this.initTouchEvents === 'function'){
-		this.initTouchEvents();
-	}
 }
+
+//requires all proteins have had sequence set
+xiNET.Controller.prototype.initProteins = function() {
+	var prots = this.proteins.values();
+	var protCount = prots.length;
+	Protein.MAXSIZE = 0;
+	for (var i = 0; i < protCount; i++){
+		var protSize = prots[i];
+		if (protSize > Protein.MAXSIZE){
+			Protein.MAXSIZE = protSize;
+		}
+	}
+	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+	var width = this.svgElement.parentNode.clientWidth;
+	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
+	for (var i = 0; i < protCount; i++){
+		prots[i].init();
+	}
+	this.initComplete = true;
+}
+
 
 xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
     var proteinLink = this.proteinLinks.get(linkID);
@@ -446,7 +439,7 @@ xiNET.Controller.prototype.resetZoom = function() {
 };
 
 xiNET.Controller.prototype.getLayout = function() {
-    var myJSONText = JSON.stringify(this, null, '\t');
+    var myJSONText = JSON.stringify(this.proteins, null, '\t');
     var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
     var layout = myJSONText.replace(/\\u0000/gi, '');
     //+ "\n{co:" + this.cutOff +"}";
@@ -541,12 +534,4 @@ xiNET.Controller.prototype.loadLayout = function() {
         }
     }
     this.svgElement.unsuspendRedraw(suspendID);
-};
-
-
-xiNET.Controller.prototype.toJSON = function() {
-    return {
-        //        links: this.proteinLinks,
-        proteins: this.proteins
-    };
 };

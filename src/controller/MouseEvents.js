@@ -16,41 +16,10 @@ xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on Rotator, drag?
 xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on Rotator, drag?
 xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
-//listeners also attached to mouse evnts by Protein (and Rotator) and Link, those consume their events
-//mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
-xiNET.Controller.prototype.initMouseEvents = function() {
-    //add listeners
-    var self = this;
-    this.svgElement.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.svgElement.onmousemove = function(evt) {
-        self.mouseMove(evt);
-    };
-    this.svgElement.onmouseup = function(evt) {
-        self.mouseUp(evt);
-    };
-    // even though we don't use jquery, see:
-    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
-    this.svgElement.onmouseout = function(evt) {
-        self.hideTooltip(evt);
-    };
-     
-	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
-		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
-	}
-	else if (document.addEventListener) { //WC3 browsers
-		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
-	}
-        	  
-    this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
-    this.marquee.setAttribute('class', 'marquee');
-    this.marquee.setAttribute('fill', 'red');
+//~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
+    //~ this.marquee.setAttribute('class', 'marquee');
+    //~ this.marquee.setAttribute('fill', 'red');    
     
-    this.lastMouseUp = new Date().getTime();
-}
-
 /**
  * Handle mousedown event.
  */

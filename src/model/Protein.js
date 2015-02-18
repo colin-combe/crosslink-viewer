@@ -154,8 +154,8 @@ function Protein(id, xinetController, acc, name) {
 	this.showHighlight(false);
 }
 
-//sequence = amino acid in UPPERCASE, digits or lowercase can be used for modification info
-Protein.prototype.setSequence = function(sequence){//, name, description, size) {
+//sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
+Protein.prototype.setSequence = function(sequence){
     //check for labeling modifications in sequence now, we're about to lose this info
     if (/\d/.test(sequence)) {//is there a digit in the sequence?
         this.labeling = '';// as in silac labelling
@@ -177,17 +177,15 @@ Protein.prototype.setSequence = function(sequence){//, name, description, size) 
     if (typeof this.labeling !== 'undefined') {
         this.labelSVG.innerHTML = '[' + this.labeling + '] ' + this.labelSVG.innerHTML;
     }
-    
-    
     //remove modification site info from sequence
     this.sequence = sequence.replace(/[^A-Z]/g, '');
     this.size = this.sequence.length;
-	// keep track of largest protein size - used for initial scaling of bars
-    if (Protein.MAXSIZE < this.size) {
-        Protein.MAXSIZE = this.size;
-    }
+}
+
+//by the we ghet here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
+Protein.prototype.init = function() {
     this.setForm(this.form);
-    this.setAllLineCoordinates();
+    this.setAllLineCoordinates();	
 }
 
 Protein.prototype.mouseDown = function(evt) {
@@ -287,25 +285,16 @@ Protein.prototype.isDecoy = function() {
 	}
 };
 
-//only output the info needed to reproduce the layout
+//only output the info needed to reproduce the layout, used by save layout function
 Protein.prototype.toJSON = function() {
     return {
-        //for saved proteins
-        //        name: this.name,
-        //        accession: this.accession,
-        //        description: this.description,
-        //        sequence: this.sequence,
-        //        processedDAS: this.processedDAS,
-        //for saved layout
-        //        name: this.name,
         x: this.x,
         y: this.y,
         rot: this.rotation,
         form: this.form,
         stickZoom: this.stickZoom,
         parked: this.isParked,
-        flipped: this.isFlipped//,
-        //annot: this.customAnnotations
+        flipped: this.isFlipped
     };
 };
 

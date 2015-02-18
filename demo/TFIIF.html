@@ -123,7 +123,7 @@
                 xlv.setMessageElement(messageDiv);
 				d3.text('./data/TFIIF_highConf.csv', "text/csv", function(text) {
 					d3.text('./data/TFIIF_annot.csv', "text/csv", function(annot) {
-						xlv.readCSV(text,annot);
+						xlv.readCSV(text, null, annot);
 					});	
 				
 				});				
