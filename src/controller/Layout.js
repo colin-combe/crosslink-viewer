@@ -99,7 +99,7 @@ var autoLayout = function(width, height) {
         this.force = d3.layout.force()
                 .nodes(layoutObj.nodes)
                 .links(layoutObj.links)
-                .gravity(95 * k)
+                .gravity(105 * k)
                 .linkDistance(70) //target distance between linked nodes
                 .linkStrength(0.8) //the strength (rigidity) of links
                 .charge(-18 / k)
