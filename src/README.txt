@@ -25,8 +25,27 @@ The procedure for use is as follows:
 				xlv.clear();
 				xlv.readMIJSON(data2, expand);
 				
+-----------------------------------------------------------------------------------------
 
-P.s. Something I said previously about a way to change the initial size of the graphical elements was wrong...
-some changes are needed to the code before this will work.
+Other function you may call (assumes 'xlv' is var name for your instance of xiNET Controller):
 
+xlv.autoLayout()			restarts autolayout
+xlv.resetZoom()				resets zoom/pan (actually, zooming currently disabled)
+xlv.exportSVG()				exports SVG
+
+
+
+-----------------------------------------------------------------------------------------
+
+***   USER CONTROLS   ***
+
+Toggle nodes between bar and circle	>	Left-click on node
+
+Pan			>	Left-click and drag on background
+
+Move node	>	Click and drag on node
+
+Rotate bar	>	Click and drag on handles that appear at end of a bar when moused over 
+
+Cycle through different bar lengths (longest length displays sequence)	>	Shift+left-click (this is a bit clumsy)
 

@@ -10,8 +10,6 @@
 
 "use strict";
 
-//var Interactor = require('../model/interactor/Interactor');
-
 var autoLayout = function(width, height) {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
@@ -23,6 +21,7 @@ var autoLayout = function(width, height) {
     if (proteinCount === 1) {
         var protein = this.participants.values()[0];
         protein.setPosition(width / 2, height / 2);
+        protein.setAllLinkCoordinates();
         return;
     }
     else if (proteinCount === 2) {
@@ -38,67 +37,31 @@ var autoLayout = function(width, height) {
     }
     else {
         var self = this; 
-        //if force is null choose nice starting points for nodes
+        var nodes = this.participants.values();
+		var nodeCount = nodes.length;
+		//if force is null choose starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
-            //Get starting position for force layout by using d3 packed circles layout
-            var json = "{\"name\": \"ALL\",\"children\": [";
-            var pi = 0;
-			var nodes = this.participants.values();
-			var nodeCount = nodes.length;
 			for (var n = 0; n < nodeCount; n++) {
-				var prot = nodes[n];
-				if (pi > 0){
-					json += ",";
-				}
-				pi++;
-				//TODO: change to actual json obj not string
-				json += "{\"name\":\"" + prot.name + "\",\"id\":\"" + prot.id + "\",\"ppLinkCount\":\""
-						+ prot.binaryLinks.keys().length + "\",\"size\":\"" + (prot.size) + "\"";
-				json += "}";
-			}
-            json += "]}";
-            var jsonObj = JSON.parse(json);
-            var packLayout = d3.layout.pack()
-                    .size([width - this.layoutXOffset, height])
-                    .value(function(d) {
-						return d.size;
-					})
-                    .sort(function comparator(a, b) {
-						return (b.ppLinkCount) - (a.ppLinkCount);
-					})
-					;
-            var nodes = packLayout.nodes(jsonObj);
-            var nodeCount = nodes.length;
-            for (var n = 1; n < nodeCount; n++) {
-                var node = nodes[n];
-                var protein = this.participants.get(node.id);
-                var nx = node.x + Math.random() - 0.5;
-                var ny = node.y + Math.random() - 0.5;
-                
-                protein.setPosition(nx + this.layoutXOffset, ny);
-                protein.setAllLinkCoordinates(false);
-            }
+				nodes[n].setPosition(Math.random() * width, Math.random() * height);
+			}               
         }
                 
         //do force directed layout
-        var linkDistance = 60;
         var layoutObj = {};
         layoutObj.nodes = [];
         layoutObj.links = [];
         var protLookUp = {};
         var pi = 0;
 
-		var nodes = this.participants.values();
-		var nodeCount = nodes.length;
 		for (var n = 0; n < nodeCount; n++) {
 			var prot = nodes[n];//.id);
 			protLookUp[prot.id] = pi;
 			pi++;
 			var nodeObj = {};
 			nodeObj.id = prot.id;
-			nodeObj.x = prot.x - this.layoutXOffset;
+			nodeObj.x = prot.x;
 			nodeObj.y = prot.y;
-			nodeObj.px = prot.x - this.layoutXOffset;
+			nodeObj.px = prot.x;
 			nodeObj.py = prot.y;
 			layoutObj.nodes.push(nodeObj);
 		}
@@ -125,19 +88,26 @@ var autoLayout = function(width, height) {
 					}
 				}
 		}
+		
         var k = Math.sqrt(layoutObj.nodes.length / (width * height));
-// mike suggests:
-//    .charge(-10 / k)
-//    .gravity(100 * k)
+		// mike suggests:
+		//    .charge(-10 / k)
+		//    .gravity(100 * k)
+
+		//following are the parameters for the layout you can play around with
+		//see the documentation at https://github.com/mbostock/d3/wiki/Force-Layout
         this.force = d3.layout.force()
                 .nodes(layoutObj.nodes)
                 .links(layoutObj.links)
-                .gravity(95 * k)
-                .linkDistance(linkDistance)
+                .gravity(105 * k)
+                .linkDistance(70) //target distance between linked nodes
+                .linkStrength(0.8) //the strength (rigidity) of links
                 .charge(-18 / k)
+                .friction(0.95) // 1 = frictionless
+                .theta(0.95) //Barnes–Hut approximation criterion
                 .size([width, height]);
-        var nodeCount = this.force.nodes().length;
-        var forceLinkCount = this.force.links().length;
+                //also .chargeDistance() and .alpha() // not used
+                
         this.force.on("tick", function(e) {
             var nodes = self.force.nodes();
             // console.log("nodes", nodes);

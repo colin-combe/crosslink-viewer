@@ -75,15 +75,6 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.container = document.createElementNS(Config.svgns, "g");
     this.container.setAttribute("id", "container");
 
-    var useDefs = false;//show magnifier using use and defs elements - experimental
-    // see https://bugzilla.mozilla.org/show_bug.cgi?id=265895
-    var defs;
-    if (useDefs === true) {
-        //for magnifier... chrome only
-        defs = document.createElementNS(Config.svgns, "defs");
-        defs.appendChild(this.container);
-    }
-
     this.naryLinks = document.createElementNS(Config.svgns, "g");
     this.naryLinks.setAttribute("id", "naryLinks");
     this.container.appendChild(this.naryLinks);
@@ -112,45 +103,8 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
 
-
-
-    if (useDefs === false) {//this is normal
-        this.svgElement.appendChild(this.container);
-    }
-    else {//for use/defs magnifier - test code only
-        var use = document.createElementNS(Config.svgns, "use");
-        use.setAttributeNS(Config.xlinkNS, "href", "#container");
-        this.svgElement.appendChild(use);
-
-        var cp = document.createElementNS(Config.svgns, "clipPath");
-        cp.setAttribute('id', 'CP');
-        var c = document.createElementNS(Config.svgns, "circle");
-        c.setAttribute('cx', '341');
-        c.setAttribute('cy', '192');
-        c.setAttribute('r', '50');
-        cp.appendChild(c);
-        this.svgElement.appendChild(cp);
-
-        var mag = document.createElementNS(Config.svgns, 'g');
-        mag.setAttribute('id', 'clippedI');
-        mag.setAttribute('transform', 'translate(-341, -192) scale(2)');
-        var magUse = document.createElementNS(Config.svgns, "use");
-        magUse.setAttributeNS(Config.xlinkNS, "href", "#container");
-        magUse.setAttribute("clip-path", "url(#CP)");
-        magUse.setAttribute('opacity', '1.0');
-        mag.appendChild(magUse);
-        var magFrame = document.createElementNS(Config.svgns, "circle");
-        magFrame.setAttribute('cx', '341');
-        magFrame.setAttribute('cy', '192');
-        magFrame.setAttribute('r', '50');
-        magFrame.setAttribute('fill', 'none');
-        magFrame.setAttribute('stroke', 'gray');
-        magFrame.setAttribute('stroke-with', 'gray');
-        mag.appendChild(magFrame);
-
-        this.svgElement.appendChild(mag);
-        this.svgElement.appendChild(defs);
-    }
+	this.svgElement.appendChild(this.container);
+    
     //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
     //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(Config.svgns, "text");
@@ -163,7 +117,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 
     this.tooltip_bg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_bg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
 
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
@@ -173,7 +127,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
+    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 

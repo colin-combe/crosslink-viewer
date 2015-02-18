@@ -124,7 +124,23 @@ var readMIJSON = function(miJson, expand) {
 			}
 		}
 		
-		miJson = Expand.matrix(miJson);
+		//get maximum stoichiometry
+		var maxStoich = 0;
+		for (var l = 0; l < dataElementCount; l++) {
+			var interaction = data[l];
+			if (interaction.object === 'interaction') {
+				var participantCount = interaction.participants.length;
+				for (var pi = 0; pi < participantCount; pi++) {
+					var participant = interaction.participants[pi];
+					if (participant.stoichiometry && (participant.stoichiometry-0) > maxStoich){
+						maxStoich = (participant.stoichiometry-0);
+					}
+				}	
+			}
+		}		
+		if (maxStoich < 30){
+			miJson = Expand.matrix(miJson);
+		}
 				
 		//create indexed collection of all features from interactions
 		// - still seems like a good starting point?  
