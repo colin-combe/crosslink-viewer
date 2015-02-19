@@ -12,23 +12,19 @@ Protein.MAXSIZE = 100; 			// residue count of longest sequence
 Protein.UNITS_PER_RESIDUE = 1; 	// this value is changed during init (calculated on basis of MAXSIZE)
 Protein.LABELMAXLENGTH = 60; 	// maximal width reserved for protein-labels
 Protein.labelY = -5; 			// label Y offset, better if calc'd half height of label once rendered
-//~ Protein.domainColours = d3.scale.category20c(); //
 Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[12]);
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
-//~ Protein.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[9]);
 Protein.transitionTime = 650;
 
 function Protein(id, xinetController, acc, name) {
     this.id = id; // id may not be accession
-    this.xlv = xinetController;
+    this.controller = xinetController;
     this.accession = acc;
     this.name = name;
     this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
     
     //links
     this.proteinLinks = d3.map();
-    this.internalLink = null;
+    this.selfLink = null;
     // layout info
     this.x = 40;
     this.y = 40;
@@ -42,9 +38,9 @@ function Protein(id, xinetController, acc, name) {
     //annotation scheme
     this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
 	//rotators
-	//~ this.mouseoverControls = new MouseoverControls(this, this.xlv);
-	this.lowerRotator = new Rotator(this, 0, this.xlv);
-	this.upperRotator = new Rotator(this, 1, this.xlv);
+	//~ this.mouseoverControls = new MouseoverControls(this, this.controller);
+	this.lowerRotator = new Rotator(this, 0, this.controller);
+	this.upperRotator = new Rotator(this, 1, this.controller);
           
     /*
      * Lower group
@@ -120,6 +116,7 @@ function Protein(id, xinetController, acc, name) {
 	this.outline = document.createElementNS(xiNET.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
+    this.outline.setAttribute("fill", "#EEEEEE");
     this.upperGroup.appendChild(this.outline);
     
     //domains as pie slices - shown on top of everything
@@ -131,8 +128,8 @@ function Protein(id, xinetController, acc, name) {
     this.scaleLabels = new Array();
 	//this.setRotation(this.rotation);
 	//~ var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-	//~ var k = this.xlv.svgElement.createSVGMatrix().rotate(0).translate(0, Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-	//~ this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
+	//~ var k = this.controller.svgElement.createSVGMatrix().rotate(0).translate(0, Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+	//~ this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	
     // events
     var self = this;
@@ -147,7 +144,7 @@ function Protein(id, xinetController, acc, name) {
 		self.mouseOut(evt);
     };     
     this.upperGroup.ontouchstart = function(evt) {
-		self.xlv.message("protein touch start");
+		self.controller.message("protein touch start");
 		self.touchStart(evt);
     };
     this.isSelected = false;
@@ -182,28 +179,29 @@ Protein.prototype.setSequence = function(sequence){
     this.size = this.sequence.length;
 }
 
-//by the we ghet here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
+//by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
 Protein.prototype.init = function() {
     this.setForm(this.form);
+    if (this.selfLink) this.selfLink.initSelfLinkSVG();
     this.setAllLineCoordinates();	
 }
 
 Protein.prototype.mouseDown = function(evt) {
-           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.xlv.force !== undefined) {
-            this.xlv.force.stop();
+        if (this.controller.force !== undefined) {
+            this.controller.force.stop();
         }
-        this.xlv.dragElement = this;
+        this.controller.dragElement = this;
         //~ if (evt.ctrlKey === false) {
-            this.xlv.clearSelection();
+            this.controller.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.xlv.getEventPoint(evt);
-        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        var p = this.controller.getEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         
         var message = "";
 		//heading, including PDB link
@@ -212,32 +210,28 @@ Protein.prototype.mouseDown = function(evt) {
 			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
 					+ this.accession + "' target='_blank'>PDB</a></p>";
 		}
-		this.xlv.message(message);
+		this.controller.message(message);
 		var self = this;
 		if (this.accession){
 			xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-				self.xlv.message(message + "<pre>" + txt + "</pre>");
+				self.controller.message(message + "<pre>" + txt + "</pre>");
 			});
 		}
         return false;
 };
 
 Protein.prototype.touchStart = function(evt) {
-           this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.xlv.force !== undefined) {
-            this.xlv.force.stop();
+        if (this.controller.force !== undefined) {
+            this.controller.force.stop();
         }
-        this.xlv.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.xlv.clearSelection();
-            this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
+        this.controller.dragElement = this;
+        this.controller.clearSelection();
+        this.setSelected(true);
         //store start location
-        var p = this.xlv.getTouchEventPoint(evt);
-        this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+        var p = this.controller.getTouchEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         
         var self = this;
         var message = "";
@@ -247,33 +241,30 @@ Protein.prototype.touchStart = function(evt) {
 			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
 					+ this.accession + "' target='_blank'>PDB</a></p>";
 		}
-		this.xlv.message(message);
+		this.controller.message(message);
 		var self = this;
 		xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-			self.xlv.message(message + "<pre>" + txt + "</pre>");
+			self.controller.message(message + "<pre>" + txt + "</pre>");
 		});
         
         return false;
 };
 
 Protein.prototype.mouseOver = function(evt) {
-        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.xlv.setTooltip(this.tooltip);
+        this.controller.setTooltip(this.tooltip);
         return false;
 };
 
 Protein.prototype.mouseOut = function(evt) {
-        this.xlv.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(false);
-        this.xlv.hideTooltip();
+        this.controller.hideTooltip();
         return false;
 };
 
 Protein.prototype.getBlobRadius = function() {
-	if (!this.size){
-		 return 10; 
-	}
     return Math.sqrt(this.size / Math.PI);
 };
 
@@ -302,8 +293,9 @@ Protein.prototype.addLink = function(link) {
     if (!this.proteinLinks.has(link.id)) {
         this.proteinLinks.set(link.id, link);
     }
-    if (link.intra) {
-        this.internalLink = link;
+    if (link.selfLink()) {
+        this.selfLink = link;
+        if (this.size) this.selfLink.initSelfLinkSVG();
     }
     if (link.toProtein === null) {
         this.linkerModifications = link;
@@ -324,13 +316,13 @@ Protein.prototype.showHighlight = function(show) {
 
 Protein.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.xlv.selected.set(this.id, this);
+        this.controller.selected.set(this.id, this);
         this.isSelected = true;
 		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
-        this.xlv.selected.remove(this.id);
+        this.controller.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
@@ -343,11 +335,11 @@ Protein.prototype.setRotation = function(angle) {
         this.rotation += 360;
 	}
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 
-    var svg = this.xlv.svgElement;    
+    var svg = this.controller.svgElement;    
 	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
 	var labelTransform = d3.transform(transformToContainingGroup);
 	var sll = this.scaleLabels.length;
@@ -382,24 +374,24 @@ Protein.prototype.setPosition = function(x, y) {
     this.y = y;
     if (this.form === 1 && this.isParked === false){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") ");
+				+ " scale(" + (this.controller.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.xlv.z) + ") ");
-		if (this.internalLink != null) {
-			if (typeof this.internalLink.fatLine !== 'undefined') {
-				this.internalLink.fatLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+				+ " scale(" + (this.controller.z) + ") ");
+		if (this.selfLink != null) {
+			if (typeof this.selfLink.fatLine !== 'undefined') {
+				this.selfLink.fatLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.controller.z) + ")");
 			}
-				this.internalLink.line.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
-				this.internalLink.highlightLine.setAttribute("transform", "translate(" + this.x
-						+ " " + this.y + ")" + " scale(" + (this.xlv.z) + ")");
+				this.selfLink.line.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.controller.z) + ")");
+				this.selfLink.highlightLine.setAttribute("transform", "translate(" + this.x
+						+ " " + this.y + ")" + " scale(" + (this.controller.z) + ")");
 		}
 	}
 };
@@ -414,7 +406,7 @@ Protein.prototype.switchStickScale = function(svgP) {
         this.toStick();
     }
     else {
-        var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
+        var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
         if (pixPerRes > 8) {
             this.stickZoom = 0.5;//this looks like a hack
             this.setPosition(svgP.x, svgP.y);
@@ -441,9 +433,9 @@ Protein.prototype.scale = function() {
     var protLength = (this.size) * Protein.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-		var k = this.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
+		var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
 			.translate((-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-		this.labelSVG.transform.baseVal.initialize(this.xlv.svgElement.createSVGTransformFromMatrix(k));
+		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
 		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
@@ -465,8 +457,8 @@ Protein.prototype.scale = function() {
 			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Protein.rotOffset) + " 0)");
         
         //internal links
-        if (this.internalLink != null) {
-            var resLinks = this.internalLink.residueLinks.values();
+        if (this.selfLink != null) {
+            var resLinks = this.selfLink.residueLinks.values();
             var iLinkCount = resLinks.length;
             for (var l = 0; l < iLinkCount; l++) {
 				var residueLink = resLinks[l];
@@ -497,13 +489,13 @@ Protein.prototype.scale = function() {
 };
 
 Protein.prototype.setScaleGroup = function() {
-	this.xlv.emptyElement(this.ticks);
+	this.controller.emptyElement(this.ticks);
 	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
     
     this.scaleLabels = new Array();
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
-	var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.xlv.z;
+	var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
 	var tick = -1;
 	var lastTickX = this.getResXwithStickZoom(this.size);
 	
@@ -690,12 +682,11 @@ Protein.prototype.toCircle = function(svgP) {
     var protLength = this.size * Protein.UNITS_PER_RESIDUE * this.stickZoom;		
 	var r = this.getBlobRadius();
 	
-	//~ var lengthInterpol = d3.interpolate(protLength, (2 * r));
 	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
 	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
 	//todo: should take current tranform of label as start
 	var labelStartPoint = -(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
-	if (Protein.UNITS_PER_RESIDUE === 1) labelStartPoint = -(r + 5);
+	//if (Protein.UNITS_PER_RESIDUE === 1) labelStartPoint = -(r + 5);
 	var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 	
 	var xInterpol = null, yInterpol = null;
@@ -718,8 +709,8 @@ Protein.prototype.toCircle = function(svgP) {
 		.attr("rx", r + 2.5).attr("ry", r + 2.5)
 		.duration(Protein.transitionTime);		   
 	
-	if (this.internalLink != null) {
-		var resLinks = this.internalLink.residueLinks.values();
+	if (this.selfLink != null) {
+		var resLinks = this.selfLink.residueLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
@@ -786,8 +777,8 @@ Protein.prototype.toCircle = function(svgP) {
 	function update(interp) {
 		// if (self.isParked === false) { //that wont work
 			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-			var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-			self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+			var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+			self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 		// }
 		 if (xInterpol !== null){
 			 self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
@@ -797,9 +788,8 @@ Protein.prototype.toCircle = function(svgP) {
 		 //~ }
 		
 	   	var rot = rotationInterpol(cubicInOut(interp));
-		self.setRotation(rot);
-	 
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+		self.setRotation(rot);	 
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
@@ -845,7 +835,6 @@ Protein.prototype.toStick = function() {
     this.form = 1; 
    
     //place rotators
-	//~ this.mouseoverControls.add();
 	this.upperGroup.appendChild(this.lowerRotator.svg);
 	this.upperGroup.appendChild(this.upperRotator.svg);  
 	this.lowerRotator.svg.setAttribute("transform", 
@@ -896,8 +885,8 @@ Protein.prototype.toStick = function() {
 		.attr("rx", 0).attr("ry", 0)
 		.duration(Protein.transitionTime);		   
 	
-	 if (this.internalLink != null) {
-		var resLinks = this.internalLink.residueLinks.values();
+	 if (this.selfLink != null) {
+		var resLinks = this.selfLink.residueLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];			
@@ -958,8 +947,8 @@ Protein.prototype.toStick = function() {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.xlv.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.xlv.svgElement.createSVGTransformFromMatrix(k));
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 	   
 	   	var rot = rotationInterpol(cubicInOut(interp));
 		self.setRotation(rot);
@@ -1117,7 +1106,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 }
 
 Protein.prototype.removePeptides = function() {
-	this.xlv.emptyElement(this.peptides);
+	this.controller.emptyElement(this.peptides);
 }
 
 Protein.prototype.getResXwithStickZoom = function(r) {
@@ -1192,7 +1181,7 @@ Protein.prototype.getSubgraph = function(subgraphs) {
         if (this.isParked === false) {
             this.subgraph = this.addConnectedNodes(subgraph);
         }
-        this.xlv.subgraphs.push(subgraph); 
+        this.controller.subgraphs.push(subgraph); 
     }
     return this.subgraph;
 };
@@ -1230,8 +1219,8 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
 Protein.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
-    if (this.circDomains) this.xlv.emptyElement(this.circDomains);
-    if (this.rectDomains) this.xlv.emptyElement(this.rectDomains);
+    if (this.circDomains) this.controller.emptyElement(this.circDomains);
+    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
     
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Protein.STICKHEIGHT / 2;
@@ -1286,7 +1275,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
             //~ annotMouseEventRect.name = text;
-            var xlv = this.xlv;
+            var xlv = this.controller;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
                 //    for magnifier experiment

@@ -19,30 +19,21 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.xlv = xlvController;
     this.fromProtein = fromP; //its the object. not the ID number
     this.toProtein = toP; //its the object. not the ID number
-    this.intra = false;// TODO: remove this?
-    if (this.fromProtein === this.toProtein) {
-        this.intra = true;
-    }
     this.ambig = false;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
-    this.dashed = false;
     //layout stuff
     this.hidden = false;
     
-    if (!this.intra) {
+    if (!this.selfLink()) {
         this.line = document.createElementNS(xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(xiNET.svgns, "line");
         this.fatLine = document.createElementNS(xiNET.svgns, "line");
     } else {
-        var path = this.fromProtein.getAggregateSelfLinkPath();
         this.line = document.createElementNS(xiNET.svgns, "path");
-        this.line.setAttribute('d', path);
         this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-        this.highlightLine.setAttribute('d', path);
         this.fatLine = document.createElementNS(xiNET.svgns, 'path');
-        this.fatLine.setAttribute('d', path);
     }
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
@@ -105,40 +96,27 @@ function ProteinLink(id, fromP, toP, xlvController) {
     };
     
     this.isSelected = false;
-    this.initSVG();
 }
 
-ProteinLink.prototype.initSVG = function() {
-    //~ function trig(radius, angleDegrees) {
-		//~ //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-		//~ var radians = (angleDegrees / 360) * Math.PI * 2;
-		//~ return {
-			//~ x: (radius * Math.cos(radians)),
-			//~ y: -(radius * Math.sin(radians))
-		//~ };
-    //~ }
-    
-    if (!this.intra) {
-        //~ this.line = document.createElementNS(xiNET.svgns, "line");
-        //~ this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-        //~ this.fatLine = document.createElementNS(xiNET.svgns, "line");
-    } else {
-        var path = this.fromProtein.getAggregateSelfLinkPath();
-        //~ this.line = document.createElementNS(xiNET.svgns, "path");
-        this.line.setAttribute('d', path);
-        //~ this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-        this.highlightLine.setAttribute('d', path);
-        //~ this.fatLine = document.createElementNS(xiNET.svgns, 'path');
-        this.fatLine.setAttribute('d', path);
-    }
+ProteinLink.prototype.selfLink = function() {
+	return (this.fromProtein === this.toProtein);
 }
-;
+
+ProteinLink.prototype.initSelfLinkSVG = function() {
+	var path = this.fromProtein.getAggregateSelfLinkPath();
+	this.line.setAttribute('d', path);
+	this.highlightLine.setAttribute('d', path);
+	this.fatLine.setAttribute('d', path);
+};
+
 ProteinLink.prototype.getFromProtein = function() {
     return this.fromProtein;
 };
+
 ProteinLink.prototype.getToProtein = function() {
     return this.toProtein;
 };
+
 ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     if (typeof andAlternatives === 'undefined') {
         andAlternatives = false;
@@ -352,7 +330,7 @@ ProteinLink.prototype.check = function() {
         this.hide();
         return false;
     }
-    if (this.xlv.intraHidden && this.intra) {
+    if (this.xlv.selfLinksHidden && this.selfLink()) {
         if (this.fromProtein.form === 0) {
             this.hide();
         } else {
@@ -428,10 +406,10 @@ ProteinLink.prototype.check = function() {
 				this.tooltip += ' matches)';
 			}
 			this.w = filteredResLinkCount * (45 / ProteinLink.maxNoResidueLinks);
-			//acknowledge following line is a bit confusing...
+			//acknowledge following line is a bit strange
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
-			if (this.intra) {
+			if (this.selfLink()) {
 				if (this.hd) {
 					this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 					this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
@@ -464,33 +442,23 @@ ProteinLink.prototype.check = function() {
 };
 
 ProteinLink.prototype.dashedLine = function(dash) {
-    //~ if (typeof this.line === 'undefined'){
-        //~ this.initSVG();
-    //~ }
-    if (dash){// && !this.dashed) {
-        this.dashed = true;
-        if (this.intra === true) {
+    if (dash){
+        if (this.selfLink() === true) {
 			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
 		} else {
 			this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
 		}
     }
-    else if (!dash){// && this.dashed) {
-        this.dashed = false;
+    else if (!dash){
         this.line.removeAttribute("stroke-dasharray");
     }
 };
+
 ProteinLink.prototype.show = function() {
-    //~ if (this.xlv.initComplete) {
         // TODO?: check how some of this compares to whats in Refresh.js, scale()
         if (!this.shown) {
             this.shown = true;
-            //~ if (typeof this.line === 'undefined') {
-                //~ this.initSVG();
-            //~ }
-            if (this.intra) {
-                //this.line.setAttribute("stroke-width", 1);//this.xlv.z*
-
+            if (this.selfLink()) {
                 if (ProteinLink.maxNoResidueLinks > 1) {
                     this.fatLine.setAttribute("transform", "translate(" +
                         this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
@@ -502,8 +470,6 @@ ProteinLink.prototype.show = function() {
 				this.highlightLine.setAttribute("transform", "translate(" + this.fromProtein.x
 						+ " " + this.fromProtein.y + ")" + " scale(" + (this.xlv.z) + ")");
 
-                //~ this.fromProtein.lowerGroup.appendChild(this.highlightLine);
-                //~ this.fromProtein.lowerGroup.appendChild(this.line);
                 this.xlv.highlights.appendChild(this.highlightLine);
                 this.xlv.p_pLinks.appendChild(this.line);
             }
@@ -520,18 +486,18 @@ ProteinLink.prototype.show = function() {
             }
         }
         if (ProteinLink.maxNoResidueLinks > 1) {
-            if (this.intra) {
+            if (this.selfLink()) {
                 this.fatLine.setAttribute("stroke-width", this.w);
             } else {
                 this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
             }
         }
-    //~ }
 };
+
 ProteinLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        if (this.intra) {
+        if (this.selfLink()) {
             //TODO: be more selective about when to show 'fatLine'
             if (ProteinLink.maxNoResidueLinks > 1) {
                 this.xlv.p_pLinksWide.removeChild(this.fatLine);
@@ -549,10 +515,6 @@ ProteinLink.prototype.hide = function() {
 };
 
 ProteinLink.prototype.setLineCoordinates = function(interactor) {
-	//a defensive check
-    if (interactor.x == null || interactor.y == null) {
-        return;
-    }
 	//if not linker modified pep
 	if (this.getToProtein() !== null){
 		//don't waste time changing DOM if this not visible
@@ -560,25 +522,18 @@ ProteinLink.prototype.setLineCoordinates = function(interactor) {
 			if (this.getFromProtein() === interactor) {
 						this.line.setAttribute("x1", interactor.x);
 						this.line.setAttribute("y1", interactor.y);
-						//                    if (moveHighlight == false){
 						this.highlightLine.setAttribute("x1", interactor.x);
 						this.highlightLine.setAttribute("y1", interactor.y);
-						//                    }
-						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
 						this.fatLine.setAttribute("x1", interactor.x);
 						this.fatLine.setAttribute("y1", interactor.y);
 			}
 			else if (this.getToProtein() === interactor) {
 						this.line.setAttribute("x2", interactor.x);
 						this.line.setAttribute("y2", interactor.y);
-						//                    if (moveHighlight == false){
 						this.highlightLine.setAttribute("x2", interactor.x);
 						this.highlightLine.setAttribute("y2", interactor.y);
-						//                    }
-						//                    if ( this.fatLine.getAttribute("stroke-width") > interactor.xlv.thisWidth){
 						this.fatLine.setAttribute("x2", interactor.x);
 						this.fatLine.setAttribute("y2", interactor.y);
-						//                    }
 			}
 		}
 	}
@@ -591,12 +546,4 @@ ProteinLink.prototype.getOtherEnd = function(protein) {
     else {
         return this.fromProtein;
     }
-};
-
-ProteinLink.prototype.toJSON = function() {
-    return {
-        //    id : this.id,
-        sc: this.residueLinks.values()[0].matches[0].score,
-        rl: this.residueLinks
-    };
 };

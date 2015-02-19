@@ -382,7 +382,7 @@ xiNET.Controller.prototype.initProteins = function() {
 	var protCount = prots.length;
 	Protein.MAXSIZE = 0;
 	for (var i = 0; i < protCount; i++){
-		var protSize = prots[i];
+		var protSize = prots[i].size;
 		if (protSize > Protein.MAXSIZE){
 			Protein.MAXSIZE = protSize;
 		}
