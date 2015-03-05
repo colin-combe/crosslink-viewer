@@ -93,7 +93,6 @@ var autoLayout = function(width, height) {
 		// mike suggests:
 		//    .charge(-10 / k)
 		//    .gravity(100 * k)
-
 		//following are the parameters for the layout you can play around with
 		//see the documentation at https://github.com/mbostock/d3/wiki/Force-Layout
         this.force = d3.layout.force()
