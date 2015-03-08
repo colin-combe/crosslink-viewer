@@ -10,12 +10,12 @@
 
 "use strict";
 
-var autoLayout = function(width, height) {
+var autoLayout = function() {
     if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
-    if (!width) width = this.svgElement.parentNode.clientWidth;
-    if (!height) height = this.svgElement.parentNode.clientHeight;
+    var width = this.svgElement.parentNode.clientWidth;
+    var height = this.svgElement.parentNode.clientHeight;
 
     var proteinCount = this.participants.keys().length;
     if (proteinCount === 1) {

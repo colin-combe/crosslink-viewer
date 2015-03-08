@@ -15,7 +15,7 @@ var Config = require('../../controller/Config');
 
 SmallMol.prototype = new Interactor();
 
-function SmallMol(id, xlvController, json) {
+function SmallMol(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
@@ -24,10 +24,7 @@ function SmallMol(id, xlvController, json) {
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-}
 
-SmallMol.prototype.initInteractor = function(name)
-{
     this.name = name;
     // layout info
     this.x = null;
@@ -92,10 +89,6 @@ SmallMol.prototype.initInteractor = function(name)
 		"translate( -" + (15) + " " + Interactor.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
    	 
-	//make outline
-    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
-	this.outline = document.createElementNS(Config.svgns, "rect");
-	
 	//make blob
 	this.outline = document.createElementNS(Config.svgns, "polygon");
 	this.outline.setAttribute("points", points);
@@ -124,23 +117,6 @@ SmallMol.prototype.initInteractor = function(name)
 		self.ctrl.message("protein touch start");
 		self.touchStart(evt);
     };
-    //~ this.upperGroup.ontouchmove = function(evt) {};
-	//~ this.upperGroup.ontouchend = function(evt) {
-		//~ self.ctrl.message("protein touch end");
-		//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchenter = function(evt) {
-        //~ self.message("protein touch enter");
-    	//~ self.touchStart(evt);
-    //~ };
-    //~ this.upperGroup.ontouchleave = function(evt) {
-        //~ self.message("protein touch leave");
-    	//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchcancel = function(evt) {
-        //~ self.message("protein touch cancel");
-    	//~ self.mouseOut(evt);
-    //~ };
     this.isSelected = false;
 };
 

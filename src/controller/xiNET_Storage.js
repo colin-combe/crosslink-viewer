@@ -162,3 +162,7 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
 		superFamDAS();
 	}
 }
+
+module.exports = {
+    xiNET_Storage: xiNET_Storage
+}

@@ -11,8 +11,8 @@ var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
 //josh - following are libraries and should be in 'vendor'?
 //  but I don't know how to set up the dependency if its there
-var Intersection = require('../../controller/Intersection');
-var Point2D = require('../../controller/Point2D');
+//var Intersection = require('../../controller/Intersection');
+//var Point2D = require('../../controller/Point2D');
 
 // BinaryLink.js
 // the class representing a binary interaction
@@ -177,26 +177,24 @@ BinaryLink.prototype.check = function() {
 };
 
 BinaryLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
-        if (!this.shown) {
-            this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
-			this.line.setAttribute("stroke-width", this.ctrl.z * 1);
-			this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
-			this.setLinkCoordinates(this.interactors[0]);
-			this.setLinkCoordinates(this.interactors[1]);
-			if (this.thickLineShown) {
-				this.ctrl.p_pLinksWide.appendChild(this.thickLine);
-			}
-			this.ctrl.highlights.appendChild(this.highlightLine);
-			this.ctrl.p_pLinks.appendChild(this.line);
-			if (this.thickLineShown) {
-				this.thickLine.setAttribute("stroke-width", this.w);
-			}
+	 if (!this.shown) {
+		this.shown = true;
+		if (typeof this.line === 'undefined') {
+			this.initSVG();
 		}
-    }
+		this.line.setAttribute("stroke-width", this.ctrl.z * 1);
+		this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
+		this.setLinkCoordinates(this.interactors[0]);
+		this.setLinkCoordinates(this.interactors[1]);
+		if (this.thickLineShown) {
+			this.ctrl.p_pLinksWide.appendChild(this.thickLine);
+		}
+		this.ctrl.highlights.appendChild(this.highlightLine);
+		this.ctrl.p_pLinks.appendChild(this.line);
+		if (this.thickLineShown) {
+			this.thickLine.setAttribute("stroke-width", this.w);
+		}
+	}
 };
 
 BinaryLink.prototype.hide = function() {
@@ -235,7 +233,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 				}
 			}
 		}else {//interactor is a complex
-			var otherEndPos = this.getOtherEnd(interactor).getPosition();
+	/*		var otherEndPos = this.getOtherEnd(interactor).getPosition();
 			var naryPath = interactor.naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
@@ -271,7 +269,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 					this.thickLine.setAttribute("y2", newPos[1]);
 				}
 			}
-		
+		*/
 		}
 	}
 };

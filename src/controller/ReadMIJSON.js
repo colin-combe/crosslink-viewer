@@ -111,7 +111,7 @@ var readMIJSON = function(miJson, expand) {
 		//~ complexes[c].initInteractor(naryLink);
 		//~ naryLink.complex = complexes[c];           
 	//~ }
-	self.init();
+	self.initLayout();
 	self.checkLinks();   
 	
 	function readStoichExpanded(){			
@@ -202,17 +202,17 @@ var readMIJSON = function(miJson, expand) {
 						else if (interactor.type.name === 'small molecule') {
 							//its a small mol
 							participant = new SmallMol(participantId, self, interactor);
-							participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
 						} else {
 							//console.log(JSON.stringify(intRef));
 							//unwisely jump to conclusion its a polymer
 							participant = new Polymer(participantId, self, interactor);
 							if (typeof interactor.sequence !== 'undefined') {
-								participant.initInteractor(interactor.sequence, interactor.label);// + ' (' + partRef + ')');
+								//participant.initInteractor(interactor.sequence, interactor.label);// + ' (' + partRef + ')');
 							}
 							else {
 								//hack - should look it up using accession number
-								participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
+								//participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
 							}
 						}
 						self.participants.set(participantId, participant);

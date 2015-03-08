@@ -16,14 +16,14 @@ var checkLinks = function() {
 			links[l].check();
 		}	
 	}    
-    if (this.initComplete) {
+    //if (this.initComplete) {
 		var suspendID = this.svgElement.suspendRedraw(5000);
 		checkAll(this.allNaryLinks);
 		checkAll(this.allBinaryLinks);
 		checkAll(this.allUnaryLinks);
 		checkAll(this.allSequenceLinks);
 		this.svgElement.unsuspendRedraw(suspendID);
-	}
+	//}
 };
 
 var scale = function() {// TODO: this is currently broken

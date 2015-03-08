@@ -33,10 +33,17 @@
 				<option>./demo/data/complex/EBI-9997373.json</option>
 			</select>
 		
-			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoichiometry expansion
+			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
+			
+			<select id="featureSet" onChange="changeFeatures();">
+				<option>None</option>  
+				<option>MI features</option>
+				<option>UniprotKB</option> 
+				<option>SuperFamily</option>  
+			</select>			
 
 		</div>
         <div id="networkCaption">
@@ -47,8 +54,12 @@
 
         <script type="text/javascript">
                 //<![CDATA[
-                
-                function loadData(){
+                                
+                var targetDiv = document.getElementById('networkContainer');
+
+                xlv = new xiNET(targetDiv);
+                loadData();
+				function loadData(){
 					xlv.clear();
 					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var dataSetsSelect = document.getElementById('dataSets');
@@ -56,13 +67,11 @@
 				    d3.json(path, function(data) {
 						xlv.readMIJSON(data, matrixExpansion);
 					});            
-				}
-                
-                var targetDiv = document.getElementById('networkContainer');
-
-                xlv = new xiNET(targetDiv);
-                loadData();
-                
+				 }
+				 function changeFeatures(){
+					           
+				 }
+                  
                 //]]>
         </script>
 

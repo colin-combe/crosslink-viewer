@@ -14,53 +14,6 @@
 
 var TouchEvents = {};
 
-TouchEvents.initTouchEvents = function() {
-    //add listeners
-    var self = this;
-    //touchstart
-    this.svgElement.ontouchstart = function(evt) {
- 		self.message("touch start");
-        self.touchStart(evt);
-    };
-    //touchmove
-    this.svgElement.ontouchmove = function(evt) {
- 		//~ self.message("touch move");
-		//~ console.debug("move");
-        self.touchMove(evt);
-    };
-    //touchend
-    this.svgElement.ontouchend = function(evt) {
-        self.message("touch end");
-        self.touchEnd(evt);
-    };
-    //not used yet
-    this.svgElement.ontouchenter = function(evt) {
-         self.preventDefaultsAndStopPropagation(evt);
-         self.message("touch enter");
-    };
-    this.svgElement.ontouchleave = function(evt) {
-         self.preventDefaultsAndStopPropagation(evt);
-         self.message("touch leave");
-    };
-    this.svgElement.ontouchcancel = function(evt) {
-         self.preventDefaultsAndStopPropagation(evt);
-         self.message("touch cancel");
-    };
-    
-    this.svgElement.ongesturechange = function(evt) {
-         //~ self.preventDefaultsAndStopPropagation(evt);
-         self.message("touch gesture change");
-         self.gestureChange();
-    };
-    
-        
-    //for pinch gestures, e.g. to zoom	
-    // gesturestart, 
-    // gesturechange, 
-    // and gestureend
-    //http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch
-    //https://developer.apple.com/library/safari/documentation/UserExperience/Reference/GestureEventClassReference/GestureEvent/GestureEvent.html 
-}
 
 /**
  * Handle touchstart event.

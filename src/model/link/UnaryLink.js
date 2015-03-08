@@ -128,18 +128,16 @@ UnaryLink.prototype.check = function() {
 };
 
 UnaryLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
-		// resembles Refresh.js, scale() function
-        if (!this.shown) {
-            this.shown = true;
-			this.line.setAttribute("transform", "translate(" + this.interactors[0].x
-					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
-					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.ctrl.highlights.appendChild(this.highlightLine);
-			this.ctrl.p_pLinks.appendChild(this.line);
-        }
-    }
+	// resembles Refresh.js, scale() function
+	if (!this.shown) {
+		this.shown = true;
+		this.line.setAttribute("transform", "translate(" + this.interactors[0].x
+				+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
+		this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
+				+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
+		this.ctrl.highlights.appendChild(this.highlightLine);
+		this.ctrl.p_pLinks.appendChild(this.line);
+	}
 };
 
 UnaryLink.prototype.hide = function() {

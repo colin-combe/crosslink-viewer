@@ -21,67 +21,22 @@ Polymer.transitionTime = 650;
 
 Polymer.prototype = new Interactor();
 
-function Polymer(id, xlvController, json) {
+function Polymer(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.ctrl = xlvController;
     this.json = json;  
-    //~ this.features = d3.map();  
+    this.name = name;
+    this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
+
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
     this.selfLink = null;
-}
-
-Polymer.prototype.initInteractor = function(sequence, name, description, size)
-{
-    this.accession = this.json.identifier.id;
-    this.name = name;
-    if (this.json.label.indexOf('_') !== -1) { //take out organism suffix
-		this.json.label.substring(0, this.json.label.indexOf('_'));
-	}
-    this.organism = this.json.organism;
-
-    this.description = description;
-    this.tooltip = this.description;
-    if (this.name == null) {
-        this.name = name;
-    }
-    //check for labeling modifications in sequence now, we're about to lose this info
-    if (/\d/.test(sequence)) {//is there a digit in the sequence?
-        this.labeling = '';// as in silac labelling
-        if (sequence.indexOf('K4') !== -1)
-            this.labeling += 'K4';
-        if (sequence.indexOf('K6') !== -1)
-            this.labeling += 'K6';
-        if (sequence.indexOf('K8') !== -1)
-            this.labeling += 'K8';
-        if (sequence.indexOf('K10') !== -1)
-            this.labeling += 'R4';
-        if (sequence.indexOf('R6') !== -1)
-            this.labeling += 'R6';
-        if (sequence.indexOf('R8') !== -1)
-            this.labeling += 'R8';
-        if (sequence.indexOf('R10') !== -1)
-            this.labeling += 'R10';
-    }
-    //remove modification site info from sequence
-    this.sequence = sequence.replace(/[^A-Z]/g, '');
-    if (typeof size != "undefined") {
-		this.size = size;
-	}
-	else {
-		this.size = this.sequence.length;
-	}
-    // keep track of largest protein size - used for initial scaling of bars
-    if (Polymer.MAXSIZE < this.size) {
-        Polymer.MAXSIZE = this.size;
-    }
-
     // layout info
-    this.x = null;
-    this.y = null;
+    this.x = 40;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -96,8 +51,6 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
 	this.lowerRotator = new Rotator(this, 0, this.ctrl);
 	this.upperRotator = new Rotator(this, 1, this.ctrl);
     
-    var r = this.getBlobRadius();
-	
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -111,13 +64,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     this.highlight.setAttribute("stroke", Config.highlightColour);
     this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
-    //this.highlight.setAttribute("fill-opacity", 1);   
-    //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0)
-		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
-		.attr("x", -r - 2.5).attr("y", -r - 2.5)
-		.attr("rx", r + 2.5).attr("ry", r + 2.5);
-	this.lowerGroup.appendChild(this.highlight);   
+    this.lowerGroup.appendChild(this.highlight);   
     
     //domains in rectangle form (shown underneath links) 
     this.rectDomains = document.createElementNS(Config.svgns, "g");
@@ -134,13 +81,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
-    
-    //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-    this.intraLinks = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
-    
+       
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
@@ -151,29 +92,19 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
     //choose label text
-    if (this.name !== null & this.name !== "") {
-        this.labelText = this.name;
-    }
-    else if (description != null & description !== "") {
-        this.labelText = description;
-        this.name = description;
-    }
-    else if (this.accession != null & this.accession !== "") {
-        this.labelText = this.accession;
-    }
-    else {
+   // if (this.name !== null & this.name !== "") {
+   //     this.labelText = this.name;
+   // }
+   // else {
 		this.labelText  = this.id;
-	}
+	//}
     if (this.labelText.length > 25) {
         this.labelText = this.labelText.substr(0, 16) + "...";
     }
-    if (typeof this.labeling !== 'undefined') {
-        this.labelText = '[' + this.labeling + '] ' + this.labelText;
-    }
-    this.labelTextNode = document.createTextNode(this.labelText);
+	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (r + 5) + " " + Interactor.labelY + ")");
+		"translate( -" + (5) + " " + Interactor.labelY + ") rotate(0) scale(1, 1)");
     this.upperGroup.appendChild(this.labelSVG);
    	
    	//ticks (and animo acid letters)
@@ -184,12 +115,7 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
 	this.outline = document.createElementNS(Config.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
-    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff")
-			.attr("width", r * 2).attr("height", r * 2)
-			.attr("x", -r).attr("y", -r)
-			.attr("rx", r).attr("ry", r);
-    //append outline
+    this.outline.setAttribute("fill", "#EEEEEE");
     this.upperGroup.appendChild(this.outline);
     
     //domains as pie slices - shown on top of everything
@@ -212,29 +138,46 @@ Polymer.prototype.initInteractor = function(sequence, name, description, size)
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
     };
-     
     this.upperGroup.ontouchstart = function(evt) {
-		self.ctrl.message("protein touch start");
 		self.touchStart(evt);
     };
-    //~ this.upperGroup.ontouchmove = function(evt) {};
-	//~ this.upperGroup.ontouchend = function(evt) {
-		//~ self.ctrl.message("protein touch end");
-		//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchenter = function(evt) {
-        //~ self.message("protein touch enter");
-    	//~ self.touchStart(evt);
-    //~ };
-    //~ this.upperGroup.ontouchleave = function(evt) {
-        //~ self.message("protein touch leave");
-    	//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchcancel = function(evt) {
-        //~ self.message("protein touch cancel");
-    	//~ self.mouseOut(evt);
-    //~ };
     this.isSelected = false;
+	this.showHighlight(false);
+};
+
+//sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
+Polymer.prototype.setSequence = function(sequence){
+    //check for labeling modifications in sequence now, we're about to lose this info
+    if (/\d/.test(sequence)) {//is there a digit in the sequence?
+        this.labeling = '';// as in silac labelling
+        if (sequence.indexOf('K4') !== -1)
+            this.labeling += 'K4';
+        if (sequence.indexOf('K6') !== -1)
+            this.labeling += 'K6';
+        if (sequence.indexOf('K8') !== -1)
+            this.labeling += 'K8';
+        if (sequence.indexOf('K10') !== -1)
+            this.labeling += 'R4';
+        if (sequence.indexOf('R6') !== -1)
+            this.labeling += 'R6';
+        if (sequence.indexOf('R8') !== -1)
+            this.labeling += 'R8';
+        if (sequence.indexOf('R10') !== -1)
+            this.labeling += 'R10';
+    }
+    if (typeof this.labeling !== 'undefined') {
+        this.labelSVG.innerHTML = '[' + this.labeling + '] ' + this.labelSVG.innerHTML;
+    }
+    //remove modification site info from sequence
+    this.sequence = sequence.replace(/[^A-Z]/g, '');
+    this.size = this.sequence.length;
+}
+
+//by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
+Polymer.prototype.init = function() {
+    this.setForm(this.form);
+    if (this.selfLink) this.selfLink.initSelfLinkSVG();
+    this.setAllLineCoordinates();	
 };
 
 Polymer.prototype.getBlobRadius = function() {

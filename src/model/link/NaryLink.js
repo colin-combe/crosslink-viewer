@@ -72,25 +72,21 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
-        if (!this.shown) {
-            this.shown = true;
-            this.path.setAttribute("stroke-width", this.ctrl.z * 1);
-            this.setLinkCoordinates();
-            this.ctrl.naryLinks.appendChild(this.path);
-        }
-    }
+	if (!this.shown) {
+		this.shown = true;
+		this.path.setAttribute("stroke-width", this.ctrl.z * 1);
+		this.setLinkCoordinates();
+		this.ctrl.naryLinks.appendChild(this.path);
+	}
 };
 
 NaryLink.prototype.hide = function() {
-    if (this.ctrl.initComplete) {
-		if (this.shown) {
-			this.shown = false;
-			if (this.thickLineShown) {
-				this.ctrl.p_pLinksWide.removeChild(this.thickLine);
-			}
-			this.ctrl.p_pLinks.removeChild(this.path);
+	if (this.shown) {
+		this.shown = false;
+		if (this.thickLineShown) {
+			this.ctrl.p_pLinksWide.removeChild(this.thickLine);
 		}
+		this.ctrl.p_pLinks.removeChild(this.path);
 	}
 };
 
@@ -102,13 +98,13 @@ NaryLink.prototype.setLinkCoordinates = function(interactor) {
 		return "M" + calced.join("L") + "Z";
     };
 	var self = this;// TODO: - tidy hack above
-    if (this.shown) {//don't waste time changing DOM if link not visible
+    //if (this.shown) {//don't waste time changing DOM if link not visible
 		var mapped = this.orbitNodes(this.getMappedCoordinates());
         var hullValues = calculateHullPath(mapped);
         if (hullValues) {
             this.path.setAttribute('d', hullValues);
         }
-    }
+    //}
     if (this.complex){
 		this.complex.setAllLinkCoordinates();
 	}

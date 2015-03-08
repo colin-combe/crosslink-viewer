@@ -21,40 +21,6 @@ MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or
 //listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
 
-var initMouseEvents = function() {
-
-    //add listeners
-    var self = this;
-    this.svgElement.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.svgElement.onmousemove = function(evt) {
-        self.mouseMove(evt);
-    };
-    this.svgElement.onmouseup = function(evt) {
-        self.mouseUp(evt);
-    };
-    // even though we don't use jquery, see:
-    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
-    this.svgElement.onmouseout = function(evt) {
-        self.hideTooltip(evt);
-    };
-     
-    var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-    if (document.attachEvent){ //if IE (and Opera depending on user setting) 
-        this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
-    }
-    else if (document.addEventListener) { //WC3 browsers
-        this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
-    }
-              
-    //~ this.marquee = document.createElementNS(Config.svgns, 'rect');
-    //~ this.marquee.setAttribute('class', 'marquee');
-    //~ this.marquee.setAttribute('fill', 'red');
-    
-    this.lastMouseUp = new Date().getTime();
-}
-
 /**
  * Handle mousedown event.
  */
@@ -68,9 +34,7 @@ var mouseDown = function(evt) {
     }
 
     var p = this.getEventPoint(evt);// seems to be correct, see below
-    console.log("dragSTART");
-    console.log("this.dragstart", this.mouseToSVG(p.x, p.y));
-    this.dragStart = this.mouseToSVG(p.x, p.y);
+   this.dragStart = this.mouseToSVG(p.x, p.y);
 
     var rightClick; //which button has just been raised
     if (evt.which)
@@ -390,7 +354,6 @@ var preventDefaultsAndStopPropagation = function(evt) {
  };
 
 module.exports = {
-    initMouseEvents: initMouseEvents,
     mouseDown: mouseDown,
     mouseMove: mouseMove,
     mouseUp: mouseUp,
@@ -403,5 +366,4 @@ module.exports = {
     getScrollTop: getScrollTop,
     sortByNumber: sortByNumber,
     mouseToSVG: mouseToSVG
-
 }
