@@ -13,10 +13,10 @@
 var MouseEventCodes = {}
 
 MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or controller
 MouseEventCodes.DRAGGING = 2;//set by mouse down on Protein or Link
 MouseEventCodes.ROTATING = 3;//set by mouse down on Rotator, drag?
-MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or controller, drag
 
 //listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
@@ -42,7 +42,7 @@ var mouseDown = function(evt) {
     else if (evt.button)
         rightClick = (evt.button === 2);
 
-    if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
+    if (evt.controllerKey === true || evt.shiftKey === true || rightClick) {
 //        alert("here");
 //        this.state = MouseEventCodes.SELECTING;
 ////        //      marquee.style.strokeDashoffset=0;
@@ -55,8 +55,8 @@ var mouseDown = function(evt) {
 //////      var offset = 0, marcher = setInterval(function(){
 //////        marquee.style.strokeDashoffset = offset--;
 //////      },30);
-////        //clear selection if ctrl not pressed
-////        if (evt.ctrlKey === false) {
+////        //clear selection if controller not pressed
+////        if (evt.controllerKey === false) {
 ////            this.clearSelection();
 ////        }
     } else {
@@ -69,80 +69,78 @@ var mouseDown = function(evt) {
 // dragging/rotation/panning/selecting
 var mouseMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-    if (this.initComplete) { // just being cautious
-        var p = this.getEventPoint(evt);// seems to be correct, see below
-        var c = this.mouseToSVG(p.x, p.y);
+	var p = this.getEventPoint(evt);// seems to be correct, see below
+	var c = this.mouseToSVG(p.x, p.y);
 
-        if (this.dragElement != null) { //dragging or rotating
-            this.hideTooltip();
-            var suspendID = this.svgElement.suspendRedraw(5000);
-            var dx = this.dragStart.x - c.x;
-            var dy = this.dragStart.y - c.y;
+	if (this.dragElement != null) { //dragging or rotating
+		this.hideTooltip();
+		var suspendID = this.svgElement.suspendRedraw(5000);
+		var dx = this.dragStart.x - c.x;
+		var dy = this.dragStart.y - c.y;
 
-            if (this.state === MouseEventCodes.DRAGGING) {
-                // we are currently dragging things around
-                var ox, oy, nx, ny;
-                if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
-                    var nodes = this.dragElement.interactors;
-                    var nodeCount = nodes.length;
-                    for (var i = 0; i < nodeCount; i++) {
-                        var protein = nodes[i];
-                        ox = protein.x;
-                        oy = protein.y;
-                        nx = ox - dx;
-                        ny = oy - dy;
-                        protein.setPosition(nx, ny);
-                        protein.setAllLinkCoordinates();
-                    }
-                    for (i = 0; i < nodeCount; i++) {
-                        nodes[i].setAllLinkCoordinates();
-                    }
-                } else {
-                    //its a protein - drag it TODO: DRAG SELECTED
-                    ox = this.dragElement.x;
-                    oy = this.dragElement.y;
-                    nx = ox - dx;
-                    ny = oy - dy;
-                    this.dragElement.setPosition(nx, ny);
-                    this.dragElement.setAllLinkCoordinates();
-                }
-                this.dragStart = c;
-            }
+		if (this.state === MouseEventCodes.DRAGGING) {
+			// we are currently dragging things around
+			var ox, oy, nx, ny;
+			if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+				var nodes = this.dragElement.interactors;
+				var nodeCount = nodes.length;
+				for (var i = 0; i < nodeCount; i++) {
+					var protein = nodes[i];
+					ox = protein.x;
+					oy = protein.y;
+					nx = ox - dx;
+					ny = oy - dy;
+					protein.setPosition(nx, ny);
+					protein.setAllLinkCoordinates();
+				}
+				for (i = 0; i < nodeCount; i++) {
+					nodes[i].setAllLinkCoordinates();
+				}
+			} else {
+				//its a protein - drag it TODO: DRAG SELECTED
+				ox = this.dragElement.x;
+				oy = this.dragElement.y;
+				nx = ox - dx;
+				ny = oy - dy;
+				this.dragElement.setPosition(nx, ny);
+				this.dragElement.setAllLinkCoordinates();
+			}
+			this.dragStart = c;
+		}
 
-            else if (this.state === MouseEventCodes.ROTATING) {
-                // Distance from mouse x and center of stick.
-                var _dx = c.x - this.dragElement.x
-                // Distance from mouse y and center of stick.
-                var _dy = c.y - this.dragElement.y;
-                //see http://en.wikipedia.org/wiki/Atan2#Motivation
-                var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                if (this.whichRotator === 0) {
-                    centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-                }
-                var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-                this.dragElement.setRotation(centreToMouseAngleDegrees);
-                this.dragElement.setAllLinkCoordinates();
-            }
-            else { //not dragging or rotating yet, maybe we should start
-                // don't start dragging just on a click - we need to move the mouse a bit first
-                if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = MouseEventCodes.DRAGGING;
+		else if (this.state === MouseEventCodes.ROTATING) {
+			// Distance from mouse x and center of stick.
+			var _dx = c.x - this.dragElement.x
+			// Distance from mouse y and center of stick.
+			var _dy = c.y - this.dragElement.y;
+			//see http://en.wikipedia.org/wiki/Atan2#Motivation
+			var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+			if (this.whichRotator === 0) {
+				centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+			}
+			var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+			this.dragElement.setRotation(centreToMouseAngleDegrees);
+			this.dragElement.setAllLinkCoordinates();
+		}
+		else { //not dragging or rotating yet, maybe we should start
+			// don't start dragging just on a click - we need to move the mouse a bit first
+			if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+				this.state = MouseEventCodes.DRAGGING;
 
-                }
-            }
-            this.svgElement.unsuspendRedraw(suspendID);
-        }
+			}
+		}
+		this.svgElement.unsuspendRedraw(suspendID);
+	}
 
 //    else if (this.state === MouseEventCodes.SELECTING) {
 //        this.updateMarquee(this.marquee, c);
 //    }
-        else if (this.state === MouseEventCodes.PANNING) {
-            setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-        }
-        else {
-            this.showTooltip(p);
-        }
-    }
+	else if (this.state === MouseEventCodes.PANNING) {
+		setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+	}
+	else {
+		this.showTooltip(p);
+	}
     return false;
 };
 
@@ -199,11 +197,13 @@ var mouseUp = function(evt) {
                     } else if (evt.shiftKey) { //if shift key
                         this.dragElement.switchStickScale(c);
                     } else {
-                        if (this.dragElement.form === 0) {
-                            this.dragElement.setForm(1, c);
-                        } else {
-                            this.dragElement.setForm(0, c);
-                        }
+						if (this.sequenceInitComplete === true){
+							   if (this.dragElement.form === 0) {
+								this.dragElement.setForm(1, c);
+							} else {
+								this.dragElement.setForm(0, c);
+							}
+						}
                     }
                 }
                 //~ this.checkLinks();
@@ -223,7 +223,7 @@ var mouseUp = function(evt) {
                 //~ link.hidden = false;
             //~ }
             this.checkLinks();
-        } else if (/*this.state !== MouseEventCodes.PANNING &&*/ evt.ctrlKey === false) {
+        } else if (/*this.state !== MouseEventCodes.PANNING &&*/ evt.controllerKey === false) {
             this.clearSelection();
         }
 
@@ -282,7 +282,7 @@ var mouseWheel = function(evt) {
 };
 
 var clearSelection = function() {
-    var interactors = this.participants.values();
+    var interactors = this.molecules.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];

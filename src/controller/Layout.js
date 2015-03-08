@@ -17,17 +17,17 @@ var autoLayout = function() {
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
-    var proteinCount = this.participants.keys().length;
+    var proteinCount = this.molecules.keys().length;
     if (proteinCount === 1) {
-        var protein = this.participants.values()[0];
+        var protein = this.molecules.values()[0];
         protein.setPosition(width / 2, height / 2);
         protein.setAllLinkCoordinates();
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = this.participants.values()[0];
+        var p1 = this.molecules.values()[0];
         p1.setPosition(width / 2, height / 3 * 2);
-        var p2 = this.participants.values()[1];
+        var p2 = this.molecules.values()[1];
         p2.setPosition(width / 2, height / 3 * 1);
         
         p1.setAllLinkCoordinates();
@@ -37,7 +37,7 @@ var autoLayout = function() {
     }
     else {
         var self = this; 
-        var nodes = this.participants.values();
+        var nodes = this.molecules.values();
 		var nodeCount = nodes.length;
 		//if force is null choose starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
@@ -112,7 +112,7 @@ var autoLayout = function() {
             // console.log("nodes", nodes);
             for (var n = 0; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = self.participants.get(node.id);
+                var protein = self.molecules.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
                 protein.setPosition(nx, ny);

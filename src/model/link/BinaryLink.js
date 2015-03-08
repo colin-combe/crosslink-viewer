@@ -24,7 +24,7 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.evidences = d3.map();
     this.interactors = [fromI, toI];	
     this.sequenceLinks = d3.map();
-    this.ctrl = xlvController;
+    this.controller = xlvController;
     this.ambig = false;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
@@ -182,15 +182,15 @@ BinaryLink.prototype.show = function() {
 		if (typeof this.line === 'undefined') {
 			this.initSVG();
 		}
-		this.line.setAttribute("stroke-width", this.ctrl.z * 1);
-		this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
+		this.line.setAttribute("stroke-width", this.controller.z * 1);
+		this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
 		this.setLinkCoordinates(this.interactors[0]);
 		this.setLinkCoordinates(this.interactors[1]);
 		if (this.thickLineShown) {
-			this.ctrl.p_pLinksWide.appendChild(this.thickLine);
+			this.controller.p_pLinksWide.appendChild(this.thickLine);
 		}
-		this.ctrl.highlights.appendChild(this.highlightLine);
-		this.ctrl.p_pLinks.appendChild(this.line);
+		this.controller.highlights.appendChild(this.highlightLine);
+		this.controller.p_pLinks.appendChild(this.line);
 		if (this.thickLineShown) {
 			this.thickLine.setAttribute("stroke-width", this.w);
 		}
@@ -201,10 +201,10 @@ BinaryLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
 		if (this.thickLineShown) {
-			this.ctrl.p_pLinksWide.removeChild(this.thickLine);
+			this.controller.p_pLinksWide.removeChild(this.thickLine);
 		}
-		this.ctrl.highlights.removeChild(this.highlightLine);
-		this.ctrl.p_pLinks.removeChild(this.line);
+		this.controller.highlights.removeChild(this.highlightLine);
+		this.controller.p_pLinks.removeChild(this.line);
     }
 };
 

@@ -9,8 +9,11 @@
 "use strict";
 var xiNET_Storage = require('./xiNET_Storage');
 var Feature = require('../model/interactor/Feature');
+var Protein = require('../model/interactor/Protein');
 var SmallMol = require('../model/interactor/SmallMol');
-var Polymer = require('../model/interactor/Polymer');
+var Gene = require('../model/interactor/Gene');
+var DNA = require('../model/interactor/DNA');
+var RNA = require('../model/interactor/RNA');
 var Complex = require('../model/interactor/Complex');
 var InteractorSet = require('../model/interactor/InteractorSet');
 var NaryLink = require('../model/link/NaryLink');
@@ -29,10 +32,9 @@ var readMIJSON = function(miJson, expand) {
 	var data = miJson.data;
     var dataElementCount = data.length;
     var self = this;
-	Polymer.UNITS_PER_RESIDUE = self.svgElement.parentNode.clientWidth / 3000;
 	self.features = d3.map();
 	//forget complexes for just now   
-	//self.complexes = d3.map();  
+	self.complexes = d3.map();  
 	
 	expand? readStoichExpanded() : readStoichUnexpanded();	
 	// readStoichUnexpanded();
@@ -97,22 +99,23 @@ var readMIJSON = function(miJson, expand) {
 	}
 	
 	//init complexes
-	//~ var complexes = self.complexes.values()
-	//~ for (var c = 0; c < complexes.length; c++) {
-		//~ var interactionId = complexes[c].id;
-		//~ var naryLink;
-		//~ for (var l = 0; l < dataElementCount; l++) {
-			//~ var interaction = data[l];
-			//~ if (interaction.id == interactionId) {
-				//~ var nLinkId = getIdFromInteraction(interaction);
-				//~ naryLink = self.allNaryLinks.get(nLinkId);
-			//~ }
-		//~ }						
-		//~ complexes[c].initInteractor(naryLink);
-		//~ naryLink.complex = complexes[c];           
-	//~ }
+	var complexes = self.complexes.values()
+	for (var c = 0; c < complexes.length; c++) {
+		var interactionId = complexes[c].id;
+		var naryLink;
+		for (var l = 0; l < dataElementCount; l++) {
+			var interaction = data[l];
+			if (interaction.id == interactionId) {
+				var nLinkId = getIdFromInteraction(interaction);
+				naryLink = self.allNaryLinks.get(nLinkId);
+			}
+		}						
+		complexes[c].initInteractor(naryLink);
+		naryLink.complex = complexes[c];           
+	}
+	self.checkLinks();
 	self.initLayout();
-	self.checkLinks();   
+	self.initPolymers();
 	
 	function readStoichExpanded(){			
 		//get interactors
@@ -141,27 +144,9 @@ var readMIJSON = function(miJson, expand) {
 		if (maxStoich < 30){
 			miJson = Expand.matrix(miJson);
 		}
-				
-		//create indexed collection of all features from interactions
-		// - still seems like a good starting point?  
-		for (var l = 0; l < dataElementCount; l++) {
-			var interaction = data[l];
-			if (interaction.object === 'interaction') {
-				var participantCount = interaction.participants.length;
-				for (var pi = 0; pi < participantCount; pi++) {
-					var participant = interaction.participants[pi];
-					var features = new Array(0);
-					if (participant.features) features = participant.features;
-
-					var fCount = features.length;
-					for (var f = 0; f < fCount; f++){
-						var feature = features[f];
-						self.features.set(feature.id, feature);
-					}		
-				}	
-			}
-		}
 		
+		indexFeatures();	
+			
 		//add naryLinks and participants
 		for (var l = 0; l < dataElementCount; l++) {
 			var interaction = data[l];
@@ -186,36 +171,44 @@ var readMIJSON = function(miJson, expand) {
 				for (var pi = 0; pi < participantCount; pi++){
 					var jsonParticipant = jsonParticipants[pi];
 					
-					//~ console.log(JSON.stringify(jsonParticipant));
 					var intRef = jsonParticipant.interactorRef;
 					var partRef = jsonParticipant.id;
-					//~ if (typeof partRef === 'undefined'){
-						//~ partRef = "1";
-					//~ }
 					var participantId =  intRef + "(" + partRef + ")";   
-					var participant = self.participants.get(participantId);
+					var participant = self.molecules.get(participantId);
 					if (typeof participant === 'undefined'){
 						var interactor = interactors.get(intRef);
 						if (interactor.type.name === 'molecule set') {
-							participant = new InteractorSet(participantId, self, interactor);
+							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
 						}
 						else if (interactor.type.name === 'small molecule') {
-							//its a small mol
-							participant = new SmallMol(participantId, self, interactor);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						} else {
-							//console.log(JSON.stringify(intRef));
-							//unwisely jump to conclusion its a polymer
-							participant = new Polymer(participantId, self, interactor);
+							participant = new SmallMol(participantId, self, interactor, interactor.label);
+						}
+						else if (interactor.type.name === 'protein') {
+							participant = new Protein(participantId, self, interactor, interactor.label);
 							if (typeof interactor.sequence !== 'undefined') {
-								//participant.initInteractor(interactor.sequence, interactor.label);// + ' (' + partRef + ')');
+								participant.setSequence(interactor.sequence);
 							}
 							else {
-								//hack - should look it up using accession number
-								//participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
+								//should look it up using accession number
 							}
 						}
-						self.participants.set(participantId, participant);
+						else if (interactor.type.name === 'gene') {
+							//its a small mol
+							participant = new Gene(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						}else if (interactor.type.name === 'ribonucleic acid') {
+							//its a small mol
+							participant = new RNA(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						}else if (interactor.type.name === 'deoxyribonucleic acid') {
+							//its a small mol
+							participant = new DNA(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						} else {
+							participant = new Complex(participantId, self, interactor);
+							self.complexes.set(participantId, participant);
+						}
+						self.molecules.set(participantId, participant);
 					}
 					
 					participant.naryLinks.set(nLinkId, nLink);				
@@ -225,16 +218,35 @@ var readMIJSON = function(miJson, expand) {
 					}				
 					
 					if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-						var interactor = self.participants.get(participantId); 
+						var interactor = self.molecules.get(participantId); 
 						interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
 					}
 				}
 			}
-		}
-		
-
-	
+		}	
 	};
+	
+	function indexFeatures(){
+		//create indexed collection of all features from interactions
+		// - still seems like a good starting point?  
+		for (var l = 0; l < dataElementCount; l++) {
+			var interaction = data[l];
+			if (interaction.object === 'interaction') {
+				var participantCount = interaction.participants.length;
+				for (var pi = 0; pi < participantCount; pi++) {
+					var participant = interaction.participants[pi];
+					var features = new Array(0);
+					if (participant.features) features = participant.features;
+
+					var fCount = features.length;
+					for (var f = 0; f < fCount; f++){
+						var feature = features[f];
+						self.features.set(feature.id, feature);
+					}		
+				}	
+			}
+		}		
+	}
 	
 	function readStoichUnexpanded(){
 		//get interactors
@@ -263,7 +275,7 @@ var readMIJSON = function(miJson, expand) {
 							, interactor.label);
 					}
 				}
-				self.participants.set(interactor.id, p);
+				self.molecules.set(interactor.id, p);
 			}
 		}
 		
@@ -325,7 +337,7 @@ var readMIJSON = function(miJson, expand) {
 						//~ partRef = "1";
 					//~ }
 					var participantId =  intRef;// + "(" + partRef + ")";   
-					var participant = self.participants.get(participantId);
+					var participant = self.molecules.get(participantId);
 					//~ if (typeof participant === 'undefined'){
 						//~ var interactor = interactors.get(intRef);
 						//~ if (interactor.type.name === 'molecule set') {
@@ -347,7 +359,7 @@ var readMIJSON = function(miJson, expand) {
 								//~ participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
 							//~ }
 						//~ }
-						//~ self.participants.set(participantId, participant);
+						//~ self.molecules.set(participantId, participant);
 					//~ }
 					//~ 
 					participant.naryLinks.set(nLinkId, nLink);				
@@ -357,7 +369,7 @@ var readMIJSON = function(miJson, expand) {
 					}				
 					//~ 
 					if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-						var interactor = self.participants.get(participantId); 
+						var interactor = self.molecules.get(participantId); 
 						interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
 					}
 				}
@@ -409,7 +421,7 @@ var readMIJSON = function(miJson, expand) {
 			if (expand){
 				id = id + '(' + seqDatum.participantRef + ')';
 			}
-			return self.participants.get(id); 
+			return self.molecules.get(id); 
 		}
 		
 		var start =  seqDataToString(fromSequenceData);

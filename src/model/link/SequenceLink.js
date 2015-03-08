@@ -15,7 +15,7 @@ var Config = require('../../controller/Config');
 SequenceLink.prototype = new Link();
 function SequenceLink(id, fromFeatPos, toFeatPos, xlvController) {
     this.id = id;
-    this.ctrl = xlvController;
+    this.controller = xlvController;
     this.fromSequenceData = fromFeatPos;
     this.toSequenceData = toFeatPos;
     //TODO - not dealing with non-contiguous features in different interactors
@@ -63,12 +63,12 @@ SequenceLink.prototype.initSVG = function() {
         var self = this;
         this.uncertainGlyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.removeChild(self.glyph);
-            self.ctrl.res_resLinks.appendChild(self.glyph);
-            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
+            self.controller.res_resLinks.removeChild(self.highlightGlyph);
+            self.controller.res_resLinks.appendChild(self.highlightGlyph);
+            self.controller.res_resLinks.removeChild(self.glyph);
+            self.controller.res_resLinks.appendChild(self.glyph);
+            self.controller.res_resLinks.removeChild(self.uncertainGlyph);
+            self.controller.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.uncertainGlyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -78,12 +78,12 @@ SequenceLink.prototype.initSVG = function() {
         };
         this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            //~ self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            //~ self.ctrl.res_resLinks.removeChild(self.glyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.glyph);
-            //~ self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
+            //~ self.controller.res_resLinks.removeChild(self.highlightGlyph);
+            //~ self.controller.res_resLinks.appendChild(self.highlightGlyph);
+            //~ self.controller.res_resLinks.removeChild(self.glyph);
+            //~ self.controller.res_resLinks.appendChild(self.glyph);
+            //~ self.controller.res_resLinks.removeChild(self.uncertainGlyph);
+            //~ self.controller.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -136,32 +136,28 @@ SequenceLink.prototype.anyInteractorIsBar = function() {
 };
 
 SequenceLink.prototype.show = function() {
-  	if (this.ctrl.initComplete) {
-        if (!this.shown) {
-			if (!this.glyph){
-				this.initSVG();
-			}
-			this.shown = true;
-            //this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
-            this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
-            this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);
-            this.setLinkCoordinates();
-            this.ctrl.res_resLinks.appendChild(this.highlightGlyph);
-            this.ctrl.res_resLinks.appendChild(this.glyph);
-            this.ctrl.res_resLinks.appendChild(this.uncertainGlyph);
-        }
-    }
+	 if (!this.shown) {
+		if (!this.glyph){
+			this.initSVG();
+		}
+		this.shown = true;
+		//this.glyph.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
+		this.uncertainGlyph.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
+		this.highlightGlyph.setAttribute("stroke-width", this.controller.z * 10);
+		this.setLinkCoordinates();
+		this.controller.res_resLinks.appendChild(this.highlightGlyph);
+		this.controller.res_resLinks.appendChild(this.glyph);
+		this.controller.res_resLinks.appendChild(this.uncertainGlyph);
+	}
 };
 
 SequenceLink.prototype.hide = function() {
-    if (this.ctrl.initComplete) {
-        if (this.shown) {
-            this.shown = false;
-            this.ctrl.res_resLinks.removeChild(this.glyph);
-            this.ctrl.res_resLinks.removeChild(this.uncertainGlyph);
-            this.ctrl.res_resLinks.removeChild(this.highlightGlyph);
-        }
-    }
+	 if (this.shown) {
+		this.shown = false;
+		this.controller.res_resLinks.removeChild(this.glyph);
+		this.controller.res_resLinks.removeChild(this.uncertainGlyph);
+		this.controller.res_resLinks.removeChild(this.highlightGlyph);
+	}
 };
 
 // update the links(polygons/lines) to fit to the protein
@@ -275,14 +271,14 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             tRotRad = tRotRad - Math.PI;
         }
 
-        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.ctrl.z),
-            fMid[1] - (30 * Math.cos(fRotRad) * this.ctrl.z)];
+        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.controller.z),
+            fMid[1] - (30 * Math.cos(fRotRad) * this.controller.z)];
         if (fromInteractor.form === 0) {
             ftMid = fMid;
         }
 
-        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.ctrl.z),
-            tMid[1] - (30 * Math.cos(tRotRad) * this.ctrl.z)];
+        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.controller.z),
+            tMid[1] - (30 * Math.cos(tRotRad) * this.controller.z)];
         if (toInteractor.form === 0) {
             ttMid = tMid;
         }

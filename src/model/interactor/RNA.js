@@ -4,7 +4,7 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		RNA.js		
 //
 //		authors: Colin Combe
 
@@ -13,9 +13,9 @@
 var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+RNA.prototype = new Interactor();
 
-function SmallMol(id, xlvController, json, name) {
+function RNA(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
     this.json = json;  
@@ -45,7 +45,7 @@ function SmallMol(id, xlvController, json, name) {
     this.lowerGroup = document.createElementNS(Config.svgns, "g");
     this.lowerGroup.setAttribute("class", "protein lowerGroup");
  	//for polygon
- 	var points = "0, -10  8.66,5 -8.66,5";
+ 	var points = "0, -10  10, 0 0, 10 -10, 0";
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
@@ -120,7 +120,7 @@ function SmallMol(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-SmallMol.prototype.setForm = function(form, svgP) {
+RNA.prototype.setForm = function(form, svgP) {
 };
 
-module.exports = SmallMol;
+module.exports = RNA;

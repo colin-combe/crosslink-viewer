@@ -4,7 +4,7 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		Gene.js		
 //
 //		authors: Colin Combe
 
@@ -13,9 +13,9 @@
 var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+Gene.prototype = new Interactor();
 
-function SmallMol(id, xlvController, json, name) {
+function Gene(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
     this.json = json;  
@@ -28,7 +28,7 @@ function SmallMol(id, xlvController, json, name) {
     this.name = name;
     // layout info
     this.x = 40;
-    this.y = 40;
+    this.y = 35;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -96,7 +96,7 @@ function SmallMol(id, xlvController, json, name) {
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff");
+			.attr("fill", "pink");
     //append outline
     this.upperGroup.appendChild(this.outline);
 
@@ -120,7 +120,7 @@ function SmallMol(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-SmallMol.prototype.setForm = function(form, svgP) {
+Gene.prototype.setForm = function(form, svgP) {
 };
 
-module.exports = SmallMol;
+module.exports = Gene;

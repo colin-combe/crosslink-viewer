@@ -21,7 +21,7 @@ function UnaryLink(id, xlvController, interactor) {
     this.id = id;
     this.evidences = d3.map();
 	this.interactors = [interactor];
-    this.ctrl = xlvController;
+    this.controller = xlvController;
 	//used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.thickLineShown = false;
@@ -132,11 +132,11 @@ UnaryLink.prototype.show = function() {
 	if (!this.shown) {
 		this.shown = true;
 		this.line.setAttribute("transform", "translate(" + this.interactors[0].x
-				+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
+				+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
 		this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
-				+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
-		this.ctrl.highlights.appendChild(this.highlightLine);
-		this.ctrl.p_pLinks.appendChild(this.line);
+				+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
+		this.controller.highlights.appendChild(this.highlightLine);
+		this.controller.p_pLinks.appendChild(this.line);
 	}
 };
 
@@ -145,22 +145,22 @@ UnaryLink.prototype.hide = function() {
         this.shown = false;
         //TODO: be more selective about when to show 'thickLine'
         // if (ProteinLink.maxNoResidueLinks > 1) {
-            // this.ctrl.p_pLinksWide.removeChild(this.thickLine);
+            // this.controller.p_pLinksWide.removeChild(this.thickLine);
         // }
-        this.ctrl.highlights.removeChild(this.highlightLine);
-        this.ctrl.p_pLinks.removeChild(this.line);
+        this.controller.highlights.removeChild(this.highlightLine);
+        this.controller.p_pLinks.removeChild(this.line);
 	}
 };
 
 UnaryLink.prototype.setLinkCoordinates = function(interactor) {
 			if (typeof this.thickLine !== 'undefined') {
 				this.thickLine.setAttribute("transform", "translate(" + interactor.x
-						+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+						+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 			}
 			this.line.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+					+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 			this.highlightLine.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+					+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 };
 
 module.exports = UnaryLink;

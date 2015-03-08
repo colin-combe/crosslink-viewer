@@ -27,42 +27,42 @@ Interactor.prototype.addStoichiometryLabel = function(stoich) {
 }
 
 Interactor.prototype.mouseDown = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.ctrl.force) {
-            this.ctrl.force.stop();
+        if (this.controller.force) {
+            this.controller.force.stop();
         }
 
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
+        this.controller.dragElement = this;
+        //~ if (evt.controllerKey === false) {
+            this.controller.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.ctrl.getEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+        var p = this.controller.getEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         this.showData();
         return false;
 };
 
 Interactor.prototype.touchStart = function(evt) {
-           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.ctrl.force !== undefined) {
-            this.ctrl.force.stop();
+        if (this.controller.force !== undefined) {
+            this.controller.force.stop();
         }
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
+        this.controller.dragElement = this;
+        //~ if (evt.controllerKey === false) {
+            this.controller.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.ctrl.getTouchEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+        var p = this.controller.getTouchEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         this.showData();
         return false;
 };
@@ -78,16 +78,16 @@ Interactor.prototype.showData = function(evt) {
 }
 
 Interactor.prototype.mouseOver = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.ctrl.setTooltip(this.id);
+        this.controller.setTooltip(this.id);
         return false;
 };
 
 Interactor.prototype.mouseOut = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(false);
-        this.ctrl.hideTooltip();
+        this.controller.hideTooltip();
         return false;
 };
 
@@ -105,13 +105,13 @@ Interactor.prototype.showHighlight = function(show) {
 
 Interactor.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.ctrl.selected.set(this.id, this);
+        this.controller.selected.set(this.id, this);
         this.isSelected = true;
 		this.highlight.setAttribute("stroke", Config.selectedColour);
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
-        this.ctrl.selected.remove(this.id);
+        this.controller.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", Config.highlightColour);
@@ -128,15 +128,15 @@ Interactor.prototype.setPosition = function(x, y) {
     this.y = y;
     if (this.form === 1 && this.isParked === false){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
+				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
+				+ " scale(" + (this.controller.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
+				+ " scale(" + (this.controller.z) + ") ");
 	}
 };
 
@@ -214,7 +214,7 @@ Interactor.prototype.countExternalLinks = function() {
             //~ links: d3.map()
         //~ };
         //~ this.addConnectedNodes(subgraph);
-        //~ this.ctrl.subgraphs.push(subgraph); 
+        //~ this.controller.subgraphs.push(subgraph); 
     //~ }
     //~ return this.subgraph;
 //~ };
@@ -250,8 +250,8 @@ Interactor.prototype.countExternalLinks = function() {
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
-    if (this.circDomains) this.ctrl.emptyElement(this.circDomains);
-    if (this.rectDomains) this.ctrl.emptyElement(this.rectDomains);
+    if (this.circDomains) this.controller.emptyElement(this.circDomains);
+    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
     
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
@@ -307,7 +307,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
             //~ annotMouseEventRect.name = text;
-            var xlv = this.ctrl;
+            var xlv = this.controller;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
                 //    for magnifier experiment

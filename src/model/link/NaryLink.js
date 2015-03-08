@@ -29,7 +29,7 @@ function NaryLink(id, xlvController) {
     this.sequenceLinks = d3.map();
     this.binaryLinks = d3.map();
     this.unaryLinks = d3.map();
-    this.ctrl = xlvController;
+    this.controller = xlvController;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
@@ -74,9 +74,9 @@ NaryLink.prototype.check = function() {
 NaryLink.prototype.show = function() {
 	if (!this.shown) {
 		this.shown = true;
-		this.path.setAttribute("stroke-width", this.ctrl.z * 1);
+		this.path.setAttribute("stroke-width", this.controller.z * 1);
 		this.setLinkCoordinates();
-		this.ctrl.naryLinks.appendChild(this.path);
+		this.controller.naryLinks.appendChild(this.path);
 	}
 };
 
@@ -84,9 +84,9 @@ NaryLink.prototype.hide = function() {
 	if (this.shown) {
 		this.shown = false;
 		if (this.thickLineShown) {
-			this.ctrl.p_pLinksWide.removeChild(this.thickLine);
+			this.controller.p_pLinksWide.removeChild(this.thickLine);
 		}
-		this.ctrl.p_pLinks.removeChild(this.path);
+		this.controller.p_pLinks.removeChild(this.path);
 	}
 };
 

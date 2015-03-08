@@ -21,6 +21,7 @@ var Config = require('./Config');
 var MouseEvents = require('./MouseEvents');
 var ToolTips = require('./ToolTips');
 var TouchEvents = require('./TouchEvents');
+var Protein = require('../model/interactor/Protein');
 
 xiNET.Controller = function(targetDiv) {
 	// targetDiv could be div itself or id of div - lets deal with that
@@ -64,13 +65,10 @@ xiNET.Controller = function(targetDiv) {
     this.lastMouseUp = new Date().getTime();   
      //touchstart
     this.svgElement.ontouchstart = function(evt) {
- 		self.message("touch start");
         self.touchStart(evt);
     };
     //touchmove
     this.svgElement.ontouchmove = function(evt) {
- 		//~ self.message("touch move");
-		//~ console.debug("move");
         self.touchMove(evt);
     };
     //touchend
@@ -92,7 +90,8 @@ xiNET.Controller = function(targetDiv) {
     background.setAttribute("height", 2048 * 2);
     background.setAttribute("fill-opacity", "1");
     background.setAttribute("fill", "#FFFFFF");
-    //this.svgElement.appendChild(background);
+    this.svgElement.appendChild(background);
+	
 	// various groups needed
     this.container = document.createElementNS(Config.svgns, "g");
     this.container.setAttribute("id", "container");
@@ -206,7 +205,7 @@ xiNET.setCTM = function(element, matrix) {
 
 
 xiNET.Controller.prototype.clear = function() {
-    this.initComplete = false;
+    this.sequenceInitComplete = false;
  	if (this.force) {
 		this.force.stop();
 	}
@@ -232,7 +231,7 @@ xiNET.Controller.prototype.clear = function() {
     // are we rotating at the moment
     this.rotating = false;
  
- 	this.participants = d3.map();
+ 	this.molecules = d3.map();
     this.allNaryLinks = d3.map();
     this.allBinaryLinks = d3.map();
     this.allUnaryLinks = d3.map();
@@ -262,34 +261,37 @@ xiNET.Controller.prototype.emptyElement = function(element) {
 
 //this can be done before all proteins have their sequences
 xiNET.Controller.prototype.initLayout = function() {
-	var interactors = this.participants.values();
-	var proteinCount = interactors.length;
-	for (var p = 0; p < proteinCount; p++) {
-		var prot = interactors[p];
-		this.proteinLower.appendChild(prot.lowerGroup);
-		this.proteinUpper.appendChild(prot.upperGroup);
+	var mols = this.molecules.values();
+	var molCount = mols.length;
+	for (var m = 0; m < molCount; m++) {
+		var mol = mols[m];
+		this.proteinLower.appendChild(mol.lowerGroup);
+		this.proteinUpper.appendChild(mol.upperGroup);
 		}
 	this.autoLayout();
 }
 
 //requires all polymers have had sequence set
-xiNET.Controller.prototype.initPolymers = function() {
-	var prots = this.proteins.values();
-	var protCount = prots.length;
+xiNET.Controller.prototype.initPolymers = function() {//currently only does Proteins
+	var mols = this.molecules.values();
+	var molCount = mols.length;
 	Protein.MAXSIZE = 0;
-	for (var i = 0; i < protCount; i++){
-		var protSize = prots[i].size;
-		if (protSize > Protein.MAXSIZE){
-			Protein.MAXSIZE = protSize;
+	for (var m = 0; m < molCount; m++){
+		var molSize = mols[m].size;
+		if (molSize > Protein.MAXSIZE){
+			Protein.MAXSIZE = molSize;
 		}
 	}
 	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
-	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
-	for (var i = 0; i < protCount; i++){
-		prots[i].init();
+	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Interactor.LABELMAXLENGTH) / Protein.MAXSIZE;
+	for (var i = 0; i < molCount; i++){
+		var mol = mols[i];
+		if (mol.json.type.name == "protein") {
+			mol.init();
+		}
 	}
-	this.initComplete = true;
+	this.sequenceInitComplete = true;
 }
 
 xiNET.Controller.prototype.resetZoom = function() {
@@ -299,7 +301,7 @@ xiNET.Controller.prototype.resetZoom = function() {
     //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
-    var interactors = this.participants.values();
+    var interactors = this.molecules.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];
