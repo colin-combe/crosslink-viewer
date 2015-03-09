@@ -162,6 +162,11 @@ xiNET.Controller = function(targetDiv) {
 };
 
 xiNET.Controller.prototype.clear = function() {
+    this.initComplete = false;
+ 	if (this.force) {
+		this.force.stop();
+	}
+ 	this.force = null;
     var suspendID = this.svgElement.suspendRedraw(5000);
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
@@ -169,14 +174,17 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.res_resLinks);
     this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
-    this.svgElement.unsuspendRedraw(suspendID);    
+	this.svgElement.unsuspendRedraw(suspendID);
     
-    this.initComplete = false;
-    
+     //are we panning?
     this.panning = false;
+    // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
+    // are we dragging at the moment?
     this.dragging = false;
+    // from where did we start dragging
     this.dragStart = {};
+    // are we rotating at the moment
     this.rotating = false;
     
     this.proteins = d3.map();
@@ -354,25 +362,18 @@ xiNET.Controller.prototype.annotationSet = function(annotationSetName) {
 }
 
 //this can be done before all proteins have their sequences
-xiNET.Controller.prototype.initLayout = function(width, height) {
+xiNET.Controller.prototype.initLayout = function() {
     if (typeof this.layout !== 'undefined' && this.layout != null) {
         this.loadLayout();
     } else {
-        //make inital form sticks or blobs
         var proteins = this.proteins.values();
         var proteinCount = proteins.length;
         for (var p = 0; p < proteinCount; p++) {
             var prot = proteins[p];
-            //~ if (this.proteins.keys().length < 3) {
-                //~ prot.setForm(1);
-            //~ }
-            //~ else {
-                //~ prot.setForm(0);
-            //~ }
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
         }
-        this.autoLayout(width, height);
+        this.autoLayout();
     }
 }
 

@@ -21,7 +21,7 @@ function Protein(id, xinetController, acc, name) {
     this.accession = acc;
     this.name = name;
     this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
-    
+
     //links
     this.proteinLinks = d3.map();
     this.selfLink = null;
@@ -41,7 +41,7 @@ function Protein(id, xinetController, acc, name) {
 	//~ this.mouseoverControls = new MouseoverControls(this, this.controller);
 	this.lowerRotator = new Rotator(this, 0, this.controller);
 	this.upperRotator = new Rotator(this, 1, this.controller);
-          
+    
     /*
      * Lower group
      * svg group for elements that appear underneath links
@@ -126,11 +126,7 @@ function Protein(id, xinetController, acc, name) {
 	this.upperGroup.appendChild(this.circDomains);
 
     this.scaleLabels = new Array();
-	//this.setRotation(this.rotation);
-	//~ var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-	//~ var k = this.controller.svgElement.createSVGMatrix().rotate(0).translate(0, Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-	//~ this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
-	
+
     // events
     var self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
@@ -142,14 +138,13 @@ function Protein(id, xinetController, acc, name) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-    };     
+    };
     this.upperGroup.ontouchstart = function(evt) {
-		self.controller.message("protein touch start");
 		self.touchStart(evt);
     };
     this.isSelected = false;
 	this.showHighlight(false);
-}
+};
 
 //sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
 Protein.prototype.setSequence = function(sequence){
@@ -685,8 +680,8 @@ Protein.prototype.toCircle = function(svgP) {
 	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
 	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
 	//todo: should take current tranform of label as start
-	var labelStartPoint = -(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
-	//if (Protein.UNITS_PER_RESIDUE === 1) labelStartPoint = -(r + 5);
+	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));	
+	var labelStartPoint = labelTransform.translate[0];//-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
 	var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 	
 	var xInterpol = null, yInterpol = null;
@@ -776,6 +771,7 @@ Protein.prototype.toCircle = function(svgP) {
  
 	function update(interp) {
 		// if (self.isParked === false) { //that wont work
+//can following be removed
 			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
 			var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
 			self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
