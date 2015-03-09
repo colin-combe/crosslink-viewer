@@ -25,7 +25,6 @@ function Protein(id, xinetController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xinetController;
     this.json = json;  
-    this.accession = null;
   	this.name = name;
     this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
     //links
@@ -75,9 +74,6 @@ function Protein(id, xinetController, json, name) {
     //choose label text
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
-    }
-    else if (this.accession != null & this.accession !== "") {
-        this.labelText = this.accession;
     }
     else {
 		this.labelText  = this.id;
@@ -368,15 +364,8 @@ Protein.prototype.toCircle = function(svgP) {
 	
 	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
 	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);	
-	//todo: should take current tranform of label as start
-	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-		
+	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));	
 	var labelStartPoint = labelTransform.translate[0];//-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
-	//~ var k = svg.createSVGMatrix()
-						//~ .translate(Math.abs(labelTransform.translate[0]), -Interactor.labelY)
-						//~ .rotate(180, 0, 0);
-			//~ this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			
 	var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 	
 	var xInterpol = null, yInterpol = null;
