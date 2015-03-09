@@ -15,7 +15,14 @@ function xiNET_Storage() {}
 xiNET_Storage.ns = "xiNET.";
 
 xiNET_Storage.accessionFromId = function (id){
-	if (id.indexOf('|') !== -1){
+	var idRegex = /uniprotkb_(.*)\(/
+	var match = idRegex.exec(id);
+	if (match){
+		return match[1];
+	}
+	else if (id.indexOf('|') !== -1){
+		//following reads swiss-prot style identifiers, 
+		//(keeps this class compatible with crosslink-viewer)
 		return id.split('|')[1];
 	} else {
 		return id;
@@ -57,8 +64,8 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 }
 
 xiNET_Storage.getSequence = function (id, callback){
-	var accession = xiNET_Storage.accessionFromId(id);
-	xiNET_Storage.getUniProtTxt(accession, function(accession, txt){
+	//~ var accession = xiNET_Storage.accessionFromId(id);
+	xiNET_Storage.getUniProtTxt(id, function(noNeed, txt){
 			var sequence = "";
 			var lines = txt.split('\n');
 			var lineCount = lines.length;
@@ -163,6 +170,4 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
 	}
 }
 
-module.exports = {
-    xiNET_Storage: xiNET_Storage
-}
+module.exports = xiNET_Storage;

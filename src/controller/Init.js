@@ -104,9 +104,9 @@ xiNET.Controller = function(targetDiv) {
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
  
-    this.proteinLower = document.createElementNS(Config.svgns, "g");
-    this.proteinLower.setAttribute("id", "proteinLower");
-    this.container.appendChild(this.proteinLower);
+    //~ this.proteinLower = document.createElementNS(Config.svgns, "g");
+    //~ this.proteinLower.setAttribute("id", "proteinLower");
+    //~ this.container.appendChild(this.proteinLower);
 
     this.highlights = document.createElementNS(Config.svgns, "g");
     this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
@@ -216,7 +216,7 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
+    //~ this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
 	this.svgElement.unsuspendRedraw(suspendID);
       
@@ -265,7 +265,7 @@ xiNET.Controller.prototype.initLayout = function() {
 	var molCount = mols.length;
 	for (var m = 0; m < molCount; m++) {
 		var mol = mols[m];
-		this.proteinLower.appendChild(mol.lowerGroup);
+		//~ this.proteinLower.appendChild(mol.lowerGroup);
 		this.proteinUpper.appendChild(mol.upperGroup);
 		}
 	this.autoLayout();
@@ -292,6 +292,12 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 		}
 	}
 	this.sequenceInitComplete = true;
+	
+	 //show features
+	for (m = 0; m < molCount; m++) {
+		var mol = mols[m];
+		mol.setPositionalFeatures(mol.miFeatures);
+	}
 }
 
 xiNET.Controller.prototype.resetZoom = function() {

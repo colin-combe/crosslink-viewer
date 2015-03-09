@@ -26,6 +26,10 @@ Interactor.prototype.addStoichiometryLabel = function(stoich) {
 	}
 }
 
+Interactor.prototype.getBlobRadius = function() {
+    return 15;
+};
+
 Interactor.prototype.mouseDown = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
@@ -129,14 +133,14 @@ Interactor.prototype.setPosition = function(x, y) {
     if (this.form === 1 && this.isParked === false){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.controller.z) + ") ");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.controller.z) + ") ");
+		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+				//~ + " scale(" + (this.controller.z) + ") ");
 	}
 };
 
@@ -202,51 +206,7 @@ Interactor.prototype.setAllLinkCoordinates = function() {
 	}    
 };
 
-//TODO: following 3 functions are used by auto layout and need work
-Interactor.prototype.countExternalLinks = function() {
-    return this.binaryLinks.length;
-};
-
-//~ Interactor.prototype.getSubgraph = function() {
-    //~ if (this.subgraph == null) { // don't check for undefined here
-        //~ var subgraph = {
-            //~ nodes: d3.map(),
-            //~ links: d3.map()
-        //~ };
-        //~ this.addConnectedNodes(subgraph);
-        //~ this.controller.subgraphs.push(subgraph); 
-    //~ }
-    //~ return this.subgraph;
-//~ };
-//~ 
-//~ Interactor.prototype.addConnectedNodes = function(subgraph) {
-	//~ this.subgraph = subgraph;
-	//~ subgraph.nodes.set(this.id, this);	
-	//~ var count = this.binaryLinks.values().length;
-    //~ for (var bi = 0; bi < count; bi++) {
-		//~ var binaryLink = this.binaryLinks.values()[bi];
-        //~ if (subgraph.links.has(binaryLink.id) === false) {
-        	//~ subgraph.links.set(binaryLink.id, binaryLink);
-				//~ var otherEnd = binaryLink.getOtherEnd(this);
-				 //~ if (otherEnd) {
-					 //~ otherEnd.addConnectedNodes(subgraph);
-				 //~ }
-		//~ }
-    //~ }
-    //~ // count = this.nLinks.values().length;
-    //~ // for (var ni = 0; ni < count; ni++) {
-		//~ // var naryLink = this.naryLinks.values()[ni];
-        //~ // if (subgraph.links.has(binaryLink.id) === false) {
-        	//~ // subgraph.links.set(binaryLink.id, binaryLink);
-				//~ // var otherEnd = binaryLink.getOtherEnd(this);
-				 //~ // if (otherEnd) {
-					 //~ // otherEnd.addConnectedNodes(subgraph);
-				 //~ // }
-		//~ // }
-    //~ // }
-    //~ // console.debug(subgraph.nodes.keys());
-//~ };
-
+//todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
@@ -323,7 +283,9 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-            this.circDomains.appendChild(annotPieSlice);
+             if (this.circDomains) { //hack
+				 this.circDomains.appendChild(annotPieSlice);
+			 }
             if (this.rectDomains) {
                 this.rectDomains.appendChild(annotColouredRect);
             }

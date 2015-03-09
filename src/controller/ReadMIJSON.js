@@ -7,6 +7,8 @@
 //    author: Colin Combe
 
 "use strict";
+
+var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
 var Feature = require('../model/interactor/Feature');
 var Protein = require('../model/interactor/Protein');
@@ -33,11 +35,10 @@ var readMIJSON = function(miJson, expand) {
     var dataElementCount = data.length;
     var self = this;
 	self.features = d3.map();
-	//forget complexes for just now   
 	self.complexes = d3.map();  
 	
+	var needsSequence = d3.set();//things that need seq looked up
 	expand? readStoichExpanded() : readStoichUnexpanded();	
-	// readStoichUnexpanded();
 	
 	// loop through particpants and features
 	// init binary, unary and sequence links, 
@@ -115,7 +116,72 @@ var readMIJSON = function(miJson, expand) {
 	}
 	self.checkLinks();
 	self.initLayout();
-	self.initPolymers();
+	
+	//make mi features into annotations
+	var domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+	var features = self.features.values();
+	var fCount = features.length;
+	for (var f = 0; f < fCount; f++){
+		var feature = features[f];
+		// add features to interactors/participants/nodes
+		var annotName = "";
+		if (typeof feature.name !== 'undefined') {
+			annotName += feature.name + ', ';
+		}
+		if (typeof feature.type !== 'undefined') {
+			annotName += feature.type.name;
+		}
+		if (typeof feature.detmethod !== 'undefined') {
+			annotName += ', ' + feature.detmethod.name;
+		}
+		var colour = domainColours(feature.name);
+		// the id info we need is inside sequenceData att
+		if (feature.sequenceData) {
+			//~ console.log(JSON.stringify(feature, null, '\t'));
+			var seqData = feature.sequenceData;
+			var seqDataCount = seqData.length;
+			for (var sdi = 0; sdi < seqDataCount; sdi++) {
+				var seqDatum = seqData[sdi];
+				var mID = seqDatum.interactorRef; 
+				if (expand)	{
+					mID = mID	+ "(" + seqDatum.participantRef + ")";
+				}
+				var molecule = self.molecules.get(mID);
+				var sequenceRegex = /(.+)-(.+)/;
+				var match = sequenceRegex.exec(seqDatum.pos);
+				var startRes = match[1] * 1;
+				var endRes = match[2] * 1;
+				if (isNaN(startRes) === false && isNaN(endRes) === false) {
+					var annotation = new Feature(annotName, startRes, endRes, colour);
+					if (molecule.miFeatures == null) {
+						molecule.miFeatures = new Array();
+					}
+					molecule.miFeatures.push(annotation);
+					console.log(molecule.id);
+				}
+			}
+		}
+	} 
+	
+	//lookup missing sequences
+	var nsIds = needsSequence.values();
+	var nsCount = nsIds.length;
+	var countSequences = 0;
+	for (var m = 0; m < nsCount; m++){
+		xiNET_Storage.getSequence(nsIds[m], function(id, seq){
+				self.molecules.get(id).setSequence(seq);
+				countSequences++;
+				if (countSequences === nsCount){
+					self.initPolymers();
+				}
+			}
+		);
+	}
+	if (nsCount === 0) {
+		self.initPolymers();
+	}
+	
+
 	
 	function readStoichExpanded(){			
 		//get interactors
@@ -190,6 +256,11 @@ var readMIJSON = function(miJson, expand) {
 							}
 							else {
 								//should look it up using accession number
+								if (participantId.indexOf('uniprotkb') === 0){
+									needsSequence.add(participantId);
+								} else {
+									participant.setSequence("SEQUENCEMISSING");
+								}
 							}
 						}
 						else if (interactor.type.name === 'gene') {

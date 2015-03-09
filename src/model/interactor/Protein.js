@@ -25,7 +25,8 @@ function Protein(id, xinetController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xinetController;
     this.json = json;  
-    this.name = name;
+    this.accession = null;
+  	this.name = name;
     this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
 
     //links
@@ -55,26 +56,9 @@ function Protein(id, xinetController, json, name) {
      * Lower group
      * svg group for elements that appear underneath links
      */
-    this.lowerGroup = document.createElementNS(Config.svgns, "g");
-    this.lowerGroup.setAttribute("class", "protein lowerGroup");
- 	
- 	//make highlight
-    this.highlight = document.createElementNS(Config.svgns, "rect");
-    //invariant attributes
-    this.highlight.setAttribute("stroke", Config.highlightColour);
-    this.highlight.setAttribute("stroke-width", "5");   
-    this.highlight.setAttribute("fill", "none");   
-    this.lowerGroup.appendChild(this.highlight);   
-    
-    //domains in rectangle form (shown underneath links) 
-    this.rectDomains = document.createElementNS(Config.svgns, "g");
-    this.rectDomains.setAttribute("opacity", "0");
-    this.lowerGroup.appendChild(this.rectDomains);
-    
-    this.peptides = document.createElementNS(Config.svgns, "g");
-	this.lowerGroup.appendChild(this.peptides);
-	
-	/*
+    //~ this.lowerGroup = document.createElementNS(Config.svgns, "g");
+    //~ this.lowerGroup.setAttribute("class", "protein lowerGroup");
+/*
      * Upper group
      * svg group for elements that appear above links
      */
@@ -82,7 +66,28 @@ function Protein(id, xinetController, json, name) {
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
        
-    //create label - we will move this svg element around when protein form changes
+ 	
+ 	//make highlight
+    this.highlight = document.createElementNS(Config.svgns, "rect");
+    //invariant attributes
+    this.highlight.setAttribute("stroke", Config.highlightColour);
+    this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("fill", "none");   
+    this.upperGroup.appendChild(this.highlight);   
+   	
+   	//make background
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.background = document.createElementNS(Config.svgns, "rect");
+    //~ this.outline.setAttribute("stroke", "black");
+    //~ this.outline.setAttribute("stroke-width", "1");
+    this.background.setAttribute("fill", "#FFFFFF");
+    this.upperGroup.appendChild(this.background); 
+    //domains in rectangle form (shown underneath links) 
+    //~ this.rectDomains = document.createElementNS(Config.svgns, "g");
+    //~ this.rectDomains.setAttribute("opacity", "0");
+   // this.upperGroup.appendChild(this.rectDomains);
+    	
+	//create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
@@ -94,6 +99,9 @@ function Protein(id, xinetController, json, name) {
     //choose label text
     if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
+    }
+    else if (this.accession != null & this.accession !== "") {
+        this.labelText = this.accession;
     }
     else {
 		this.labelText  = this.id;
@@ -110,20 +118,21 @@ function Protein(id, xinetController, json, name) {
    	//ticks (and animo acid letters)
     this.ticks = document.createElementNS(Config.svgns, "g");
      
-	//make outline
-    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
-	this.outline = document.createElementNS(Config.svgns, "rect");
-    this.outline.setAttribute("stroke", "black");
-    this.outline.setAttribute("stroke-width", "1");
-    this.outline.setAttribute("fill", "#EEEEEE");
-    this.upperGroup.appendChild(this.outline);
-    
+   
     //domains as pie slices - shown on top of everything
 	this.circDomains = document.createElementNS(Config.svgns, "g");
     //~ this.circDomains.setAttribute("class", "protein circDomains");
 	this.circDomains.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.circDomains);
-
+	
+	//make outline
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.outline = document.createElementNS(Config.svgns, "rect");
+    this.outline.setAttribute("stroke", "black");
+    this.outline.setAttribute("stroke-width", "1");
+    this.outline.setAttribute("fill", "none");
+    this.upperGroup.appendChild(this.outline);
+ 
     this.scaleLabels = new Array();
 
     // events
@@ -147,36 +156,15 @@ function Protein(id, xinetController, json, name) {
 
 //sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
 Protein.prototype.setSequence = function(sequence){
-    //check for labeling modifications in sequence now, we're about to lose this info
-    if (/\d/.test(sequence)) {//is there a digit in the sequence?
-        this.labeling = '';// as in silac labelling
-        if (sequence.indexOf('K4') !== -1)
-            this.labeling += 'K4';
-        if (sequence.indexOf('K6') !== -1)
-            this.labeling += 'K6';
-        if (sequence.indexOf('K8') !== -1)
-            this.labeling += 'K8';
-        if (sequence.indexOf('K10') !== -1)
-            this.labeling += 'R4';
-        if (sequence.indexOf('R6') !== -1)
-            this.labeling += 'R6';
-        if (sequence.indexOf('R8') !== -1)
-            this.labeling += 'R8';
-        if (sequence.indexOf('R10') !== -1)
-            this.labeling += 'R10';
-    }
-    if (typeof this.labeling !== 'undefined') {
-        this.labelSVG.innerHTML = '[' + this.labeling + '] ' + this.labelSVG.innerHTML;
-    }
     //remove modification site info from sequence
     this.sequence = sequence.replace(/[^A-Z]/g, '');
     this.size = this.sequence.length;
 }
 
-//by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
+//by the time we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
 Protein.prototype.init = function() {
     this.setForm(this.form);
-    //if (this.selfLink) this.selfLink.initSelfLinkSVG();
+    if (this.selfLink) this.selfLink.initSelfLinkSVG();
     this.setAllLinkCoordinates();	
 };
 
@@ -191,8 +179,8 @@ Protein.prototype.setRotation = function(angle) {
 	}
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-    this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+    //~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			//~ + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 
     var svg = this.controller.svgElement;    
 	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
@@ -264,9 +252,9 @@ Protein.prototype.scale = function() {
 			.translate((-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
-		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		//~ d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
-		d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		//~ d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		
 		d3.select(this.outline)
 			.attr("width", protLength)
@@ -377,36 +365,49 @@ Protein.prototype.setScaleGroup = function() {
 
 Protein.prototype.setForm = function(form, svgP) {
     if (this.busy !== true) {
-		if (this.isParked) {
-			this.setParked(false);
-		}
-		else
-		{
+		//~ if (this.isParked) {
+			//~ this.setParked(false);
+		//~ }
+		//~ else
+		//~ {
 			if (form == 1) {
 				this.toStick();
 			}
 			else {
 				this.toCircle(svgP);
 				var r = this.getBlobRadius();
-				
 				var self = this;
-				d3.select(this.outline).transition()
-					.attr("stroke-opacity", 1).attr("fill-opacity", 1)
-					.attr("fill", "#ffffff")
+				d3.select(this.background).transition()
+					//.attr("stroke-opacity", 1)//.attr("fill-opacity", 1)
+					//~ .attr("fill", "#ffffff")
 					.attr("x", -r).attr("y", -r)
 					.attr("width", r * 2).attr("height", r * 2)
 					.attr("rx", r).attr("ry", r)
 					.duration(Protein.transitionTime);
-
-				d3.select(this.rectDomains).transition().attr("opacity", 0)
-					.attr("transform", "scale(1, 1)")
+				d3.select(this.outline).transition()
+					//.attr("stroke-opacity", 1)//.attr("fill-opacity", 1)
+					//~ .attr("fill", "#ffffff")
+					.attr("x", -r).attr("y", -r)
+					.attr("width", r * 2).attr("height", r * 2)
+					.attr("rx", r).attr("ry", r)
 					.duration(Protein.transitionTime);
-					
-				d3.select(this.circDomains).transition().attr("opacity", 1)
-					.attr("transform", "scale(1, 1)")
+				d3.select(this.highlight).transition()
+					//.attr("stroke-opacity", 1)//.attr("fill-opacity", 1)
+					//~ .attr("fill", "#ffffff")
+					.attr("x", -r).attr("y", -r)
+					.attr("width", r * 2).attr("height", r * 2)
+					.attr("rx", r).attr("ry", r)
 					.duration(Protein.transitionTime);
+//~ 
+				//~ d3.select(this.rectDomains).transition().attr("opacity", 0)
+					//~ .attr("transform", "scale(1, 1)")
+					//~ .duration(Protein.transitionTime);
+					//~ 
+				//~ d3.select(this.circDomains).transition().attr("opacity", 1)
+					//~ .attr("transform", "scale(1, 1)")
+					//~ .duration(Protein.transitionTime);
 			}
-		}
+		//~ }
 	}
 };
 
@@ -490,8 +491,8 @@ Protein.prototype.toCircle = function(svgP) {
 						}
 					}
 				);
-			d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
-				.duration(Protein.transitionTime);
+			//~ d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
+				//~ .duration(Protein.transitionTime);
 		}
 	}
 
@@ -567,16 +568,24 @@ Protein.prototype.toStick = function() {
 	this.checkLinks(this.sequenceLinks);
 	this.stickZoom = origStickZoom;
  	
-	d3.select(this.circDomains).transition().attr("opacity", 0)
-		.attr("transform", "scale(" + this.stickZoom + ", 1)")
-		.duration(Protein.transitionTime);
-	d3.select(this.rectDomains).transition().attr("opacity", 1)
-		.attr("transform", "scale(" + this.stickZoom + ", 1)")
+	//~ d3.select(this.circDomains).transition().attr("opacity", 0)
+		//~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+		//~ .duration(Protein.transitionTime);
+	//~ d3.select(this.rectDomains).transition().attr("opacity", 1)
+		//~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+		//~ .duration(Protein.transitionTime);
+				
+	d3.select(this.background).transition()//.attr("stroke-opacity", 1)
+	//~ .attr("fill-opacity",  0)
+		//.attr("fill", "#FFFFFF")
+		.attr("height", Protein.STICKHEIGHT)
+		.attr("y",  -Protein.STICKHEIGHT / 2)
+		.attr("rx", 0).attr("ry", 0)
 		.duration(Protein.transitionTime);
 				
-	d3.select(this.outline).transition().attr("stroke-opacity", 1)
-	.attr("fill-opacity",  0)
-		.attr("fill", "#FFFFFF")
+	d3.select(this.outline).transition()//.attr("stroke-opacity", 1)
+	//~ .attr("fill-opacity",  0)
+		//.attr("fill", "#FFFFFF")
 		.attr("height", Protein.STICKHEIGHT)
 		.attr("y",  -Protein.STICKHEIGHT / 2)
 		.attr("rx", 0).attr("ry", 0)
@@ -617,8 +626,8 @@ Protein.prototype.toStick = function() {
 						
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
 				.duration(Protein.transitionTime);
-			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
-				.duration(Protein.transitionTime);
+			//~ d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
+				//~ .duration(Protein.transitionTime);
 		}
 	}
 	
@@ -639,7 +648,9 @@ Protein.prototype.toStick = function() {
 		self.setRotation(rot);
 	 
 		var currentLength = lengthInterpol(cubicInOut(interp));
+		d3.select(self.highlight).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Protein.UNITS_PER_RESIDUE * self.stickZoom));
 		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Protein.UNITS_PER_RESIDUE * self.stickZoom));
+		d3.select(self.background).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Protein.UNITS_PER_RESIDUE * self.stickZoom));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setAllLinkCoordinates();
 		
