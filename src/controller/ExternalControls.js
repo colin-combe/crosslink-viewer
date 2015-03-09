@@ -264,13 +264,6 @@ xiNET.Controller.prototype.hideAmbig = function(bool) {
     this.checkLinks();
 };
 
-//TODO:fix
-//xiNET.Controller.prototype.setAnnotations = function(positional, group, category) {
-//    //    alert(group + ' - ' + category);
-//    //clear
-//
-//    };
-
 xiNET.Controller.prototype.exportSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
     //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
