@@ -12,6 +12,7 @@
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
 var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
+var xiNET_Storage = require('./xiNET_Storage');
 var Interactor = require('../model/interactor/Interactor');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
@@ -104,10 +105,6 @@ xiNET.Controller = function(targetDiv) {
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
  
-    //~ this.proteinLower = document.createElementNS(Config.svgns, "g");
-    //~ this.proteinLower.setAttribute("id", "proteinLower");
-    //~ this.container.appendChild(this.proteinLower);
-
     this.highlights = document.createElementNS(Config.svgns, "g");
     this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
     this.container.appendChild(this.highlights);
@@ -216,7 +213,6 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
-    //~ this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
 	this.svgElement.unsuspendRedraw(suspendID);
       
@@ -259,15 +255,49 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
+xiNET.Controller.prototype.setAnnotations = function(annotationType) {
+	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
+		var mols = this.molecules.values(); 
+		var molCount = mols.length;
+		var self = this;
+		for (var m = 0; m < molCount; m++) {
+			var mol = mols[m];
+			if (annotationType.toUpperCase() === "MI FEATURES") {
+				mol.setPositionalFeatures(mol.miFeatures);
+			}
+			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+				if (mol.id.indexOf('uniprotkb_' === 0)) {
+					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+						var m = self.molecules.get(id);
+						m.setPositionalFeatures(fts);
+					});
+				}
+			} 
+			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
+				if (mol.id.indexOf('uniprotkb_' === 0) {
+					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+						var m = self.molecules.get(id);
+						m.setPositionalFeatures(fts);
+					});
+				}
+			}
+			else {
+				mol.setPositionalFeatures([])
+			}
+		}
+		return true;
+	}
+	else return false;
+}
+
 //this can be done before all proteins have their sequences
 xiNET.Controller.prototype.initLayout = function() {
 	var mols = this.molecules.values();
 	var molCount = mols.length;
 	for (var m = 0; m < molCount; m++) {
 		var mol = mols[m];
-		//~ this.proteinLower.appendChild(mol.lowerGroup);
 		this.proteinUpper.appendChild(mol.upperGroup);
-		}
+	}
 	this.autoLayout();
 }
 
@@ -292,19 +322,10 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 		}
 	}
 	this.sequenceInitComplete = true;
-	
-	 //show features
-	for (m = 0; m < molCount; m++) {
-		var mol = mols[m];
-		mol.setPositionalFeatures(mol.miFeatures);
-	}
+	this.setAnnotations('MI FEATURES');
 }
 
 xiNET.Controller.prototype.resetZoom = function() {
-    //    var conBBox = this.container.getBBox();
-    //    var w = this.svgElement.parentNode.clientWidth;//getAttribute("viewBox");
-    //    var h = this.svgElement.parentNode.clientHeight;//getAttribute("width");
-    //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
     var interactors = this.molecules.values();

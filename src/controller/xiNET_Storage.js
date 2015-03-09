@@ -11,6 +11,7 @@
 "use strict";
 
 function xiNET_Storage() {}
+var Annotation = require('../model/interactor/Annotation');
 
 xiNET_Storage.ns = "xiNET.";
 

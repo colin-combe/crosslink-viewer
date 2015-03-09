@@ -133,14 +133,10 @@ Interactor.prototype.setPosition = function(x, y) {
     if (this.form === 1 && this.isParked === false){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-    } 
+  } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.controller.z) + ") ");
-		//~ this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				//~ + " scale(" + (this.controller.z) + ") ");
 	}
 };
 
@@ -252,7 +248,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                     c = new RGBColor('#FF00AA88');
                 }
                 else {
-                    c = new RGBColor(Interactor.domainColours(anno.name));
+                    c = Interactor.domainColours(anno.name);
                 }
             }
             else {

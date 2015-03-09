@@ -11,8 +11,8 @@ var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
 //josh - following are libraries and should be in 'vendor'?
 //  but I don't know how to set up the dependency if its there
-//var Intersection = require('../../controller/Intersection');
-//var Point2D = require('../../controller/Point2D');
+var Intersection = require('../../../vendor/Intersection');
+var Point2D = require('../../../vendor/Point2D');
 
 // BinaryLink.js
 // the class representing a binary interaction
@@ -233,7 +233,7 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 				}
 			}
 		}else {//interactor is a complex
-	/*		var otherEndPos = this.getOtherEnd(interactor).getPosition();
+			var otherEndPos = this.getOtherEnd(interactor).getPosition();
 			var naryPath = interactor.naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
@@ -269,7 +269,6 @@ BinaryLink.prototype.setLinkCoordinates = function(interactor) {
 					this.thickLine.setAttribute("y2", newPos[1]);
 				}
 			}
-		*/
 		}
 	}
 };

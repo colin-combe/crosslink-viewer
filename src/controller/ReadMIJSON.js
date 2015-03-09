@@ -10,7 +10,8 @@
 
 var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
-var Feature = require('../model/interactor/Feature');
+var Annotation = require('../model/interactor/Annotation');
+var Interactor = require('../model/interactor/Interactor');
 var Protein = require('../model/interactor/Protein');
 var SmallMol = require('../model/interactor/SmallMol');
 var Gene = require('../model/interactor/Gene');
@@ -118,7 +119,6 @@ var readMIJSON = function(miJson, expand) {
 	self.initLayout();
 	
 	//make mi features into annotations
-	var domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
 	var features = self.features.values();
 	var fCount = features.length;
 	for (var f = 0; f < fCount; f++){
@@ -134,7 +134,7 @@ var readMIJSON = function(miJson, expand) {
 		if (typeof feature.detmethod !== 'undefined') {
 			annotName += ', ' + feature.detmethod.name;
 		}
-		var colour = domainColours(feature.name);
+		var colour = Interactor.domainColours(feature.name);
 		// the id info we need is inside sequenceData att
 		if (feature.sequenceData) {
 			//~ console.log(JSON.stringify(feature, null, '\t'));
@@ -152,7 +152,7 @@ var readMIJSON = function(miJson, expand) {
 				var startRes = match[1] * 1;
 				var endRes = match[2] * 1;
 				if (isNaN(startRes) === false && isNaN(endRes) === false) {
-					var annotation = new Feature(annotName, startRes, endRes, colour);
+					var annotation = new Annotation(annotName, startRes, endRes, colour);
 					if (molecule.miFeatures == null) {
 						molecule.miFeatures = new Array();
 					}
@@ -358,18 +358,6 @@ var readMIJSON = function(miJson, expand) {
 				for (var pi = 0; pi < participantCount; pi++) {
 					var participant = interaction.participants[pi];
 					var features = new Array(0);
-					// if (participant.bindingSites) {
-					// 	features = features.concat(participant.bindingSites);
-					// }
-					// if (participant.experimentalFeatures) {
-					// 	features = features.concat(participant.experimentalFeatures);
-					// }
-					// if (participant.ptms) {
-					// 	features = features.concat(participant.ptms);
-					// }
-					// if (participant.otherFeatures) {
-					// 	features = features.concat(participant.otherFeatures);
-					// }
 					if (participant.features) features = participant.features;
 					var fCount = features.length;
 					for (var f = 0; f < fCount; f++){

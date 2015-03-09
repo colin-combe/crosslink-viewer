@@ -38,11 +38,11 @@
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
 			
-			<select id="featureSet" onChange="changeFeatures();">
-				<option>None</option>  
+			<select id="annotations" onChange="changeAnnotations();">
 				<option>MI features</option>
 				<option>UniprotKB</option> 
 				<option>SuperFamily</option>  
+				<option>None</option>  
 			</select>			
 
 		</div>
@@ -68,8 +68,10 @@
 						xlv.readMIJSON(data, matrixExpansion);
 					});            
 				 }
-				 function changeFeatures(){
-					           
+				 
+				 function changeAnnotations(){
+					var annotationSelect = document.getElementById('annotations');
+					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
 				 }
                   
                 //]]>
