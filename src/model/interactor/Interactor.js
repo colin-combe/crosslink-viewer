@@ -26,10 +26,6 @@ Interactor.prototype.addStoichiometryLabel = function(stoich) {
 	}
 }
 
-Interactor.prototype.getBlobRadius = function() {
-    return 15;
-};
-
 Interactor.prototype.mouseDown = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
@@ -71,16 +67,6 @@ Interactor.prototype.touchStart = function(evt) {
         return false;
 };
 
-Interactor.prototype.showData = function(evt) {
-    if (document.getElementById('jsonHeading')) {	
-		document.getElementById('jsonHeading').innerHTML = this.id;
-	} 
-    if (document.getElementById('json')) {	
-		document.getElementById('json').innerHTML = 
-			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
-	} 
-}
-
 Interactor.prototype.mouseOver = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
@@ -94,6 +80,11 @@ Interactor.prototype.mouseOut = function(evt) {
         this.controller.hideTooltip();
         return false;
 };
+
+Interactor.prototype.getBlobRadius = function() {
+    return 15;
+};
+
 
 Interactor.prototype.showHighlight = function(show) {
     if (show === true) {
@@ -130,7 +121,7 @@ Interactor.prototype.getPosition = function(){
 Interactor.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    if (this.form === 1 && this.isParked === false){
+    if (this.form === 1){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
   } 
@@ -153,7 +144,6 @@ Interactor.prototype.getAggregateSelfLinkPath = function() {
 		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
-//Josh - this gets used from a couple of different files, where do you think it should go?
 Interactor.rotatePointAboutPoint = function(p, o, theta) {
 	theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
 	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
@@ -207,7 +197,6 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];
     
     if (this.circDomains) this.controller.emptyElement(this.circDomains);
-    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
     
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
@@ -238,18 +227,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             var c;
             //temp
             if (anno.colour == null) { // check == here
-                if (anno.name === 'alpha_helix') {
-                    c = new RGBColor('#7EB6FF88');
-                }
-                else if (anno.name === 'beta_strand') {
-                    c = new RGBColor('#9AFF9A88');
-                }
-                else if (anno.name === 'turn') {
-                    c = new RGBColor('#FF00AA88');
-                }
-                else {
-                    c = Interactor.domainColours(anno.name);
-                }
+				c = Interactor.domainColours(anno.name);
             }
             else {
                 c = anno.colour;
@@ -334,5 +312,16 @@ Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation)
     approximatePiePath += "  Z";
     return approximatePiePath;
 };
+
+Interactor.prototype.showData = function(evt) {
+    if (document.getElementById('jsonHeading')) {	
+		document.getElementById('jsonHeading').innerHTML = this.id;
+	} 
+    if (document.getElementById('json')) {	
+		document.getElementById('json').innerHTML = 
+			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
+	} 
+}
+
 
 module.exports = Interactor;

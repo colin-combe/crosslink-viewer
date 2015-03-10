@@ -266,7 +266,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 				mol.setPositionalFeatures(mol.miFeatures);
 			}
 			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
-				if (mol.id.indexOf('uniprotkb_') === 0)) {
+				if (mol.id.indexOf('uniprotkb_') === 0) {
 					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
 						var m = self.molecules.get(id);
 						m.setPositionalFeatures(fts);
