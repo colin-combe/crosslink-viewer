@@ -38,7 +38,7 @@
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
 			
-			<select id="annotations" onChange="changeAnnotations();">
+			<select id="annotationsSelect" onChange="changeAnnotations();">
 				<option>MI features</option>
 				<option>UniprotKB</option> 
 				<option>SuperFamily</option>  
@@ -70,7 +70,7 @@
 				 }
 				 
 				 function changeAnnotations(){
-					var annotationSelect = document.getElementById('annotations');
+					var annotationSelect = document.getElementById('annotationsSelect');
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
 				 }
                   

@@ -37,9 +37,9 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.setAttribute("height", "100%");
     this.svgElement.setAttribute("style", "display:block;");
     // disable right click context menu (we may wish to put right click to our own purposes)
-    this.svgElement.oncontextmenu = function() {
-        return false;
-    };
+    //~ this.svgElement.oncontextmenu = function() {
+        //~ return false;
+    //~ };
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {
@@ -262,27 +262,28 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 		var self = this;
 		for (var m = 0; m < molCount; m++) {
 			var mol = mols[m];
-			if (annotationType.toUpperCase() === "MI FEATURES") {
-				mol.setPositionalFeatures(mol.miFeatures);
-			}
-			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
-				if (mol.id.indexOf('uniprotkb_') === 0) {
-					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
-						var m = self.molecules.get(id);
-						m.setPositionalFeatures(fts);
-					});
+			if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+				if (annotationType.toUpperCase() === "MI FEATURES") {
+					mol.setPositionalFeatures(mol.miFeatures);
 				}
-			}  
-			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
-				if (mol.id.indexOf('uniprotkb_') === 0) {
-					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-						var m = self.molecules.get(id);
-						m.setPositionalFeatures(fts);
-					});
+				else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+					if (mol.id.indexOf('uniprotkb_') === 0) {
+						xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+							var m = self.molecules.get(id);
+							m.setPositionalFeatures(fts);
+						});
+					}
+				}  
+				else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
+						xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+							var m = self.molecules.get(id);
+							m.setPositionalFeatures(fts);
+						});
+			
 				}
-			}
-			else {
-				mol.setPositionalFeatures([])
+				else {
+					mol.setPositionalFeatures([])
+				}
 			}
 		}
 		return true;
@@ -322,7 +323,15 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 		}
 	}
 	this.sequenceInitComplete = true;
-	this.setAnnotations('MI FEATURES');
+	//if webpage conatins element called 'annotationsSelect',
+	// use it to know inital set of annotations to show, default is mi features from pSI-MI
+	var annotationsSelect = document.getElementById('annotationsSelect');
+	if (annotationsSelect){
+		xlv.setAnnotations(annotationsSelect.options[annotationsSelect.selectedIndex].value);
+	}
+	else {
+		this.setAnnotations('MI FEATURES');
+	}
 }
 
 xiNET.Controller.prototype.resetZoom = function() {

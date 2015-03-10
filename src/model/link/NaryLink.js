@@ -40,7 +40,12 @@ function NaryLink(id, xlvController) {
 
 NaryLink.prototype.initSVG = function() {
     this.path = document.createElementNS(Config.svgns, "path");
-    this.path.setAttribute('fill', NaryLink.naryColours(this.id));
+    if (this.controller.expand === false){
+		this.path.setAttribute('fill', NaryLink.naryColours(this.id));
+	}
+	else {
+		this.path.setAttribute('fill', '#cccccc');
+	}
     this.path.setAttribute('fill-opacity', 0.3);
 
     //set the events for it

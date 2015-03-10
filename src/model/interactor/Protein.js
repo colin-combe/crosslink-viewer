@@ -37,9 +37,7 @@ function Protein(id, xinetController, json, name) {
     this.stickZoom = 1;
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isSelected = false;
-    //annotation scheme
-    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
-	//rotators
+    //rotators
 	this.lowerRotator = new Rotator(this, 0, this.controller);
 	this.upperRotator = new Rotator(this, 1, this.controller);
      

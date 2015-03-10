@@ -194,10 +194,8 @@ Interactor.prototype.setAllLinkCoordinates = function() {
 
 //todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
-    this.annotations = [];
-    
+    this.annotations = [];   
     if (this.circDomains) this.controller.emptyElement(this.circDomains);
-    
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
@@ -210,37 +208,24 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
             var annotPieSlice = document.createElementNS(Config.svgns, "path");
-            var annotColouredRect = document.createElementNS(Config.svgns, "path");
-            
-            this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-           // alert(this.form);
-            if (this.form === 0) {
+            this.annotations.push({anno:anno, pieSlice:annotPieSlice});//, rect:annotColouredRect});
+             if (this.form === 0) {
                 annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
             } else {
                 annotPieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                annotColouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
             }
             annotPieSlice.setAttribute("stroke", "none");
-            annotColouredRect.setAttribute("stroke", "none");
-            
             var c;
-            //temp
             if (anno.colour == null) { // check == here
 				c = Interactor.domainColours(anno.name);
             }
             else {
                 c = anno.colour;
             }
-            //console.log(JSON.stringify(c));
-            annotPieSlice.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            annotPieSlice.setAttribute("fill", c);
             annotPieSlice.setAttribute("fill-opacity", "1");
-            annotColouredRect.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "1");
-            
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
-            //~ annotMouseEventRect.name = text;
             var xlv = this.controller;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
@@ -250,19 +235,9 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-            annotColouredRect.onmouseover = function(evt) {
-                //    for magnifier experiment
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-                xlv.setTooltip(el.name, el.getAttribute('fill'));
-                self.showHighlight(true);
-            };
              if (this.circDomains) { //hack
 				 this.circDomains.appendChild(annotPieSlice);
 			 }
-            if (this.rectDomains) {
-                this.rectDomains.appendChild(annotColouredRect);
-            }
         }
     }
 };
@@ -275,42 +250,6 @@ Interactor.trig = function(radius, angleDegrees) {
             x: (radius * Math.cos(radians)),
             y: (radius * Math.sin(radians))
         };
-};
-Interactor.stepsInArc = 5;
-
-Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
-    var endAngle = ((annotation.end - 1) / this.size) * 360;
-    var radius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(radius, startAngle - 90);
-    var arcEnd = Interactor.trig(radius, endAngle - 90);
-    var largeArch = 0;
-    if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
-        largeArch = 1;
-    }
-    //~ console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-        //~ + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
-    return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-        + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z"; 
-};
-
-Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
-    //approximate pie slice
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
-    var endAngle = ((annotation.end) / this.size) * 360;
-    var pieRadius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(pieRadius, startAngle - 90);
-    var arcEnd = Interactor.trig(pieRadius, endAngle - 90);
-    var approximatePiePath = "M 0,0";
-    var stepsInArc = 5;
-    for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
-        var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-        var siaCoord = Interactor.trig(pieRadius, angle - 90);
-        approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
-    }
-    approximatePiePath += " L " + 0 + "," + 0;
-    approximatePiePath += "  Z";
-    return approximatePiePath;
 };
 
 Interactor.prototype.showData = function(evt) {

@@ -32,6 +32,7 @@ var readMIJSON = function(miJson, expand) {
     miJson = (typeof miJson === 'object') ? miJson : JSON.parse(miJson);
     //default is to expand
 	if (typeof expand === 'undefined'){expand = true;}
+	this.expand = expand;//naryLink checks this when deciding colour
 	var data = miJson.data;
     var dataElementCount = data.length;
     var self = this;
