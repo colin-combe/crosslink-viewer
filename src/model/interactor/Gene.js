@@ -28,7 +28,7 @@ function Gene(id, xlvController, json, name) {
     this.name = name;
     // layout info
     this.x = 40;
-    this.y = 35;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -38,40 +38,27 @@ function Gene(id, xlvController, json, name) {
     
     this.size = 10;//hack, layout is using this
        
-    /*
-     * Lower group
-     * svg group for elements that appear underneath links
-     */
-    this.lowerGroup = document.createElementNS(Config.svgns, "g");
-    this.lowerGroup.setAttribute("class", "protein lowerGroup");
- 	//for polygon
- 	var points = "0, -10  8.66,5 -8.66,5";
- 	//make highlight
-    this.highlight = document.createElementNS(Config.svgns, "polygon");
-    this.highlight.setAttribute("points", points);
-    this.highlight.setAttribute("stroke", Config.highlightColour);
-	this.highlight.setAttribute("stroke-width", "5");   
-    this.highlight.setAttribute("fill", "none");   
-    //this.highlight.setAttribute("fill-opacity", 1);   
-    //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0);
-	this.lowerGroup.appendChild(this.highlight);   
-    
-
-	/*
+     /*
      * Upper group
      * svg group for elements that appear above links
-     */
+	 */
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
-    
-    //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-    this.intraLinks = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
-    
+      	
+ 	//make highlight
+    this.highlight = document.createElementNS(Config.svgns, "rect");
+    this.highlight.setAttribute("stroke", Config.highlightColour);
+	this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("fill", "none");   
+    this.upperGroup.appendChild(this.highlight);   
+   	
+   	//make background
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.background = document.createElementNS(Config.svgns, "rect");
+    this.background.setAttribute("fill", "#FFFFFF");
+    this.upperGroup.appendChild(this.background);     	
+   
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
@@ -81,24 +68,49 @@ function Gene(id, xlvController, json, name) {
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-    
-    this.labelText = this.name;
-    this.labelTextNode = document.createTextNode(this.labelText);
+    //choose label text
+    if (this.name !== null & this.name !== "") {
+        this.labelText = this.name;
+    }
+    else {
+		this.labelText  = this.id;
+	}
+    if (this.labelText.length > 25) {
+        this.labelText = this.labelText.substr(0, 16) + "...";
+    }
+	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (15) + " " + Interactor.labelY + ")");
-    this.upperGroup.appendChild(this.labelSVG);
-   	 
-	//make blob
-	this.outline = document.createElementNS(Config.svgns, "polygon");
-	this.outline.setAttribute("points", points);
-   
+		"translate( -" + (21) + " " + Interactor.labelY + ") rotate(0) scale(1, 1)");
+    this.upperGroup.appendChild(this.labelSVG);   	
+   	//ticks (and animo acid letters)
+    this.ticks = document.createElementNS(Config.svgns, "g");
+    //domains as pie slices - shown on top of everything
+	this.circDomains = document.createElementNS(Config.svgns, "g");
+    this.circDomains.setAttribute("opacity", 1);
+	this.upperGroup.appendChild(this.circDomains);
+	
+	//make outline
+    this.outline = document.createElementNS(Config.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
-    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "pink");
-    //append outline
+    this.outline.setAttribute("fill", "none");
     this.upperGroup.appendChild(this.outline);
+ 
+	d3.select(this.background).transition()
+		.attr("x", -16).attr("y", -8)
+		.attr("width", 32).attr("height", 16)
+		.attr("rx", 6).attr("ry", 6);
+	d3.select(this.outline).transition()
+		.attr("x", -16).attr("y", -8)
+		.attr("width", 32).attr("height", 16)
+		.attr("rx", 6).attr("ry", 6);
+	d3.select(this.highlight).transition()
+		.attr("x", -16).attr("y", -8)
+		.attr("width", 32).attr("height", 16)
+		.attr("rx", 6).attr("ry", 6);	
+ 
+    this.scaleLabels = new Array();
 
     // events
     var self = this;
@@ -111,13 +123,12 @@ function Gene(id, xlvController, json, name) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-    };
-     
+    };     
     this.upperGroup.ontouchstart = function(evt) {
-		self.controller.message("protein touch start");
 		self.touchStart(evt);
     };
     this.isSelected = false;
+	this.showHighlight(false);
 };
 
 Gene.prototype.setForm = function(form, svgP) {

@@ -38,16 +38,10 @@ function RNA(id, xlvController, json, name) {
     
     this.size = 10;//hack, layout is using this
        
-    /*
-     * Lower group
-     * svg group for elements that appear underneath links
-     */
-    //~ this.lowerGroup = document.createElementNS(Config.svgns, "g");
-    //~ this.lowerGroup.setAttribute("class", "protein lowerGroup");
- 	/*
+     /*
      * Upper group
      * svg group for elements that appear above links
-     */
+	 */
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
@@ -64,14 +58,12 @@ function RNA(id, xlvController, json, name) {
     //attributes that may change
     d3.select(this.highlight).attr("stroke-opacity", 0);
 	this.upperGroup.appendChild(this.highlight);   
-    
-
 
     //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-    this.intraLinks = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
+//    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
+//    this.intraLinks = document.createElementNS(Config.svgns, "g");
+//    this.upperGroup.appendChild(this.intraLinksHighlights);
+//	this.upperGroup.appendChild(this.intraLinks);    
     
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");

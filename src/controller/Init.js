@@ -14,6 +14,7 @@ var xiNET = {}; //crosslinkviewer's javascript namespace
 var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
 var xiNET_Storage = require('./xiNET_Storage');
 var Interactor = require('../model/interactor/Interactor');
+var Polymer = require('../model/interactor/Polymer');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
 var Link = require('../model/link/Link');
@@ -22,7 +23,6 @@ var Config = require('./Config');
 var MouseEvents = require('./MouseEvents');
 var ToolTips = require('./ToolTips');
 var TouchEvents = require('./TouchEvents');
-var Protein = require('../model/interactor/Protein');
 
 xiNET.Controller = function(targetDiv) {
 	// targetDiv could be div itself or id of div - lets deal with that
@@ -305,16 +305,16 @@ xiNET.Controller.prototype.initLayout = function() {
 xiNET.Controller.prototype.initPolymers = function() {//currently only does Proteins
 	var mols = this.molecules.values();
 	var molCount = mols.length;
-	Protein.MAXSIZE = 0;
+	Polymer.MAXSIZE = 0;
 	for (var m = 0; m < molCount; m++){
 		var molSize = mols[m].size;
-		if (molSize > Protein.MAXSIZE){
-			Protein.MAXSIZE = molSize;
+		if (molSize > Polymer.MAXSIZE){
+			Polymer.MAXSIZE = molSize;
 		}
 	}
-	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+	//this.maxBlobRadius = Math.sqrt(Polymer.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
-	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Interactor.LABELMAXLENGTH) / Protein.MAXSIZE;
+	Polymer.UNITS_PER_RESIDUE = (((width / 2)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
 	for (var i = 0; i < molCount; i++){
 		var mol = mols[i];
 		if (mol.json.type.name == "protein") {

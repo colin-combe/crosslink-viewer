@@ -27,8 +27,8 @@ function DNA(id, xlvController, json, name) {
 
     this.name = name;
     // layout info
-    this.x = 30;
-    this.y = 30;
+    this.x = 40;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -38,14 +38,16 @@ function DNA(id, xlvController, json, name) {
     
     this.size = 10;//hack, layout is using this
        
-    /*
-     * Lower group
-     * svg group for elements that appear underneath links
-     */
-    this.lowerGroup = document.createElementNS(Config.svgns, "g");
-    this.lowerGroup.setAttribute("class", "protein lowerGroup");
- 	//for polygon
- 	var points = "0, -10  8.66,5 -8.66,5";
+     /*
+     * Upper group
+     * svg group for elements that appear above links
+	 */
+     
+    this.upperGroup = document.createElementNS(Config.svgns, "g");
+    this.upperGroup.setAttribute("class", "protein upperGroup");
+    
+    //for polygon
+ 	var points = "0, -5  10, -10 0, 10 -10, -10";
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
@@ -55,22 +57,13 @@ function DNA(id, xlvController, json, name) {
     //this.highlight.setAttribute("fill-opacity", 1);   
     //attributes that may change
     d3.select(this.highlight).attr("stroke-opacity", 0);
-	this.lowerGroup.appendChild(this.highlight);   
-    
+	this.upperGroup.appendChild(this.highlight);   
 
-	/*
-     * Upper group
-     * svg group for elements that appear above links
-     */
-     
-    this.upperGroup = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.setAttribute("class", "protein upperGroup");
-    
     //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-    this.intraLinks = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
+//    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
+//    this.intraLinks = document.createElementNS(Config.svgns, "g");
+//    this.upperGroup.appendChild(this.intraLinksHighlights);
+//	this.upperGroup.appendChild(this.intraLinks);    
     
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
@@ -96,7 +89,7 @@ function DNA(id, xlvController, json, name) {
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "green");
+			.attr("fill", "#ffffff");
     //append outline
     this.upperGroup.appendChild(this.outline);
 
