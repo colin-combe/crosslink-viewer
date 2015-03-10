@@ -80,10 +80,9 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "1", 
-                    "interactorRef": "uniprotkb_Q13309", 
-                    "otherFeatures": [
+                    "features": [
                         {
+                            "category": "otherFeatures", 
                             "id": "2", 
                             "linkedFeatures": [
                                 "3"
@@ -102,6 +101,8 @@
                             }
                         }
                     ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q13309", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -113,11 +114,10 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "4", 
-                    "interactorRef": "uniprotkb_P61024", 
-                    "otherFeatures": [
+                    "features": [
                         {
                             "InterPro": "IPR000789", 
+                            "category": "otherFeatures", 
                             "id": "3", 
                             "linkedFeatures": [
                                 "2"
@@ -136,6 +136,8 @@
                             }
                         }
                     ], 
+                    "id": "4", 
+                    "interactorRef": "uniprotkb_P61024", 
                     "stoichiometry": "1"
                 }
             ]
@@ -211,10 +213,9 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "5", 
-                    "interactorRef": "rcsb pdb_2ASS", 
-                    "otherFeatures": [
+                    "features": [
                         {
+                            "category": "otherFeatures", 
                             "id": "6", 
                             "linkedFeatures": [
                                 "7"
@@ -234,6 +235,8 @@
                             }
                         }
                     ], 
+                    "id": "5", 
+                    "interactorRef": "rcsb pdb_2ASS", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -245,10 +248,9 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "8", 
-                    "interactorRef": "uniprotkb_P46527", 
-                    "otherFeatures": [
+                    "features": [
                         {
+                            "category": "otherFeatures", 
                             "id": "7", 
                             "linkedFeatures": [
                                 "6"
@@ -265,10 +267,9 @@
                                 "id": "MI:0116", 
                                 "name": "sufficient binding region"
                             }
-                        }
-                    ], 
-                    "ptms": [
+                        }, 
                         {
+                            "category": "ptms", 
                             "id": "9", 
                             "name": "required-phosphothr187", 
                             "role": {
@@ -288,6 +289,8 @@
                             }
                         }
                     ], 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_P46527", 
                     "stoichiometry": "1"
                 }
             ]

@@ -23,23 +23,27 @@
 		<div id='controls'>
 			
 			<select id="dataSets" onChange="loadData();">
-				<option>./data/evidence/EBI-5282463.json</option>
-				<option>./data/evidence/EBI-6050724.json</option> 
 				<option>./data/evidence/22843697.json</option>
 				<option>./data/evidence/24315095.json</option> 
 				<option>./data/evidence/10679202.json</option>  
 				<option>./data/evidence/PolII-TFIIF.json</option>  
 				<option>./data/evidence/Herzog.json</option>  
-<!--
 				<option>./data/evidence/allostery.json</option>  
 				<option>./data/evidence/Cks1-Skp2.json</option>  
--->
 			</select>
-			
-			<input onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoichiometry expansion
+		
+			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
 			<button onclick="xlv.autoLayout();">Auto layout</button>
 			<button onclick="xlv.resetZoom();">Reset zoom</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
+			
+			<select id="annotationsSelect" onChange="changeAnnotations();">
+				<option>MI features</option>
+				<option>UniprotKB</option> 
+				<option>SuperFamily</option>  
+				<option>None</option>  
+			</select>			
+
 		</div>
         <div id="networkCaption">
 			<h2 id="jsonHeading"></h2> 
@@ -49,21 +53,26 @@
 
         <script type="text/javascript">
                 //<![CDATA[
-                
-                function loadData(){
+                                
+                var targetDiv = document.getElementById('networkContainer');
+
+                xlv = new xiNET(targetDiv);
+                loadData();
+				function loadData(){
 					xlv.clear();
 					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var dataSetsSelect = document.getElementById('dataSets');
-					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].innerHTML;
+					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
 				    d3.json(path, function(data) {
 						xlv.readMIJSON(data, matrixExpansion);
 					});            
-				}
-                
-                var targetDiv = document.getElementById('networkContainer');
-                xlv = new xiNET(targetDiv);
-                loadData();
-                
+				 }
+				 
+				 function changeAnnotations(){
+					var annotationSelect = document.getElementById('annotationsSelect');
+					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
+				 }
+                  
                 //]]>
         </script>
 
