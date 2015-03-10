@@ -182,8 +182,6 @@ var readMIJSON = function(miJson, expand) {
 		self.initPolymers();
 	}
 	
-
-	
 	function readStoichExpanded(){			
 		//get interactors
 		var interactors = d3.map();
@@ -244,6 +242,12 @@ var readMIJSON = function(miJson, expand) {
 					var participant = self.molecules.get(participantId);
 					if (typeof participant === 'undefined'){
 						var interactor = interactors.get(intRef);
+						if (typeof interactor === 'undefined') {
+							//must be a previously unencountered complex
+							interactor = new Complex(intRef, self);
+							self.interactors.set(intRef, interactor);
+							self.complexes.set(intRef, interactor);
+						}
 						if (interactor.type.name === 'molecule set') {
 							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
 						}
@@ -264,6 +268,20 @@ var readMIJSON = function(miJson, expand) {
 								}
 							}
 						}
+						else if (interactor.type.name === 'peptide') {
+							participant = new Protein(participantId, self, interactor, interactor.label);
+							//~ if (typeof interactor.sequence !== 'undefined') {
+								//~ participant.setSequence(interactor.sequence);
+							//~ }
+							//~ else {
+								//~ //should look it up using accession number
+								//~ if (participantId.indexOf('uniprotkb') === 0){
+									//~ needsSequence.add(participantId);
+								//~ } else {
+									//~ participant.setSequence("SEQUENCEMISSING");
+								//~ }
+							//~ }
+						}
 						else if (interactor.type.name === 'gene') {
 							//its a small mol
 							participant = new Gene(participantId, self, interactor, interactor.label);
@@ -277,8 +295,9 @@ var readMIJSON = function(miJson, expand) {
 							participant = new DNA(participantId, self, interactor, interactor.label);
 							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
 						} else {
-							participant = new Complex(participantId, self, interactor);
-							self.complexes.set(participantId, participant);
+							alert("Unrecognised type:" + interactor.type.name);
+							//~ participant = new Complex(participantId, self, interactor);
+							//~ self.complexes.set(participantId, participant);
 						}
 						self.molecules.set(participantId, participant);
 					}

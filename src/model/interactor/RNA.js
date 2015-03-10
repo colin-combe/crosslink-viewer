@@ -107,7 +107,6 @@ function RNA(id, xlvController, json, name) {
     };
      
     this.upperGroup.ontouchstart = function(evt) {
-		self.controller.message("protein touch start");
 		self.touchStart(evt);
     };
     this.isSelected = false;

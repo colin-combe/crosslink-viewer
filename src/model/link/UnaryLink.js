@@ -97,6 +97,17 @@ UnaryLink.prototype.initSVG = function() {
     };
     
     this.isSelected = false;
+}
+
+UnaryLink.prototype.selfLink = function() {
+	return (this.fromProtein === this.toProtein);
+}
+
+UnaryLink.prototype.initSelfLinkSVG = function() {
+	var path = this.interactors[0].getAggregateSelfLinkPath();
+	this.line.setAttribute('d', path);
+	this.highlightLine.setAttribute('d', path);
+	this.thickLine.setAttribute('d', path);
 };
 
 UnaryLink.prototype.showHighlight = function(show) {
