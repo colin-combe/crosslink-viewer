@@ -116,8 +116,8 @@ var autoLayout = function() {
                 var nx = node.x;
                 var ny = node.y;
                 mol.setPosition(nx, ny);
-                mol.setAllLinkCoordinates();
             }
+            self.controller.setAllLinkCoordinates();
         });
         this.force.start();
     }

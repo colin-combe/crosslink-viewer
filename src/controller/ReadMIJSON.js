@@ -37,8 +37,8 @@ var readMIJSON = function(miJson, expand) {
     var dataElementCount = data.length;
     var self = this;
 	self.features = d3.map();
-	self.complexes = d3.map();  
 	
+	var complexes = d3.map();  	
 	var needsSequence = d3.set();//things that need seq looked up
 	expand? readStoichExpanded() : readStoichUnexpanded();	
 	
