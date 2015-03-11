@@ -95,21 +95,19 @@ NaryLink.prototype.hide = function() {
 	}
 };
 
-NaryLink.prototype.setLinkCoordinates = function(interactor) {
+NaryLink.prototype.setLinkCoordinates = function() {
     // Uses d3.geom.hull to calculate a bounding path around an array of vertices 
     var calculateHullPath = function(values) {
 		var calced = d3.geom.hull(values);
 		self.hull = calced;//hack?
 		return "M" + calced.join("L") + "Z";
     };
-	var self = this;// TODO: - tidy hack above
-    //if (this.shown) {//don't waste time changing DOM if link not visible
-		var mapped = this.orbitNodes(this.getMappedCoordinates());
-        var hullValues = calculateHullPath(mapped);
-        if (hullValues) {
-            this.path.setAttribute('d', hullValues);
-        }
-    //}
+	var self = this;// TODO: - tidy hack above?
+	var mapped = this.orbitNodes(this.getMappedCoordinates());
+	var hullValues = calculateHullPath(mapped);
+	if (hullValues) {
+		this.path.setAttribute('d', hullValues);
+	}
     if (this.complex){
 		this.complex.setAllLinkCoordinates();
 	}
@@ -121,7 +119,10 @@ NaryLink.prototype.getMappedCoordinates = function() {
 	var ic = interactors.length;
 	for (var i = 0; i < ic; i ++) {
 		var interactor = interactors[i];
-		if (interactor.form === 1){
+		if (interactor.type == 'complex') {
+			mapped = mapped.concat(this.orbitNodes(interactor.naryLink.getMappedCoordinates()));
+		}
+		else if (interactor.form === 1){
 			var start = interactor.getResidueCoordinates(0);
 			var end = interactor.getResidueCoordinates(interactor.size);
 			if (!isNaN(start[0]) && !isNaN(start[1]) && 

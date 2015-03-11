@@ -102,8 +102,8 @@ var autoLayout = function() {
                 .linkDistance(70) //target distance between linked nodes
                 .linkStrength(0.8) //the strength (rigidity) of links
                 .charge(-18 / k)
-                .friction(0.95) // 1 = frictionless
-                .theta(0.95) //Barnes–Hut approximation criterion
+                .friction(0.96) // 1 = frictionless
+                .theta(0.99) //Barnes–Hut approximation criterion
                 .size([width, height]);
                 //also .chargeDistance() and .alpha() // not used
                 
@@ -117,7 +117,7 @@ var autoLayout = function() {
                 var ny = node.y;
                 mol.setPosition(nx, ny);
             }
-            self.controller.setAllLinkCoordinates();
+            self.setAllLinkCoordinates();
         });
         this.force.start();
     }

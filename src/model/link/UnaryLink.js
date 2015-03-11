@@ -163,15 +163,16 @@ UnaryLink.prototype.hide = function() {
 	}
 };
 
-UnaryLink.prototype.setLinkCoordinates = function(interactor) {
-			if (typeof this.thickLine !== 'undefined') {
-				this.thickLine.setAttribute("transform", "translate(" + interactor.x
-						+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
-			}
-			this.line.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
-			this.highlightLine.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
+UnaryLink.prototype.setLinkCoordinates = function() {
+	var interactor = this.interactors[0];
+	if (typeof this.thickLine !== 'undefined') {
+		this.thickLine.setAttribute("transform", "translate(" + interactor.x
+				+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
+	}
+	this.line.setAttribute("transform", "translate(" + interactor.x
+			+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
+	this.highlightLine.setAttribute("transform", "translate(" + interactor.x
+			+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 };
 
 module.exports = UnaryLink;

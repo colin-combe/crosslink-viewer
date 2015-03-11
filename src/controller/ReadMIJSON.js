@@ -102,14 +102,14 @@ var readMIJSON = function(miJson, expand) {
 	}
 	
 	//init complexes
-	var complexes = self.complexes.values()
+	var complexes = complexes.values()
 	for (var c = 0; c < complexes.length; c++) {
-		var interactionId = complexes[c].id;
+		var interactionId = complexes[c].id.substring(0, complexes[c].id.indexOf('('));
 		var naryLink;
 		for (var l = 0; l < dataElementCount; l++) {
 			var interaction = data[l];
 			if (interaction.id == interactionId) {
-				var nLinkId = getIdFromInteraction(interaction);
+				var nLinkId = getNaryLinkIdFromInteraction(interaction);
 				naryLink = self.allNaryLinks.get(nLinkId);
 			}
 		}						
@@ -183,7 +183,7 @@ var readMIJSON = function(miJson, expand) {
 	}
 	
 	function readStoichExpanded(){			
-		//get interactors
+		//get interactors 
 		var interactors = d3.map();
 		for (var n = 0; n < dataElementCount; n++) {
 			if (data[n].object === 'interactor') {
@@ -244,17 +244,16 @@ var readMIJSON = function(miJson, expand) {
 						var interactor = interactors.get(intRef);
 						if (typeof interactor === 'undefined') {
 							//must be a previously unencountered complex
-							interactor = new Complex(intRef, self);
-							self.interactors.set(intRef, interactor);
-							self.complexes.set(intRef, interactor);
+							participant = new Complex(participantId, self);
+							complexes.set(participantId, participant);
 						}
-						if (interactor.type.name === 'molecule set') {
+						else if (interactor.type.name === 'molecule set') {
 							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
 						}
 						else if (interactor.type.name === 'small molecule') {
 							participant = new SmallMol(participantId, self, interactor, interactor.label);
 						}
-						else if (interactor.type.name === 'protein') {
+						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
 							participant = new Protein(participantId, self, interactor, interactor.label);
 							if (typeof interactor.sequence !== 'undefined') {
 								participant.setSequence(interactor.sequence);
@@ -270,17 +269,6 @@ var readMIJSON = function(miJson, expand) {
 						}
 						else if (interactor.type.name === 'peptide') {
 							participant = new Protein(participantId, self, interactor, interactor.label);
-							//~ if (typeof interactor.sequence !== 'undefined') {
-								//~ participant.setSequence(interactor.sequence);
-							//~ }
-							//~ else {
-								//~ //should look it up using accession number
-								//~ if (participantId.indexOf('uniprotkb') === 0){
-									//~ needsSequence.add(participantId);
-								//~ } else {
-									//~ participant.setSequence("SEQUENCEMISSING");
-								//~ }
-							//~ }
 						}
 						else if (interactor.type.name === 'gene') {
 							//its a small mol
@@ -296,8 +284,6 @@ var readMIJSON = function(miJson, expand) {
 							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
 						} else {
 							alert("Unrecognised type:" + interactor.type.name);
-							//~ participant = new Complex(participantId, self, interactor);
-							//~ self.complexes.set(participantId, participant);
 						}
 						self.molecules.set(participantId, participant);
 					}

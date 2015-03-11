@@ -162,6 +162,7 @@ xiNET.Controller = function(targetDiv) {
 
 // Copy functions from Refresh.js to our prototype:
 xiNET.Controller.prototype.checkLinks = Refresh.checkLinks;
+xiNET.Controller.prototype.setAllLinkCoordinates = Refresh.setAllLinkCoordinates;
 xiNET.Controller.prototype.scale = Refresh.scale;
 
 // Copy functions from ReadMIJSON.js to our prototype:
@@ -297,7 +298,9 @@ xiNET.Controller.prototype.initLayout = function() {
 	var molCount = mols.length;
 	for (var m = 0; m < molCount; m++) {
 		var mol = mols[m];
-		this.proteinUpper.appendChild(mol.upperGroup);
+		if (mol.upperGroup) {
+			this.proteinUpper.appendChild(mol.upperGroup);
+		}
 	}
 	this.autoLayout();
 }
@@ -318,7 +321,7 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 	Polymer.UNITS_PER_RESIDUE = (((width / 2)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
 	for (var i = 0; i < molCount; i++){
 		var mol = mols[i];
-		if (mol.json.type.name == "protein") {
+		if (mol.json && mol.json.type.name == "protein") {
 			mol.init();
 		}
 	}

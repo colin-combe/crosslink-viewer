@@ -36,7 +36,7 @@ var setAllLinkCoordinates = function() {
 	setAll(this.allNaryLinks);
 	setAll(this.allBinaryLinks);
 	setAll(this.allUnaryLinks);
-    if (this.seqInitComplete) {
+    if (this.sequenceInitComplete) {
 		setAll(this.allSequenceLinks);
 	}		
 	this.svgElement.unsuspendRedraw(suspendID);
@@ -91,4 +91,4 @@ var scale = function() {// TODO: this is currently broken
     //~ this.svgElement.unsuspendRedraw(suspendID);
 };
 
-module.exports = {checkLinks: checkLinks, scale: scale};
+module.exports = {checkLinks: checkLinks, setAllLinkCoordinates: setAllLinkCoordinates, scale: scale};

@@ -208,67 +208,58 @@ BinaryLink.prototype.hide = function() {
     }
 };
 
-BinaryLink.prototype.setLinkCoordinates = function(interactor) {
+BinaryLink.prototype.setLinkCoordinates = function() {
     if (this.shown) {//don't waste time changing DOM if link not visible
-		var pos = interactor.getPosition();
-        if (interactor.type !== 'complex'){
-			if (this.interactors[0] === interactor) {
-				this.line.setAttribute("x1", pos[0]);
-				this.line.setAttribute("y1", pos[1]);
-				this.highlightLine.setAttribute("x1", pos[0]);
-				this.highlightLine.setAttribute("y1", pos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x1", pos[0]);
-					this.thickLine.setAttribute("y1", pos[1]);
-				}
-			}
-			else {
-				this.line.setAttribute("x2", pos[0]);
-				this.line.setAttribute("y2", pos[1]);
-				this.highlightLine.setAttribute("x2", pos[0]);
-				this.highlightLine.setAttribute("y2", pos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x2", pos[0]);
-					this.thickLine.setAttribute("y2", pos[1]);
-				}
-			}
-		}else {//interactor is a complex
-			var otherEndPos = this.getOtherEnd(interactor).getPosition();
-			var naryPath = interactor.naryLink.hull;
+		var pos1 = this.interactors[0].getPosition();
+        var pos2 = this.interactors[1].getPosition();
+        
+        if (this.interactors[0].type === 'complex'){        
+			var naryPath = this.interactors[0].naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
 				var p = naryPath[pi];
 				iPath.push(new Point2D(p[0],p[1]));
 			}
-			var a1 = new Point2D(pos[0], pos[1]);
-			var a2 = new Point2D(otherEndPos[0], otherEndPos[1]);
+			var a1 = new Point2D(pos1[0], pos1[1]);
+			var a2 = new Point2D(pos2[0], pos2[1]);
 			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
 			var newPos;
 			if (intersect.points[0]){
-				newPos = [intersect.points[0].x,intersect.points[0].y]; 
-			} else {
-				newPos = pos;
-			} 
-			if (this.interactors[0] === interactor) {
-				this.line.setAttribute("x1", newPos[0]);
-				this.line.setAttribute("y1", newPos[1]);
-				this.highlightLine.setAttribute("x1", newPos[0]);
-				this.highlightLine.setAttribute("y1", newPos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x1", newPos[0]);
-					this.thickLine.setAttribute("y1", newPos[1]);
-				}
+				pos1 = [intersect.points[0].x,intersect.points[0].y]; 
 			}
-			else {
-				this.line.setAttribute("x2", newPos[0]);
-				this.line.setAttribute("y2", newPos[1]);
-				this.highlightLine.setAttribute("x2", newPos[0]);
-				this.highlightLine.setAttribute("y2", newPos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x2", newPos[0]);
-					this.thickLine.setAttribute("y2", newPos[1]);
-				}
+		}
+        
+        if (this.interactors[1].type === 'complex'){        
+			var naryPath = this.interactors[0].naryLink.hull;
+			var iPath = new Array();
+			for (var pi = 0; pi < naryPath.length; pi++) {
+				var p = naryPath[pi];
+				iPath.push(new Point2D(p[0],p[1]));
 			}
+			var a1 = new Point2D(pos1[0], pos1[1]);
+			var a2 = new Point2D(pos2[0], pos2[1]);
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var newPos;
+			if (intersect.points[0]){
+				pos2 = [intersect.points[0].x,intersect.points[0].y]; 
+			}
+		}
+        
+		this.line.setAttribute("x1", pos1[0]);
+		this.line.setAttribute("y1", pos1[1]);
+		this.highlightLine.setAttribute("x1", pos1[0]);
+		this.highlightLine.setAttribute("y1", pos1[1]);
+		if (this.thickLineShown) {
+			this.thickLine.setAttribute("x1", pos1[0]);
+			this.thickLine.setAttribute("y1", pos1[1]);
+		}
+		this.line.setAttribute("x2", pos2[0]);
+		this.line.setAttribute("y2", pos2[1]);
+		this.highlightLine.setAttribute("x2", pos2[0]);
+		this.highlightLine.setAttribute("y2", pos2[1]);
+		if (this.thickLineShown) {
+			this.thickLine.setAttribute("x2", pos2[0]);
+			this.thickLine.setAttribute("y2", pos2[1]);
 		}
 	}
 };

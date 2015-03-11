@@ -16,7 +16,7 @@ var Config = require('../../controller/Config');
 //josh - should these be moved to Config.js?
 Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set2[7]);
 
 function Interactor() {}
 
