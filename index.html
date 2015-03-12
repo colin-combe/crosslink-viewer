@@ -38,11 +38,11 @@
 			<button onclick="xlv.exportSVG();">Export SVG</button>
 			
 			<select id="annotationsSelect" onChange="changeAnnotations();">
-				<option>MI features</option>
+				<option selected='selected'>MI features</option>
 				<option>UniprotKB</option> 
 				<option>SuperFamily</option>  
 				<option>None</option>  
-				<option selected>Interactor</option>  
+				<option>Interactor</option>  
 			</select>			
 
 		</div>
@@ -112,7 +112,7 @@
 
                 xlv = new xiNET(targetDiv);
                 loadData();
-				function loadData(){
+                function loadData(){
 					xlv.clear();
 					var matrixExpansion = document.getElementById("chkexpansion").checked;
 					var dataSetsSelect = document.getElementById('dataSets');
