@@ -53,7 +53,7 @@ function BinaryLink(id, xlvController, fromI, toI) {
 	//~ tooltip += this.interactors[1].labelText + " ";
 	//~ tooltip += toResidues;
 	//~ return tooltip;
-}
+//~ }
 
 BinaryLink.prototype.initSVG = function() {
 	this.line = document.createElementNS(Config.svgns, "line");

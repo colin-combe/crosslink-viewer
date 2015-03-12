@@ -85,7 +85,7 @@ function Gene(id, xlvController, json, name) {
     this.upperGroup.appendChild(this.labelSVG);   	
    	//ticks (and animo acid letters)
     this.ticks = document.createElementNS(Config.svgns, "g");
-    //domains as pie slices - shown on top of everything
+    //annotation svg group
 	this.annotationsSvgGroup = document.createElementNS(Config.svgns, "g");
     this.annotationsSvgGroup.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.annotationsSvgGroup);
