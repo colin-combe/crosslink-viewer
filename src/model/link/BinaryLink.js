@@ -26,8 +26,33 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.sequenceLinks = d3.map();
     this.controller = xlvController;
     this.ambig = false;
-    //used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
+}
+
+//~ BinaryLink.prototype.getToolTip = function(){
+	//~ var tooltip = "", fromResidues = "", toResidues = "";
+	//~ var seqLinks = this.sequenceLinks.values();
+	//~ var seqLinkCount = seqLinks.length;
+	//~ for (var sl = 0; sl < seqLinkCount; sl++){
+		//~ if (sl > 0){
+			//~ fromResidues += ",";
+			//~ toResidues += ",";
+		//~ }
+		//~ var seqLink = seqLinks[sl];
+		//~ for (var i = 0; i < seqLink.fromSequenceData.length; i++){
+			//~ if (i > 0) tooltip += ",";
+			//~ fromResidues += seqLink.fromSequenceData[i].toString();
+		//~ }
+		//~ for (var j = 0; j < seqLink.toSequenceData.length; j++){
+			//~ if (j > 0) tooltip += ",";
+			//~ toResidues += seqLink.toSequenceData[j].toString();
+		//~ }
+	//~ }
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += fromResidues;
+	//~ tooltip += " TO ";
+	//~ tooltip += this.interactors[1].labelText + " ";
+	//~ tooltip += toResidues;
+	//~ return tooltip;
 }
 
 BinaryLink.prototype.initSVG = function() {
@@ -113,62 +138,9 @@ BinaryLink.prototype.showHighlight = function(show) {
 };
 
 BinaryLink.prototype.check = function() {
-	//~ if (!this.fromInteractor) {//TEMP HACK
-		//~ return false;
-	//~ }
-    if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
-        //~ this.ambig = true;
-        //~ var filteredEvids = this.getFilteredEvidences();
-        //~ var evidCount = filteredEvids.length;
-        //~ for (var i = 0; i < evidCount; i++) {
-            //~ var evid = filteredEvids[i];
-            //~ if (typeof evid.expansion === 'undefined') {
-                //~ this.ambig = false;
-            //~ }
-        //~ }
-        //~ if (evidCount > 0) {
-            //~ //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-            //~ //thickLine
-            //~ if (evidCount > 1) {
-                //~ this.thickLineShown = true
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
-            //~ }
-            //~ else {
-//~ //                this.thickLineShown = false;//hack
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
-            //~ }
-            //~ //ambig?
-            //~ this.dashedLine(this.ambig);
-
-            //sequence links will have been hidden previously
+	if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
             this.show();
             return true;
-
     }
     else {//at least one end was in stick form
         this.hide();

@@ -113,7 +113,4 @@ function DNA(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-DNA.prototype.setForm = function(form, svgP) {
-};
-
 module.exports = DNA;

@@ -120,7 +120,4 @@ function SmallMol(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-SmallMol.prototype.setForm = function(form, svgP) {
-};
-
 module.exports = SmallMol;

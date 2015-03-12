@@ -115,5 +115,4 @@ function Protein(id, xinetController, json, name) {
 	this.showHighlight(false);
 };
 
-
 module.exports = Protein;

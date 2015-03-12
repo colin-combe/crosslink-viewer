@@ -318,7 +318,7 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 	}
 	//this.maxBlobRadius = Math.sqrt(Polymer.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
-	Polymer.UNITS_PER_RESIDUE = (((width / 2)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
+	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
 	for (var i = 0; i < molCount; i++){
 		var mol = mols[i];
 		if (mol.json && mol.json.type.name == "protein") {

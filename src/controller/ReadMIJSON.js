@@ -62,7 +62,7 @@ var readMIJSON = function(miJson, expand) {
 					var fromSequenceData = feature.sequenceData;
 					if (feature.linkedFeatures) {
 						var linkedFeatureIDs = feature.linkedFeatures;
-						// break links to different nodes into seperate binary links 
+						// break feature links to different nodes into seperate binary links 
 						var toSequenceData_indexedByNodeId = d3.map();
 						var linkedFeatureCount = linkedFeatureIDs.length;
 						for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
@@ -85,15 +85,19 @@ var readMIJSON = function(miJson, expand) {
 						var countEndNodes = toSequenceData_indexedByNodeId.values().length;
 						for (var n = 0; n < countEndNodes; n++) {
 							toSequenceData = toSequenceData_indexedByNodeId.values()[n];
-							var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
-							var fromInteractor = sequenceLink.fromSequenceData[0].node;						
-							var toInteractor = sequenceLink.toSequenceData[0].node;						
+							var fromInteractor = getNode(fromSequenceData[0]);						
+							var toInteractor = getNode(toSequenceData[0]);
+							var link;						
 							if (fromInteractor === toInteractor){
-								getUnaryLink(fromInteractor, interaction);
+								link = getUnaryLink(fromInteractor, interaction);
 							}
 							else {
-								getBinaryLink(fromInteractor, toInteractor, interaction);
+								link = getBinaryLink(fromInteractor, toInteractor, interaction);
 							}
+							var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);							
+							fromInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							toInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							link.sequenceLinks.set(sequenceLink.id, sequenceLink);					
 						}
 					}			
 				}	
@@ -450,6 +454,13 @@ var readMIJSON = function(miJson, expand) {
 		return pIDs.values().sort().join('-');
 	};
 	
+	function getNode(seqDatum){
+		var id = seqDatum.interactorRef;
+		if (expand){
+			id = id + '(' + seqDatum.participantRef + ')';
+		}
+		return self.molecules.get(id); 
+	}	
 	
 	function getFeatureLink(fromSeqData, toSeqData, interaction){
 		function seqDataToString(seqData){
@@ -467,13 +478,7 @@ var readMIJSON = function(miJson, expand) {
 			//sort ids
 			return nodeIds.values().sort().join(';');
 		}
-		function getNode(seqDatum){
-			var id = seqDatum.interactorRef;
-			if (expand){
-				id = id + '(' + seqDatum.participantRef + ')';
-			}
-			return self.molecules.get(id); 
-		}
+
 		
 		var start =  seqDataToString(fromSequenceData);
 		var end =  seqDataToString(toSequenceData);
@@ -497,7 +502,7 @@ var readMIJSON = function(miJson, expand) {
 			for (i = 0; i < seqDatumCount; i++) {
 				toFeaturePositions.push(new SequenceDatum(getNode(toSeqData[i]), toSeqData[i].pos));
 			}
-			//~ if (endsSwapped === false) {
+			//~ if (endsSwapped === false) { 
 				sequenceLink = new SequenceLink(seqLinkId, fromFeaturePositions, toFeaturePositions, self, interaction);
 			//~ }else {
 				//~ sequenceLink = new SequenceLink(seqLinkId, toFeaturePositions, fromFeaturePositions, self, interaction);

@@ -46,7 +46,6 @@ Complex.prototype.getPosition = function(){
 	return [xSum / mc, ySum / mc];
 };
 
-Complex.prototype.setForm = function(form, svgP) {};
 Complex.prototype.setPosition = function(x, y) {};
 Complex.prototype.getResidueCoordinates = function(x, y) {return this.getPosition()};
 Complex.prototype.showHighlight = function() {};

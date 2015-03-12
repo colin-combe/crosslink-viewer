@@ -70,7 +70,7 @@ Interactor.prototype.touchStart = function(evt) {
 Interactor.prototype.mouseOver = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.controller.setTooltip(this.id);
+        //~ this.controller.setTooltip(this.id);
         return false;
 };
 
@@ -173,22 +173,21 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     var c = links.length;
     for (var l = 0; l < c; l++) {
 		//if interactor count > 2
-        links[l].setLinkCoordinates(this);
+        links[l].setLinkCoordinates();
     }    
     links = this.binaryLinks.values();
     c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        link.setLinkCoordinates(this);
-        link.setLinkCoordinates(link.getOtherEnd(this));
+        link.setLinkCoordinates();
     }
     if (this.selfLink) {
-		this.selfLink.setLinkCoordinates(this); 
+		this.selfLink.setLinkCoordinates(); 
 	}
 	links = this.sequenceLinks.values();
 	c = links.length;
 	for (var l = 0; l < c; l++) {
-		links[l].setLinkCoordinates(this);
+		links[l].setLinkCoordinates();
 	}    
 };
 
@@ -262,5 +261,7 @@ Interactor.prototype.showData = function(evt) {
 	} 
 }
 
+Interactor.prototype.setForm = function(form, svgP) {
+};
 
 module.exports = Interactor;

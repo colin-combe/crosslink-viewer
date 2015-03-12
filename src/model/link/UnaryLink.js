@@ -21,14 +21,37 @@ function UnaryLink(id, xlvController, interactor) {
     this.id = id;
     this.evidences = d3.map();
 	this.interactors = [interactor];
+    this.sequenceLinks = d3.map();
     this.controller = xlvController;
-	//used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
-    this.thickLineShown = false;
-    //layout stuff
-    this.hidden = false;
-    this.initSVG();
-}
+	this.initSVG();
+};
+
+//~ UnaryLink.prototype.getToolTip = function(){
+	//~ var tooltip = "", fromResidues = "", toResidues = "";
+	//~ var seqLinks = this.sequenceLinks.values();
+	//~ var seqLinkCount = seqLinks.length;
+	//~ for (var sl = 0; sl < seqLinkCount; sl++){
+		//~ if (sl > 0){
+			//~ fromResidues += ",";
+			//~ toResidues += ",";
+		//~ }
+		//~ var seqLink = seqLinks[sl];
+		//~ for (var i = 0; i < seqLink.fromSequenceData.length; i++){
+			//~ if (i > 0) tooltip += ",";
+			//~ fromResidues += seqLink.fromSequenceData[i].toString();
+		//~ }
+		//~ for (var j = 0; j < seqLink.toSequenceData.length; j++){
+			//~ if (j > 0) tooltip += ",";
+			//~ toResidues += seqLink.toSequenceData[j].toString();
+		//~ }
+	//~ }
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += fromResidues;
+	//~ tooltip += " TO ";
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += toResidues;
+	//~ return tooltip;
+//~ };
 
 UnaryLink.prototype.initSVG = function() {
 	var path = this.interactors[0].getAggregateSelfLinkPath();

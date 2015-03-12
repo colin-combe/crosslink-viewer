@@ -112,7 +112,4 @@ function RNA(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-RNA.prototype.setForm = function(form, svgP) {
-};
-
 module.exports = RNA;

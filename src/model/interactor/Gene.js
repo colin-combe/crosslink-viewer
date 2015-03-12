@@ -131,7 +131,4 @@ function Gene(id, xlvController, json, name) {
 	this.showHighlight(false);
 };
 
-Gene.prototype.setForm = function(form, svgP) {
-};
-
 module.exports = Gene;
