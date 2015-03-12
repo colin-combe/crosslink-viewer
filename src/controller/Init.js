@@ -137,8 +137,7 @@ xiNET.Controller = function(targetDiv) {
 
     this.tooltip_bg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
-
+    
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
@@ -147,7 +146,6 @@ xiNET.Controller = function(targetDiv) {
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 
@@ -157,9 +155,6 @@ xiNET.Controller = function(targetDiv) {
 
     this.clear();
 };
-
-//josh - what can we do about the following, I think its a bit confusing / hard to maintain
-// would one big file be better?
 
 // Link to prototype functions that exist in other files.
 // Eventually the files will accept this controller as an argument
@@ -341,6 +336,17 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 		this.setAnnotations('MI FEATURES');
 	}
 }
+
+xiNET.Controller.prototype.reset = function() {
+	this.resetZoom();
+    var interactors = this.molecules.values();
+    var proteinCount = interactors.length;
+    for (var p = 0; p < proteinCount; p++) {
+        var prot = interactors[p];
+        prot.setForm(0);
+    }
+    this.autoLayout();
+};
 
 xiNET.Controller.prototype.resetZoom = function() {
     this.container.setAttribute("transform", "scale(1)");
