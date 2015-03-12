@@ -104,7 +104,13 @@ var readMIJSON = function(miJson, expand) {
 	//init complexes
 	var complexes = complexes.values()
 	for (var c = 0; c < complexes.length; c++) {
-		var interactionId = complexes[c].id.substring(0, complexes[c].id.indexOf('('));
+		var interactionId;
+		if (expand) {
+			interactionId = complexes[c].id.substring(0, complexes[c].id.indexOf('('));
+		} 
+		else {
+			interactionId = complexes[c].id;
+		}
 		var naryLink;
 		for (var l = 0; l < dataElementCount; l++) {
 			var interaction = data[l];
@@ -158,7 +164,7 @@ var readMIJSON = function(miJson, expand) {
 						molecule.miFeatures = new Array();
 					}
 					molecule.miFeatures.push(annotation);
-					console.log(molecule.id);
+	//				console.log(molecule.id);
 				}
 			}
 		}
@@ -330,49 +336,51 @@ var readMIJSON = function(miJson, expand) {
 		for (var n = 0; n < dataElementCount; n++) {
 			if (data[n].object === 'interactor') {
 				var interactor = data[n];
-				var p;
-				if (interactor.type.name === 'molecule set') {//ignore interactor sets
-					p = new InteractorSet(interactor.id, self, interactor);
-				}
-				else if (interactor.type.name === 'small molecule') {
-					p = new SmallMol(interactor.id, self, interactor);
-					p.initInteractor(interactor.label);
-				} else {
-					p = new Polymer(interactor.id, self, interactor);
-					//TODO - get features and sequences from uniprot webservice
-					//~ if (interactor.identifier.db === 'uniprotkb') { 
-						//~ uniprotInteractors.add
-					//temp
-					if (typeof interactor.sequence !== 'undefined') {
-						p.initInteractor(interactor.sequence, interactor.label);
-					}
-					else {
-						//hack
-						p.initInteractor('NO_SEQUENCE_NO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCE_NO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCENO_SEQUENCE'
-							, interactor.label);
-					}
-				}
-				self.molecules.set(interactor.id, p);
+				var participant;
+				var participantId = interactor.id;
+						if (interactor.type.name === 'molecule set') {
+							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
+						}
+						else if (interactor.type.name === 'small molecule') {
+							participant = new SmallMol(participantId, self, interactor, interactor.label);
+						}
+						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
+							participant = new Protein(participantId, self, interactor, interactor.label);
+							if (typeof interactor.sequence !== 'undefined') {
+								participant.setSequence(interactor.sequence);
+							}
+							else {
+								//should look it up using accession number
+								if (participantId.indexOf('uniprotkb') === 0){
+									needsSequence.add(participantId);
+								} else {
+									participant.setSequence("SEQUENCEMISSING");
+								}
+							}
+						}
+						else if (interactor.type.name === 'peptide') {
+							participant = new Protein(participantId, self, interactor, interactor.label);
+						}
+						else if (interactor.type.name === 'gene') {
+							//its a small mol
+							participant = new Gene(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						}else if (interactor.type.name === 'ribonucleic acid') {
+							//its a small mol
+							participant = new RNA(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						}else if (interactor.type.name === 'deoxyribonucleic acid') {
+							//its a small mol
+							participant = new DNA(participantId, self, interactor, interactor.label);
+							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						} else {
+							alert("Unrecognised type:" + interactor.type.name);
+						}
+						self.molecules.set(participantId, participant);
 			}
 		}
 		
-		//create indexed collection of all features from interactions
-		for (var l = 0; l < dataElementCount; l++) {
-			var interaction = data[l];
-			if (interaction.object === 'interaction') {
-				var participantCount = interaction.participants.length;
-				for (var pi = 0; pi < participantCount; pi++) {
-					var participant = interaction.participants[pi];
-					var features = new Array(0);
-					if (participant.features) features = participant.features;
-					var fCount = features.length;
-					for (var f = 0; f < fCount; f++){
-						var feature = features[f];
-						self.features.set(feature.id, feature);
-					}		
-				}	
-			}
-		}
+		indexFeatures();
 		
 		//add naryLinks 
 		for (var l = 0; l < dataElementCount; l++) {
@@ -394,49 +402,27 @@ var readMIJSON = function(miJson, expand) {
 				//~ //init participants
 				for (var pi = 0; pi < participantCount; pi++){
 					var jsonParticipant = jsonParticipants[pi];
-					//~ 
-					//console.log(JSON.stringify(jsonParticipant));
 					var intRef = jsonParticipant.interactorRef;
-					//~ var partRef = jsonParticipant.id;
-					//~ if (typeof partRef === 'undefined'){
-						//~ partRef = "1";
-					//~ }
 					var participantId =  intRef;// + "(" + partRef + ")";   
 					var participant = self.molecules.get(participantId);
-					//~ if (typeof participant === 'undefined'){
-						//~ var interactor = interactors.get(intRef);
-						//~ if (interactor.type.name === 'molecule set') {
-							//~ participant = new InteractorSet(participantId, self, interactor);
-						//~ }
-						//~ else if (interactor.type.name === 'small molecule') {
-							//~ //its a small mol
-							//~ participant = new SmallMol(participantId, self, interactor);
-							//~ participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						//~ } else {
-							//~ //console.log(JSON.stringify(intRef));
-							//~ //unwisely jump to conclusion its a polymer
-							//~ participant = new Polymer(participantId, self, interactor);
-							//~ if (typeof interactor.sequence !== 'undefined') {
-								//~ participant.initInteractor(interactor.sequence, interactor.label);// + ' (' + partRef + ')');
-							//~ }
-							//~ else {
-								//~ //hack - should look it up using accession number
-								//~ participant.initInteractor('NO_SEQUENCE', interactor.label);// + ' (' + partRef + ')');
-							//~ }
-						//~ }
-						//~ self.molecules.set(participantId, participant);
-					//~ }
-					//~ 
+					
+					if (typeof participant === 'undefined'){
+						//must be a previously unencountered complex
+						participant = new Complex(participantId, self);
+						complexes.set(participantId, participant);
+						self.molecules.set(participantId, participant);
+					}
+					
+					
 					participant.naryLinks.set(nLinkId, nLink);				
 					//TODO: tidy up whats happening in NaryLink re interactor/participant terminology
 					if (nLink.interactors.indexOf(participant) === -1){
 						nLink.interactors.push(participant);
 					}				
-					//~ 
-					if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-						var interactor = self.molecules.get(participantId); 
-						interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
-					}
+					//~ if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
+						//~ var interactor = self.molecules.get(participantId); 
+						//~ interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
+					//~ }
 				}
 			}
 		}

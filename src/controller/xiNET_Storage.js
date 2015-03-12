@@ -16,7 +16,14 @@ var Annotation = require('../model/interactor/Annotation');
 xiNET_Storage.ns = "xiNET.";
 
 xiNET_Storage.accessionFromId = function (id){
-	var idRegex = /uniprotkb_(.*)\(/
+	var idRegex;
+	// i cant figure out way to do this purely with regex... who cares
+	if (id.indexOf("(") !== -1){//id has participant number in it 
+		idRegex = /uniprotkb_(.*)(\()/;
+	}
+	else {
+		idRegex = /uniprotkb_(.*)/;
+	}
 	var match = idRegex.exec(id);
 	if (match){
 		return match[1];

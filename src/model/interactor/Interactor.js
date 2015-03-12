@@ -195,7 +195,7 @@ Interactor.prototype.setAllLinkCoordinates = function() {
 //todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];   
-    if (this.circDomains) this.controller.emptyElement(this.circDomains);
+    if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
@@ -235,8 +235,8 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-             if (this.circDomains) { //hack
-				 this.circDomains.appendChild(annotPieSlice);
+             if (this.annotationsSvgGroup) { //hack
+				 this.annotationsSvgGroup.appendChild(annotPieSlice);
 			 }
         }
     }

@@ -119,8 +119,12 @@ Polymer.prototype.scale = function() {
 			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
-		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		d3.select(this.annotationsSvgGroup).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		
+		d3.select(this.background)
+			.attr("width", protLength)
+			.attr("x", this.getResXwithStickZoom(0.5));
+			
 		d3.select(this.outline)
 			.attr("width", protLength)
 			.attr("x", this.getResXwithStickZoom(0.5));
@@ -245,6 +249,9 @@ Polymer.prototype.setForm = function(form, svgP) {
 				.attr("x", -r).attr("y", -r)
 				.attr("width", r * 2).attr("height", r * 2)
 				.attr("rx", r).attr("ry", r)
+				.duration(Polymer.transitionTime);
+			d3.select(this.annotationsSvgGroup).transition()
+				.attr("transform", "scale(1, 1)")
 				.duration(Polymer.transitionTime);
 			d3.select(this.highlight).transition()
 				.attr("x", -r).attr("y", -r)
@@ -400,21 +407,17 @@ Polymer.prototype.toStick = function() {
 	this.stickZoom = origStickZoom;
 				
 	d3.select(this.background).transition()//.attr("stroke-opacity", 1)
-	//~ .attr("fill-opacity",  0)
-		//.attr("fill", "#FFFFFF")
 		.attr("height", Polymer.STICKHEIGHT)
 		.attr("y",  -Polymer.STICKHEIGHT / 2)
 		.attr("rx", 0).attr("ry", 0)
 		.duration(Polymer.transitionTime);
 				
 	d3.select(this.outline).transition()//.attr("stroke-opacity", 1)
-	//~ .attr("fill-opacity",  0)
-		//.attr("fill", "#FFFFFF")
 		.attr("height", Polymer.STICKHEIGHT)
 		.attr("y",  -Polymer.STICKHEIGHT / 2)
 		.attr("rx", 0).attr("ry", 0)
 		.duration(Polymer.transitionTime);		
-
+	
 	d3.select(this.highlight).transition()
 		.attr("width", protLength + 5).attr("height", Polymer.STICKHEIGHT + 5)
 		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Polymer.STICKHEIGHT / 2) - 2.5)
@@ -469,6 +472,7 @@ Polymer.prototype.toStick = function() {
 		var currentLength = lengthInterpol(cubicInOut(interp));
 		d3.select(self.highlight).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
 		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
+		d3.select(self.annotationsSvgGroup).attr("transform", "scale(" + (self.stickZoom) + ", 1)");
 		d3.select(self.background).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setAllLinkCoordinates();

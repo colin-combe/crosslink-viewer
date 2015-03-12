@@ -121,6 +121,10 @@ xiNET.Controller = function(targetDiv) {
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
 
+    this.selfRes_resLinks = document.createElementNS(Config.svgns, "g");
+    this.selfRes_resLinks.setAttribute("id", "res_resLinks");
+    this.container.appendChild(this.selfRes_resLinks);
+
 	this.svgElement.appendChild(this.container);
     
     //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
@@ -215,6 +219,7 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
     this.emptyElement(this.proteinUpper);
+	this.emptyElement(this.selfRes_resLinks);
 	this.svgElement.unsuspendRedraw(suspendID);
       
      //are we panning?

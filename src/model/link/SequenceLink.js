@@ -145,18 +145,26 @@ SequenceLink.prototype.show = function() {
 		this.uncertainGlyph.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
 		this.highlightGlyph.setAttribute("stroke-width", this.controller.z * 10);
 		this.setLinkCoordinates();
-		this.controller.res_resLinks.appendChild(this.highlightGlyph);
-		this.controller.res_resLinks.appendChild(this.glyph);
-		this.controller.res_resLinks.appendChild(this.uncertainGlyph);
+		var containingGroup = this.controller.res_resLinks;
+		if (this.interactors[0] === this.interactors[1]){
+			containingGroup = this.controller.selfRes_resLinks;
+		}
+		containingGroup.appendChild(this.highlightGlyph);
+		containingGroup.appendChild(this.glyph);
+		containingGroup.appendChild(this.uncertainGlyph);
 	}
 };
 
 SequenceLink.prototype.hide = function() {
 	 if (this.shown) {
 		this.shown = false;
-		this.controller.res_resLinks.removeChild(this.glyph);
-		this.controller.res_resLinks.removeChild(this.uncertainGlyph);
-		this.controller.res_resLinks.removeChild(this.highlightGlyph);
+		var containingGroup = this.controller.res_resLinks;
+		if (this.interactors[0] === this.interactors[1]){
+			containingGroup = this.controller.selfRes_resLinks;
+		}
+		containingGroup.removeChild(this.glyph);
+		containingGroup.removeChild(this.uncertainGlyph);
+		containingGroup.removeChild(this.highlightGlyph);
 	}
 };
 
