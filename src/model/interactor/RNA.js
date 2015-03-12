@@ -59,12 +59,6 @@ function RNA(id, xlvController, json, name) {
     d3.select(this.highlight).attr("stroke-opacity", 0);
 	this.upperGroup.appendChild(this.highlight);   
 
-    //svg groups for self links
-//    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-//    this.intraLinks = document.createElementNS(Config.svgns, "g");
-//    this.upperGroup.appendChild(this.intraLinksHighlights);
-//	this.upperGroup.appendChild(this.intraLinks);    
-    
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");

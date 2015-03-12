@@ -27,13 +27,21 @@ The procedure for use is as follows:
 				
 -----------------------------------------------------------------------------------------
 
-Other function you may call (assumes 'xlv' is var name for your instance of xiNET Controller):
+Other functions you may call (assumes 'xlv' is var name for your instance of xiNET Controller):
 
-xlv.autoLayout()			restarts autolayout
+xlv.reset()					resets zoom/pan, changes all molecules to blobs (not bars), runs autolayout
 xlv.resetZoom()				resets zoom/pan (actually, zooming currently disabled)
+xlv.autoLayout()			restarts autolayout
+
 xlv.exportSVG()				exports SVG
 
+Choosing how to annotate proteins:
 
+xlv.setAnnotations("MI features");	//show features from MI data 
+xlv.setAnnotations("UniprotKB");	//show annotations from uniprot
+xlv.setAnnotations("SuperFamily");	//from SuperFamily
+xlv.setAnnotations("None");			//no annotations
+xlv.setAnnotations("Interactor");	//colour bars and circles according to interactor (may help indicate stoichiometry)
 
 -----------------------------------------------------------------------------------------
 

@@ -13,6 +13,7 @@
 var xiNET = {}; //crosslinkviewer's javascript namespace
 var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
 var xiNET_Storage = require('./xiNET_Storage');
+var Annotation = require('../model/interactor/Annotation');
 var Interactor = require('../model/interactor/Interactor');
 var Polymer = require('../model/interactor/Polymer');
 var Refresh = require('./Refresh');
@@ -259,6 +260,7 @@ xiNET.Controller.prototype.emptyElement = function(element) {
 };
 
 xiNET.Controller.prototype.setAnnotations = function(annotationType) {
+	this.annotationSet = annotationType;
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
 		var mols = this.molecules.values(); 
 		var molCount = mols.length;
@@ -284,6 +286,10 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 						});
 			
 				}
+				else if (annotationType.toUpperCase() === "INTERACTOR") {
+						var annotation = new Annotation (mol.json.label, 1, mol.size);
+						mol.setPositionalFeatures([annotation]);
+				}
 				else {
 					mol.setPositionalFeatures([])
 				}
@@ -292,7 +298,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 		return true;
 	}
 	else return false;
-}
+};
 
 //this can be done before all proteins have their sequences
 xiNET.Controller.prototype.initLayout = function() {
@@ -305,7 +311,7 @@ xiNET.Controller.prototype.initLayout = function() {
 		}
 	}
 	this.autoLayout();
-}
+};
 
 //requires all polymers have had sequence set
 xiNET.Controller.prototype.initPolymers = function() {//currently only does Proteins
@@ -328,11 +334,9 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 		}
 	}
 	this.sequenceInitComplete = true;
-	//if webpage conatins element called 'annotationsSelect',
-	// use it to know inital set of annotations to show, default is mi features from pSI-MI
-	var annotationsSelect = document.getElementById('annotationsSelect');
-	if (annotationsSelect){
-		xlv.setAnnotations(annotationsSelect.options[annotationsSelect.selectedIndex].value);
+	
+	if (this.annotationSet){
+		xlv.setAnnotations(this.annotationSet);
 	}
 	else {
 		this.setAnnotations('MI FEATURES');
