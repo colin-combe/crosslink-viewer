@@ -119,4 +119,17 @@ Link.prototype.filteredEvidence = function() {
     //~ } 
 };
 
+//used by BinaryLink and UnaryLink
+Link.prototype.hide = function() {
+	if (this.controller.p_pLinksWide.contains(this.thickLine)) {
+		this.controller.p_pLinksWide.removeChild(this.thickLine);
+	}
+	if (this.controller.highlights.contains(this.highlightLine)) {
+		this.controller.highlights.removeChild(this.highlightLine);
+	}
+	if (this.controller.p_pLinks.contains(this.line)) {
+		this.controller.p_pLinks.removeChild(this.line);
+	}
+};
+
 module.exports = Link;

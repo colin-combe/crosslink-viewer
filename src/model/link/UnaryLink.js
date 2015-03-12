@@ -134,20 +134,18 @@ UnaryLink.prototype.initSelfLinkSVG = function() {
 };
 
 UnaryLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-		if (this.notSubLink === true){
-			this.highlightInteractors(show);
-		}
-        if (show) {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "1");
-        } else {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			//~ if (this.isSelected === false) {
-				this.highlightLine.setAttribute("stroke-opacity", "0");
-			//~ }			
-        }
-    }
+	if (this.notSubLink === true){
+		this.highlightInteractors(show);
+	}
+	if (show) {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+	} else {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		//~ if (this.isSelected === false) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+		//~ }			
+	}
 };
 
 UnaryLink.prototype.check = function() {
@@ -162,29 +160,14 @@ UnaryLink.prototype.check = function() {
 };
 
 UnaryLink.prototype.show = function() {
-	// resembles Refresh.js, scale() function
-	if (!this.shown) {
-		this.shown = true;
-		this.line.setAttribute("transform", "translate(" + this.interactors[0].x
-				+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
-		this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
-				+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
-		this.controller.highlights.appendChild(this.highlightLine);
-		this.controller.p_pLinks.appendChild(this.line);
-	}
+	this.line.setAttribute("transform", "translate(" + this.interactors[0].x
+			+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
+	this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
+			+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
+	this.controller.highlights.appendChild(this.highlightLine);
+	this.controller.p_pLinks.appendChild(this.line);
 };
 
-UnaryLink.prototype.hide = function() {
-    if (this.shown) {
-        this.shown = false;
-        //TODO: be more selective about when to show 'thickLine'
-        // if (ProteinLink.maxNoResidueLinks > 1) {
-            // this.controller.p_pLinksWide.removeChild(this.thickLine);
-        // }
-        this.controller.highlights.removeChild(this.highlightLine);
-        this.controller.p_pLinks.removeChild(this.line);
-	}
-};
 
 UnaryLink.prototype.setLinkCoordinates = function() {
 	var interactor = this.interactors[0];

@@ -25,7 +25,6 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.interactors = [fromI, toI];	
     this.sequenceLinks = d3.map();
     this.controller = xlvController;
-    this.ambig = false;
 }
 
 //~ BinaryLink.prototype.getToolTip = function(){
@@ -121,20 +120,18 @@ BinaryLink.prototype.initSVG = function() {
 }
 ;
 BinaryLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-		if (this.notSubLink === true){
-			this.highlightInteractors(show);
-		}
-        if (show) {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "1");
-        } else {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			//~ if (this.isSelected === false) {
-				this.highlightLine.setAttribute("stroke-opacity", "0");
-			//~ }			
-        }
-    }
+	if (this.notSubLink === true){
+		this.highlightInteractors(show);
+	}
+	if (show) {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+	} else {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		//~ if (this.isSelected === false) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+		//~ }			
+	}
 };
 
 BinaryLink.prototype.check = function() {
@@ -149,40 +146,37 @@ BinaryLink.prototype.check = function() {
 };
 
 BinaryLink.prototype.show = function() {
-	 if (!this.shown) {
-		this.shown = true;
-		if (typeof this.line === 'undefined') {
-			this.initSVG();
-		}
-		this.line.setAttribute("stroke-width", this.controller.z * 1);
-		this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
-		this.setLinkCoordinates(this.interactors[0]);
-		this.setLinkCoordinates(this.interactors[1]);
-		if (this.thickLineShown) {
-			this.controller.p_pLinksWide.appendChild(this.thickLine);
-		}
-		this.controller.highlights.appendChild(this.highlightLine);
-		this.controller.p_pLinks.appendChild(this.line);
-		if (this.thickLineShown) {
-			this.thickLine.setAttribute("stroke-width", this.w);
-		}
+	if (typeof this.line === 'undefined') {
+		this.initSVG();
+	}
+	this.line.setAttribute("stroke-width", this.controller.z * 1);
+	this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
+	this.setLinkCoordinates(this.interactors[0]);
+	this.setLinkCoordinates(this.interactors[1]);
+	if (this.thickLineShown) {
+		this.controller.p_pLinksWide.appendChild(this.thickLine);
+	}
+	this.controller.highlights.appendChild(this.highlightLine);
+	this.controller.p_pLinks.appendChild(this.line);
+	if (this.thickLineShown) {
+		this.thickLine.setAttribute("stroke-width", this.w);
 	}
 };
 
 BinaryLink.prototype.hide = function() {
-    if (this.shown) {
-        this.shown = false;
-		if (this.thickLineShown) {
-			this.controller.p_pLinksWide.removeChild(this.thickLine);
-		}
+	if (this.controller.p_pLinksWide.contains(this.thickLine)) {
+		this.controller.p_pLinksWide.removeChild(this.thickLine);
+	}
+	if (this.controller.highlights.contains(this.highlightLine)) {
 		this.controller.highlights.removeChild(this.highlightLine);
+	}
+	if (this.controller.p_pLinks.contains(this.line)) {
 		this.controller.p_pLinks.removeChild(this.line);
-    }
+	}
 };
 
 BinaryLink.prototype.setLinkCoordinates = function() {
-    if (this.shown) {//don't waste time changing DOM if link not visible
-		var pos1 = this.interactors[0].getPosition();
+ 		var pos1 = this.interactors[0].getPosition();
         var pos2 = this.interactors[1].getPosition();
         
         if (this.interactors[0].type === 'complex'){        
@@ -233,7 +227,6 @@ BinaryLink.prototype.setLinkCoordinates = function() {
 			this.thickLine.setAttribute("x2", pos2[0]);
 			this.thickLine.setAttribute("y2", pos2[1]);
 		}
-	}
 };
 
 BinaryLink.prototype.getOtherEnd = function(interactor) {

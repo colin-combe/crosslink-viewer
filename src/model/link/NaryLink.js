@@ -32,9 +32,6 @@ function NaryLink(id, xlvController) {
     this.controller = xlvController;
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
-    //layout stuff
-    this.hidden = false;  
     this.initSVG();
 }
 
@@ -65,9 +62,7 @@ NaryLink.prototype.initSVG = function() {
 };
 
 NaryLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-        this.highlightInteractors(show);
-    }
+	this.highlightInteractors(show);
 };
 
 
@@ -77,23 +72,12 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-	if (!this.shown) {
-		this.shown = true;
-		this.path.setAttribute("stroke-width", this.controller.z * 1);
-		this.setLinkCoordinates();
-		this.controller.naryLinks.appendChild(this.path);
-	}
+	this.path.setAttribute("stroke-width", this.controller.z * 1);
+	this.setLinkCoordinates();
+	this.controller.naryLinks.appendChild(this.path);
 };
 
-NaryLink.prototype.hide = function() {
-	if (this.shown) {
-		this.shown = false;
-		if (this.thickLineShown) {
-			this.controller.p_pLinksWide.removeChild(this.thickLine);
-		}
-		this.controller.p_pLinks.removeChild(this.path);
-	}
-};
+NaryLink.prototype.hide = function() {};
 
 NaryLink.prototype.setLinkCoordinates = function() {
     // Uses d3.geom.hull to calculate a bounding path around an array of vertices 
