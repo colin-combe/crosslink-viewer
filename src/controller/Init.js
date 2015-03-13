@@ -196,13 +196,12 @@ for (var property in MouseEvents) {
 }
 
 /**
- * Sets the current transform matrix of an element. JOSH TODO
+ * Sets the current transform matrix of an element.
  */
 xiNET.setCTM = function(element, matrix) {
     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
     element.setAttribute("transform", s);
 };
-
 
 xiNET.Controller.prototype.clear = function() {
     this.sequenceInitComplete = false;
@@ -367,11 +366,6 @@ xiNET.Controller.prototype.resetZoom = function() {
 			prot.setAllLinkCoordinates();
 		}
     }
-};
-
-xiNET.Controller.prototype.setCutOff = function(cutOff) {
-    this.cutOff = cutOff;
-    this.checkLinks();
 };
 
 xiNET.Controller.prototype.exportSVG = function() {
