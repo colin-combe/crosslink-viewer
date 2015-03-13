@@ -70,8 +70,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "2", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -105,8 +106,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "4", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -203,8 +205,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "6", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -238,8 +241,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "8", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -320,8 +324,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "10", 
                             "linkedFeatures": [
                                 "11"
@@ -340,6 +345,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "12", 
                             "linkedFeatures": [
                                 "13"
@@ -358,6 +364,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "14", 
                             "linkedFeatures": [
                                 "15"
@@ -376,6 +383,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "16", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -391,6 +399,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "17", 
                             "linkedFeatures": [
                                 "18"
@@ -409,6 +418,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "19", 
                             "linkedFeatures": [
                                 "20"
@@ -427,6 +437,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "21", 
                             "linkedFeatures": [
                                 "22"
@@ -445,6 +456,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "23", 
                             "linkedFeatures": [
                                 "24"
@@ -481,8 +493,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "24", 
                             "linkedFeatures": [
                                 "23"
@@ -501,6 +514,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "13", 
                             "linkedFeatures": [
                                 "12"
@@ -519,6 +533,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "15", 
                             "linkedFeatures": [
                                 "14"
@@ -537,6 +552,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "18", 
                             "linkedFeatures": [
                                 "17"
@@ -555,6 +571,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "26", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -570,6 +587,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "22", 
                             "linkedFeatures": [
                                 "21"
@@ -588,6 +606,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "20", 
                             "linkedFeatures": [
                                 "19"
@@ -606,6 +625,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "11", 
                             "linkedFeatures": [
                                 "10"
@@ -689,8 +709,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "28", 
                             "linkedFeatures": [
                                 "29"
@@ -709,6 +730,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "30", 
                             "linkedFeatures": [
                                 "31"
@@ -727,6 +749,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "32", 
                             "linkedFeatures": [
                                 "33"
@@ -745,6 +768,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "34", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -760,6 +784,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "35", 
                             "linkedFeatures": [
                                 "36"
@@ -778,6 +803,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "37", 
                             "linkedFeatures": [
                                 "38"
@@ -814,8 +840,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "40", 
                             "linkedFeatures": [
                                 "41"
@@ -834,6 +861,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "31", 
                             "linkedFeatures": [
                                 "30"
@@ -852,6 +880,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "29", 
                             "linkedFeatures": [
                                 "28"
@@ -870,6 +899,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "33", 
                             "linkedFeatures": [
                                 "32"
@@ -888,6 +918,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "38", 
                             "linkedFeatures": [
                                 "37"
@@ -906,6 +937,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "42", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -921,6 +953,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "36", 
                             "linkedFeatures": [
                                 "35"
@@ -939,6 +972,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "43", 
                             "linkedFeatures": [
                                 "44"
@@ -975,8 +1009,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "46", 
                             "linkedFeatures": [
                                 "47"
@@ -995,6 +1030,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "48", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1010,6 +1046,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "49", 
                             "linkedFeatures": [
                                 "50"
@@ -1028,6 +1065,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "51", 
                             "linkedFeatures": [
                                 "52"
@@ -1046,6 +1084,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "53", 
                             "linkedFeatures": [
                                 "54"
@@ -1064,6 +1103,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "55", 
                             "linkedFeatures": [
                                 "56"
@@ -1100,8 +1140,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "41", 
                             "linkedFeatures": [
                                 "40"
@@ -1120,6 +1161,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "52", 
                             "linkedFeatures": [
                                 "51"
@@ -1138,6 +1180,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "50", 
                             "linkedFeatures": [
                                 "49"
@@ -1156,6 +1199,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "58", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1171,6 +1215,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "54", 
                             "linkedFeatures": [
                                 "53"
@@ -1189,6 +1234,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "47", 
                             "linkedFeatures": [
                                 "46"
@@ -1207,6 +1253,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "44", 
                             "linkedFeatures": [
                                 "43"
@@ -1225,6 +1272,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "56", 
                             "linkedFeatures": [
                                 "55"
@@ -1308,8 +1356,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "60", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1325,6 +1374,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "61", 
                             "linkedFeatures": [
                                 "62"
@@ -1343,6 +1393,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "63", 
                             "linkedFeatures": [
                                 "64"
@@ -1361,6 +1412,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "65", 
                             "linkedFeatures": [
                                 "66"
@@ -1379,6 +1431,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "67", 
                             "linkedFeatures": [
                                 "68"
@@ -1416,8 +1469,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "70", 
                             "linkedFeatures": [
                                 "71"
@@ -1436,6 +1490,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "62", 
                             "linkedFeatures": [
                                 "61"
@@ -1454,6 +1509,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "64", 
                             "linkedFeatures": [
                                 "63"
@@ -1472,6 +1528,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "72", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1487,6 +1544,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "73", 
                             "linkedFeatures": [
                                 "74"
@@ -1505,6 +1563,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "68", 
                             "linkedFeatures": [
                                 "67"
@@ -1523,6 +1582,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "66", 
                             "linkedFeatures": [
                                 "65"
@@ -1541,6 +1601,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "75", 
                             "linkedFeatures": [
                                 "76"
@@ -1559,6 +1620,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "77", 
                             "linkedFeatures": [
                                 "78"
@@ -1577,6 +1639,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "79", 
                             "linkedFeatures": [
                                 "80"
@@ -1614,8 +1677,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "82", 
                             "linkedFeatures": [
                                 "83"
@@ -1634,6 +1698,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "71", 
                             "linkedFeatures": [
                                 "70"
@@ -1652,6 +1717,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "78", 
                             "linkedFeatures": [
                                 "77"
@@ -1670,6 +1736,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "84", 
                             "linkedFeatures": [
                                 "85"
@@ -1688,6 +1755,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "86", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1703,6 +1771,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "87", 
                             "linkedFeatures": [
                                 "88"
@@ -1721,6 +1790,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "89", 
                             "linkedFeatures": [
                                 "90"
@@ -1739,6 +1809,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "76", 
                             "linkedFeatures": [
                                 "75"
@@ -1757,6 +1828,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "74", 
                             "linkedFeatures": [
                                 "73"
@@ -1775,6 +1847,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "80", 
                             "linkedFeatures": [
                                 "79"
@@ -1812,8 +1885,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "90", 
                             "linkedFeatures": [
                                 "89"
@@ -1832,6 +1906,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "88", 
                             "linkedFeatures": [
                                 "87"
@@ -1850,6 +1925,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "92", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -1865,6 +1941,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "83", 
                             "linkedFeatures": [
                                 "82"
@@ -1883,6 +1960,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "85", 
                             "linkedFeatures": [
                                 "84"
@@ -1967,8 +2045,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "94", 
                             "linkedFeatures": [
                                 "95"
@@ -1987,6 +2066,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "96", 
                             "linkedFeatures": [
                                 "97"
@@ -2005,6 +2085,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "98", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2020,6 +2101,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "99", 
                             "linkedFeatures": [
                                 "100"
@@ -2038,6 +2120,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "101", 
                             "linkedFeatures": [
                                 "102"
@@ -2075,8 +2158,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "104", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2092,6 +2176,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "97", 
                             "linkedFeatures": [
                                 "96"
@@ -2110,6 +2195,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "102", 
                             "linkedFeatures": [
                                 "101"
@@ -2128,6 +2214,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "100", 
                             "linkedFeatures": [
                                 "99"
@@ -2146,6 +2233,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "95", 
                             "linkedFeatures": [
                                 "94"
@@ -2230,8 +2318,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "106", 
                             "linkedFeatures": [
                                 "107"
@@ -2250,6 +2339,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "108", 
                             "linkedFeatures": [
                                 "109"
@@ -2287,8 +2377,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "107", 
                             "linkedFeatures": [
                                 "106"
@@ -2307,6 +2398,7 @@
                             }
                         }, 
                         {
+                            "category": "experimentalFeatures", 
                             "id": "109", 
                             "linkedFeatures": [
                                 "108"
@@ -2391,8 +2483,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "112", 
                             "linkedFeatures": [
                                 "113"
@@ -2430,8 +2523,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "113", 
                             "linkedFeatures": [
                                 "112"
@@ -2513,8 +2607,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "116", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2548,8 +2643,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "118", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2627,8 +2723,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "120", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2662,8 +2759,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "122", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2741,8 +2839,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "124", 
                             "name": "n-terminal", 
                             "sequenceData": [
@@ -2820,8 +2919,9 @@
                         "id": "MI:0497", 
                         "name": "neutral component"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "126", 
                             "name": "n-terminal", 
                             "sequenceData": [

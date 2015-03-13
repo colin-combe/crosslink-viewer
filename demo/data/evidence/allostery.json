@@ -73,11 +73,10 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "1", 
-                    "interactorRef": "uniprotkb_Q9Y3Y4", 
-                    "otherFeatures": [
+                    "features": [
                         {
                             "InterPro": "IPR019787", 
+                            "category": "otherFeatures", 
                             "id": "2", 
                             "linkedFeatures": [
                                 "3"
@@ -96,6 +95,8 @@
                             }
                         }
                     ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q9Y3Y4", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -107,10 +108,9 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "4", 
-                    "interactorRef": "uniprotkb_O00512", 
-                    "otherFeatures": [
+                    "features": [
                         {
+                            "category": "otherFeatures", 
                             "id": "3", 
                             "linkedFeatures": [
                                 "2"
@@ -129,6 +129,8 @@
                             }
                         }
                     ], 
+                    "id": "4", 
+                    "interactorRef": "uniprotkb_O00512", 
                     "stoichiometry": "1"
                 }
             ]
@@ -197,11 +199,10 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "5", 
-                    "interactorRef": "rcsb pdb_2VPD", 
-                    "otherFeatures": [
+                    "features": [
                         {
                             "InterPro": "IPR019787", 
+                            "category": "otherFeatures", 
                             "id": "6", 
                             "linkedFeatures": [
                                 "7"
@@ -220,6 +221,8 @@
                             }
                         }
                     ], 
+                    "id": "5", 
+                    "interactorRef": "rcsb pdb_2VPD", 
                     "stoichiometry": "1"
                 }, 
                 {
@@ -231,10 +234,9 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
-                    "id": "8", 
-                    "interactorRef": "intact_EBI-6146769", 
-                    "otherFeatures": [
+                    "features": [
                         {
+                            "category": "otherFeatures", 
                             "id": "7", 
                             "linkedFeatures": [
                                 "6"
@@ -251,10 +253,9 @@
                                 "id": "MI:0116", 
                                 "name": "sufficient binding region"
                             }
-                        }
-                    ], 
-                    "ptms": [
+                        }, 
                         {
+                            "category": "ptms", 
                             "id": "9", 
                             "name": "required-dimethyllys4", 
                             "role": {
@@ -274,6 +275,8 @@
                             }
                         }
                     ], 
+                    "id": "8", 
+                    "interactorRef": "intact_EBI-6146769", 
                     "stoichiometry": "1"
                 }
             ]

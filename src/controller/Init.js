@@ -10,8 +10,12 @@
 
 "use strict";
 
+var xiNET = {}; //crosslinkviewer's javascript namespace
 var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
+var xiNET_Storage = require('./xiNET_Storage');
+var Annotation = require('../model/interactor/Annotation');
 var Interactor = require('../model/interactor/Interactor');
+var Polymer = require('../model/interactor/Polymer');
 var Refresh = require('./Refresh');
 var ReadMIJSON = require('./ReadMIJSON');
 var Link = require('../model/link/Link');
@@ -20,45 +24,65 @@ var Config = require('./Config');
 var MouseEvents = require('./MouseEvents');
 var ToolTips = require('./ToolTips');
 var TouchEvents = require('./TouchEvents');
+//for save file.
+var saveAs = require('../../vendor/FileSaver');
 
-var xiNET = {}; //create xiNET's javascript namespace
-
-//~ xiNET.linkWidth = 1.3;// default line width
-
-xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id of div
-
+xiNET.Controller = function(targetDiv) {
+	// targetDiv could be div itself or id of div - lets deal with that
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
-	
-	//these attributes are used by checkboxes to hide self links or ambiguous links
-	this.intraHidden = false;
-	this.ambigHidden = false;
-	
-    this.fields = {}; //used by text search
-    this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
-    
+	this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
+    this.svgElement.setAttribute("width", "100%");
+    this.svgElement.setAttribute("height", "100%");
+    this.svgElement.setAttribute("style", "display:block;");
+    // disable right click context menu (we may wish to put right click to our own purposes)
+    //~ this.svgElement.oncontextmenu = function() {
+        //~ return false;
+    //~ };
+    //add listeners
+    var self = this;
+    this.svgElement.onmousedown = function(evt) {
+        self.mouseDown(evt);
+    };
+    this.svgElement.onmousemove = function(evt) {
+        self.mouseMove(evt);
+    };
+    this.svgElement.onmouseup = function(evt) {
+        self.mouseUp(evt);
+    };
+    // even though we don't use jquery, see:
+    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
+    this.svgElement.onmouseout = function(evt) {
+        self.hideTooltip(evt);
+    };    
+    var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+    if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+        this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
+    }
+    else if (document.addEventListener) { //WC3 browsers
+        this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
+    }  
+    this.lastMouseUp = new Date().getTime();   
+     //touchstart
+    this.svgElement.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
+    //touchmove
+    this.svgElement.ontouchmove = function(evt) {
+        self.touchMove(evt);
+    };
+    //touchend
+    this.svgElement.ontouchend = function(evt) {
+        self.message("touch end");
+        self.touchEnd(evt);
+    };
+    
     targetDiv.appendChild(this.svgElement);
     
-    //are we panning?
-    this.panning = false;
-    // if we are dragging something at the moment - this will be the element that is draged
-    this.dragElement = null;
-    // are we dragging at the moment?
-    this.dragging = false;
-    // from where did we start dragging
-    this.dragStart = {};
-    // are we rotating at the moment
-    this.rotating = false;
-
-    // disable right click context menu (we wish to put right click to our own purposes)
-    this.svgElement.oncontextmenu = function() {
-        return false;
-    };
-
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
@@ -71,7 +95,8 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     background.setAttribute("fill-opacity", "1");
     background.setAttribute("fill", "#FFFFFF");
     this.svgElement.appendChild(background);
-
+	
+	// various groups needed
     this.container = document.createElementNS(Config.svgns, "g");
     this.container.setAttribute("id", "container");
 
@@ -83,10 +108,6 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
  
-    this.proteinLower = document.createElementNS(Config.svgns, "g");
-    this.proteinLower.setAttribute("id", "proteinLower");
-    this.container.appendChild(this.proteinLower);
-
     this.highlights = document.createElementNS(Config.svgns, "g");
     this.highlights.setAttribute("class", "highlights");//interactors also contain highlight groups
     this.container.appendChild(this.highlights);
@@ -103,13 +124,15 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.proteinUpper.setAttribute("id", "proteinUpper");
     this.container.appendChild(this.proteinUpper);
 
+    this.selfRes_resLinks = document.createElementNS(Config.svgns, "g");
+    this.selfRes_resLinks.setAttribute("id", "res_resLinks");
+    this.container.appendChild(this.selfRes_resLinks);
+
 	this.svgElement.appendChild(this.container);
     
     //showing title as tooltips is NOT part of svg spec (even though some browsers do this)
     //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(Config.svgns, "text");
-  //  this.tooltip.setAttribute('class', 'tooltip');
-  //  this.tooltip.setAttribute('id', 'tooltip');
     this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
     var tooltipTextNode = document.createTextNode('tooltip');
@@ -117,8 +140,7 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
 
     this.tooltip_bg = document.createElementNS(Config.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
-
+    
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
@@ -127,7 +149,6 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 
@@ -138,14 +159,12 @@ xiNET.Controller = function(targetDiv) {// targetDiv could be div itself or id o
     this.clear();
 };
 
-//josh - what can we do about the following, I think its a bit confusing / hard to maintain
-// would one big file be better?
-
 // Link to prototype functions that exist in other files.
 // Eventually the files will accept this controller as an argument
 
 // Copy functions from Refresh.js to our prototype:
 xiNET.Controller.prototype.checkLinks = Refresh.checkLinks;
+xiNET.Controller.prototype.setAllLinkCoordinates = Refresh.setAllLinkCoordinates;
 xiNET.Controller.prototype.scale = Refresh.scale;
 
 // Copy functions from ReadMIJSON.js to our prototype:
@@ -186,7 +205,7 @@ xiNET.setCTM = function(element, matrix) {
 
 
 xiNET.Controller.prototype.clear = function() {
-    this.initComplete = false;
+    this.sequenceInitComplete = false;
  	if (this.force) {
 		this.force.stop();
 	}
@@ -197,26 +216,31 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
+	this.emptyElement(this.selfRes_resLinks);
 	this.svgElement.unsuspendRedraw(suspendID);
-    
-    this.participants = d3.map();
-    
+      
+     //are we panning?
+    this.panning = false;
+    // if we are dragging something at the moment - this will be the element that is draged
+    this.dragElement = null;
+    // are we dragging at the moment?
+    this.dragging = false;
+    // from where did we start dragging
+    this.dragStart = {};
+    // are we rotating at the moment
+    this.rotating = false;
+ 
+ 	this.molecules = d3.map();
     this.allNaryLinks = d3.map();
     this.allBinaryLinks = d3.map();
     this.allUnaryLinks = d3.map();
     this.allSequenceLinks = d3.map();
     
-    this.subgraphs = new Array();
-    
-    this.layoutXOffset = 0;
-
     this.proteinCount = 0;
-    this.maxBlobRadius = 0;
-    Interactor.MAXSIZE = 0;
+    this.maxBlobRadius = 30;
+    Interactor.MAXSIZE = 100;
 
-    this.layout = null;
     this.z = 1;
     this.scores = null;
     this.selected = d3.map();
@@ -235,63 +259,105 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
-xiNET.Controller.prototype.init = function(width, height) {
-    //initial dimensions
-    var containingDiv = this.svgElement.parentNode;
-    if (typeof containingDiv !== 'undefined' && containingDiv != null) {
-        width = containingDiv.clientWidth;
-        height = containingDiv.clientHeight;
-    } else {
-        width = 800;
-        height = 480;
-    }
-    this.svgElement.setAttribute("width", "100%");
-    this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("style", "display:block;");
-
-    this.maxBlobRadius = Math.sqrt(2000 / Math.PI);//((Interactor.MAXSIZE < 5000)? Interactor.MAXSIZE : 5000)
-
-    this.initComplete = true;
-
-    if (typeof this.layout !== 'undefined' && this.layout != null) {
-        this.loadLayout();
-    } else {
-        //make inital form sticks or blobs
-        var interactors = this.participants.values();
-        var proteinCount = interactors.length;
-        for (var p = 0; p < proteinCount; p++) { //temp
-			var prot = interactors[p];
-            prot.setPosition(0, 0);
-		}
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = interactors[p];
-            if (this.participants.keys().length < 3) {
-               if (prot.toStick) prot.toStick();
-            }
-            else {
-               if (prot.toBlob) prot.toBlob();
-            }
-            if (prot.lowerGroup){
-            this.proteinLower.appendChild(prot.lowerGroup);
-            this.proteinUpper.appendChild(prot.upperGroup);
+xiNET.Controller.prototype.setAnnotations = function(annotationType) {
+	this.annotationSet = annotationType;
+	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
+		var mols = this.molecules.values(); 
+		var molCount = mols.length;
+		var self = this;
+		for (var m = 0; m < molCount; m++) {
+			var mol = mols[m];
+			if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+				if (annotationType.toUpperCase() === "MI FEATURES") {
+					mol.setPositionalFeatures(mol.miFeatures);
+				}
+				else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+					if (mol.id.indexOf('uniprotkb_') === 0) {
+						xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+							var m = self.molecules.get(id);
+							m.setPositionalFeatures(fts);
+						});
+					}
+				}  
+				else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
+						xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+							var m = self.molecules.get(id);
+							m.setPositionalFeatures(fts);
+						});
+			
+				}
+				else if (annotationType.toUpperCase() === "INTERACTOR") {
+						var annotation = new Annotation (mol.json.label, 1, mol.size);
+						mol.setPositionalFeatures([annotation]);
+				}
+				else {
+					mol.setPositionalFeatures([])
+				}
 			}
-        }
-        this.autoLayout(width, height);
-    }
-    this.initMouseEvents();
-    if (typeof this.initTouchEvents === 'function'){
-	 	this.initTouchEvents();
+		}
+		return true;
+	}
+	else return false;
+};
+
+//this can be done before all proteins have their sequences
+xiNET.Controller.prototype.initLayout = function() {
+	var mols = this.molecules.values();
+	var molCount = mols.length;
+	for (var m = 0; m < molCount; m++) {
+		var mol = mols[m];
+		if (mol.upperGroup) {
+			this.proteinUpper.appendChild(mol.upperGroup);
+		}
+	}
+	this.autoLayout();
+};
+
+//requires all polymers have had sequence set
+xiNET.Controller.prototype.initPolymers = function() {//currently only does Proteins
+	var mols = this.molecules.values();
+	var molCount = mols.length;
+	Polymer.MAXSIZE = 0;
+	for (var m = 0; m < molCount; m++){
+		var molSize = mols[m].size;
+		if (molSize > Polymer.MAXSIZE){
+			Polymer.MAXSIZE = molSize;
+		}
+	}
+	//this.maxBlobRadius = Math.sqrt(Polymer.MAXSIZE / Math.PI);
+	var width = this.svgElement.parentNode.clientWidth;
+	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
+	for (var i = 0; i < molCount; i++){
+		var mol = mols[i];
+		if (mol.json && mol.json.type.name == "protein") {
+			mol.init();
+		}
+	}
+	this.sequenceInitComplete = true;
+	
+	if (this.annotationSet){
+		xlv.setAnnotations(this.annotationSet);
+	}
+	else {
+		this.setAnnotations('MI FEATURES');
 	}
 }
 
+xiNET.Controller.prototype.reset = function() {
+	this.resetZoom();
+    var interactors = this.molecules.values();
+    var proteinCount = interactors.length;
+    for (var p = 0; p < proteinCount; p++) {
+        var prot = interactors[p];
+        prot.setForm(0);
+    }
+    this.autoLayout();
+};
+
 xiNET.Controller.prototype.resetZoom = function() {
-    //    var conBBox = this.container.getBBox();
-    //    var w = this.svgElement.parentNode.clientWidth;//getAttribute("viewBox");
-    //    var h = this.svgElement.parentNode.clientHeight;//getAttribute("width");
-    //    alert(vb + " "  + w + " "  + h + " " + "");
     this.container.setAttribute("transform", "scale(1)");
     this.scale();
-    var interactors = this.participants.values();
+    var interactors = this.molecules.values();
     var proteinCount = interactors.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = interactors[p];
@@ -310,24 +376,21 @@ xiNET.Controller.prototype.setCutOff = function(cutOff) {
 
 xiNET.Controller.prototype.exportSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
-    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
-    //    .replace(/xmlns:svg=/gi,"xmlns=")
-    //    .replace(/svg:/gi,"")
-    .replace(/<rect .*?\/rect>/i, "");//takes out background fill
+    .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
     
-    //~ var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-	//~ saveAs(blob, "xiNET_output.svg");
-	
-	var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-    + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-    + svgXml;
-	
-	var xmlAsUrl;
-    //xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    xmlAsUrl += encodeURIComponent(xml);
-    var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
+    if (Blob) {
+		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+		saveAs(blob, "xiNET_output.svg");
+	} else {	
+		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+		+ svgXml;
+		var xmlAsUrl;
+		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
+		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+		xmlAsUrl += encodeURIComponent(xml);
+		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+	}
 };
 
 module.exports = xiNET.Controller;

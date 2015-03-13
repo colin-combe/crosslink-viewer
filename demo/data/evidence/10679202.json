@@ -81,8 +81,17 @@
             "object": "interaction", 
             "participants": [
                 {
-                    "bindingSites": [
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0498", 
+                        "name": "prey"
+                    }, 
+                    "features": [
                         {
+                            "category": "bindingSites", 
                             "id": "2", 
                             "name": "region", 
                             "sequenceData": [
@@ -98,14 +107,6 @@
                             }
                         }
                     ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "expRole": {
-                        "id": "MI:0498", 
-                        "name": "prey"
-                    }, 
                     "id": "1", 
                     "identificationMethods": [
                         {
@@ -182,9 +183,18 @@
             "object": "interaction", 
             "participants": [
                 {
-                    "bindingSites": [
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "expRole": {
+                        "id": "MI:0496", 
+                        "name": "bait"
+                    }, 
+                    "features": [
                         {
-                            "id": "6", 
+                            "category": "bindingSites", 
+                            "id": "5", 
                             "name": "region", 
                             "sequenceData": [
                                 {
@@ -197,19 +207,10 @@
                                 "id": "MI:0442", 
                                 "name": "sufficient binding region"
                             }
-                        }
-                    ], 
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "expRole": {
-                        "id": "MI:0496", 
-                        "name": "bait"
-                    }, 
-                    "experimentalFeatures": [
+                        }, 
                         {
-                            "id": "5", 
+                            "category": "experimentalFeatures", 
+                            "id": "6", 
                             "name": "n-terminus", 
                             "sequenceData": [
                                 {
@@ -326,8 +327,9 @@
                         "id": "MI:0498", 
                         "name": "prey"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "10", 
                             "name": "n-terminus", 
                             "sequenceData": [
@@ -409,8 +411,9 @@
                         "id": "MI:0496", 
                         "name": "bait"
                     }, 
-                    "experimentalFeatures": [
+                    "features": [
                         {
+                            "category": "experimentalFeatures", 
                             "id": "12", 
                             "name": "n-terminus", 
                             "sequenceData": [
@@ -444,16 +447,9 @@
                         "id": "MI:0498", 
                         "name": "prey"
                     }, 
-                    "id": "13", 
-                    "identificationMethods": [
+                    "features": [
                         {
-                            "id": "MI:0705", 
-                            "name": "anti tag western blot"
-                        }
-                    ], 
-                    "interactorRef": "uniprotkb_P22681", 
-                    "pointMutations": [
-                        {
+                            "category": "pointMutations", 
                             "id": "14", 
                             "name": "tyr700phe-tyr731phe-tyr744phe", 
                             "sequenceData": [
@@ -479,6 +475,7 @@
                             }
                         }, 
                         {
+                            "category": "pointMutations", 
                             "id": "15", 
                             "name": "tyr700phe-tyr731phe", 
                             "sequenceData": [
@@ -498,7 +495,15 @@
                                 "name": "mutation decreasing interaction"
                             }
                         }
-                    ]
+                    ], 
+                    "id": "13", 
+                    "identificationMethods": [
+                        {
+                            "id": "MI:0705", 
+                            "name": "anti tag western blot"
+                        }
+                    ], 
+                    "interactorRef": "uniprotkb_P22681"
                 }
             ]
         }

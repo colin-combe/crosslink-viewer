@@ -24,28 +24,33 @@ var showTooltip = function(p)
     };
 
 var setTooltip = function(text, colour) {
-    //TODO: format tooltips (line breaks)
-    if (typeof text === 'undefined') text = "undefined";
-    this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
-    this.tooltip.setAttribute("visibility","visible");
-    var length = this.tooltip.getComputedTextLength();
-    this.tooltip_bg.setAttributeNS(null,"width",length+16);
-    this.tooltip_subBg.setAttributeNS(null,"width",length+16);
-    if (typeof colour !== 'undefined' && colour != null){
-        this.tooltip_bg.setAttribute('fill', colour);
-        this.tooltip_bg.setAttribute('stroke', colour);
-        this.tooltip_bg.setAttribute('fill-opacity', '0.5');
-    } else {
-        this.tooltip_bg.setAttribute('fill','white');
-        this.tooltip_bg.setAttribute('stroke','grey');
-    }
+	if (text) {
+		//TODO: format tooltips (line breaks)
+		if (typeof text === 'undefined') text = "undefined";
+		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
+		this.tooltip.setAttribute("visibility","visible");
+		var length = this.tooltip.getComputedTextLength();
+		this.tooltip_bg.setAttributeNS(null,"width",length+16);
+		this.tooltip_subBg.setAttributeNS(null,"width",length+16);
+		if (typeof colour !== 'undefined' && colour != null){
+			this.tooltip_bg.setAttribute('fill', colour);
+			this.tooltip_bg.setAttribute('stroke', colour);
+			this.tooltip_bg.setAttribute('fill-opacity', '0.5');
+		} else {
+			this.tooltip_bg.setAttribute('fill','white');
+			this.tooltip_bg.setAttribute('stroke','grey');
+		}
 
-    this.tooltip_bg.setAttribute('height', 28);
-    this.tooltip_subBg.setAttribute('height', 28);
+		this.tooltip_bg.setAttribute('height', 28);
+		this.tooltip_subBg.setAttribute('height', 28);
 
-    this.tooltip.setAttribute("visibility","visible");
-    this.tooltip_bg.setAttributeNS(null,"visibility","visible");
-    this.tooltip_subBg.setAttributeNS(null,"visibility","visible");
+		this.tooltip.setAttribute("visibility","visible");
+		this.tooltip_bg.setAttributeNS(null,"visibility","visible");
+		this.tooltip_subBg.setAttributeNS(null,"visibility","visible");
+	}
+	else {
+		this.hideTooltip();
+	}
 };
 
 

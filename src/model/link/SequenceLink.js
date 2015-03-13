@@ -8,28 +8,36 @@
 
 var Link = require('./Link');
 var SequenceDatum = require('./SequenceDatum');
-var BinaryLink = require('./BinaryLink');
-var UnaryLink = require('./UnaryLink');
+//~ var BinaryLink = require('./BinaryLink');
+//~ var UnaryLink = require('./UnaryLink');
 var Config = require('../../controller/Config');
 
 SequenceLink.prototype = new Link();
 function SequenceLink(id, fromFeatPos, toFeatPos, xlvController) {
     this.id = id;
-    this.ctrl = xlvController;
+    this.controller = xlvController;
     this.fromSequenceData = fromFeatPos;
     this.toSequenceData = toFeatPos;
-    //TODO - not dealing with non-contiguous features in different interactors
-    //TEMP - tidy this up
-    var fromInteractor = this.fromSequenceData[0].node;
-	var toInteractor = this.toSequenceData[0].node;
-	this.interactors = [fromInteractor, toInteractor];
-	//TODO - get rid of following
-	fromInteractor.sequenceLinks.set(id, this);
-	toInteractor.sequenceLinks.set(id, this);
-		
-	//used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
-    //this.initSVG();
+    this.interactors = [this.fromSequenceData[0].node, this.toSequenceData[0].node];//*
+    // *potentially, this over simplifies the situation, 
+    // but there is a workaround in way ReadMiJson init's links so OK for now
+	
+}
+
+SequenceLink.prototype.getToolTip = function(){
+	var tooltip = "";
+	tooltip += this.interactors[0].labelText + " ";
+	for (var i = 0; i < this.fromSequenceData.length; i++){
+		if (i > 0) tooltip += ",";
+		tooltip += this.fromSequenceData[i].toString();
+	}
+	tooltip += " to ";
+	tooltip += this.interactors[1].labelText + " ";
+	for (var j = 0; j < this.toSequenceData.length; j++){
+		if (j > 0) tooltip += ",";
+		tooltip += this.toSequenceData[j].toString();
+	}
+	return tooltip;
 }
 
 SequenceLink.prototype.initSVG = function() {
@@ -59,16 +67,10 @@ SequenceLink.prototype.initSVG = function() {
             this.glyph.setAttribute("fill", this.colour.toString());
         }
 
-//set the events for it
+		//set the events for it
         var self = this;
         this.uncertainGlyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            self.ctrl.res_resLinks.removeChild(self.glyph);
-            self.ctrl.res_resLinks.appendChild(self.glyph);
-            self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.uncertainGlyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -78,12 +80,6 @@ SequenceLink.prototype.initSVG = function() {
         };
         this.glyph.onmousedown = function(evt) {
             self.mouseDown(evt);
-            //~ self.ctrl.res_resLinks.removeChild(self.highlightGlyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.highlightGlyph);
-            //~ self.ctrl.res_resLinks.removeChild(self.glyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.glyph);
-            //~ self.ctrl.res_resLinks.removeChild(self.uncertainGlyph);
-            //~ self.ctrl.res_resLinks.appendChild(self.uncertainGlyph);
         };
         this.glyph.onmouseover = function(evt) {
             self.mouseOver(evt);
@@ -105,13 +101,11 @@ SequenceLink.prototype.initSVG = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 SequenceLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-        if (show) {
-            this.highlightGlyph.setAttribute("stroke-opacity", "1");
-        } else {
-            this.highlightGlyph.setAttribute("stroke-opacity", "0");
-        }
-    }
+	if (show) {
+		this.highlightGlyph.setAttribute("stroke-opacity", "1");
+	} else {
+		this.highlightGlyph.setAttribute("stroke-opacity", "0");
+	}
 };
 
 //used when filter changed
@@ -136,32 +130,32 @@ SequenceLink.prototype.anyInteractorIsBar = function() {
 };
 
 SequenceLink.prototype.show = function() {
-  	if (this.ctrl.initComplete) {
-        if (!this.shown) {
-			if (!this.glyph){
-				this.initSVG();
-			}
-			this.shown = true;
-            //this.glyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
-            this.uncertainGlyph.setAttribute("stroke-width", this.ctrl.z * xiNET.linkWidth);
-            this.highlightGlyph.setAttribute("stroke-width", this.ctrl.z * 10);
-            this.setLinkCoordinates();
-            this.ctrl.res_resLinks.appendChild(this.highlightGlyph);
-            this.ctrl.res_resLinks.appendChild(this.glyph);
-            this.ctrl.res_resLinks.appendChild(this.uncertainGlyph);
-        }
-    }
+	if (!this.glyph){
+		this.initSVG();
+	}
+	//this.glyph.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
+	this.uncertainGlyph.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
+	this.highlightGlyph.setAttribute("stroke-width", this.controller.z * 10);
+	this.setLinkCoordinates();
+	var containingGroup = this.controller.res_resLinks;
+	if (this.interactors[0] === this.interactors[1]){
+		containingGroup = this.controller.selfRes_resLinks;
+	}
+	containingGroup.appendChild(this.highlightGlyph);
+	containingGroup.appendChild(this.glyph);
+	containingGroup.appendChild(this.uncertainGlyph);
 };
 
 SequenceLink.prototype.hide = function() {
-    if (this.ctrl.initComplete) {
-        if (this.shown) {
-            this.shown = false;
-            this.ctrl.res_resLinks.removeChild(this.glyph);
-            this.ctrl.res_resLinks.removeChild(this.uncertainGlyph);
-            this.ctrl.res_resLinks.removeChild(this.highlightGlyph);
-        }
-    }
+	var containingGroup = this.controller.res_resLinks;
+	if (this.interactors[0] === this.interactors[1]){
+		containingGroup = this.controller.selfRes_resLinks;
+	}
+	if (containingGroup.contains(this.glyph)) {
+		containingGroup.removeChild(this.glyph);
+		containingGroup.removeChild(this.uncertainGlyph);
+		containingGroup.removeChild(this.highlightGlyph);
+	}
 };
 
 // update the links(polygons/lines) to fit to the protein
@@ -187,7 +181,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         }
 
         function sequenceDataMidPoint(sequenceData, interactor) {
-//get the smallest start and the biggest end
+		//get the smallest start and the biggest end
             var lowestLinkedRes = null, highestLinkedRes = null;
             var sdCount = sequenceData.length;
             for (var s = 0; s < sdCount; s++) {
@@ -219,7 +213,6 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             }
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
-    //~ if (this.shown) { //don't waste time changing DOM if link is not visible
         var fromInteractor = this.fromSequenceData[0].node;
         var toInteractor = this.toSequenceData[0].node;
         //calculate mid points of from and to sequence data
@@ -237,7 +230,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             tMid = sequenceDataMidPoint(this.toSequenceData, toInteractor);
         }
 
-//calculate angle from fromInteractor mid point to toInteractor mid point
+		//calculate angle from fromInteractor mid point to toInteractor mid point
         var deltaX = fMid[0] - tMid[0];
         var deltaY = fMid[1] - tMid[1];
         var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
@@ -247,8 +240,8 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             abmpDeg += 360;
         }
 
-//out is value we use to decide which side of bar the link glyph is drawn
-//first for 'from' interactor
+		//out is value we use to decide which side of bar the link glyph is drawn
+		//first for 'from' interactor
         var out = (abmpDeg - fromInteractor.rotation);
         if (out < 0) {
             out += 360;
@@ -261,7 +254,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
-//now for 'to' interactor
+		//now for 'to' interactor
         out = (abmpDeg - toInteractor.rotation);
         if (out < 0) {
             out += 360;
@@ -275,14 +268,14 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             tRotRad = tRotRad - Math.PI;
         }
 
-        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.ctrl.z),
-            fMid[1] - (30 * Math.cos(fRotRad) * this.ctrl.z)];
+        var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.controller.z),
+            fMid[1] - (30 * Math.cos(fRotRad) * this.controller.z)];
         if (fromInteractor.form === 0) {
             ftMid = fMid;
         }
 
-        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.ctrl.z),
-            tMid[1] - (30 * Math.cos(tRotRad) * this.ctrl.z)];
+        var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.controller.z),
+            tMid[1] - (30 * Math.cos(tRotRad) * this.controller.z)];
         if (toInteractor.form === 0) {
             ttMid = tMid;
         }
@@ -338,9 +331,6 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         this.glyph.setAttribute("d", glyphPath);
         this.uncertainGlyph.setAttribute("d", uncertainGlyphPath);
         this.highlightGlyph.setAttribute("d", highlightGlyphPath);
-	//~ }
-
-    
 };
 
 module.exports = SequenceLink;

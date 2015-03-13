@@ -9,7 +9,6 @@ var Config = {
 	Polymer: {
 		STICKHEIGHT: 20,
 		MAXSIZE: 20,
-		UNITS_PER_RESIDUE: 1,
 		transitionTime: 650
 	}
 };

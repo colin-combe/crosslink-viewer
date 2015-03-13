@@ -4,28 +4,31 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		Protein.js		
 //
-//		authors: Colin Combe
+//		authors: Lutz Fischer, Colin Combe
 
 "use strict";
 
 var Interactor = require('./Interactor');
+var Polymer = require('./Polymer');
+var Rotator = require('../../controller/Rotator');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+Protein.prototype = new Polymer();
 
-function SmallMol(id, xlvController, json, name) {
+function Protein(id, xinetController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
-    this.controller = xlvController;
+    this.controller = xinetController;
     this.json = json;  
+  	this.name = name;
+    this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-
-    this.name = name;
+    this.selfLink = null;
     // layout info
     this.x = 40;
     this.y = 40;
@@ -33,33 +36,27 @@ function SmallMol(id, xlvController, json, name) {
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
     this.form = 0;//null; // 0 = blob, 1 = stick
-    this.isParked = false;
     this.isSelected = false;
-    
-    this.size = 10;//hack, layout is using this
-       
-     /*
-     * Upper group
-     * svg group for elements that appear above links
-	 */
+    //rotators
+	this.lowerRotator = new Rotator(this, 0, this.controller);
+	this.upperRotator = new Rotator(this, 1, this.controller);
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
-
- 	//for polygon
- 	var points = "0, -10  8.66,5 -8.66,5";
+      	
  	//make highlight
-    this.highlight = document.createElementNS(Config.svgns, "polygon");
-    this.highlight.setAttribute("points", points);
+    this.highlight = document.createElementNS(Config.svgns, "rect");
     this.highlight.setAttribute("stroke", Config.highlightColour);
-	this.highlight.setAttribute("stroke-width", "5");   
+    this.highlight.setAttribute("stroke-width", "5");   
     this.highlight.setAttribute("fill", "none");   
-    //this.highlight.setAttribute("fill-opacity", 1);   
-    //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0);
-	this.upperGroup.appendChild(this.highlight);   
-    
-    //create label - we will move this svg element around when protein form changes
+    this.upperGroup.appendChild(this.highlight);   
+   	
+   	//make background
+    //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
+	this.background = document.createElementNS(Config.svgns, "rect");
+    this.background.setAttribute("fill", "#FFFFFF");
+    this.upperGroup.appendChild(this.background);     	
+	//create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
@@ -68,24 +65,36 @@ function SmallMol(id, xlvController, json, name) {
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-    
-    this.labelText = this.name;
-    this.labelTextNode = document.createTextNode(this.labelText);
+    //choose label text
+    if (this.name !== null & this.name !== "") {
+        this.labelText = this.name;
+    }
+    else {
+		this.labelText  = this.id;
+	}
+    if (this.labelText.length > 25) {
+        this.labelText = this.labelText.substr(0, 16) + "...";
+    }
+	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (15) + " " + Interactor.labelY + ")");
-    this.upperGroup.appendChild(this.labelSVG);
-   	 
-	//make blob
-	this.outline = document.createElementNS(Config.svgns, "polygon");
-	this.outline.setAttribute("points", points);
-   
+		"translate( -" + (5) + " " + Interactor.labelY + ") rotate(0) scale(1, 1)");
+    this.upperGroup.appendChild(this.labelSVG);   	
+   	//ticks (and animo acid letters)
+    this.ticks = document.createElementNS(Config.svgns, "g");
+    //svg group for annotations
+	this.annotationsSvgGroup = document.createElementNS(Config.svgns, "g");
+    this.annotationsSvgGroup.setAttribute("opacity", 1);
+	this.upperGroup.appendChild(this.annotationsSvgGroup);
+	
+	//make outline
+    this.outline = document.createElementNS(Config.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
-    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff");
-    //append outline
+    this.outline.setAttribute("fill", "none");
     this.upperGroup.appendChild(this.outline);
+ 
+    this.scaleLabels = new Array();
 
     // events
     var self = this;
@@ -99,11 +108,11 @@ function SmallMol(id, xlvController, json, name) {
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
     };
-     
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
     };
     this.isSelected = false;
+	this.showHighlight(false);
 };
 
-module.exports = SmallMol;
+module.exports = Protein;

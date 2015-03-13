@@ -11,8 +11,8 @@ var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
 //josh - following are libraries and should be in 'vendor'?
 //  but I don't know how to set up the dependency if its there
-var Intersection = require('../../controller/Intersection');
-var Point2D = require('../../controller/Point2D');
+var Intersection = require('../../../vendor/Intersection');
+var Point2D = require('../../../vendor/Point2D');
 
 // BinaryLink.js
 // the class representing a binary interaction
@@ -24,11 +24,35 @@ function BinaryLink(id, xlvController, fromI, toI) {
     this.evidences = d3.map();
     this.interactors = [fromI, toI];	
     this.sequenceLinks = d3.map();
-    this.ctrl = xlvController;
-    this.ambig = false;
-    //used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
+    this.controller = xlvController;
 }
+
+//~ BinaryLink.prototype.getToolTip = function(){
+	//~ var tooltip = "", fromResidues = "", toResidues = "";
+	//~ var seqLinks = this.sequenceLinks.values();
+	//~ var seqLinkCount = seqLinks.length;
+	//~ for (var sl = 0; sl < seqLinkCount; sl++){
+		//~ if (sl > 0){
+			//~ fromResidues += ",";
+			//~ toResidues += ",";
+		//~ }
+		//~ var seqLink = seqLinks[sl];
+		//~ for (var i = 0; i < seqLink.fromSequenceData.length; i++){
+			//~ if (i > 0) tooltip += ",";
+			//~ fromResidues += seqLink.fromSequenceData[i].toString();
+		//~ }
+		//~ for (var j = 0; j < seqLink.toSequenceData.length; j++){
+			//~ if (j > 0) tooltip += ",";
+			//~ toResidues += seqLink.toSequenceData[j].toString();
+		//~ }
+	//~ }
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += fromResidues;
+	//~ tooltip += " TO ";
+	//~ tooltip += this.interactors[1].labelText + " ";
+	//~ tooltip += toResidues;
+	//~ return tooltip;
+//~ }
 
 BinaryLink.prototype.initSVG = function() {
 	this.line = document.createElementNS(Config.svgns, "line");
@@ -96,79 +120,24 @@ BinaryLink.prototype.initSVG = function() {
 }
 ;
 BinaryLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-		if (this.notSubLink === true){
-			this.highlightInteractors(show);
-		}
-        if (show) {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "1");
-        } else {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			//~ if (this.isSelected === false) {
-				this.highlightLine.setAttribute("stroke-opacity", "0");
-			//~ }			
-        }
-    }
+	if (this.notSubLink === true){
+		this.highlightInteractors(show);
+	}
+	if (show) {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+	} else {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		//~ if (this.isSelected === false) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+		//~ }			
+	}
 };
 
 BinaryLink.prototype.check = function() {
-	//~ if (!this.fromInteractor) {//TEMP HACK
-		//~ return false;
-	//~ }
-    if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
-        //~ this.ambig = true;
-        //~ var filteredEvids = this.getFilteredEvidences();
-        //~ var evidCount = filteredEvids.length;
-        //~ for (var i = 0; i < evidCount; i++) {
-            //~ var evid = filteredEvids[i];
-            //~ if (typeof evid.expansion === 'undefined') {
-                //~ this.ambig = false;
-            //~ }
-        //~ }
-        //~ if (evidCount > 0) {
-            //~ //tooltip
-            //~ this.tooltip = /*this.id + ', ' +*/ evidCount + ' experiment';
-            //~ if (evidCount > 1) {
-                //~ this.tooltip += 's';
-            //~ }
-            //~ this.tooltip += ' (';
-            //~ var nested_data = d3.nest()
-                    //~ .key(function(d) {
-                //~ return d.experiment.detmethod.name;
-            //~ })
-                    //~ .rollup(function(leaves) {
-                //~ return leaves.length;
-            //~ })
-                    //~ .entries(filteredEvids);
-//~ 
-            //~ nested_data.sort(function(a, b) {
-                //~ return b.values - a.values
-            //~ });
-            //~ var countDetMethods = nested_data.length
-            //~ for (var i = 0; i < countDetMethods; i++) {
-                //~ if (i > 0) {
-                    //~ this.tooltip += ', ';
-                //~ }
-                //~ this.tooltip += nested_data[i].values + ' ' + nested_data[i].key;
-            //~ }
-            //~ this.tooltip += ' )';
-            //~ //thickLine
-            //~ if (evidCount > 1) {
-                //~ this.thickLineShown = true
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);
-            //~ }
-            //~ else {
-//~ //                this.thickLineShown = false;//hack
-                //~ this.w = evidCount * (45 / BinaryLink.maxNoEvidences);//hack
-            //~ }
-            //~ //ambig?
-            //~ this.dashedLine(this.ambig);
-
-            //sequence links will have been hidden previously
+	if (this.interactors[0].form === 0 && this.interactors[1].form === 0) {
             this.show();
             return true;
-
     }
     else {//at least one end was in stick form
         this.hide();
@@ -177,103 +146,87 @@ BinaryLink.prototype.check = function() {
 };
 
 BinaryLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
-        if (!this.shown) {
-            this.shown = true;
-            if (typeof this.line === 'undefined') {
-                this.initSVG();
-            }
-			this.line.setAttribute("stroke-width", this.ctrl.z * 1);
-			this.highlightLine.setAttribute("stroke-width", this.ctrl.z * 10);
-			this.setLinkCoordinates(this.interactors[0]);
-			this.setLinkCoordinates(this.interactors[1]);
-			if (this.thickLineShown) {
-				this.ctrl.p_pLinksWide.appendChild(this.thickLine);
-			}
-			this.ctrl.highlights.appendChild(this.highlightLine);
-			this.ctrl.p_pLinks.appendChild(this.line);
-			if (this.thickLineShown) {
-				this.thickLine.setAttribute("stroke-width", this.w);
-			}
-		}
-    }
+	if (typeof this.line === 'undefined') {
+		this.initSVG();
+	}
+	this.line.setAttribute("stroke-width", this.controller.z * 1);
+	this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
+	this.setLinkCoordinates(this.interactors[0]);
+	this.setLinkCoordinates(this.interactors[1]);
+	if (this.thickLineShown) {
+		this.controller.p_pLinksWide.appendChild(this.thickLine);
+	}
+	this.controller.highlights.appendChild(this.highlightLine);
+	this.controller.p_pLinks.appendChild(this.line);
+	if (this.thickLineShown) {
+		this.thickLine.setAttribute("stroke-width", this.w);
+	}
 };
 
 BinaryLink.prototype.hide = function() {
-    if (this.shown) {
-        this.shown = false;
-		if (this.thickLineShown) {
-			this.ctrl.p_pLinksWide.removeChild(this.thickLine);
-		}
-		this.ctrl.highlights.removeChild(this.highlightLine);
-		this.ctrl.p_pLinks.removeChild(this.line);
-    }
+	if (this.controller.p_pLinksWide.contains(this.thickLine)) {
+		this.controller.p_pLinksWide.removeChild(this.thickLine);
+	}
+	if (this.controller.highlights.contains(this.highlightLine)) {
+		this.controller.highlights.removeChild(this.highlightLine);
+	}
+	if (this.controller.p_pLinks.contains(this.line)) {
+		this.controller.p_pLinks.removeChild(this.line);
+	}
 };
 
-BinaryLink.prototype.setLinkCoordinates = function(interactor) {
-    if (this.shown) {//don't waste time changing DOM if link not visible
-		var pos = interactor.getPosition();
-        if (interactor.type !== 'complex'){
-			if (this.interactors[0] === interactor) {
-				this.line.setAttribute("x1", pos[0]);
-				this.line.setAttribute("y1", pos[1]);
-				this.highlightLine.setAttribute("x1", pos[0]);
-				this.highlightLine.setAttribute("y1", pos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x1", pos[0]);
-					this.thickLine.setAttribute("y1", pos[1]);
-				}
-			}
-			else {
-				this.line.setAttribute("x2", pos[0]);
-				this.line.setAttribute("y2", pos[1]);
-				this.highlightLine.setAttribute("x2", pos[0]);
-				this.highlightLine.setAttribute("y2", pos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x2", pos[0]);
-					this.thickLine.setAttribute("y2", pos[1]);
-				}
-			}
-		}else {//interactor is a complex
-			var otherEndPos = this.getOtherEnd(interactor).getPosition();
-			var naryPath = interactor.naryLink.hull;
+BinaryLink.prototype.setLinkCoordinates = function() {
+ 		var pos1 = this.interactors[0].getPosition();
+        var pos2 = this.interactors[1].getPosition();
+        
+        if (this.interactors[0].type === 'complex'){        
+			var naryPath = this.interactors[0].naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
 				var p = naryPath[pi];
 				iPath.push(new Point2D(p[0],p[1]));
 			}
-			var a1 = new Point2D(pos[0], pos[1]);
-			var a2 = new Point2D(otherEndPos[0], otherEndPos[1]);
+			var a1 = new Point2D(pos1[0], pos1[1]);
+			var a2 = new Point2D(pos2[0], pos2[1]);
 			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
 			var newPos;
 			if (intersect.points[0]){
-				newPos = [intersect.points[0].x,intersect.points[0].y]; 
-			} else {
-				newPos = pos;
-			} 
-			if (this.interactors[0] === interactor) {
-				this.line.setAttribute("x1", newPos[0]);
-				this.line.setAttribute("y1", newPos[1]);
-				this.highlightLine.setAttribute("x1", newPos[0]);
-				this.highlightLine.setAttribute("y1", newPos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x1", newPos[0]);
-					this.thickLine.setAttribute("y1", newPos[1]);
-				}
+				pos1 = [intersect.points[0].x,intersect.points[0].y]; 
 			}
-			else {
-				this.line.setAttribute("x2", newPos[0]);
-				this.line.setAttribute("y2", newPos[1]);
-				this.highlightLine.setAttribute("x2", newPos[0]);
-				this.highlightLine.setAttribute("y2", newPos[1]);
-				if (this.thickLineShown) {
-					this.thickLine.setAttribute("x2", newPos[0]);
-					this.thickLine.setAttribute("y2", newPos[1]);
-				}
-			}
-		
 		}
-	}
+        
+        if (this.interactors[1].type === 'complex'){        
+			var naryPath = this.interactors[0].naryLink.hull;
+			var iPath = new Array();
+			for (var pi = 0; pi < naryPath.length; pi++) {
+				var p = naryPath[pi];
+				iPath.push(new Point2D(p[0],p[1]));
+			}
+			var a1 = new Point2D(pos1[0], pos1[1]);
+			var a2 = new Point2D(pos2[0], pos2[1]);
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var newPos;
+			if (intersect.points[0]){
+				pos2 = [intersect.points[0].x,intersect.points[0].y]; 
+			}
+		}
+        
+		this.line.setAttribute("x1", pos1[0]);
+		this.line.setAttribute("y1", pos1[1]);
+		this.highlightLine.setAttribute("x1", pos1[0]);
+		this.highlightLine.setAttribute("y1", pos1[1]);
+		if (this.thickLineShown) {
+			this.thickLine.setAttribute("x1", pos1[0]);
+			this.thickLine.setAttribute("y1", pos1[1]);
+		}
+		this.line.setAttribute("x2", pos2[0]);
+		this.line.setAttribute("y2", pos2[1]);
+		this.highlightLine.setAttribute("x2", pos2[0]);
+		this.highlightLine.setAttribute("y2", pos2[1]);
+		if (this.thickLineShown) {
+			this.thickLine.setAttribute("x2", pos2[0]);
+			this.thickLine.setAttribute("y2", pos2[1]);
+		}
 };
 
 BinaryLink.prototype.getOtherEnd = function(interactor) {

@@ -21,14 +21,37 @@ function UnaryLink(id, xlvController, interactor) {
     this.id = id;
     this.evidences = d3.map();
 	this.interactors = [interactor];
-    this.ctrl = xlvController;
-	//used to avoid some unnecessary manipulation of DOM
-    this.shown = false;
-    this.thickLineShown = false;
-    //layout stuff
-    this.hidden = false;
-    this.initSVG();
-}
+    this.sequenceLinks = d3.map();
+    this.controller = xlvController;
+	this.initSVG();
+};
+
+//~ UnaryLink.prototype.getToolTip = function(){
+	//~ var tooltip = "", fromResidues = "", toResidues = "";
+	//~ var seqLinks = this.sequenceLinks.values();
+	//~ var seqLinkCount = seqLinks.length;
+	//~ for (var sl = 0; sl < seqLinkCount; sl++){
+		//~ if (sl > 0){
+			//~ fromResidues += ",";
+			//~ toResidues += ",";
+		//~ }
+		//~ var seqLink = seqLinks[sl];
+		//~ for (var i = 0; i < seqLink.fromSequenceData.length; i++){
+			//~ if (i > 0) tooltip += ",";
+			//~ fromResidues += seqLink.fromSequenceData[i].toString();
+		//~ }
+		//~ for (var j = 0; j < seqLink.toSequenceData.length; j++){
+			//~ if (j > 0) tooltip += ",";
+			//~ toResidues += seqLink.toSequenceData[j].toString();
+		//~ }
+	//~ }
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += fromResidues;
+	//~ tooltip += " TO ";
+	//~ tooltip += this.interactors[0].labelText + " ";
+	//~ tooltip += toResidues;
+	//~ return tooltip;
+//~ };
 
 UnaryLink.prototype.initSVG = function() {
 	var path = this.interactors[0].getAggregateSelfLinkPath();
@@ -97,23 +120,32 @@ UnaryLink.prototype.initSVG = function() {
     };
     
     this.isSelected = false;
+}
+
+UnaryLink.prototype.selfLink = function() {
+	return (this.fromProtein === this.toProtein);
+}
+
+UnaryLink.prototype.initSelfLinkSVG = function() {
+	var path = this.interactors[0].getAggregateSelfLinkPath();
+	this.line.setAttribute('d', path);
+	this.highlightLine.setAttribute('d', path);
+	this.thickLine.setAttribute('d', path);
 };
 
 UnaryLink.prototype.showHighlight = function(show) {
-    if (this.shown) {
-		if (this.notSubLink === true){
-			this.highlightInteractors(show);
-		}
-        if (show) {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "1");
-        } else {
-			//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
-			//~ if (this.isSelected === false) {
-				this.highlightLine.setAttribute("stroke-opacity", "0");
-			//~ }			
-        }
-    }
+	if (this.notSubLink === true){
+		this.highlightInteractors(show);
+	}
+	if (show) {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+		this.highlightLine.setAttribute("stroke-opacity", "1");
+	} else {
+		//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		//~ if (this.isSelected === false) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+		//~ }			
+	}
 };
 
 UnaryLink.prototype.check = function() {
@@ -128,41 +160,25 @@ UnaryLink.prototype.check = function() {
 };
 
 UnaryLink.prototype.show = function() {
-    if (this.ctrl.initComplete) {
-		// resembles Refresh.js, scale() function
-        if (!this.shown) {
-            this.shown = true;
-			this.line.setAttribute("transform", "translate(" + this.interactors[0].x
-					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
-					+ " " + this.interactors[0].y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.ctrl.highlights.appendChild(this.highlightLine);
-			this.ctrl.p_pLinks.appendChild(this.line);
-        }
-    }
+	this.line.setAttribute("transform", "translate(" + this.interactors[0].x
+			+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
+	this.highlightLine.setAttribute("transform", "translate(" + this.interactors[0].x
+			+ " " + this.interactors[0].y + ")" + " scale(" + (this.controller.z) + ")");
+	this.controller.highlights.appendChild(this.highlightLine);
+	this.controller.p_pLinks.appendChild(this.line);
 };
 
-UnaryLink.prototype.hide = function() {
-    if (this.shown) {
-        this.shown = false;
-        //TODO: be more selective about when to show 'thickLine'
-        // if (ProteinLink.maxNoResidueLinks > 1) {
-            // this.ctrl.p_pLinksWide.removeChild(this.thickLine);
-        // }
-        this.ctrl.highlights.removeChild(this.highlightLine);
-        this.ctrl.p_pLinks.removeChild(this.line);
+
+UnaryLink.prototype.setLinkCoordinates = function() {
+	var interactor = this.interactors[0];
+	if (typeof this.thickLine !== 'undefined') {
+		this.thickLine.setAttribute("transform", "translate(" + interactor.x
+				+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 	}
-};
-
-UnaryLink.prototype.setLinkCoordinates = function(interactor) {
-			if (typeof this.thickLine !== 'undefined') {
-				this.thickLine.setAttribute("transform", "translate(" + interactor.x
-						+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			}
-			this.line.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
-			this.highlightLine.setAttribute("transform", "translate(" + interactor.x
-					+ " " + interactor.y + ")" + " scale(" + (this.ctrl.z) + ")");
+	this.line.setAttribute("transform", "translate(" + interactor.x
+			+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
+	this.highlightLine.setAttribute("transform", "translate(" + interactor.x
+			+ " " + interactor.y + ")" + " scale(" + (this.controller.z) + ")");
 };
 
 module.exports = UnaryLink;

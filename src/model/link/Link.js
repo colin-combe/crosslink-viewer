@@ -44,17 +44,17 @@ Link.prototype.highlightInteractors = function(show){
 
 // event handler for starting dragging or rotation (or flipping internal links)
 Link.prototype.mouseDown = function(evt) {
-    this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.ctrl.force){
-        this.ctrl.force.stop();
+    if (this.controller.force){
+        this.controller.force.stop();
     }
-    this.ctrl.dragElement = this;
-    this.ctrl.clearSelection();
+    this.controller.dragElement = this;
+    this.controller.clearSelection();
     //this.setSelected(true);
     //store start location
-    var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
-    this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+    var p = this.controller.getEventPoint(evt);// seems to be correct, see above
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     this.showData();
     return false;
 }
@@ -62,31 +62,33 @@ Link.prototype.mouseDown = function(evt) {
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
-    this.ctrl.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
-    this.ctrl.setTooltip(this.id);
+    this.controller.setTooltip(this.getToolTip());
     return false;
 }
 
+Link.prototype.getToolTip = function(){}
+
 Link.prototype.mouseOut = function(evt){
-    this.ctrl.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(false, true);
-    this.ctrl.hideTooltip();
+    this.controller.hideTooltip();
     return false;
 }
 
 Link.prototype.touchStart = function(evt) {
-    this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.ctrl.force !== undefined){
-        this.ctrl.force.stop();
+    if (this.controller.force !== undefined){
+        this.controller.force.stop();
     }
-    this.ctrl.dragElement = this;
-            this.ctrl.clearSelection();
+    this.controller.dragElement = this;
+            this.controller.clearSelection();
             this.setSelected(true);
     //store start location
-    var p = this.ctrl.getTouchEventPoint(evt);// seems to be correct, see above
-    this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+    var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     this.showData();
     return false;
 }
@@ -115,6 +117,19 @@ Link.prototype.filteredEvidence = function() {
             //~ }
         //~ }
     //~ } 
+};
+
+//used by BinaryLink and UnaryLink
+Link.prototype.hide = function() {
+	if (this.controller.p_pLinksWide.contains(this.thickLine)) {
+		this.controller.p_pLinksWide.removeChild(this.thickLine);
+	}
+	if (this.controller.highlights.contains(this.highlightLine)) {
+		this.controller.highlights.removeChild(this.highlightLine);
+	}
+	if (this.controller.p_pLinks.contains(this.line)) {
+		this.controller.p_pLinks.removeChild(this.line);
+	}
 };
 
 module.exports = Link;

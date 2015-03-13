@@ -21,10 +21,6 @@
 
 function SequenceDatum(node, sequenceDatumString) {
 	this.node = node;
-	//from a complex (bit of a hack)
-	//~ if (typeof sequenceDatumString !== "string"){
-		//~ sequenceDatumString = sequenceDatumString.pos;
-	//~ }          
 	sequenceDatumString = sequenceDatumString.trim();
 
     this.uncertainStart = null;
@@ -55,6 +51,14 @@ function SequenceDatum(node, sequenceDatumString) {
     }
 }
 
+SequenceDatum.prototype.toString = function(){
+	var string = "";
+	if (this.uncertainStart) string += this.uncertainStart + '..';
+	if (this.start) string += this.start + '-';
+	if (this.end) string += this.end;
+	if (this.uncertainEnd) string += '..' + this.uncertainEnd;
+	return string;
+}
 //On 06/06/13 09:22, marine@ebi.ac.uk wrote:
 //> Concerning the ranges, I think there was a confusion :
 //>

@@ -16,7 +16,7 @@ var Config = require('../../controller/Config');
 //josh - should these be moved to Config.js?
 Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Pastel1[8]);
+Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set2[7]);
 
 function Interactor() {}
 
@@ -27,69 +27,64 @@ Interactor.prototype.addStoichiometryLabel = function(stoich) {
 }
 
 Interactor.prototype.mouseDown = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.ctrl.force) {
-            this.ctrl.force.stop();
+        if (this.controller.force) {
+            this.controller.force.stop();
         }
 
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
+        this.controller.dragElement = this;
+        //~ if (evt.controllerKey === false) {
+            this.controller.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.ctrl.getEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+        var p = this.controller.getEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         this.showData();
         return false;
 };
 
 Interactor.prototype.touchStart = function(evt) {
-           this.ctrl.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+           this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.ctrl.force !== undefined) {
-            this.ctrl.force.stop();
+        if (this.controller.force !== undefined) {
+            this.controller.force.stop();
         }
-        this.ctrl.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            this.ctrl.clearSelection();
+        this.controller.dragElement = this;
+        //~ if (evt.controllerKey === false) {
+            this.controller.clearSelection();
             this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.ctrl.getTouchEventPoint(evt);
-        this.ctrl.dragStart = this.ctrl.mouseToSVG(p.x, p.y);
+        var p = this.controller.getTouchEventPoint(evt);
+        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         this.showData();
         return false;
 };
 
-Interactor.prototype.showData = function(evt) {
-    if (document.getElementById('jsonHeading')) {	
-		document.getElementById('jsonHeading').innerHTML = this.id;
-	} 
-    if (document.getElementById('json')) {	
-		document.getElementById('json').innerHTML = 
-			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
-	} 
-}
-
 Interactor.prototype.mouseOver = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(true);
-        this.ctrl.setTooltip(this.id);
+        //~ this.controller.setTooltip(this.id);
         return false;
 };
 
 Interactor.prototype.mouseOut = function(evt) {
-        this.ctrl.preventDefaultsAndStopPropagation(evt);
+        this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(false);
-        this.ctrl.hideTooltip();
+        this.controller.hideTooltip();
         return false;
 };
+
+Interactor.prototype.getBlobRadius = function() {
+    return 15;
+};
+
 
 Interactor.prototype.showHighlight = function(show) {
     if (show === true) {
@@ -105,13 +100,13 @@ Interactor.prototype.showHighlight = function(show) {
 
 Interactor.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.ctrl.selected.set(this.id, this);
+        this.controller.selected.set(this.id, this);
         this.isSelected = true;
 		this.highlight.setAttribute("stroke", Config.selectedColour);
 		this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
-        this.ctrl.selected.remove(this.id);
+        this.controller.selected.remove(this.id);
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", Config.highlightColour);
@@ -126,17 +121,13 @@ Interactor.prototype.getPosition = function(){
 Interactor.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    if (this.form === 1 && this.isParked === false){
+    if (this.form === 1){
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") " + "rotate(" + this.rotation + ")");
-    } 
+				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+  } 
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
-		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
-				+ " scale(" + (this.ctrl.z) + ") ");
+				+ " scale(" + (this.controller.z) + ") ");
 	}
 };
 
@@ -153,7 +144,6 @@ Interactor.prototype.getAggregateSelfLinkPath = function() {
 		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
-//Josh - this gets used from a couple of different files, where do you think it should go?
 Interactor.rotatePointAboutPoint = function(p, o, theta) {
 	theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
 	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
@@ -183,76 +173,28 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     var c = links.length;
     for (var l = 0; l < c; l++) {
 		//if interactor count > 2
-        links[l].setLinkCoordinates(this);
+        links[l].setLinkCoordinates();
     }    
     links = this.binaryLinks.values();
     c = links.length;
     for (var l = 0; l < c; l++) {
         var link = links[l];
-        link.setLinkCoordinates(this);
-        link.setLinkCoordinates(link.getOtherEnd(this));
+        link.setLinkCoordinates();
     }
     if (this.selfLink) {
-		this.selfLink.setLinkCoordinates(this); 
+		this.selfLink.setLinkCoordinates(); 
 	}
 	links = this.sequenceLinks.values();
 	c = links.length;
 	for (var l = 0; l < c; l++) {
-		links[l].setLinkCoordinates(this);
+		links[l].setLinkCoordinates();
 	}    
 };
 
-//TODO: following 3 functions are used by auto layout and need work
-Interactor.prototype.countExternalLinks = function() {
-    return this.binaryLinks.length;
-};
-
-//~ Interactor.prototype.getSubgraph = function() {
-    //~ if (this.subgraph == null) { // don't check for undefined here
-        //~ var subgraph = {
-            //~ nodes: d3.map(),
-            //~ links: d3.map()
-        //~ };
-        //~ this.addConnectedNodes(subgraph);
-        //~ this.ctrl.subgraphs.push(subgraph); 
-    //~ }
-    //~ return this.subgraph;
-//~ };
-//~ 
-//~ Interactor.prototype.addConnectedNodes = function(subgraph) {
-	//~ this.subgraph = subgraph;
-	//~ subgraph.nodes.set(this.id, this);	
-	//~ var count = this.binaryLinks.values().length;
-    //~ for (var bi = 0; bi < count; bi++) {
-		//~ var binaryLink = this.binaryLinks.values()[bi];
-        //~ if (subgraph.links.has(binaryLink.id) === false) {
-        	//~ subgraph.links.set(binaryLink.id, binaryLink);
-				//~ var otherEnd = binaryLink.getOtherEnd(this);
-				 //~ if (otherEnd) {
-					 //~ otherEnd.addConnectedNodes(subgraph);
-				 //~ }
-		//~ }
-    //~ }
-    //~ // count = this.nLinks.values().length;
-    //~ // for (var ni = 0; ni < count; ni++) {
-		//~ // var naryLink = this.naryLinks.values()[ni];
-        //~ // if (subgraph.links.has(binaryLink.id) === false) {
-        	//~ // subgraph.links.set(binaryLink.id, binaryLink);
-				//~ // var otherEnd = binaryLink.getOtherEnd(this);
-				 //~ // if (otherEnd) {
-					 //~ // otherEnd.addConnectedNodes(subgraph);
-				 //~ // }
-		//~ // }
-    //~ // }
-    //~ // console.debug(subgraph.nodes.keys());
-//~ };
-
+//todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
-    this.annotations = [];
-    
-    if (this.circDomains) this.ctrl.emptyElement(this.circDomains);
-    if (this.rectDomains) this.ctrl.emptyElement(this.rectDomains);
-    
+    this.annotations = [];   
+    if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
@@ -265,49 +207,25 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
             var annotPieSlice = document.createElementNS(Config.svgns, "path");
-            var annotColouredRect = document.createElementNS(Config.svgns, "path");
-            
-            this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-           // alert(this.form);
-            if (this.form === 0) {
+            this.annotations.push({anno:anno, pieSlice:annotPieSlice});//, rect:annotColouredRect});
+             if (this.form === 0) {
                 annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
             } else {
                 annotPieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                annotColouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
             }
             annotPieSlice.setAttribute("stroke", "none");
-            annotColouredRect.setAttribute("stroke", "none");
-            
             var c;
-            //temp
             if (anno.colour == null) { // check == here
-                if (anno.name === 'alpha_helix') {
-                    c = new RGBColor('#7EB6FF88');
-                }
-                else if (anno.name === 'beta_strand') {
-                    c = new RGBColor('#9AFF9A88');
-                }
-                else if (anno.name === 'turn') {
-                    c = new RGBColor('#FF00AA88');
-                }
-                else {
-                    c = new RGBColor(Interactor.domainColours(anno.name));
-                }
+				c = Interactor.domainColours(anno.name);
             }
             else {
                 c = anno.colour;
             }
-            //console.log(JSON.stringify(c));
-            annotPieSlice.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
+            annotPieSlice.setAttribute("fill", c);
             annotPieSlice.setAttribute("fill-opacity", "1");
-            annotColouredRect.setAttribute("fill", c);//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "1");
-            
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             annotPieSlice.name = text;
-            //~ annotMouseEventRect.name = text;
-            var xlv = this.ctrl;
+            var xlv = this.controller;
             var self = this;
             annotPieSlice.onmouseover = function(evt) {
                 //    for magnifier experiment
@@ -316,17 +234,9 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-            annotColouredRect.onmouseover = function(evt) {
-                //    for magnifier experiment
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-                xlv.setTooltip(el.name, el.getAttribute('fill'));
-                self.showHighlight(true);
-            };
-            this.circDomains.appendChild(annotPieSlice);
-            if (this.rectDomains) {
-                this.rectDomains.appendChild(annotColouredRect);
-            }
+             if (this.annotationsSvgGroup) { //hack
+				 this.annotationsSvgGroup.appendChild(annotPieSlice);
+			 }
         }
     }
 };
@@ -340,41 +250,18 @@ Interactor.trig = function(radius, angleDegrees) {
             y: (radius * Math.sin(radians))
         };
 };
-Interactor.stepsInArc = 5;
 
-Interactor.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
-    var endAngle = ((annotation.end - 1) / this.size) * 360;
-    var radius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(radius, startAngle - 90);
-    var arcEnd = Interactor.trig(radius, endAngle - 90);
-    var largeArch = 0;
-    if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
-        largeArch = 1;
-    }
-    //~ console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-        //~ + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
-    return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-        + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z"; 
-};
+Interactor.prototype.showData = function(evt) {
+    if (document.getElementById('jsonHeading')) {	
+		document.getElementById('jsonHeading').innerHTML = this.id;
+	} 
+    if (document.getElementById('json')) {	
+		document.getElementById('json').innerHTML = 
+			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
+	} 
+}
 
-Interactor.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
-    //approximate pie slice
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
-    var endAngle = ((annotation.end) / this.size) * 360;
-    var pieRadius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(pieRadius, startAngle - 90);
-    var arcEnd = Interactor.trig(pieRadius, endAngle - 90);
-    var approximatePiePath = "M 0,0";
-    var stepsInArc = 5;
-    for (var sia = 0; sia <= Interactor.stepsInArc; sia++) {
-        var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-        var siaCoord = Interactor.trig(pieRadius, angle - 90);
-        approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
-    }
-    approximatePiePath += " L " + 0 + "," + 0;
-    approximatePiePath += "  Z";
-    return approximatePiePath;
+Interactor.prototype.setForm = function(form, svgP) {
 };
 
 module.exports = Interactor;

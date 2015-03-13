@@ -16,14 +16,30 @@ var checkLinks = function() {
 			links[l].check();
 		}	
 	}    
-    if (this.initComplete) {
-		var suspendID = this.svgElement.suspendRedraw(5000);
-		checkAll(this.allNaryLinks);
-		checkAll(this.allBinaryLinks);
-		checkAll(this.allUnaryLinks);
-		checkAll(this.allSequenceLinks);
-		this.svgElement.unsuspendRedraw(suspendID);
-	}
+	var suspendID = this.svgElement.suspendRedraw(5000);
+	checkAll(this.allNaryLinks);
+	checkAll(this.allBinaryLinks);
+	checkAll(this.allUnaryLinks);
+	checkAll(this.allSequenceLinks);
+	this.svgElement.unsuspendRedraw(suspendID);
+};
+
+var setAllLinkCoordinates = function() {
+    function setAll(linkMap){
+		var links = linkMap.values();
+		var c = links.length;
+		for (var l = 0; l < c; l++) {
+			links[l].setLinkCoordinates();
+		}	
+	}    
+	var suspendID = this.svgElement.suspendRedraw(5000);
+	setAll(this.allNaryLinks);
+	setAll(this.allBinaryLinks);
+	setAll(this.allUnaryLinks);
+    if (this.sequenceInitComplete) {
+		setAll(this.allSequenceLinks);
+	}		
+	this.svgElement.unsuspendRedraw(suspendID);
 };
 
 var scale = function() {// TODO: this is currently broken
@@ -75,4 +91,4 @@ var scale = function() {// TODO: this is currently broken
     //~ this.svgElement.unsuspendRedraw(suspendID);
 };
 
-module.exports = {checkLinks: checkLinks, scale: scale};
+module.exports = {checkLinks: checkLinks, setAllLinkCoordinates: setAllLinkCoordinates, scale: scale};

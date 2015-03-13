@@ -4,7 +4,7 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		InteractorSet.js		
+//		RNA.js		
 //
 //		authors: Colin Combe
 
@@ -13,9 +13,9 @@
 var Interactor = require('./Interactor');
 var Config = require('../../controller/Config');
 
-InteractorSet.prototype = new Interactor();
+RNA.prototype = new Interactor();
 
-function InteractorSet(id, xlvController, json) {
+function RNA(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
     this.json = json;  
@@ -24,12 +24,8 @@ function InteractorSet(id, xlvController, json) {
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-	
-	this.name = "INTERACTOR SET";
-    this.size = 10;//HACK
-	
-    this.tooltip = this.id;
-    
+
+    this.name = name;
     // layout info
     this.x = 40;
     this.y = 40;
@@ -49,7 +45,9 @@ function InteractorSet(id, xlvController, json) {
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
- 	var points = "0, -10  8.66,5 -8.66,5";
+    
+    //for polygon
+ 	var points = "0, -10  10, 0 0, 10 -10, 0";
  	//make highlight
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
@@ -61,16 +59,10 @@ function InteractorSet(id, xlvController, json) {
     d3.select(this.highlight).attr("stroke-opacity", 0);
 	this.upperGroup.appendChild(this.highlight);   
 
-    //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
-    this.intraLinks = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
-    
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
-    this.labelSVG.setAttribute("fill", "red")
+    this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
@@ -111,31 +103,7 @@ function InteractorSet(id, xlvController, json) {
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
     };
-    //~ this.upperGroup.ontouchmove = function(evt) {};
-	//~ this.upperGroup.ontouchend = function(evt) {
-		//~ self.ctrl.message("protein touch end");
-		//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchenter = function(evt) {
-        //~ self.message("protein touch enter");
-    	//~ self.touchStart(evt);
-    //~ };
-    //~ this.upperGroup.ontouchleave = function(evt) {
-        //~ self.message("protein touch leave");
-    	//~ self.mouseOut(evt);
-    //~ };
-    //~ this.upperGroup.ontouchcancel = function(evt) {
-        //~ self.message("protein touch cancel");
-    	//~ self.mouseOut(evt);
-    //~ };
     this.isSelected = false;
 };
 
-InteractorSet.prototype.getBlobRadius = function() {
-    return 10;
-};
-
-InteractorSet.prototype.setForm = function(form, svgP) {
-};
-
-module.exports = InteractorSet;
+module.exports = RNA;
