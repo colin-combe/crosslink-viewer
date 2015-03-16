@@ -68,7 +68,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.mouseMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-  //  if (this.initComplete) { // just being cautious
+  //  if (this.sequenceInitComplete) { // just being cautious
         var p = this.getEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
 
@@ -148,7 +148,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 //        this.updateMarquee(this.marquee, c);
 //    }
         else if (this.state === xiNET.Controller.PANNING) {
-            xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+           xiNET.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
             this.showTooltip(p);
@@ -210,7 +210,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 					} else if (evt.shiftKey) { //if shift key
 						this.dragElement.switchStickScale(c);
 					} else {
-						if (this.initComplete === true){
+						if (this.sequenceInitComplete === true){
 							if (this.dragElement.form === 0) {
 								this.dragElement.setForm(1, c);
 							} else {
@@ -295,13 +295,6 @@ xiNET.Controller.prototype.mouseWheel = function(evt) {
 };
 
 xiNET.Controller.prototype.clearSelection = function() {
-    //~ var proteins = this.proteins.values();
-    //~ var proteinCount = proteins.length;
-    //~ for (var p = 0; p < proteinCount; p++) {
-        //~ var prot = proteins[p];
-        //~ prot.setSelected(false);
-    //~ }
-
 	var things = this.selected.values();
     var count = things.length;
     for (var t = 0; t < count; t++) {
@@ -325,7 +318,7 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
         element = element.offsetParent;
    } while(element);
    //TODO: should do equivalent for horizontal scroll also
-	top += getScrollTop();
+	// top += getScrollTop();
     p.x = evt.pageX - left;
     p.y = evt.pageY - top;
     return p;
@@ -363,12 +356,4 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
     if (evt.preventDefault)
         evt.preventDefault();
     //~ evt.returnValue = false;
-};
-
-/**
- * Sets the current transform matrix of an element.
- */
-xiNET.setCTM = function(element, matrix) {
-    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-    element.setAttribute("transform", s);
 };

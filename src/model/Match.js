@@ -23,8 +23,8 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
   	
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
-    
-    //score - leaves this.score undefined if !isNaN(parseInt(score)) 
+   				//~ console.log(score); 
+    //score - leaves this.score null if !isNaN(parseFloat(score)) 
     if (typeof score != 'undefined' && score){
 		score = parseFloat(score);
 		if (!isNaN(score)){

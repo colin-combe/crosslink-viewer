@@ -350,7 +350,7 @@ ResidueLink.prototype.dashedLine = function(dash) {
 };
 
 ResidueLink.prototype.show = function() {
-    if (this.xlv.initComplete) {
+    if (this.xlv.sequenceInitComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
@@ -375,7 +375,7 @@ ResidueLink.prototype.show = function() {
 };
 
 ResidueLink.prototype.hide = function() {
-    if (this.xlv.initComplete) {
+    if (this.xlv.sequenceInitComplete) {
         if (this.shown) {
             this.shown = false;
             if (this.intra || this.proteinLink.toProtein === null) {

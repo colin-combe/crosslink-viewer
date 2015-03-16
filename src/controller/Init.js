@@ -39,7 +39,7 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.oncontextmenu = function() {
         return false;
     };
-    //add mouse listeners
+    //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {
         self.mouseDown(evt);
@@ -54,26 +54,21 @@ xiNET.Controller = function(targetDiv) {
     // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
     this.svgElement.onmouseout = function(evt) {
         self.hideTooltip(evt);
-    };   
-	var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-	if (document.attachEvent){ //if IE (and Opera depending on user setting) 
-		this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
-	}
-	else if (document.addEventListener) { //WC3 browsers
-		this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
-	}        	  
-    this.lastMouseUp = new Date().getTime();
-    //add touch listeners
-    var self = this;
-    //touchstart
+    };    
+    var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+    if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+        this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
+    }
+    else if (document.addEventListener) { //WC3 browsers
+        this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
+    }  
+    this.lastMouseUp = new Date().getTime();   
+     //touchstart
     this.svgElement.ontouchstart = function(evt) {
- 		self.message("touch start");
         self.touchStart(evt);
     };
     //touchmove
     this.svgElement.ontouchmove = function(evt) {
- 		//~ self.message("touch move");
-		//~ console.debug("move");
         self.touchMove(evt);
     };
     //touchend
@@ -140,8 +135,7 @@ xiNET.Controller = function(targetDiv) {
 
     this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_bg.setAttribute('id', 'tooltip_bg');
-
+    
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
@@ -150,7 +144,6 @@ xiNET.Controller = function(targetDiv) {
     this.tooltip_subBg.setAttribute('fill', 'white');
     this.tooltip_subBg.setAttribute('stroke', 'white');
     this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
-    //~ this.tooltip_subBg.setAttribute('id', 'tooltip_bg');
     this.tooltip_subBg.setAttribute('opacity', 1);
     this.tooltip_subBg.setAttribute('stroke-width', 1);
 
@@ -161,8 +154,16 @@ xiNET.Controller = function(targetDiv) {
     this.clear();
 };
 
+/**
+ * Sets the current transform matrix of an element.
+ */
+xiNET.setCTM = function(element, matrix) {
+    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+    element.setAttribute("transform", s);
+};
+
 xiNET.Controller.prototype.clear = function() {
-    this.initComplete = false;
+    this.sequenceInitComplete = false;
  	if (this.force) {
 		this.force.stop();
 	}
@@ -175,7 +176,7 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
 	this.svgElement.unsuspendRedraw(suspendID);
-    
+ 
      //are we panning?
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
@@ -198,10 +199,6 @@ xiNET.Controller.prototype.clear = function() {
     Protein.MAXSIZE = 100;
 
     this.layout = null;
-    if (typeof this.force !== 'undefined' && this.force != null) {
-        this.force.stop();
-    }
-    this.force = null;
     this.z = 1;
     this.scores = null;
     this.selected = d3.map();
@@ -220,6 +217,128 @@ xiNET.Controller.prototype.emptyElement = function(element) {
     }
 };
 
+xiNET.Controller.prototype.setAnnotations = function(annotationType) {
+	this.annotationSet = annotationType;
+	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
+		var mols = this.proteins.values(); 
+		var molCount = mols.length;
+		var self = this;
+		for (var m = 0; m < molCount; m++) {
+			var mol = mols[m];
+			if (annotationType.toUpperCase() === "MI FEATURES") {
+				mol.setPositionalFeatures(mol.miFeatures);
+			}
+			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+					var m = self.proteins.get(id);
+					m.setPositionalFeatures(fts);
+				});
+			}  
+			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
+					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+						var m = self.proteins.get(id);
+						m.setPositionalFeatures(fts);
+					});
+		
+			}
+			else if (annotationType.toUpperCase() === "INTERACTOR") {
+					var annotation = new Annotation (mol.json.label, 1, mol.size);
+					mol.setPositionalFeatures([annotation]);
+			}
+			else {
+				mol.setPositionalFeatures([])
+			}
+		}
+		return true;
+	}
+	else return false;
+};
+
+//this can be done before all proteins have their sequences
+xiNET.Controller.prototype.initLayout = function() {
+    if (typeof this.layout !== 'undefined' && this.layout != null) {
+        this.loadLayout();
+    } else {
+        var proteins = this.proteins.values();
+        var proteinCount = proteins.length;
+        for (var p = 0; p < proteinCount; p++) {
+            var prot = proteins[p];
+            this.proteinLower.appendChild(prot.lowerGroup);
+            this.proteinUpper.appendChild(prot.upperGroup);
+        }
+        this.autoLayout();
+    }
+};
+
+//requires all proteins have had sequence set
+xiNET.Controller.prototype.initProteins = function() {
+	var prots = this.proteins.values();
+	var protCount = prots.length;
+	Protein.MAXSIZE = 0;
+	for (var i = 0; i < protCount; i++){
+		var protSize = prots[i].size;
+		if (protSize > Protein.MAXSIZE){
+			Protein.MAXSIZE = protSize;
+		}
+	}
+	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+	var width = this.svgElement.parentNode.clientWidth;
+	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
+	for (var i = 0; i < protCount; i++){
+		prots[i].init();
+	}
+	this.sequenceInitComplete = true;
+	
+	if (this.annotationSet){
+		xlv.setAnnotations(this.annotationSet);
+	}
+	else {
+		this.setAnnotations('CUSTOM');
+	}
+}
+
+xiNET.Controller.prototype.reset = function() {
+	this.resetZoom();
+    var proteins = this.proteins.values();
+    var proteinCount = proteins.length;
+    for (var p = 0; p < proteinCount; p++) {
+        var prot = proteins[p];
+        prot.setForm(0);
+    }
+    this.autoLayout();
+};
+
+xiNET.Controller.prototype.resetZoom = function() {
+    this.container.setAttribute("transform", "scale(1)");
+    this.scale();
+    //~ var proteins = this.proteins.values();
+    //~ var proteinCount = proteins.length;
+    //~ for (var p = 0; p < proteinCount; p++) {
+        //~ var prot = proteins[p];
+        //~ prot.stickZoom = 1;
+        //~ prot.scale();
+    //~ }
+};
+
+xiNET.Controller.prototype.exportSVG = function() {
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
+    .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
+    
+    if (Blob) {
+		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+		saveAs(blob, "xiNET_output.svg");
+	} else {	
+		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+		+ svgXml;
+		var xmlAsUrl;
+		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
+		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+		xmlAsUrl += encodeURIComponent(xml);
+		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+	}
+};
+
 xiNET.Controller.prototype.message = function(text, preformatted) {
     if (typeof this.messageElement !== 'undefined') {
         if (typeof text === "object") {
@@ -235,7 +354,8 @@ xiNET.Controller.prototype.message = function(text, preformatted) {
 
 xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
     var newProt = new Protein(id, this, accession, label);
-    newProt.initProtein(sequence, label, description, size);
+    newProt.setSequence(sequence);
+    newProt.init();
     this.proteins.set(id, newProt);
 };
 
@@ -334,111 +454,6 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
     }
 }
 
-xiNET.Controller.prototype.annotationSet = function(annotationSetName) {
-    var prots = this.proteins.values(); 
-    var protCount = prots.length;
-    var self = this;
-    for (var p = 0; p < protCount; p++) {
-        var protein = prots[p];
-        if (annotationSetName.toUpperCase() === "CUSTOM") {
-            protein.setPositionalFeatures(protein.customAnnotations);
-        }
-        else if (annotationSetName.toUpperCase() === "SUPERFAM" || annotationSetName.toUpperCase() === "SUPERFAMILY"){
-			xiNET_Storage.getSuperFamFeatures(protein.id, function (id, fts){
-				var p = self.proteins.get(id);
-				p.setPositionalFeatures(fts);
-			});
-		} 
-		else if (annotationSetName.toUpperCase() === "UNIPROT" || annotationSetName.toUpperCase() === "UNIPROTKB") {
-			xiNET_Storage.getUniProtFeatures(protein.id, function (id, fts){
-				var p = self.proteins.get(id);
-				p.setPositionalFeatures(fts);
-			});
-		}
-		else {
-			protein.setPositionalFeatures([])
-		}
-    }
-}
-
-//this can be done before all proteins have their sequences
-xiNET.Controller.prototype.initLayout = function() {
-    if (typeof this.layout !== 'undefined' && this.layout != null) {
-        this.loadLayout();
-    } else {
-        var proteins = this.proteins.values();
-        var proteinCount = proteins.length;
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
-            this.proteinLower.appendChild(prot.lowerGroup);
-            this.proteinUpper.appendChild(prot.upperGroup);
-        }
-        this.autoLayout();
-    }
-}
-
-//requires all proteins have had sequence set
-xiNET.Controller.prototype.initProteins = function() {
-	var prots = this.proteins.values();
-	var protCount = prots.length;
-	Protein.MAXSIZE = 0;
-	for (var i = 0; i < protCount; i++){
-		var protSize = prots[i].size;
-		if (protSize > Protein.MAXSIZE){
-			Protein.MAXSIZE = protSize;
-		}
-	}
-	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-	var width = this.svgElement.parentNode.clientWidth;
-	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
-	for (var i = 0; i < protCount; i++){
-		prots[i].init();
-	}
-	this.initComplete = true;
-}
-
-
-xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
-    var proteinLink = this.proteinLinks.get(linkID);
-    if (typeof proteinLink !== 'undefined') {
-        proteinLink.colour = new RGBColor(colour);
-        proteinLink.colourSpecified = true;
-    }
-    else {
-        var protein = this.proteins.get(linkID);
-        if (typeof protein !== 'undefined') {
-            protein.internalLinkColour = new RGBColor(colour);
-            //            protein.colourSpecified = true;
-        }
-    }
-};
-
-xiNET.Controller.prototype.parkAll = function() {
-    var prots = this.proteins.values();
-    var protCount = prots.length;
-    for (var p = 0; p < protCount; p++) {
-        var protein = prots[p];
-        if (protein.isParked === false)
-            protein.toggleParked();
-    }
-};
-
-xiNET.Controller.prototype.resetZoom = function() {
-    //    var conBBox = this.container.getBBox();
-    //    var w = this.svgElement.parentNode.clientWidth;//getAttribute("viewBox");
-    //    var h = this.svgElement.parentNode.clientHeight;//getAttribute("width");
-    //    alert(vb + " "  + w + " "  + h + " " + "");
-    this.container.setAttribute("transform", "scale(1)");
-    this.scale();
-    //~ var proteins = this.proteins.values();
-    //~ var proteinCount = proteins.length;
-    //~ for (var p = 0; p < proteinCount; p++) {
-        //~ var prot = proteins[p];
-        //~ prot.stickZoom = 1;
-        //~ prot.scale();
-    //~ }
-};
-
 xiNET.Controller.prototype.getLayout = function() {
     var myJSONText = JSON.stringify(this.proteins, null, '\t');
     var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
@@ -535,4 +550,29 @@ xiNET.Controller.prototype.loadLayout = function() {
         }
     }
     this.svgElement.unsuspendRedraw(suspendID);
+};
+
+xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
+    var proteinLink = this.proteinLinks.get(linkID);
+    if (typeof proteinLink !== 'undefined') {
+        proteinLink.colour = new RGBColor(colour);
+        proteinLink.colourSpecified = true;
+    }
+    else {
+        var protein = this.proteins.get(linkID);
+        if (typeof protein !== 'undefined') {
+            protein.internalLinkColour = new RGBColor(colour);
+            //            protein.colourSpecified = true;
+        }
+    }
+};
+
+xiNET.Controller.prototype.parkAll = function() {
+    var prots = this.proteins.values();
+    var protCount = prots.length;
+    for (var p = 0; p < protCount; p++) {
+        var protein = prots[p];
+        if (protein.isParked === false)
+            protein.toggleParked();
+    }
 };

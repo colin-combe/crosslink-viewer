@@ -254,36 +254,14 @@ xiNET.Controller.prototype.setCutOff = function(cutOff) {
     this.checkLinks();
 };
 
-xiNET.Controller.prototype.hideInternal = function(bool) {
-    this.intraHidden = bool;
+xiNET.Controller.prototype.showSelfLinks = function(bool) {
+    this.intraHidden = !bool;
     this.checkLinks();
 };
 
-xiNET.Controller.prototype.hideAmbig = function(bool) {
-    this.ambigHidden = bool;
+xiNET.Controller.prototype.showAmbig = function(bool) {
+    this.ambigHidden = !bool;
     this.checkLinks();
-};
-
-xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    //    .replace(/<g class="highlights".*?<g id="p_pLinks"/gi,"<g id=\"p_pLinks\"")
-    //    .replace(/<g class="highlights".*?<g class="intraLinks"/gi,"<g class=\"intraLinks\"")
-    //    .replace(/xmlns:svg=/gi,"xmlns=")
-    //    .replace(/svg:/gi,"")
-    .replace(/<rect .*?\/rect>/i, "");//takes out background fill
-    
-    var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-	saveAs(blob, "xiNET_output.svg");
-	
-	//~ var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-    //~ + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-    //~ + svgXml;
-	//~ 
-	//~ var xmlAsUrl;
-    //~ xmlAsUrl = 'data:xml;filename=ProteinViewExport.xml,'
-    //~ //xmlAsUrl = 'data:image/svg;filename=ProteinViewExport.svg,';
-    //~ xmlAsUrl += encodeURIComponent(xml);
-    //~ var win = window.open(xmlAsUrl, 'ProteinViewExport.svg');
 };
 
 //set the message element to use (optional - mainly for debugging)

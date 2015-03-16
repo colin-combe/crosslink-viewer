@@ -40,7 +40,7 @@ xiNET.Controller.prototype.touchStart = function(evt) {
 xiNET.Controller.prototype.touchMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     this.message(this.dragStart);
-    if (this.initComplete) { // just being cautious
+    if (this.sequenceInitComplete) { // just being cautious
         var p = this.getTouchEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
 
