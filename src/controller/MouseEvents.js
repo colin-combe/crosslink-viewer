@@ -42,7 +42,7 @@ var mouseDown = function(evt) {
     else if (evt.button)
         rightClick = (evt.button === 2);
 
-    if (evt.controllerKey === true || evt.shiftKey === true || rightClick) {
+    if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
 //        alert("here");
 //        this.state = MouseEventCodes.SELECTING;
 ////        //      marquee.style.strokeDashoffset=0;
@@ -136,7 +136,7 @@ var mouseMove = function(evt) {
 //        this.updateMarquee(this.marquee, c);
 //    }
 	else if (this.state === MouseEventCodes.PANNING) {
-		setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+//		setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
 	}
 	else {
 		this.showTooltip(p);
@@ -309,7 +309,7 @@ var getEventPoint = function(evt) {
     return p;
 };
 
-
+/*
 var getScrollTop = function(){
     if(typeof pageYOffset!= 'undefined'){
         //most browsers except IE before #9
@@ -322,7 +322,7 @@ var getScrollTop = function(){
         return D.scrollTop;
     }
 }
-
+*/
 // transform the mouse-position into a position on the svg
 var mouseToSVG = function(x, y) {
     var p = this.svgElement.createSVGPoint();
