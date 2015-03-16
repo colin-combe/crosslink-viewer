@@ -38,7 +38,6 @@ TouchEvents.touchStart = function(evt) {
 // dragging/rotation/panning/selecting
 TouchEvents.touchMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-    this.message(this.dragStart);
     if (this.sequenceInitComplete) { // just being cautious
         var p = this.getTouchEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
@@ -155,13 +154,9 @@ TouchEvents.touchEnd = function(evt) {
 		this.svgElement.removeChild(this.marquee);
 	}
 	//    this.svgElement.unsuspendRedraw(suspendID);
-			
-	//this.message("nulling...");
-
 	this.dragElement = null;
 	this.whichRotator = -1;
 	this.state = xiNET.Controller.MOUSE_UP;
-
     return false;
 };
 
@@ -203,11 +198,9 @@ TouchEvents.getTouchEventPoint = function(evt) {
    } while(element);
    //TODO: should do equivalent for horizontal scroll also
 	top += getScrollTop();
- //~ this.message("?");//this.dragStart);
        p.x = evt.touches[0].pageX - left;
     p.y = evt.touches[0].pageY - top;
  //~ var help = left;////evt.touches[0].pageX;//.toString();
-  //~ this.message(JSON.stringify(help, null, '\t'));//this.dragStart);
    return p;
 };
 

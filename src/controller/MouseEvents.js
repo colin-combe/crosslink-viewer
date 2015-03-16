@@ -362,8 +362,8 @@ module.exports = {
     clearSelection: clearSelection,
     getEventPoint: getEventPoint,
     preventDefaultsAndStopPropagation: preventDefaultsAndStopPropagation,
-    setCTM: setCTM,
-    getScrollTop: getScrollTop,
+    //~ setCTM: setCTM,
+    //~ getScrollTop: getScrollTop,
     sortByNumber: sortByNumber,
     mouseToSVG: mouseToSVG
 }

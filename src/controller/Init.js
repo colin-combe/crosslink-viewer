@@ -77,7 +77,6 @@ xiNET.Controller = function(targetDiv) {
     };
     //touchend
     this.svgElement.ontouchend = function(evt) {
-        self.message("touch end");
         self.touchEnd(evt);
     };
     
