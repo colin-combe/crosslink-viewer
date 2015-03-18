@@ -576,3 +576,23 @@ xiNET.Controller.prototype.parkAll = function() {
             protein.toggleParked();
     }
 };
+
+xiNET.Controller.prototype.setCutOff = function(cutOff) {
+    this.cutOff = cutOff;
+    this.checkLinks();
+};
+
+xiNET.Controller.prototype.showSelfLinks = function(bool) {
+    this.selfLinksShown = bool;
+    this.checkLinks();
+};
+
+xiNET.Controller.prototype.showAmbig = function(bool) {
+    this.ambigShown = bool;
+    this.checkLinks();
+};
+
+//set the message element to use (optional - mainly for debugging)
+xiNET.Controller.prototype.setMessageElement = function(e) {
+    this.messageElement = e;
+};

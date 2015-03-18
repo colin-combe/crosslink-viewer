@@ -6,6 +6,88 @@
 
 "use strict";
 
+
+function saveLayout() {
+    var layout = xlv.getLayout();
+    //        xlv.message("layout sent:" + layout, true);
+    var defaultDesc = this.currentLayoutName;
+    var desc = '';
+    while (desc === '' || desc === 'default') {
+        desc = prompt("Enter description of layout:", defaultDesc);
+    }
+    if (desc != null) {
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        var url = "./saveLayout.php";
+        var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
+            layout) + "&desc=" + desc;
+        xmlhttp.open("POST", url, true);
+        //Send the proper header information along with the request
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        //chrome doesn't like following
+        //  xmlhttp.setRequestHeader("Content-length", params.length);
+        //    xmlhttp.setRequestHeader("Connection", "close");
+
+        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                //                xlv.message("response:" + xmlhttp.responseText, true)
+                xlv.message("<br>Layout saved");
+                var select = document.getElementById('load_layout');
+                var optionlist = select.options;
+                for (var option = 0; option < optionlist.length; option++ )
+                {
+                    if (optionlist[option].text == desc)
+                    {
+                        return;
+                    }
+                }
+                var newLayoutOption = document.createElement("option");
+                newLayoutOption.setAttribute("value", desc);
+                newLayoutOption.appendChild(document.createTextNode(desc));
+                select.appendChild(newLayoutOption);
+            }
+        };
+        xmlhttp.send(params);
+    }
+}
+
+
+function loadLayout(layoutDesc) {
+    this.currentLayoutName = layoutDesc;
+    if (layoutDesc != '') {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "../searches/getLayout.php";
+        var params = "sid=" + xlv.sid + "&desc=" + layoutDesc;
+        xmlhttp.open("POST", url, true);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                var response = xmlhttp.responseText;
+                xlv.message("response:" + response, true);
+                xlv.setLayout(response);
+                xlv.loadLayout();
+                //            var proteins = xlv.proteins.values();
+                //            var proteinCount = proteins.length;
+                //            for (var p = 0; p < proteinCount; p++) {
+                //                var prot = proteins[p];
+                //                prot.setAllLineCoordinates();
+                //            }
+                xlv.checkLinks();
+            }
+        };
+        xmlhttp.send(params);
+    }
+}
+
+
+
+
+/*
+
+
 // text filter currently not working
 xiNET.Controller.prototype.textFilterKeyUp = function(filterText) {
     this.textFilterRegex = new Array();
@@ -249,97 +331,4 @@ xiNET.Controller.prototype.exportLinks = function() {
     xlv.message(myJSONText, true);
 };
 
-xiNET.Controller.prototype.setCutOff = function(cutOff) {
-    this.cutOff = cutOff;
-    this.checkLinks();
-};
-
-xiNET.Controller.prototype.showSelfLinks = function(bool) {
-    this.intraHidden = !bool;
-    this.checkLinks();
-};
-
-xiNET.Controller.prototype.showAmbig = function(bool) {
-    this.ambigHidden = !bool;
-    this.checkLinks();
-};
-
-//set the message element to use (optional - mainly for debugging)
-xiNET.Controller.prototype.setMessageElement = function(e) {
-    this.messageElement = e;
-};
-
-function saveLayout() {
-    var layout = xlv.getLayout();
-    //        xlv.message("layout sent:" + layout, true);
-    var defaultDesc = this.currentLayoutName;
-    var desc = '';
-    while (desc === '' || desc === 'default') {
-        desc = prompt("Enter description of layout:", defaultDesc);
-    }
-    if (desc != null) {
-        var xmlhttp;
-        if (window.XMLHttpRequest)
-        {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        }
-        var url = "./saveLayout.php";
-        var params = "sid=" + xlv.sid + "&layout=" + encodeURIComponent(
-            layout) + "&desc=" + desc;
-        xmlhttp.open("POST", url, true);
-        //Send the proper header information along with the request
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        //chrome doesn't like following
-        //  xmlhttp.setRequestHeader("Content-length", params.length);
-        //    xmlhttp.setRequestHeader("Connection", "close");
-
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                //                xlv.message("response:" + xmlhttp.responseText, true)
-                xlv.message("<br>Layout saved");
-                var select = document.getElementById('load_layout');
-                var optionlist = select.options;
-                for (var option = 0; option < optionlist.length; option++ )
-                {
-                    if (optionlist[option].text == desc)
-                    {
-                        return;
-                    }
-                }
-                var newLayoutOption = document.createElement("option");
-                newLayoutOption.setAttribute("value", desc);
-                newLayoutOption.appendChild(document.createTextNode(desc));
-                select.appendChild(newLayoutOption);
-            }
-        };
-        xmlhttp.send(params);
-    }
-}
-
-
-function loadLayout(layoutDesc) {
-    this.currentLayoutName = layoutDesc;
-    if (layoutDesc != '') {
-        var xmlhttp = new XMLHttpRequest();
-        var url = "../searches/getLayout.php";
-        var params = "sid=" + xlv.sid + "&desc=" + layoutDesc;
-        xmlhttp.open("POST", url, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                var response = xmlhttp.responseText;
-                xlv.message("response:" + response, true);
-                xlv.setLayout(response);
-                xlv.loadLayout();
-                //            var proteins = xlv.proteins.values();
-                //            var proteinCount = proteins.length;
-                //            for (var p = 0; p < proteinCount; p++) {
-                //                var prot = proteins[p];
-                //                prot.setAllLineCoordinates();
-                //            }
-                xlv.checkLinks();
-            }
-        };
-        xmlhttp.send(params);
-    }
-}
+*/
