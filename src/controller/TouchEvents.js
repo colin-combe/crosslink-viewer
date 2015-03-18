@@ -31,7 +31,7 @@ TouchEvents.touchStart = function(evt) {
     
     var p = this.getTouchEventPoint(evt);// seems to be correct, see below
 	this.dragStart = this.mouseToSVG(p.x, p.y);	
-    this.state = xiNET.Controller.PANNING;
+    this.state = MouseEventCodes.PANNING;
     //~ this.panned = false;
 };
 
@@ -48,7 +48,7 @@ TouchEvents.touchMove = function(evt) {
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
-            if (this.state === xiNET.Controller.DRAGGING) {
+            if (this.state ===  MouseEventCodes.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
                 if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
@@ -78,7 +78,7 @@ TouchEvents.touchMove = function(evt) {
                 this.dragStart = c;
             }
 
-            else if (this.state === xiNET.Controller.ROTATING) {
+            else if (this.state === MouseEventCodes.ROTATING) {
                 // Distance from mouse x and center of stick.
                 var _dx = c.x - this.dragElement.x
                 // Distance from mouse y and center of stick.
@@ -95,20 +95,20 @@ TouchEvents.touchMove = function(evt) {
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
                 if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = xiNET.Controller.DRAGGING;
+                    this.state = MouseEventCodes.DRAGGING;
 
                 }
             }
             // this.svgElement.unsuspendRedraw(suspendID);
         }
 
-//    else if (this.state === xiNET.Controller.SELECTING) {
+//    else if (this.state ===  MouseEventCodes.SELECTING) {
 //        this.updateMarquee(this.marquee, c);
 //    }
         else 
         {
         
-        //~ if (this.state === xiNET.Controller.PANNING) {
+        //~ if (this.state === MouseEventCodes.PANNING) {
             xiNET.setCTM(this.container, this.container.getCTM()
 				.translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         //~ }
@@ -156,13 +156,14 @@ TouchEvents.touchEnd = function(evt) {
 	//    this.svgElement.unsuspendRedraw(suspendID);
 	this.dragElement = null;
 	this.whichRotator = -1;
-	this.state = xiNET.Controller.MOUSE_UP;
+	this.state = MouseEventCodes.MOUSE_UP;
     return false;
 };
 
 /**
  * Handle gesture change event.
  */
+/*
 TouchEvents.gestureChange = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     var delta = evt.scale;
@@ -182,6 +183,7 @@ TouchEvents.gestureChange = function(evt) {
     this.scale();
     return false;
 };
+*/
 
 //gets mouse position
 TouchEvents.getTouchEventPoint = function(evt) {
@@ -197,7 +199,7 @@ TouchEvents.getTouchEventPoint = function(evt) {
         element = element.offsetParent;
    } while(element);
    //TODO: should do equivalent for horizontal scroll also
-	top += getScrollTop();
+	//~ top += getScrollTop();
        p.x = evt.touches[0].pageX - left;
     p.y = evt.touches[0].pageY - top;
  //~ var help = left;////evt.touches[0].pageX;//.toString();

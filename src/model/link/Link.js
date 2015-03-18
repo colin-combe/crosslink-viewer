@@ -85,7 +85,7 @@ Link.prototype.touchStart = function(evt) {
     }
     this.controller.dragElement = this;
             this.controller.clearSelection();
-            this.setSelected(true);
+        //    this.setSelected(true);
     //store start location
     var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
