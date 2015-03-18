@@ -80,10 +80,9 @@ xiNET.Controller = function(targetDiv) {
     targetDiv.appendChild(this.svgElement);
     
 	//these attributes are used by checkboxes to hide self links or ambiguous links
-	this.intraHidden = false;//TODO - fix confusing double negative
-	this.ambigHidden = false;	
-    this.fields = {}; //used by text search
-        
+	this.selfLinksShown = true;//TODO - fix confusing double negative
+	this.ambigShown = true;	
+       
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
@@ -225,8 +224,8 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 		var self = this;
 		for (var m = 0; m < molCount; m++) {
 			var mol = mols[m];
-			if (annotationType.toUpperCase() === "MI FEATURES") {
-				mol.setPositionalFeatures(mol.miFeatures);
+			if (annotationType.toUpperCase() === "CUSTOM") {
+				mol.setPositionalFeatures(mol.customAnnotations);
 			}
 			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
 				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
@@ -387,13 +386,15 @@ xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes,
     if (protein) {
 		//lets just check a few things here...
 		// we're using human (starts at 1) numbering
-		if (startRes == null && endRes == null) {
+		startRes = parseInt(startRes);
+		endRes = parseInt(endRes);
+		if (isNaN(startRes) && isNaN(endRes)) {
 			startRes = 1;
 			endRes = protein.size;
 		}
-		else if (startRes == null)
+		else if (isNaN(startRes))
 			startRes = endRes;
-		else if (endRes == null)
+		else if (isNaN(endRes))
 			endRes = startRes;
 
 		if (startRes > endRes) {
@@ -407,7 +408,6 @@ xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes,
 			protein.customAnnotations = new Array();
 		}
 		protein.customAnnotations.push(annotation);
-		protein.setPositionalFeatures(protein.customAnnotations);
 	}
 }
 

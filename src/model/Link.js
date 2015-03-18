@@ -15,57 +15,57 @@ xiNET.Link = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Link.prototype.mouseDown = function(evt) {
 //    //console.log("clickable mouse down");
-    this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.xlv.force !== undefined){
-        this.xlv.force.stop();
+    if (this.controller.force !== undefined){
+        this.controller.force.stop();
     }
-    this.xlv.dragElement = this;
-    this.xlv.clearSelection();
+    this.controller.dragElement = this;
+    this.controller.clearSelection();
     this.setSelected(true);
     //store start location
-    var p = this.xlv.getEventPoint(evt);// seems to be correct, see above
-    this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+    var p = this.controller.getEventPoint(evt);// seems to be correct, see above
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     return false;
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 xiNET.Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
-    this.xlv.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
-    this.xlv.setTooltip(this.tooltip);
+    this.controller.setTooltip(this.tooltip);
     return false;
 }
 
 xiNET.Link.prototype.mouseOut = function(evt){
     //console.log("clickable mouse out");
-    this.xlv.preventDefaultsAndStopPropagation(evt);
-    //    if (this.xlv.dragElement == undefined) {
+    this.controller.preventDefaultsAndStopPropagation(evt);
+    //    if (this.controller.dragElement == undefined) {
     this.showHighlight(false, true);
     //    } else {
-    //        if (this.xlv.dragElement != this){// todo: improve, actually needs to know
+    //        if (this.controller.dragElement != this){// todo: improve, actually needs to know
     //            // if drag element is part of dragging subgraph
     //            this.showHighlight(false, true);
     //        }
     //    }
-    this.xlv.hideTooltip();
+    this.controller.hideTooltip();
     return false;
 }
 
 xiNET.Link.prototype.touchStart = function(evt) {
 //    //console.log("clickable mouse down");
-    this.xlv.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.xlv.force !== undefined){
-        this.xlv.force.stop();
+    if (this.controller.force !== undefined){
+        this.controller.force.stop();
     }
-    this.xlv.dragElement = this;
-            this.xlv.clearSelection();
+    this.controller.dragElement = this;
+            this.controller.clearSelection();
             this.setSelected(true);
     //store start location
-    var p = this.xlv.getTouchEventPoint(evt);// seems to be correct, see above
-    this.xlv.dragStart = this.xlv.mouseToSVG(p.x, p.y);
+    var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     return false;
 }
 

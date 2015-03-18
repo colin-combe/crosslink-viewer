@@ -14,7 +14,7 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     this.id = id;
     //    this.matches = new Array(0); //we don't initialise this here 
     // (save some memory in use case where there is no match info, only link info)
-    this.xlv = xlvController;
+    this.controller = xlvController;
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
     this.toResidue = toResidue;
@@ -165,13 +165,13 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 
 ResidueLink.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.xlv.selected.set(this.id, this);//ok, 
+        this.controller.selected.set(this.id, this);//ok, 
         this.isSelected = true;
         this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
     }
     else if (select === false && this.isSelected === true) {
-        this.xlv.selected.remove(this.id);
+        this.controller.selected.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
         this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
@@ -228,10 +228,10 @@ ResidueLink.prototype.showID = function() {
 		
 		scoresTable += "<th>Score</th>";
 		
-		if (this.xlv.autoValidatedFound === true){
+		if (this.controller.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}
-		if (this.xlv.manualValidatedFound === true){
+		if (this.controller.manualValidatedFound === true){
 			scoresTable += "<th>Manual</th>";
 		}
 		
@@ -243,7 +243,7 @@ ResidueLink.prototype.showID = function() {
 		scoresTable += "</table><p>&nbsp;</p>";
 		
 		linkInfo += scoresTable;
-        this.xlv.message(linkInfo);
+        this.controller.message(linkInfo);
     }
 };
 
@@ -273,7 +273,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
 
 //used when filter changed
 ResidueLink.prototype.check = function(filter) {
-    if (this.xlv.intraHidden && this.intra) {
+    if (this.controller.intraHidden && this.intra) {
         this.hide();
         return false;
     }
@@ -282,7 +282,7 @@ ResidueLink.prototype.check = function(filter) {
         return false;
     }
     if (typeof this.matches === 'undefined' || this.matches == null) {
-        //~ if (this.proteinLink.sc >= this.xlv.cutOff) {
+        //~ if (this.proteinLink.sc >= this.controller.cutOff) {
             this.ambig = false;
 			this.show();
             return true;
@@ -339,7 +339,7 @@ ResidueLink.prototype.dashedLine = function(dash) {
             }
             else {
                 this.dashed = true;
-                this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+                this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
             }
         }
         else if (!dash) {// && this.dashed){
@@ -350,7 +350,7 @@ ResidueLink.prototype.dashedLine = function(dash) {
 };
 
 ResidueLink.prototype.show = function() {
-    if (this.xlv.sequenceInitComplete) {
+    if (this.controller.sequenceInitComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
@@ -363,19 +363,19 @@ ResidueLink.prototype.show = function() {
                 this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
             }
             else {
-                this.line.setAttribute("stroke-width", this.xlv.z * xiNET.linkWidth);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+                this.line.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
+                this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
                 this.setLineCoordinates(this.proteinLink.fromProtein);
                 this.setLineCoordinates(this.proteinLink.toProtein);
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.res_resLinks.appendChild(this.line);
+                this.controller.highlights.appendChild(this.highlightLine);
+                this.controller.res_resLinks.appendChild(this.line);
             }
         }
     }
 };
 
 ResidueLink.prototype.hide = function() {
-    if (this.xlv.sequenceInitComplete) {
+    if (this.controller.sequenceInitComplete) {
         if (this.shown) {
             this.shown = false;
             if (this.intra || this.proteinLink.toProtein === null) {
@@ -383,8 +383,8 @@ ResidueLink.prototype.hide = function() {
                 this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
             }
             else {
-                this.xlv.res_resLinks.removeChild(this.line);
-                this.xlv.highlights.removeChild(this.highlightLine);
+                this.controller.res_resLinks.removeChild(this.line);
+                this.controller.highlights.removeChild(this.highlightLine);
             }
         }
     }
@@ -436,13 +436,13 @@ ResidueLink.prototype.setLineCoordinates = function(interactor) {
 	}
 }
 
-//calculate the  coordinates of a residue (relative to this.xlv.container)
+//calculate the  coordinates of a residue (relative to this.controller.container)
 ResidueLink.prototype.getResidueCoordinates = function(r, interactor) {
-    var x = interactor.getResXwithStickZoom(r) * this.xlv.z;
-    //var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.xlv.z;
+    var x = interactor.getResXwithStickZoom(r) * this.controller.z;
+    //var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.controller.z;
     var y = 0;
     if (Protein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
-			//~ y = 10 * this.xlv.z;
+			//~ y = 10 * this.controller.z;
 		var from = this.getFromProtein(), to = this.getToProtein();
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
@@ -464,7 +464,7 @@ ResidueLink.prototype.getResidueCoordinates = function(r, interactor) {
 					fyOffset = -5;
 				}
 				
-				y = fyOffset * this.xlv.z;
+				y = fyOffset * this.controller.z;
 		}
 		else { // interactor === to
 				out = (abmpDeg - to.rotation);
@@ -475,7 +475,7 @@ ResidueLink.prototype.getResidueCoordinates = function(r, interactor) {
 				if (out > 180) {
 					tyOffset = -5;
 				}
-				y = tyOffset * this.xlv.z;
+				y = tyOffset * this.controller.z;
 		}
 	}
 

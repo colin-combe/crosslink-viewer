@@ -146,6 +146,9 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 					self.proteins.get(ident).setSequence(seq);
 					countSequences++;
 					if (countSequences === protCount){
+						if (annotations){
+							self.addAnnotations(annotations);
+						}
 						self.initProteins();
 					}
 				}
@@ -155,13 +158,6 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 	}
 	
 	this.initLayout();
-	
-    //~ if (typeof initSlider === "function"){
-		//~ initSlider();
-	//~ }
-	//~ if (annotations){
-		//~ self.addAnnotations(annotations);
-	//~ }
 	
     function addProteins(columnIndex) {
         for (var row = 1; row < countRows; row++) {

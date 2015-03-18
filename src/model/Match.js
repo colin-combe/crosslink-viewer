@@ -16,7 +16,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 	
 	this.id = id.toString().trim();
   	this.residueLinks = new Array();//if the match is ambiguous it will relate to many residueLinks
-    this.xlv = xlvController;//reference to controlling xiNET.Controller object 
+    this.controller = xlvController;//reference to controlling xiNET.Controller object 
     
     //for comparison of different data sets (for mathieu)
   	this.dataSetId = dataSetId;
@@ -29,17 +29,17 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		score = parseFloat(score);
 		if (!isNaN(score)){
 			this.score = score;
-			if (this.xlv.scores == null){
-					this.xlv.scores = {
+			if (this.controller.scores == null){
+					this.controller.scores = {
 						'min':this.score,
 						'max':this.score
 					};
 			}
-			if (this.score > this.xlv.scores.max) {
-				this.xlv.scores.max = this.score;
+			if (this.score > this.controller.scores.max) {
+				this.controller.scores.max = this.score;
 			}
-			else if (this.score < this.xlv.scores.min) {
-				this.xlv.scores.min = this.score;
+			else if (this.score < this.controller.scores.min) {
+				this.controller.scores.min = this.score;
 			}
 		}
 	}
@@ -54,7 +54,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			} else {
 				this.autovalidated = false;
 			}		
-			this.xlv.autoValidatedFound = true;
+			this.controller.autoValidatedFound = true;
 		}
     }
     
@@ -63,7 +63,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		validated = validated.trim();
 		if (validated !== ''){
 			this.validated = validated;	
-			this.xlv.manualValidatedFound = true;
+			this.controller.manualValidatedFound = true;
 		}
 	}
 		
@@ -377,7 +377,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	
 	//TODO: tidy up following
 	if (p2ID === null) { //its  a loop link or mono link
-		fromProt = this.xlv.proteins.get(p1ID);
+		fromProt = this.controller.proteins.get(p1ID);
 		if (res2 === null){// its a monolink
 			proteinLinkID = "" + p1ID + "-null";
 			toProt = null;
@@ -389,25 +389,25 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	}
 	else if (p1ID <= p2ID) {
 		proteinLinkID = "" + p1ID + "-" + p2ID;
-		fromProt = this.xlv.proteins.get(p1ID);
-		toProt = (p2ID !== null)? this.xlv.proteins.get(p2ID) : null;
+		fromProt = this.controller.proteins.get(p1ID);
+		toProt = (p2ID !== null)? this.controller.proteins.get(p2ID) : null;
 	}
 	else {
 		proteinLinkID = "" + p2ID + "-" + p1ID;
-		fromProt = this.xlv.proteins.get(p2ID);
-		toProt = this.xlv.proteins.get(p1ID);
+		fromProt = this.controller.proteins.get(p2ID);
+		toProt = this.controller.proteins.get(p1ID);
 
 	}
 	
 	//get or create protein-protein link
-	var link = this.xlv.proteinLinks.get(proteinLinkID);
+	var link = this.controller.proteinLinks.get(proteinLinkID);
 	if (link === undefined) {
 		if (fromProt === undefined || toProt === undefined) {
 			alert("Something has gone wrong; a link has been added before a protein it links to. " +
 					p1ID + "-" + p2ID);
 		}
-		link = new ProteinLink(proteinLinkID, fromProt, toProt, this.xlv);
-		this.xlv.proteinLinks.set(proteinLinkID, link);
+		link = new ProteinLink(proteinLinkID, fromProt, toProt, this.controller);
+		this.controller.proteinLinks.set(proteinLinkID, link);
 		fromProt.addLink(link);
 		if (toProt !== null){
 			toProt.addLink(link);
@@ -439,18 +439,18 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 		//WATCH OUT - residues need to be in correct order
 		if (p1ID === p2ID) {
 			if ((res1 - 0) < (res2 - 0) || res2 === 'n/a') {//TODO: the 'n/a' is a mistake? Already dealt with?
-				resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
+				resLink = new ResidueLink(residueLinkID, link, res1, res2, this.controller);
 			} else {
-				resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
+				resLink = new ResidueLink(residueLinkID, link, res2, res1, this.controller);
 			}
 		}
 		//
 		else if (p1ID == link.fromProtein.id) {
-			resLink = new ResidueLink(residueLinkID, link, res1, res2, this.xlv);
+			resLink = new ResidueLink(residueLinkID, link, res1, res2, this.controller);
 		}
 		else {
 			//WATCH OUT - residues need to be in correct oprder
-			resLink = new ResidueLink(residueLinkID, link, res2, res1, this.xlv);
+			resLink = new ResidueLink(residueLinkID, link, res2, res1, this.controller);
 		}
 		link.residueLinks.set(residueLinkID, resLink);
 		if (link.residueLinks.keys().length > ProteinLink.maxNoResidueLinks) {
@@ -470,14 +470,14 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 }
 
 Match.prototype.meetsFilterCriteria = function() {
-    if (this.xlv.ambigHidden && this.isAmbig()) {
+    if (this.isAmbig() && this.controller.ambigShown === false) {
         return false;
     }
-    if (typeof this.xlv.filter == 'function') {
-        return this.xlv.filter(this);
+    if (typeof this.controller.filter == 'function') {
+        return this.controller.filter(this);
     }
-    else if (typeof this.xlv.cutOff !== 'undefined' && typeof this.score !== 'undefined') {
-        if (this.score >= this.xlv.cutOff)
+    else if (typeof this.controller.cutOff !== 'undefined' && typeof this.score !== 'undefined') {
+        if (this.score >= this.controller.cutOff)
             return true;
         else
             return false;
@@ -520,12 +520,12 @@ Match.prototype.toTableRow = function() {
 	((typeof this.score !== 'undefined')? this.score.toFixed(4) : 'undefined')
 	+ "</p></td>";
 	
-	if (this.xlv.autoValidatedFound === true){
+	if (this.controller.autoValidatedFound === true){
 		htmlTableRow += "<td><p>" + this.autovalidated
 			+ "</p></td>";
 	}
 	
-	if (this.xlv.manualValidatedFound === true){
+	if (this.controller.manualValidatedFound === true){
 		htmlTableRow += "<td><p>" + this.validated
 			+ "</p></td>";
 	}

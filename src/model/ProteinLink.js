@@ -16,7 +16,7 @@ ProteinLink.prototype = new xiNET.Link();
 function ProteinLink(id, fromP, toP, xlvController) {
     this.id = id;
     this.residueLinks = d3.map();
-    this.xlv = xlvController;
+    this.controller = xlvController;
     this.fromProtein = fromP; //its the object. not the ID number
     this.toProtein = toP; //its the object. not the ID number
     this.ambig = false;
@@ -165,13 +165,13 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
 
 ProteinLink.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
-        this.xlv.selected.set(this.id, this);//ok, 
+        this.controller.selected.set(this.id, this);//ok, 
         this.isSelected = true;
         this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
-        this.xlv.selected.remove(this.id);
+        this.controller.selected.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
         this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
@@ -262,10 +262,10 @@ ProteinLink.prototype.showID = function() {
 		
 		scoresTable += "<th>Score</th>";
 		
-		if (this.xlv.autoValidatedFound === true){
+		if (this.controller.autoValidatedFound === true){
 			scoresTable += "<th>Auto</th>";
 		}
-		if (this.xlv.manualValidatedFound === true){
+		if (this.controller.manualValidatedFound === true){
 			scoresTable += "<th>Manual</th>";
 		}
 		
@@ -283,10 +283,10 @@ ProteinLink.prototype.showID = function() {
 				//~ linkInfo += ":</p>";
 			//~ }
 			//~ var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
-			//~ if (this.xlv.autoValidatedFound === true){
+			//~ if (this.controller.autoValidatedFound === true){
 				//~ scoresTable += "<th>Auto</th>";
 			//~ }
-			//~ if (this.xlv.manualValidatedFound === true){
+			//~ if (this.controller.manualValidatedFound === true){
 				//~ scoresTable += "<th>Manual</th>";
 			//~ }
 			//~ scoresTable += "<th>Pep Seq.1</th>";
@@ -302,7 +302,7 @@ ProteinLink.prototype.showID = function() {
         }
         			scoresTable += "</table>";//<p>&nbsp;</p>";
 			linkInfo += scoresTable;
-        this.xlv.message(linkInfo);
+        this.controller.message(linkInfo);
     }
 };
 
@@ -330,7 +330,7 @@ ProteinLink.prototype.check = function() {
         this.hide();
         return false;
     }
-    if (this.xlv.selfLinksHidden && this.selfLink()) {
+    if (this.selfLink() && this.controller.selfLinksShown === false) {
         if (this.fromProtein.form === 0) {
             this.hide();
         } else {
@@ -446,7 +446,7 @@ ProteinLink.prototype.dashedLine = function(dash) {
         if (this.selfLink() === true) {
 			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
 		} else {
-			this.line.setAttribute("stroke-dasharray", (4 * this.xlv.z) + ", " + (4 * this.xlv.z));
+			this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
 		}
     }
     else if (!dash){
@@ -462,34 +462,34 @@ ProteinLink.prototype.show = function() {
                 if (ProteinLink.maxNoResidueLinks > 1) {
                     this.fatLine.setAttribute("transform", "translate(" +
                         this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
-                        + " scale(" + (this.xlv.z) + ")");
-                    this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                        + " scale(" + (this.controller.z) + ")");
+                    this.controller.p_pLinksWide.appendChild(this.fatLine);
                 }
 				this.line.setAttribute("transform", "translate(" + this.fromProtein.x
-						+ " " + this.fromProtein.y + ")" + " scale(" + (this.xlv.z) + ")");
+						+ " " + this.fromProtein.y + ")" + " scale(" + (this.controller.z) + ")");
 				this.highlightLine.setAttribute("transform", "translate(" + this.fromProtein.x
-						+ " " + this.fromProtein.y + ")" + " scale(" + (this.xlv.z) + ")");
+						+ " " + this.fromProtein.y + ")" + " scale(" + (this.controller.z) + ")");
 
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.p_pLinks.appendChild(this.line);
+                this.controller.highlights.appendChild(this.highlightLine);
+                this.controller.p_pLinks.appendChild(this.line);
             }
             else {
-                this.line.setAttribute("stroke-width", this.xlv.z * 1);
-                this.highlightLine.setAttribute("stroke-width", this.xlv.z * 10);
+                this.line.setAttribute("stroke-width", this.controller.z * 1);
+                this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
                 this.setLineCoordinates(this.fromProtein);
                 this.setLineCoordinates(this.toProtein);
                 if (ProteinLink.maxNoResidueLinks > 1) {
-                    this.xlv.p_pLinksWide.appendChild(this.fatLine);
+                    this.controller.p_pLinksWide.appendChild(this.fatLine);
                 }
-                this.xlv.highlights.appendChild(this.highlightLine);
-                this.xlv.p_pLinks.appendChild(this.line);
+                this.controller.highlights.appendChild(this.highlightLine);
+                this.controller.p_pLinks.appendChild(this.line);
             }
         }
         if (ProteinLink.maxNoResidueLinks > 1) {
             if (this.selfLink()) {
                 this.fatLine.setAttribute("stroke-width", this.w);
             } else {
-                this.fatLine.setAttribute("stroke-width", this.xlv.z * this.w);
+                this.fatLine.setAttribute("stroke-width", this.controller.z * this.w);
             }
         }
 };
@@ -500,16 +500,16 @@ ProteinLink.prototype.hide = function() {
         if (this.selfLink()) {
             //TODO: be more selective about when to show 'fatLine'
             if (ProteinLink.maxNoResidueLinks > 1) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
+                this.controller.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.xlv.highlights.removeChild(this.highlightLine);
-            this.xlv.p_pLinks.removeChild(this.line);
+            this.controller.highlights.removeChild(this.highlightLine);
+            this.controller.p_pLinks.removeChild(this.line);
         } else {
             if (ProteinLink.maxNoResidueLinks > 1) {
-                this.xlv.p_pLinksWide.removeChild(this.fatLine);
+                this.controller.p_pLinksWide.removeChild(this.fatLine);
             }
-            this.xlv.highlights.removeChild(this.highlightLine);
-            this.xlv.p_pLinks.removeChild(this.line);
+            this.controller.highlights.removeChild(this.highlightLine);
+            this.controller.p_pLinks.removeChild(this.line);
         }
     }
 };
