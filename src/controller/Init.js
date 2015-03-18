@@ -368,8 +368,8 @@ xiNET.Controller.prototype.resetZoom = function() {
 };
 
 xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "");
+    //~ .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
     
     if (Blob) {
 		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
