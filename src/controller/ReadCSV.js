@@ -130,7 +130,10 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 				this.proteins.remove(prot.id);
 			}
 		}
-		initProteins();
+		if (annotations){
+			self.addAnnotations(annotations);
+		}						
+		self.initProteins();
 	}
 	else { // no FASTA file 
 		//we may encounter proteins with 

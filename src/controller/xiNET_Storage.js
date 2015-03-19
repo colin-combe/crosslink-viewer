@@ -82,14 +82,16 @@ xiNET_Storage.getUniProtFeatures = function (id, callback){
 	var accession = xiNET_Storage.accessionFromId(id);
 		xiNET_Storage.getUniProtTxt(id, function(id, txt){
 			var features = new Array();
-			var lines = txt.split('\n');
-			var lineCount = lines.length;
-			for (var l = 0; l < lineCount; l++){
-				var line = lines[l];
-				if (line.indexOf("FT") === 0){
-					var fields = line.split(/\s{2,}/g);
-					if (fields.length > 4 && fields[1] !== 'CHAIN') {	
-						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
+			if (txt !== null) {
+				var lines = txt.split('\n');
+				var lineCount = lines.length;
+				for (var l = 0; l < lineCount; l++){
+					var line = lines[l];
+					if (line.indexOf("FT") === 0){
+						var fields = line.split(/\s{2,}/g);
+						if (fields.length > 4 && fields[1] !== 'CHAIN') {	
+							features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
+						}
 					}
 				}
 			}

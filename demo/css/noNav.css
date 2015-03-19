@@ -1,0 +1,29 @@
+
+.menu{
+	display: block;
+	width: 50px;
+	height: 50px;
+	background:url('../images/menu/white-blue.png') center top no-repeat;
+}
+.menu:hover {
+   background-image: url('../images/menu/blue-white.png');
+}
+
+#main{
+	margin-left: 0px;
+}
+
+#infoPanel{
+	left: 0px;
+}
+#legendPanel{
+	left: 0px;
+}
+.controlsexamplespage{
+	left: 0px;
+}
+#networkContainer{
+	left: 0px;
+	top:100px;
+}
+

@@ -20,7 +20,7 @@ java -jar compiler.jar \
 --js=../src/model/Annotation.js \
 --js=../src/model/ProteinLink.js \
 --js=../src/model/ResidueLink.js \
---js=../src/controller/ExternalControls.js \
+--js=../src/controller/xiNET_Storage.js \
 --js=../src/controller/Rotator.js \
 --js=../src/controller/ReadCSV.js \
 --js_output_file=./xiNET_2.0.0.js;
