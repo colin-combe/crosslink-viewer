@@ -200,7 +200,7 @@ Protein.prototype.mouseDown = function(evt) {
         
         var message = "";
 		//heading, including PDB link
-		message += "<h5>" + this.name + " &nbsp;&nbsp;[" + this.id + "] </h5><p>";
+		message += this.name + " &nbsp;&nbsp;[" + this.id + "]<p>";
 		if (this.accession) {
 			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
 					+ this.accession + "' target='_blank'>PDB</a></p>";

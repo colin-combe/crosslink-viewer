@@ -301,7 +301,7 @@ xiNET.Controller.prototype.clearSelection = function() {
         var thing = things[t];
         thing.setSelected(false);
     }
-
+    this.message("No selection.");
 };
 
 //gets mouse position
