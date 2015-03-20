@@ -90,7 +90,7 @@ function Protein(id, xinetController, acc, name) {
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
     //choose label text
-    if (this.name !== null & this.name !== "") {
+    if (this.name) {
         this.labelText = this.name;
     }
     else if (this.accession != null & this.accession !== "") {
@@ -184,7 +184,7 @@ Protein.prototype.init = function() {
 Protein.prototype.mouseDown = function(evt) {
            this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.controller.force !== undefined) {
+        if (this.controller.force) {
             this.controller.force.stop();
         }
         this.controller.dragElement = this;
@@ -264,7 +264,10 @@ Protein.prototype.getBlobRadius = function() {
 };
 
 Protein.prototype.isDecoy = function() {
-    if (this.name.indexOf("DECOY_") === -1 && this.name !== "REV") {
+	if (!this.name){
+		return false;
+	}
+    else if (this.name.indexOf("DECOY_") === -1 && this.name !== "REV") {
 		return false;
 	} else {
 		return true;
@@ -571,9 +574,9 @@ Protein.prototype.toggleFlipped = function() {
 };
 
 Protein.prototype.setParked = function(bool, svgP) {
-    if (this.busy !== true) {
-		if (this.isParked === true && bool == false) {
-			this.isParked = false; //u r here
+   this.isParked = bool; 
+   if (this.busy !== true) {
+		if (bool == false) {
 			if (this.form === 0) {
 				d3.select(this.outline).transition()
 					.attr("stroke-opacity", 1).attr("fill-opacity", 1)
@@ -590,7 +593,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 			this.scale();
 			this.setAllLineCoordinates();
 		}
-		else if (this.isParked === false && bool == true) {
+		else if (bool == true) {
 			this.isParked = true;
 			var c = this.proteinLinks.values().length;
 			for (var l = 0; l < c; l++) {
@@ -602,8 +605,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 				for (var rl = 0; rl < resLinkCount; rl++) {
 					var resLink = resLinks[rl];
 						resLink.hide();
-				}
-				
+				}				
 			}       
 			
 			if (this.form === 1){
@@ -634,6 +636,7 @@ Protein.prototype.setParked = function(bool, svgP) {
 };
 
 Protein.prototype.setForm = function(form, svgP) {
+	//this.form = form; //cant have this here
     if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);

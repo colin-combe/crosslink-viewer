@@ -384,6 +384,9 @@ table.default tfoot {
     font-size: 1em;
 }
 .page-header {
+/*
+	height:77px;
+*/
     background-color: #091D42;
     color: #fff;
     padding: 20px;
@@ -927,7 +930,7 @@ form table td {
     margin-left: 80px;
     margin-right: 80px;
 }
-.overlay-box div{
+.overlay-box img{
     background: white;
 }
 .long-citation {

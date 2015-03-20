@@ -302,7 +302,9 @@ xiNET.Controller.prototype.reset = function() {
     var proteinCount = proteins.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = proteins[p];
-        prot.setForm(0);
+        if (prot.isParked === false) {
+			prot.setForm(0);
+		}
     }
     this.autoLayout();
 };
@@ -468,8 +470,8 @@ xiNET.Controller.prototype.setLayout = function(layoutJSON) {
 
 xiNET.Controller.prototype.loadLayout = function() {
     var suspendID = this.svgElement.suspendRedraw(5000);
-    for (var prot in this.layout.proteins) {
-        var protState = this.layout.proteins[prot];
+    for (var prot in this.layout/*.proteins*/) {
+        var protState = this.layout[prot];
         var protein = this.proteins.get(prot);
         if (protein !== undefined) {
             protein.setPosition(protState["x"], protState["y"]);
@@ -493,11 +495,8 @@ xiNET.Controller.prototype.loadLayout = function() {
                 protein.rotation = protState["rot"];
             }
 
-            if (typeof protState["form"] !== 'undefined' && protState["form"] === 1) {
-                protein.toStick();
-            }
-            else {
-                protein.toBlob();
+            if (typeof protState["form"]) {
+                protein.setForm(protState["form"]);
             }
             
 			protein.setAllLineCoordinates();// watch out for this
@@ -531,24 +530,24 @@ xiNET.Controller.prototype.loadLayout = function() {
     }
 
     // layout info for links (hidden / specified colour)
-    for (var l in this.layout.links) {
-        var linkState = this.layout.links[l];
-        var link = this.proteinLinks.get(l);
-        if (link !== undefined) {
-            if (typeof linkState.hidden !== 'undefined')
-                link.hidden = linkState.hidden;
-            var c = linkState.colour;
-            if (typeof c !== 'undefined') {
-                var resLinks = link.residueLinks.values();
-                var resLinkCount = resLinks.length;
-                for (var r = 0; r < resLinkCount; r++) {
-                    var resLink = resLinks[r];
-                    resLink.initSVG();
-                    resLink.line.setAttribute('stroke', 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')');
-                }
-            }
-        }
-    }
+    //~ for (var l in this.layout.links) {
+        //~ var linkState = this.layout.links[l];
+        //~ var link = this.proteinLinks.get(l);
+        //~ if (link !== undefined) {
+            //~ if (typeof linkState.hidden !== 'undefined')
+                //~ link.hidden = linkState.hidden;
+            //~ var c = linkState.colour;
+            //~ if (typeof c !== 'undefined') {
+                //~ var resLinks = link.residueLinks.values();
+                //~ var resLinkCount = resLinks.length;
+                //~ for (var r = 0; r < resLinkCount; r++) {
+                    //~ var resLink = resLinks[r];
+                    //~ resLink.initSVG();
+                    //~ resLink.line.setAttribute('stroke', 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')');
+                //~ }
+            //~ }
+        //~ }
+    //~ }
     this.svgElement.unsuspendRedraw(suspendID);
 };
 

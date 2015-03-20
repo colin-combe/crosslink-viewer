@@ -61,6 +61,7 @@
         <script type="text/javascript" src="../src/controller/Fasta.js"></script>
     </head>
     <body>
+
 	<!-- Slidey panels -->	
 	<div class="overlay-box" id="infoPanel">
 	<div id="networkCaption">
@@ -291,7 +292,7 @@
 
 		<script>
      		//<![CDATA[
-			function hideDecoy(decoysHidden) {
+			function hideDecoys(decoysHidden) {
 				var protCount = xlv.proteins.values().length;
                 var prots = xlv.proteins.values();
                 for (var p = 0; p < protCount; p++) {
@@ -328,22 +329,22 @@
 			xlv.showSelfLinks(document.getElementById('selfLinks').checked);
 			xlv.showAmbig(document.getElementById('ambig').checked);
 	
-			function saveLayout () {
-				var layout = xlv.getLayout();
-	//            xlv.message(xlv.id + ", layout sent:" + layout, true);
-				var xmlhttp = new XMLHttpRequest();
-				var url = "./saveLayout.php";
-				var params =  "id=" + xlv.id + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
-				xmlhttp.open("POST", url, true);
-				//Send the proper header information along with the request
-				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-					if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						xlv.message(xmlhttp.responseText, true);
+				function saveLayout () {
+					var layout = xlv.getLayout();
+		//            xlv.message(xlv.id + ", layout sent:" + layout, true);
+					var xmlhttp = new XMLHttpRequest();
+					var url = "./saveLayout.php";
+					var params =  "id=" + xlv.id + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
+					xmlhttp.open("POST", url, true);
+					//Send the proper header information along with the request
+					xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+					xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+						if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							xlv.message(xmlhttp.responseText, true);
+						}
 					}
+					xmlhttp.send(params);
 				}
-				xmlhttp.send(params);
-			}
             	 
 				 function changeAnnotations(){
 					var annotationSelect = document.getElementById('annotationsSelect');

@@ -17,7 +17,7 @@ xiNET.Link.prototype.mouseDown = function(evt) {
 //    //console.log("clickable mouse down");
     this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.controller.force !== undefined){
+    if (this.controller.force){
         this.controller.force.stop();
     }
     this.controller.dragElement = this;
