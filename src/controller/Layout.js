@@ -18,24 +18,24 @@ var autoLayout = function() {
     var height = this.svgElement.parentNode.clientHeight;
 
     var molCount = this.molecules.keys().length;
-    if (molCount === 1) {
-        var mol = this.molecules.values()[0];
-        mol.setPosition(width / 2, height / 2);
-        mol.setAllLinkCoordinates();
-        return;
-    }
-    else if (molCount === 2) {
-        var m1 = this.molecules.values()[0];
-        m1.setPosition(width / 2, height / 3 * 2);
-        var m2 = this.molecules.values()[1];
-        m2.setPosition(width / 2, height / 3 * 1);
-        
-        m1.setAllLinkCoordinates();
-        m2.setAllLinkCoordinates();
-        
-        return;
-    }
-    else {
+    //~ if (molCount === 1) {
+        //~ var mol = this.molecules.values()[0];
+        //~ mol.setPosition(width / 2, height / 2);
+        //~ mol.setAllLinkCoordinates();
+        //~ return;
+    //~ }
+    //~ else if (molCount === 2) {
+        //~ var m1 = this.molecules.values()[0];
+        //~ m1.setPosition(width / 2, height / 3 * 2);
+        //~ var m2 = this.molecules.values()[1];
+        //~ m2.setPosition(width / 2, height / 3 * 1);
+        //~ 
+        //~ m1.setAllLinkCoordinates();
+        //~ m2.setAllLinkCoordinates();
+        //~ 
+        //~ return;
+    //~ }
+    //~ else {
         var self = this; 
         var nodes = this.molecules.values();
 		var nodeCount = nodes.length;
@@ -120,7 +120,7 @@ var autoLayout = function() {
             self.setAllLinkCoordinates();
         });
         this.force.start();
-    }
+    //~ }
 };
 
 module.exports = autoLayout;

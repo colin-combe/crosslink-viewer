@@ -172,8 +172,7 @@ Interactor.prototype.setAllLinkCoordinates = function() {
     var links = this.naryLinks.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
-		//if interactor count > 2
-        links[l].setLinkCoordinates();
+		links[l].setLinkCoordinates();
     }    
     links = this.binaryLinks.values();
     c = links.length;

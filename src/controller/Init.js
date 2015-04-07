@@ -77,7 +77,6 @@ xiNET.Controller = function(targetDiv) {
     };
     //touchend
     this.svgElement.ontouchend = function(evt) {
-        self.message("touch end");
         self.touchEnd(evt);
     };
     
@@ -86,7 +85,7 @@ xiNET.Controller = function(targetDiv) {
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
-    var background = document.createElementNS(Config.svgns, "rect");
+    /*var background = document.createElementNS(Config.svgns, "rect");
     background.setAttribute("id", "background_fill");
     background.setAttribute("x", 0);
     background.setAttribute("y", 0);
@@ -94,7 +93,7 @@ xiNET.Controller = function(targetDiv) {
     background.setAttribute("height", 2048 * 2);
     background.setAttribute("fill-opacity", "1");
     background.setAttribute("fill", "#FFFFFF");
-    this.svgElement.appendChild(background);
+    this.svgElement.appendChild(background);*/
 	
 	// various groups needed
     this.container = document.createElementNS(Config.svgns, "g");
@@ -196,13 +195,14 @@ for (var property in MouseEvents) {
 }
 
 /**
- * Sets the current transform matrix of an element. JOSH TODO
+ * Sets the current transform matrix of an element.
  */
+/*
 xiNET.setCTM = function(element, matrix) {
     var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
     element.setAttribute("transform", s);
 };
-
+*/
 
 xiNET.Controller.prototype.clear = function() {
     this.sequenceInitComplete = false;
@@ -219,7 +219,7 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.proteinUpper);
 	this.emptyElement(this.selfRes_resLinks);
 	this.svgElement.unsuspendRedraw(suspendID);
-      
+ 
      //are we panning?
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
@@ -272,12 +272,10 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 					mol.setPositionalFeatures(mol.miFeatures);
 				}
 				else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
-					if (mol.id.indexOf('uniprotkb_') === 0) {
-						xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
-							var m = self.molecules.get(id);
-							m.setPositionalFeatures(fts);
-						});
-					}
+					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+						var m = self.molecules.get(id);
+						m.setPositionalFeatures(fts);
+					});
 				}  
 				else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
 						xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
@@ -369,14 +367,9 @@ xiNET.Controller.prototype.resetZoom = function() {
     }
 };
 
-xiNET.Controller.prototype.setCutOff = function(cutOff) {
-    this.cutOff = cutOff;
-    this.checkLinks();
-};
-
 xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "")
-    .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "");
+    //~ .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
     
     if (Blob) {
 		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
