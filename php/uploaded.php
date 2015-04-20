@@ -187,14 +187,12 @@
 					<button class="btn btn-1 btn-1a network-control resetzoom" onclick="saveLayout();">
 							Save layout
 					</button>
-						
-					<div style='float:right'>
-						<button class="btn btn-1 btn-1a network-control resetzoom" onclick="xlv.reset();">
+					<button class="btn btn-1 btn-1a network-control resetzoom" onclick="xlv.reset();">
 							Reset
-						</button>
-						<!--
-						<button class="btn btn-1 btn-1a network-control" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
-						-->
+					</button>
+					<button class="btn btn-1 btn-1a network-control" onclick="xlv.exportSVG();">Export SVG</button>
+							
+					<div style='float:right'>
 						<label class="btn">
 								Legend
 								<input id="selection" onclick="toggleLegendPanel()" type="checkbox">
