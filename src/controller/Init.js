@@ -234,15 +234,22 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 				});
 			}  
 			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
-					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-						var m = self.proteins.get(id);
-						m.setPositionalFeatures(fts);
-					});
-		
+				xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+					var m = self.proteins.get(id);
+					m.setPositionalFeatures(fts);
+				});	
 			}
-			else if (annotationType.toUpperCase() === "INTERACTOR") {
-					var annotation = new Annotation (mol.json.label, 1, mol.size);
-					mol.setPositionalFeatures([annotation]);
+			else if (annotationType.toUpperCase() === "LYSINES") {
+				var seq = mol.sequence;
+				var annots = new Array();
+				for (var i =0; i < mol.size; i++){
+					var aa = seq[i];
+					if (aa === 'K'){
+						annots.push(new Annotation ("Lysine", i+1, i+1));
+					}
+				
+				}
+				mol.setPositionalFeatures(annots);
 			}
 			else {
 				mol.setPositionalFeatures([])
@@ -561,7 +568,6 @@ xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {
         var protein = this.proteins.get(linkID);
         if (typeof protein !== 'undefined') {
             protein.internalLinkColour = new RGBColor(colour);
-            //            protein.colourSpecified = true;
         }
     }
 };

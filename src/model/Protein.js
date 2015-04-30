@@ -435,8 +435,15 @@ Protein.prototype.scale = function() {
 			.translate((-(((this.size / 2) * Protein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
-		d3.select(this.rectDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
-		d3.select(this.circDomains).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		if (this.annotations){
+			var ca = this.annotations.length;
+			for (var a = 0; a < ca; a++){
+				var anno = this.annotations[a];
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+				anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+			}
+		}
+		
 		d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 		
 		d3.select(this.outline)
@@ -448,8 +455,7 @@ Protein.prototype.scale = function() {
 			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
 			
 		//place rotators
-		//this.mouseoverControls.place();
-        this.lowerRotator.svg.setAttribute("transform", 
+		this.lowerRotator.svg.setAttribute("transform", 
 			"translate(" + (this.getResXwithStickZoom(0.5) - Protein.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform", 
 			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Protein.rotOffset) + " 0)");
@@ -468,7 +474,7 @@ Protein.prototype.scale = function() {
             }
         }
 
-       //linker modified peptides
+        //linker modified peptides
         if (this.linkerModifications != null) {
             var mods = this.linkerModifications.residueLinks.values();
             var iModCount = mods.length;
@@ -740,22 +746,20 @@ Protein.prototype.toCircle = function(svgP) {
 	}
 	
 	var self = this;
-	if (typeof this.annotations !== 'undefined') {
-		var annots = this.annotations;
-		var ca = annots.length;
+	if (this.annotations) {
+		var ca = this.annotations.length;
 		for (var a = 0; a < ca; a++) {
-			//TODO: structure of this is not ideal...
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			var rectDomain = annots[a].rect;
+			var anno = this.annotations[a];
+			var pieSlice = anno.pieSlice;
+			var rectDomain = anno.colouredRect;
 
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Protein.transitionTime).each("end", 
 					function () {
 						for (var b = 0; b < ca; b++) {
-							var annoB = annots[b];
+							var annoB = self.annotations[b];
 							if (this === annoB.pieSlice){
-								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
 							}
 						}
 					}
@@ -920,12 +924,11 @@ Protein.prototype.toStick = function() {
 	
 	if (typeof this.annotations !== 'undefined') {
 		var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
-		var annots = this.annotations;
-		var ca = annots.length;
+		var ca = this.annotations.length;
 		for (var a = 0; a < ca; a++) {
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			var rectDomain = annots[a].rect;
+			var anno = this.annotations[a];
+			var pieSlice = anno.pieSlice;
+			var rectDomain = anno.colouredRect;
 
 			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 						
@@ -1216,36 +1219,30 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
 
 
 Protein.prototype.setPositionalFeatures = function(posFeats) {
-    this.annotations = [];
-    
+    //clear everything
+    this.annotations = [];   
     if (this.circDomains) this.controller.emptyElement(this.circDomains);
     if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
-    
-    if (posFeats !== undefined && posFeats !== null) {
-        var y = -Protein.STICKHEIGHT / 2;
+    //create new annotations
+    if (posFeats) {
         //draw longest regions first
         posFeats.sort(function(a, b) {
             return (b.end - b.start) - (a.end - a.start);
         });     
-        
+        this.annotations = posFeats;
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
-            var annotPieSlice = document.createElementNS(xiNET.svgns, "path");
-            var annotColouredRect = document.createElementNS(xiNET.svgns, "path");
-            
-            this.annotations.push({anno:anno, pieSlice:annotPieSlice, rect:annotColouredRect});
-           // alert(this.form);
+            anno.pieSlice = document.createElementNS(xiNET.svgns, "path");
+            anno.colouredRect = document.createElementNS(xiNET.svgns, "path");
             if (this.form === 0) { 
-				annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-				annotColouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+				anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+				anno.colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
 			} else {
-				annotPieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-				annotColouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+				anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
 			}
-            annotPieSlice.setAttribute("stroke", "none");
-            annotColouredRect.setAttribute("stroke", "none");
             
             var c;
             //temp
@@ -1266,32 +1263,34 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
             else {
                 c = anno.colour;
             }
-            annotPieSlice.setAttribute("fill", c.toRGB());//"rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotPieSlice.setAttribute("fill-opacity", "0.5");
-            annotColouredRect.setAttribute("fill", c.toRGB());// "rgb(" + c.r + "," + c.g + "," + c.b + ")");
-            annotColouredRect.setAttribute("fill-opacity", "0.5");
+            anno.pieSlice.setAttribute("fill", c.toRGB());
+            anno.pieSlice.setAttribute("stroke", c.toRGB());
+            anno.pieSlice.setAttribute("stroke-width", 1);
+            anno.pieSlice.setAttribute("fill-opacity", "0.5");
+            anno.colouredRect.setAttribute("fill", c.toRGB());
+            anno.colouredRect.setAttribute("stroke", c.toRGB());
+            anno.colouredRect.setAttribute("stroke-width", 1);
+            anno.colouredRect.setAttribute("fill-opacity", "0.5"); 
+            
             
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
-            annotPieSlice.name = text;
-            //~ annotMouseEventRect.name = text;
+            anno.pieSlice.name = text;
             var xlv = this.controller;
             var self = this;
-            annotPieSlice.onmouseover = function(evt) {
-                //    for magnifier experiment
+            anno.pieSlice.onmouseover = function(evt) {
                 var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
                 xlv.preventDefaultsAndStopPropagation(evt);
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-            annotColouredRect.onmouseover = function(evt) {
-                //    for magnifier experiment
+            anno.colouredRect.onmouseover = function(evt) {
                 var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
                 xlv.preventDefaultsAndStopPropagation(evt);
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-            this.circDomains.appendChild(annotPieSlice);
-            this.rectDomains.appendChild(annotColouredRect);
+            this.circDomains.appendChild(anno.pieSlice);
+            this.rectDomains.appendChild(anno.colouredRect);
         }
     }
 };
@@ -1341,12 +1340,11 @@ Protein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
 };
 
 Protein.prototype.getAnnotationRectPath = function(annotation) {
-	//domain as rectangle path
+	//domain as rectangular path
 	var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
-	var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Protein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
-	//~ //Ouch!! Without brackets following may do string concatenation
+	var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
 	var annotSize = (1 + (annotation.end - annotation.start));
-	var annotLength = annotSize * Protein.UNITS_PER_RESIDUE;
+	var annotLength = annotSize * Protein.UNITS_PER_RESIDUE * this.stickZoom;
 	var rectPath = "M " + annotX + "," + bottom;
 	for (var sia = 0; sia <= Protein.stepsInArc; sia++) {
 		var step = annotX + (annotLength * (sia / Protein.stepsInArc));
