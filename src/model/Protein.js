@@ -118,8 +118,8 @@ function Protein(id, xinetController, acc, name) {
     this.outline.setAttribute("stroke-width", "1");
     this.outline.setAttribute("fill", "#EEEEEE");
     this.upperGroup.appendChild(this.outline);
-    
-    //domains as pie slices - shown on top of everything
+     this.upperGroup.appendChild(this.ticks);
+   //domains as pie slices - shown on top of everything
 	this.circDomains = document.createElementNS(xiNET.svgns, "g");
     //~ this.circDomains.setAttribute("class", "protein circDomains");
 	this.circDomains.setAttribute("opacity", 1);
@@ -493,9 +493,9 @@ Protein.prototype.scale = function() {
 };
 
 Protein.prototype.setScaleGroup = function() {
+	//~ this.upperGroup.appendChild(this.ticks);
 	this.controller.emptyElement(this.ticks);
-	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
-    
+	
     this.scaleLabels = new Array();
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
@@ -703,7 +703,8 @@ Protein.prototype.toCircle = function(svgP) {
 	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4)
 				.each("end", 
 					function () {
-						if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
+						self.controller.emptyElement(this);//this === self.ticks
+						//if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
 					}
 				);
 	
@@ -868,10 +869,10 @@ Protein.prototype.toStick = function() {
 	this.stickZoom = origStickZoom;
  	
 	d3.select(this.circDomains).transition().attr("opacity", 0)
-		.attr("transform", "scale(" + this.stickZoom + ", 1)")
+		//~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
 		.duration(Protein.transitionTime);
 	d3.select(this.rectDomains).transition().attr("opacity", 1)
-		.attr("transform", "scale(" + this.stickZoom + ", 1)")
+		//~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
 		.duration(Protein.transitionTime);
 				
 	d3.select(this.outline).transition().attr("stroke-opacity", 1)
