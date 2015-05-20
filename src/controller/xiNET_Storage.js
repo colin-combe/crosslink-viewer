@@ -15,6 +15,7 @@ function xiNET_Storage() {}
 xiNET_Storage.ns = "xiNET.";
 
 xiNET_Storage.accessionFromId = function (id){
+	id = id + "";
 	if (id.indexOf('|') !== -1){
 		return id.split('|')[1];
 	} else {
