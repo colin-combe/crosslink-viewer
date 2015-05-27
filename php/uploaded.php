@@ -22,27 +22,26 @@
 			$annot = $line['annot'];
 			echo ('<title> xiNET | ' . $filename . '</title>');
         ?>
-			<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-			<meta name="description" content="xiNET is a visualisation tool for cross-linking and mass spectrometry data." />
-			<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />	
-			<meta name="viewport" content="initial-scale=1, maximum-scale=1">
-			<meta name="apple-mobile-web-app-capable" content="yes">
-			<meta name="apple-mobile-web-app-status-bar-style" content="black">
-			<link rel="icon" type="image/ico" href="images/logos/favicon.ico">
-			<link rel="stylesheet" href="../demo/css/reset.css" />
-			<link rel="stylesheet" href="../demo/css/noscript.css" />
-			<link rel="stylesheet" href="../demo/css/style.css" />
-			<link rel="stylesheet" href="../demo/css/noNav.css" />
-			<link rel="stylesheet" href="../demo/css/xiNET.css">
-		<!--
-		<script type="text/javascript" src="./xiNET_2.0.0.js"></script>
-		-->
-        <!--libraries-->
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="xiNET is a visualisation tool for cross-linking and mass spectrometry data." />
+		<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />	
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="icon" type="image/ico" href="images/logos/favicon.ico">
+		<link rel="stylesheet" href="../demo/css/reset.css" />
+		<link rel="stylesheet" href="../demo/css/noscript.css" />
+		<link rel="stylesheet" href="../demo/css/style.css" />
+		<link rel="stylesheet" href="../demo/css/noNav.css" />
+		<link rel="stylesheet" href="../demo/css/xiNET.css">
+		<!--libraries-->
         <script type="text/javascript" src="../vendor/d3.js"></script>
         <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
        	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
         <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
         <!--xiNET-->
+		<script type="text/javascript" src="./crosslinkviewer.js"></script>
+        <!--
         <script type="text/javascript" src="../src/controller/Init.js"></script>
         <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
         <script type="text/javascript" src="../src/controller/Layout.js"></script>
@@ -59,6 +58,7 @@
         <script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
         <script type="text/javascript" src="../src/controller/ReadCSV.js"></script>
         <script type="text/javascript" src="../src/controller/Fasta.js"></script>
+-->
     </head>
     <body>
 

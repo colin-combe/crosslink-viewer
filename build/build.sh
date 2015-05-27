@@ -23,4 +23,4 @@ java -jar compiler.jar \
 --js=../src/controller/xiNET_Storage.js \
 --js=../src/controller/Rotator.js \
 --js=../src/controller/ReadCSV.js \
---js_output_file=./xiNET_2.0.1.js;
+--js_output_file=./crosslinkviewer.js;
