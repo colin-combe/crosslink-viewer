@@ -148,7 +148,6 @@ xiNET.Controller.prototype.clear = function() {
 		this.force.stop();
 	}
  	this.force = null;
-    var suspendID = this.svgElement.suspendRedraw(5000);
     this.emptyElement(this.naryLinks);
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
@@ -156,7 +155,6 @@ xiNET.Controller.prototype.clear = function() {
     this.emptyElement(this.res_resLinks);
     this.emptyElement(this.proteinUpper);
 	this.emptyElement(this.selfRes_resLinks);
-	this.svgElement.unsuspendRedraw(suspendID);
 
      //are we panning?
     this.panning = false;
@@ -739,12 +737,10 @@ xiNET.Controller.prototype.checkLinks = function() {
 			links[l].check();
 		}
 	}
-	var suspendID = this.svgElement.suspendRedraw(5000);
 	checkAll(this.allNaryLinks);
 	checkAll(this.allBinaryLinks);
 	checkAll(this.allUnaryLinks);
 	checkAll(this.allSequenceLinks);
-	this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.setAllLinkCoordinates = function() {
@@ -755,14 +751,12 @@ xiNET.Controller.prototype.setAllLinkCoordinates = function() {
 			links[l].setLinkCoordinates();
 		}
 	}
-	var suspendID = this.svgElement.suspendRedraw(5000);
 	setAll(this.allNaryLinks);
 	setAll(this.allBinaryLinks);
 	setAll(this.allUnaryLinks);
     if (this.sequenceInitComplete) {
 		setAll(this.allSequenceLinks);
 	}
-	this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.autoLayout = function() {
@@ -1035,7 +1029,6 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
 	if (this.dragElement != null) { //dragging or rotating
 		this.hideTooltip();
-		var suspendID = this.svgElement.suspendRedraw(5000);
 		var dx = this.dragStart.x - c.x;
 		var dy = this.dragStart.y - c.y;
 
@@ -1090,7 +1083,6 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
 			}
 		}
-		this.svgElement.unsuspendRedraw(suspendID);
 	}
 
 //    else if (this.state === MouseEventCodes.SELECTING) {
@@ -1126,8 +1118,6 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 
         var p = this.getEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
-
-        var suspendID = this.svgElement.suspendRedraw(5000);
 
         if (this.dragElement != null) {
             if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
@@ -1177,7 +1167,6 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
             clearInterval(this.marcher);
             this.svgElement.removeChild(this.marquee);
         }
-		this.svgElement.unsuspendRedraw(suspendID);
 	}
 
 	this.dragElement = null;
@@ -1261,7 +1250,6 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
         if (this.dragElement != null) { //dragging or rotating
             this.hideTooltip();
-            // var suspendID = this.svgElement.suspendRedraw(5000);
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
@@ -1278,10 +1266,10 @@ xiNET.Controller.prototype.touchMove = function(evt) {
                         nx = ox - dx;
                         ny = oy - dy;
                         protein.setPosition(nx, ny);
-                        protein.setAllLineCoordinates();
+                        protein.setAllLinkCoordinates();
                     }
                     for (i = 0; i < nodeCount; i++) {
-                        nodes[i].setAllLineCoordinates();
+                        nodes[i].setAllLinkCoordinates();
                     }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
@@ -1290,7 +1278,7 @@ xiNET.Controller.prototype.touchMove = function(evt) {
                     nx = ox - dx;
                     ny = oy - dy;
                     this.dragElement.setPosition(nx, ny);
-                    this.dragElement.setAllLineCoordinates();
+                    this.dragElement.setAllLinkCoordinates();
                 }
                 this.dragStart = c;
             }
@@ -1307,7 +1295,7 @@ xiNET.Controller.prototype.touchMove = function(evt) {
                 }
                 var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
                 this.dragElement.setRotation(centreToMouseAngleDegrees);
-                this.dragElement.setAllLineCoordinates();
+                this.dragElement.setAllLinkCoordinates();
             }
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
@@ -1316,7 +1304,6 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
                 }
             }
-            // this.svgElement.unsuspendRedraw(suspendID);
         }
 
 //    else if (this.state ===  MouseEventCodes.SELECTING) {
@@ -1341,11 +1328,10 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 // this ends all dragging and rotating
 xiNET.Controller.prototype.touchEnd = function(evt) {
 	this.preventDefaultsAndStopPropagation(evt);
-	//    var suspendID = this.svgElement.suspendRedraw(5000);
 	if (this.dragElement != null) {
 		if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (typeof this.dragElement.x === 'undefined') { //if not protein
-					this.dragElement.showID();
+					//this.dragElement.showID();
 				} else {
 					if (this.dragElement.form === 0) {
 						this.dragElement.setForm(1);
@@ -1370,7 +1356,6 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 		clearInterval(this.marcher);
 		this.svgElement.removeChild(this.marquee);
 	}
-	//    this.svgElement.unsuspendRedraw(suspendID);
 	this.dragElement = null;
 	this.whichRotator = -1;
 	this.state = MouseEventCodes.MOUSE_UP;
