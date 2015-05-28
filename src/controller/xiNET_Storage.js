@@ -18,7 +18,7 @@ xiNET_Storage.ns = "xiNET.";
 xiNET_Storage.accessionFromId = function (id){
 	var idRegex;
 	// i cant figure out way to do this purely with regex... who cares
-	if (id.indexOf("(") !== -1){//id has participant number in it 
+	if (id.indexOf("(") !== -1){//id has participant number in it
 		idRegex = /uniprotkb_(.*)(\()/;
 	}
 	else {
@@ -29,12 +29,12 @@ xiNET_Storage.accessionFromId = function (id){
 		return match[1];
 	}
 	else if (id.indexOf('|') !== -1){
-		//following reads swiss-prot style identifiers, 
+		//following reads swiss-prot style identifiers,
 		//(keeps this class compatible with crosslink-viewer)
 		return id.split('|')[1];
 	} else {
 		return id;
-	}	
+	}
 }
 
 xiNET_Storage.getUniProtTxt = function (id, callback){
@@ -50,7 +50,7 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 			callback(id, txt)
 		});
 	}
-	
+
 	if(typeof(Storage) !== "undefined") {
 		// Code for localStorage/sessionStorage.
 		//~ console.log("Local storage found.");
@@ -58,7 +58,7 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 		var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
 		if (stored){
 			//~ console.log(accession + " UniProt from local storage.");
-			callback(id, stored);	
+			callback(id, stored);
 		}
 		else {
 			//~ console.log(accession + " UniProt not in local storage.");
@@ -68,7 +68,7 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 	else {
 		//~ console.log("No local storage found.");
 		uniprotWebService();
-	}	
+	}
 }
 
 xiNET_Storage.getSequence = function (id, callback){
@@ -103,8 +103,8 @@ xiNET_Storage.getUniProtFeatures = function (id, callback){
 				var line = lines[l];
 				if (line.indexOf("FT") === 0){
 					var fields = line.split(/\s{2,}/g);
-					if (fields.length > 4 && fields[1] !== 'CHAIN') {	
-						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
+					if (fields.length > 4 && fields[1] !== 'CHAIN') {
+						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4]));
 					}
 				}
 			}
@@ -127,7 +127,7 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
 			parseSuperFamDAS(xml);
 		});
 	}
-	
+
 	function parseSuperFamDAS (dasXml){
 		//~ console.log(dasXml);
 		if (window.DOMParser)
@@ -145,8 +145,8 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
 		var xmlFeatures = xmlDoc.getElementsByTagName('FEATURE');
 		var featureCount = xmlFeatures.length;
 		for (var f = 0; f < featureCount; f++) {
-			var xmlFeature = xmlFeatures[f]; 
-			var type = xmlFeature.getElementsByTagName('TYPE')[0];//might need to watch for text nodes getting mixed in here 
+			var xmlFeature = xmlFeatures[f];
+			var type = xmlFeature.getElementsByTagName('TYPE')[0];//might need to watch for text nodes getting mixed in here
 			var category = type.getAttribute('category')
 			if (category === 'miscellaneous') {
 				var name = type.getAttribute('id');
@@ -154,18 +154,18 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
 				var end = xmlFeature.getElementsByTagName('END')[0].textContent;
 				features.push(new Annotation(name, start, end));
 			}
-		} 
+		}
 		//~ console.log(JSON.stringify(features));
 		callback(id, features);
   	}
-	
+
 	if(typeof(Storage) !== "undefined") {
 		//~ console.log("Local storage found.");
 		// Retrieve
 		var stored = localStorage.getItem(xiNET_Storage.ns + "SuperFamDAS."  + accession);
 		if (stored){
 			//~ console.log(accession + " SuperFamDAS from local storage.");
-			parseSuperFamDAS(stored);	
+			parseSuperFamDAS(stored);
 		}
 		else {
 			//~ console.log(accession + " SuperFamDAS not in local storage.");
