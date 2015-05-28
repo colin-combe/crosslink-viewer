@@ -41,7 +41,7 @@ NaryLink.prototype.initSVG = function() {
 		this.path.setAttribute('fill', NaryLink.naryColours(this.id));
 	}
 	else {
-		this.path.setAttribute('fill', '#cccccc');
+		this.path.setAttribute('fill', '#70BDBD');
 	}
     this.path.setAttribute('fill-opacity', 0.3);
 

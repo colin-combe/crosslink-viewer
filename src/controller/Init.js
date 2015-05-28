@@ -35,6 +35,14 @@ var Config = require('./Config');
 //for save file.
 var saveAs = require('../../vendor/FileSaver');
 
+
+var MouseEventCodes = {}
+MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or controller
+MouseEventCodes.DRAGGING = 2;//set by mouse down on Protein or Link
+MouseEventCodes.ROTATING = 3;//set by mouse down on Rotator, drag?
+MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or controller, drag
+
 xiNET.Controller = function(targetDiv) {
 	// targetDiv could be div itself or id of div - lets deal with that
 	if (typeof targetDiv === "string"){
@@ -186,7 +194,7 @@ xiNET.Controller.prototype.clear = function() {
     this.tooltip_bg.setAttribute('visibility', 'hidden');
 
     this.resetZoom();
-    this.state = xiNET.Controller.MOUSE_UP;
+    this.state = MouseEventCodes.MOUSE_UP;
 };
 
 xiNET.Controller.prototype.emptyElement = function(element) {
@@ -981,14 +989,6 @@ xiNET.Controller.prototype.exportSVG = function() {
 	}
 };
 
-var MouseEventCodes = {}
-
-MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or controller
-MouseEventCodes.DRAGGING = 2;//set by mouse down on Protein or Link
-MouseEventCodes.ROTATING = 3;//set by mouse down on Rotator, drag?
-MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or left button shift or controller, drag
-
 //listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
 
@@ -1312,25 +1312,24 @@ xiNET.Controller.prototype.touchMove = function(evt) {
         else
         {
 
-        //~ if (this.state === MouseEventCodes.PANNING) {
-            xiNET.setCTM(this.container, this.container.getCTM()
-				.translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-        //~ }
-        //~ else {
-           //~ // this.showTooltip(p);
-        //~ }
+        // if (this.state === MouseEventCodes.PANNING) {
+            //~ xiNET.setCTM(this.container, this.container.getCTM()
+				//~ .translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+        // }
+        // else {
+           // // this.showTooltip(p);
+        // }
 		}
     }
     return false;
 };
 
-
 // this ends all dragging and rotating
 xiNET.Controller.prototype.touchEnd = function(evt) {
 	this.preventDefaultsAndStopPropagation(evt);
 	if (this.dragElement != null) {
-		if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
-				if (typeof this.dragElement.x === 'undefined') { //if not protein
+		if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
+           		if (typeof this.dragElement.x === 'undefined') { //if not protein
 					//this.dragElement.showID();
 				} else {
 					if (this.dragElement.form === 0) {
@@ -1341,21 +1340,21 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 				}
 			//~ this.checkLinks();
 		}
-		else if (this.state === xiNET.Controller.ROTATING) {
+		else if (this.state === MouseEventCodes.ROTATING) {
 			//round protein rotation to nearest 5 degrees (looks neater)
 			this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
 		}
 		else {
 		} //end of protein drag; do nothing
 	}
-	else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-		this.clearSelection();
-	}
-
-	if (this.state === xiNET.Controller.SELECTING) {
-		clearInterval(this.marcher);
-		this.svgElement.removeChild(this.marquee);
-	}
+	//~ else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+		//~ this.clearSelection();
+	//~ }
+//~ 
+	//~ if (this.state === xiNET.Controller.SELECTING) {
+		//~ clearInterval(this.marcher);
+		//~ this.svgElement.removeChild(this.marquee);
+	//~ }
 	this.dragElement = null;
 	this.whichRotator = -1;
 	this.state = MouseEventCodes.MOUSE_UP;
