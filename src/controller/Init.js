@@ -167,14 +167,12 @@ xiNET.Controller.prototype.clear = function() {
 		this.force.stop();
 	}
  	this.force = null;
-    var suspendID = this.svgElement.suspendRedraw(5000);
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
     this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
-	this.svgElement.unsuspendRedraw(suspendID);
  
      //are we panning?
     this.panning = false;
@@ -476,7 +474,6 @@ xiNET.Controller.prototype.setLayout = function(layoutJSON) {
 };
 
 xiNET.Controller.prototype.loadLayout = function() {
-    var suspendID = this.svgElement.suspendRedraw(5000);
     for (var prot in this.layout/*.proteins*/) {
         var protState = this.layout[prot];
         var protein = this.proteins.get(prot);
@@ -555,7 +552,6 @@ xiNET.Controller.prototype.loadLayout = function() {
             //~ }
         //~ }
     //~ }
-    this.svgElement.unsuspendRedraw(suspendID);
 };
 
 xiNET.Controller.prototype.setLinkColour = function(linkID, colour) {

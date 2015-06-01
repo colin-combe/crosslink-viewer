@@ -46,7 +46,6 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
         if (this.dragElement != null) { //dragging or rotating
             this.hideTooltip();
-            // var suspendID = this.svgElement.suspendRedraw(5000);
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
@@ -113,7 +112,6 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
                 }
             }
-            // this.svgElement.unsuspendRedraw(suspendID);
         }
 
 //    else if (this.state === xiNET.Controller.SELECTING) {
@@ -138,7 +136,6 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 // this ends all dragging and rotating
 xiNET.Controller.prototype.touchEnd = function(evt) {
 	this.preventDefaultsAndStopPropagation(evt);
-	//    var suspendID = this.svgElement.suspendRedraw(5000);
 	if (this.dragElement != null) { 
 		if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (typeof this.dragElement.x === 'undefined') { //if not protein
@@ -167,10 +164,6 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 		clearInterval(this.marcher);
 		this.svgElement.removeChild(this.marquee);
 	}
-	//    this.svgElement.unsuspendRedraw(suspendID);
-			
-	//this.message("nulling...");
-
 	this.dragElement = null;
 	this.whichRotator = -1;
 	this.state = xiNET.Controller.MOUSE_UP;

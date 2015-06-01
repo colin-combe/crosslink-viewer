@@ -9,18 +9,15 @@
 
 xiNET.Controller.prototype.checkLinks = function() {
     //if (this.sequenceInitComplete) {
-		var suspendID = this.svgElement.suspendRedraw(5000);
 		var links = this.proteinLinks.values();
 		var linkCount = links.length;
 		for (var l = 0; l < linkCount; l++) {
 			links[l].check();
 		}
-		this.svgElement.unsuspendRedraw(suspendID);
 	//}
 };
 
 xiNET.Controller.prototype.scale = function() {
-    var suspendID = this.svgElement.suspendRedraw(5000);
     //if (this.sequenceInitComplete) {
         this.z = this.container.getScreenCTM().inverse().a;
 
@@ -65,5 +62,4 @@ xiNET.Controller.prototype.scale = function() {
             }
         }
     //}
-    this.svgElement.unsuspendRedraw(suspendID);
 };
