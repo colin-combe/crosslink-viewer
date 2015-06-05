@@ -67,7 +67,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.mouseMove = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
+    //~ this.preventDefaultsAndStopPropagation(evt);
   //  if (this.sequenceInitComplete) { // just being cautious
         var p = this.getEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
@@ -350,5 +350,5 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
         evt.cancelBubble = true;
     if (evt.preventDefault)
         evt.preventDefault();
-    //~ evt.returnValue = false;
+    // evt.returnValue = false;
 };
