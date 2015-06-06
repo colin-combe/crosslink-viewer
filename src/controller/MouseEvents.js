@@ -289,22 +289,9 @@ xiNET.Controller.prototype.mouseWheel = function(evt) {
     return false;
 };
 
-xiNET.Controller.prototype.clearSelection = function() {
-	var things = this.selected.values();
-    var count = things.length;
-    for (var t = 0; t < count; t++) {
-        var thing = things[t];
-        thing.setSelected(false);
-    }
-    this.message("No selection.");
-};
-
 //gets mouse position
 xiNET.Controller.prototype.getEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
-//    var rect = this.container.getBoundingClientRect();
-//   p.x = evt.clientX - rect.left;
-//    p.y = evt.clientY - rect.top;
     var element = this.svgElement.parentNode;
     var top = 0, left = 0;
     do {
@@ -312,26 +299,10 @@ xiNET.Controller.prototype.getEventPoint = function(evt) {
         left += element.offsetLeft || 0;
         element = element.offsetParent;
    } while(element);
-   //TODO: should do equivalent for horizontal scroll also
-	// top += getScrollTop();
     p.x = evt.pageX - left;
     p.y = evt.pageY - top;
     return p;
 };
-
-
-function getScrollTop(){
-    if(typeof pageYOffset!= 'undefined'){
-        //most browsers except IE before #9
-        return pageYOffset;
-    }
-    else{
-        var B= document.body; //IE 'quirks'
-        var D= document.documentElement; //IE with doctype
-        D= (D.clientHeight)? D: B;
-        return D.scrollTop;
-    }
-}
 
 // transform the mouse-position into a position on the svg
 xiNET.Controller.prototype.mouseToSVG = function(x, y) {

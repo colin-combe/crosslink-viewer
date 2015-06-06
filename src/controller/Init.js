@@ -41,20 +41,10 @@ xiNET.Controller = function(targetDiv) {
     };
     //add listeners
     var self = this;
-    this.svgElement.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.svgElement.onmousemove = function(evt) {
-        self.mouseMove(evt);
-    };
-    this.svgElement.onmouseup = function(evt) {
-        self.mouseUp(evt);
-    };
-    // even though we don't use jquery, see:
-    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
-    this.svgElement.onmouseout = function(evt) {
-        self.hideTooltip(evt);
-    };    
+    this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
+    this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
+    this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
+    this.svgElement.onmouseout = function(evt) { self.hideTooltip(evt); };    
     var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
     if (document.attachEvent){ //if IE (and Opera depending on user setting) 
         this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
@@ -63,24 +53,17 @@ xiNET.Controller = function(targetDiv) {
         this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
     }  
     this.lastMouseUp = new Date().getTime();   
-     //touchstart
-    this.svgElement.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
-    //touchmove
-    this.svgElement.ontouchmove = function(evt) {
-        self.touchMove(evt);
-    };
-    //touchend
-    this.svgElement.ontouchend = function(evt) {
-        self.message("touch end");
-        self.touchEnd(evt);
-    };
+    this.svgElement.ontouchstart = function(evt) { self.touchStart(evt); };
+    this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
+    this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
+    //selection and highlight callbacks
+    this.linkSelectionChanged = new Array();
+    this.linkHighlightsChanged = new Array();
     
     targetDiv.appendChild(this.svgElement);
     
 	//these attributes are used by checkboxes to hide self links or ambiguous links
-	this.selfLinksShown = true;//TODO - fix confusing double negative
+	this.selfLinksShown = true;
 	this.ambigShown = true;	
        
     // filled background needed, else cannot click/drag background
@@ -125,7 +108,7 @@ xiNET.Controller = function(targetDiv) {
 
     this.svgElement.appendChild(this.container);
     //showing title as tooltips is NOT part of svg spec (even though browsers do this)
-    //also more repsonsive / more control if we do out own
+    //also more repsonsive / more control if we do our own
     this.tooltip = document.createElementNS(xiNET.svgns, "text");
 	this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
@@ -151,14 +134,6 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.appendChild(this.tooltip);
 
     this.clear();
-};
-
-/**
- * Sets the current transform matrix of an element.
- */
-xiNET.setCTM = function(element, matrix) {
-    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-    element.setAttribute("transform", s);
 };
 
 xiNET.Controller.prototype.clear = function() {
@@ -198,8 +173,7 @@ xiNET.Controller.prototype.clear = function() {
     this.layout = null;
     this.z = 1;
     this.scores = null;
-    this.selected = d3.map();
-    this.selectedLinks = d3.map();
+    this.linkSelection = d3.map();
 
     this.tooltip.setAttribute('visibility', 'hidden');
     this.tooltip_bg.setAttribute('visibility', 'hidden');
@@ -211,6 +185,33 @@ xiNET.Controller.prototype.clear = function() {
 xiNET.Controller.prototype.emptyElement = function(element) {
     while (element.lastChild) {
         element.removeChild(element.lastChild);
+    }
+};
+
+/**
+ * Sets the current transform matrix of an element.
+ */
+xiNET.setCTM = function(element, matrix) {
+    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+    element.setAttribute("transform", s);
+};
+
+xiNET.Controller.prototype.linkSelectionChanged = function() {
+	var count = this.linkSelectionChanged.length;
+	for (var i = 0; i < count; i++) {
+		
+	}
+}
+
+xiNET.Controller.prototype.linkHighlightsChanged = function() {
+}
+
+xiNET.Controller.prototype.clearSelection = function() {
+	var things = this.selected.values();
+    var count = things.length;
+    for (var t = 0; t < count; t++) {
+        var thing = things[t];
+        thing.setSelected(false);
     }
 };
 
@@ -343,19 +344,6 @@ xiNET.Controller.prototype.exportSVG = function() {
 		xmlAsUrl += encodeURIComponent(xml);
 		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
 	}
-};
-
-xiNET.Controller.prototype.message = function(text, preformatted) {
-    if (typeof this.messageElement !== 'undefined') {
-        if (typeof text === "object") {
-            text = JSON.stringify(text, null, ' ');
-            text = text.replace(/\\u0000/gi, '');
-            preformatted = true;
-        }
-        if (preformatted)
-            text = "<pre>" + text + "</pre>";
-        this.messageElement.innerHTML = text;
-    }
 };
 
 xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
@@ -593,7 +581,3 @@ xiNET.Controller.prototype.showAmbig = function(bool) {
     this.checkLinks();
 };
 
-//set the message element to use (optional - mainly for debugging)
-xiNET.Controller.prototype.setMessageElement = function(e) {
-    this.messageElement = e;
-};
