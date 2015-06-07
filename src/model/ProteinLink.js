@@ -178,6 +178,7 @@ ProteinLink.prototype.setSelected = function(select) {
  }
 };
 
+/*
 //used when link clicked
 ProteinLink.prototype.showID = function() {
     if (typeof send_match_ids === 'function') {
@@ -304,7 +305,7 @@ ProteinLink.prototype.showID = function() {
 			linkInfo += scoresTable;
         this.controller.message(linkInfo);
     }
-};
+};*/
 
 //its an array of match id's its going to return
 ProteinLink.prototype.getFilteredMatches = function() {

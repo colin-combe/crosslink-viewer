@@ -39,7 +39,6 @@ xiNET.Controller.prototype.touchStart = function(evt) {
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.touchMove = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
-    this.message(this.dragStart);
     if (this.sequenceInitComplete) { // just being cautious
         var p = this.getTouchEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
@@ -139,7 +138,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 	if (this.dragElement != null) { 
 		if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (typeof this.dragElement.x === 'undefined') { //if not protein
-					this.dragElement.showID();
+					//~ this.dragElement.showID();
 				} else {
 					if (this.dragElement.form === 0) {
 						this.dragElement.setForm(1);
@@ -174,7 +173,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 /**
  * Handle gesture change event.
  */
-xiNET.Controller.prototype.gestureChange = function(evt) {
+/*xiNET.Controller.prototype.gestureChange = function(evt) {
     this.preventDefaultsAndStopPropagation(evt);
     var delta = evt.scale;
     //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
@@ -192,27 +191,19 @@ xiNET.Controller.prototype.gestureChange = function(evt) {
     xiNET.setCTM(g, g.getCTM().multiply(k));
     this.scale();
     return false;
-};
+};*/
 
 //gets mouse position
 xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
     var p = this.svgElement.createSVGPoint();
-//    var rect = this.container.getBoundingClientRect();
-//   p.x = evt.clientX - rect.left;
-//    p.y = evt.clientY - rect.top;
     var element = this.svgElement.parentNode;
     var top = 0, left = 0;
     do {
         top += element.offsetTop  || 0;
         left += element.offsetLeft || 0;
         element = element.offsetParent;
-   } while(element);
-   //TODO: should do equivalent for horizontal scroll also
-	top += getScrollTop();
- //~ this.message("?");//this.dragStart);
-       p.x = evt.touches[0].pageX - left;
+	} while(element);
+    p.x = evt.touches[0].pageX - left;
     p.y = evt.touches[0].pageY - top;
- //~ var help = left;////evt.touches[0].pageX;//.toString();
-  //~ this.message(JSON.stringify(help, null, '\t'));//this.dragStart);
    return p;
 };

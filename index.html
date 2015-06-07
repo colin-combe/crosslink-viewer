@@ -315,9 +315,12 @@
                 xlv = new xiNET.Controller(targetDiv);
                 
 			    var targetDiv = document.getElementById('networkContainer');
-                var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
-                xlv.setMessageElement(messageDiv);
+                xlv.linkSelectionChanged.push(function (selectedResidueLinks){
+				
+					console.log(selectedResidueLinks.length);
+					
+				});
 				loadData();
                 changeAnnotations();
                 xlv.showSelfLinks(document.getElementById('selfLinks').checked);

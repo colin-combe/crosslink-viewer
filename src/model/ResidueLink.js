@@ -179,7 +179,7 @@ ResidueLink.prototype.setSelected = function(select) {
 };
 
 //used when link clicked
-ResidueLink.prototype.showID = function() {
+/*ResidueLink.prototype.showID = function() {
     if (typeof send_match_ids === 'function') {
         var matches = this.getFilteredMatches();
         var matchIDs = new Array();
@@ -245,7 +245,7 @@ ResidueLink.prototype.showID = function() {
 		linkInfo += scoresTable;
         this.controller.message(linkInfo);
     }
-};
+};*/
 
 ResidueLink.prototype.getFilteredMatches = function() {
     this.ambig = true;

@@ -198,20 +198,20 @@ Protein.prototype.mouseDown = function(evt) {
         var p = this.controller.getEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         
-        var message = "";
-		//heading, including PDB link
-		message += this.name + " &nbsp;&nbsp;[" + this.id + "]<p>";
-		if (this.accession) {
-			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-					+ this.accession + "' target='_blank'>PDB</a></p>";
-		}
-		this.controller.message(message);
-		var self = this;
-		if (this.accession){
-			xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-				self.controller.message(message + "<pre>" + txt + "</pre>");
-			});
-		}
+        //~ var message = "";
+		//~ //heading, including PDB link
+		//~ message += this.name + " &nbsp;&nbsp;[" + this.id + "]<p>";
+		//~ if (this.accession) {
+			//~ message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
+					//~ + this.accession + "' target='_blank'>PDB</a></p>";
+		//~ }
+		//~ this.controller.message(message);
+		//~ var self = this;
+		//~ if (this.accession){
+			//~ xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
+				//~ self.controller.message(message + "<pre>" + txt + "</pre>");
+			//~ });
+		//~ }
         return false;
 };
 
@@ -228,19 +228,19 @@ Protein.prototype.touchStart = function(evt) {
         var p = this.controller.getTouchEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
         
-        var self = this;
-        var message = "";
+        //~ var self = this;
+        //~ var message = "";
 		//heading, including PDB link
-		message += "<h5>" + this.name + " &nbsp;&nbsp;[" + this.id + "] </h5><p>";
-		if (typeof this.accession !== "undefined") {
-			message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-					+ this.accession + "' target='_blank'>PDB</a></p>";
-		}
-		this.controller.message(message);
-		var self = this;
-		xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-			self.controller.message(message + "<pre>" + txt + "</pre>");
-		});
+		//~ message += "<h5>" + this.name + " &nbsp;&nbsp;[" + this.id + "] </h5><p>";
+		//~ if (typeof this.accession !== "undefined") {
+			//~ message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
+					//~ + this.accession + "' target='_blank'>PDB</a></p>";
+		//~ }
+		//~ this.controller.message(message);
+		//~ var self = this;
+		//~ xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
+			//~ self.controller.message(message + "<pre>" + txt + "</pre>");
+		//~ });
         
         return false;
 };
