@@ -131,7 +131,10 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 				this.proteinLink.fromProtein.showPeptides(fromPeptides);  
 				if (this.proteinLink.toProtein !== null) {
 					this.proteinLink.toProtein.showPeptides(toPeptides);  
-				}			
+				}		
+				var temp = d3.map();
+				temp.set(this.id, this);
+				this.controller.linkHighlightsChanged(temp);	
 			} else {
 				this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 				if (this.isSelected == false) {
@@ -140,7 +143,8 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 				this.proteinLink.fromProtein.removePeptides();  
 				if (this.proteinLink.toProtein !== null) {
 						this.proteinLink.toProtein.removePeptides();  	
-				}		
+				}
+				this.controller.linkHighlightsChanged(d3.map());
 			}
 		}
 		if (andAlternatives && this.ambig) {
@@ -164,88 +168,21 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 };
 
 ResidueLink.prototype.setSelected = function(select) {
-    if (select && this.isSelected === false) {
-        this.controller.selected.set(this.id, this);//ok, 
+    if (select === true && this.isSelected === false) {
+        this.controller.selectedLinks.set(this.id, this);
         this.isSelected = true;
         this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
+		this.controller.linkSelectionChanged();
     }
     else if (select === false && this.isSelected === true) {
-        this.controller.selected.remove(this.id);
+        this.controller.selectedLinks.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
         this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
- }
+        this.controller.linkSelectionChanged();
+	}
 };
-
-//used when link clicked
-/*ResidueLink.prototype.showID = function() {
-    if (typeof send_match_ids === 'function') {
-        var matches = this.getFilteredMatches();
-        var matchIDs = new Array();
-        var c = matches.length;
-        var firstMatch = true;
-        for (var i = 0; i < c; i++) {
-            if (firstMatch) {
-                firstMatch = false;
-            }
-            else {
-                matchIDs = matchIDs + ",";
-            }
-            matchIDs = matchIDs + matches[i].id;
-        }
-        send_match_ids(matchIDs);
-    }
-    else {
-		var fromProt = this.getFromProtein();
-		var toProt = this.getToProtein();
-
-		var linkInfo = "<h5>" + fromProt.name + " [" + fromProt.id
-			+ "], residue " + this.fromResidue + " to "
-			+ ((toProt)?toProt.name:"null") + " [" + ((toProt)?toProt.id:"")
-			+ "], residue " + this.toResidue + "</h5>";
-        
-        var matches = this.getFilteredMatches();
-        var c = matches.length;
-        linkInfo += "<p>" + c + " match";
-		if (c > 1){
-			linkInfo += "es:</p>";
-		} else {
-			linkInfo += ":</p>";
-		}
-		
-		var scoresTable = "<table><tr>";
-		
-		scoresTable += "<th>Id</th>";
-		scoresTable += "<th>Protein1</th>";
-		scoresTable += "<th>PepPos1</th>";
-		scoresTable += "<th>PepSeq1</th>";
-		scoresTable += "<th>LinkPos1</th>";
-		scoresTable += "<th>Protein2</th>";
-		scoresTable += "<th>PepPos2</th>";
-		scoresTable += "<th>PepSeq2</th>";
-		scoresTable += "<th>LinkPos2</th>";
-		
-		scoresTable += "<th>Score</th>";
-		
-		if (this.controller.autoValidatedFound === true){
-			scoresTable += "<th>Auto</th>";
-		}
-		if (this.controller.manualValidatedFound === true){
-			scoresTable += "<th>Manual</th>";
-		}
-		
-		scoresTable += "</tr>";
-		for (var j = 0; j < c; j++) {
-			scoresTable += matches[j][0].toTableRow();
-		}
-		
-		scoresTable += "</table><p>&nbsp;</p>";
-		
-		linkInfo += scoresTable;
-        this.controller.message(linkInfo);
-    }
-};*/
 
 ResidueLink.prototype.getFilteredMatches = function() {
     this.ambig = true;

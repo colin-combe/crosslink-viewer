@@ -129,19 +129,10 @@ function Protein(id, xinetController, acc, name) {
 
     // events
     var self = this;
-    //    this.upperGroup.setAttribute('pointer-events','all');
-    this.upperGroup.onmousedown = function(evt) {
-		self.mouseDown(evt);
-    };
-    this.upperGroup.onmouseover = function(evt) {
-		self.mouseOver(evt);
-    };
-    this.upperGroup.onmouseout = function(evt) {
-		self.mouseOut(evt);
-    };
-    this.upperGroup.ontouchstart = function(evt) {
-		self.touchStart(evt);
-    };
+    this.upperGroup.onmousedown = function(evt) {self.mouseDown(evt);};
+    this.upperGroup.onmouseover = function(evt) {self.mouseOver(evt);};
+    this.upperGroup.onmouseout = function(evt) {self.mouseOut(evt);};
+    this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
     this.isSelected = false;
 	this.showHighlight(false);
 };
@@ -189,29 +180,14 @@ Protein.prototype.mouseDown = function(evt) {
         }
         this.controller.dragElement = this;
         //~ if (evt.ctrlKey === false) {
-            this.controller.clearSelection();
-            this.setSelected(true);
+            //~ this.controller.clearSelection();
+            //~ this.setSelected(true);
         //~ } else {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
         var p = this.controller.getEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        
-        //~ var message = "";
-		//~ //heading, including PDB link
-		//~ message += this.name + " &nbsp;&nbsp;[" + this.id + "]<p>";
-		//~ if (this.accession) {
-			//~ message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-					//~ + this.accession + "' target='_blank'>PDB</a></p>";
-		//~ }
-		//~ this.controller.message(message);
-		//~ var self = this;
-		//~ if (this.accession){
-			//~ xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-				//~ self.controller.message(message + "<pre>" + txt + "</pre>");
-			//~ });
-		//~ }
         return false;
 };
 
@@ -222,26 +198,11 @@ Protein.prototype.touchStart = function(evt) {
             this.controller.force.stop();
         }
         this.controller.dragElement = this;
-        this.controller.clearSelection();
-        this.setSelected(true);
+        //~ this.controller.clearSelection();
+        //~ this.setSelected(true);
         //store start location
         var p = this.controller.getTouchEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        
-        //~ var self = this;
-        //~ var message = "";
-		//heading, including PDB link
-		//~ message += "<h5>" + this.name + " &nbsp;&nbsp;[" + this.id + "] </h5><p>";
-		//~ if (typeof this.accession !== "undefined") {
-			//~ message += "<a href='http://www.ebi.ac.uk/pdbe-apps/widgets/unipdb?uniprot="
-					//~ + this.accession + "' target='_blank'>PDB</a></p>";
-		//~ }
-		//~ this.controller.message(message);
-		//~ var self = this;
-		//~ xiNET_Storage.getUniProtTxt(this.accession, function (id, txt){
-			//~ self.controller.message(message + "<pre>" + txt + "</pre>");
-		//~ });
-        
         return false;
 };
 
@@ -312,20 +273,20 @@ Protein.prototype.showHighlight = function(show) {
     }
 };
 
-Protein.prototype.setSelected = function(select) {
-    if (select && this.isSelected === false) {
-        this.controller.selected.set(this.id, this);
-        this.isSelected = true;
-		this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-		this.highlight.setAttribute("stroke-opacity", "1");
-    }
-    else if (select === false && this.isSelected === true) {
-        this.controller.selected.remove(this.id);
-        this.isSelected = false;
-		this.highlight.setAttribute("stroke-opacity", "0");
-		this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    }
-};
+//~ Protein.prototype.setSelected = function(select) {
+    //~ if (select && this.isSelected === false) {
+        //~ this.controller.selected.set(this.id, this);
+        //~ this.isSelected = true;
+		//~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+		//~ this.highlight.setAttribute("stroke-opacity", "1");
+    //~ }
+    //~ else if (select === false && this.isSelected === true) {
+        //~ this.controller.selected.remove(this.id);
+        //~ this.isSelected = false;
+		//~ this.highlight.setAttribute("stroke-opacity", "0");
+		//~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    //~ }
+//~ };
 
 Protein.prototype.setRotation = function(angle) {
     this.rotation = angle % 360;
@@ -778,20 +739,13 @@ Protein.prototype.toCircle = function(svgP) {
 	});
  
 	function update(interp) {
-		// if (self.isParked === false) { //that wont work
-//can following be removed
-			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-			var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
-			self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
-		// }
-		 if (xInterpol !== null){
+		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
+		if (xInterpol !== null){
 			 self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
-		 }
-		 //~ else {
-			 //~ self.setPosition(self.getX(), self.getY());
-		 //~ }
-		
-	   	var rot = rotationInterpol(cubicInOut(interp));
+		}
+		var rot = rotationInterpol(cubicInOut(interp));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
 		self.setRotation(rot);	 
 		self.setAllLineCoordinates();

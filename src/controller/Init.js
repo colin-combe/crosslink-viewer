@@ -57,8 +57,8 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
     this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
     //selection and highlight callbacks
-    this.linkSelectionChanged = new Array();
-    this.linkHighlightsChanged = new Array();
+    this.linkSelectionCallbacks = new Array();
+    this.linkHighlightsCallbacks = new Array();
     
     targetDiv.appendChild(this.svgElement);
     
@@ -173,7 +173,7 @@ xiNET.Controller.prototype.clear = function() {
     this.layout = null;
     this.z = 1;
     this.scores = null;
-    this.linkSelection = d3.map();
+    this.selectedLinks = d3.map();
 
     this.tooltip.setAttribute('visibility', 'hidden');
     this.tooltip_bg.setAttribute('visibility', 'hidden');
@@ -197,17 +197,23 @@ xiNET.setCTM = function(element, matrix) {
 };
 
 xiNET.Controller.prototype.linkSelectionChanged = function() {
-	var count = this.linkSelectionChanged.length;
+	var callbacks = this.linkSelectionCallbacks;
+	var count = callbacks.length;
 	for (var i = 0; i < count; i++) {
-		
+		callbacks[i](this.selectedLinks);
 	}
 }
 
-xiNET.Controller.prototype.linkHighlightsChanged = function() {
+xiNET.Controller.prototype.linkHighlightsChanged = function(highlighted) {
+	var callbacks = this.linkHighlightsCallbacks;
+	var count = callbacks.length;
+	for (var i = 0; i < count; i++) {
+		callbacks[i](highlighted);
+	}
 }
 
 xiNET.Controller.prototype.clearSelection = function() {
-	var things = this.selected.values();
+	var things = this.selectedLinks.values();
     var count = things.length;
     for (var t = 0; t < count; t++) {
         var thing = things[t];
