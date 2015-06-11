@@ -46,70 +46,64 @@
 			</select>			
 
 		</div>
-        <div id="networkCaption">
-			<h2>Key</h2> 
-			<div>
+			<div id="networkCaption">
+				<h2>Key</h2> 
+				<div>
+					
+	<!--
+					LEGEND
+	-->
+					<table>
+					 <tr>
+						<td>
+							<div style="float:right">
+								<img src="./demo/svgForKey/smallMol.svg"></td>
+							</div>
+						<td>Small molecule</td>
+					  </tr>				  
+					 <tr>
+						<td>
+							<div style="float:right">
+								<img src="./demo/svgForKey/proteinBlob.svg" >
+							</div>
+							<div style="float:right">
+								<img src="./demo/svgForKey/proteinBar.svg">
+							</div>						
+						</td>
+						<td>
+							Protein<br>
+							 - click or tap to toggle between circle and bar (bar shows binding sites, if known).</td>
+					  </tr>
+					  <tr>
+						<td>
+							<div style="float:right">
+								<img src="./demo/svgForKey/gene.svg"></td>
+							</div>
+						<td>Gene</td>
+					  </tr>				  
+					  <tr>
+						<td>
+							<div style="float:right">
+								<img src="./demo/svgForKey/DNA.svg"></td>
+							</div>
+						<td>DNA</td>
+					  </tr>
+					<tr>
+						<td>
+							<div style="float:right">
+								<img src="./demo/svgForKey/RNA.svg"></td>
+							</div>
+						<td>RNA</td>
+					  </tr>
+					</table>
+				</div>
 				
-<!--
-				LEGEND
--->
-				<table>
-				 <tr>
-					<td>
-						<div style="float:right">
-							<img src="./demo/svgForKey/smallMol.svg"></td>
-						</div>
-					<td>Small molecule</td>
-				  </tr>				  
-				 <tr>
-					<td>
-						<div style="float:right">
-							<img src="./demo/svgForKey/proteinBlob.svg" >
-						</div>
-						<div style="float:right">
-							<img src="./demo/svgForKey/proteinBar.svg">
-						</div>						
-					</td>
-					<td>
-						Protein<br>
-						 - click or tap to toggle between circle and bar (bar shows binding sites, if known).</td>
-				  </tr>
-				  <tr>
-					<td>
-						<div style="float:right">
-							<img src="./demo/svgForKey/gene.svg"></td>
-						</div>
-					<td>Gene</td>
-				  </tr>				  
-				  <tr>
-					<td>
-						<div style="float:right">
-							<img src="./demo/svgForKey/DNA.svg"></td>
-						</div>
-					<td>DNA</td>
-				  </tr>
-				<tr>
-					<td>
-						<div style="float:right">
-							<img src="./demo/svgForKey/RNA.svg"></td>
-						</div>
-					<td>RNA</td>
-				  </tr>
-				</table>
+				<div id="colours"></div>
+				
+				<a href="./index.html"><h2>Complex data examples</h2></a>
+				<a href="./demo/evidence.html"><h2>Evidence data examples</h2></a>
+				<a href="https://github.com/MICommunity/interaction-viewer/tree/master/src/controller"><h2>GitHub</h2></a>
 			</div>
-			
-			<a href="./index.html"><h2>Complex data examples</h2></a>
-			<a href="./demo/evidence.html"><h2>Evidence data examples</h2></a>
-			<a href="https://github.com/MICommunity/interaction-viewer/tree/master/src/controller"><h2>GitHub</h2></a>
-		</div>
-
-		
-<!--
-        <div id="networkCaption">
-			<h2 id="jsonHeading"></h2> 
-			<div id="json"/>
-		</div>
--->
         </div>
 
         <script type="text/javascript">
@@ -117,8 +111,14 @@
                                 
                 var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET(targetDiv);
+                
+                xlv.legendCallbacks.push(function () {
+				
+				});
+                
                 loadData();
                 changeAnnotations();
+                               
                 function loadData(){
 					xlv.clear();
 					var matrixExpansion = document.getElementById("chkexpansion").checked;

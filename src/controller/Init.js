@@ -57,33 +57,17 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.setAttribute("style", "display:block;");
     //add listeners
     var self = this;
-    this.svgElement.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.svgElement.onmousemove = function(evt) {
-        self.mouseMove(evt);
-    };
-    this.svgElement.onmouseup = function(evt) {
-        self.mouseUp(evt);
-    };
-    // even though we don't use jquery, see:
-    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
-    this.svgElement.onmouseout = function(evt) {
-        self.hideTooltip(evt);
-    };
+    this.svgElement.onmousedown = function(evt) {self.mouseDown(evt);};
+    this.svgElement.onmousemove = function(evt) {self.mouseMove(evt);};
+    this.svgElement.onmouseup = function(evt) {self.mouseUp(evt);};
+    this.svgElement.onmouseout = function(evt) {self.hideTooltip(evt);};
     this.lastMouseUp = new Date().getTime();
-     //touchstart
-    this.svgElement.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
-    //touchmove
-    this.svgElement.ontouchmove = function(evt) {
-        self.touchMove(evt);
-    };
-    //touchend
-    this.svgElement.ontouchend = function(evt) {
-        self.touchEnd(evt);
-    };
+    this.svgElement.ontouchstart = function(evt) {self.touchStart(evt);};
+    this.svgElement.ontouchmove = function(evt) {self.touchMove(evt);};
+    this.svgElement.ontouchend = function(evt) {self.touchEnd(evt);};
+    
+    //legend changed callbacks
+    this.legendCallbacks = new Array();
 
     targetDiv.appendChild(this.svgElement);
 
@@ -196,6 +180,14 @@ xiNET.Controller.prototype.clear = function() {
     this.resetZoom();
     this.state = MouseEventCodes.MOUSE_UP;
 };
+
+xiNET.Controller.prototype.legendChanged = function() {
+	var callbacks = this.legendCallbacks;
+	var count = callbacks.length;
+	for (var i = 0; i < count; i++) {
+		callbacks[i]();
+	}
+}
 
 xiNET.Controller.prototype.emptyElement = function(element) {
     while (element.lastChild) {
@@ -354,21 +346,23 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 	//lookup missing sequences
 	var nsIds = needsSequence.values();
 	var nsCount = nsIds.length;
-	var countSequences = 0;
-	for (var m = 0; m < nsCount; m++){
-		xiNET_Storage.getSequence(nsIds[m], function(id, seq){
-				self.molecules.get(id).setSequence(seq);
-				countSequences++;
-				if (countSequences === nsCount){
-					self.initPolymers();
-				}
-			}
-		);
-	}
 	if (nsCount === 0) {
 		self.initPolymers();
 	}
-
+	else {
+		var countSequences = 0;
+		for (var m = 0; m < nsCount; m++){
+			xiNET_Storage.getSequence(nsIds[m], function(id, seq){
+					self.molecules.get(id).setSequence(seq);
+					countSequences++;
+					if (countSequences === nsCount){
+						self.initPolymers();
+					}
+				}
+			);
+		}
+	}
+	
 	function readStoichExpanded(){
 		//get interactors
 		var interactors = d3.map();

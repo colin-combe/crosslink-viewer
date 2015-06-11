@@ -119,7 +119,13 @@ Polymer.prototype.scale = function() {
 			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
-		d3.select(this.annotationsSvgGroup).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		if (this.annotations){
+			var ca = this.annotations.length;
+			for (var a = 0; a < ca; a++){
+				var anno = this.annotations[a];
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+			}
+		}
 		
 		d3.select(this.background)
 			.attr("width", protLength)
@@ -440,16 +446,14 @@ Polymer.prototype.toStick = function() {
 			}
 		}
 	}*/		
-	if (typeof this.annotations !== 'undefined') {
+	if (this.annotations) {
 		var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			
+			var anno = annots[a];
+			var pieSlice = anno.pieSlice;		
 			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-						
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
 				.duration(Polymer.transitionTime);
 		}
@@ -529,23 +533,6 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
 
 Polymer.stepsInArc = 5;
 
-Polymer.prototype.getAnnotationRectPath = function(annotation) {
-    //domain as rectangle path
-    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
-    var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
-    //~ Without brackets following may do string concatenation
-    var annotSize = (1 + (annotation.end - annotation.start));
-    var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE;
-    var rectPath = "M " + annotX + "," + bottom;
-    for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
-        var step = annotX + (annotLength * (sia / Polymer.stepsInArc));
-        rectPath += " L " + step + "," + top;
-    }       
-    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
-        + " Z";
-    return rectPath;
-};
-
 Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     var startAngle = ((annotation.start - 1) / this.size) * 360;
     var endAngle = ((annotation.end - 1) / this.size) * 360;
@@ -556,8 +543,6 @@ Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
         largeArch = 1;
     }
-   //~ // console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-     //~ //   + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
     return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
         + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z"; 
 };
@@ -579,6 +564,22 @@ Polymer.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
     approximatePiePath += " L " + 0 + "," + 0;
     approximatePiePath += "  Z";
     return approximatePiePath;
+};
+
+Polymer.prototype.getAnnotationRectPath = function(annotation) {
+    //domain as rectangle path
+    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
+    var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
+    var annotSize = (1 + (annotation.end - annotation.start));
+	var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
+    var rectPath = "M " + annotX + "," + bottom;
+    for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
+        var step = annotX + (annotLength * (sia / Polymer.stepsInArc));
+        rectPath += " L " + step + "," + top;
+    }       
+    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
+        + " Z";
+    return rectPath;
 };
 
 module.exports = Polymer;

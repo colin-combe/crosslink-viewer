@@ -200,41 +200,42 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
         posFeats.sort(function(a, b) {
             return (b.end - b.start) - (a.end - a.start);
         });     
-        
+        this.annotations = posFeats;
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
-            var annotPieSlice = document.createElementNS(Config.svgns, "path");
-            this.annotations.push({anno:anno, pieSlice:annotPieSlice});//, rect:annotColouredRect});
+            anno.pieSlice = document.createElementNS(Config.svgns, "path");
+          //  this.annotations.push({anno:anno, pieSlice:annotPieSlice});//, rect:annotColouredRect});
              if (this.form === 0) {
-                annotPieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+                anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
             } else {
-                annotPieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
             }
-            annotPieSlice.setAttribute("stroke", "none");
             var c;
-            if (anno.colour == null) { // check == here
+            if (anno.colour == null) {
 				c = Interactor.domainColours(anno.name);
             }
             else {
                 c = anno.colour;
             }
-            annotPieSlice.setAttribute("fill", c);
-            annotPieSlice.setAttribute("fill-opacity", "1");
+            anno.pieSlice.setAttribute("fill", c);
+            anno.pieSlice.setAttribute("stroke", c);
+            anno.pieSlice.setAttribute("stroke-width", 1);
+            anno.pieSlice.setAttribute("fill-opacity", "0.5");
+                     
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
-            annotPieSlice.name = text;
+            anno.pieSlice.name = text;
             var xlv = this.controller;
             var self = this;
-            annotPieSlice.onmouseover = function(evt) {
-                //    for magnifier experiment
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
+            anno.pieSlice.onmouseover = function(evt) {
+				var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
                 xlv.preventDefaultsAndStopPropagation(evt);
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
              if (this.annotationsSvgGroup) { //hack
-				 this.annotationsSvgGroup.appendChild(annotPieSlice);
+				 this.annotationsSvgGroup.appendChild(anno.pieSlice);
 			 }
         }
     }
