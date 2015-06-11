@@ -16,7 +16,6 @@ var Config = require('../../controller/Config');
 //josh - should these be moved to Config.js?
 Interactor.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Interactor.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
-Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set2[7]);
 
 function Interactor() {}
 
@@ -194,6 +193,8 @@ Interactor.prototype.setAllLinkCoordinates = function() {
 Interactor.prototype.setPositionalFeatures = function(posFeats) {
     this.annotations = [];   
     if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
+    Interactor.domainColours = null;//d3.scale.ordinal().range(colorbrewer.Set2[7]);
+	var categories = d3.set();
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
@@ -206,21 +207,21 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             anno.start = anno.start - 0;
             anno.end = anno.end - 0;
             anno.pieSlice = document.createElementNS(Config.svgns, "path");
-          //  this.annotations.push({anno:anno, pieSlice:annotPieSlice});//, rect:annotColouredRect});
-             if (this.form === 0) {
+            if (this.form === 0) {
                 anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
             } else {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
             }
-            var c;
-            if (anno.colour == null) {
-				c = Interactor.domainColours(anno.name);
-            }
-            else {
-                c = anno.colour;
-            }
-            anno.pieSlice.setAttribute("fill", c);
-            anno.pieSlice.setAttribute("stroke", c);
+            categories.add(anno.name)
+            //~ var c;
+            //~ if (anno.colour == null) {
+				//~ c = Interactor.domainColours(anno.name);
+            //~ }
+            //~ else {
+                //~ c = anno.colour;
+            //~ }
+            //~ anno.pieSlice.setAttribute("fill", c);
+            //~ anno.pieSlice.setAttribute("stroke", c);
             anno.pieSlice.setAttribute("stroke-width", 1);
             anno.pieSlice.setAttribute("fill-opacity", "0.5");
                      
@@ -238,7 +239,24 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
 				 this.annotationsSvgGroup.appendChild(anno.pieSlice);
 			 }
         }
+        var catCount = categories.length;
+        if (catCount < 3) catCount = 3;
+        //~ if (catCount < 20) {
+			//~ if (catCount < 12) {
+				//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[catCount]);
+			//~ }
+			//~ else {
+				Interactor.domainColours = d3.scale.category20();
+			//~ }
+			for (var i = 0; i < this.annotations.length; i++) {
+				var anno = this.annotations[i];
+				var c = Interactor.domainColours(anno.name);
+				anno.pieSlice.setAttribute("fill", c);
+				anno.pieSlice.setAttribute("stroke", c);          	
+			}
+		//~ }
     }
+    this.controller.legendChanged();
 };
 
 //TODO: remove this, use rotateAboutPoint instead

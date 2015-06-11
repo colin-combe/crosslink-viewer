@@ -318,21 +318,19 @@ Polymer.prototype.toCircle = function(svgP) {
 	}*/
 
 	var self = this;
-	if (typeof this.annotations !== 'undefined') {
+	if (this.annotations) {
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
-			//TODO: structure of this is not ideal...
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			
+			var anno = annots[a];
+			var pieSlice = anno.pieSlice;		
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Polymer.transitionTime).each("end", 
 					function () {
 						for (var b = 0; b < ca; b++) {
-							var annoB = annots[b];
+							var annoB = self.annotations[b];
 							if (this === annoB.pieSlice){
-								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
 							}
 						}
 					}

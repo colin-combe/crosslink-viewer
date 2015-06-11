@@ -185,7 +185,7 @@ xiNET.Controller.prototype.legendChanged = function() {
 	var callbacks = this.legendCallbacks;
 	var count = callbacks.length;
 	for (var i = 0; i < count; i++) {
-		callbacks[i]();
+		callbacks[i](Interactor.domainColours);
 	}
 }
 
@@ -314,7 +314,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		if (typeof feature.detmethod !== 'undefined') {
 			annotName += ', ' + feature.detmethod.name;
 		}
-		var colour = Interactor.domainColours(feature.name);
+		//~ var colour = Interactor.domainColours(feature.name);
 		// the id info we need is inside sequenceData att
 		if (feature.sequenceData) {
 			//~ console.log(JSON.stringify(feature, null, '\t'));
@@ -332,7 +332,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				var startRes = match[1] * 1;
 				var endRes = match[2] * 1;
 				if (isNaN(startRes) === false && isNaN(endRes) === false) {
-					var annotation = new Annotation(annotName, startRes, endRes, colour);
+					var annotation = new Annotation(annotName, startRes, endRes);
 					if (molecule.miFeatures == null) {
 						molecule.miFeatures = new Array();
 					}

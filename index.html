@@ -100,9 +100,11 @@
 				
 				<div id="colours"></div>
 				
+<!--
 				<a href="./index.html"><h2>Complex data examples</h2></a>
 				<a href="./demo/evidence.html"><h2>Evidence data examples</h2></a>
 				<a href="https://github.com/MICommunity/interaction-viewer/tree/master/src/controller"><h2>GitHub</h2></a>
+-->
 			</div>
         </div>
 
@@ -112,8 +114,29 @@
                 var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET(targetDiv);
                 
-                xlv.legendCallbacks.push(function () {
-				
+                xlv.legendCallbacks.push(function (colourAssignment) {
+					var coloursKeyDiv = document.getElementById('colours');
+					
+					var table = "<table><tr><td style='width:75px;margin:10px;"
+								+ "background:#70BDBD;opacity:0.3;border:none;'>"
+								+ "</td><td>your complex</td></tr>";
+					if (colourAssignment){
+						var domain = colourAssignment.domain();
+						console.log("Domain:"+domain);
+						var range = colourAssignment.range();
+						console.log("Range:"+range);
+						table += "<tr style='height:10px;'></tr>";
+						for (var i = 0; i < domain.length; i ++){
+							table += "<tr><td style='width:75px;margin:10px;background:"
+									+ range[i] + ";opacity:0.5;border:solid 1px " 
+									+ range[i] + ";'></td><td>"
+									+ domain[i] +"</td></tr>";
+							console.log(i + " "+ domain[i] + " " + range[i]);
+						}
+					}
+					table = table += "</table>";
+					coloursKeyDiv.innerHTML = table;
+					
 				});
                 
                 loadData();
