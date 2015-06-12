@@ -8,6 +8,8 @@
 //
 //		authors: Colin Combe
 
+// rename to molecule?
+
 "use strict";
 
 var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');//Josh - should path for this be ../../../vendor...?

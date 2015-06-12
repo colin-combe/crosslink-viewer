@@ -422,49 +422,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 					var participant = self.molecules.get(participantId);
 					if (typeof participant === 'undefined'){
 						var interactor = interactors.get(intRef);
-						if (typeof interactor === 'undefined') {
-							//must be a previously unencountered complex
-							participant = new Complex(participantId, self);
-							complexes.set(participantId, participant);
-						}
-						else if (interactor.type.name === 'molecule set') {
-							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
-						}
-						else if (interactor.type.name === 'small molecule') {
-							participant = new SmallMol(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-							if (typeof interactor.sequence !== 'undefined') {
-								participant.setSequence(interactor.sequence);
-							}
-							else {
-								//should look it up using accession number
-								if (participantId.indexOf('uniprotkb') === 0){
-									needsSequence.add(participantId);
-								} else {
-									participant.setSequence("SEQUENCEMISSING");
-								}
-							}
-						}
-						else if (interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'gene') {
-							//its a small mol
-							participant = new Gene(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'ribonucleic acid') {
-							//its a small mol
-							participant = new RNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'deoxyribonucleic acid') {
-							//its a small mol
-							participant = new DNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						} else {
-							alert("Unrecognised type:" + interactor.type.name);
-						}
+						participant = newMolecule(interactor, participantId);
 						self.molecules.set(participantId, participant);
 					}
 
@@ -482,6 +440,79 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 			}
 		}
 	};
+
+	function newMolecule(interactor, participantId){
+		var participant;
+		if (typeof interactor === 'undefined') {
+			//must be a previously unencountered complex - 
+			// MI:0314 - interaction?, MI:0317 - complex? and its many subclasses
+			participant = new Complex(participantId, self);
+			complexes.set(participantId, participant);
+		}
+		//molecule sets
+		else if (interactor.type.id === 'MI:1304' //molecule set
+				|| interactor.type.id === 'MI:1305' //molecule set - candidate set
+				|| interactor.type.id === 'MI:1307' //molecule set - defined set
+				|| interactor.type.id === 'MI:1306' //molecule set - open set
+			) {
+			participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
+		}
+		//bioactive entities
+		else if (interactor.type.id === 'MI:1100' // bioactive entity
+				|| interactor.type.id === 'MI:0904' // bioactive entity - polysaccharide
+				|| interactor.type.id === 'MI:0328' //bioactive entity - small mol
+			) {
+			participant = new SmallMol(participantId, self, interactor, interactor.label);
+		}
+		// proteins, peptides
+		else if (interactor.type.id === 'MI:0326' || interactor.type.id === 'MI:0327') {
+			participant = new Protein(participantId, self, interactor, interactor.label);
+			if (typeof interactor.sequence !== 'undefined') {
+				participant.setSequence(interactor.sequence);
+			}
+			else {
+				//should look it up using accession number
+				if (participantId.indexOf('uniprotkb') === 0){
+					needsSequence.add(participantId);
+				} else {
+					participant.setSequence("SEQUENCEMISSING");
+				}
+			}
+		}
+		//genes
+		else if (interactor.type.id === 'NI:0250') {
+			participant = new Gene(participantId, self, interactor, interactor.label);
+		}
+		//RNA
+		else if (interactor.type.id === 'MI:0320' // RNA
+				|| interactor.type.id === 'MI:0321' // RNA - catalytic
+				|| interactor.type.id === 'MI:0322' // RNA - guide
+				|| interactor.type.id === 'MI:0323' // RNA - heterogeneous nuclear 
+				|| interactor.type.id === 'MI:2190' // RNA - long non-coding 
+				|| interactor.type.id === 'MI:0324' // RNA - messenger 
+				|| interactor.type.id === 'MI:0679' // RNA - poly adenine 
+				|| interactor.type.id === 'MI:0608' // RNA - ribosomal 
+				|| interactor.type.id === 'MI:0611' // RNA - signal recognition particle 
+				|| interactor.type.id === 'MI:0610' // RNA - small interfering  
+				|| interactor.type.id === 'MI:0607' // RNA - small nuclear  
+				|| interactor.type.id === 'MI:0609' // RNA - small nucleolar  
+				|| interactor.type.id === 'MI:0325' // RNA - transfer  
+			) {
+			participant = new RNA(participantId, self, interactor, interactor.label);
+		}
+		//DNA
+		else if (interactor.type.id === 'MI:0319' // DNA 
+				|| interactor.type.id === 'MI:0681' // DNA - double stranded 
+				|| interactor.type.id === 'MI:0680' // DNA - single stranded 
+			) {
+			participant = new DNA(participantId, self, interactor, interactor.label);
+		} else {
+			// MI:0329 - unknown participant ?
+			// MI:0383 - biopolymer ?
+			alert("Unrecognised type:" + interactor.type.name);
+		}		
+		return participant;
+	}
 
 	function indexFeatures(){
 		//create indexed collection of all features from interactions
@@ -512,45 +543,46 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				var interactor = data[n];
 				var participant;
 				var participantId = interactor.id;
-						if (interactor.type.name === 'molecule set') {
-							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
-						}
-						else if (interactor.type.name === 'small molecule') {
-							participant = new SmallMol(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-							if (typeof interactor.sequence !== 'undefined') {
-								participant.setSequence(interactor.sequence);
-							}
-							else {
-								//should look it up using accession number
-								if (participantId.indexOf('uniprotkb') === 0){
-									needsSequence.add(participantId);
-								} else {
-									participant.setSequence("SEQUENCEMISSING");
-								}
-							}
-						}
-						else if (interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'gene') {
-							//its a small mol
-							participant = new Gene(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'ribonucleic acid') {
-							//its a small mol
-							participant = new RNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'deoxyribonucleic acid') {
-							//its a small mol
-							participant = new DNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						} else {
-							alert("Unrecognised type:" + interactor.type.name);
-						}
-						self.molecules.set(participantId, participant);
+						//~ if (interactor.type.name === 'molecule set') {
+							//~ participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
+						//~ }
+						//~ else if (interactor.type.name === 'small molecule') {
+							//~ participant = new SmallMol(participantId, self, interactor, interactor.label);
+						//~ }
+						//~ else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
+							//~ participant = new Protein(participantId, self, interactor, interactor.label);
+							//~ if (typeof interactor.sequence !== 'undefined') {
+								//~ participant.setSequence(interactor.sequence);
+							//~ }
+							//~ else {
+								//~ //should look it up using accession number
+								//~ if (participantId.indexOf('uniprotkb') === 0){
+									//~ needsSequence.add(participantId);
+								//~ } else {
+									//~ participant.setSequence("SEQUENCEMISSING");
+								//~ }
+							//~ }
+						//~ }
+						//~ else if (interactor.type.name === 'peptide') {
+							//~ participant = new Protein(participantId, self, interactor, interactor.label);
+						//~ }
+						//~ else if (interactor.type.name === 'gene') {
+							//~ //its a small mol
+							//~ participant = new Gene(participantId, self, interactor, interactor.label);
+							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						//~ }else if (interactor.type.name === 'ribonucleic acid') {
+							//~ //its a small mol
+							//~ participant = new RNA(participantId, self, interactor, interactor.label);
+							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						//~ }else if (interactor.type.name === 'deoxyribonucleic acid') {
+							//~ //its a small mol
+							//~ participant = new DNA(participantId, self, interactor, interactor.label);
+							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+						//~ } else {
+							//~ alert("Unrecognised type:" + interactor.type.name);
+						//~ }
+				participant = newMolecule (interactor, participantId);
+				self.molecules.set(participantId, participant);
 			}
 		}
 
@@ -898,9 +930,9 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			}
 		}
 		var catCount = categories.values().length;
-		var colourScheme = null;
+		var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
-        if (catCount < 21) {
+        //~ if (catCount < 21) {
 			if (catCount < 9) {
 				var reversed = colorbrewer.Accent[catCount].slice().reverse();
 				colourScheme = d3.scale.ordinal().range(reversed);
@@ -921,7 +953,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 					anno.pieSlice.setAttribute("stroke", c);          	
 				}
 			}
-		}
+		//~ }
 		this.legendChanged(colourScheme);
 		return true;
 	}

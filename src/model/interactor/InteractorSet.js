@@ -8,6 +8,8 @@
 //
 //		authors: Colin Combe
 
+//rename this to MoleculeSet
+
 "use strict";
 
 var Interactor = require('./Interactor');

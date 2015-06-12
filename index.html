@@ -121,14 +121,15 @@
 					var table = "<table><tr style='height:10px;'></tr><tr><td style='width:80px;margin:10px;"
 								+ "background:#70BDBD;opacity:0.3;border:none;'>"
 								+ "</td><td>your complex</td></tr>";
+					
 					if (colourAssignment){
 						var domain = colourAssignment.domain();
-						console.log("Domain:"+domain);
+						//~ console.log("Domain:"+domain);
 						var range = colourAssignment.range();
-						console.log("Range:"+range);
+						//~ console.log("Range:"+range);
 						table += "<tr style='height:10px;'></tr>";
 						for (var i = 0; i < domain.length; i ++){
-							//make transparaent version of color
+							//make transparent version of colour
 							var temp = new RGBColor(range[i]);
 							var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.7)"
 							table += "<tr><td style='width:75px;margin:10px;background:"
@@ -139,8 +140,7 @@
 						}
 					}
 					table = table += "</table>";
-					coloursKeyDiv.innerHTML = table;
-					
+					coloursKeyDiv.innerHTML = table;					
 				});
                 
                 loadData();

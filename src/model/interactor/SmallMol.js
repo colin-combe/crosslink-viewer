@@ -8,6 +8,8 @@
 //
 //		authors: Colin Combe
 
+//renmae to BioactiveEntity
+
 "use strict";
 
 var Interactor = require('./Interactor');
