@@ -190,11 +190,13 @@ Interactor.prototype.setAllLinkCoordinates = function() {
 };
 
 //todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
-Interactor.prototype.setPositionalFeatures = function(posFeats) {
+Interactor.prototype.clearPositionalFeatures = function(posFeats) {
     this.annotations = [];   
     if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
-    Interactor.domainColours = null;//d3.scale.ordinal().range(colorbrewer.Set2[7]);
-	var categories = d3.set();
+}
+
+//todo: some tidying with regards whats in Interactor, whats in Polymer and whats in Gene,Protein, etc
+Interactor.prototype.setPositionalFeatures = function(posFeats) {
     if (posFeats !== undefined && posFeats !== null) {
         var y = -Interactor.STICKHEIGHT / 2;
         //draw longest regions first
@@ -212,19 +214,8 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
             } else {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
             }
-            categories.add(anno.name)
-            //~ var c;
-            //~ if (anno.colour == null) {
-				//~ c = Interactor.domainColours(anno.name);
-            //~ }
-            //~ else {
-                //~ c = anno.colour;
-            //~ }
-            //~ anno.pieSlice.setAttribute("fill", c);
-            //~ anno.pieSlice.setAttribute("stroke", c);
             anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.5");
-                     
+            anno.pieSlice.setAttribute("fill-opacity", "0.7");                 
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             anno.pieSlice.name = text;
             var xlv = this.controller;
@@ -239,24 +230,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
 				 this.annotationsSvgGroup.appendChild(anno.pieSlice);
 			 }
         }
-        var catCount = categories.length;
-        if (catCount < 3) catCount = 3;
-        //~ if (catCount < 20) {
-			//~ if (catCount < 12) {
-				//~ Interactor.domainColours = d3.scale.ordinal().range(colorbrewer.Set3[catCount]);
-			//~ }
-			//~ else {
-				Interactor.domainColours = d3.scale.category20();
-			//~ }
-			for (var i = 0; i < this.annotations.length; i++) {
-				var anno = this.annotations[i];
-				var c = Interactor.domainColours(anno.name);
-				anno.pieSlice.setAttribute("fill", c);
-				anno.pieSlice.setAttribute("stroke", c);          	
-			}
-		//~ }
     }
-    this.controller.legendChanged();
 };
 
 //TODO: remove this, use rotateAboutPoint instead

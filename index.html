@@ -15,6 +15,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
         <script type="text/javascript" src="./build/complexviewer.js"></script>
+        <script type="text/javascript" src="./vendor/rgbcolor.js"></script>
     </head>
     <body>
 
@@ -117,7 +118,7 @@
                 xlv.legendCallbacks.push(function (colourAssignment) {
 					var coloursKeyDiv = document.getElementById('colours');
 					
-					var table = "<table><tr><td style='width:75px;margin:10px;"
+					var table = "<table><tr style='height:10px;'></tr><tr><td style='width:80px;margin:10px;"
 								+ "background:#70BDBD;opacity:0.3;border:none;'>"
 								+ "</td><td>your complex</td></tr>";
 					if (colourAssignment){
@@ -127,8 +128,11 @@
 						console.log("Range:"+range);
 						table += "<tr style='height:10px;'></tr>";
 						for (var i = 0; i < domain.length; i ++){
+							//make transparaent version of color
+							var temp = new RGBColor(range[i]);
+							var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.7)"
 							table += "<tr><td style='width:75px;margin:10px;background:"
-									+ range[i] + ";opacity:0.5;border:solid 1px " 
+									+ trans + ";border:1px solid " 
 									+ range[i] + ";'></td><td>"
 									+ domain[i] +"</td></tr>";
 							console.log(i + " "+ domain[i] + " " + range[i]);
