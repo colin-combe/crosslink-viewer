@@ -174,8 +174,7 @@ xiNET.Controller.prototype.clear = function() {
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-    this.tooltip.setAttribute('visibility', 'hidden');
-    this.tooltip_bg.setAttribute('visibility', 'hidden');
+    this.hideTooltip();
 
     this.resetZoom();
     this.state = MouseEventCodes.MOUSE_UP;
@@ -1429,10 +1428,10 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 		//TODO: format tooltips (line breaks)
 		if (typeof text === 'undefined') text = "undefined";
 		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
-		this.tooltip.setAttribute("visibility","visible");
+		this.tooltip.setAttribute("display","block");
 		var length = this.tooltip.getComputedTextLength();
-		this.tooltip_bg.setAttributeNS(null,"width",length+16);
-		this.tooltip_subBg.setAttributeNS(null,"width",length+16);
+		this.tooltip_bg.setAttribute("width",length+16);
+		this.tooltip_subBg.setAttribute("width",length+16);
 		if (typeof colour !== 'undefined' && colour != null){
 			this.tooltip_bg.setAttribute('fill', colour);
 			this.tooltip_bg.setAttribute('stroke', colour);
@@ -1445,9 +1444,9 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 		this.tooltip_bg.setAttribute('height', 28);
 		this.tooltip_subBg.setAttribute('height', 28);
 
-		this.tooltip.setAttribute("visibility","visible");
-		this.tooltip_bg.setAttributeNS(null,"visibility","visible");
-		this.tooltip_subBg.setAttributeNS(null,"visibility","visible");
+		this.tooltip.setAttribute("display","block");
+		this.tooltip_bg.setAttribute("display","block");
+		this.tooltip_subBg.setAttribute("display","block");
 	}
 	else {
 		this.hideTooltip();
@@ -1455,9 +1454,9 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 };
 
 xiNET.Controller.prototype.hideTooltip = function(evt){
-    this.tooltip.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_bg.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_subBg.setAttributeNS(null,"visibility","hidden");
+    this.tooltip.setAttribute("display","none");
+    this.tooltip_bg.setAttribute("display","none");
+    this.tooltip_subBg.setAttribute("display","none");
 };
 
 module.exports = xiNET.Controller;

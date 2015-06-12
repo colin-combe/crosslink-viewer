@@ -67,7 +67,7 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
     this.rotatorSymbol.appendChild(arrow2);
     this.rotatorSymbol.setAttribute("transform", "rotate(45) scale (0.7, 0.7)");
 
-    this.rotatorSymbol.setAttribute("visibility", "hidden");
+    this.rotatorSymbol.setAttribute("display", "none");
 
     this.inner = document.createElementNS(Config.svgns, "g");
     this.inner.setAttribute("class","PV_rotator");
@@ -91,13 +91,13 @@ function Rotator(proteinRegion, upperOrLower, xlvController) {
 Rotator.prototype.rotatorMouseOver = function (evt) {
 //    console.log("rotator mouseover (this = " + this.toString() + ')');
     if (!this.ctrl.rotating) {
-        this.rotatorSymbol.setAttribute("visibility", "visible");
+        this.rotatorSymbol.setAttribute("display", "block");
     }
 }
 
 Rotator.prototype.rotatorMouseOut = function (evt) {
     //if (!rotateEnabled) {
-    this.rotatorSymbol.setAttribute("visibility", "hidden");
+    this.rotatorSymbol.setAttribute("display", "none");
 //}
 }
 
@@ -107,7 +107,6 @@ Rotator.prototype.rotatorMouseDown = function (evt) {
     var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
     var c = this.ctrl.mouseToSVG(p.x, p.y);
     this.ctrl.whichRotator = this.upperOrLower;
-    // rot.rotatorSymbol.setAttribute("visibility", "hidden");
     return false;
 }
 
