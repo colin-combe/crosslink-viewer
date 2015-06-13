@@ -897,31 +897,72 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	this.legendChanged(null);
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
 		var self = this;
-		for (m = 0; m < molCount; m++) {
-			var mol = mols[m];
-			if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
-				if (annotationChoice.toUpperCase() === "MI FEATURES") {
-					mol.setPositionalFeatures(mol.miFeatures);
+		if (annotationChoice.toUpperCase() === "MI FEATURES"){
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+					mol.setPositionalFeatures(mol.miFeatures);				
+				}	
+			}
+			chooseColours();
+		} 
+		else if (annotationChoice.toUpperCase() === "INTERACTOR") {
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+					var annotation = new Annotation (mol.json.label, 1, mol.size);
+					mol.setPositionalFeatures([annotation]);	
 				}
-				else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
+			}
+			chooseColours();
+		}
+		else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
 					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
 						var m = self.molecules.get(id);
 						m.setPositionalFeatures(fts);
+						molsAnnotated++;
+						if (molsAnnotated === molCount) {
+							chooseColours();
+						}
 					});
 				}
-				else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {
-						xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-							var m = self.molecules.get(id);
-							m.setPositionalFeatures(fts);
-						});
-
-				}
-				else if (annotationChoice.toUpperCase() === "INTERACTOR") {
-						var annotation = new Annotation (mol.json.label, 1, mol.size);
-						mol.setPositionalFeatures([annotation]);
+				else {
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}	
 				}
 			}
 		}
+		else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+						var m = self.molecules.get(id);
+						m.setPositionalFeatures(fts);
+						molsAnnotated++;
+						if (molsAnnotated === molCount) {
+							chooseColours();
+						}
+					});
+				}
+				else {
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}	
+				}
+			}
+		}
+	}
+
+	function chooseColours(){
 		var categories = d3.set();
 		for (m = 0; m < molCount; m++) {
 			var mol = mols[m];
@@ -932,7 +973,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 		var catCount = categories.values().length;
 		var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
-        //~ if (catCount < 21) {
+        if (catCount < 21) {
 			if (catCount < 9) {
 				var reversed = colorbrewer.Accent[catCount].slice().reverse();
 				colourScheme = d3.scale.ordinal().range(reversed);
@@ -953,11 +994,9 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 					anno.pieSlice.setAttribute("stroke", c);          	
 				}
 			}
-		//~ }
-		this.legendChanged(colourScheme);
-		return true;
+		}
+		self.legendChanged(colourScheme);
 	}
-	else return false;
 };
 
 //this can be done before all proteins have their sequences

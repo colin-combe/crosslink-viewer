@@ -217,7 +217,7 @@ Interactor.prototype.setPositionalFeatures = function(posFeats) {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
             }
             anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.7");                 
+            anno.pieSlice.setAttribute("fill-opacity", "0.6");                 
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             anno.pieSlice.name = text;
             var xlv = this.controller;

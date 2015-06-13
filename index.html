@@ -130,11 +130,11 @@
 						table += "<tr style='height:10px;'></tr>";
 						for (var i = 0; i < domain.length; i ++){
 							//make transparent version of colour
-							var temp = new RGBColor(range[i]);
-							var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.7)"
+							var temp = new RGBColor(range[i%20]);
+							var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.6)"
 							table += "<tr><td style='width:75px;margin:10px;background:"
 									+ trans + ";border:1px solid " 
-									+ range[i] + ";'></td><td>"
+									+ range[i%20] + ";'></td><td>"
 									+ domain[i] +"</td></tr>";
 							console.log(i + " "+ domain[i] + " " + range[i]);
 						}

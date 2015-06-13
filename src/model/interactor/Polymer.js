@@ -38,7 +38,10 @@ Polymer.prototype.init = function() {
 };
 
 Polymer.prototype.getBlobRadius = function() {
-    return Math.sqrt(this.size / 2 / Math.PI);
+    if (this.size) {
+		return Math.sqrt(this.size / 2 / Math.PI);
+    }
+	else return 15;
 };
 
 Polymer.prototype.setRotation = function(angle) {
