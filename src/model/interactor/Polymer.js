@@ -10,7 +10,7 @@
 
 "use strict";
 
-var Interactor = require('./Interactor');
+var Molecule = require('./Molecule');
 var Rotator = require('../../controller/Rotator');
 var Config = require('../../controller/Config');
 
@@ -21,7 +21,7 @@ Polymer.transitionTime = 650;
 
 function Polymer() {}
 
-Polymer.prototype = new Interactor();
+Polymer.prototype = new Molecule();
 
 //sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
 Polymer.prototype.setSequence = function(sequence){
@@ -58,7 +58,7 @@ Polymer.prototype.setRotation = function(angle) {
 	var sll = this.scaleLabels.length;
 	if (this.rotation >= 90 && this.rotation < 270) {
 			var k = svg.createSVGMatrix()
-						.translate(Math.abs(labelTransform.translate[0]), -Interactor.labelY)
+						.translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
 						.rotate(180, 0, 0);
 			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
 			if (this.form ===1){
@@ -70,7 +70,7 @@ Polymer.prototype.setRotation = function(angle) {
 	}
     else {
     		var k = svg.createSVGMatrix()
-						.translate(-(Math.abs(labelTransform.translate[0])), Interactor.labelY);
+						.translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
 			 this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
 			if (this.form ===1){
 				for (var j = 0; j < sll; j++) {
@@ -119,7 +119,7 @@ Polymer.prototype.scale = function() {
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
 		var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
 		if (this.annotations){
@@ -350,7 +350,7 @@ Polymer.prototype.toCircle = function(svgP) {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 		//~ 
 		if (xInterpol !== null){
@@ -468,7 +468,7 @@ Polymer.prototype.toStick = function() {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 	   
 	   	var rot = rotationInterpol(cubicInOut(interp));
@@ -538,8 +538,8 @@ Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     var startAngle = ((annotation.start - 1) / this.size) * 360;
     var endAngle = ((annotation.end - 1) / this.size) * 360;
     var radius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(radius, startAngle - 90);
-    var arcEnd = Interactor.trig(radius, endAngle - 90);
+    var arcStart = Molecule.trig(radius, startAngle - 90);
+    var arcEnd = Molecule.trig(radius, endAngle - 90);
     var largeArch = 0;
     if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
         largeArch = 1;
@@ -553,13 +553,13 @@ Polymer.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
     var startAngle = ((annotation.start - 1) / this.size) * 360;
     var endAngle = ((annotation.end) / this.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(pieRadius, startAngle - 90);
-    var arcEnd = Interactor.trig(pieRadius, endAngle - 90);
+    var arcStart = Molecule.trig(pieRadius, startAngle - 90);
+    var arcEnd = Molecule.trig(pieRadius, endAngle - 90);
     var approximatePiePath = "M 0,0";
     var stepsInArc = 5;
     for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
         var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-        var siaCoord = Interactor.trig(pieRadius, angle - 90);
+        var siaCoord = Molecule.trig(pieRadius, angle - 90);
         approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
     }
     approximatePiePath += " L " + 0 + "," + 0;

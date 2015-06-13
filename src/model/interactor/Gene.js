@@ -10,10 +10,10 @@
 
 "use strict";
 
-var Interactor = require('./Interactor');
+var Molecule = require('./Molecule');
 var Config = require('../../controller/Config');
 
-Gene.prototype = new Interactor();
+Gene.prototype = new Molecule();
 
 function Gene(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
@@ -81,7 +81,7 @@ function Gene(id, xlvController, json, name) {
 	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (21) + " " + Interactor.labelY + ") rotate(0) scale(1, 1)");
+		"translate( -" + (21) + " " + Molecule.labelY + ") rotate(0) scale(1, 1)");
     this.upperGroup.appendChild(this.labelSVG);   	
    	//ticks (and animo acid letters)
     this.ticks = document.createElementNS(Config.svgns, "g");

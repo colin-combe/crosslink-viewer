@@ -135,7 +135,7 @@ UnaryLink.prototype.initSelfLinkSVG = function() {
 
 UnaryLink.prototype.showHighlight = function(show) {
 	if (this.notSubLink === true){
-		this.highlightInteractors(show);
+		this.highlightMolecules(show);
 	}
 	if (show) {
 		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());

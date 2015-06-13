@@ -15,15 +15,15 @@ var d3 = require('../../node_modules/d3/');// josh - should these be dependencie
 var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');
-var Interactor = require('../model/interactor/Interactor');
+var Molecule = require('../model/interactor/Molecule');
 var Polymer = require('../model/interactor/Polymer');
 var Protein = require('../model/interactor/Protein');
-var SmallMol = require('../model/interactor/SmallMol');
+var BioactiveEntity = require('../model/interactor/BioactiveEntity');
 var Gene = require('../model/interactor/Gene');
 var DNA = require('../model/interactor/DNA');
 var RNA = require('../model/interactor/RNA');
 var Complex = require('../model/interactor/Complex');
-var InteractorSet = require('../model/interactor/InteractorSet');
+var MoleculeSet = require('../model/interactor/MoleculeSet');
 var Link = require('../model/link/Link');
 var NaryLink = require('../model/link/NaryLink');
 var SequenceLink = require('../model/link/SequenceLink');
@@ -166,7 +166,7 @@ xiNET.Controller.prototype.clear = function() {
 
     this.proteinCount = 0;
     this.maxBlobRadius = 30;
-    Interactor.MAXSIZE = 100;
+    Molecule.MAXSIZE = 100;
 
     this.z = 1;
     this.scores = null;
@@ -252,18 +252,18 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 						var countEndNodes = toSequenceData_indexedByNodeId.values().length;
 						for (var n = 0; n < countEndNodes; n++) {
 							toSequenceData = toSequenceData_indexedByNodeId.values()[n];
-							var fromInteractor = getNode(fromSequenceData[0]);
-							var toInteractor = getNode(toSequenceData[0]);
+							var fromMolecule = getNode(fromSequenceData[0]);
+							var toMolecule = getNode(toSequenceData[0]);
 							var link;
-							if (fromInteractor === toInteractor){
-								link = getUnaryLink(fromInteractor, interaction);
+							if (fromMolecule === toMolecule){
+								link = getUnaryLink(fromMolecule, interaction);
 							}
 							else {
-								link = getBinaryLink(fromInteractor, toInteractor, interaction);
+								link = getBinaryLink(fromMolecule, toMolecule, interaction);
 							}
 							var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
-							fromInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
-							toInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
 							link.sequenceLinks.set(sequenceLink.id, sequenceLink);
 						}
 					}
@@ -290,7 +290,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				naryLink = self.allNaryLinks.get(nLinkId);
 			}
 		}
-		complexes[c].initInteractor(naryLink);
+		complexes[c].initMolecule(naryLink);
 		naryLink.complex = complexes[c];
 	}
 	self.checkLinks();
@@ -312,7 +312,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		if (typeof feature.detmethod !== 'undefined') {
 			annotName += ', ' + feature.detmethod.name;
 		}
-		//~ var colour = Interactor.domainColours(feature.name);
+		//~ var colour = Molecule.domainColours(feature.name);
 		// the id info we need is inside sequenceData att
 		if (feature.sequenceData) {
 			//~ console.log(JSON.stringify(feature, null, '\t'));
@@ -454,14 +454,14 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				|| interactor.type.id === 'MI:1307' //molecule set - defined set
 				|| interactor.type.id === 'MI:1306' //molecule set - open set
 			) {
-			participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
+			participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
 		}
 		//bioactive entities
 		else if (interactor.type.id === 'MI:1100' // bioactive entity
 				|| interactor.type.id === 'MI:0904' // bioactive entity - polysaccharide
 				|| interactor.type.id === 'MI:0328' //bioactive entity - small mol
 			) {
-			participant = new SmallMol(participantId, self, interactor, interactor.label);
+			participant = new BioactiveEntity(participantId, self, interactor, interactor.label);
 		}
 		// proteins, peptides
 		else if (interactor.type.id === 'MI:0326' || interactor.type.id === 'MI:0327') {
@@ -543,10 +543,10 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				var participant;
 				var participantId = interactor.id;
 						//~ if (interactor.type.name === 'molecule set') {
-							//~ participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
+							//~ participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
 						//~ }
 						//~ else if (interactor.type.name === 'small molecule') {
-							//~ participant = new SmallMol(participantId, self, interactor, interactor.label);
+							//~ participant = new BioactiveEntity(participantId, self, interactor, interactor.label);
 						//~ }
 						//~ else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
 							//~ participant = new Protein(participantId, self, interactor, interactor.label);
@@ -568,15 +568,15 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 						//~ else if (interactor.type.name === 'gene') {
 							//~ //its a small mol
 							//~ participant = new Gene(participantId, self, interactor, interactor.label);
-							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
 						//~ }else if (interactor.type.name === 'ribonucleic acid') {
 							//~ //its a small mol
 							//~ participant = new RNA(participantId, self, interactor, interactor.label);
-							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
 						//~ }else if (interactor.type.name === 'deoxyribonucleic acid') {
 							//~ //its a small mol
 							//~ participant = new DNA(participantId, self, interactor, interactor.label);
-							//~ //participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
 						//~ } else {
 							//~ alert("Unrecognised type:" + interactor.type.name);
 						//~ }
@@ -733,18 +733,18 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		return link;
 	};
 
-	function getBinaryLink(sourceInteractor, targetInteractor, interaction){
+	function getBinaryLink(sourceMolecule, targetMolecule, interaction){
 		var linkID, fi, ti;
 		// these links are undirected and should have same ID regardless of which way round
 		// source and target are
-		if (sourceInteractor.id  < targetInteractor.id) {
-			linkID = '-' + sourceInteractor.id + '-' + targetInteractor.id;
-			fi = sourceInteractor;
-			ti = targetInteractor;
+		if (sourceMolecule.id  < targetMolecule.id) {
+			linkID = '-' + sourceMolecule.id + '-' + targetMolecule.id;
+			fi = sourceMolecule;
+			ti = targetMolecule;
 		} else {
-			linkID = "-" + targetInteractor.id + '-' + sourceInteractor.id;
-			fi = targetInteractor;
-			ti = sourceInteractor;
+			linkID = "-" + targetMolecule.id + '-' + sourceMolecule.id;
+			fi = targetMolecule;
+			ti = sourceMolecule;
 		}
 		var link = self.allBinaryLinks.get(linkID);
 		if (typeof link === 'undefined') {
@@ -1024,7 +1024,7 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 	}
 	//this.maxBlobRadius = Math.sqrt(Polymer.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
-	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
+	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Molecule.LABELMAXLENGTH) / Polymer.MAXSIZE;
 	for (var i = 0; i < molCount; i++){
 		var mol = mols[i];
 		if (mol.json && mol.json.type.name == "protein") {
@@ -1085,7 +1085,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 	}
 };
 
-//listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
+//listeners also attached to mouse evnts by Molecule (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
 
 /**
@@ -1131,7 +1131,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 		if (this.state === MouseEventCodes.DRAGGING) {
 			// we are currently dragging things around
 			var ox, oy, nx, ny;
-			if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+			if (typeof this.dragElement.x === 'undefined') { // if not an Molecule
 				var nodes = this.dragElement.interactors;
 				var nodeCount = nodes.length;
 				for (var i = 0; i < nodeCount; i++) {
@@ -1352,7 +1352,7 @@ xiNET.Controller.prototype.touchMove = function(evt) {
             if (this.state ===  MouseEventCodes.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
-                if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+                if (typeof this.dragElement.x === 'undefined') { // if not an Molecule
                     var nodes = this.dragElement.interactors;
                     var nodeCount = nodes.length;
                     for (var i = 0; i < nodeCount; i++) {
