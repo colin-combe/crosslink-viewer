@@ -35,7 +35,6 @@ var Config = require('./Config');
 //for save file.
 var saveAs = require('../../vendor/FileSaver');
 
-
 var MouseEventCodes = {}
 MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 MouseEventCodes.PANNING = 1;//set by mouse down on svgElement - left button, no shift or controller
@@ -1481,22 +1480,35 @@ xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
 
 xiNET.Controller.prototype.showTooltip = function(p)
     {
-        //TODO: if its going ot be off the right of the screen put it to left of the cursor
-//        var x = (Math.round(p.x / 10) * 10) + 0.5, y = (Math.round(p.y / 10) * 10) + 0.5;
-    var x = p.x, y = p.y;
-        this.tooltip.setAttribute("x", x + 22);
-        this.tooltip.setAttribute("y",y + 47);
-
-        this.tooltip_bg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_bg.setAttributeNS(null,"y", y + 28);
-
-        this.tooltip_subBg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_subBg.setAttributeNS(null,"y", y + 28);
+        var x = p.x, y = p.y, ttX, ttY;
+		var length = this.tooltip.getComputedTextLength() + 16;
+		var width = this.svgElement.parentNode.clientWidth;
+		var height = this.svgElement.parentNode.clientHeight;
+		//keep tooltip on screen
+		if (x + 20 + length < width) {
+			ttX = x;
+		}
+		else {
+			ttX = width - length - 20;
+		}
+		
+        if (y + 60 < height) {
+			ttY = y;
+		}
+		else {
+			ttY = height - 60;
+		}
+		
+        this.tooltip.setAttribute("x", ttX + 22);
+        this.tooltip.setAttribute("y", ttY + 47);
+        this.tooltip_bg.setAttributeNS(null,"x", ttX + 16);
+        this.tooltip_bg.setAttributeNS(null,"y", ttY + 28);
+        this.tooltip_subBg.setAttributeNS(null,"x", ttX + 16);
+        this.tooltip_subBg.setAttributeNS(null,"y", ttY + 28);
     };
 
 xiNET.Controller.prototype.setTooltip = function(text, colour) {
 	if (text) {
-		//TODO: format tooltips (line breaks)
 		if (typeof text === 'undefined') text = "undefined";
 		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
 		this.tooltip.setAttribute("display","block");
@@ -1511,10 +1523,8 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 			this.tooltip_bg.setAttribute('fill','white');
 			this.tooltip_bg.setAttribute('stroke','grey');
 		}
-
 		this.tooltip_bg.setAttribute('height', 28);
 		this.tooltip_subBg.setAttribute('height', 28);
-
 		this.tooltip.setAttribute("display","block");
 		this.tooltip_bg.setAttribute("display","block");
 		this.tooltip_subBg.setAttribute("display","block");
