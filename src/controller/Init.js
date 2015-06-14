@@ -201,8 +201,7 @@ xiNET.Controller.prototype.clear = function() {
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-    this.tooltip.setAttribute('visibility', 'hidden');
-    this.tooltip_bg.setAttribute('visibility', 'hidden');
+    this.hideTooltip();
 
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
