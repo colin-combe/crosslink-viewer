@@ -9,7 +9,7 @@ module.exports = taskManager = function(grunt) {
     },
     browserify: {
       all: {
-        src: ['src/controller/Init.js'],
+        src: ['src/controller/Controller.js'],
         dest: 'build/<%= config.package.name %>.js',
         options: {
           browserifyOptions: {

@@ -6,7 +6,7 @@
 //
 //	  author: Colin Combe
 //
-//    Init.js
+//    Controller.js
 
 "use strict";
 
@@ -64,7 +64,7 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.ontouchstart = function(evt) {self.touchStart(evt);};
     this.svgElement.ontouchmove = function(evt) {self.touchMove(evt);};
     this.svgElement.ontouchend = function(evt) {self.touchEnd(evt);};
-    
+
     //legend changed callbacks
     this.legendCallbacks = new Array();
 
@@ -360,7 +360,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 			);
 		}
 	}
-	
+
 	function readStoichExpanded(){
 		//get interactors
 		var interactors = d3.map();
@@ -443,7 +443,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 	function newMolecule(interactor, participantId){
 		var participant;
 		if (typeof interactor === 'undefined') {
-			//must be a previously unencountered complex - 
+			//must be a previously unencountered complex -
 			// MI:0314 - interaction?, MI:0317 - complex? and its many subclasses
 			participant = new Complex(participantId, self);
 			complexes.set(participantId, participant);
@@ -486,30 +486,30 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		else if (interactor.type.id === 'MI:0320' // RNA
 				|| interactor.type.id === 'MI:0321' // RNA - catalytic
 				|| interactor.type.id === 'MI:0322' // RNA - guide
-				|| interactor.type.id === 'MI:0323' // RNA - heterogeneous nuclear 
-				|| interactor.type.id === 'MI:2190' // RNA - long non-coding 
-				|| interactor.type.id === 'MI:0324' // RNA - messenger 
-				|| interactor.type.id === 'MI:0679' // RNA - poly adenine 
-				|| interactor.type.id === 'MI:0608' // RNA - ribosomal 
-				|| interactor.type.id === 'MI:0611' // RNA - signal recognition particle 
-				|| interactor.type.id === 'MI:0610' // RNA - small interfering  
-				|| interactor.type.id === 'MI:0607' // RNA - small nuclear  
-				|| interactor.type.id === 'MI:0609' // RNA - small nucleolar  
-				|| interactor.type.id === 'MI:0325' // RNA - transfer  
+				|| interactor.type.id === 'MI:0323' // RNA - heterogeneous nuclear
+				|| interactor.type.id === 'MI:2190' // RNA - long non-coding
+				|| interactor.type.id === 'MI:0324' // RNA - messenger
+				|| interactor.type.id === 'MI:0679' // RNA - poly adenine
+				|| interactor.type.id === 'MI:0608' // RNA - ribosomal
+				|| interactor.type.id === 'MI:0611' // RNA - signal recognition particle
+				|| interactor.type.id === 'MI:0610' // RNA - small interfering
+				|| interactor.type.id === 'MI:0607' // RNA - small nuclear
+				|| interactor.type.id === 'MI:0609' // RNA - small nucleolar
+				|| interactor.type.id === 'MI:0325' // RNA - transfer
 			) {
 			participant = new RNA(participantId, self, interactor, interactor.label);
 		}
 		//DNA
-		else if (interactor.type.id === 'MI:0319' // DNA 
-				|| interactor.type.id === 'MI:0681' // DNA - double stranded 
-				|| interactor.type.id === 'MI:0680' // DNA - single stranded 
+		else if (interactor.type.id === 'MI:0319' // DNA
+				|| interactor.type.id === 'MI:0681' // DNA - double stranded
+				|| interactor.type.id === 'MI:0680' // DNA - single stranded
 			) {
 			participant = new DNA(participantId, self, interactor, interactor.label);
 		} else {
 			// MI:0329 - unknown participant ?
 			// MI:0383 - biopolymer ?
 			alert("Unrecognised type:" + interactor.type.name);
-		}		
+		}
 		return participant;
 	}
 
@@ -900,17 +900,17 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			for (m = 0; m < molCount; m++) {
 				var mol = mols[m];
 				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
-					mol.setPositionalFeatures(mol.miFeatures);				
-				}	
+					mol.setPositionalFeatures(mol.miFeatures);
+				}
 			}
 			chooseColours();
-		} 
+		}
 		else if (annotationChoice.toUpperCase() === "INTERACTOR") {
 			for (m = 0; m < molCount; m++) {
 				var mol = mols[m];
 				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
 					var annotation = new Annotation (mol.json.label, 1, mol.size);
-					mol.setPositionalFeatures([annotation]);	
+					mol.setPositionalFeatures([annotation]);
 				}
 			}
 			chooseColours();
@@ -933,7 +933,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 					molsAnnotated++;
 					if (molsAnnotated === molCount) {
 						chooseColours();
-					}	
+					}
 				}
 			}
 		}
@@ -955,7 +955,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 					molsAnnotated++;
 					if (molsAnnotated === molCount) {
 						chooseColours();
-					}	
+					}
 				}
 			}
 		}
@@ -990,7 +990,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 					var anno = mol.annotations[a];
 					var c = colourScheme(anno.name);
 					anno.pieSlice.setAttribute("fill", c);
-					anno.pieSlice.setAttribute("stroke", c);          	
+					anno.pieSlice.setAttribute("stroke", c);
 				}
 			}
 		}
@@ -1444,7 +1444,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 	//~ else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
 		//~ this.clearSelection();
 	//~ }
-//~ 
+//~
 	//~ if (this.state === xiNET.Controller.SELECTING) {
 		//~ clearInterval(this.marcher);
 		//~ this.svgElement.removeChild(this.marquee);
@@ -1489,14 +1489,14 @@ xiNET.Controller.prototype.showTooltip = function(p)
 		else {
 			ttX = width - length - 20;
 		}
-		
+
         if (y + 60 < height) {
 			ttY = y;
 		}
 		else {
 			ttY = height - 60;
 		}
-		
+
         this.tooltip.setAttribute("x", ttX + 22);
         this.tooltip.setAttribute("y", ttY + 47);
         this.tooltip_bg.setAttributeNS(null,"x", ttX + 16);
