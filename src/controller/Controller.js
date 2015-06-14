@@ -1478,36 +1478,33 @@ xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
 
 xiNET.Controller.prototype.showTooltip = function(p)
     {
-        var x = p.x, y = p.y, ttX, ttY;
+        var ttX, ttY;
 		var length = this.tooltip.getComputedTextLength() + 16;
 		var width = this.svgElement.parentNode.clientWidth;
 		var height = this.svgElement.parentNode.clientHeight;
-		//keep tooltip on screen
-		if (x + 20 + length < width) {
-			ttX = x;
+		if (p.x + 20 + length < width) {
+			ttX = p.x;
 		}
 		else {
 			ttX = width - length - 20;
 		}
 
-        if (y + 60 < height) {
-			ttY = y;
+        if (p.y + 60 < height) {
+			ttY = p.y;
 		}
 		else {
 			ttY = height - 60;
 		}
-
         this.tooltip.setAttribute("x", ttX + 22);
         this.tooltip.setAttribute("y", ttY + 47);
-        this.tooltip_bg.setAttributeNS(null,"x", ttX + 16);
-        this.tooltip_bg.setAttributeNS(null,"y", ttY + 28);
-        this.tooltip_subBg.setAttributeNS(null,"x", ttX + 16);
-        this.tooltip_subBg.setAttributeNS(null,"y", ttY + 28);
+        this.tooltip_bg.setAttribute("x", ttX + 16);
+        this.tooltip_bg.setAttribute("y", ttY + 28);
+        this.tooltip_subBg.setAttribute("x", ttX + 16);
+        this.tooltip_subBg.setAttribute("y", ttY + 28);
     };
 
 xiNET.Controller.prototype.setTooltip = function(text, colour) {
 	if (text) {
-		if (typeof text === 'undefined') text = "undefined";
 		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
 		this.tooltip.setAttribute("display","block");
 		var length = this.tooltip.getComputedTextLength();
@@ -1523,7 +1520,6 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 		}
 		this.tooltip_bg.setAttribute('height', 28);
 		this.tooltip_subBg.setAttribute('height', 28);
-		this.tooltip.setAttribute("display","block");
 		this.tooltip_bg.setAttribute("display","block");
 		this.tooltip_subBg.setAttribute("display","block");
 	}
