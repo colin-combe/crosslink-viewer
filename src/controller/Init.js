@@ -1119,8 +1119,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.mouseMove = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
-	var p = this.getEventPoint(evt);// seems to be correct, see below
+    var p = this.getEventPoint(evt);// seems to be correct, see below
 	var c = this.mouseToSVG(p.x, p.y);
 
 	if (this.dragElement != null) { //dragging or rotating
@@ -1339,7 +1338,6 @@ xiNET.Controller.prototype.touchStart = function(evt) {
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.touchMove = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
     if (this.sequenceInitComplete) { // just being cautious
         var p = this.getTouchEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
