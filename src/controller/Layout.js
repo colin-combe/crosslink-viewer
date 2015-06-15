@@ -8,17 +8,16 @@
 
 "use strict";
 
-xiNET.Controller.prototype.autoLayout = function(width, height) {
-    if (typeof this.force !== 'undefined' && this.force != null) {
-        this.force.stop();
-    }
-    if (!width) width = this.svgElement.parentNode.clientWidth;
-    if (!height) height = this.svgElement.parentNode.clientHeight;
-	
+xiNET.Controller.prototype.autoLayout = function() {
+    if (this.force) {this.force.stop();}
+    var width = this.svgElement.parentNode.clientWidth;
+    var height = this.svgElement.parentNode.clientHeight;
 	var self = this;
-	//Init subgraphs
 	//clear subgraphs
 	this.subgraphs.length = 0;
+	for (var p = 0; p < proteinCount; p++) {
+		prots[p].subgraph = null;
+	}
 	var prots = this.proteins.values();
 	var proteinCount = prots.length;
 	//~ for (var p = 0; p < proteinCount; p++) {
@@ -41,9 +40,6 @@ xiNET.Controller.prototype.autoLayout = function(width, height) {
 		//~ // }
 		//~ prot.setParked(park);
 	//~ }
-	for (var p = 0; p < proteinCount; p++) {
-		prots[p].subgraph = null;
-	}
 	//init subgraphs
 	for (var p = 0; p < proteinCount; p++) {
 		prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
