@@ -8,7 +8,7 @@
 
 /* construtor parameter sequenceDatumString is string with following format:
  *
- *              "?-?" = unknown 
+ *              "?-?" = unknown
  *              "n-n" = n-terminal range (to be represented as link to box beside n terminal)
  *              "c-c" = c-terminal range (to be represented as link to box beside c terminal)
  *              "123-123" = specific residue
@@ -40,7 +40,7 @@ function SequenceDatum(node, sequenceDatumString) {
         this.uncertainStart = firstPart.substring(0, firstDotPosition) * 1;
         this.start = firstPart.substring(firstDotPosition + 2) * 1;
     }
-    
+
     if (secondPart.indexOf('.') === -1) {
         this.end = secondPart;
     }

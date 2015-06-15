@@ -10,10 +10,10 @@
 
 "use strict";
 
-var Interactor = require('./Interactor');
+var Molecule = require('./Molecule');
 var Config = require('../../controller/Config');
 
-Complex.prototype = new Interactor();
+Complex.prototype = new Molecule();
 
 function Complex(id, xlvController) {
     this.id = id; 
@@ -27,7 +27,7 @@ function Complex(id, xlvController) {
     this.type = 'complex';
 }
 
-Complex.prototype.initInteractor = function(naryLink)
+Complex.prototype.initMolecule = function(naryLink)
 {
     this.naryLink = naryLink;
 	naryLink.path.setAttribute('stroke', 'black');

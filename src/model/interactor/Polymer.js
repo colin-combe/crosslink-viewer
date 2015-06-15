@@ -10,7 +10,7 @@
 
 "use strict";
 
-var Interactor = require('./Interactor');
+var Molecule = require('./Molecule');
 var Rotator = require('../../controller/Rotator');
 var Config = require('../../controller/Config');
 
@@ -21,7 +21,7 @@ Polymer.transitionTime = 650;
 
 function Polymer() {}
 
-Polymer.prototype = new Interactor();
+Polymer.prototype = new Molecule();
 
 //sequence = amino acids in UPPERCASE, digits or lowercase can be used for modification info
 Polymer.prototype.setSequence = function(sequence){
@@ -38,7 +38,10 @@ Polymer.prototype.init = function() {
 };
 
 Polymer.prototype.getBlobRadius = function() {
-    return Math.sqrt(this.size / 2 / Math.PI);
+    if (this.size) {
+		return Math.sqrt(this.size / 2 / Math.PI);
+    }
+	else return 15;
 };
 
 Polymer.prototype.setRotation = function(angle) {
@@ -55,7 +58,7 @@ Polymer.prototype.setRotation = function(angle) {
 	var sll = this.scaleLabels.length;
 	if (this.rotation >= 90 && this.rotation < 270) {
 			var k = svg.createSVGMatrix()
-						.translate(Math.abs(labelTransform.translate[0]), -Interactor.labelY)
+						.translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
 						.rotate(180, 0, 0);
 			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
 			if (this.form ===1){
@@ -67,7 +70,7 @@ Polymer.prototype.setRotation = function(angle) {
 	}
     else {
     		var k = svg.createSVGMatrix()
-						.translate(-(Math.abs(labelTransform.translate[0])), Interactor.labelY);
+						.translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
 			 this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
 			if (this.form ===1){
 				for (var j = 0; j < sll; j++) {
@@ -116,10 +119,16 @@ Polymer.prototype.scale = function() {
     if (this.form === 1) {
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
 		var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
-		d3.select(this.annotationsSvgGroup).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
+		if (this.annotations){
+			var ca = this.annotations.length;
+			for (var a = 0; a < ca; a++){
+				var anno = this.annotations[a];
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+			}
+		}
 		
 		d3.select(this.background)
 			.attr("width", protLength)
@@ -312,21 +321,19 @@ Polymer.prototype.toCircle = function(svgP) {
 	}*/
 
 	var self = this;
-	if (typeof this.annotations !== 'undefined') {
+	if (this.annotations) {
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
-			//TODO: structure of this is not ideal...
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			
+			var anno = annots[a];
+			var pieSlice = anno.pieSlice;		
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Polymer.transitionTime).each("end", 
 					function () {
 						for (var b = 0; b < ca; b++) {
-							var annoB = annots[b];
+							var annoB = self.annotations[b];
 							if (this === annoB.pieSlice){
-								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.anno));
+								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
 							}
 						}
 					}
@@ -343,7 +350,7 @@ Polymer.prototype.toCircle = function(svgP) {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 		//~ 
 		if (xInterpol !== null){
@@ -440,16 +447,14 @@ Polymer.prototype.toStick = function() {
 			}
 		}
 	}*/		
-	if (typeof this.annotations !== 'undefined') {
+	if (this.annotations) {
 		var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
 		var annots = this.annotations;
 		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
-			var anno = annots[a].anno;
-			var pieSlice = annots[a].pieSlice;
-			
+			var anno = annots[a];
+			var pieSlice = anno.pieSlice;		
 			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-						
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
 				.duration(Polymer.transitionTime);
 		}
@@ -463,7 +468,7 @@ Polymer.prototype.toStick = function() {
  
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Interactor.labelY);//.scale(z).translate(-c.x, -c.y);
+		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
 		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 	   
 	   	var rot = rotationInterpol(cubicInOut(interp));
@@ -529,35 +534,16 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
 
 Polymer.stepsInArc = 5;
 
-Polymer.prototype.getAnnotationRectPath = function(annotation) {
-    //domain as rectangle path
-    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
-    var annotX =  ((annotation.start - 0.5) - (this.size/2)) * Polymer.UNITS_PER_RESIDUE;//this.getResXUnzoomed(annotation.start - 0.5);
-    //~ Without brackets following may do string concatenation
-    var annotSize = (1 + (annotation.end - annotation.start));
-    var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE;
-    var rectPath = "M " + annotX + "," + bottom;
-    for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
-        var step = annotX + (annotLength * (sia / Polymer.stepsInArc));
-        rectPath += " L " + step + "," + top;
-    }       
-    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
-        + " Z";
-    return rectPath;
-};
-
 Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     var startAngle = ((annotation.start - 1) / this.size) * 360;
     var endAngle = ((annotation.end - 1) / this.size) * 360;
     var radius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(radius, startAngle - 90);
-    var arcEnd = Interactor.trig(radius, endAngle - 90);
+    var arcStart = Molecule.trig(radius, startAngle - 90);
+    var arcEnd = Molecule.trig(radius, endAngle - 90);
     var largeArch = 0;
     if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
         largeArch = 1;
     }
-   //~ // console.debug("M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
-     //~ //   + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z");
     return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
         + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z"; 
 };
@@ -567,18 +553,34 @@ Polymer.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
     var startAngle = ((annotation.start - 1) / this.size) * 360;
     var endAngle = ((annotation.end) / this.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
-    var arcStart = Interactor.trig(pieRadius, startAngle - 90);
-    var arcEnd = Interactor.trig(pieRadius, endAngle - 90);
+    var arcStart = Molecule.trig(pieRadius, startAngle - 90);
+    var arcEnd = Molecule.trig(pieRadius, endAngle - 90);
     var approximatePiePath = "M 0,0";
     var stepsInArc = 5;
     for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
         var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-        var siaCoord = Interactor.trig(pieRadius, angle - 90);
+        var siaCoord = Molecule.trig(pieRadius, angle - 90);
         approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
     }
     approximatePiePath += " L " + 0 + "," + 0;
     approximatePiePath += "  Z";
     return approximatePiePath;
+};
+
+Polymer.prototype.getAnnotationRectPath = function(annotation) {
+    //domain as rectangle path
+    var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
+    var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
+    var annotSize = (1 + (annotation.end - annotation.start));
+	var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
+    var rectPath = "M " + annotX + "," + bottom;
+    for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
+        var step = annotX + (annotLength * (sia / Polymer.stepsInArc));
+        rectPath += " L " + step + "," + top;
+    }       
+    rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom 
+        + " Z";
+    return rectPath;
 };
 
 module.exports = Polymer;

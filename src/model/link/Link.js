@@ -35,7 +35,7 @@ Link.prototype.addEvidence = function(interaction) {
 	}
 };
 
-Link.prototype.highlightInteractors = function(show){	
+Link.prototype.highlightMolecules = function(show){	
 	var interactors = this.interactors;
 	for (var i = 0; i < interactors.length; i++) {
 		interactors[i].showHighlight(show);

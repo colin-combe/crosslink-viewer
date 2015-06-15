@@ -4,18 +4,18 @@
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //		
-//		SmallMol.js		
+//		BioactiveEntity.js		
 //
 //		authors: Colin Combe
 
 "use strict";
 
-var Interactor = require('./Interactor');
+var Molecule = require('./Molecule');
 var Config = require('../../controller/Config');
 
-SmallMol.prototype = new Interactor();
+BioactiveEntity.prototype = new Molecule();
 
-function SmallMol(id, xlvController, json, name) {
+function BioactiveEntity(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
     this.json = json;  
@@ -73,7 +73,7 @@ function SmallMol(id, xlvController, json, name) {
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (15) + " " + Interactor.labelY + ")");
+		"translate( -" + (15) + " " + Molecule.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
    	 
 	//make blob
@@ -106,4 +106,4 @@ function SmallMol(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
-module.exports = SmallMol;
+module.exports = BioactiveEntity;

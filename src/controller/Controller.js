@@ -6,7 +6,7 @@
 //
 //	  author: Colin Combe
 //
-//    Init.js
+//    Controller.js
 
 "use strict";
 
@@ -15,15 +15,15 @@ var d3 = require('../../node_modules/d3/');// josh - should these be dependencie
 var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');
-var Interactor = require('../model/interactor/Interactor');
+var Molecule = require('../model/interactor/Molecule');
 var Polymer = require('../model/interactor/Polymer');
 var Protein = require('../model/interactor/Protein');
-var SmallMol = require('../model/interactor/SmallMol');
+var BioactiveEntity = require('../model/interactor/BioactiveEntity');
 var Gene = require('../model/interactor/Gene');
 var DNA = require('../model/interactor/DNA');
 var RNA = require('../model/interactor/RNA');
 var Complex = require('../model/interactor/Complex');
-var InteractorSet = require('../model/interactor/InteractorSet');
+var MoleculeSet = require('../model/interactor/MoleculeSet');
 var Link = require('../model/link/Link');
 var NaryLink = require('../model/link/NaryLink');
 var SequenceLink = require('../model/link/SequenceLink');
@@ -34,7 +34,6 @@ var Expand = require ('./Expand');
 var Config = require('./Config');
 //for save file.
 var saveAs = require('../../vendor/FileSaver');
-
 
 var MouseEventCodes = {}
 MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
@@ -57,33 +56,17 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.setAttribute("style", "display:block;");
     //add listeners
     var self = this;
-    this.svgElement.onmousedown = function(evt) {
-        self.mouseDown(evt);
-    };
-    this.svgElement.onmousemove = function(evt) {
-        self.mouseMove(evt);
-    };
-    this.svgElement.onmouseup = function(evt) {
-        self.mouseUp(evt);
-    };
-    // even though we don't use jquery, see:
-    // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
-    this.svgElement.onmouseout = function(evt) {
-        self.hideTooltip(evt);
-    };
+    this.svgElement.onmousedown = function(evt) {self.mouseDown(evt);};
+    this.svgElement.onmousemove = function(evt) {self.mouseMove(evt);};
+    this.svgElement.onmouseup = function(evt) {self.mouseUp(evt);};
+    this.svgElement.onmouseout = function(evt) {self.hideTooltip(evt);};
     this.lastMouseUp = new Date().getTime();
-     //touchstart
-    this.svgElement.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
-    //touchmove
-    this.svgElement.ontouchmove = function(evt) {
-        self.touchMove(evt);
-    };
-    //touchend
-    this.svgElement.ontouchend = function(evt) {
-        self.touchEnd(evt);
-    };
+    this.svgElement.ontouchstart = function(evt) {self.touchStart(evt);};
+    this.svgElement.ontouchmove = function(evt) {self.touchMove(evt);};
+    this.svgElement.ontouchend = function(evt) {self.touchEnd(evt);};
+
+    //legend changed callbacks
+    this.legendCallbacks = new Array();
 
     targetDiv.appendChild(this.svgElement);
 
@@ -183,19 +166,26 @@ xiNET.Controller.prototype.clear = function() {
 
     this.proteinCount = 0;
     this.maxBlobRadius = 30;
-    Interactor.MAXSIZE = 100;
+    Molecule.MAXSIZE = 100;
 
     this.z = 1;
     this.scores = null;
     this.selected = d3.map();
     this.selectedLinks = d3.map();
 
-    this.tooltip.setAttribute('visibility', 'hidden');
-    this.tooltip_bg.setAttribute('visibility', 'hidden');
+    this.hideTooltip();
 
     this.resetZoom();
     this.state = MouseEventCodes.MOUSE_UP;
 };
+
+xiNET.Controller.prototype.legendChanged = function(colourScheme) {
+	var callbacks = this.legendCallbacks;
+	var count = callbacks.length;
+	for (var i = 0; i < count; i++) {
+		callbacks[i](colourScheme);
+	}
+}
 
 xiNET.Controller.prototype.emptyElement = function(element) {
     while (element.lastChild) {
@@ -262,18 +252,18 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 						var countEndNodes = toSequenceData_indexedByNodeId.values().length;
 						for (var n = 0; n < countEndNodes; n++) {
 							toSequenceData = toSequenceData_indexedByNodeId.values()[n];
-							var fromInteractor = getNode(fromSequenceData[0]);
-							var toInteractor = getNode(toSequenceData[0]);
+							var fromMolecule = getNode(fromSequenceData[0]);
+							var toMolecule = getNode(toSequenceData[0]);
 							var link;
-							if (fromInteractor === toInteractor){
-								link = getUnaryLink(fromInteractor, interaction);
+							if (fromMolecule === toMolecule){
+								link = getUnaryLink(fromMolecule, interaction);
 							}
 							else {
-								link = getBinaryLink(fromInteractor, toInteractor, interaction);
+								link = getBinaryLink(fromMolecule, toMolecule, interaction);
 							}
 							var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
-							fromInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
-							toInteractor.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
 							link.sequenceLinks.set(sequenceLink.id, sequenceLink);
 						}
 					}
@@ -300,7 +290,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				naryLink = self.allNaryLinks.get(nLinkId);
 			}
 		}
-		complexes[c].initInteractor(naryLink);
+		complexes[c].initMolecule(naryLink);
 		naryLink.complex = complexes[c];
 	}
 	self.checkLinks();
@@ -322,7 +312,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		if (typeof feature.detmethod !== 'undefined') {
 			annotName += ', ' + feature.detmethod.name;
 		}
-		var colour = Interactor.domainColours(feature.name);
+		//~ var colour = Molecule.domainColours(feature.name);
 		// the id info we need is inside sequenceData att
 		if (feature.sequenceData) {
 			//~ console.log(JSON.stringify(feature, null, '\t'));
@@ -340,7 +330,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				var startRes = match[1] * 1;
 				var endRes = match[2] * 1;
 				if (isNaN(startRes) === false && isNaN(endRes) === false) {
-					var annotation = new Annotation(annotName, startRes, endRes, colour);
+					var annotation = new Annotation(annotName, startRes, endRes);
 					if (molecule.miFeatures == null) {
 						molecule.miFeatures = new Array();
 					}
@@ -354,19 +344,21 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 	//lookup missing sequences
 	var nsIds = needsSequence.values();
 	var nsCount = nsIds.length;
-	var countSequences = 0;
-	for (var m = 0; m < nsCount; m++){
-		xiNET_Storage.getSequence(nsIds[m], function(id, seq){
-				self.molecules.get(id).setSequence(seq);
-				countSequences++;
-				if (countSequences === nsCount){
-					self.initPolymers();
-				}
-			}
-		);
-	}
 	if (nsCount === 0) {
 		self.initPolymers();
+	}
+	else {
+		var countSequences = 0;
+		for (var m = 0; m < nsCount; m++){
+			xiNET_Storage.getSequence(nsIds[m], function(id, seq){
+					self.molecules.get(id).setSequence(seq);
+					countSequences++;
+					if (countSequences === nsCount){
+						self.initPolymers();
+					}
+				}
+			);
+		}
 	}
 
 	function readStoichExpanded(){
@@ -429,49 +421,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 					var participant = self.molecules.get(participantId);
 					if (typeof participant === 'undefined'){
 						var interactor = interactors.get(intRef);
-						if (typeof interactor === 'undefined') {
-							//must be a previously unencountered complex
-							participant = new Complex(participantId, self);
-							complexes.set(participantId, participant);
-						}
-						else if (interactor.type.name === 'molecule set') {
-							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
-						}
-						else if (interactor.type.name === 'small molecule') {
-							participant = new SmallMol(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-							if (typeof interactor.sequence !== 'undefined') {
-								participant.setSequence(interactor.sequence);
-							}
-							else {
-								//should look it up using accession number
-								if (participantId.indexOf('uniprotkb') === 0){
-									needsSequence.add(participantId);
-								} else {
-									participant.setSequence("SEQUENCEMISSING");
-								}
-							}
-						}
-						else if (interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'gene') {
-							//its a small mol
-							participant = new Gene(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'ribonucleic acid') {
-							//its a small mol
-							participant = new RNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'deoxyribonucleic acid') {
-							//its a small mol
-							participant = new DNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						} else {
-							alert("Unrecognised type:" + interactor.type.name);
-						}
+						participant = newMolecule(interactor, participantId);
 						self.molecules.set(participantId, participant);
 					}
 
@@ -489,6 +439,79 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 			}
 		}
 	};
+
+	function newMolecule(interactor, participantId){
+		var participant;
+		if (typeof interactor === 'undefined') {
+			//must be a previously unencountered complex -
+			// MI:0314 - interaction?, MI:0317 - complex? and its many subclasses
+			participant = new Complex(participantId, self);
+			complexes.set(participantId, participant);
+		}
+		//molecule sets
+		else if (interactor.type.id === 'MI:1304' //molecule set
+				|| interactor.type.id === 'MI:1305' //molecule set - candidate set
+				|| interactor.type.id === 'MI:1307' //molecule set - defined set
+				|| interactor.type.id === 'MI:1306' //molecule set - open set
+			) {
+			participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
+		}
+		//bioactive entities
+		else if (interactor.type.id === 'MI:1100' // bioactive entity
+				|| interactor.type.id === 'MI:0904' // bioactive entity - polysaccharide
+				|| interactor.type.id === 'MI:0328' //bioactive entity - small mol
+			) {
+			participant = new BioactiveEntity(participantId, self, interactor, interactor.label);
+		}
+		// proteins, peptides
+		else if (interactor.type.id === 'MI:0326' || interactor.type.id === 'MI:0327') {
+			participant = new Protein(participantId, self, interactor, interactor.label);
+			if (typeof interactor.sequence !== 'undefined') {
+				participant.setSequence(interactor.sequence);
+			}
+			else {
+				//should look it up using accession number
+				if (participantId.indexOf('uniprotkb') === 0){
+					needsSequence.add(participantId);
+				} else {
+					participant.setSequence("SEQUENCEMISSING");
+				}
+			}
+		}
+		//genes
+		else if (interactor.type.id === 'NI:0250') {
+			participant = new Gene(participantId, self, interactor, interactor.label);
+		}
+		//RNA
+		else if (interactor.type.id === 'MI:0320' // RNA
+				|| interactor.type.id === 'MI:0321' // RNA - catalytic
+				|| interactor.type.id === 'MI:0322' // RNA - guide
+				|| interactor.type.id === 'MI:0323' // RNA - heterogeneous nuclear
+				|| interactor.type.id === 'MI:2190' // RNA - long non-coding
+				|| interactor.type.id === 'MI:0324' // RNA - messenger
+				|| interactor.type.id === 'MI:0679' // RNA - poly adenine
+				|| interactor.type.id === 'MI:0608' // RNA - ribosomal
+				|| interactor.type.id === 'MI:0611' // RNA - signal recognition particle
+				|| interactor.type.id === 'MI:0610' // RNA - small interfering
+				|| interactor.type.id === 'MI:0607' // RNA - small nuclear
+				|| interactor.type.id === 'MI:0609' // RNA - small nucleolar
+				|| interactor.type.id === 'MI:0325' // RNA - transfer
+			) {
+			participant = new RNA(participantId, self, interactor, interactor.label);
+		}
+		//DNA
+		else if (interactor.type.id === 'MI:0319' // DNA
+				|| interactor.type.id === 'MI:0681' // DNA - double stranded
+				|| interactor.type.id === 'MI:0680' // DNA - single stranded
+			) {
+			participant = new DNA(participantId, self, interactor, interactor.label);
+		} else {
+			// MI:0329 - unknown participant ?
+			// MI:0383 - biopolymer ?
+			alert("Unrecognised type:" + interactor.type.name);
+		}
+		return participant;
+	}
 
 	function indexFeatures(){
 		//create indexed collection of all features from interactions
@@ -519,45 +542,46 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				var interactor = data[n];
 				var participant;
 				var participantId = interactor.id;
-						if (interactor.type.name === 'molecule set') {
-							participant = new InteractorSet(participantId, self, interactor); //doesn't really work yet
-						}
-						else if (interactor.type.name === 'small molecule') {
-							participant = new SmallMol(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-							if (typeof interactor.sequence !== 'undefined') {
-								participant.setSequence(interactor.sequence);
-							}
-							else {
-								//should look it up using accession number
-								if (participantId.indexOf('uniprotkb') === 0){
-									needsSequence.add(participantId);
-								} else {
-									participant.setSequence("SEQUENCEMISSING");
-								}
-							}
-						}
-						else if (interactor.type.name === 'peptide') {
-							participant = new Protein(participantId, self, interactor, interactor.label);
-						}
-						else if (interactor.type.name === 'gene') {
-							//its a small mol
-							participant = new Gene(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'ribonucleic acid') {
-							//its a small mol
-							participant = new RNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						}else if (interactor.type.name === 'deoxyribonucleic acid') {
-							//its a small mol
-							participant = new DNA(participantId, self, interactor, interactor.label);
-							//participant.initInteractor(interactor.label);// + ' (' + partRef + ')');
-						} else {
-							alert("Unrecognised type:" + interactor.type.name);
-						}
-						self.molecules.set(participantId, participant);
+						//~ if (interactor.type.name === 'molecule set') {
+							//~ participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
+						//~ }
+						//~ else if (interactor.type.name === 'small molecule') {
+							//~ participant = new BioactiveEntity(participantId, self, interactor, interactor.label);
+						//~ }
+						//~ else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
+							//~ participant = new Protein(participantId, self, interactor, interactor.label);
+							//~ if (typeof interactor.sequence !== 'undefined') {
+								//~ participant.setSequence(interactor.sequence);
+							//~ }
+							//~ else {
+								//~ //should look it up using accession number
+								//~ if (participantId.indexOf('uniprotkb') === 0){
+									//~ needsSequence.add(participantId);
+								//~ } else {
+									//~ participant.setSequence("SEQUENCEMISSING");
+								//~ }
+							//~ }
+						//~ }
+						//~ else if (interactor.type.name === 'peptide') {
+							//~ participant = new Protein(participantId, self, interactor, interactor.label);
+						//~ }
+						//~ else if (interactor.type.name === 'gene') {
+							//~ //its a small mol
+							//~ participant = new Gene(participantId, self, interactor, interactor.label);
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
+						//~ }else if (interactor.type.name === 'ribonucleic acid') {
+							//~ //its a small mol
+							//~ participant = new RNA(participantId, self, interactor, interactor.label);
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
+						//~ }else if (interactor.type.name === 'deoxyribonucleic acid') {
+							//~ //its a small mol
+							//~ participant = new DNA(participantId, self, interactor, interactor.label);
+							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
+						//~ } else {
+							//~ alert("Unrecognised type:" + interactor.type.name);
+						//~ }
+				participant = newMolecule (interactor, participantId);
+				self.molecules.set(participantId, participant);
 			}
 		}
 
@@ -709,18 +733,18 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 		return link;
 	};
 
-	function getBinaryLink(sourceInteractor, targetInteractor, interaction){
+	function getBinaryLink(sourceMolecule, targetMolecule, interaction){
 		var linkID, fi, ti;
 		// these links are undirected and should have same ID regardless of which way round
 		// source and target are
-		if (sourceInteractor.id  < targetInteractor.id) {
-			linkID = '-' + sourceInteractor.id + '-' + targetInteractor.id;
-			fi = sourceInteractor;
-			ti = targetInteractor;
+		if (sourceMolecule.id  < targetMolecule.id) {
+			linkID = '-' + sourceMolecule.id + '-' + targetMolecule.id;
+			fi = sourceMolecule;
+			ti = targetMolecule;
 		} else {
-			linkID = "-" + targetInteractor.id + '-' + sourceInteractor.id;
-			fi = targetInteractor;
-			ti = sourceInteractor;
+			linkID = "-" + targetMolecule.id + '-' + sourceMolecule.id;
+			fi = targetMolecule;
+			ti = sourceMolecule;
 		}
 		var link = self.allBinaryLinks.get(linkID);
 		if (typeof link === 'undefined') {
@@ -861,45 +885,117 @@ xiNET.Controller.prototype.autoLayout = function() {
 	this.force.start();
 };
 
-
-
-xiNET.Controller.prototype.setAnnotations = function(annotationType) {
-	this.annotationSet = annotationType;
+xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
+	this.annotationChoice = annotationChoice;
+	//clear all annot's
+	var mols = this.molecules.values();
+	var molCount = mols.length;
+	for (var m = 0; m < molCount; m++) {
+		mols[m].clearPositionalFeatures();
+	}
+	this.legendChanged(null);
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
-		var mols = this.molecules.values();
-		var molCount = mols.length;
 		var self = this;
-		for (var m = 0; m < molCount; m++) {
-			var mol = mols[m];
-			if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
-				if (annotationType.toUpperCase() === "MI FEATURES") {
+		if (annotationChoice.toUpperCase() === "MI FEATURES"){
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
 					mol.setPositionalFeatures(mol.miFeatures);
 				}
-				else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+			}
+			chooseColours();
+		}
+		else if (annotationChoice.toUpperCase() === "INTERACTOR") {
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+					var annotation = new Annotation (mol.json.label, 1, mol.size);
+					mol.setPositionalFeatures([annotation]);
+				}
+			}
+			chooseColours();
+		}
+		else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
 					xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
 						var m = self.molecules.get(id);
 						m.setPositionalFeatures(fts);
+						molsAnnotated++;
+						if (molsAnnotated === molCount) {
+							chooseColours();
+						}
 					});
 				}
-				else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
-						xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-							var m = self.molecules.get(id);
-							m.setPositionalFeatures(fts);
-						});
-
-				}
-				else if (annotationType.toUpperCase() === "INTERACTOR") {
-						var annotation = new Annotation (mol.json.label, 1, mol.size);
-						mol.setPositionalFeatures([annotation]);
-				}
 				else {
-					mol.setPositionalFeatures([])
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}
 				}
 			}
 		}
-		return true;
+		else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+					xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+						var m = self.molecules.get(id);
+						m.setPositionalFeatures(fts);
+						molsAnnotated++;
+						if (molsAnnotated === molCount) {
+							chooseColours();
+						}
+					});
+				}
+				else {
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}
+				}
+			}
+		}
 	}
-	else return false;
+
+	function chooseColours(){
+		var categories = d3.set();
+		for (m = 0; m < molCount; m++) {
+			var mol = mols[m];
+			for (var a = 0; a < mol.annotations.length; a++){
+				categories.add(mol.annotations[a].name);
+			}
+		}
+		var catCount = categories.values().length;
+		var colourScheme;// = null;
+        if (catCount < 3){catCount = 3;}
+        if (catCount < 21) {
+			if (catCount < 9) {
+				var reversed = colorbrewer.Accent[catCount].slice().reverse();
+				colourScheme = d3.scale.ordinal().range(reversed);
+			}
+			else if (catCount < 13) {
+				var reversed = colorbrewer.Set3[catCount].slice().reverse();
+				colourScheme = d3.scale.ordinal().range(reversed);
+			}
+			else {
+				colourScheme = d3.scale.category20();
+			}
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				for (a = 0; a < mol.annotations.length; a++) {
+					var anno = mol.annotations[a];
+					var c = colourScheme(anno.name);
+					anno.pieSlice.setAttribute("fill", c);
+					anno.pieSlice.setAttribute("stroke", c);
+				}
+			}
+		}
+		self.legendChanged(colourScheme);
+	}
 };
 
 //this can be done before all proteins have their sequences
@@ -928,7 +1024,7 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 	}
 	//this.maxBlobRadius = Math.sqrt(Polymer.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
-	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Interactor.LABELMAXLENGTH) / Polymer.MAXSIZE;
+	Polymer.UNITS_PER_RESIDUE = (((width / 2.5)) - Molecule.LABELMAXLENGTH) / Polymer.MAXSIZE;
 	for (var i = 0; i < molCount; i++){
 		var mol = mols[i];
 		if (mol.json && mol.json.type.name == "protein") {
@@ -937,8 +1033,8 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 	}
 	this.sequenceInitComplete = true;
 
-	if (this.annotationSet){
-		xlv.setAnnotations(this.annotationSet);
+	if (this.annotationChoice){
+		xlv.setAnnotations(this.annotationChoice);
 	}
 	else {
 		this.setAnnotations('MI FEATURES');
@@ -989,7 +1085,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 	}
 };
 
-//listeners also attached to mouse evnts by Interactor (and Rotator) and Link, those consume their events
+//listeners also attached to mouse evnts by Molecule (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
 
 /**
@@ -1023,8 +1119,7 @@ xiNET.Controller.prototype.mouseDown = function(evt) {
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.mouseMove = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
-	var p = this.getEventPoint(evt);// seems to be correct, see below
+    var p = this.getEventPoint(evt);// seems to be correct, see below
 	var c = this.mouseToSVG(p.x, p.y);
 
 	if (this.dragElement != null) { //dragging or rotating
@@ -1035,7 +1130,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 		if (this.state === MouseEventCodes.DRAGGING) {
 			// we are currently dragging things around
 			var ox, oy, nx, ny;
-			if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+			if (typeof this.dragElement.x === 'undefined') { // if not an Molecule
 				var nodes = this.dragElement.interactors;
 				var nodeCount = nodes.length;
 				for (var i = 0; i < nodeCount; i++) {
@@ -1243,7 +1338,6 @@ xiNET.Controller.prototype.touchStart = function(evt) {
 
 // dragging/rotation/panning/selecting
 xiNET.Controller.prototype.touchMove = function(evt) {
-    this.preventDefaultsAndStopPropagation(evt);
     if (this.sequenceInitComplete) { // just being cautious
         var p = this.getTouchEventPoint(evt);// seems to be correct, see below
         var c = this.mouseToSVG(p.x, p.y);
@@ -1256,7 +1350,7 @@ xiNET.Controller.prototype.touchMove = function(evt) {
             if (this.state ===  MouseEventCodes.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
-                if (typeof this.dragElement.x === 'undefined') { // if not an Interactor
+                if (typeof this.dragElement.x === 'undefined') { // if not an Molecule
                     var nodes = this.dragElement.interactors;
                     var nodeCount = nodes.length;
                     for (var i = 0; i < nodeCount; i++) {
@@ -1350,7 +1444,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
 	//~ else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
 		//~ this.clearSelection();
 	//~ }
-//~ 
+//~
 	//~ if (this.state === xiNET.Controller.SELECTING) {
 		//~ clearInterval(this.marcher);
 		//~ this.svgElement.removeChild(this.marquee);
@@ -1384,28 +1478,38 @@ xiNET.Controller.prototype.getTouchEventPoint = function(evt) {
 
 xiNET.Controller.prototype.showTooltip = function(p)
     {
-        //TODO: if its going ot be off the right of the screen put it to left of the cursor
-//        var x = (Math.round(p.x / 10) * 10) + 0.5, y = (Math.round(p.y / 10) * 10) + 0.5;
-    var x = p.x, y = p.y;
-        this.tooltip.setAttribute("x", x + 22);
-        this.tooltip.setAttribute("y",y + 47);
+        var ttX, ttY;
+		var length = this.tooltip.getComputedTextLength() + 16;
+		var width = this.svgElement.parentNode.clientWidth;
+		var height = this.svgElement.parentNode.clientHeight;
+		if (p.x + 20 + length < width) {
+			ttX = p.x;
+		}
+		else {
+			ttX = width - length - 20;
+		}
 
-        this.tooltip_bg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_bg.setAttributeNS(null,"y", y + 28);
-
-        this.tooltip_subBg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_subBg.setAttributeNS(null,"y", y + 28);
+        if (p.y + 60 < height) {
+			ttY = p.y;
+		}
+		else {
+			ttY = height - 60;
+		}
+        this.tooltip.setAttribute("x", ttX + 22);
+        this.tooltip.setAttribute("y", ttY + 47);
+        this.tooltip_bg.setAttribute("x", ttX + 16);
+        this.tooltip_bg.setAttribute("y", ttY + 28);
+        this.tooltip_subBg.setAttribute("x", ttX + 16);
+        this.tooltip_subBg.setAttribute("y", ttY + 28);
     };
 
 xiNET.Controller.prototype.setTooltip = function(text, colour) {
 	if (text) {
-		//TODO: format tooltips (line breaks)
-		if (typeof text === 'undefined') text = "undefined";
 		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
-		this.tooltip.setAttribute("visibility","visible");
+		this.tooltip.setAttribute("display","block");
 		var length = this.tooltip.getComputedTextLength();
-		this.tooltip_bg.setAttributeNS(null,"width",length+16);
-		this.tooltip_subBg.setAttributeNS(null,"width",length+16);
+		this.tooltip_bg.setAttribute("width",length+16);
+		this.tooltip_subBg.setAttribute("width",length+16);
 		if (typeof colour !== 'undefined' && colour != null){
 			this.tooltip_bg.setAttribute('fill', colour);
 			this.tooltip_bg.setAttribute('stroke', colour);
@@ -1414,13 +1518,10 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 			this.tooltip_bg.setAttribute('fill','white');
 			this.tooltip_bg.setAttribute('stroke','grey');
 		}
-
 		this.tooltip_bg.setAttribute('height', 28);
 		this.tooltip_subBg.setAttribute('height', 28);
-
-		this.tooltip.setAttribute("visibility","visible");
-		this.tooltip_bg.setAttributeNS(null,"visibility","visible");
-		this.tooltip_subBg.setAttributeNS(null,"visibility","visible");
+		this.tooltip_bg.setAttribute("display","block");
+		this.tooltip_subBg.setAttribute("display","block");
 	}
 	else {
 		this.hideTooltip();
@@ -1428,9 +1529,9 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 };
 
 xiNET.Controller.prototype.hideTooltip = function(evt){
-    this.tooltip.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_bg.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_subBg.setAttributeNS(null,"visibility","hidden");
+    this.tooltip.setAttribute("display","none");
+    this.tooltip_bg.setAttribute("display","none");
+    this.tooltip_subBg.setAttribute("display","none");
 };
 
 module.exports = xiNET.Controller;

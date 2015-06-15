@@ -121,7 +121,7 @@ BinaryLink.prototype.initSVG = function() {
 ;
 BinaryLink.prototype.showHighlight = function(show) {
 	if (this.notSubLink === true){
-		this.highlightInteractors(show);
+		this.highlightMolecules(show);
 	}
 	if (show) {
 		//~ this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());

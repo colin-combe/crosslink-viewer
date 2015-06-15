@@ -110,7 +110,7 @@ SequenceLink.prototype.showHighlight = function(show) {
 
 //used when filter changed
 SequenceLink.prototype.check = function() {
-    if (this.filteredEvidence().length > 0 && this.anyInteractorIsBar() === true) {
+    if (this.filteredEvidence().length > 0 && this.anyMoleculeIsBar() === true) {
         this.show();
         return true;
 	} else {
@@ -119,7 +119,7 @@ SequenceLink.prototype.check = function() {
 	}
 };
 
-SequenceLink.prototype.anyInteractorIsBar = function() {
+SequenceLink.prototype.anyMoleculeIsBar = function() {
 	var ic = this.interactors.length;
 	for (var i = 0; i < ic; i++) {
 		if (this.interactors[i].form === 1) {
@@ -213,24 +213,24 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
             }
             return interactor.getResidueCoordinates((lowestLinkedRes + highestLinkedRes) / 2, 0);
         }
-        var fromInteractor = this.fromSequenceData[0].node;
-        var toInteractor = this.toSequenceData[0].node;
+        var fromMolecule = this.fromSequenceData[0].node;
+        var toMolecule = this.toSequenceData[0].node;
         //calculate mid points of from and to sequence data
         var fMid, tMid;
-        if (fromInteractor.form === 0) {
-            fMid = fromInteractor.getPosition();
+        if (fromMolecule.form === 0) {
+            fMid = fromMolecule.getPosition();
         }
         else {
-            fMid = sequenceDataMidPoint(this.fromSequenceData, fromInteractor);
+            fMid = sequenceDataMidPoint(this.fromSequenceData, fromMolecule);
         }
-        if (toInteractor.form === 0) {
-            tMid = toInteractor.getPosition();
+        if (toMolecule.form === 0) {
+            tMid = toMolecule.getPosition();
         }
         else {
-            tMid = sequenceDataMidPoint(this.toSequenceData, toInteractor);
+            tMid = sequenceDataMidPoint(this.toSequenceData, toMolecule);
         }
 
-		//calculate angle from fromInteractor mid point to toInteractor mid point
+		//calculate angle from fromMolecule mid point to toMolecule mid point
         var deltaX = fMid[0] - tMid[0];
         var deltaY = fMid[1] - tMid[1];
         var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
@@ -242,7 +242,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
 
 		//out is value we use to decide which side of bar the link glyph is drawn
 		//first for 'from' interactor
-        var out = (abmpDeg - fromInteractor.rotation);
+        var out = (abmpDeg - fromMolecule.rotation);
         if (out < 0) {
             out += 360;
         }
@@ -250,12 +250,12 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out < 180) {
             fyOffset = -10;
         }
-        var fRotRad = (fromInteractor.rotation / 360) * Math.PI * 2;
+        var fRotRad = (fromMolecule.rotation / 360) * Math.PI * 2;
         if (out > 180) {
             fRotRad = fRotRad - Math.PI;
         }
 		//now for 'to' interactor
-        out = (abmpDeg - toInteractor.rotation);
+        out = (abmpDeg - toMolecule.rotation);
         if (out < 0) {
             out += 360;
         }
@@ -263,20 +263,20 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         if (out > 180) {
             tyOffset = -10;
         }
-        var tRotRad = (toInteractor.rotation / 360) * Math.PI * 2;
+        var tRotRad = (toMolecule.rotation / 360) * Math.PI * 2;
         if (out < 180) {
             tRotRad = tRotRad - Math.PI;
         }
 
         var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.controller.z),
             fMid[1] - (30 * Math.cos(fRotRad) * this.controller.z)];
-        if (fromInteractor.form === 0) {
+        if (fromMolecule.form === 0) {
             ftMid = fMid;
         }
 
         var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.controller.z),
             tMid[1] - (30 * Math.cos(tRotRad) * this.controller.z)];
-        if (toInteractor.form === 0) {
+        if (toMolecule.form === 0) {
             ttMid = tMid;
         }
 
@@ -289,39 +289,39 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
         var highlightGlyphPath = 'M' + triPointMid[0] + ',' + triPointMid[1];
         for (var f = 0; f < fSDCount; f++) {
             seqDatum = this.fromSequenceData[f];
-            glyphPath += getPathSegments(triPointMid, ftMid, seqDatum.start, seqDatum.end, fromInteractor, fyOffset);
+            glyphPath += getPathSegments(triPointMid, ftMid, seqDatum.start, seqDatum.end, fromMolecule, fyOffset);
             highlightStartRes = seqDatum.start;
             highlightEndRes = seqDatum.end;
             if (isNumber(seqDatum.uncertainStart)) {
                 uncertainGlyphPath += getPathSegments(triPointMid, ftMid,
-                        seqDatum.uncertainStart, seqDatum.start, fromInteractor, fyOffset);
+                        seqDatum.uncertainStart, seqDatum.start, fromMolecule, fyOffset);
                 highlightStartRes = seqDatum.uncertainStart;
             }
             if (isNumber(seqDatum.uncertainEnd)) {
                 uncertainGlyphPath += getPathSegments(triPointMid, ftMid,
-                        seqDatum.end, seqDatum.uncertainEnd, fromInteractor, fyOffset);
+                        seqDatum.end, seqDatum.uncertainEnd, fromMolecule, fyOffset);
                 highlightEndRes = seqDatum.uncertainEnd;
             }
             highlightGlyphPath += getPathSegments(triPointMid, ftMid,
-                    highlightStartRes, highlightEndRes, fromInteractor, fyOffset);
+                    highlightStartRes, highlightEndRes, fromMolecule, fyOffset);
         }
         for (var t = 0; t < tSDCount; t++) {
             seqDatum = this.toSequenceData[t];
-            glyphPath += getPathSegments(triPointMid, ttMid, seqDatum.start, seqDatum.end, toInteractor, tyOffset);
+            glyphPath += getPathSegments(triPointMid, ttMid, seqDatum.start, seqDatum.end, toMolecule, tyOffset);
             highlightStartRes = seqDatum.start;
             highlightEndRes = seqDatum.end;
             if (isNumber(seqDatum.uncertainStart)) {
                 uncertainGlyphPath += getPathSegments(triPointMid, ttMid,
-                        seqDatum.uncertainStart, seqDatum.start, toInteractor, tyOffset);
+                        seqDatum.uncertainStart, seqDatum.start, toMolecule, tyOffset);
                 highlightStartRes = seqDatum.uncertainStart;
             }
             if (isNumber(seqDatum.uncertainEnd)) {
                 uncertainGlyphPath += getPathSegments(triPointMid, ttMid,
-                        seqDatum.end, seqDatum.uncertainEnd, toInteractor, tyOffset);
+                        seqDatum.end, seqDatum.uncertainEnd, toMolecule, tyOffset);
                 highlightEndRes = seqDatum.uncertainEnd;
             }
             highlightGlyphPath += getPathSegments(triPointMid, ttMid,
-                    highlightStartRes, highlightEndRes, toInteractor, tyOffset);
+                    highlightStartRes, highlightEndRes, toMolecule, tyOffset);
         }
 		
 		if (!this.glyph){
