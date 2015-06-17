@@ -11,7 +11,7 @@
 "use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
-var d3 = require('../../node_modules/d3/');// josh - should these be dependencies on files in vendor folder?
+var d3 = require('d3');
 var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');

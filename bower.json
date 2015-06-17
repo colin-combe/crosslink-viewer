@@ -1,0 +1,16 @@
+{
+  "name": "complexviewer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/MICommunity/interaction-viewer",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.5"
+  }
+}
