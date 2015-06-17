@@ -1,4 +1,4 @@
-var Point2D = require('./Point2D');
+var Point2D = require('point2d');
 
 function Intersection(status){if(arguments.length>0){this.init(status);}}
 Intersection.prototype.init=function(status){this.status=status;this.points=new Array();};Intersection.prototype.appendPoint=function(point){this.points.push(point);};Intersection.prototype.appendPoints=function(points){this.points=this.points.concat(points);};Intersection.intersectShapes=function(shape1,shape2){var ip1=shape1.getIntersectionParams();var ip2=shape2.getIntersectionParams();var result;if(ip1!=null&&ip2!=null){if(ip1.name=="Path"){result=Intersection.intersectPathShape(shape1,shape2);}else if(ip2.name=="Path"){result=Intersection.intersectPathShape(shape2,shape1);}else{var method;var params;if(ip1.name<ip2.name){method="intersect"+ip1.name+ip2.name;params=ip1.params.concat(ip2.params);}else{method="intersect"+ip2.name+ip1.name;params=ip2.params.concat(ip1.params);}
