@@ -33,7 +33,7 @@ var UnaryLink = require('../model/link/UnaryLink');
 var Expand = require ('./Expand');
 var Config = require('./Config');
 //for save file.
-var saveAs = require('../../vendor/FileSaver');
+var FileSaver = require('file-saver.js');
 
 var MouseEventCodes = {}
 MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
@@ -1072,7 +1072,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 
     if (Blob) {
 		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-		saveAs(blob, "xiNET_output.svg");
+		FileSaver.saveAs(blob, "xiNET_output.svg");
 	} else {
 		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"

@@ -13,6 +13,7 @@
   "dependencies": {
     "d3": "~3.5.5",
     "colorbrewer": "~1.0.0",
-    "rgb-color": "*"
+    "rgb-color": "*",
+    "file-saver.js": "~1.20150507.2"
   }
 }
