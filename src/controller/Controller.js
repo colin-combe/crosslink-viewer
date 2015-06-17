@@ -12,7 +12,7 @@
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
 var d3 = require('d3');
-var colorbrewer = require('../../node_modules/colorbrewer/colorbrewer');
+var colorbrewer = require('colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');
 var Molecule = require('../model/interactor/Molecule');

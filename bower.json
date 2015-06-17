@@ -11,6 +11,7 @@
     "tests"
   ],
   "dependencies": {
-    "d3": "~3.5.5"
+    "d3": "~3.5.5",
+    "colorbrewer": "~1.0.0"
   }
 }
