@@ -187,7 +187,9 @@ xiNET.Controller.prototype.autoLayout = function() {
                 var protein = this.proteins.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                protein.setPosition(nx + this.layoutXOffset, ny);
+                var rotated = Protein.rotatePointAboutPoint([nx, ny], 
+					[(width - this.layoutXOffset / 2), height / 2], 90)
+                protein.setPosition(rotated[0] + this.layoutXOffset, rotated[1]);
                 protein.setAllLineCoordinates(false);
             }
         }

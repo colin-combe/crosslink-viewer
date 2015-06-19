@@ -506,7 +506,10 @@ Match.prototype.isAmbig = function() {
 
 Match.prototype.toTableRow = function() {
    var htmlTableRow = "<tr>";
-
+	if (loadSpectra){
+		htmlTableRow = "<tr onclick='loadSpectra()'>"
+	}
+	
 	htmlTableRow += "<td><p>" + this.id
 		+ "</p></td>";
 	htmlTableRow += "<td><p>" + this.protein1
