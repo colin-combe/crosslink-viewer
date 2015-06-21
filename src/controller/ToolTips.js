@@ -10,47 +10,58 @@
 
 xiNET.Controller.prototype.showTooltip = function(p)
     {
-        //TODO: if its going ot be off the right of the screen put it to left of the cursor
-//        var x = (Math.round(p.x / 10) * 10) + 0.5, y = (Math.round(p.y / 10) * 10) + 0.5;
-    var x = p.x, y = p.y;
-        this.tooltip.setAttribute("x", x + 22);
-        this.tooltip.setAttribute("y",y + 47);
+        var ttX, ttY;
+		var length = this.tooltip.getComputedTextLength() + 16;
+		var width = this.svgElement.parentNode.clientWidth;
+		var height = this.svgElement.parentNode.clientHeight;
+		if (p.x + 20 + length < width) {
+			ttX = p.x;
+		}
+		else {
+			ttX = width - length - 20;
+		}
 
-        this.tooltip_bg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_bg.setAttributeNS(null,"y", y + 28);
-
-        this.tooltip_subBg.setAttributeNS(null,"x", x + 16);
-        this.tooltip_subBg.setAttributeNS(null,"y", y + 28);
+        if (p.y + 60 < height) {
+			ttY = p.y;
+		}
+		else {
+			ttY = height - 60;
+		}
+        this.tooltip.setAttribute("x", ttX + 22);
+        this.tooltip.setAttribute("y", ttY + 47);
+        this.tooltip_bg.setAttribute("x", ttX + 16);
+        this.tooltip_bg.setAttribute("y", ttY + 28);
+        this.tooltip_subBg.setAttribute("x", ttX + 16);
+        this.tooltip_subBg.setAttribute("y", ttY + 28);
     };
 
 xiNET.Controller.prototype.setTooltip = function(text, colour) {
-    //TODO: format tooltips (line breaks)
-    if (typeof text === 'undefined') text = "undefined";
-    this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
-    this.tooltip.setAttribute("visibility","visible");
-    var length = this.tooltip.getComputedTextLength();
-    this.tooltip_bg.setAttributeNS(null,"width",length+16);
-    this.tooltip_subBg.setAttributeNS(null,"width",length+16);
-    if (typeof colour !== 'undefined' && colour != null){
-        this.tooltip_bg.setAttribute('fill', colour);
-        this.tooltip_bg.setAttribute('stroke', colour);
-        this.tooltip_bg.setAttribute('fill-opacity', '0.5');
-    } else {
-        this.tooltip_bg.setAttribute('fill','white');
-        this.tooltip_bg.setAttribute('stroke','grey');
-    }
-
-    this.tooltip_bg.setAttribute('height', 28);
-    this.tooltip_subBg.setAttribute('height', 28);
-
-    this.tooltip.setAttribute("visibility","visible");
-    this.tooltip_bg.setAttributeNS(null,"visibility","visible");
-    this.tooltip_subBg.setAttributeNS(null,"visibility","visible");
+	if (text) {
+		this.tooltip.firstChild.data = text.toString().replace(/&(quot);/g, '"');
+		this.tooltip.setAttribute("display","block");
+		var length = this.tooltip.getComputedTextLength();
+			this.tooltip_bg.setAttribute("width",length+16);
+			this.tooltip_subBg.setAttribute("width",length+16);
+		if (typeof colour !== 'undefined' && colour != null){
+		    this.tooltip_bg.setAttribute('fill', colour);
+		    this.tooltip_bg.setAttribute('stroke', colour);
+		    this.tooltip_bg.setAttribute('fill-opacity', '0.5');
+		} else {
+		    this.tooltip_bg.setAttribute('fill','white');
+		    this.tooltip_bg.setAttribute('stroke','grey');
+		}
+		this.tooltip_bg.setAttribute('height', 28);
+		this.tooltip_subBg.setAttribute('height', 28);
+		this.tooltip_bg.setAttribute("display","block");
+		this.tooltip_subBg.setAttribute("display","block");
+	}
+	else {
+		this.hideTooltip();
+	}
 };
 
-
 xiNET.Controller.prototype.hideTooltip = function(evt){
-    this.tooltip.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_bg.setAttributeNS(null,"visibility","hidden");
-    this.tooltip_subBg.setAttributeNS(null,"visibility","hidden");
+    this.tooltip.setAttribute("display","none");
+    this.tooltip_bg.setAttribute("display","none");
+    this.tooltip_subBg.setAttribute("display","none");
 };

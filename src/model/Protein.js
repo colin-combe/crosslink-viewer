@@ -709,12 +709,12 @@ Protein.prototype.toCircle = function(svgP) {
 	
 	var self = this;
 	if (this.annotations) {
-		var ca = this.annotations.length;
+		var annots = this.annotations;
+		var ca = annots.length;
 		for (var a = 0; a < ca; a++) {
-			var anno = this.annotations[a];
+			var anno = annots[a];
 			var pieSlice = anno.pieSlice;
 			var rectDomain = anno.colouredRect;
-
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
 				.duration(Protein.transitionTime).each("end", 
 					function () {
@@ -877,16 +877,15 @@ Protein.prototype.toStick = function() {
 		}
 	}	
 	
-	if (typeof this.annotations !== 'undefined') {
+	if (this.annotations) {
 		var bottom = Protein.STICKHEIGHT / 2, top = -Protein.STICKHEIGHT / 2;
-		var ca = this.annotations.length;
+		var annots = this.annotations;
+		var ca = annots.length;		
 		for (var a = 0; a < ca; a++) {
-			var anno = this.annotations[a];
+			var anno = annots[a];
 			var pieSlice = anno.pieSlice;
 			var rectDomain = anno.colouredRect;
-
-			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-						
+			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));						
 			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
 				.duration(Protein.transitionTime);
 			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
@@ -1268,7 +1267,7 @@ Protein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	var arcStart = Protein.trig(radius, startAngle - 90);
 	var arcEnd = Protein.trig(radius, endAngle - 90);
 	var largeArch = 0;
-	if ((endAngle - startAngle) > 180) {
+    if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
 		largeArch = 1;
 	}
 	return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
