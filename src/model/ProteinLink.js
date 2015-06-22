@@ -236,7 +236,7 @@ ProteinLink.prototype.check = function() {
 	if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
 
 		this.ambig = true;
-		var filteredResLinks = new Array();
+		var filteredResLinks = [];
 		var filteredMatches = d3.map();
 		var altProteinLinks = d3.map();
 		for (var i = 0; i < resLinkCount; i++) {

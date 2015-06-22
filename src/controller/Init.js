@@ -57,8 +57,8 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
     this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
     //selection and highlight callbacks
-    this.linkSelectionCallbacks = new Array();
-    this.linkHighlightsCallbacks = new Array();
+    this.linkSelectionCallbacks = [];
+    this.linkHighlightsCallbacks = [];
     
     targetDiv.appendChild(this.svgElement);
     
@@ -163,7 +163,7 @@ xiNET.Controller.prototype.clear = function() {
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
     this.matches = d3.map();
-    this.subgraphs = new Array();
+    this.subgraphs = [];
     this.layoutXOffset = 0;
 
     this.proteinCount = 0;
@@ -246,7 +246,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 			}
 			else if (annotationType.toUpperCase() === "LYSINES") {
 				var seq = mol.sequence;
-				var annots = new Array();
+				var annots = [];
 				for (var i =0; i < mol.size; i++){
 					var aa = seq[i];
 					if (aa === 'K'){
@@ -406,7 +406,7 @@ xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes,
 
 		var annotation = new Annotation(annotName, startRes, endRes, colour);
 		if (protein.customAnnotations == null) {
-			protein.customAnnotations = new Array();
+			protein.customAnnotations = [];
 		}
 		protein.customAnnotations.push(annotation);
 	}
