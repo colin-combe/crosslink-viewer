@@ -59,7 +59,9 @@ xiNET.Controller = function(targetDiv) {
     //selection and highlight callbacks
     this.linkSelectionCallbacks = [];
     this.linkHighlightsCallbacks = [];
-    
+    //legend changed callbacks
+    this.legendCallbacks = new Array();
+
     targetDiv.appendChild(this.svgElement);
     
 	//these attributes are used by checkboxes to hide self links or ambiguous links
@@ -180,13 +182,6 @@ xiNET.Controller.prototype.clear = function() {
     this.resetZoom();
     this.state = xiNET.Controller.MOUSE_UP;
 };
-
-xiNET.Controller.prototype.emptyElement = function(element) {
-    while (element.lastChild) {
-        element.removeChild(element.lastChild);
-    }
-};
-
 /**
  * Sets the current transform matrix of an element.
  */
@@ -211,6 +206,21 @@ xiNET.Controller.prototype.linkHighlightsChanged = function(highlighted) {
 	}
 }
 
+xiNET.Controller.prototype.legendChanged = function(colourScheme) {
+	var callbacks = this.legendCallbacks;
+	var count = callbacks.length;
+	for (var i = 0; i < count; i++) {
+		callbacks[i](colourScheme);
+	}
+}
+
+xiNET.Controller.prototype.emptyElement = function(element) {
+    while (element.lastChild) {
+        element.removeChild(element.lastChild);
+    }
+};
+
+
 xiNET.Controller.prototype.clearSelection = function() {
 	var things = this.selectedLinks.values();
     var count = things.length;
@@ -219,7 +229,7 @@ xiNET.Controller.prototype.clearSelection = function() {
         thing.setSelected(false);
     }
 };
-
+/*
 xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 	this.annotationSet = annotationType;
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
@@ -262,6 +272,110 @@ xiNET.Controller.prototype.setAnnotations = function(annotationType) {
 		return true;
 	}
 	else return false;
+};*/
+
+xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
+	this.annotationChoice = annotationChoice;
+	//clear all annot's
+	var mols = this.proteins.values();
+	var molCount = mols.length;
+	for (var m = 0; m < molCount; m++) {
+		mols[m].clearPositionalFeatures();
+	}
+	this.legendChanged(null);
+	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
+		var self = this;
+		if (annotationChoice.toUpperCase() === "CUSTOM"){
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				mol.setPositionalFeatures(mol.customAnnotations);
+			}
+			chooseColours();
+		}
+		else if (annotationChoice.toUpperCase() === "LYSINES") {
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				var seq = mol.sequence;
+				var annots = [];
+				for (var i =0; i < mol.size; i++){
+					var aa = seq[i];
+					if (aa === 'K'){
+						annots.push(new Annotation ("Lysine", i+1, i+1));
+					}
+				
+				}
+				mol.setPositionalFeatures(annots);
+			}
+			chooseColours();
+		}
+		else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+					var m = self.proteins.get(id);
+					m.setPositionalFeatures(fts);
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}
+				});
+			}
+		}
+		else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {
+			var molsAnnotated = 0;
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+					var m = self.proteins.get(id);
+					m.setPositionalFeatures(fts);
+					molsAnnotated++;
+					if (molsAnnotated === molCount) {
+						chooseColours();
+					}
+				});
+			}
+		}
+	}
+
+	function chooseColours(){
+		alert("chooseColours");
+		var categories = d3.set();
+		for (m = 0; m < molCount; m++) {
+			var mol = mols[m];
+			for (var a = 0; a < mol.annotations.length; a++){
+				categories.add(mol.annotations[a].name);
+			}
+		}
+		var catCount = categories.values().length;
+		var colourScheme;// = null;
+        if (catCount < 3){catCount = 3;}
+        //~ if (catCount < 21) {
+			if (catCount < 9) {
+				var reversed = colorbrewer.Accent[catCount].slice().reverse();
+				colourScheme = d3.scale.ordinal().range(reversed);
+			}
+			else if (catCount < 13) {
+				var reversed = colorbrewer.Set3[catCount].slice().reverse();
+				colourScheme = d3.scale.ordinal().range(reversed);
+			}
+			else {
+				colourScheme = d3.scale.category20();
+			}
+			for (m = 0; m < molCount; m++) {
+				var mol = mols[m];
+				for (a = 0; a < mol.annotations.length; a++) {
+					var anno = mol.annotations[a];
+					var c = colourScheme(anno.name);
+					anno.pieSlice.setAttribute("fill", c);
+					anno.pieSlice.setAttribute("stroke", c);
+					anno.colouredRect.setAttribute("fill", c);
+					anno.colouredRect.setAttribute("stroke", c);
+				}
+			}
+		//~ }
+		self.legendChanged(colourScheme);
+	}
 };
 
 //this can be done before all proteins have their sequences

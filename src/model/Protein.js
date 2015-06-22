@@ -1171,6 +1171,12 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
     return subgraph;
 };
 
+//todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
+Protein.prototype.clearPositionalFeatures = function(posFeats) {
+    this.annotations = [];   
+    if (this.circDomains) this.controller.emptyElement(this.circDomains);
+    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
+}
 
 Protein.prototype.setPositionalFeatures = function(posFeats) {
     //clear everything
@@ -1197,36 +1203,10 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
 				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
 				anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
 			}
-            
-            var c;
-            //temp
-            if (anno.colour == null) { // check == here
-                if (anno.name === 'alpha_helix') {
-                    c = new RGBColor('#7EB6FF88');
-                }
-                else if (anno.name === 'beta_strand') {
-                    c = new RGBColor('#9AFF9A88');
-                }
-                else if (anno.name === 'turn') {
-                    c = new RGBColor('#FF00AA88');
-                }
-                else {
-                    c = new RGBColor(Protein.domainColours(anno.name));
-                }
-            }
-            else {
-                c = anno.colour;
-            }
-            anno.pieSlice.setAttribute("fill", c.toRGB());
-            anno.pieSlice.setAttribute("stroke", c.toRGB());
             anno.pieSlice.setAttribute("stroke-width", 1);
             anno.pieSlice.setAttribute("fill-opacity", "0.5");
-            anno.colouredRect.setAttribute("fill", c.toRGB());
-            anno.colouredRect.setAttribute("stroke", c.toRGB());
             anno.colouredRect.setAttribute("stroke-width", 1);
             anno.colouredRect.setAttribute("fill-opacity", "0.5"); 
-            
-            
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             anno.pieSlice.name = text;
             var xlv = this.controller;
