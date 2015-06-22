@@ -11,10 +11,11 @@ Join us!
 ----------------
 Build Process
 
+Bower must installed globally: $ npm install -g bower
 
 1. Clone the repository.
 2. $ cd /interaction-viewer
-3. $ sudo npm install
+3. $ npm install
 4. $ bower install
 5. $ npm start
 
