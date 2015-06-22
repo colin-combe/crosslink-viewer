@@ -368,6 +368,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			//}
 		}
 		
+		this.controller.matches.push(this);
 		//non of following are strictly necesssary, 
 		//burns some memory for convenience when making table of matches
 		this.protein1 = pep1_protIDs;

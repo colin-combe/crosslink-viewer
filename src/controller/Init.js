@@ -162,7 +162,7 @@ xiNET.Controller.prototype.clear = function() {
     
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
-    this.matches = d3.map();
+    this.matches = [];
     this.subgraphs = [];
     this.layoutXOffset = 0;
 
@@ -365,7 +365,6 @@ xiNET.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
         id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId) { //dataSetId param added for mathieu
     var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
             id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId);
-    this.matches.set(id, match);
     return match;
 };
 

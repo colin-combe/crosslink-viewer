@@ -125,7 +125,7 @@ function Protein(id, xinetController, acc, name) {
 	this.circDomains.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.circDomains);
 
-    this.scaleLabels = new Array();
+    this.scaleLabels = [];
 
     // events
     var self = this;
@@ -457,7 +457,7 @@ Protein.prototype.setScaleGroup = function() {
 	//~ this.upperGroup.appendChild(this.ticks);
 	this.controller.emptyElement(this.ticks);
 	
-    this.scaleLabels = new Array();
+    this.scaleLabels = [];
 	var ScaleMajTick = 100;
 	var ScaleTicksPerLabel = 2; // varies with scale?
 	var pixPerRes = Protein.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
