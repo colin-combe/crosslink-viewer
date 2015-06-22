@@ -10,7 +10,7 @@
 
 "use strict";
 
-var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');//Josh - should path for this be ../../../vendor...?
+var colorbrewer = require('colorbrewer');//Josh - should path for this be ../../../vendor...?
 var Config = require('../../controller/Config');
 
 //josh - should these be moved to Config.js?

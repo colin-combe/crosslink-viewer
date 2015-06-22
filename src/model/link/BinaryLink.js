@@ -11,8 +11,8 @@ var Link = require('./Link');
 var SequenceLink = require('./SequenceLink');
 //josh - following are libraries and should be in 'vendor'?
 //  but I don't know how to set up the dependency if its there
-var Intersection = require('../../../vendor/Intersection');
-var Point2D = require('../../../vendor/Point2D');
+var Intersection = require('intersectionjs');
+var Point2D = require('point2d');
 
 // BinaryLink.js
 // the class representing a binary interaction

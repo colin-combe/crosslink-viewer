@@ -1,0 +1,19 @@
+{
+  "name": "complexviewer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/MICommunity/interaction-viewer",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.5",
+    "colorbrewer": "~1.0.0",
+    "rgb-color": "*",
+    "file-saver.js": "~1.20150507.2"
+  }
+}
