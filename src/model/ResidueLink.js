@@ -188,7 +188,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
     this.ambig = true;
     this.hd = false;
     this.intraMolecular = false; //i.e. type 1, loop link, intra peptide, internally linked peptide, etc 
-    var filteredMatches = new Array();
+    var filteredMatches = [];
     var count = this.matches? this.matches.length : 0;
     for (var i = 0; i < count; i++) {
         var match = this.matches[i][0];
@@ -430,7 +430,7 @@ ResidueLink.prototype.leastAmbiguousMatches = function() {// yes: plural
     };
 
 ResidueLink.prototype.toJSON = function() {
-    var m = new Array();
+    var m = [];
     var mc = this.matches.length;
     for (var i = 0; i < mc; i++) {
         m.push(this.matches[i].id);

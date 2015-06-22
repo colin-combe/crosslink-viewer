@@ -15,7 +15,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
          pepSeq1, pepSeq2, autovalidated, validated, rejected, dataSetId){
 	
 	this.id = id.toString().trim();
-  	this.residueLinks = new Array();//if the match is ambiguous it will relate to many residueLinks
+  	this.residueLinks = [];//if the match is ambiguous it will relate to many residueLinks
     this.controller = xlvController;//reference to controlling xiNET.Controller object 
     
     //for comparison of different data sets (for mathieu)
@@ -368,6 +368,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 			//}
 		}
 		
+		this.controller.matches.push(this);
 		//non of following are strictly necesssary, 
 		//burns some memory for convenience when making table of matches
 		this.protein1 = pep1_protIDs;
@@ -469,7 +470,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	}
 	//we have residue link we want - associate this match with it
 	if (typeof resLink.matches === 'undefined' || resLink.matches == null){
-		resLink.matches = new Array(0);
+		resLink.matches = [];
 	}
 	if (endsReversedInResLinkId === false) {
 		resLink.matches.push([this, pep1_start, pep1_length, pep2_start, pep2_length]);
