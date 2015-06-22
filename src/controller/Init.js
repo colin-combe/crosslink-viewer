@@ -135,6 +135,7 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.appendChild(this.tooltip_bg);
     this.svgElement.appendChild(this.tooltip);
 
+	this.xiNET_storage = new xiNET_Storage(this);
     this.clear();
 };
 
@@ -229,50 +230,6 @@ xiNET.Controller.prototype.clearSelection = function() {
         thing.setSelected(false);
     }
 };
-/*
-xiNET.Controller.prototype.setAnnotations = function(annotationType) {
-	this.annotationSet = annotationType;
-	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
-		var mols = this.proteins.values(); 
-		var molCount = mols.length;
-		var self = this;
-		for (var m = 0; m < molCount; m++) {
-			var mol = mols[m];
-			if (annotationType.toUpperCase() === "CUSTOM") {
-				mol.setPositionalFeatures(mol.customAnnotations);
-			}
-			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
-				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
-					var m = self.proteins.get(id);
-					m.setPositionalFeatures(fts);
-				});
-			}  
-			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
-				xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-					var m = self.proteins.get(id);
-					m.setPositionalFeatures(fts);
-				});	
-			}
-			else if (annotationType.toUpperCase() === "LYSINES") {
-				var seq = mol.sequence;
-				var annots = [];
-				for (var i =0; i < mol.size; i++){
-					var aa = seq[i];
-					if (aa === 'K'){
-						annots.push(new Annotation ("Lysine", i+1, i+1));
-					}
-				
-				}
-				mol.setPositionalFeatures(annots);
-			}
-			else {
-				mol.setPositionalFeatures([])
-			}
-		}
-		return true;
-	}
-	else return false;
-};*/
 
 xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	this.annotationChoice = annotationChoice;
@@ -312,7 +269,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			var molsAnnotated = 0;
 			for (m = 0; m < molCount; m++) {
 				var mol = mols[m];
-				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+				this.xiNET_storage.getSuperFamFeatures(mol.id, function (id, fts){
 					var m = self.proteins.get(id);
 					m.setPositionalFeatures(fts);
 					molsAnnotated++;
@@ -326,7 +283,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			var molsAnnotated = 0;
 			for (m = 0; m < molCount; m++) {
 				var mol = mols[m];
-				xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+				this.xiNET_storage.getUniProtFeatures(mol.id, function (id, fts){
 					var m = self.proteins.get(id);
 					m.setPositionalFeatures(fts);
 					molsAnnotated++;
@@ -339,7 +296,6 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	}
 
 	function chooseColours(){
-		alert("chooseColours");
 		var categories = d3.set();
 		for (m = 0; m < molCount; m++) {
 			var mol = mols[m];

@@ -10,7 +10,9 @@
 
 "use strict";
 
-function xiNET_Storage() {}
+function xiNET_Storage(controller) {
+	this.controller = controller;
+}
 
 xiNET_Storage.ns = "xiNET.";
 
@@ -23,8 +25,8 @@ xiNET_Storage.accessionFromId = function (id){
 	}	
 }
 
-xiNET_Storage.getUniProtTxt = function (id, callback){
-	var accession = xiNET_Storage.accessionFromId(id);
+xiNET_Storage.prototype.getUniProtTxt = function (id, callback){
+	var accession = this.controller.proteins.get(id).accession;
 	function uniprotWebService(){
 		var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
 		d3.text(url, function (txt){
@@ -57,27 +59,8 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 	}	
 }
 
-xiNET_Storage.getSequence = function (id, callback){
-	var accession = xiNET_Storage.accessionFromId(id);
-	//~ xiNET_Storage.getUniProtTxt(accession, function(accession, txt){
-			//~ var sequence = "";
-			//~ var lines = txt.split('\n');
-			//~ var lineCount = lines.length;
-			//~ for (var l = 0; l < lineCount; l++){
-				//~ var line = lines[l];
-				//~ if (line.indexOf("SQ") === 0){
-					//~ //sequence = line;
-					//~ l++;
-					//~ for (l; l < lineCount; l++){
-						//~ line = lines[l];
-						//~ sequence += line;
-					//~ }
-				//~ }
-			//~ }
-			//~ callback(id, sequence.replace(/[^A-Z]/g, ''));
-		//~ }
-	//~ );
-	
+xiNET_Storage.prototype.getSequence = function (id, callback){
+	var accession = this.controller.proteins.get(id).accession;
 	function uniprotWebServiceFASTA(){
 		var url = "http://www.uniprot.org/uniprot/" + accession + ".fasta";
 		d3.text(url, function (txt){
@@ -126,30 +109,29 @@ xiNET_Storage.getSequence = function (id, callback){
 	}	
 }
 
-xiNET_Storage.getUniProtFeatures = function (id, callback){
-	var accession = xiNET_Storage.accessionFromId(id);
-		xiNET_Storage.getUniProtTxt(id, function(id, txt){
-			var features = new Array();
-			if (txt !== null) {
-				var lines = txt.split('\n');
-				var lineCount = lines.length;
-				for (var l = 0; l < lineCount; l++){
-					var line = lines[l];
-					if (line.indexOf("FT") === 0){
-						var fields = line.split(/\s{2,}/g);
-						if (fields.length > 4 && fields[1] !== 'CHAIN') {	
-							features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
-						}
+xiNET_Storage.prototype.getUniProtFeatures = function (id, callback){
+	//~ var accession = xiNET_Storage.accessionFromId(id);
+	this.getUniProtTxt(id, function(id, txt){
+		var features = new Array();
+		if (txt !== null) {
+			var lines = txt.split('\n');
+			var lineCount = lines.length;
+			for (var l = 0; l < lineCount; l++){
+				var line = lines[l];
+				if (line.indexOf("FT") === 0){
+					var fields = line.split(/\s{2,}/g);
+					if (fields.length > 4 && fields[1] !== 'CHAIN') {	
+						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4])); 
 					}
 				}
 			}
-			callback(id, features);
 		}
-	);
+		callback(id, features);
+	});
 }
 
-xiNET_Storage.getSuperFamFeatures = function (id, callback){
-	var accession = xiNET_Storage.accessionFromId(id);
+xiNET_Storage.prototype.getSuperFamFeatures = function (id, callback){
+	var accession = this.controller.proteins.get(id).accession;
 	function superFamDAS(){
 		var url = "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
 		d3.xml(url, function (xml){
