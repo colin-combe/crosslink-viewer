@@ -8,13 +8,12 @@
 "use strict";
 
 xiNET.Controller.prototype.checkLinks = function() {
-    //if (this.sequenceInitComplete) {
-		var links = this.proteinLinks.values();
-		var linkCount = links.length;
-		for (var l = 0; l < linkCount; l++) {
-			links[l].check();
-		}
-	//}
+	var links = this.proteinLinks.values();
+	var linkCount = links.length;
+	for (var l = 0; l < linkCount; l++) {
+		links[l].check();
+	}
+	this.linkSelectionChanged();
 };
 
 xiNET.Controller.prototype.scale = function() {

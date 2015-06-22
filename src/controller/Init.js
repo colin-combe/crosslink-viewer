@@ -355,6 +355,28 @@ xiNET.Controller.prototype.exportSVG = function() {
 	}
 };
 
+xiNET.Controller.prototype.exportCSV = function() {
+	var csv = '"Id", "Protein1", "PepPos1", "PepSeq1", "LinkPos1", "Protein2", "PepPos2", "PepSeq2", "LinkPos2", "Score", "Group"\r\n';
+	var matches = this.matches;
+	var matchCount = matches.length;
+	for (var i = 0; i < matchCount; i++){
+		var match = matches[i];
+		if (match.meetsFilterCriteria()){
+			csv += '"' + match.id + '","' + match.protein1 + '","' +match.pepPos1 + '","' 
+				+ match.pepSeq1 + '","' + match.linkPos1 + '","' 
+				+ match.protein2 + '","' + match.pepPos2 + '","'
+				+ match.pepSeq2 + '","' + match.linkPos2 + '","'
+				+ match.score + '","' + match.group + '"\r\n';
+		}
+	}
+	if (Blob) {
+		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
+		saveAs(blob, "xiNET-export.csv");
+	} else {	
+		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'xiNET-export.csv');
+	}
+}
+
 xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
     var newProt = new Protein(id, this, accession, label);
     newProt.setSequence(sequence);
