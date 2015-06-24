@@ -145,7 +145,7 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 		var countSequences = 0;
 		for (var p = 0; p < protCount; p++){
 			var id = prots[p].id;
-			xiNET_Storage.getSequence(id, function(ident, seq){
+			this.xiNET_storage.getSequence(id, function(ident, seq){
 					self.proteins.get(ident).setSequence(seq);
 					countSequences++;
 					if (countSequences === protCount){

@@ -13,13 +13,13 @@ xiNET.Controller.prototype.autoLayout = function() {
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 	var self = this;
+	var prots = this.proteins.values();
+	var proteinCount = prots.length;
 	//clear subgraphs
 	this.subgraphs.length = 0;
 	for (var p = 0; p < proteinCount; p++) {
 		prots[p].subgraph = null;
 	}
-	var prots = this.proteins.values();
-	var proteinCount = prots.length;
 	//~ for (var p = 0; p < proteinCount; p++) {
 		//~ var prot = prots[p];
 		//~ var park = true;
