@@ -455,11 +455,14 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 };
 
 //Positions are one based
-xiNET.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
-        pep2_protIDs, pep2_positions,
-        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId) { //dataSetId param added for mathieu
-    var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId);
+xiNET.Controller.prototype.addMatch = function(id, 
+				pep1_protIDs, pep1_positions, pep1_seq, linkPos1, 
+				pep2_protIDs, pep2_positions, pep2_seq, linkPos2,
+				score, dataSetId, autovalidated, validated) { //dataSetId param added for mathieu
+    var match = new Match(this, id,
+				pep1_protIDs, pep1_positions, pep1_seq, linkPos1,
+				pep2_protIDs, pep2_positions, pep2_seq, linkPos2,
+				score, dataSetId, autovalidated, validated);
     return match;
 };
 
@@ -470,7 +473,8 @@ xiNET.Controller.prototype.addMatches = function(matches) {
         //        alert(matches[i]);
         this.addMatch(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
                 matches[i][4], matches[i][5], matches[i][6], matches[i][7],
-                matches[i][8], matches[i][9]);
+                matches[i][8], matches[i][9], matches[i][10], matches[i][11],
+                matches[i][12], matches[i][13]);
     }
 }
 

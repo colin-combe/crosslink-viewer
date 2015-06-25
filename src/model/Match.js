@@ -9,17 +9,16 @@
 
 // TODO: for historical reasons the order of the parameters 
 // to this function is not that logical - should reorder them.
-function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-        id, score, xlvController, linkPos1, linkPos2, 
-        //the following attributes are optional (also pep1_positions, pep2_positions and score in preceeding)
-         pepSeq1, pepSeq2, autovalidated, validated, rejected, dataSetId){
+function Match(controller,id, 
+				pep1_protIDs, pep1_positions, pepSeq1, linkPos1,
+				pep2_protIDs, pep2_positions, pepSeq2, linkPos2,
+				score, dataSetId, autovalidated, validated){
 	
+    this.controller = controller;//reference to controlling xiNET.Controller object 
 	this.id = id.toString().trim();
   	this.residueLinks = [];//if the match is ambiguous it will relate to many residueLinks
-    this.controller = xlvController;//reference to controlling xiNET.Controller object 
-    
-    //for comparison of different data sets (for mathieu)
-  	this.dataSetId = dataSetId;
+    //for comparison of different data sets
+  	this.group = dataSetId;
   	
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
@@ -44,8 +43,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		}
 	}
 	
-	//autovalidated - an attribute used internally by Rappsilber Lab, 
-	// but, hey, its another attribute you can filter on if you want  
+	//autovalidated - another attribute   
 	if (typeof autovalidated != 'undefined' && autovalidated){
 		autovalidated = autovalidated.trim();
 		if (autovalidated !== ''){
@@ -144,7 +142,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 				// eliminate all forms of quotation mark 
 				eliminateQuotes.lastIndex = 0;
 				positions = positions.toString().replace(eliminateQuotes, '');
-				//; or , as seperator
+				//; or , as seperator (need comma incase input field was an array, which has just had toString called on it)
 				split.lastIndex = 0;
 				positions = positions.split(split);	
 				var posCount = positions.length;
@@ -370,7 +368,7 @@ function Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
 		
 		this.controller.matches.push(this);
 		//non of following are strictly necesssary, 
-		//burns some memory for convenience when making table of matches
+		//burns some memory for convenience when making table of matches or outputing CSV
 		this.protein1 = pep1_protIDs;
 		this.pepPos1 = pep1_positions;
 		this.linkPos1 = linkPos1;
