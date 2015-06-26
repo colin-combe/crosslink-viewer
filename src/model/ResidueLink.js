@@ -237,7 +237,7 @@ ResidueLink.prototype.check = function(filter) {
 			}
 			if (groupCheck.values().length == 1){
 				var c = this.controller.linkColours(groupCheck.values()[0]);
-				console.log(">"+groupCheck.values()[0] + "\t" + c);
+				//~ console.log(">"+groupCheck.values()[0] + "\t" + c);
 				this.line.setAttribute("stroke", c);				
           	}
 			else  {

@@ -208,11 +208,11 @@ xiNET.Controller.prototype.linkHighlightsChanged = function(highlighted) {
 	}
 }
 
-xiNET.Controller.prototype.legendChanged = function(colourScheme) {
+xiNET.Controller.prototype.legendChanged = function() {
 	var callbacks = this.legendCallbacks;
 	var count = callbacks.length;
 	for (var i = 0; i < count; i++) {
-		callbacks[i](colourScheme);
+		callbacks[i](this.linkColours, this.domainColours);
 	}
 }
 
@@ -240,7 +240,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	for (var m = 0; m < molCount; m++) {
 		mols[m].clearPositionalFeatures();
 	}
-	this.legendChanged(null);
+	this.legendChanged();
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
 		var self = this;
 		if (annotationChoice.toUpperCase() === "CUSTOM"){
@@ -331,7 +331,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 				}
 			}
 		//~ }
-		self.legendChanged(self.domainColours);
+		self.legendChanged();
 	}
 };
 
@@ -349,25 +349,33 @@ xiNET.Controller.prototype.initLayout = function() {
         }
         this.autoLayout();
     }
+    var groupCount = this.groups.values().length;
+    if (groupCount > 1) {
     //can now choose link colours for comparing sets
 		this.linkColours = null;
-		//~ var catCount = this.groups.values().length;
-		//~ if (catCount > 1) {
-		//~ if (catCount < 3){catCount = 3;}
-        //~ // if (catCount < 21) {
-			//~ if (catCount < 9) {
+		var catCount = this.groups.values().length;
+		if (catCount > 1) {
+		if (catCount < 3){catCount = 3;}
+        // if (catCount < 21) {
+			if (catCount < 9) {
 				var reversed = colorbrewer.Accent[3];
 				this.linkColours = d3.scale.ordinal().range(reversed);
-			//~ }
-			//~ else if (catCount < 13) {
-				//~ var reversed = colorbrewer.Set3[catCount];
-				//~ this.linkColours = d3.scale.ordinal().range(reversed);
-			//~ }
-			//~ else {
-				//~ this.linkColours = d3.scale.category20();
-			//~ }	
-		//~ //}	
-		//~ }
+			}
+			else if (catCount < 13) {
+				var reversed = colorbrewer.Set3[catCount];
+				this.linkColours = d3.scale.ordinal().range(reversed);
+			}
+			else {
+				this.linkColours = d3.scale.category20();
+			}	
+		//}	
+			var groups = this.groups.values();
+			for (var g = 0; g < groupCount; g++) {
+				this.linkColours(groups[g]);
+			}
+			this.legendChanged();
+		}
+	}
 };
 
 //requires all proteins have had sequence set
