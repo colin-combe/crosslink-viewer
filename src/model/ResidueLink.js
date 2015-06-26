@@ -219,23 +219,57 @@ ResidueLink.prototype.check = function(filter) {
         return false;
     }
     if (typeof this.matches === 'undefined' || this.matches == null) {
-        //~ if (this.proteinLink.sc >= this.controller.cutOff) {
-            this.ambig = false;
-			this.show();
-            return true;
-        //~ } else {
-            //~ this.hide();
-            //~ return false;
-        //~ }
+		this.ambig = false;
+		this.show();
+		return true;
     }
     var filteredMatches = this.getFilteredMatches();
-    
-    //mathieu - filteredMatches is an array of Match objects, 
-    // you can check aMatch.dataSetId to find out which data set each match belongs to
-    
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
-        this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
+        this.show();
+        this.dashedLine(this.ambig);		
+        if (this.controller.groups.values().length) {
+			
+			var groupCheck = d3.set();
+            for (var i=0; i < countFilteredMatches; i++) {
+                var match = filteredMatches[i][0];//TODO: fix this weirdness with array
+				groupCheck.add(match.group);
+			}
+			if (groupCheck.values().length == 1){
+				var c = this.controller.linkColours(groupCheck.values()[0]);
+				console.log(">"+groupCheck.values()[0] + "\t" + c);
+				this.line.setAttribute("stroke", c);				
+          	}
+			else  {
+				this.line.setAttribute("stroke", "#000000");
+				if (this.intra){
+					this.line.setAttribute("transform", "scale (1 -1)");
+					this.highlightLine.setAttribute("transform", "scale (1 -1)");
+				}
+            }
+            //else this.line.setAttribute("stroke", "purple");//shouldn't happen
+			
+			
+			
+			
+			
+		}
+        //else 
+        //~ if (this.intra === true){
+			//~ if (this.hd === true) {
+				//~ this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
+				//~ this.line.setAttribute("transform", "scale(1, -1)");			
+				//~ this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
+				//~ this.highlightLine.setAttribute("transform", "scale(1, -1)");			
+			//~ }
+			//~ else {
+				//~ this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
+				//~ this.line.setAttribute("transform", "scale(1, 1)");			
+				//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);			
+				//~ this.highlightLine.setAttribute("transform", "scale(1, 1)");			
+			//~ }
+		//~ }		
+		this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
                     + "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null') 
                     + '_' + this.toResidue + ' (' + countFilteredMatches;
         if (countFilteredMatches == 1) {
@@ -243,22 +277,8 @@ ResidueLink.prototype.check = function(filter) {
         } else {
             this.tooltip += ' matches)';
         }
-        this.show();
-        this.dashedLine(this.ambig);
-        if (this.intra === true){
-			if (this.hd === true) {
-				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
-				this.line.setAttribute("transform", "scale(1, -1)");			
-				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
-				this.highlightLine.setAttribute("transform", "scale(1, -1)");			
-			}
-			else {
-				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
-				this.line.setAttribute("transform", "scale(1, 1)");			
-				this.line.setAttribute("stroke-width", xiNET.linkWidth);			
-				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
-			}
-		}
+
+
         return true;
     }
     else {

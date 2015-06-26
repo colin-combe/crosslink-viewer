@@ -166,6 +166,7 @@ xiNET.Controller.prototype.clear = function() {
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
     this.matches = [];
+    this.groups = d3.set();
     this.subgraphs = [];
     this.layoutXOffset = 0;
 
@@ -304,25 +305,25 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			}
 		}
 		var catCount = categories.values().length;
-		var colourScheme;// = null;
+		self.domainColours = null;
         if (catCount < 3){catCount = 3;}
         //~ if (catCount < 21) {
 			if (catCount < 9) {
 				var reversed = colorbrewer.Accent[catCount].slice().reverse();
-				colourScheme = d3.scale.ordinal().range(reversed);
+				self.domainColours = d3.scale.ordinal().range(reversed);
 			}
 			else if (catCount < 13) {
 				var reversed = colorbrewer.Set3[catCount].slice().reverse();
-				colourScheme = d3.scale.ordinal().range(reversed);
+				self.domainColours = d3.scale.ordinal().range(reversed);
 			}
 			else {
-				colourScheme = d3.scale.category20();
+				self.domainColours = d3.scale.category20();
 			}
 			for (m = 0; m < molCount; m++) {
 				var mol = mols[m];
 				for (a = 0; a < mol.annotations.length; a++) {
 					var anno = mol.annotations[a];
-					var c = colourScheme(anno.name);
+					var c = self.domainColours(anno.name);
 					anno.pieSlice.setAttribute("fill", c);
 					anno.pieSlice.setAttribute("stroke", c);
 					anno.colouredRect.setAttribute("fill", c);
@@ -330,7 +331,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 				}
 			}
 		//~ }
-		self.legendChanged(colourScheme);
+		self.legendChanged(self.domainColours);
 	}
 };
 
@@ -348,6 +349,25 @@ xiNET.Controller.prototype.initLayout = function() {
         }
         this.autoLayout();
     }
+    //can now choose link colours for comparing sets
+		this.linkColours = null;
+		//~ var catCount = this.groups.values().length;
+		//~ if (catCount > 1) {
+		//~ if (catCount < 3){catCount = 3;}
+        //~ // if (catCount < 21) {
+			//~ if (catCount < 9) {
+				var reversed = colorbrewer.Accent[3];
+				this.linkColours = d3.scale.ordinal().range(reversed);
+			//~ }
+			//~ else if (catCount < 13) {
+				//~ var reversed = colorbrewer.Set3[catCount];
+				//~ this.linkColours = d3.scale.ordinal().range(reversed);
+			//~ }
+			//~ else {
+				//~ this.linkColours = d3.scale.category20();
+			//~ }	
+		//~ //}	
+		//~ }
 };
 
 //requires all proteins have had sequence set

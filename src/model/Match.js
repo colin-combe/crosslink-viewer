@@ -19,6 +19,7 @@ function Match(controller,id,
   	this.residueLinks = [];//if the match is ambiguous it will relate to many residueLinks
     //for comparison of different data sets
   	this.group = dataSetId;
+  	this.controller.groups.add(this.group);
   	
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in
@@ -470,6 +471,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	if (typeof resLink.matches === 'undefined' || resLink.matches == null){
 		resLink.matches = [];
 	}
+	//fix this hack witht hte arrays
 	if (endsReversedInResLinkId === false) {
 		resLink.matches.push([this, pep1_start, pep1_length, pep2_start, pep2_length]);
 	} else {
