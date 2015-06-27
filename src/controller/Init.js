@@ -351,23 +351,22 @@ xiNET.Controller.prototype.initLayout = function() {
     }
     var groupCount = this.groups.values().length;
     if (groupCount > 1) {
-    //can now choose link colours for comparing sets
-		this.linkColours = null;
+		//can now choose link colours for comparing sets
 		var catCount = this.groups.values().length;
-		if (catCount > 1) {
-		if (catCount < 3){catCount = 3;}
+		if (catCount > 1 && catCount < 6) {
+		//~ if (catCount < 3){catCount = 3;}
         // if (catCount < 21) {
-			if (catCount < 9) {
-				var reversed = colorbrewer.Accent[3];
-				this.linkColours = d3.scale.ordinal().range(reversed);
-			}
-			else if (catCount < 13) {
-				var reversed = colorbrewer.Set3[catCount];
-				this.linkColours = d3.scale.ordinal().range(reversed);
-			}
-			else {
-				this.linkColours = d3.scale.category20();
-			}	
+			//~ if (catCount < 9) {
+				//~ var reversed = colorbrewer.Accent[3];
+				this.linkColours = d3.scale.ordinal().range(colorbrewer.Dark2[5]);
+			//~ }
+			//~ else if (catCount < 13) {
+				//~ var reversed = colorbrewer.Set3[catCount];
+				//~ this.linkColours = d3.scale.ordinal().range(reversed);
+			//~ }
+			//~ else {
+				//~ this.linkColours = d3.scale.category20();
+			//~ }	
 		//}	
 			var groups = this.groups.values();
 			for (var g = 0; g < groupCount; g++) {

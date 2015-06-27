@@ -254,7 +254,7 @@ ProteinLink.prototype.check = function() {
 							resLinkMeetsCriteria = true;
 							filteredResLinks.push(resLink);
 						}
-						filteredMatches.set(match.id);
+						filteredMatches.set(match.id, match);
 						if (match.isAmbig()) {
 							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
 								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
@@ -288,21 +288,19 @@ ProteinLink.prototype.check = function() {
 			
 			if (this.controller.groups.values().length > 1) {
 				var groupCheck = d3.set();
+				var matchArray = filteredMatches.values();
+				var countFilteredMatches = matchArray.length;
 				for (var i=0; i < countFilteredMatches; i++) {
-					var match = filteredMatches[i][0];//fix this weirdness with array?
+					var match = matchArray[i];
 					groupCheck.add(match.group);
 				}
 				if (groupCheck.values().length == 1){
 					var c = this.controller.linkColours(groupCheck.values()[0]);
-					//~ console.log(">"+groupCheck.values()[0] + "\t" + c);
+					//~ //console.log(">"+groupCheck.values()[0] + "\t" + c);
 					this.line.setAttribute("stroke", c);				
 				}
 				else  {
 					this.line.setAttribute("stroke", "#000000");
-					if (this.selfLink){
-						this.line.setAttribute("transform", "scale (1 -1)");
-						this.highlightLine.setAttribute("transform", "scale (1 -1)");
-					}
 				}
 				//else this.line.setAttribute("stroke", "purple");//shouldn't happen
 			}
