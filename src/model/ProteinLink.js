@@ -285,7 +285,28 @@ ProteinLink.prototype.check = function() {
 			//acknowledge following line is a bit strange
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
-			if (this.selfLink()) {
+			
+			if (this.controller.groups.values().length > 1) {
+				var groupCheck = d3.set();
+				for (var i=0; i < countFilteredMatches; i++) {
+					var match = filteredMatches[i][0];//fix this weirdness with array?
+					groupCheck.add(match.group);
+				}
+				if (groupCheck.values().length == 1){
+					var c = this.controller.linkColours(groupCheck.values()[0]);
+					//~ console.log(">"+groupCheck.values()[0] + "\t" + c);
+					this.line.setAttribute("stroke", c);				
+				}
+				else  {
+					this.line.setAttribute("stroke", "#000000");
+					if (this.selfLink){
+						this.line.setAttribute("transform", "scale (1 -1)");
+						this.highlightLine.setAttribute("transform", "scale (1 -1)");
+					}
+				}
+				//else this.line.setAttribute("stroke", "purple");//shouldn't happen
+			}
+			else if (this.selfLink()) {
 				if (this.hd) {
 					this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 					this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			

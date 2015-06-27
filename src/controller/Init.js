@@ -28,7 +28,7 @@ xiNET.Controller = function(targetDiv) {
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
-	this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+	xiNET.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
@@ -145,12 +145,12 @@ xiNET.Controller.prototype.clear = function() {
 		this.force.stop();
 	}
  	this.force = null;
-    this.emptyElement(this.p_pLinksWide);
-    this.emptyElement(this.highlights);
-    this.emptyElement(this.p_pLinks);
-    this.emptyElement(this.res_resLinks);
-    this.emptyElement(this.proteinLower);
-    this.emptyElement(this.proteinUpper);
+    xiNET.emptyElement(this.p_pLinksWide);
+    xiNET.emptyElement(this.highlights);
+    xiNET.emptyElement(this.p_pLinks);
+    xiNET.emptyElement(this.res_resLinks);
+    xiNET.emptyElement(this.proteinLower);
+    xiNET.emptyElement(this.proteinUpper);
  
      //are we panning?
     this.panning = false;
@@ -216,7 +216,7 @@ xiNET.Controller.prototype.legendChanged = function() {
 	}
 }
 
-xiNET.Controller.prototype.emptyElement = function(element) {
+xiNET.emptyElement = function(element) {
     while (element.lastChild) {
         element.removeChild(element.lastChild);
     }

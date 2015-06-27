@@ -471,7 +471,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 	if (typeof resLink.matches === 'undefined' || resLink.matches == null){
 		resLink.matches = [];
 	}
-	//fix this hack witht hte arrays
+	//fix this hack with the array?
 	if (endsReversedInResLinkId === false) {
 		resLink.matches.push([this, pep1_start, pep1_length, pep2_start, pep2_length]);
 	} else {

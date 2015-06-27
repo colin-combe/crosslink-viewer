@@ -75,10 +75,10 @@ function Protein(id, xinetController, acc, name) {
     this.upperGroup.setAttribute("class", "protein upperGroup");
     
     //svg groups for self links
-    this.intraLinksHighlights = document.createElementNS(xiNET.svgns, "g");
-    this.intraLinks = document.createElementNS(xiNET.svgns, "g");
-    this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
+    this.selfLinksHighlights = document.createElementNS(xiNET.svgns, "g");
+    this.selfLinks = document.createElementNS(xiNET.svgns, "g");
+    this.upperGroup.appendChild(this.selfLinksHighlights);
+	this.upperGroup.appendChild(this.selfLinks);    
     
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(xiNET.svgns, "text");
@@ -455,7 +455,7 @@ Protein.prototype.scale = function() {
 
 Protein.prototype.setScaleGroup = function() {
 	//~ this.upperGroup.appendChild(this.ticks);
-	this.controller.emptyElement(this.ticks);
+	xiNET.emptyElement(this.ticks);
 	
     this.scaleLabels = [];
 	var ScaleMajTick = 100;
@@ -531,12 +531,12 @@ Protein.prototype.setScaleGroup = function() {
 Protein.prototype.toggleFlipped = function() {
     this.isFlipped = !this.isFlipped;
     if (this.isFlipped) {
-        this.intraLinks.setAttribute("transform", "scale (1 -1)");
-        this.intraLinksHighlights.setAttribute("transform", "scale (1 -1)");
+        this.selfLinks.setAttribute("transform", "scale (1 -1)");
+        this.selfLinksHighlights.setAttribute("transform", "scale (1 -1)");
     }
     else {
-        this.intraLinks.setAttribute("transform", "scale (1 1)");
-        this.intraLinksHighlights.setAttribute("transform", "scale (1 1)");
+        this.selfLinks.setAttribute("transform", "scale (1 1)");
+        this.selfLinksHighlights.setAttribute("transform", "scale (1 1)");
     }
 };
 
@@ -664,7 +664,7 @@ Protein.prototype.toCircle = function(svgP) {
 	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4)
 				.each("end", 
 					function () {
-						self.controller.emptyElement(this);//this === self.ticks
+						xiNET.emptyElement(this);//this === self.ticks
 						//if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
 					}
 				);
@@ -680,7 +680,7 @@ Protein.prototype.toCircle = function(svgP) {
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
-			if (residueLink.intra === true && residueLink.shown) {
+			if (residueLink.selfLink === true && residueLink.shown) {
 						var selectLine = d3.select(residueLink.line);
 						selectLine.attr("d",this.getResidueLinkPath(residueLink));
 						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
@@ -1062,7 +1062,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 }
 
 Protein.prototype.removePeptides = function() {
-	this.controller.emptyElement(this.peptides);
+	xiNET.emptyElement(this.peptides);
 }
 
 Protein.prototype.getResXwithStickZoom = function(r) {
@@ -1117,7 +1117,7 @@ Protein.prototype.countExternalLinks = function() {
     var c = this.proteinLinks.keys().length;
     for (var l = 0; l < c; l++) {
         var link = this.proteinLinks.values()[l];
-        if (!link.intra)
+        if (!link.selfLink)
         {
             if (link.check() === true) {
                 countExternal++;
@@ -1171,18 +1171,17 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
     return subgraph;
 };
 
-//todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
 Protein.prototype.clearPositionalFeatures = function(posFeats) {
     this.annotations = [];   
-    if (this.circDomains) this.controller.emptyElement(this.circDomains);
-    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
+    if (this.circDomains) xiNET.emptyElement(this.circDomains);
+    if (this.rectDomains) xiNET.emptyElement(this.rectDomains);
 }
 
 Protein.prototype.setPositionalFeatures = function(posFeats) {
     //clear everything
     this.annotations = [];   
-    if (this.circDomains) this.controller.emptyElement(this.circDomains);
-    if (this.rectDomains) this.controller.emptyElement(this.rectDomains);
+    if (this.circDomains) xiNET.emptyElement(this.circDomains);
+    if (this.rectDomains) xiNET.emptyElement(this.rectDomains);
     //create new annotations
     if (posFeats) {
         //draw longest regions first

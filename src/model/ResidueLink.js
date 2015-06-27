@@ -18,10 +18,10 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
     this.toResidue = toResidue;
-    this.intra = false;
+    this.selfLink = false;
     if (typeof this.proteinLink !== 'undefined') {
         if (this.proteinLink.fromProtein === this.proteinLink.toProtein) {
-            this.intra = true;
+            this.selfLink = true;
         }
     }
 
@@ -41,7 +41,7 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
 
 ResidueLink.prototype.initSVG = function() {
     if (typeof this.line === 'undefined') {
-        if (this.intra || this.proteinLink.toProtein === null) {
+        if (this.selfLink || this.proteinLink.toProtein === null) {
             this.line = document.createElementNS(xiNET.svgns, "path");
             this.line.setAttribute('stroke', xiNET.defaultSelfLinkColour.toRGB());
             this.highlightLine = document.createElementNS(xiNET.svgns, "path");
@@ -210,7 +210,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
 
 //used when filter changed
 ResidueLink.prototype.check = function(filter) {
-    if (this.controller.intraHidden && this.intra) {
+    if (this.controller.selfLinkShown === false && this.selfLink) {
         this.hide();
         return false;
     }
@@ -228,11 +228,10 @@ ResidueLink.prototype.check = function(filter) {
     if (countFilteredMatches > 0) {
         this.show();
         this.dashedLine(this.ambig);		
-        if (this.controller.groups.values().length) {
-			
+        if (this.controller.groups.values().length > 1) {
 			var groupCheck = d3.set();
             for (var i=0; i < countFilteredMatches; i++) {
-                var match = filteredMatches[i][0];//TODO: fix this weirdness with array
+                var match = filteredMatches[i][0];//fix this weirdness with array?
 				groupCheck.add(match.group);
 			}
 			if (groupCheck.values().length == 1){
@@ -242,33 +241,27 @@ ResidueLink.prototype.check = function(filter) {
           	}
 			else  {
 				this.line.setAttribute("stroke", "#000000");
-				if (this.intra){
+				if (this.selfLink){
 					this.line.setAttribute("transform", "scale (1 -1)");
 					this.highlightLine.setAttribute("transform", "scale (1 -1)");
 				}
             }
             //else this.line.setAttribute("stroke", "purple");//shouldn't happen
-			
-			
-			
-			
-			
 		}
-        //else 
-        //~ if (this.intra === true){
-			//~ if (this.hd === true) {
-				//~ this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
-				//~ this.line.setAttribute("transform", "scale(1, -1)");			
-				//~ this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
-				//~ this.highlightLine.setAttribute("transform", "scale(1, -1)");			
-			//~ }
-			//~ else {
-				//~ this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
-				//~ this.line.setAttribute("transform", "scale(1, 1)");			
-				//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);			
-				//~ this.highlightLine.setAttribute("transform", "scale(1, 1)");			
-			//~ }
-		//~ }		
+        else if (this.selfLink === true){
+			if (this.hd === true) {
+				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
+				this.line.setAttribute("transform", "scale(1, -1)");			
+				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
+				this.highlightLine.setAttribute("transform", "scale(1, -1)");			
+			}
+			else {
+				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());	
+				this.line.setAttribute("transform", "scale(1, 1)");			
+				this.line.setAttribute("stroke-width", xiNET.linkWidth);			
+				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
+			}
+		}		
 		this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
                     + "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null') 
                     + '_' + this.toResidue + ' (' + countFilteredMatches;
@@ -290,7 +283,7 @@ ResidueLink.prototype.check = function(filter) {
 ResidueLink.prototype.dashedLine = function(dash) {
     if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.toResidue))) {
         if (dash) {// && !this.dashed){
-            if (this.intra) {
+            if (this.selfLink) {
                 this.dashed = true;
                 this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
             }
@@ -313,11 +306,13 @@ ResidueLink.prototype.show = function() {
             if (typeof this.line === 'undefined') {
                 this.initSVG();
             }
-            if (this.intra || this.proteinLink.toProtein === null) {
-                this.line.setAttribute("stroke-width", xiNET.linkWidth);
-                this.line.setAttribute("d", this.proteinLink.fromProtein.getResidueLinkPath(this));
-                this.proteinLink.fromProtein.intraLinksHighlights.appendChild(this.highlightLine);
-                this.proteinLink.fromProtein.intraLinks.appendChild(this.line);
+            if (this.selfLink || this.proteinLink.toProtein === null) {
+                //~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
+                var path =  this.proteinLink.fromProtein.getResidueLinkPath(this);
+                this.line.setAttribute("d", path);
+                this.highlightLine.setAttribute("d", path);
+                this.proteinLink.fromProtein.selfLinksHighlights.appendChild(this.highlightLine);
+                this.proteinLink.fromProtein.selfLinks.appendChild(this.line);
             }
             else {
                 this.line.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
@@ -335,9 +330,9 @@ ResidueLink.prototype.hide = function() {
     if (this.controller.sequenceInitComplete) {
         if (this.shown) {
             this.shown = false;
-            if (this.intra || this.proteinLink.toProtein === null) {
-                this.proteinLink.fromProtein.intraLinksHighlights.removeChild(this.highlightLine);
-                this.proteinLink.fromProtein.intraLinks.removeChild(this.line);
+            if (this.selfLink || this.proteinLink.toProtein === null) {
+                this.proteinLink.fromProtein.selfLinksHighlights.removeChild(this.highlightLine);
+                this.proteinLink.fromProtein.selfLinks.removeChild(this.line);
             }
             else {
                 this.controller.res_resLinks.removeChild(this.line);
