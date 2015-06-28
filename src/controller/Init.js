@@ -240,7 +240,8 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	for (var m = 0; m < molCount; m++) {
 		mols[m].clearPositionalFeatures();
 	}
-	this.legendChanged();
+	this.domainColours = null;
+    this.legendChanged();
 	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
 		var self = this;
 		if (annotationChoice.toUpperCase() === "CUSTOM"){
@@ -305,8 +306,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			}
 		}
 		var catCount = categories.values().length;
-		self.domainColours = null;
-        if (catCount < 3){catCount = 3;}
+		if (catCount < 3){catCount = 3;}
         //~ if (catCount < 21) {
 			if (catCount < 9) {
 				var reversed = colorbrewer.Accent[catCount].slice().reverse();
