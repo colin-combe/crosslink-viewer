@@ -1117,7 +1117,7 @@ Protein.prototype.countExternalLinks = function() {
     var c = this.proteinLinks.keys().length;
     for (var l = 0; l < c; l++) {
         var link = this.proteinLinks.values()[l];
-        if (!link.selfLink)
+        if (!link.selfLink())
         {
             if (link.check() === true) {
                 countExternal++;

@@ -18,7 +18,7 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     this.proteinLink = proteinLink;
     this.fromResidue = fromResidue;
     this.toResidue = toResidue;
-    this.selfLink = false;
+    this.selfLink = false;//todo - i think remove this
     if (typeof this.proteinLink !== 'undefined') {
         if (this.proteinLink.fromProtein === this.proteinLink.toProtein) {
             this.selfLink = true;
@@ -95,7 +95,9 @@ ResidueLink.prototype.initSVG = function() {
     }
     this.isSelected = false;
 };
-
+ResidueLink.prototype.selfLink = function() {
+	return (this.proteinLink.fromProtein === this.proteinLink.toProtein);
+}
 ResidueLink.prototype.getFromProtein = function() {
     return this.proteinLink.fromProtein;
 };
