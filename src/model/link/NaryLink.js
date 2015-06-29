@@ -11,7 +11,7 @@
 
 "use strict";
 
-var colorbrewer = require('../../../node_modules/colorbrewer/colorbrewer');
+var colorbrewer = require('colorbrewer');
 var Link = require('./Link');
 var Config = require('../../controller/Config');
 var Molecule = require('../interactor/Molecule');

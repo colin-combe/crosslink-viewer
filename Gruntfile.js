@@ -15,7 +15,8 @@ module.exports = taskManager = function(grunt) {
           browserifyOptions: {
             standalone: 'xiNET',
             debug: true
-          }
+          },
+          transform: ['browserify-shim', 'debowerify', 'deamdify']
         }
       }
     },
@@ -64,7 +65,7 @@ module.exports = taskManager = function(grunt) {
   grunt.registerTask('package', ['browserify', 'uglify']);
   grunt.registerTask('build', ['browserify']);
   grunt.registerTask('do', ['build', 'notify']);
-  return grunt.registerTask('default', ['watch']);
+  return grunt.registerTask('default', ['do', 'watch']);
 };
 
 getKeys = function(obj) {
