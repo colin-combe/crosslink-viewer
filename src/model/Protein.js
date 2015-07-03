@@ -455,7 +455,7 @@ Protein.prototype.scale = function() {
 
 Protein.prototype.setScaleGroup = function() {
 	//~ this.upperGroup.appendChild(this.ticks);
-	xiNET.emptyElement(this.ticks);
+	d3.select(this.p_pLinksWide).selectAll(this.ticks).remove();
 	
     this.scaleLabels = [];
 	var ScaleMajTick = 100;
@@ -664,7 +664,7 @@ Protein.prototype.toCircle = function(svgP) {
 	d3.select(this.ticks).transition().attr("opacity", 0).duration(Protein.transitionTime / 4)
 				.each("end", 
 					function () {
-						xiNET.emptyElement(this);//this === self.ticks
+						d3.select(this).selectAll("*").remove();//this === self.ticks
 						//if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
 					}
 				);
@@ -1062,7 +1062,7 @@ Protein.prototype.showPeptides = function(pepBounds) {
 }
 
 Protein.prototype.removePeptides = function() {
-	xiNET.emptyElement(this.peptides);
+	d3.select(this.peptides).selectAll("*").remove();
 }
 
 Protein.prototype.getResXwithStickZoom = function(r) {
@@ -1173,15 +1173,12 @@ Protein.prototype.addConnectedNodes = function(subgraph) {
 
 Protein.prototype.clearPositionalFeatures = function(posFeats) {
     this.annotations = [];   
-    if (this.circDomains) xiNET.emptyElement(this.circDomains);
-    if (this.rectDomains) xiNET.emptyElement(this.rectDomains);
+    if (this.circDomains) d3.select(this.circDomains).selectAll("*").remove();
+    if (this.rectDomains) d3.select(this.rectDomains).selectAll("*").remove();
 }
 
 Protein.prototype.setPositionalFeatures = function(posFeats) {
-    //clear everything
-    this.annotations = [];   
-    if (this.circDomains) xiNET.emptyElement(this.circDomains);
-    if (this.rectDomains) xiNET.emptyElement(this.rectDomains);
+    this.clearPositionalFeatures();
     //create new annotations
     if (posFeats) {
         //draw longest regions first

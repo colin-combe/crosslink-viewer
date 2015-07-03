@@ -236,9 +236,10 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 				for (pp = 0; pp < peptidePositions2.length; pp++){
 					peptidePositions2[pp] = parseInt(peptidePositions2[pp]) - linkPos2 + 1;
 				}
-				self.addMatch(prot1,  peptidePositions1.join(';'), 
-								prot2, peptidePositions2.join(';'), 
-								id, score, linkPos1, linkPos2, pep1_seq, pep2_seq);
+				self.addMatch(id,
+							prot1, peptidePositions1.join(';'), pep1_seq, linkPos1,
+							prot2, peptidePositions2.join(';'), pep2_seq, linkPos2,
+							score);
 			} else if (iType !== -1 && m2 !== null && (rows[row][iType] === "intralink" || rows[row][iType] === "monolink")) {
 				var pep1_seq = m2[1];
 				var linkPos1 = parseInt(m2[2].substring(1));
@@ -248,20 +249,27 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 				}
 				if (rows[row][iType] === "intralink") {//its an internally linked peptide
 					var linkPos2 = parseInt(m2[3].substring(1));
-					self.addMatch(prot1,  peptidePositions1.join(';'), 
-							null, null, 
-							id, score, linkPos1, linkPos2, pep1_seq, null);	
+					self.addMatch(id,
+							prot1,  peptidePositions1.join(';'), pep1_seq, linkPos1,
+							null, null, null, linkPos2,
+							score);	
 				} else { //its a linker modified peptide
-					self.addMatch(prot1,  peptidePositions1.join(';'), 
-							null, null, 
-							id, score, linkPos1, null, pep1_seq, null);					
+					self.addMatch(id, 
+							prot1,  peptidePositions1.join(';'), pep1_seq, linkPos1, 
+							null, null, null, null, 
+							score);					
 				}				
 			}
 			else {
 				var m = rows[row];
-				self.addMatch(prot1, m[iRes1], prot2, m[iRes2], id, score,
-					m[iLinkPosition1], m[iLinkPosition2],
-					m[iPepSeq1],m[iPepSeq2]);
+				/*id, 
+				pep1_protIDs, pep1_positions, pep1_seq, linkPos1, 
+				pep2_protIDs, pep2_positions, pep2_seq, linkPos2,
+				score, dataSetId, autovalidated, validated*/
+				self.addMatch(id, 
+							prot1, m[iRes1], m[iPepSeq1], m[iLinkPosition1],
+							prot2, m[iRes2], m[iPepSeq2], m[iLinkPosition2],
+							score);
 			}
 		}     
     }

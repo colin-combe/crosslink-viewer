@@ -28,7 +28,7 @@ xiNET.Controller = function(targetDiv) {
 	if (typeof targetDiv === "string"){
 		targetDiv = document.getElementById(targetDiv);
 	}
-	xiNET.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+	d3.select(targetDiv).selectAll("*").remove();//avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
@@ -145,14 +145,14 @@ xiNET.Controller.prototype.clear = function() {
 		this.force.stop();
 	}
  	this.force = null;
-    xiNET.emptyElement(this.p_pLinksWide);
-    xiNET.emptyElement(this.highlights);
-    xiNET.emptyElement(this.p_pLinks);
-    xiNET.emptyElement(this.res_resLinks);
-    xiNET.emptyElement(this.proteinLower);
-    xiNET.emptyElement(this.proteinUpper);
- 
-     //are we panning?
+ 	d3.select(this.p_pLinksWide).selectAll("*").remove();
+    d3.select(this.highlights).selectAll("*").remove();
+    d3.select(this.p_pLinks).selectAll("*").remove();
+    d3.select(this.res_resLinks).selectAll("*").remove();
+    d3.select(this.proteinLower).selectAll("*").remove();
+    d3.select(this.proteinUpper).selectAll("*").remove();
+    
+    //are we panning?
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
     this.dragElement = null;
@@ -215,13 +215,6 @@ xiNET.Controller.prototype.legendChanged = function() {
 		callbacks[i](this.linkColours, this.domainColours);
 	}
 }
-
-xiNET.emptyElement = function(element) {
-    while (element.lastChild) {
-        element.removeChild(element.lastChild);
-    }
-};
-
 
 xiNET.Controller.prototype.clearSelection = function() {
 	var things = this.selectedLinks.values();
