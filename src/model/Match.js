@@ -72,9 +72,9 @@ function Match(controller,id,
 	var split = /[;,]/g;
 	var capitalsOnly = /[^A-Z]/g;
 	function sanitiseProteinIDs(protIDs){
-		if (protIDs){
+		//~ if (protIDs){
 			protIDs = protIDs.toString().trim();
-			if (protIDs !== '' && protIDs !== '-' && protIDs !== 'n/a'){
+			if (/*protIDs !== '' &&*/ protIDs !== '-' && protIDs !== 'n/a'){
 				// eliminate all forms of quotation mark
 				// - sooner or later they're going to screw up javascript, prob whilst trying to generate>parse JSON
 				eliminateQuotes.lastIndex = 0;
@@ -89,10 +89,10 @@ function Match(controller,id,
 			else {
 				protIDs = null;
 			}
-		}
-		else {
-			protIDs = null;
-		}		
+		//~ }
+		//~ else {
+			//~ protIDs = null;
+		//~ }		
 		return protIDs;
 	}
 
