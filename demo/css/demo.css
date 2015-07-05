@@ -16,10 +16,10 @@ div#networkContainer{
     position:absolute;
     bottom:0px;
     top:0px;
-    width:65%;
+    width:75%;
     overflow: hidden;
     margin: 8px;
-	margin-right:35%;
+	margin-right:25%;
  }
 
 div#controls{
@@ -35,11 +35,11 @@ div#networkCaption{
     overflow: auto;
     position:absolute;
     margin: 0px;
-    margin-left:67%;
+    margin-left:77%;
     line-height: 1;
     top:0px;
     max-height:100%;
-	width:33%;
+	width:23%;
 	max-width:33%;
 }
 

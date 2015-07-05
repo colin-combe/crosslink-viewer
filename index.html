@@ -16,6 +16,7 @@
         <!--libraries-->
         <script type="text/javascript" src="./build/complexviewer.js"></script>
         <script type="text/javascript" src="./bower_components/rgb-color/rgb-color.js"></script>
+		<script type="text/javascript" src="./vendor/legend.js"></script>
     </head>
     <body>
 
@@ -25,13 +26,17 @@
 			
 			<select id="dataSets" onChange="loadData();">
 				<option>./demo/data/complex/EBI-1202920.json</option>  
+				<option>./demo/data/complex/EBI-9696567.json</option>  
 				<option>./demo/data/complex/EBI-9082861.json</option>
+				<option>./demo/data/complex/EBI-9691559.json</option>
+				<option>./demo/data/complex/EBI-10828997.json</option>
+<!--
 				<option>./demo/data/complex/EBI-9008420.json</option> 
 				<option>./demo/data/complex/EBI-6554207.json</option>  
 				<option>./demo/data/complex/EBI-8869931.json</option>
 				<option>./demo/data/complex/EBI-9008283.json</option>
-				<option>./demo/data/complex/EBI-9691559.json</option>
 				<option>./demo/data/complex/EBI-9997373.json</option>
+-->
 			</select>
 		
 			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
@@ -115,32 +120,39 @@
                 var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET(targetDiv);
                 
+                var legend = d3.select("svg").append("g");
                 xlv.legendCallbacks.push(function (colourAssignment) {
-					var coloursKeyDiv = document.getElementById('colours');
-					
-					var table = "<table><tr style='height:10px;'></tr><tr><td style='width:80px;margin:10px;"
-								+ "background:#70BDBD;opacity:0.3;border:none;'>"
-								+ "</td><td>your complex</td></tr>";
-					
+					var coloursKeyDiv = document.getElementById('colours');			
 					if (colourAssignment){
-						var domain = colourAssignment.domain();
-						//~ console.log("Domain:"+domain);
-						var range = colourAssignment.range();
-						//~ console.log("Range:"+range);
-						table += "<tr style='height:10px;'></tr>";
-						for (var i = 0; i < domain.length; i ++){
-							//make transparent version of colour
-							var temp = new RGBColor(range[i%20]);
-							var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.6)"
-							table += "<tr><td style='width:75px;margin:10px;background:"
-									+ trans + ";border:1px solid " 
-									+ range[i%20] + ";'></td><td>"
-									+ domain[i] +"</td></tr>";
-							//~ console.log(i + " "+ domain[i] + " " + range[i]);
+						//html legened
+						/*
+						var table = "<table><tr style='height:10px;'></tr><tr><td style='width:80px;margin:10px;"
+									+ "background:#70BDBD;opacity:0.3;border:none;'>"
+									+ "</td><td>your complex</td></tr>";
+								var domain = colourAssignment.domain();
+							//~ console.log("Domain:"+domain);
+							var range = colourAssignment.range();
+							//~ console.log("Range:"+range);
+							table += "<tr style='height:10px;'></tr>";
+							for (var i = 0; i < domain.length; i ++){
+								//make transparent version of colour
+								var temp = new RGBColor(range[i%20]);
+								var trans = "rgba(" +temp.r+","+temp.g+","+temp.b+ ", 0.6)";
+								table += "<tr><td style='width:75px;margin:10px;background:"
+										+ trans + ";border:1px solid " 
+										+ range[i%20] + ";'></td><td>"
+										+ domain[i] +"</td></tr>";
+								//~ console.log(i + " "+ domain[i] + " " + range[i]);
+							}
 						}
+						table = table += "</table>";
+						coloursKeyDiv.innerHTML = table;					
+						*/
+						//d3 svg legend
+						verticalLegend = d3.svg.legend().labelFormat("none").cellPadding(5).orientation("vertical").units(xlv.annotationChoice).cellWidth(25).cellHeight(18).inputScale(colourAssignment);
+						legend.selectAll("*").remove();
+						legend.attr("transform", "translate(20,40)").attr("class", "legend").call(verticalLegend);
 					}
-					table = table += "</table>";
-					coloursKeyDiv.innerHTML = table;					
 				});
                 
                 loadData();
