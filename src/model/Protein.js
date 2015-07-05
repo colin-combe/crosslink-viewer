@@ -455,7 +455,7 @@ Protein.prototype.scale = function() {
 
 Protein.prototype.setScaleGroup = function() {
 	//~ this.upperGroup.appendChild(this.ticks);
-	d3.select(this.p_pLinksWide).selectAll(this.ticks).remove();
+	d3.select(this.ticks).selectAll("*").remove();
 	
     this.scaleLabels = [];
 	var ScaleMajTick = 100;
