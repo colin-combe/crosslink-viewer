@@ -463,8 +463,11 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
 			resLink = new ResidueLink(residueLinkID, link, res2, res1, this.controller);
 		}
 		link.residueLinks.set(residueLinkID, resLink);
-		if (link.residueLinks.keys().length > ProteinLink.maxNoResidueLinks) {
-			ProteinLink.maxNoResidueLinks = link.residueLinks.keys().length;
+		if (this.controller.proteins.size() > 1) {
+			var linkCount = link.residueLinks.size();
+			if (linkCount > ProteinLink.maxNoResidueLinks) {
+				ProteinLink.maxNoResidueLinks = linkCount;
+			}
 		}
 	}
 	//we have residue link we want - associate this match with it

@@ -20,7 +20,10 @@ function Protein(id, xinetController, acc, name) {
     this.controller = xinetController;
     this.accession = acc;
     this.name = name;
-    this.tooltip = this.name + ' [' + this.id + ']';// + this.accession;
+    if (!this.name) {
+		this.name = acc;
+	}
+    this.tooltip = this.name + ' [' + this.accession + ']';// + this.accession;
 
     //links
     this.proteinLinks = d3.map();
