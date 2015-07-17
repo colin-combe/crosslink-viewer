@@ -101,7 +101,7 @@ function Match(controller,id,
 	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
 
 
-	if (typeof pepSeq1 != 'undefined' && pepSeq1 != null){
+	if (pepSeq1){
 		pepSeq1 = pepSeq1.trim();
 		if (pepSeq1){
 			capitalsOnly.lastindex = 0;
@@ -115,7 +115,7 @@ function Match(controller,id,
 		this.pepSeq1 = null;
 	}
 
-	if (typeof pepSeq2 !== 'undefined' && pepSeq2 != null){
+	if (pepSeq2){
 		pepSeq2 = pepSeq2.trim();
 		if (pepSeq2){
 			capitalsOnly.lastindex = 0;
