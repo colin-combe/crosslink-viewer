@@ -445,8 +445,8 @@ xiNET.Controller.prototype.exportSVG = function() {
 	}
 };
 
-xiNET.Controller.prototype.exportCSV = function() {
-	var csv = '"Id", "Protein1", "PepPos1", "PepSeq1", "LinkPos1", "Protein2", "PepPos2", "PepSeq2", "LinkPos2", "Score", "Group"\r\n';
+xiNET.Controller.prototype.exportMatchesCSV = function() {
+	var csv = '"Id","Protein1","PepPos1","PepSeq1","LinkPos1","Protein2","PepPos2","PepSeq2","LinkPos2","Score","Group"\r\n';
 	var matches = this.matches;
 	var matchCount = matches.length;
 	for (var i = 0; i < matchCount; i++){
@@ -458,6 +458,37 @@ xiNET.Controller.prototype.exportCSV = function() {
 				+ match.pepSeq2 + '","' + match.linkPos2 + '","'
 				+ match.score + '","' + match.group + '"\r\n';
 		}
+	}
+	if (Blob) {
+		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
+		saveAs(blob, "xiNET-export.csv");
+	} else {	
+		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'xiNET-export.csv');
+	}
+}
+
+xiNET.Controller.prototype.exportLinksCSV = function() {
+	var csv = '"Protein1","LinkPos1","LinkedRes1","Protein2","LinkPos2","LinkedRes2"\r\n';
+	
+	var pLinks = this.proteinLinks.values();
+	var pLinkCount = pLinks.length;
+	for (var pl = 0; pl < pLinkCount; pl++){
+		var resLinks = pLinks[pl].residueLinks.values();
+		var resLinkCount = resLinks.length;
+		for (var rl =0; rl < resLinkCount; rl ++) {
+			var residueLink = resLinks[rl];
+			var filteredMatches = residueLink.getFilteredMatches();
+			if (filteredMatches.length > 0){
+				csv += '"' + residueLink.proteinLink.fromProtein.id + '","' 
+					+ residueLink.fromResidue + '","' + residueLink.proteinLink.fromProtein.sequence[residueLink.fromResidue - 1] + '","'
+					+ residueLink.proteinLink.toProtein.id + '","'
+					+ residueLink.toResidue + '","';
+				if (residueLink.proteinLink.toProtein && residueLink.toResidue) {
+					csv += residueLink.proteinLink.toProtein.sequence[residueLink.toResidue - 1];
+				}
+				csv += '"\r\n';				
+			}
+		}		  		
 	}
 	if (Blob) {
 		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
