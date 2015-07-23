@@ -461,9 +461,9 @@ xiNET.Controller.prototype.exportMatchesCSV = function() {
 	}
 	if (Blob) {
 		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
-		saveAs(blob, "xiNET-export.csv");
+		saveAs(blob, "matches.csv");
 	} else {	
-		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'xiNET-export.csv');
+		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'matches.csv');
 	}
 }
 
@@ -479,9 +479,9 @@ xiNET.Controller.prototype.exportLinksCSV = function() {
 			var residueLink = resLinks[rl];
 			var filteredMatches = residueLink.getFilteredMatches();
 			if (filteredMatches.length > 0){
-				csv += '"' + residueLink.proteinLink.fromProtein.id + '","' 
+				csv += '"' + xiNET.Controller.bestId(residueLink.proteinLink.fromProtein) + '","' 
 					+ residueLink.fromResidue + '","' + residueLink.proteinLink.fromProtein.sequence[residueLink.fromResidue - 1] + '","'
-					+ residueLink.proteinLink.toProtein.id + '","'
+					+ xiNET.Controller.bestId(residueLink.proteinLink.toProtein) + '","'
 					+ residueLink.toResidue + '","';
 				if (residueLink.proteinLink.toProtein && residueLink.toResidue) {
 					csv += residueLink.proteinLink.toProtein.sequence[residueLink.toResidue - 1];
@@ -492,10 +492,20 @@ xiNET.Controller.prototype.exportLinksCSV = function() {
 	}
 	if (Blob) {
 		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
-		saveAs(blob, "xiNET-export.csv");
+		saveAs(blob, "links.csv");
 	} else {	
-		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'xiNET-export.csv');
+		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'links.csv');
 	}
+}
+
+xiNET.Controller.bestId = function(protein){
+	if (protein.accession) {
+		return protein.accession;
+	}
+	if (protein.name) {
+		return protein.accession;
+	}
+	return id;
 }
 
 xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
