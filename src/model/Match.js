@@ -12,7 +12,7 @@
 function Match(controller,id, 
 				pep1_protIDs, pep1_positions, pepSeq1, linkPos1,
 				pep2_protIDs, pep2_positions, pepSeq2, linkPos2,
-				score, dataSetId, autovalidated, validated){
+				score, dataSetId, autovalidated, validated, run_name, scan_number){
 	
     this.controller = controller;//reference to controlling xiNET.Controller object 
 	this.id = id.toString().trim();
@@ -20,6 +20,9 @@ function Match(controller,id,
     //for comparison of different data sets
   	this.group = dataSetId;
   	this.controller.groups.add(this.group);
+  	
+  	this.runName = run_name;
+  	this.scanNumber = scan_number;
   	
   	//sanitise the inputs  
     //http://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in

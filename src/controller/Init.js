@@ -519,11 +519,11 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 xiNET.Controller.prototype.addMatch = function(id, 
 				pep1_protIDs, pep1_positions, pep1_seq, linkPos1, 
 				pep2_protIDs, pep2_positions, pep2_seq, linkPos2,
-				score, dataSetId, autovalidated, validated) { //dataSetId param added for mathieu
+				score, dataSetId, autovalidated, validated, run_name, scan_number) { 
     var match = new Match(this, id,
 				pep1_protIDs, pep1_positions, pep1_seq, linkPos1,
 				pep2_protIDs, pep2_positions, pep2_seq, linkPos2,
-				score, dataSetId, autovalidated, validated);
+				score, dataSetId, autovalidated, validated, run_name, scan_number);
     return match;
 };
 
@@ -535,7 +535,7 @@ xiNET.Controller.prototype.addMatches = function(matches) {
         this.addMatch(matches[i][0], matches[i][1], matches[i][2], matches[i][3],
                 matches[i][4], matches[i][5], matches[i][6], matches[i][7],
                 matches[i][8], matches[i][9], matches[i][10], matches[i][11],
-                matches[i][12], matches[i][13]);
+                matches[i][12], matches[i][13], matches[i][14], matches[i][15]);
     }
 }
 
