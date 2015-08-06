@@ -342,7 +342,7 @@ ResidueLink.prototype.setLineCoordinates = function(interactor) {
         return;
     }
 	//non self, not linker modified pep's links only 
-	if (this.getToProtein() !== null){
+	if (this.selfLink() === false && this.getToProtein() !== null){
 		//don't waste time changing DOM if link not visible
 		if (this.shown) {
 			var x, y;
