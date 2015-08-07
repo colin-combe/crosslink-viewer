@@ -411,7 +411,7 @@ ProteinLink.prototype.hide = function() {
 
 ProteinLink.prototype.setLineCoordinates = function(interactor) {
 	//if not linker modified pep
-	if (this.selfLink() !== false && this.getToProtein() !== null){
+	if (this.selfLink() === false && this.getToProtein() !== null){
 		//don't waste time changing DOM if this not visible
 		if (this.shown) {
 			if (this.getFromProtein() === interactor) {
