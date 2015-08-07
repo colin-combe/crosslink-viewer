@@ -255,7 +255,7 @@ Protein.prototype.addLink = function(link) {
     if (!this.proteinLinks.has(link.id)) {
         this.proteinLinks.set(link.id, link);
     }
-    if (link.selfLink()) {
+    if (link.selfLink() === true) {
         this.selfLink = link;
         if (this.size) this.selfLink.initSelfLinkSVG();
     }
@@ -683,7 +683,7 @@ Protein.prototype.toCircle = function(svgP) {
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];
-			if (residueLink.selfLink === true && residueLink.shown) {
+			if (residueLink.shown) {
 						var selectLine = d3.select(residueLink.line);
 						selectLine.attr("d",this.getResidueLinkPath(residueLink));
 						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
