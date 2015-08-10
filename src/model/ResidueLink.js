@@ -31,9 +31,8 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
 
 ResidueLink.prototype.initSVG = function() {
     if (typeof this.line === 'undefined') {
-        if (this.selfLink() || this.proteinLink.toProtein === null) {
+        if (this.selfLink() === true || this.proteinLink.toProtein === null) {
             this.line = document.createElementNS(xiNET.svgns, "path");
-            this.line.setAttribute('stroke', xiNET.defaultSelfLinkColour.toRGB());
             this.highlightLine = document.createElementNS(xiNET.svgns, "path");
         } else {
             this.line = document.createElementNS(xiNET.svgns, "line");
@@ -242,7 +241,7 @@ ResidueLink.prototype.check = function(filter) {
             }
             //else this.line.setAttribute("stroke", "purple");//shouldn't happen
 		}
-        else if (this.selfLink() === true){
+        else if (this.selfLink() === true && this.colour == null){
 			if (this.hd === true) {
 				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
 				this.line.setAttribute("transform", "scale(1, -1)");			
