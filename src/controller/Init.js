@@ -429,11 +429,11 @@ xiNET.Controller.prototype.resetZoom = function() {
 
 xiNET.Controller.prototype.exportSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
-    
-    //~ if (Blob) {
-		//~ var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-		//~ saveAs(blob, "xiNET_output.svg");
-	//~ } else {	
+    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
+    if (Blob) {
+		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+		saveAs(blob, "xiNET_output.svg");
+	} else {	
 		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
 		+ svgXml;
@@ -442,7 +442,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
 		xmlAsUrl += encodeURIComponent(xml);
 		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
-	//~ }
+	}
 };
 
 xiNET.Controller.prototype.exportMatchesCSV = function() {
