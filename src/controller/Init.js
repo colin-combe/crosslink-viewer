@@ -332,7 +332,7 @@ xiNET.Controller.prototype.resetZoom = function() {
 
 xiNET.Controller.prototype.exportSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
-    
+    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
     if (Blob) {
 		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
 		saveAs(blob, "xiNET_output.svg");
