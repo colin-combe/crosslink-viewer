@@ -26,7 +26,7 @@ function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, fli
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
-    //~ this.initSVG();
+    this.initSVG();
 }
 
 ResidueLink.prototype.initSVG = function() {
@@ -239,7 +239,7 @@ ResidueLink.prototype.check = function(filter) {
 					this.highlightLine.setAttribute("transform", "scale (1 -1)");
 				}
             }
-            //else this.line.setAttribute("stroke", "purple");//shouldn't happen
+            //else this.line.setAttribute("stroke", "purple");//shouldn't happen				
 		}
         else if (this.selfLink() === true && this.colour == null){
 			if (this.hd === true) {
@@ -254,6 +254,9 @@ ResidueLink.prototype.check = function(filter) {
 				this.line.setAttribute("stroke-width", xiNET.linkWidth);			
 				this.highlightLine.setAttribute("transform", "scale(1, 1)");			
 			}
+		}
+		else if (this.selfLink() === true) {
+			this.line.setAttribute("stroke-width", xiNET.linkWidth);			
 		}		
 		this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
                     + "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null') 
