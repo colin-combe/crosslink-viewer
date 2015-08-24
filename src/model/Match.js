@@ -103,7 +103,9 @@ function Match(controller,id,
 	pep1_protIDs = sanitiseProteinIDs(pep1_protIDs);
 	pep2_protIDs = sanitiseProteinIDs(pep2_protIDs);
 
-
+	this.pepSeq1raw = pepSeq1;
+	this.pepSeq2raw = pepSeq2;
+	
 	if (pepSeq1){
 		pepSeq1 = pepSeq1.trim();
 		if (pepSeq1){
