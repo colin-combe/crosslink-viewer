@@ -11,3 +11,5 @@ There may currently be some issues with saving/loading layouts.
 
 Rappsilber Laboratory is funded by the Wellcome Trust.
 
+
+*This branch uses MySQL instead of Postgres backend.*
