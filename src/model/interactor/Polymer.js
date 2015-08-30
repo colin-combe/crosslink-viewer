@@ -49,7 +49,10 @@ Polymer.prototype.setRotation = function(angle) {
     if (this.rotation < 0) {
         this.rotation += 360;
 	}
+	
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+	this.labelContainer.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
 			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     
     var svg = this.controller.svgElement;    
@@ -117,9 +120,12 @@ Polymer.prototype.switchStickScale = function(svgP) {
 Polymer.prototype.scale = function() {
     var protLength = (this.size) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
+      	
       	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+		
 		var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
 			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
+		
 		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 	    
 		if (this.annotations){

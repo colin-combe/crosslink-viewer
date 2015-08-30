@@ -3,8 +3,8 @@
 //
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-//		
-//		Molecule.js		
+//
+//		Molecule.js
 //
 //		authors: Colin Combe
 
@@ -25,8 +25,11 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 	}
 }
 
-Molecule.prototype.mouseDown = function(evt) {
+Molecule.prototype.mouseDown = function(evt, labelClickStart) {
         this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        
+        this.controller.labelClickStart = labelClickStart;
+        
         //if a force layout exists then stop it
         if (this.controller.force) {
             this.controller.force.stop();
@@ -42,14 +45,17 @@ Molecule.prototype.mouseDown = function(evt) {
         //store start location
         var p = this.controller.getEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        this.showData();
+        //~ this.showData();
         return false;
 };
 
-Molecule.prototype.touchStart = function(evt) {
+Molecule.prototype.touchStart = function(evt, labelClickStart) {
            this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.controller.force !== undefined) {
+       
+        this.controller.labelClickStart = labelClickStart;
+        
+         if (this.controller.force !== undefined) {
             this.controller.force.stop();
         }
         this.controller.dragElement = this;
@@ -121,12 +127,21 @@ Molecule.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
     if (this.form === 1){
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
 				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-  } 
+	}
     else {
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" 
+		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
 				+ " scale(" + (this.controller.z) + ") ");
+	}
+
+	if (this.labelContainer){ //bit of short term protection, not all mol types have this yet
+		var rotation = 0;
+		if (this.rotation && this.form == 1) {
+			rotation = this.rotation;
+		}
+		this.labelContainer.setAttribute("transform",
+			"translate( " + this.x + " " + this.y + ") rotate("+rotation+") scale(1, 1)");
 	}
 };
 
@@ -137,7 +152,7 @@ Molecule.prototype.getAggregateSelfLinkPath = function() {
 	var arcEnd = Molecule.trig(intraR, -25 + sectorSize);
 	var cp1 = Molecule.trig(intraR, 40 + sectorSize);
 	var cp2 = Molecule.trig(intraR, -40 + sectorSize);
-	return 'M 0,0 ' 
+	return 'M 0,0 '
 		+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
 		+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
 		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
@@ -156,8 +171,8 @@ Molecule.prototype.checkLinks = function() {
 		var c = links.length;
 		for (var l = 0; l < c; l++) {
 			links[l].check();
-		}	
-	}    
+		}
+	}
     checkAll(this.naryLinks);
     checkAll(this.binaryLinks);
     checkAll(this.sequenceLinks);
@@ -172,7 +187,7 @@ Molecule.prototype.setAllLinkCoordinates = function() {
     var c = links.length;
     for (var l = 0; l < c; l++) {
 		links[l].setLinkCoordinates();
-    }    
+    }
     links = this.binaryLinks.values();
     c = links.length;
     for (var l = 0; l < c; l++) {
@@ -180,18 +195,18 @@ Molecule.prototype.setAllLinkCoordinates = function() {
         link.setLinkCoordinates();
     }
     if (this.selfLink) {
-		this.selfLink.setLinkCoordinates(); 
+		this.selfLink.setLinkCoordinates();
 	}
 	links = this.sequenceLinks.values();
 	c = links.length;
 	for (var l = 0; l < c; l++) {
 		links[l].setLinkCoordinates();
-	}    
+	}
 };
 
 //todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
 Molecule.prototype.clearPositionalFeatures = function(posFeats) {
-    this.annotations = [];   
+    this.annotations = [];
     if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
 }
 
@@ -202,7 +217,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
         //draw longest regions first
         posFeats.sort(function(a, b) {
             return (b.end - b.start) - (a.end - a.start);
-        });     
+        });
         this.annotations = posFeats;
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
@@ -215,7 +230,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
             }
             anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.6");                 
+            anno.pieSlice.setAttribute("fill-opacity", "0.6");
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
             anno.pieSlice.name = text;
             var xlv = this.controller;
@@ -244,13 +259,7 @@ Molecule.trig = function(radius, angleDegrees) {
 };
 
 Molecule.prototype.showData = function(evt) {
-    if (document.getElementById('jsonHeading')) {	
-		document.getElementById('jsonHeading').innerHTML = this.id;
-	} 
-    if (document.getElementById('json')) {	
-		document.getElementById('json').innerHTML = 
-			"<pre>" + JSON.stringify(this.json, null, ' ') + "</pre>";
-	} 
+	//~ alert ("molecule!");
 }
 
 Molecule.prototype.setForm = function(form, svgP) {

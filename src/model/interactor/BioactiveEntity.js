@@ -74,8 +74,9 @@ function BioactiveEntity(id, xlvController, json, name) {
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
 		"translate( -" + (15) + " " + Molecule.labelY + ")");
-    this.upperGroup.appendChild(this.labelSVG);
    	 
+    this.labelContainer = document.createElementNS(Config.svgns, "g");
+    this.labelContainer.appendChild(this.labelSVG);   	
 	//make blob
 	this.outline = document.createElementNS(Config.svgns, "polygon");
 	this.outline.setAttribute("points", points);
@@ -98,12 +99,32 @@ function BioactiveEntity(id, xlvController, json, name) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-    };
-     
+    };     
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
     };
+    
+    this.labelSVG.onmousedown = function(evt) {
+		self.mouseDown(evt, true);
+    };
+    this.labelSVG.onmouseover = function(evt) {
+		self.mouseOver(evt);
+    };
+    this.labelSVG.onmouseout = function(evt) {
+		self.mouseOut(evt);
+    };
+    this.labelSVG.ontouchstart = function(evt) {
+		self.touchStart(evt, true);
+    };
+
+    
     this.isSelected = false;
 };
 
+BioactiveEntity.prototype.showData = function(evt) {
+    var url = "https://www.ebi.ac.uk/chebi/searchId.do;?chebiId=" + this.json.identifier.id;
+	//~ alert (url);
+	var win = window.open(url, '_blank');
+	//~ win.focus();
+}
 module.exports = BioactiveEntity;
