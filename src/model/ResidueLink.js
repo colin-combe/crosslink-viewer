@@ -277,22 +277,24 @@ ResidueLink.prototype.check = function(filter) {
 };
 
 ResidueLink.prototype.dashedLine = function(dash) {
-    if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.toResidue))) {
-        if (dash) {// && !this.dashed){
-            if (this.selfLink() === true) {
-                this.dashed = true;
-                this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-            }
-            else {
-                this.dashed = true;
-                this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
-            }
-        }
-        else if (!dash) {// && this.dashed){
-            this.dashed = false;
-            this.line.removeAttribute("stroke-dasharray");
-        }
-    }
+	if (this.controller.unambigLinkFound == true) {
+		if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.toResidue))) {
+			if (dash) {// && !this.dashed){
+				if (this.selfLink() === true) {
+					this.dashed = true;
+					this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+				}
+				else {
+					this.dashed = true;
+					this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+				}
+			}
+			else if (!dash) {// && this.dashed){
+				this.dashed = false;
+				this.line.removeAttribute("stroke-dasharray");
+			}
+		}
+	}
 };
 
 ResidueLink.prototype.show = function() {

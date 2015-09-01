@@ -171,6 +171,7 @@ xiNET.Controller.prototype.clear = function() {
     this.layoutXOffset = 0;
 
     this.proteinCount = 0;
+    this.unambigLinkFound = false;
     this.maxBlobRadius = 30;
     Protein.MAXSIZE = 100;
 

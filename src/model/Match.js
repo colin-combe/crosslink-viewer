@@ -138,6 +138,10 @@ function Match(controller,id,
 	linkPos1 = sanitisePositions(linkPos1);
 	linkPos2 = sanitisePositions(linkPos2);
 	
+	if (pep1_positions.length == 1 && pep2_positions.length == 1) {
+		this.controller.unambigLinkFound = true; 
+	}
+		
 	// tidy up postions (peptide and link positions), 
 	// leaves positions null if empty, 'n/a' or '-'
 	// forbidden characters are ,;'"

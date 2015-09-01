@@ -337,16 +337,18 @@ ProteinLink.prototype.check = function() {
 };
 
 ProteinLink.prototype.dashedLine = function(dash) {
-    if (dash){
-        if (this.selfLink() === true) {
-			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-		} else {
-			this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+	if (this.controller.unambigLinkFound == true) {
+			if (dash){
+			if (this.selfLink() === true) {
+				this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+			} else {
+				this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+			}
 		}
-    }
-    else if (!dash){
-        this.line.removeAttribute("stroke-dasharray");
-    }
+		else if (!dash){
+			this.line.removeAttribute("stroke-dasharray");
+		}
+	}
 };
 
 ProteinLink.prototype.show = function() {
