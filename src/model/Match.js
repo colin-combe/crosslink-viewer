@@ -506,10 +506,10 @@ Match.prototype.isAmbig = function() {
 
 Match.prototype.toTableRow = function() {
    var htmlTableRow = "<tr>";
-	if (loadSpectra){
-		htmlTableRow = "<tr onclick=\"loadSpectra('"+this.id+"','"+this.pepSeq1+"',"
-			+this.linkPos1+",'"+this.pepSeq2+"',"+this.linkPos2+");\">";
-	}
+	//~ if (loadSpectra){
+		//~ htmlTableRow = "<tr onclick=\"loadSpectra('"+this.id+"','"+this.pepSeq1+"',"
+			//~ +this.linkPos1+",'"+this.pepSeq2+"',"+this.linkPos2+");\">";
+	//~ }
 	
 	htmlTableRow += "<td><p>" + this.id
 		+ "</p></td>";
