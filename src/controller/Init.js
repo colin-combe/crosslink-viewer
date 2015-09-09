@@ -281,7 +281,17 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 				var mol = mols[m];
 				this.xiNET_storage.getUniProtFeatures(mol.id, function (id, fts){
 					var m = self.proteins.get(id);
-					m.setPositionalFeatures(fts);
+					if (m.accession.indexOf("-") === -1 || m.accession === "P02768-A") {
+						if (m.accession === "P02768-A") {
+							var offset = -24;
+							for (var f = 0; f < fts.length; f++) {
+								var feature = fts[f];
+								feature.start = feature.start + offset;
+								feature.end = feature.end + offset;
+							}
+						}
+						m.setPositionalFeatures(fts);
+					}
 					molsAnnotated++;
 					if (molsAnnotated === molCount) {
 						chooseColours();

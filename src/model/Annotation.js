@@ -11,8 +11,8 @@
 //constructor for annotations
 function Annotation(annotName, startRes, endRes, colour, notes) {
     this.name = annotName;
-    this.start = startRes;
-    this.end = endRes;
+    this.start = startRes - 0;
+    this.end = endRes - 0;
     if (colour !== undefined && colour !== null) {
         this.colour = new RGBColor(colour);
     }
