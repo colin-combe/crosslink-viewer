@@ -229,9 +229,10 @@ ResidueLink.prototype.check = function(filter) {
 			}
 			if (groupCheck.values().length == 1){
 				var c = this.controller.linkColours(groupCheck.values()[0]);
-				//~ console.log(">"+groupCheck.values()[0] + "\t" + c);
 				this.line.setAttribute("stroke", c);				
-          	}
+          		this.line.setAttribute("transform", "scale (1 1)");
+				this.highlightLine.setAttribute("transform", "scale (1 1)");
+			}
 			else  {
 				this.line.setAttribute("stroke", "#000000");
 				if (this.selfLink()){
