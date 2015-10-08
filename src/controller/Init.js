@@ -29,16 +29,28 @@ xiNET.Controller = function(targetDiv) {
 		targetDiv = document.getElementById(targetDiv);
 	}
 	d3.select(targetDiv).selectAll("*").remove();//avoids prob with 'save - web page complete'
+    
+    //this is neded to allow the SVG export
+    var containingDiv = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+    //~ containingDiv.setAttribute("width", "100%");
+    //~ containingDiv.setAttribute("height", "100%");
+    containingDiv.setAttribute("style", "width:100%;height:100%;display:block;");
+    targetDiv.appendChild(containingDiv);
+   
+    
+    
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
     this.svgElement.setAttribute("width", "100%");
     this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("style", "display:block;");
+    this.svgElement.setAttribute("viewport", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight); 
+    //~ this.svgElement.setAttribute("style", "display:block;");
     // disable right click context menu (we wish to put right click to our own purposes)
     this.svgElement.oncontextmenu = function() {
         return false;
     };
+    
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
@@ -62,7 +74,7 @@ xiNET.Controller = function(targetDiv) {
     //legend changed callbacks
     this.legendCallbacks = new Array();
 
-    targetDiv.appendChild(this.svgElement);
+    containingDiv.appendChild(this.svgElement);
     
 	//these attributes are used by checkboxes to hide self links or ambiguous links
 	this.selfLinksShown = true;
@@ -341,23 +353,11 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 
 //this can be done before all proteins have their sequences
 xiNET.Controller.prototype.initLayout = function() {
-    if (typeof this.layout !== 'undefined' && this.layout != null) {
-        this.loadLayout();
-    } else {
-        var proteins = this.proteins.values();
-        var proteinCount = proteins.length;
-        for (var p = 0; p < proteinCount; p++) {
-            var prot = proteins[p];
-            this.proteinLower.appendChild(prot.lowerGroup);
-            this.proteinUpper.appendChild(prot.upperGroup);
-        }
-        this.autoLayout();
-    }
     var groupCount = this.groups.values().length;
     if (groupCount > 1) {
 		//can now choose link colours for comparing sets
 		var catCount = this.groups.values().length;
-		if (catCount > 1 && catCount < 6) {
+		//~ if (catCount > 1 && catCount < 6) {
 		//~ if (catCount < 3){catCount = 3;}
         // if (catCount < 21) {
 			//~ if (catCount < 9) {
@@ -377,8 +377,21 @@ xiNET.Controller.prototype.initLayout = function() {
 				this.linkColours(groups[g]);
 			}
 			this.legendChanged();
-		}
-	}
+		//~ }
+	}    
+	if (typeof this.layout !== 'undefined' && this.layout != null) {
+        this.loadLayout();
+    } else {
+        var proteins = this.proteins.values();
+        var proteinCount = proteins.length;
+        for (var p = 0; p < proteinCount; p++) {
+            var prot = proteins[p];
+            this.proteinLower.appendChild(prot.lowerGroup);
+            this.proteinUpper.appendChild(prot.upperGroup);
+        }
+        this.autoLayout();
+    }
+
 };
 
 //requires all proteins have had sequence set
@@ -438,11 +451,31 @@ xiNET.Controller.prototype.resetZoom = function() {
     //~ }
 };
 
-xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
+xiNET.Controller.prototype.getSVG = function() {
+	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill   
     svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
+	
+	return '<?xml version="1.0" encoding="UTF-8" standalone=\"no\"?>' 
+		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+		+ svgXml;
+}
+
+xiNET.Controller.prototype.exportSVG = function() {
+	//alert("aa!");
+	
+	var svgXml = this.svgElement.parentNode.innerHTML;//.replace(/<rect .*?\/rect>/i, "");//take out white background fill
+
+    
+    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
+    
+    //~ var wnd = window.open("data:image/svg+xml;charset=utf-8;base64," 
+		//~ + window.btoa('<?xml version="1.0" encoding="UTF-8" standalone=\"no\"?>' 
+		//~ + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+		//~ + svgXml), 'out.svg');
+			
+    
     if (Blob) {
-		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+		var blob = new Blob([svgXml], {type: "data:xml;charset=utf-8"});
 		saveAs(blob, "xiNET_output.svg");
 	} else {	
 		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
@@ -450,7 +483,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 		+ svgXml;
 		var xmlAsUrl;
 		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
-		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+		xmlAsUrl = 'data:svg;charset=utf-8;filename="xiNET-output.svg",';
 		xmlAsUrl += encodeURIComponent(xml);
 		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
 	}

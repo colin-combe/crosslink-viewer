@@ -181,7 +181,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (rightclick) { // RIGHT click
 					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-						if (this.dragElement.selfLink) {//if internal link
+						if (this.dragElement.selfLink() == true) {//if internal link
 							if (this.dragElement.proteinLink)//its a residueLink
 								this.dragElement.proteinLink.fromProtein.toggleFlipped();
 						} else {
