@@ -137,6 +137,7 @@ function Protein(id, xinetController, acc, name) {
     this.upperGroup.onmouseout = function(evt) {self.mouseOut(evt);};
     this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
     this.isSelected = false;
+    this.busy = false;
 	this.showHighlight(false);
 };
 
@@ -241,6 +242,7 @@ Protein.prototype.isDecoy = function() {
 //only output the info needed to reproduce the layout, used by save layout function
 Protein.prototype.toJSON = function() {
     return {
+		id: this.id,
         x: this.x,
         y: this.y,
         rot: this.rotation,
@@ -642,7 +644,8 @@ Protein.prototype.setForm = function(form, svgP) {
 };
 
 Protein.prototype.toCircle = function(svgP) {  
-	this.busy = true;
+	//~ if (this.form == 1){
+		 this.busy = true;
 	this.removePeptides();
 	if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
 	if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);  
@@ -740,7 +743,13 @@ Protein.prototype.toCircle = function(svgP) {
 	d3.timer(function(elapsed) {
 	  return update(elapsed / Protein.transitionTime);
 	});
- 
+ //~ }
+ //~ else {
+ 		//~ var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+		//~ var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
+		//~ self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
+
+ //~ }
 	function update(interp) {
 		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
 		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Protein.labelY);//.scale(z).translate(-c.x, -c.y);
@@ -750,7 +759,7 @@ Protein.prototype.toCircle = function(svgP) {
 		}
 		var rot = rotationInterpol(cubicInOut(interp));
 		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-		self.setRotation(rot);	 
+		if (self.form == 1) self.setRotation(rot);	 
 		self.setAllLineCoordinates();
 		
 		if (interp ===  1){ // finished - tidy up
@@ -785,6 +794,7 @@ Protein.prototype.toCircle = function(svgP) {
 			return false;
 		}
 	}
+
 };
 
 Protein.prototype.getX = function() {return this.x;}

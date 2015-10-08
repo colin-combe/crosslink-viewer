@@ -207,10 +207,10 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 						this.dragElement.switchStickScale(c);
 					} else {
 						if (this.sequenceInitComplete === true){
-							if (this.dragElement.form === 0) {
-								this.dragElement.setForm(1, c);
-							} else {
+							if (this.dragElement.form === 1) {
 								this.dragElement.setForm(0, c);
+							} else {
+								this.dragElement.setForm(1, c);
 							}
 						}
 					}

@@ -32,12 +32,8 @@ xiNET.Controller = function(targetDiv) {
     
     //this is neded to allow the SVG export
     var containingDiv = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-    //~ containingDiv.setAttribute("width", "100%");
-    //~ containingDiv.setAttribute("height", "100%");
     containingDiv.setAttribute("style", "width:100%;height:100%;display:block;");
     targetDiv.appendChild(containingDiv);
-   
-    
     
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
@@ -351,9 +347,20 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 	}
 };
 
-//this can be done before all proteins have their sequences
+//if no saved layout this can be done before all proteins have their sequences
 xiNET.Controller.prototype.initLayout = function() {
-    var groupCount = this.groups.values().length;
+  	var prots = this.proteins.values();
+	var protCount = prots.length;
+	Protein.MAXSIZE = 0;
+	for (var i = 0; i < protCount; i++){
+		var protSize = prots[i].size;
+		if (protSize > Protein.MAXSIZE){
+			Protein.MAXSIZE = protSize;
+		}
+	}
+	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+	var width = this.svgElement.parentNode.clientWidth;
+	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;  var groupCount = this.groups.values().length;
     if (groupCount > 1) {
 		//can now choose link colours for comparing sets
 		var catCount = this.groups.values().length;
@@ -460,35 +467,6 @@ xiNET.Controller.prototype.getSVG = function() {
 		+ svgXml;
 }
 
-xiNET.Controller.prototype.exportSVG = function() {
-	//alert("aa!");
-	
-	var svgXml = this.svgElement.parentNode.innerHTML;//.replace(/<rect .*?\/rect>/i, "");//take out white background fill
-
-    
-    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
-    
-    //~ var wnd = window.open("data:image/svg+xml;charset=utf-8;base64," 
-		//~ + window.btoa('<?xml version="1.0" encoding="UTF-8" standalone=\"no\"?>' 
-		//~ + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-		//~ + svgXml), 'out.svg');
-			
-    
-    if (Blob) {
-		var blob = new Blob([svgXml], {type: "data:xml;charset=utf-8"});
-		saveAs(blob, "xiNET_output.svg");
-	} else {	
-		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-		+ svgXml;
-		var xmlAsUrl;
-		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
-		xmlAsUrl = 'data:svg;charset=utf-8;filename="xiNET-output.svg",';
-		xmlAsUrl += encodeURIComponent(xml);
-		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
-	}
-};
-
 xiNET.Controller.prototype.exportMatchesCSV = function() {
 	var csv = '"Id","Protein1","PepPos1","PepSeq1","LinkPos1","Protein2","PepPos2","PepSeq2","LinkPos2","Score","Group"\r\n';
 	var matches = this.matches;
@@ -547,15 +525,15 @@ xiNET.Controller.bestId = function(protein){
 		return protein.accession;
 	}
 	if (protein.name) {
-		return protein.accession;
+		return protein.name;
 	}
-	return id;
+	return protein.id;
 }
 
-xiNET.Controller.prototype.addProtein = function(id, label, sequence, description, accession, size) {
+xiNET.Controller.prototype.addProtein = function(id, label, sequence, accession) {
     var newProt = new Protein(id, this, accession, label);
     newProt.setSequence(sequence);
-    newProt.init();
+    //~ newProt.init();
     this.proteins.set(id, newProt);
 };
 
@@ -659,7 +637,7 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
 }
 
 xiNET.Controller.prototype.getLayout = function() {
-    var myJSONText = JSON.stringify(this.proteins, null, '\t');
+    var myJSONText = JSON.stringify(this.proteins.values(), null, '\t');
     var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
     var layout = myJSONText.replace(/\\u0000/gi, '');
     //+ "\n{co:" + this.cutOff +"}";
@@ -671,49 +649,44 @@ xiNET.Controller.prototype.setLayout = function(layoutJSON) {
 };
 
 xiNET.Controller.prototype.loadLayout = function() {
-    for (var prot in this.layout/*.proteins*/) {
-        var protState = this.layout[prot];
-        var protein = this.proteins.get(prot);
+    for (var prot in this.layout) {
+        var protLayout = this.layout[prot];
+        var protein = this.proteins.get(protLayout.id);
         if (protein !== undefined) {
-            protein.setPosition(protState["x"], protState["y"]);
-            // protein.toStick();
-            //~ if (typeof protState.annot !== 'undefined' && protState.annot != null) {
-                //~ if (protState.annot.length > 0) {
-                    //~ protein.customAnnotations = protState.annot;
-                    //~ protein.setPositionalFeatures(protein.customAnnotations);
-                //~ }
-            //~ }
-            
-            //~ if (protState["form"] === 1) {
-                if (typeof protState["stickZoom"] !== 'undefined') {
-                    protein.stickZoom = protState["stickZoom"];
-                    //~ protein.scale();
-                }
-                //~ protein.setRotation(protein.rotation);
-            //~ }
-            
-            if (typeof protState['rot'] !== 'undefined') {
-                protein.rotation = protState["rot"];
-            }
-
-            if (typeof protState["form"]) {
-                protein.setForm(protState["form"]);
-            }
-            
-			protein.setAllLineCoordinates();// watch out for this
-
-            if (typeof protState["parked"] !== 'undefined') {
-                protein.setParked(protState["parked"]);
-            }
-            if (protState["flipped"]) { //TODO: fix this
-                protein.toggleFlipped(); // change to setFlipped(protState["flipped"])
-            }
-            //~ if (protState["processedDAS"]) {
-                //~ protein.processedDAS = d3.map(protState["processedDAS"]);
-            //~ }
-            this.proteinLower.appendChild(protein.lowerGroup);
+              this.proteinLower.appendChild(protein.lowerGroup);
             this.proteinUpper.appendChild(protein.upperGroup);
+          protein.setPosition(protLayout["x"], protLayout["y"]);
+            if (typeof protLayout['rot'] !== 'undefined') {
+                protein.rotation = protLayout["rot"] - 0;
+            }
+  
+            if (protLayout["form"]) {
+				//~ if (protLayout["stickZoom"]) {
+                    protein.stickZoom = 1;//protLayout["stickZoom"];
+                //~ }  
+                protein.form = protLayout["form"] - 0;
+                // protein.form =1;
+                // protein.scale();
+                // protein.toStick();
+                //~ //protein.setRotation(protein.rotation);
+            }
+             //~ protein.form = 1;
+            //~ protein.init();
+            
+            //~ if (typeof protLayout["form"]) {
+              //~ 
+            //~ }
+            
+			//~ protein.setAllLineCoordinates();// watch out for this
+
+            if (typeof protLayout["parked"] !== 'undefined') {
+                protein.setParked(protLayout["parked"]);
+            }
+            if (protLayout["flipped"]) { //TODO: fix this
+                protein.toggleFlipped(); // change to setFlipped(protLayout["flipped"])
+            }
         }
+        else {console.log("!");}
     }
 
     // incase proteins have been added which are not included in layout -
