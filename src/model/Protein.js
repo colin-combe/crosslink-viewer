@@ -758,7 +758,7 @@ Protein.prototype.toCircle = function(svgP) {
 			 self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
 		}
 		var rot = rotationInterpol(cubicInOut(interp));
-		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+		self.stickZoom = stickZoomInterpol(cubicInOut(interp));
 		if (self.form == 1) self.setRotation(rot);	 
 		self.setAllLineCoordinates();
 		
