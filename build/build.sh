@@ -3,10 +3,6 @@ java -jar compiler.jar --version
 
 #versioning system consists of editing numbers in file name in last line
 java -jar compiler.jar \
---js=../vendor/d3.js \
---js=../vendor/colorbrewer.js \
---js=../vendor/rgbcolor.js \
---js=../vendor/FileSaver.js \
 --js=../src/controller/Init.js \
 --js=../src/controller/MouseEvents.js \
 --js=../src/controller/TouchEvents.js \

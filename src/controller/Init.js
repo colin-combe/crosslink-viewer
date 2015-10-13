@@ -40,7 +40,8 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.setAttribute('id', 'networkSVG');
     this.svgElement.setAttribute("width", "100%");
     this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("viewport", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight); 
+    this.svgElement.setAttribute("preserveAspectRatio", "xMinYMin meet");
+    this.svgElement.setAttribute("viewBox", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight); 
     //~ this.svgElement.setAttribute("style", "display:block;");
     // disable right click context menu (we wish to put right click to our own purposes)
     this.svgElement.oncontextmenu = function() {
@@ -467,7 +468,7 @@ xiNET.Controller.prototype.getSVG = function() {
 		+ svgXml;
 }
 
-xiNET.Controller.prototype.exportMatchesCSV = function() {
+xiNET.Controller.prototype.getMatchesCSV = function() {
 	var csv = '"Id","Protein1","PepPos1","PepSeq1","LinkPos1","Protein2","PepPos2","PepSeq2","LinkPos2","Score","Group"\r\n';
 	var matches = this.matches;
 	var matchCount = matches.length;
@@ -481,15 +482,10 @@ xiNET.Controller.prototype.exportMatchesCSV = function() {
 				+ match.score + '","' + match.group + '"\r\n';
 		}
 	}
-	if (Blob) {
-		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
-		saveAs(blob, "matches.csv");
-	} else {	
-		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'matches.csv');
-	}
+	return csv;
 }
 
-xiNET.Controller.prototype.exportLinksCSV = function() {
+xiNET.Controller.prototype.getLinksCSV = function() {
 	var csv = '"Protein1","LinkPos1","LinkedRes1","Protein2","LinkPos2","LinkedRes2"\r\n';
 	
 	var pLinks = this.proteinLinks.values();
@@ -512,12 +508,7 @@ xiNET.Controller.prototype.exportLinksCSV = function() {
 			}
 		}		  		
 	}
-	if (Blob) {
-		var blob = new Blob([csv], {type: "data:text/csv;charset=utf-8" });
-		saveAs(blob, "links.csv");
-	} else {	
-		var wnd = window.open("data:text/csv;charset=utf-8;base64," + window.btoa(csv), 'links.csv');
-	}
+	return csv;
 }
 
 xiNET.Controller.bestId = function(protein){
