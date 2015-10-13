@@ -40,8 +40,8 @@ xiNET.Controller = function(targetDiv) {
     this.svgElement.setAttribute('id', 'networkSVG');
     this.svgElement.setAttribute("width", "100%");
     this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("preserveAspectRatio", "xMinYMin meet");
-    this.svgElement.setAttribute("viewBox", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight); 
+    //~ this.svgElement.setAttribute("preserveAspectRatio", "xMinYMin meet");
+    //~ this.svgElement.setAttribute("viewBox", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight); 
     //~ this.svgElement.setAttribute("style", "display:block;");
     // disable right click context menu (we wish to put right click to our own purposes)
     this.svgElement.oncontextmenu = function() {
