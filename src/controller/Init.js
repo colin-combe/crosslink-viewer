@@ -461,13 +461,15 @@ xiNET.Controller.prototype.resetZoom = function() {
 
 xiNET.Controller.prototype.getSVG = function() {
 	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill   
-    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
+    var viewBox = 'viewBox="0 0 ' + this.svgElement.parentNode.clientWidth + " " + this.svgElement.parentNode.clientHeight + '" '; 
+    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ' + viewBox);
 	
 	return '<?xml version="1.0" encoding="UTF-8" standalone=\"no\"?>' 
 		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
 		+ svgXml;
 }
 
+/*
 xiNET.Controller.prototype.getMatchesCSV = function() {
 	var csv = '"Id","Protein1","PepPos1","PepSeq1","LinkPos1","Protein2","PepPos2","PepSeq2","LinkPos2","Score","Group"\r\n';
 	var matches = this.matches;
@@ -509,7 +511,7 @@ xiNET.Controller.prototype.getLinksCSV = function() {
 		}		  		
 	}
 	return csv;
-}
+}*/
 
 xiNET.Controller.bestId = function(protein){
 	if (protein.accession) {
