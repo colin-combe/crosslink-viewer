@@ -221,7 +221,7 @@ ResidueLink.prototype.check = function(filter) {
     if (countFilteredMatches > 0) {
         this.show();
         this.dashedLine(this.ambig);		
-        if (this.controller.groups.values().length > 1) {
+        if (this.controller.groups.values().length > 1 && this.controller.groups.values().length < 5) {
 			var groupCheck = d3.set();
             for (var i=0; i < countFilteredMatches; i++) {
                 var match = filteredMatches[i][0];//fix this weirdness with array?

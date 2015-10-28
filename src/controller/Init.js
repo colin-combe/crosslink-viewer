@@ -362,7 +362,7 @@ xiNET.Controller.prototype.initLayout = function() {
 	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
 	var width = this.svgElement.parentNode.clientWidth;
 	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;  var groupCount = this.groups.values().length;
-    if (groupCount > 1) {
+    if (groupCount > 1 && groupCount < 5) {
 		//can now choose link colours for comparing sets
 		var catCount = this.groups.values().length;
 		//~ if (catCount > 1 && catCount < 6) {

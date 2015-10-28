@@ -286,7 +286,7 @@ ProteinLink.prototype.check = function() {
 			this.ambig = (this.ambig && (altProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
 			
-			if (this.controller.groups.values().length > 1) {
+			if (this.controller.groups.values().length > 1 && this.controller.groups.values().length < 5) {
 				var groupCheck = d3.set();
 				var matchArray = filteredMatches.values();
 				var countFilteredMatches = matchArray.length;
