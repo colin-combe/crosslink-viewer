@@ -1,4 +1,4 @@
-The code uses a postgress database but it should be easily changed to another db.
+The code uses a mysql database but it should be easily changed to another db.
 
 You will need to create a database table called 'upload'.
 
@@ -9,6 +9,11 @@ The table requires following columns:
 	'layout', used for saved layout
 	'fasta', protein sequence data as fasta file format string
     'annot', stores uploaded custom annotation info
+
+This can be done in a MySQL shell using:
+use whateverIsYourDatabase;
+create table upload ( rand TEXT, links TEXT, fileName TEXT, layout TEXT, fasta
+TEXT, annot TEXT );
 
 You will need to add the connection string for your database into these files: 
 	fup.php, handles file upload then redirects to unique URL
@@ -27,8 +32,10 @@ You can do this by either:
 	
 
 The connection string looks like:
-$connectionString = "host=yourhost dbname=yourdbname user=yourusername password='yourpassword'"; 
- 	
+$server = "server";
+$user = "username";
+$password = "pwd";
+$db = "mysql database";
 
 careful not to check your db password into github :) 
 
