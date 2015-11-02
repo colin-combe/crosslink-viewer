@@ -51,7 +51,7 @@ xiNET.Controller.prototype.autoLayout = function() {
      
     if (proteinCount === 1) {
         var protein = prots[0];
-        protein.setPosition(width / 2, height / 4 * 3);
+        protein.setPosition(width / 2, height / 2);
         return;
     }
     else if (proteinCount === 2) {
