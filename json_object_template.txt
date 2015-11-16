@@ -49,20 +49,24 @@
             "exprole": 'cvType',
             "identificationMethod": list_of_cvType,
             "expressedIn": 'organismType',
-            "experimentalFeatures": 'listType_feature',
-            "pointMutations": 'listType_feature',
-            "bindingFeatures": 'listType_feature',
-            "ptmFeatures": 'listType_feature',
-            "otherFeatures": 'listType_feature'
+            "features": 'listType_feature'
         },
 
 "feature" : {
-         "id": 'string',
+     "id": 'string',
 	 "name" : 'string',
 	 "type" : 'cvType',
-	 "detmethod" : "cvType",	
-         "interpro" : 'string',	
+	 "category": 'string',
+	 "role" : 'cvType',
+	 "detmethods" : "listType_cvType",	
+     "parameters" : "listType_cvType",	
+     "InterPro" : 'string',	
 	 "sequenceData" : "listType_rangeData",
-         "linkedFeatures": 'listType_featureId'		  			
+     "linkedFeatures": 'listType_featureId'		  			
+}
+"rangeData" : {
+     "interactorRef": 'string',
+	 "participantRef" : 'string',
+	 "pos" : 'string'
 }
 }

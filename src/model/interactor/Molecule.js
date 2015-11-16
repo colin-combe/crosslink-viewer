@@ -25,11 +25,8 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 	}
 }
 
-Molecule.prototype.mouseDown = function(evt, labelClickStart) {
+Molecule.prototype.mouseDown = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        
-        this.controller.labelClickStart = labelClickStart;
-        
         //if a force layout exists then stop it
         if (this.controller.force) {
             this.controller.force.stop();
@@ -49,12 +46,9 @@ Molecule.prototype.mouseDown = function(evt, labelClickStart) {
         return false;
 };
 
-Molecule.prototype.touchStart = function(evt, labelClickStart) {
+Molecule.prototype.touchStart = function(evt) {
            this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-       
-        this.controller.labelClickStart = labelClickStart;
-        
          if (this.controller.force !== undefined) {
             this.controller.force.stop();
         }
@@ -133,15 +127,6 @@ Molecule.prototype.setPosition = function(x, y) {
     else {
 		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
 				+ " scale(" + (this.controller.z) + ") ");
-	}
-
-	if (this.labelContainer){ //bit of short term protection, not all mol types have this yet
-		var rotation = 0;
-		if (this.rotation && this.form == 1) {
-			rotation = this.rotation;
-		}
-		this.labelContainer.setAttribute("transform",
-			"translate( " + this.x + " " + this.y + ") rotate("+rotation+") scale(1, 1)");
 	}
 };
 

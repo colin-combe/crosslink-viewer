@@ -1006,10 +1006,6 @@ xiNET.Controller.prototype.initLayout = function() {
 		var mol = mols[m];
 		if (mol.upperGroup) {
 			this.proteinUpper.appendChild(mol.upperGroup);
-
-		}
-		if (mol.labelContainer) {	
-			this.proteinUpper.appendChild(mol.labelContainer);
 		}
 	}
 	this.autoLayout();
@@ -1233,15 +1229,10 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                         this.dragElement.switchStickScale(c);
                     } else {
 						if (this.sequenceInitComplete === true){
-							if (!this.labelClickStart) {
-								if (this.dragElement.form === 0) {
-									this.dragElement.setForm(1, c);
-								} else {
-									this.dragElement.setForm(0, c);
-								}
-							}
-							else {
-								this.dragElement.showData();
+							   if (this.dragElement.form === 0) {
+								this.dragElement.setForm(1, c);
+							} else {
+								this.dragElement.setForm(0, c);
 							}
 						}
                     }
@@ -1276,9 +1267,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
 	this.dragElement = null;
 	this.whichRotator = -1;
 	this.state = MouseEventCodes.MOUSE_UP;
-       
-    this.labelClickStart = false;
-     
+
     this.lastMouseUp = time;
     return false;
 };

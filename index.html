@@ -15,15 +15,16 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
         <script type="text/javascript" src="./build/complexviewer.js"></script>
-        <script type="text/javascript" src="./bower_components/rgb-color/rgb-color.js"></script>
-		<script type="text/javascript" src="./vendor/legend.js"></script>
+        <script type="text/javascript" src="./bower_components/d3/d3.js"></script>
+		<script type="text/javascript" src="./bower_components/rgb-color/rgb-color.js"></script>
+		<script type="text/javascript" src="./demo/legend.js"></script>
     </head>
     <body>
 
         <div style="height:100%;">
 		<div id="networkContainer"></div>
 		<div id='controls'>
-			
+
 			<select id="dataSets" onChange="loadData();">
 				<option>./demo/data/complex/EBI-1202920.json</option>  
 				<option>./demo/data/complex/EBI-9696567.json</option>  
@@ -36,24 +37,24 @@
 				<option>./demo/data/complex/EBI-9008283.json</option>
 				<option>./demo/data/complex/EBI-9997373.json</option>
 			</select>
-		
+
 			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
 			<button onclick="xlv.reset();">Reset</button>
 			<button onclick="xlv.exportSVG();">Export SVG</button>
-			
+
 			<select id="annotationsSelect" onChange="changeAnnotations();">
 				<option selected='selected'>MI features</option>
-				<option>UniprotKB</option> 
-				<option>SuperFamily</option>  
-				<option>None</option>  
-				<option>Interactor</option>  
-			</select>			
+				<option>UniprotKB</option>
+				<option>SuperFamily</option>
+				<option>None</option>
+				<option>Interactor</option>
+			</select>
 
 		</div>
 			<div id="networkCaption">
-				<h2>Key</h2> 
+				<h2>Key</h2>
 				<div>
-					
+
 	<!--
 					LEGEND
 	-->
@@ -72,7 +73,7 @@
 							</div>
 							<div style="float:right">
 								<img src="./demo/svgForKey/proteinBar.svg">
-							</div>						
+							</div>
 						</td>
 						<td>
 							Protein<br>
@@ -84,7 +85,7 @@
 								<img src="./demo/svgForKey/gene.svg"></td>
 							</div>
 						<td>Gene</td>
-					  </tr>				  
+					  </tr>
 					  <tr>
 						<td>
 							<div style="float:right">
@@ -101,9 +102,9 @@
 					  </tr>
 					</table>
 				</div>
-				
+
 				<div id="colours"></div>
-				
+
 <!--
 				<a href="./index.html"><h2>Complex data examples</h2></a>
 				<a href="./demo/evidence.html"><h2>Evidence data examples</h2></a>
@@ -114,7 +115,7 @@
 
         <script type="text/javascript">
                 //<![CDATA[
-                                
+
                 var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET(targetDiv);
                 
@@ -142,6 +143,7 @@
 										+ domain[i] +"</td></tr>";
 								//~ console.log(i + " "+ domain[i] + " " + range[i]);
 							}
+
 						}
 						table = table += "</table>";
 						coloursKeyDiv.innerHTML = table;					
@@ -151,11 +153,12 @@
 						legend.selectAll("*").remove();
 						legend.attr("transform", "translate(20,40)").attr("class", "legend").call(verticalLegend);
 					}
+
 				});
-                
+
                 loadData();
                 changeAnnotations();
-                               
+
                 function loadData(){
 					xlv.clear();
 					var matrixExpansion = document.getElementById("chkexpansion").checked;
@@ -163,14 +166,14 @@
 					var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
 				    d3.json(path, function(data) {
 						xlv.readMIJSON(data, matrixExpansion);
-					});            
+					});
 				 }
-				 
+
 				 function changeAnnotations(){
 					var annotationSelect = document.getElementById('annotationsSelect');
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
 				 }
-                  
+
                 //]]>
         </script>
 

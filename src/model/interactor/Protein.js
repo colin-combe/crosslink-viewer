@@ -66,7 +66,7 @@ function Protein(id, xinetController, json, name) {
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
     //choose label text
-    if (this.name) {
+    if (this.name !== null & this.name !== "") {
         this.labelText = this.name;
     }
     else {
@@ -78,11 +78,8 @@ function Protein(id, xinetController, json, name) {
 	this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
     d3.select(this.labelSVG).attr("transform", 
-		"translate( " + (this.x - 5) + " " + (this.y + Molecule.labelY) + ") rotate(0) scale(1, 1)");
-    
-    this.labelContainer = document.createElementNS(Config.svgns, "g");
-    this.labelContainer.appendChild(this.labelSVG);   	
-   	
+		"translate( -" + (5) + " " + Molecule.labelY + ") rotate(0) scale(1, 1)");
+    this.upperGroup.appendChild(this.labelSVG);   	
    	//ticks (and animo acid letters)
     this.ticks = document.createElementNS(Config.svgns, "g");
     //svg group for annotations
@@ -114,21 +111,6 @@ function Protein(id, xinetController, json, name) {
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
     };
-    
-    this.labelSVG.onmousedown = function(evt) {
-		self.mouseDown(evt, true);
-    };
-    this.labelSVG.onmouseover = function(evt) {
-		self.mouseOver(evt);
-    };
-    this.labelSVG.onmouseout = function(evt) {
-		self.mouseOut(evt);
-    };
-    this.labelSVG.ontouchstart = function(evt) {
-		self.touchStart(evt, true);
-    };
-
-    
     this.isSelected = false;
 	this.showHighlight(false);
 };
