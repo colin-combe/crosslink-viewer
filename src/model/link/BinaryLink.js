@@ -22,7 +22,7 @@ BinaryLink.prototype = new Link();
 function BinaryLink(id, xlvController, fromI, toI) {
     this.id = id;
     this.evidences = d3.map();
-    this.interactors = [fromI, toI];	
+    this.interactors = [fromI, toI];
     this.sequenceLinks = d3.map();
     this.controller = xlvController;
 }
@@ -89,7 +89,7 @@ BinaryLink.prototype.initSVG = function() {
     this.line.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
-    
+
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -102,7 +102,7 @@ BinaryLink.prototype.initSVG = function() {
     this.highlightLine.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
-    
+
     this.thickLine.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
@@ -115,7 +115,7 @@ BinaryLink.prototype.initSVG = function() {
     this.thickLine.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
-    
+
     this.isSelected = false;
 }
 ;
@@ -130,7 +130,7 @@ BinaryLink.prototype.showHighlight = function(show) {
 		//~ this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
 		//~ if (this.isSelected === false) {
 			this.highlightLine.setAttribute("stroke-opacity", "0");
-		//~ }			
+		//~ }
 	}
 };
 
@@ -164,13 +164,29 @@ BinaryLink.prototype.show = function() {
 };
 
 BinaryLink.prototype.hide = function() {
-	if (this.controller.p_pLinksWide.contains(this.thickLine)) {
+  var p_pLinksWide = []
+  var highlights = []
+  var p_pLinks = []
+
+  for (var i = 0; i < this.controller.p_pLinksWide.childNodes.length; i++) {
+    p_pLinksWide[i] = this.controller.p_pLinksWide.childNodes[i];
+  }
+
+  for (var i = 0; i < this.controller.highlights.childNodes.length; i++) {
+    highlights[i] = this.controller.highlights.childNodes[i];
+  }
+
+  for (var i = 0; i < this.controller.p_pLinks.childNodes.length; i++) {
+    p_pLinks[i] = this.controller.p_pLinks.childNodes[i];
+  }
+
+	if (p_pLinksWide.indexOf(this.thickLine) > -1) {
 		this.controller.p_pLinksWide.removeChild(this.thickLine);
 	}
-	if (this.controller.highlights.contains(this.highlightLine)) {
+	if (highlights.indexOf(this.highlightLine) > -1) {
 		this.controller.highlights.removeChild(this.highlightLine);
 	}
-	if (this.controller.p_pLinks.contains(this.line)) {
+	if (p_pLinks.indexOf(this.line) > -1) {
 		this.controller.p_pLinks.removeChild(this.line);
 	}
 };
@@ -178,8 +194,8 @@ BinaryLink.prototype.hide = function() {
 BinaryLink.prototype.setLinkCoordinates = function() {
  		var pos1 = this.interactors[0].getPosition();
         var pos2 = this.interactors[1].getPosition();
-        
-        if (this.interactors[0].type === 'complex'){        
+
+        if (this.interactors[0].type === 'complex'){
 			var naryPath = this.interactors[0].naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
@@ -188,14 +204,14 @@ BinaryLink.prototype.setLinkCoordinates = function() {
 			}
 			var a1 = new Point2D(pos1[0], pos1[1]);
 			var a2 = new Point2D(pos2[0], pos2[1]);
-			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath);
 			var newPos;
 			if (intersect.points[0]){
-				pos1 = [intersect.points[0].x,intersect.points[0].y]; 
+				pos1 = [intersect.points[0].x,intersect.points[0].y];
 			}
 		}
-        
-        if (this.interactors[1].type === 'complex'){        
+
+        if (this.interactors[1].type === 'complex'){
 			var naryPath = this.interactors[0].naryLink.hull;
 			var iPath = new Array();
 			for (var pi = 0; pi < naryPath.length; pi++) {
@@ -204,13 +220,13 @@ BinaryLink.prototype.setLinkCoordinates = function() {
 			}
 			var a1 = new Point2D(pos1[0], pos1[1]);
 			var a2 = new Point2D(pos2[0], pos2[1]);
-			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath); 
+			var intersect = Intersection.intersectLinePolygon(a1, a2, iPath);
 			var newPos;
 			if (intersect.points[0]){
-				pos2 = [intersect.points[0].x,intersect.points[0].y]; 
+				pos2 = [intersect.points[0].x,intersect.points[0].y];
 			}
 		}
-        
+
 		this.line.setAttribute("x1", pos1[0]);
 		this.line.setAttribute("y1", pos1[1]);
 		this.highlightLine.setAttribute("x1", pos1[0]);
