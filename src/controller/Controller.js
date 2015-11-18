@@ -1041,12 +1041,7 @@ xiNET.Controller.prototype.initPolymers = function() {//currently only does Prot
 
 xiNET.Controller.prototype.reset = function() {
 	this.resetZoom();
-    var interactors = this.molecules.values();
-    var proteinCount = interactors.length;
-    for (var p = 0; p < proteinCount; p++) {
-        var prot = interactors[p];
-        prot.setForm(0);
-    }
+	this.collapseAll();
     this.autoLayout();
 };
 
@@ -1060,6 +1055,28 @@ xiNET.Controller.prototype.resetZoom = function() {
         if (prot.scale) {
 			prot.scale();
 			prot.setAllLinkCoordinates();
+		}
+    }
+};
+
+xiNET.Controller.prototype.collapseAll = function() {
+    var molecules = this.molecules.values();
+    var mCount = molecules.length;
+    for (var m = 0; m < mCount; m++) {
+        var molecule = molecules[m];
+        if (molecule.form === 1){
+			 molecule.setForm(0);
+		}
+    }
+};
+
+xiNET.Controller.prototype.expandAll = function() {
+    var molecules = this.molecules.values();
+    var mCount = molecules.length;
+    for (var m = 0; m < mCount; m++) {
+        var molecule = molecules[m];
+        if (molecule.form === 0){
+			 molecule.setForm(1);
 		}
     }
 };
