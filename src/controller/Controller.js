@@ -32,8 +32,6 @@ var BinaryLink = require('../model/link/BinaryLink');
 var UnaryLink = require('../model/link/UnaryLink');
 var Expand = require ('./Expand');
 var Config = require('./Config');
-//for save file.
-var FileSaver = require('file-saver.js');
 
 var MouseEventCodes = {}
 MouseEventCodes.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
@@ -1066,24 +1064,16 @@ xiNET.Controller.prototype.resetZoom = function() {
     }
 };
 
-xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<g class="PV_rotator".*?<\/g><\/g>/gi, "");
-    //~ .replace(/<rect .*?\/rect>/i, "");//takes out large white background fill
 
-    if (Blob) {
-		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-		FileSaver.saveAs(blob, "xiNET_output.svg");
-	} else {
-		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+xiNET.Controller.prototype.getSVG = function() {
+	var svgXml = this.svgElement.outerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill   
+    var viewBox = 'viewBox="0 0 ' + this.svgElement.parentNode.clientWidth + " " + this.svgElement.parentNode.clientHeight + '" '; 
+    svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ' + viewBox);
+	
+	return '<?xml version="1.0" encoding="UTF-8" standalone=\"no\"?>' 
 		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
 		+ svgXml;
-		var xmlAsUrl;
-		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
-		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
-		xmlAsUrl += encodeURIComponent(xml);
-		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
-	}
-};
+}
 
 //listeners also attached to mouse evnts by Molecule (and Rotator) and Link, those consume their events
 //mouse down on svgElement must be allowed to propogate (to fire event on Prots/Links)
