@@ -3,6 +3,7 @@ java -jar compiler.jar --version
 
 #versioning system consists of editing numbers in file name in last line
 java -jar compiler.jar \
+--js=../src/CrosslinkViewerBB.js \
 --js=../src/controller/Init.js \
 --js=../src/controller/MouseEvents.js \
 --js=../src/controller/TouchEvents.js \

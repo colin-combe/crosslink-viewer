@@ -469,50 +469,6 @@ xiNET.Controller.prototype.getSVG = function() {
 		+ svgXml;
 }
 
-/*
-xiNET.Controller.prototype.getMatchesCSV = function() {
-	var csv = '"Id","Protein1","PepPos1","PepSeq1","LinkPos1","Protein2","PepPos2","PepSeq2","LinkPos2","Score","Group"\r\n';
-	var matches = this.matches;
-	var matchCount = matches.length;
-	for (var i = 0; i < matchCount; i++){
-		var match = matches[i];
-		if (match.meetsFilterCriteria()){
-			csv += '"' + match.id + '","' + match.protein1 + '","' +match.pepPos1 + '","' 
-				+ match.pepSeq1 + '","' + match.linkPos1 + '","' 
-				+ match.protein2 + '","' + match.pepPos2 + '","'
-				+ match.pepSeq2 + '","' + match.linkPos2 + '","'
-				+ match.score + '","' + match.group + '"\r\n';
-		}
-	}
-	return csv;
-}
-
-xiNET.Controller.prototype.getLinksCSV = function() {
-	var csv = '"Protein1","LinkPos1","LinkedRes1","Protein2","LinkPos2","LinkedRes2"\r\n';
-	
-	var pLinks = this.proteinLinks.values();
-	var pLinkCount = pLinks.length;
-	for (var pl = 0; pl < pLinkCount; pl++){
-		var resLinks = pLinks[pl].residueLinks.values();
-		var resLinkCount = resLinks.length;
-		for (var rl =0; rl < resLinkCount; rl ++) {
-			var residueLink = resLinks[rl];
-			var filteredMatches = residueLink.getFilteredMatches();
-			if (filteredMatches.length > 0){
-				csv += '"' + xiNET.Controller.bestId(residueLink.proteinLink.fromProtein) + '","' 
-					+ residueLink.fromResidue + '","' + residueLink.proteinLink.fromProtein.sequence[residueLink.fromResidue - 1] + '","'
-					+ xiNET.Controller.bestId(residueLink.proteinLink.toProtein) + '","'
-					+ residueLink.toResidue + '","';
-				if (residueLink.proteinLink.toProtein && residueLink.toResidue) {
-					csv += residueLink.proteinLink.toProtein.sequence[residueLink.toResidue - 1];
-				}
-				csv += '"\r\n';				
-			}
-		}		  		
-	}
-	return csv;
-}*/
-
 xiNET.Controller.bestId = function(protein){
 	if (protein.accession) {
 		return protein.accession;
