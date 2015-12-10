@@ -60,8 +60,6 @@ xiNET.Controller.prototype.setTooltip = function(text, colour) {
 	}
 };
 
-xiNET.Controller.prototype.hideTooltip = function(evt){
-    this.tooltip.setAttribute("display","none");
-    this.tooltip_bg.setAttribute("display","none");
-    this.tooltip_subBg.setAttribute("display","none");
-};
+//~ xiNET.Controller.prototype.hideTooltip = function(evt){
+//~ 
+//~ };
