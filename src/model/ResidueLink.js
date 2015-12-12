@@ -203,6 +203,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
 
 //used when filter changed
 ResidueLink.prototype.check = function(filter) {
+	return true;
     if (this.controller.selfLinkShown === false && this.selfLink()) {
         this.hide();
         return false;
