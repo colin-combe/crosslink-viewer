@@ -10,19 +10,20 @@
 
 ResidueLink.prototype = new xiNET.Link();
 
-function ResidueLink(id, proteinLink, fromResidue, toResidue, xlvController, flip) {
-    this.id = id;
+function ResidueLink(crossLink){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
+    this.crossLink = crossLink;
+    //~ this.id = id;
     //    this.matches = new Array(0); //we don't initialise this here 
     // (save some memory in use case where there is no match info, only link info)
-    this.controller = xlvController;
-    this.proteinLink = proteinLink;
-    this.fromResidue = fromResidue;
-    this.toResidue = toResidue;
-    this.ambig = false;
-    this.tooltip = this.id;
-    if (flip === true) {
-        this.flip = true;
-    }
+    //~ this.controller = xlvController;
+    //~ this.proteinLink = proteinLink;
+    //~ this.fromResidue = fromResidue;
+    //~ this.toResidue = toResidue;
+    //~ this.ambig = false;
+    this.tooltip = this.crossLink.id;
+    //~ if (flip === true) {
+        //~ this.flip = true;
+    //~ }
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.dashed = false;
@@ -86,15 +87,16 @@ ResidueLink.prototype.initSVG = function() {
 };
 
 ResidueLink.prototype.selfLink = function() {
-	return (this.proteinLink.fromProtein === this.proteinLink.toProtein);
+	//return (this.proteinLink.fromProtein === this.proteinLink.toProtein);
+	return this.crossLink.isSelfLink();
 }
 
 ResidueLink.prototype.getFromProtein = function() {
-    return this.proteinLink.fromProtein;
+    return this.crossLink.getFromProtein();
 };
 
 ResidueLink.prototype.getToProtein = function() {
-    return this.proteinLink.toProtein;
+    return this.crossLink.getToProtein();
 };
 
 //andAlternatives means highlight alternative links in case of site ambiguity
@@ -203,6 +205,7 @@ ResidueLink.prototype.getFilteredMatches = function() {
 
 //used when filter changed
 ResidueLink.prototype.check = function(filter) {
+	this.show();
 	return true;
     if (this.controller.selfLinkShown === false && this.selfLink()) {
         this.hide();
@@ -300,7 +303,7 @@ ResidueLink.prototype.dashedLine = function(dash) {
 };
 
 ResidueLink.prototype.show = function() {
-    if (this.controller.sequenceInitComplete) {
+    //~ if (this.controller.sequenceInitComplete) {
         if (!this.shown) {
             this.shown = true;
             if (typeof this.line === 'undefined') {
@@ -308,22 +311,25 @@ ResidueLink.prototype.show = function() {
             }
             if (this.selfLink() || this.proteinLink.toProtein === null) {
                 //~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
-                var path =  this.proteinLink.fromProtein.getResidueLinkPath(this);
-                this.line.setAttribute("d", path);
-                this.highlightLine.setAttribute("d", path);
-                this.proteinLink.fromProtein.selfLinksHighlights.appendChild(this.highlightLine);
-                this.proteinLink.fromProtein.selfLinks.appendChild(this.line);
+                
+					//problem here
+                //~ var path =  this.getFromProtein().getResidueLinkPath(this);
+                //~ this.line.setAttribute("d", path);
+                //~ this.highlightLine.setAttribute("d", path);
+                //~ this.getFromProtein().selfLinksHighlights.appendChild(this.highlightLine);
+                //~ this.getFromProtein().selfLinks.appendChild(this.line);
+            //~ 
             }
             else {
                 this.line.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
                 this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
-                this.setLineCoordinates(this.proteinLink.fromProtein);
-                this.setLineCoordinates(this.proteinLink.toProtein);
+                this.setLineCoordinates(this.getFromProtein());
+                this.setLineCoordinates(this.getToProtein());
                 this.controller.highlights.appendChild(this.highlightLine);
                 this.controller.res_resLinks.appendChild(this.line);
             }
         }
-    }
+    //~ }
 };
 
 ResidueLink.prototype.hide = function() {

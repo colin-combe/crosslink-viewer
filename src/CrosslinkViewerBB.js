@@ -189,18 +189,16 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			this.initProteins();
 			this.initLayout();
 
-		//~ 
-							//~ var linkList = [];
-							//~ 
-							//~ for(var crossLink of CLMSUI.xlv.crossLinks.values()){
-		//~ 
-								//~ linkList.push( {
-									//~ fromResidue: crossLink.fromResidue,
-									//~ toResidue: crossLink.toResidue
-								//~ } );
-		//~ 
-							//~ }
-							//~       
+			//~ this.residueLinks = d3.map();
+			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+			for(var crossLink of crossLinks){
+
+				var resLink = new ResidueLink(crossLink);
+				this.residueLinks.set(crossLink.id, resLink); 
+
+			}
+
+							      
 
             this.listenTo (this.model.get("filterModel"), "change", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout); 
@@ -236,7 +234,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			this.rotating = false;
 			
 			this.proteins = d3.map();
-			this.proteinLinks = d3.map();
+			this.residueLinks = d3.map();
 			this.matches = [];
 			this.groups = d3.set();
 			this.subgraphs = [];
@@ -260,12 +258,12 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 		},
 		
 checkLinks: function() {
-	var links = this.proteinLinks.values();
+	var links = this.residueLinks.values();
 	var linkCount = links.length;
 	for (var l = 0; l < linkCount; l++) {
 		links[l].check();
 	}
-	this.linkSelectionChanged();
+	//this.linkSelectionChanged();
 },       
 
         initLayout: function (){
@@ -774,7 +772,7 @@ mouseUp: function(evt) {
 			}
 			this.checkLinks();
 		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-			this.clearSelection();
+			//~ this.clearSelection();
 		}
 
 		if (this.state === xiNET.Controller.SELECTING) {
@@ -825,7 +823,7 @@ mouseWheel: function(evt) {
     var p = this.getEventPoint(evt);// seems to be correct, see above
     var c = this.mouseToSVG(p.x, p.y);
     var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-    xiNET.setCTM(g, g.getCTM().multiply(k));
+    this.setCTM(g, g.getCTM().multiply(k));
     this.scale();
     return false;
 },
@@ -1263,7 +1261,7 @@ autoLayout: function() {
         render: function () {
 
             console.log ("re rendering cross-link viewer");
-	
+			this.checkLinks();
 			//this.stage.handleResize();
 
             return this;
