@@ -103,8 +103,10 @@ xiNET_Storage.getUniProtFeatures = function (id, callback){
 				var line = lines[l];
 				if (line.indexOf("FT") === 0){
 					var fields = line.split(/\s{2,}/g);
-					if (fields.length > 4 && fields[1] !== 'CHAIN') {
-						features.push(new Annotation (fields[1], fields[2], fields[3], null, fields[4]));
+					if (fields.length > 4 && fields[1] === 'DOMAIN') {
+						//console.log(fields[1]);fields[4].substring(0, fields[4].indexOf("."))
+						var name = fields[4].substring(0, fields[4].indexOf("."));
+						features.push(new Annotation (name, fields[2], fields[3], null, fields[4]));
 					}
 				}
 			}

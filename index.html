@@ -37,7 +37,9 @@
 
 			<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
 			<button onclick="xlv.reset();">Reset</button>
-			<button onclick="xlv.exportSVG();">Export SVG</button>
+			<button onclick="exportSVG();">Export SVG</button>
+			<button onclick="xlv.expandAll();">Expand All</button>
+			<button onclick="xlv.collapseAll();">Collapse All</button>
 
 			<select id="annotationsSelect" onChange="changeAnnotations();">
 				<option selected='selected'>MI features</option>
@@ -157,11 +159,17 @@
 					});
 				 }
 
-				 function changeAnnotations(){
+				function changeAnnotations(){
 					var annotationSelect = document.getElementById('annotationsSelect');
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
-				 }
-
+				}
+				
+				function exportSVG(){
+					var xml = xlv.getSVG();
+					xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+					xmlAsUrl += encodeURIComponent(xml);
+					var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+				}
                 //]]>
         </script>
 
