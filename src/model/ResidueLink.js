@@ -8,7 +8,7 @@
 
 "use strict";
 
-ResidueLink.prototype = new xiNET.Link();
+ResidueLink.prototype = new CLMS.xiNET.RenderedLink();
 
 function ResidueLink(crossLink){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
     this.crossLink = crossLink;
@@ -33,13 +33,13 @@ function ResidueLink(crossLink){ //id, proteinLink, fromResidue, toResidue, xlvC
 ResidueLink.prototype.initSVG = function() {
     if (typeof this.line === 'undefined') {
         if (this.selfLink() === true || this.proteinLink.toProtein === null) {
-            this.line = document.createElementNS(xiNET.svgns, "path");
-            this.highlightLine = document.createElementNS(xiNET.svgns, "path");
+            this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
+            this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
         } else {
-            this.line = document.createElementNS(xiNET.svgns, "line");
-            this.line.setAttribute("stroke", xiNET.defaultInterLinkColour.toRGB());
+            this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
+            this.line.setAttribute("stroke", CLMS.xiNET.defaultInterLinkColour.toRGB());
             this.line.setAttribute("stroke-linecap", "round");
-            this.highlightLine = document.createElementNS(xiNET.svgns, "line");
+            this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
             this.highlightLine.setAttribute("stroke-linecap", "round");
         }
 
@@ -47,7 +47,7 @@ ResidueLink.prototype.initSVG = function() {
         this.line.setAttribute("fill", "none");
         this.highlightLine.setAttribute("class", "link");
         this.highlightLine.setAttribute("fill", "none");
-        this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
         this.highlightLine.setAttribute("stroke-width", "10");
         this.highlightLine.setAttribute("stroke-opacity", "0")
 
@@ -107,7 +107,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 		}
 		if (this.shown) {
 			if (show) {
-				this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+				this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7"); 
 				var fromPeptides = [], toPeptides = [];
 				var filteredMatches = this.getFilteredMatches();
@@ -131,7 +131,7 @@ ResidueLink.prototype.showHighlight = function(show, andAlternatives) {
 				temp.set(this.id, this);
 				this.controller.linkHighlightsChanged(temp);	
 			} else {
-				this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+				this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.selectedColour.toRGB());
 				if (this.isSelected == false) {
 					this.highlightLine.setAttribute("stroke-opacity", "0");
 				}
@@ -166,7 +166,7 @@ ResidueLink.prototype.setSelected = function(select) {
     if (select === true && this.isSelected === false) {
         this.controller.selectedLinks.set(this.id, this);
         this.isSelected = true;
-        this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
 		this.controller.linkSelectionChanged();
     }
@@ -174,7 +174,7 @@ ResidueLink.prototype.setSelected = function(select) {
         this.controller.selectedLinks.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
-        this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.highlightColour.toRGB());
         this.controller.linkSelectionChanged();
 	}
 };
@@ -248,9 +248,9 @@ ResidueLink.prototype.check = function(filter) {
 		}
         else if (this.selfLink() === true && this.colour == null){
 			if (this.hd === true) {
-				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());			
+				this.line.setAttribute("stroke", CLMS.xiNET.homodimerLinkColour.toRGB());			
 				this.line.setAttribute("transform", "scale(1, -1)");			
-				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);			
+				this.line.setAttribute("stroke-width", CLMS.xiNET.homodimerLinkWidth);			
 				this.highlightLine.setAttribute("transform", "scale(1, -1)");			
 			}
 			else {

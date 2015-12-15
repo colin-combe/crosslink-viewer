@@ -4,28 +4,6 @@
 //
 //		CrosslinkViewerBB.js
 
-var xiNET = {}; //crosslinkviewer's javascript namespace
-xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
-xiNET.linkWidth = 1.3;// default line width
-xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
-// highlight and selection colours are global
-// (because all instances of xiNET should use same colours for this)
-xiNET.highlightColour = new RGBColor("#fdc086");
-xiNET.selectedColour = new RGBColor("#ffff99");
-xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
-xiNET.defaultInterLinkColour = new RGBColor("#35978f");
-xiNET.homodimerLinkColour = new RGBColor("#a50f15");
-
-//static var's signifying Controller's status
-xiNET.Controller = {};
-xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
-xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
-xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on Rotator, drag?
-xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on Rotator, drag?
-xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
 //~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
     //~ this.marquee.setAttribute('class', 'marquee');
@@ -36,8 +14,9 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
     "use strict";
 
     win.CLMS = win.CLMS || {};
-    
-    win.CLMS.CrosslinkViewerBB = Backbone.View.extend({
+    win.CLMS.xiNET = {}; //crosslinkviewer's javascript namespace
+
+    win.CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         tagName: "div",
         //className: "dynDiv",
         events: {
@@ -76,7 +55,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			mainDivSel.node().appendChild(containingDiv);
 			
 			//create SVG elemnent
-			this.svgElement = document.createElementNS(xiNET.svgns, "svg");
+			this.svgElement = document.createElementNS(CLMS.xiNET.svgns, "svg");
 			this.svgElement.setAttribute('id', 'networkSVG');
 			this.svgElement.setAttribute("width", "100%");
 			this.svgElement.setAttribute("height", "100%");
@@ -120,7 +99,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			// filled background needed, else cannot click/drag background
 			// size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
 			// TODO: dynamically resize background to match screen bounding box
-			var background = document.createElementNS(xiNET.svgns, "rect");
+			var background = document.createElementNS(CLMS.xiNET.svgns, "rect");
 			background.setAttribute("id", "background_fill");
 			background.setAttribute("x", 0);
 			background.setAttribute("y", 0);
@@ -130,50 +109,50 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			background.setAttribute("fill", "#FFFFFF");
 			this.svgElement.appendChild(background);
 			// various groups needed
-			this.container = document.createElementNS(xiNET.svgns, "g");
+			this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.container.setAttribute("id", "container");
 
-			this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
+			this.p_pLinksWide = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
 			this.container.appendChild(this.p_pLinksWide);
 		 
-			this.proteinLower = document.createElementNS(xiNET.svgns, "g");
+			this.proteinLower = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.proteinLower.setAttribute("id", "proteinLower");
 			this.container.appendChild(this.proteinLower);
 
-			this.highlights = document.createElementNS(xiNET.svgns, "g");
+			this.highlights = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.highlights.setAttribute("class", "highlights");//proteins also contain highlight groups
 			this.container.appendChild(this.highlights);
 
-			this.res_resLinks = document.createElementNS(xiNET.svgns, "g");
+			this.res_resLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.res_resLinks.setAttribute("id", "res_resLinks");
 			this.container.appendChild(this.res_resLinks);
 
-			this.p_pLinks = document.createElementNS(xiNET.svgns, "g");
+			this.p_pLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.p_pLinks.setAttribute("id", "p_pLinks");
 			this.container.appendChild(this.p_pLinks);
 
-			this.proteinUpper = document.createElementNS(xiNET.svgns, "g");
+			this.proteinUpper = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.proteinUpper.setAttribute("id", "proteinUpper");
 			this.container.appendChild(this.proteinUpper);
 
 			this.svgElement.appendChild(this.container);
 			//showing title as tooltips is NOT part of svg spec (even though browsers do this)
 			//also more repsonsive / more control if we do our own
-			this.tooltip = document.createElementNS(xiNET.svgns, "text");
+			this.tooltip = document.createElementNS(CLMS.xiNET.svgns, "text");
 			this.tooltip.setAttribute('x', 0);
 			this.tooltip.setAttribute('y', 0);
 			var tooltipTextNode = document.createTextNode('tooltip');
 			this.tooltip.appendChild(tooltipTextNode);
 
-			this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
+			this.tooltip_bg = document.createElementNS(CLMS.xiNET.svgns, "rect");
 			this.tooltip_bg.setAttribute('class', 'tooltip_bg');
 			
 			this.tooltip_bg.setAttribute('fill-opacity', 0.75);
 			this.tooltip_bg.setAttribute('stroke-opacity', 1);
 			this.tooltip_bg.setAttribute('stroke-width', 1);
 
-			this.tooltip_subBg = document.createElementNS(xiNET.svgns, "rect");
+			this.tooltip_subBg = document.createElementNS(CLMS.xiNET.svgns, "rect");
 			this.tooltip_subBg.setAttribute('fill', 'white');
 			this.tooltip_subBg.setAttribute('stroke', 'white');
 			this.tooltip_subBg.setAttribute('class', 'tooltip_bg');
@@ -233,7 +212,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			// are we rotating at the moment
 			this.rotating = false;
 			
-			this.proteins = d3.map();
+			this.renderedProteins = d3.map();
 			this.residueLinks = d3.map();
 			this.matches = [];
 			this.groups = d3.set();
@@ -243,7 +222,7 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			this.proteinCount = 0;
 			this.unambigLinkFound = false;
 			this.maxBlobRadius = 30;
-			Protein.MAXSIZE = 100;
+			//~ CLMS.xiNET.RenderedProtein.MAXSIZE = 100; **??
 
 			this.layout = null;
 			this.z = 1;
@@ -253,32 +232,36 @@ xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button o
 			this.hideTooltip();
 
 			this.resetZoom();
-			this.state = xiNET.Controller.MOUSE_UP;
+			this.state = CLMS.xiNET.Controller.MOUSE_UP;
 		
 		},
 		
-checkLinks: function() {
-	var links = this.residueLinks.values();
-	var linkCount = links.length;
-	for (var l = 0; l < linkCount; l++) {
-		links[l].check();
-	}
-	//this.linkSelectionChanged();
-},       
+		checkLinks: function() {
+			var links = this.residueLinks.values();
+			var linkCount = links.length;
+			for (var l = 0; l < linkCount; l++) {
+				links[l].check();
+			}
+			//this.linkSelectionChanged();
+		},       
 
         initLayout: function (){
-			var prots = this.proteins.values();
+			var prots = this.renderedProteins.values();
 			var protCount = prots.length;
-			Protein.MAXSIZE = 0;
-			for (var i = 0; i < protCount; i++){
+			CLMS.xiNET.RenderedProtein.MAXSIZE = 400;
+			for (var i = 0; i < protCount; i++){//< this isn't happening
 				var protSize = prots[i].size;
-				if (protSize > Protein.MAXSIZE){
-					Protein.MAXSIZE = protSize;
+				if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
+					console.log("MX:"+CLMS.xiNET.RenderedProtein.MAXSIZE);
+					CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
 				}
 			}
 			//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
 			var width = this.svgElement.parentNode.clientWidth;
-			Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;  var groupCount = this.groups.values().length;
+			CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2) 
+			- CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE; 
+			
+			var groupCount = this.groups.values().length;
 			if (groupCount > 1 && groupCount < 5) {
 				//can now choose link colours for comparing sets
 				var catCount = this.groups.values().length;
@@ -307,7 +290,7 @@ checkLinks: function() {
 			if (typeof this.layout !== 'undefined' && this.layout != null) {
 				this.loadLayout();
 			} else {
-				var proteins = this.proteins.values();
+				var proteins = this.renderedProteins.values();
 				var proteinCount = proteins.length;
 				for (var p = 0; p < proteinCount; p++) {
 					var prot = proteins[p];
@@ -320,23 +303,24 @@ checkLinks: function() {
 
 		initProteins: function () {
 			var interactors = this.model.get("clmsModel").get("interactors").values();
-			Protein.MAXSIZE = 0;
+			CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
 			for (var interactor of interactors) {
 				
-				var newProt = new Protein(interactor.id, this, interactor.accession, interactor.label);
-				newProt.setSequence(interactor.sequence);
-				//~ newProt.init();
-				this.proteins.set(interactor.id, newProt);
+				var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
+				//~ newProt.setSequence(interactor.sequence);
+				// newProt.init();
+				this.renderedProteins.set(interactor.id, newProt);
 				
 				var protSize = interactor.size;
-				if (protSize > Protein.MAXSIZE){
-					Protein.MAXSIZE = protSize;
+				if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
+					CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
 				}
 			}
 			//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
 			var width = this.svgElement.parentNode.clientWidth;
-			Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
-			var prots = this.proteins.values();
+			CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2) 
+					- CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
+			var prots = this.renderedProteins.values();
 			var protCount = prots.length;
 			for (var i = 0; i < protCount; i++){
 				prots[i].init();
@@ -358,7 +342,7 @@ checkLinks: function() {
 
 reset: function() {
 	this.resetZoom();
-    var proteins = this.proteins.values();
+    var proteins = this.renderedProteins.values();
     var proteinCount = proteins.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = proteins[p];
@@ -373,7 +357,7 @@ reset: function() {
 		resetZoom: function () {
 		    this.container.setAttribute("transform", "scale(1)");
 			this.scale();
-			//~ var proteins = this.proteins.values();
+			//~ var proteins = this.renderedProteins.values();
 			//~ var proteinCount = proteins.length;
 			//~ for (var p = 0; p < proteinCount; p++) {
 				//~ var prot = proteins[p];
@@ -386,7 +370,7 @@ reset: function() {
 			//~ //if (this.sequenceInitComplete) {
 				//~ this.z = this.container.getScreenCTM().inverse().a;
 //~ 
-				//~ var proteins = this.proteins.values();
+				//~ var proteins = this.renderedProteins.values();
 				//~ var proteinCount = proteins.length;
 				//~ for (var p = 0; p < proteinCount; p++) {
 					//~ var prot = proteins[p];
@@ -432,7 +416,7 @@ reset: function() {
         setAnnotations: function (annotationChoice) {
 			this.annotationChoice = annotationChoice;
 			//clear all annot's
-			var mols = this.proteins.values();
+			var mols = this.renderedProteins.values();
 			var molCount = mols.length;
 			for (var m = 0; m < molCount; m++) {
 				mols[m].clearPositionalFeatures();
@@ -598,7 +582,7 @@ mouseDown: function(evt) {
 ////            this.clearSelection();
 ////        }
     } else {
-    this.state = xiNET.Controller.PANNING;
+    this.state = CLMS.xiNET.Controller.PANNING;
     this.panned = false;
     }
     return false;
@@ -616,7 +600,7 @@ mouseMove: function(evt) {
             var dx = this.dragStart.x - c.x;
             var dy = this.dragStart.y - c.y;
 
-            if (this.state === xiNET.Controller.DRAGGING) {
+            if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
                 if (typeof this.dragElement.x === 'undefined') { // if not a protein
@@ -626,7 +610,7 @@ mouseMove: function(evt) {
                         prot = this.dragElement.fromProtein;
                     else
                         prot = this.dragElement.proteinLink.fromProtein;
-                    var prots = this.proteins.values();
+                    var prots = this.renderedProteins.values();
                     var protCount = prots.length;
                     for (var p = 0; p < protCount; p++) {
                         prots[p].subgraph = null;
@@ -658,7 +642,7 @@ mouseMove: function(evt) {
                 this.dragStart = c;
             }
 
-            else if (this.state === xiNET.Controller.ROTATING) {
+            else if (this.state === CLMS.xiNET.Controller.ROTATING) {
                 // Distance from mouse x and center of stick.
                 var _dx = c.x - this.dragElement.x
                 // Distance from mouse y and center of stick.
@@ -675,7 +659,7 @@ mouseMove: function(evt) {
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
                 if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = xiNET.Controller.DRAGGING;
+                    this.state = CLMS.xiNET.Controller.DRAGGING;
 
                 }
             }
@@ -684,7 +668,7 @@ mouseMove: function(evt) {
 //    else if (this.state === xiNET.Controller.SELECTING) {
 //        this.updateMarquee(this.marquee, c);
 //    }
-        else if (this.state === xiNET.Controller.PANNING) {
+        else if (this.state === CLMS.xiNET.Controller.PANNING) {
            this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
         }
         else {
@@ -717,7 +701,7 @@ mouseUp: function(evt) {
 		var c = this.mouseToSVG(p.x, p.y);
 
 		if (this.dragElement != null) { 
-			if (!(this.state === xiNET.Controller.DRAGGING || this.state === xiNET.Controller.ROTATING)) { //not dragging or rotating
+			if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
 				if (rightclick) { // RIGHT click
 					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
 						if (this.dragElement.selfLink() == true) {//if internal link
@@ -756,7 +740,7 @@ mouseUp: function(evt) {
 				}
 				//~ this.checkLinks();
 			}
-			else if (this.state === xiNET.Controller.ROTATING) {
+			else if (this.state === CLMS.xiNET.Controller.ROTATING) {
 				//round protein rotation to nearest 5 degrees (looks neater)
 				this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
 			}
@@ -775,7 +759,7 @@ mouseUp: function(evt) {
 			//~ this.clearSelection();
 		}
 
-		if (this.state === xiNET.Controller.SELECTING) {
+		if (this.state === CLMS.xiNET.Controller.SELECTING) {
 			clearInterval(this.marcher);
 			this.svgElement.removeChild(this.marquee);
 		}
@@ -783,7 +767,7 @@ mouseUp: function(evt) {
 
 	this.dragElement = null;
 	this.whichRotator = -1;
-	this.state = xiNET.Controller.MOUSE_UP;
+	this.state = CLMS.xiNET.Controller.MOUSE_UP;
 
 	this.lastMouseUp = time;
     return false;
@@ -926,12 +910,12 @@ autoLayout: function() {
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 	var self = this;
-	var prots = this.proteins.values();
+	var prots = this.renderedProteins.values();
 	var proteinCount = prots.length;
 	//clear subgraphs
 	this.subgraphs.length = 0;
 	for (var p = 0; p < proteinCount; p++) {
-		prots[p].subgraph = null;
+		prots[p].interactor.subgraph = null;
 	}
 	//~ for (var p = 0; p < proteinCount; p++) {
 		//~ var prot = prots[p];
@@ -955,7 +939,7 @@ autoLayout: function() {
 	//~ }
 	//init subgraphs
 	for (var p = 0; p < proteinCount; p++) {
-		prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
+		prots[p].interactor.getSubgraph();//adds new subgraphs to this.subgraphs
 	}
 	//sort subgraphs by size
 	this.subgraphs.sort(function(a, b) {
@@ -1022,7 +1006,7 @@ autoLayout: function() {
                     nodes = reorderedNodes(linearGraphs[g]);
                 }
                 for (var n = 0; n < nodeCount; n++) {
-                    var p = this.proteins.get(nodes[n]);
+                    var p = this.renderedProteins.get(nodes[n]);
                     var x, y;
                     if (p.isParked === true) {
                         parkedRow++;
@@ -1073,7 +1057,7 @@ autoLayout: function() {
 				var nodes = nonLinearGraphs[g].nodes.values();
 				var nodeCount = nodes.length;
 				for (var n = 0; n < nodeCount; n++) {
-					var prot = this.proteins.get(nodes[n].id);
+					var prot = this.renderedProteins.get(nodes[n].id);
 					var nodeObj = {};
 					nodeObj.id = prot.id;
 					nodeObj.x = prot.x - this.layoutXOffset;
@@ -1097,7 +1081,7 @@ autoLayout: function() {
             var nodeCount = nodes.length;
             for (var n = 1; n < nodeCount; n++) {
                 var node = nodes[n];
-                var protein = this.proteins.get(node.id);
+                var protein = this.renderedProteins.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
                 var rotated = Protein.rotatePointAboutPoint([nx, ny], 
@@ -1122,7 +1106,7 @@ autoLayout: function() {
             var nodes = nonLinearGraphs[g].nodes.values();
             var nodeCount = nodes.length;
             for (var n = 0; n < nodeCount; n++) {
-                var prot = this.proteins.get(nodes[n].id);
+                var prot = this.renderedProteins.get(nodes[n].id);
 //        if (prot.fixed === false) {
                 protLookUp[prot.id] = pi;
                 pi++;
@@ -1284,3 +1268,26 @@ autoLayout: function() {
     });
     
 } (this));
+
+
+CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
+CLMS.xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
+CLMS.xiNET.linkWidth = 1.3;// default line width
+CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
+// highlight and selection colours are global
+// (because all instances of CLMS.xiNET should use same colours for this)
+CLMS.xiNET.highlightColour = new RGBColor("#fdc086");
+CLMS.xiNET.selectedColour = new RGBColor("#ffff99");
+CLMS.xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
+CLMS.xiNET.defaultInterLinkColour = new RGBColor("#35978f");
+CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
+
+//static var's signifying Controller's status
+CLMS.xiNET.Controller = {};
+CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+CLMS.xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+CLMS.xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
+CLMS.xiNET.Controller.ROTATING = 3;//set by mouse down on Rotator, drag?
+CLMS.xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on Rotator, drag?
+CLMS.xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on Rotator, drag?
+CLMS.xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag

@@ -8,7 +8,7 @@ java -jar compiler.jar \
 --js=../src/CrosslinkViewerBB.js \
 --js=../src/model/Match.js \
 --js=../src/model/Link.js \
---js=../src/model/Protein.js \
+--js=../src/CLMS/xiNET/RenderedProtein.js \
 --js=../src/model/Annotation.js \
 --js=../src/model/ProteinLink.js \
 --js=../src/model/ResidueLink.js \

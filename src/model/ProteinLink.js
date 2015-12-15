@@ -11,7 +11,7 @@
 //static variable used to calculate width of the background line
 ProteinLink.maxNoResidueLinks = 0;
 
-ProteinLink.prototype = new xiNET.Link();
+ProteinLink.prototype = new CLMS.xiNET.RenderedLink();
 
 function ProteinLink(id, fromP, toP, xlvController) {
     this.id = id;
@@ -42,7 +42,7 @@ function ProteinLink(id, fromP, toP, xlvController) {
     this.line.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("class", "link");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -123,10 +123,10 @@ ProteinLink.prototype.showHighlight = function(show, andAlternatives) {
     }
     if (this.shown) {
         if (show) {
-			this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-			this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 			if (this.isSelected == false) {
 				this.highlightLine.setAttribute("stroke-opacity", "0");
 			}
@@ -167,7 +167,7 @@ ProteinLink.prototype.setSelected = function(select) {
     if (select === true && this.isSelected === false) {
         this.controller.selectedLinks.set(this.id, this);//ok, 
         this.isSelected = true;
-        this.highlightLine.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "1");
 		this.controller.linkSelectionChanged();
     }
@@ -175,7 +175,7 @@ ProteinLink.prototype.setSelected = function(select) {
         this.controller.selectedLinks.remove(this.id);
         this.isSelected = false;
         this.highlightLine.setAttribute("stroke-opacity", "0");
-        this.highlightLine.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 		this.controller.linkSelectionChanged();
 	}
 };

@@ -11,9 +11,9 @@
 "use strict";
 
 //'superclass' for Protein, ResidueLink, ProteinLink
-xiNET.Link = function (){};
+CLMS.xiNET.RenderedLink = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
-xiNET.Link.prototype.mouseDown = function(evt) {
+CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 //    //console.log("clickable mouse down");
     this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
@@ -30,7 +30,7 @@ xiNET.Link.prototype.mouseDown = function(evt) {
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
-xiNET.Link.prototype.mouseOver = function(evt){
+CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
@@ -38,7 +38,7 @@ xiNET.Link.prototype.mouseOver = function(evt){
     return false;
 }
 
-xiNET.Link.prototype.mouseOut = function(evt){
+CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
     //console.log("clickable mouse out");
     this.controller.preventDefaultsAndStopPropagation(evt);
     //    if (this.controller.dragElement == undefined) {
@@ -53,7 +53,7 @@ xiNET.Link.prototype.mouseOut = function(evt){
     return false;
 }
 
-xiNET.Link.prototype.touchStart = function(evt) {
+CLMS.xiNET.RenderedLink.prototype.touchStart = function(evt) {
 //    //console.log("clickable mouse down");
     this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
     //if a force layout exists then stop it
