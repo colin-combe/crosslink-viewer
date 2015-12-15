@@ -902,12 +902,12 @@ CLMS.xiNET.RenderedProtein.prototype.getAggregateSelfLinkPath = function() {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(residueLink) {
-	var x1 = this.getResXwithStickZoom(residueLink.fromResidue);
+	var x1 = this.getResXwithStickZoom(residueLink.crossLink.fromResidue);
 	var baseLine = 0;
 	if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom >= 8){
 		baseLine = -5;
 	}
-	if (isNaN(parseFloat(residueLink.toResidue))){ //linker modified peptide
+	if (isNaN(parseFloat(residueLink.crossLink.toResidue))){ //linker modified peptide
 		if (residueLink.ambig === false){
 			residueLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
 		}
@@ -921,7 +921,7 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(residueLink) {
 			+ " L " + p3[0] + "," + p3[1];
 	}
 	else {
-		var x2 = this.getResXwithStickZoom(residueLink.toResidue);
+		var x2 = this.getResXwithStickZoom(residueLink.crossLink.toResidue);
 		var height, cp1, cp2, arcStart, arcEnd, arcRadius;
 		arcRadius = (Math.abs(x2 - x1)) / 2;
 		var height = -((CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) + 3);

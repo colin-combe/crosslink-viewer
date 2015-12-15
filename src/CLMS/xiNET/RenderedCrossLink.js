@@ -8,12 +8,12 @@
 
 "use strict";
 
-CLMS.xiNET.RenderedCrossLink = function (crossLink){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
+CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
 	this.crossLink = crossLink;
 	//~ this.id = id;
 	//    this.matches = new Array(0); //we don't initialise this here
 	// (save some memory in use case where there is no match info, only link info)
-	//~ this.controller = xlvController;
+	this.crosslinkViewer = crosslinkViewer;
 	//~ this.proteinLink = proteinLink;
 	//~ this.fromResidue = fromResidue;
 	//~ this.toResidue = toResidue;
@@ -32,7 +32,7 @@ CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	if (typeof this.line === 'undefined') {
-		if (this.selfLink() === true || this.proteinLink.toProtein === null) {
+		if (this.crossLink.isSelfLink() === true || this.proteinLink.toProtein === null) {
 			this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 			this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
 		} else {
@@ -45,6 +45,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 		this.line.setAttribute("class", "link");
 		this.line.setAttribute("fill", "none");
+			this.line.setAttribute("stroke", "#000000"); // temp
 		this.highlightLine.setAttribute("class", "link");
 		this.highlightLine.setAttribute("fill", "none");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -101,13 +102,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.getToProtein = function() {
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
-	if (!this.proteinLink.fromProtein.busy && (!this.proteinLink.toProtein || !this.proteinLink.toProtein.busy)) {
+/*	if (!this.proteinLink.fromProtein.busy && (!this.proteinLink.toProtein || !this.proteinLink.toProtein.busy)) {
 		if (typeof andAlternatives === 'undefined') {
 			andAlternatives = false;
 		}
 		if (this.shown) {
 			if (show) {
-				this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.highlightColour.toRGB());
+				this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7");
 				var fromPeptides = [], toPeptides = [];
 				var filteredMatches = this.getFilteredMatches();
@@ -129,9 +130,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				}
 				var temp = d3.map();
 				temp.set(this.id, this);
-				this.controller.linkHighlightsChanged(temp);
+				this.crosslinkViewer.linkHighlightsChanged(temp);
 			} else {
-				this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.selectedColour.toRGB());
+				this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 				if (this.isSelected == false) {
 					this.highlightLine.setAttribute("stroke-opacity", "0");
 				}
@@ -139,7 +140,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				if (this.proteinLink.toProtein !== null) {
 						this.proteinLink.toProtein.removePeptides();
 				}
-				this.controller.linkHighlightsChanged(d3.map());
+				this.crosslinkViewer.linkHighlightsChanged(d3.map());
 			}
 		}
 		if (andAlternatives && this.ambig) {
@@ -159,23 +160,23 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				}
 			}
 		}
-	}
+	}*/
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 	if (select === true && this.isSelected === false) {
-		this.controller.selectedLinks.set(this.id, this);
+		this.crosslinkViewer.selectedLinks.set(this.id, this);
 		this.isSelected = true;
-		this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.selectedColour.toRGB());
+		this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
-		this.controller.linkSelectionChanged();
+		this.crosslinkViewer.linkSelectionChanged();
 	}
 	else if (select === false && this.isSelected === true) {
-		this.controller.selectedLinks.remove(this.id);
+		this.crosslinkViewer.selectedLinks.remove(this.id);
 		this.isSelected = false;
 		this.highlightLine.setAttribute("stroke-opacity", "0");
-		this.highlightLine.setAttribute("stroke", CLMS.CLMS.xiNET.highlightColour.toRGB());
-		this.controller.linkSelectionChanged();
+		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+		this.crosslinkViewer.linkSelectionChanged();
 	}
 };
 
@@ -205,9 +206,17 @@ CLMS.xiNET.RenderedCrossLink.prototype.getFilteredMatches = function() {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-	this.show();
-	return true;
-	if (this.controller.selfLinkShown === false && this.selfLink()) {
+	var filteredMatches = this.crossLink.getFilteredMatches();
+	var countFilteredMatches = filteredMatches.length;
+	if (countFilteredMatches > 0) {
+		this.show();
+		return true;
+	}
+	else {
+		this.hide();
+		return false;
+	}
+	/*if (this.crosslinkViewer.selfLinkShown === false && this.selfLink()) {
 		this.hide();
 		return false;
 	}
@@ -225,14 +234,14 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 	if (countFilteredMatches > 0) {
 		this.show();
 		this.dashedLine(this.ambig);
-		if (this.controller.groups.values().length > 1 && this.controller.groups.values().length < 5) {
+		if (this.crosslinkViewer.groups.values().length > 1 && this.crosslinkViewer.groups.values().length < 5) {
 			var groupCheck = d3.set();
 			for (var i=0; i < countFilteredMatches; i++) {
 				var match = filteredMatches[i][0];//fix this weirdness with array?
 				groupCheck.add(match.group);
 			}
 			if (groupCheck.values().length == 1){
-				var c = this.controller.linkColours(groupCheck.values()[0]);
+				var c = this.crosslinkViewer.linkColours(groupCheck.values()[0]);
 				this.line.setAttribute("stroke", c);
 		  		this.line.setAttribute("transform", "scale (1 1)");
 				this.highlightLine.setAttribute("transform", "scale (1 1)");
@@ -278,11 +287,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 	else {
 		this.hide();
 		return false;
-	}
+	}*/
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
-	if (this.controller.unambigLinkFound == true) {
+	if (this.crosslinkViewer.unambigLinkFound == true) {
 		if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.toResidue))) {
 			if (dash) {// && !this.dashed){
 				if (this.selfLink() === true) {
@@ -291,7 +300,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
 				}
 				else {
 					this.dashed = true;
-					this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+					this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
 				}
 			}
 			else if (!dash) {// && this.dashed){
@@ -303,49 +312,54 @@ CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
-	//~ if (this.controller.sequenceInitComplete) {
-		if (!this.shown) {
+	//~ if (this.crosslinkViewer.sequenceInitComplete) {
+		//~ if (!this.shown) {
 			this.shown = true;
 			if (typeof this.line === 'undefined') {
 				this.initSVG();
 			}
-			if (this.selfLink() || this.proteinLink.toProtein === null) {
+			if (this.crossLink.isSelfLink() || this.proteinLink.toProtein === null) {
 				//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
 
 					//problem here
-				//~ var path =  this.getFromProtein().getCLMS.xiNET.RenderedCrossLinkPath(this);
-				//~ this.line.setAttribute("d", path);
-				//~ this.highlightLine.setAttribute("d", path);
-				//~ this.getFromProtein().selfLinksHighlights.appendChild(this.highlightLine);
-				//~ this.getFromProtein().selfLinks.appendChild(this.line);
+				var renderedProtein = 
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+				var path =  renderedProtein.getCrossLinkPath(this);
+				this.line.setAttribute("d", path);
+				this.highlightLine.setAttribute("d", path);
+				renderedProtein.selfLinksHighlights.appendChild(this.highlightLine);
+				renderedProtein.selfLinks.appendChild(this.line);
 			//~
 			}
 			else {
-				this.line.setAttribute("stroke-width", this.controller.z * xiNET.linkWidth);
-				this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
+				this.line.setAttribute("stroke-width", this.crosslinkViewer.z * xiNET.linkWidth);
+				this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
 				this.setLineCoordinates(this.getFromProtein());
 				this.setLineCoordinates(this.getToProtein());
-				this.controller.highlights.appendChild(this.highlightLine);
-				this.controller.res_resLinks.appendChild(this.line);
+				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+				this.crosslinkViewer.res_resLinks.appendChild(this.line);
 			}
-		}
+		//~ }
 	//~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
-	if (this.controller.sequenceInitComplete) {
-		if (this.shown) {
+	//~ if (this.crosslinkViewer.sequenceInitComplete) {
+		//~ if (this.shown) {
 			this.shown = false;
-			if (this.selfLink() || this.proteinLink.toProtein === null) {
-				this.proteinLink.fromProtein.selfLinksHighlights.removeChild(this.highlightLine);
-				this.proteinLink.fromProtein.selfLinks.removeChild(this.line);
+			alert("you");
+			if (this.crossLink.isSelfLink() || this.proteinLink.toProtein === null) {
+				var renderedProtein = 
+						this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+				renderedProtein.selfLinksHighlights.removeChild(this.highlightLine);
+				renderedProtein.selfLinks.removeChild(this.line);
 			}
 			else {
-				this.controller.res_resLinks.removeChild(this.line);
-				this.controller.highlights.removeChild(this.highlightLine);
+				this.crosslinkViewer.res_resLinks.removeChild(this.line);
+				this.crosslinkViewer.highlights.removeChild(this.highlightLine);
 			}
-		}
-	}
+		//~ }
+	//~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(interactor) {
@@ -394,13 +408,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(interactor)
 	}
 }
 
-//calculate the  coordinates of a residue (relative to this.controller.container)
+//calculate the  coordinates of a residue (relative to this.crosslinkViewer.container)
 CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, interactor) {
-	var x = interactor.getResXwithStickZoom(r) * this.controller.z;
-	//var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.controller.z;
+	var x = interactor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
+	//var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.crosslinkViewer.z;
 	var y = 0;
 	if (Protein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
-			//~ y = 10 * this.controller.z;
+			//~ y = 10 * this.crosslinkViewer.z;
 		var from = this.getFromProtein(), to = this.getToProtein();
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
@@ -422,7 +436,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 					fyOffset = -5;
 				}
 
-				y = fyOffset * this.controller.z;
+				y = fyOffset * this.crosslinkViewer.z;
 		}
 		else { // interactor === to
 				out = (abmpDeg - to.rotation);
@@ -433,7 +447,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 				if (out > 180) {
 					tyOffset = -5;
 				}
-				y = tyOffset * this.controller.z;
+				y = tyOffset * this.crosslinkViewer.z;
 		}
 	}
 

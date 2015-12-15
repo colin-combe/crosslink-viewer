@@ -172,7 +172,7 @@
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
-				var resLink = new CLMS.xiNET.RenderedCrossLink(crossLink);
+				var resLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
 				this.residueLinks.set(crossLink.id, resLink);
 
 			}

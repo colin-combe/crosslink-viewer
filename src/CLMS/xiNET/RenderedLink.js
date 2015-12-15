@@ -15,57 +15,57 @@ CLMS.xiNET.RenderedLink = function (){};
 // event handler for starting dragging or rotation (or flipping internal links)
 CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 //    //console.log("clickable mouse down");
-	this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
 	//if a force layout exists then stop it
-	if (this.controller.force){
-		this.controller.force.stop();
+	if (this.crosslinkViewer.force){
+		this.crosslinkViewer.force.stop();
 	}
-	this.controller.dragElement = this;
-	this.controller.clearSelection();
+	this.crosslinkViewer.dragElement = this;
+	this.crosslinkViewer.clearSelection();
 	this.setSelected(true);
 	//store start location
-	var p = this.controller.getEventPoint(evt);// seems to be correct, see above
-	this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+	var p = this.crosslinkViewer.getEventPoint(evt);// seems to be correct, see above
+	this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
 	return false;
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
 	//console.log("clickable mouse over");
-	this.controller.preventDefaultsAndStopPropagation(evt);
+	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
 	this.showHighlight(true, true);
-	this.controller.setTooltip(this.tooltip);
+	this.crosslinkViewer.setTooltip(this.tooltip);
 	return false;
 }
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 	//console.log("clickable mouse out");
-	this.controller.preventDefaultsAndStopPropagation(evt);
-	//    if (this.controller.dragElement == undefined) {
+	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+	//    if (this.crosslinkViewer.dragElement == undefined) {
 	this.showHighlight(false, true);
 	//    } else {
-	//        if (this.controller.dragElement != this){// todo: improve, actually needs to know
+	//        if (this.crosslinkViewer.dragElement != this){// todo: improve, actually needs to know
 	//            // if drag element is part of dragging subgraph
 	//            this.showHighlight(false, true);
 	//        }
 	//    }
-	this.controller.hideTooltip();
+	this.crosslinkViewer.hideTooltip();
 	return false;
 }
 
 CLMS.xiNET.RenderedLink.prototype.touchStart = function(evt) {
 //    //console.log("clickable mouse down");
-	this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
 	//if a force layout exists then stop it
-	if (this.controller.force !== undefined){
-		this.controller.force.stop();
+	if (this.crosslinkViewer.force !== undefined){
+		this.crosslinkViewer.force.stop();
 	}
-	this.controller.dragElement = this;
-			this.controller.clearSelection();
+	this.crosslinkViewer.dragElement = this;
+			this.crosslinkViewer.clearSelection();
 			this.setSelected(true);
 	//store start location
-	var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
-	this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+	var p = this.crosslinkViewer.getTouchEventPoint(evt);// seems to be correct, see above
+	this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
 	return false;
 }
 
