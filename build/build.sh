@@ -5,14 +5,10 @@ java -jar compiler.jar --version
 java -jar compiler.jar \
 --language_in=ECMASCRIPT6_STRICT \
 --language_out=ES5_STRICT \
---js=../src/CrosslinkViewerBB.js \
---js=../src/model/Match.js \
---js=../src/model/Link.js \
+--js=../src/CLMS/xiNET/CrosslinkViewer.js \
+--js=../src/CLMS/xiNET/RenderedLink.js \
 --js=../src/CLMS/xiNET/RenderedProtein.js \
---js=../src/model/Annotation.js \
---js=../src/model/ProteinLink.js \
---js=../src/model/ResidueLink.js \
---js=../src/controller/xiNET_Storage.js \
+--js=../src/CLMS/xiNET/RenderedProteinLink.js \
+--js=../src/CLMS/xiNET/RenderedCrossLink.js \
 --js=../src/controller/Rotator.js \
 --js_output_file=./crosslinkviewer.js;
-#~ --js=../src/controller/ReadCSV.js \
