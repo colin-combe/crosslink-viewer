@@ -5,10 +5,10 @@ java -jar compiler.jar --version
 java -jar compiler.jar \
 --language_in=ECMASCRIPT6_STRICT \
 --language_out=ES5_STRICT \
---js=../src/CLMS/xiNET/CrosslinkViewer.js \
+--js=../src/CLMS/xiNET/CrosslinkViewerBB.js \
 --js=../src/CLMS/xiNET/RenderedLink.js \
 --js=../src/CLMS/xiNET/RenderedProtein.js \
 --js=../src/CLMS/xiNET/RenderedProteinLink.js \
 --js=../src/CLMS/xiNET/RenderedCrossLink.js \
---js=../src/controller/Rotator.js \
+--js=../src/CLMS/xiNET/Rotator.js \
 --js_output_file=./crosslinkviewer.js;
