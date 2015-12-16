@@ -2,6 +2,8 @@
   "name": "complexviewer",
   "version": "v1.0.0",
   "description": "TBD",
+  "author": {"name" : "Colin Combe", "email" : "colin.combe@ed.ac.uk"},
+  "contributors": [{"name" : "Josh Heimbach", "email" : "joshkh@gmail.com"}],
   "devDependencies": {
     "grunt": "0.4.x",
     "grunt-cli": ">=0.1.6",
