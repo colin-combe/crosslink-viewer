@@ -33,16 +33,18 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
 	//console.log("clickable mouse over");
 	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-	this.showHighlight(true, true);
+	//~ this.showHighlight(true, true);
+	this.crosslinkViewer.model.set("highlights",[this.crossLink]);
 	this.crosslinkViewer.setTooltip(this.tooltip);
-	return false;
+	//~ return false;
 }
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 	//console.log("clickable mouse out");
-	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+	//~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
 	//    if (this.crosslinkViewer.dragElement == undefined) {
-	this.showHighlight(false, true);
+	//~ this.showHighlight(false, true);
+	this.crosslinkViewer.model.set("highlights",[]);
 	//    } else {
 	//        if (this.crosslinkViewer.dragElement != this){// todo: improve, actually needs to know
 	//            // if drag element is part of dragging subgraph
@@ -50,7 +52,7 @@ CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 	//        }
 	//    }
 	this.crosslinkViewer.hideTooltip();
-	return false;
+	//~ return false;
 }
 
 CLMS.xiNET.RenderedLink.prototype.touchStart = function(evt) {
