@@ -152,14 +152,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 		this.isSelected = true;
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
-		this.crosslinkViewer.linkSelectionChanged();
 	}
 	else if (select === false && this.isSelected === true) {
 		this.crosslinkViewer.selectedLinks.remove(this.id);
 		this.isSelected = false;
 		this.highlightLine.setAttribute("stroke-opacity", "0");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-		this.crosslinkViewer.linkSelectionChanged();
 	}
 };
 

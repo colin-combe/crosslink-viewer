@@ -169,6 +169,7 @@
 			this.listenTo (this.model.get("filterModel"), "change", this.render);    // any property changing in the filter model means rerendering this view
 			this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
 			this.listenTo (this.model, "change:highlights", this.highlightsChanged);
+			this.listenTo (this.model, "change:selection", this.selectionChanged);
 
 			if (viewOptions.displayEventName) {
 				this.listenTo (CLMSUI.vent, viewOptions.displayEventName, this.setVisible);
@@ -735,7 +736,7 @@ reset: function() {
 					}
 					this.checkLinks();
 				} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-					//~ this.clearSelection();
+					this.model.set("selection", []);
 				}
 
 				if (this.state === CLMS.xiNET.Controller.SELECTING) {
@@ -1234,7 +1235,7 @@ reset: function() {
 		},
 
 		highlightsChanged: function () {
-			console.log ("cross-link viewer highlightsChanhged");
+			//~ console.log ("cross-link viewer highlightsChanhged");
 			
 			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
 				renderedCrossLink.showHighlight(false);
@@ -1245,6 +1246,24 @@ reset: function() {
 			if (crossLink){
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
 				renderedCrossLink.showHighlight(true);
+			}
+
+			return this;
+		},
+
+
+		selectionChanged: function () {
+			//~ console.log ("cross-link viewer highlightsChanhged");
+			
+			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+				renderedCrossLink.setSelected(false);
+			}
+			
+			var crossLink = this.model.get("highlights")[0];
+			
+			if (crossLink){
+				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+				renderedCrossLink.setSelected(true);
 			}
 
 			return this;
