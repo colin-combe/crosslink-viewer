@@ -28,16 +28,7 @@
 
 		initialize: function (viewOptions) {
 			//~ console.log("arg options", viewOptions);
-
-
-
-			var defaultOptions = {
-				//~ xlabel: "Distance",
-				//~ ylabel: "Count",
-				//~ seriesName: "Cross Links",
-				//~ chartTitle: "Distogram",
-				//~ maxX: 80
-			};
+			var defaultOptions = {};
 			this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
 			this.displayEventName = viewOptions.displayEventName;
@@ -85,8 +76,8 @@
 			this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
 			this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 			//selection and highlight callbacks
-			this.linkSelectionCallbacks = [];
-			this.linkHighlightsCallbacks = [];
+			//~ this.linkSelectionCallbacks = [];
+			//~ this.linkHighlightsCallbacks = [];
 			//legend changed callbacks
 			this.legendCallbacks = new Array();
 
@@ -167,19 +158,18 @@
 			this.initProteins();
 			this.initLayout();
 
-			//~ this.residueLinks = d3.map();
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
-				var resLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-				this.residueLinks.set(crossLink.id, resLink);
+				var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+				this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
 			}
 
-
-
 			this.listenTo (this.model.get("filterModel"), "change", this.render);    // any property changing in the filter model means rerendering this view
 			this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
+			this.listenTo (this.model, "change:highlights", this.highlightsChanged);
+			this.listenTo (this.model, "change:selection", this.selectionChanged);
 
 			if (viewOptions.displayEventName) {
 				this.listenTo (CLMSUI.vent, viewOptions.displayEventName, this.setVisible);
@@ -211,8 +201,8 @@
 			// are we rotating at the moment
 			this.rotating = false;
 
-			this.renderedProteins = d3.map();
-			this.residueLinks = d3.map();
+			this.renderedProteins = new Map();
+			this.renderedCrossLinks = new Map();
 			this.matches = [];
 			this.groups = d3.set();
 			this.subgraphs = [];
@@ -236,20 +226,18 @@
 		},
 
 		checkLinks: function() {
-			var links = this.residueLinks.values();
-			var linkCount = links.length;
-			for (var l = 0; l < linkCount; l++) {
-				links[l].check();
+			var links = this.renderedCrossLinks.values();
+			for (var link of links) {
+				link.check();
 			}
 			//this.linkSelectionChanged();
 		},
 
 		initLayout: function (){
 			var prots = this.renderedProteins.values();
-			var protCount = prots.length;
 			CLMS.xiNET.RenderedProtein.MAXSIZE = 400;
-			for (var i = 0; i < protCount; i++){//< this isn't happening
-				var protSize = prots[i].size;
+			for (var prot of prots){//< this isn't happening
+				var protSize = prot.size;
 				if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
 					console.log("MX:"+CLMS.xiNET.RenderedProtein.MAXSIZE);
 					CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
@@ -290,9 +278,7 @@
 				this.loadLayout();
 			} else {
 				var proteins = this.renderedProteins.values();
-				var proteinCount = proteins.length;
-				for (var p = 0; p < proteinCount; p++) {
-					var prot = proteins[p];
+				for (var prot of proteins) {
 					this.proteinLower.appendChild(prot.lowerGroup);
 					this.proteinUpper.appendChild(prot.upperGroup);
 				}
@@ -321,8 +307,8 @@
 					- CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
 			var prots = this.renderedProteins.values();
 			var protCount = prots.length;
-			for (var i = 0; i < protCount; i++){
-				prots[i].init();
+			for (var protein of prots){
+				protein.init();
 			}
 			this.sequenceInitComplete = true;
 			//~ if (protCount < 3) {
@@ -342,9 +328,7 @@
 reset: function() {
 	this.resetZoom();
 	var proteins = this.renderedProteins.values();
-	var proteinCount = proteins.length;
-	for (var p = 0; p < proteinCount; p++) {
-		var prot = proteins[p];
+	for (var prot of proteins) {
 		if (prot.isParked === false) {
 			prot.setForm(0);
 		}
@@ -416,17 +400,15 @@ reset: function() {
 			this.annotationChoice = annotationChoice;
 			//clear all annot's
 			var mols = this.renderedProteins.values();
-			var molCount = mols.length;
-			for (var m = 0; m < molCount; m++) {
-				mols[m].clearPositionalFeatures();
+			for (var mol of mols) {
+				mol.clearPositionalFeatures();
 			}
 			this.domainColours = null;
 			this.legendChanged();
 			if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
 				var self = this;
 				if (annotationChoice.toUpperCase() === "CUSTOM"){
-					for (m = 0; m < molCount; m++) {
-						var mol = mols[m];
+					for (var mol of mols) {
 						mol.setPositionalFeatures(mol.customAnnotations);
 					}
 					chooseColours();
@@ -489,8 +471,7 @@ reset: function() {
 
 			function chooseColours(){
 				var categories = d3.set();
-				for (m = 0; m < molCount; m++) {
-					var mol = mols[m];
+				for (var mol of mols) {
 					for (var a = 0; a < mol.annotations.length; a++){
 						categories.add(mol.annotations[a].name);
 					}
@@ -509,8 +490,7 @@ reset: function() {
 					else {
 						self.domainColours = d3.scale.category20();
 					}
-					for (m = 0; m < molCount; m++) {
-						var mol = mols[m];
+					for (var mol of mols) {
 						for (a = 0; a < mol.annotations.length; a++) {
 							var anno = mol.annotations[a];
 							var c = self.domainColours(anno.name);
@@ -535,316 +515,317 @@ reset: function() {
 		},
 
 
-setCTM: function(element, matrix) {
-	var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-	element.setAttribute("transform", s);
-},
+		setCTM: function(element, matrix) {
+			var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+			element.setAttribute("transform", s);
+		},
 
 
 
-/**
- * Handle mousedown event.
- */
-mouseDown: function(evt) {
-	//prevent default, but allow propogation
-	evt.preventDefault();
-	//evt.returnValue = false;
-	//stop force layout
-	if (typeof this.force !== 'undefined' && this.force != null) {
-		this.force.stop();
-	}
-
-	var p = this.getEventPoint(evt);// seems to be correct, see below
-	this.dragStart = this.mouseToSVG(p.x, p.y);
-
-	var rightClick; //which button has just been raised
-	if (evt.which)
-		rightClick = (evt.which === 3);
-	else if (evt.button)
-		rightClick = (evt.button === 2);
-
-	if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
-//        alert("here");
-//        this.state = xiNET.Controller.SELECTING;
-////        //      marquee.style.strokeDashoffset=0;
-//               this.marquee.setAttribute('x', 100);
-//    this.marquee.setAttribute('y', 100);
-//    this.marquee.setAttribute('width', 100);
-//    this.marquee.setAttribute('height', 100);
-//   this.svgElement.appendChild(this.marquee);
-// //        this.updateMarquee(this.marquee, this.dragStart);
-//////      var offset = 0, marcher = setInterval(function(){
-//////        marquee.style.strokeDashoffset = offset--;
-//////      },30);
-////        //clear selection if ctrl not pressed
-////        if (evt.ctrlKey === false) {
-////            this.clearSelection();
-////        }
-	} else {
-	this.state = CLMS.xiNET.Controller.PANNING;
-	this.panned = false;
-	}
-	return false;
-},
-
-// dragging/rotation/panning/selecting
-mouseMove: function(evt) {
-	//~ this.preventDefaultsAndStopPropagation(evt);
-  //  if (this.sequenceInitComplete) { // just being cautious
-		var p = this.getEventPoint(evt);// seems to be correct, see below
-		var c = this.mouseToSVG(p.x, p.y);
-
-		if (this.dragElement != null) { //dragging or rotating
-			this.hideTooltip();
-			var dx = this.dragStart.x - c.x;
-			var dy = this.dragStart.y - c.y;
-
-			if (this.state === CLMS.xiNET.Controller.DRAGGING) {
-				// we are currently dragging things around
-				var ox, oy, nx, ny;
-				if (typeof this.dragElement.x === 'undefined') { // if not a protein
-					//its a link - drag whole connected subgraph
-					var prot;
-					if (this.dragElement.fromProtein)
-						prot = this.dragElement.fromProtein;
-					else
-						prot = this.dragElement.proteinLink.fromProtein;
-					var prots = this.renderedProteins.values();
-					var protCount = prots.length;
-					for (var p = 0; p < protCount; p++) {
-						prots[p].subgraph = null;
-					}
-					var subgraph = prot.getSubgraph();
-					var nodes = subgraph.nodes.values();
-					var nodeCount = nodes.length;
-					for (var i = 0; i < nodeCount; i++) {
-						var protein = nodes[i];
-						ox = protein.x;
-						oy = protein.y;
-						nx = ox - dx;
-						ny = oy - dy;
-						protein.setPosition(nx, ny);
-						protein.setAllLineCoordinates();
-					}
-					for (i = 0; i < nodeCount; i++) {
-						nodes[i].setAllLineCoordinates();
-					}
-				} else {
-					//its a protein - drag it TODO: DRAG SELECTED
-					ox = this.dragElement.x;
-					oy = this.dragElement.y;
-					nx = ox - dx;
-					ny = oy - dy;
-					this.dragElement.setPosition(nx, ny);
-					this.dragElement.setAllLineCoordinates();
-				}
-				this.dragStart = c;
+		/**
+		 * Handle mousedown event.
+		 */
+		mouseDown: function(evt) {
+			//prevent default, but allow propogation
+			evt.preventDefault();
+			//evt.returnValue = false;
+			//stop force layout
+			if (typeof this.force !== 'undefined' && this.force != null) {
+				this.force.stop();
 			}
 
-			else if (this.state === CLMS.xiNET.Controller.ROTATING) {
-				// Distance from mouse x and center of stick.
-				var _dx = c.x - this.dragElement.x
-				// Distance from mouse y and center of stick.
-				var _dy = c.y - this.dragElement.y;
-				//see http://en.wikipedia.org/wiki/Atan2#Motivation
-				var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-				if (this.whichCLMS.xiNET.Rotator === 0) {
-					centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-				}
-				var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-				this.dragElement.setRotation(centreToMouseAngleDegrees);
-				this.dragElement.setAllLineCoordinates();
+			var p = this.getEventPoint(evt);// seems to be correct, see below
+			this.dragStart = this.mouseToSVG(p.x, p.y);
+
+			var rightClick; //which button has just been raised
+			if (evt.which)
+				rightClick = (evt.which === 3);
+			else if (evt.button)
+				rightClick = (evt.button === 2);
+
+			if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
+		//        alert("here");
+		//        this.state = xiNET.Controller.SELECTING;
+		////        //      marquee.style.strokeDashoffset=0;
+		//               this.marquee.setAttribute('x', 100);
+		//    this.marquee.setAttribute('y', 100);
+		//    this.marquee.setAttribute('width', 100);
+		//    this.marquee.setAttribute('height', 100);
+		//   this.svgElement.appendChild(this.marquee);
+		// //        this.updateMarquee(this.marquee, this.dragStart);
+		//////      var offset = 0, marcher = setInterval(function(){
+		//////        marquee.style.strokeDashoffset = offset--;
+		//////      },30);
+		////        //clear selection if ctrl not pressed
+		////        if (evt.ctrlKey === false) {
+		////            this.clearSelection();
+		////        }
+			} else {
+			this.state = CLMS.xiNET.Controller.PANNING;
+			this.panned = false;
 			}
-			else { //not dragging or rotating yet, maybe we should start
-				// don't start dragging just on a click - we need to move the mouse a bit first
-				if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-					this.state = CLMS.xiNET.Controller.DRAGGING;
+			return false;
+		},
 
-				}
-			}
-		}
+		// dragging/rotation/panning/selecting
+		mouseMove: function(evt) {
+			//~ this.preventDefaultsAndStopPropagation(evt);
+		  //  if (this.sequenceInitComplete) { // just being cautious
+				var p = this.getEventPoint(evt);// seems to be correct, see below
+				var c = this.mouseToSVG(p.x, p.y);
 
-//    else if (this.state === xiNET.Controller.SELECTING) {
-//        this.updateMarquee(this.marquee, c);
-//    }
-		else if (this.state === CLMS.xiNET.Controller.PANNING) {
-		   this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-		}
-		else {
-			this.showTooltip(p);
-		}
-   // }
-	return false;
-},
+				if (this.dragElement != null) { //dragging or rotating
+					this.hideTooltip();
+					var dx = this.dragStart.x - c.x;
+					var dy = this.dragStart.y - c.y;
 
-
-// this ends all dragging and rotating
-mouseUp: function(evt) {
-	var time = new Date().getTime();
-	//console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
-	this.preventDefaultsAndStopPropagation(evt);
-	//eliminate some spurious mouse up events
-	if ((time - this.lastMouseUp) > 150){
-
-		var rightclick, middleclick; //which button has just been raised
-		if (evt.which)
-			rightclick = (evt.which === 3);
-		else if (evt.button)
-			rightclick = (evt.button === 2);
-		if (evt.which)
-			middleclick = (evt.which === 2);
-		else if (evt.button)
-			middleclick = (evt.button === 1);
-
-		var p = this.getEventPoint(evt);// seems to be correct, see below
-		var c = this.mouseToSVG(p.x, p.y);
-
-		if (this.dragElement != null) {
-			if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-				if (rightclick) { // RIGHT click
-					if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-						if (this.dragElement.selfLink() == true) {//if internal link
-							if (this.dragElement.proteinLink)//its a residueLink
-								this.dragElement.proteinLink.fromProtein.toggleFlipped();
+					if (this.state === CLMS.xiNET.Controller.DRAGGING) {
+						// we are currently dragging things around
+						var ox, oy, nx, ny;
+						if (typeof this.dragElement.x === 'undefined') { // if not a protein
+							//its a link - drag whole connected subgraph
+							var prot;
+							if (this.dragElement.fromProtein) {
+								prot = this.dragElement.fromProtein;
+							}
+							else {
+								prot = this.dragElement.proteinLink.fromProtein;
+							}
+							var prots = this.renderedProteins.values();
+							for (var protein of prots) {
+								protein.subgraph = null;
+							}
+							var subgraph = prot.getSubgraph();
+							var nodes = subgraph.nodes.values();
+							var nodeCount = nodes.length;
+							for (var i = 0; i < nodeCount; i++) {
+								var protein = nodes[i];
+								ox = protein.x;
+								oy = protein.y;
+								nx = ox - dx;
+								ny = oy - dy;
+								protein.setPosition(nx, ny);
+								protein.setAllLineCoordinates();
+							}
+							for (i = 0; i < nodeCount; i++) {
+								nodes[i].setAllLineCoordinates();
+							}
 						} else {
-							if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
-								this.dragElement.hidden = true;
-							} else {//its a residue link
-								this.dragElement.proteinLink.hidden = true;
-							}
-							this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-							this.checkLinks();
+							//its a protein - drag it TODO: DRAG SELECTED
+							ox = this.dragElement.x;
+							oy = this.dragElement.y;
+							nx = ox - dx;
+							ny = oy - dy;
+							this.dragElement.setPosition(nx, ny);
+							this.dragElement.setAllLineCoordinates();
 						}
-					} else {//right click on protein
-						this.dragElement.setParked(!this.dragElement.isParked, c);
+						this.dragStart = c;
+					}
+
+					else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+						// Distance from mouse x and center of stick.
+						var _dx = c.x - this.dragElement.x
+						// Distance from mouse y and center of stick.
+						var _dy = c.y - this.dragElement.y;
+						//see http://en.wikipedia.org/wiki/Atan2#Motivation
+						var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+						if (this.whichCLMS.xiNET.Rotator === 0) {
+							centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+						}
+						var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+						this.dragElement.setRotation(centreToMouseAngleDegrees);
+						this.dragElement.setAllLineCoordinates();
+					}
+					else { //not dragging or rotating yet, maybe we should start
+						// don't start dragging just on a click - we need to move the mouse a bit first
+						if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+							this.state = CLMS.xiNET.Controller.DRAGGING;
+
+						}
 					}
 				}
-				else if (middleclick) {
-					//can't be used? problem with IE (scroll thingy)
+
+		//    else if (this.state === xiNET.Controller.SELECTING) {
+		//        this.updateMarquee(this.marquee, c);
+		//    }
+				else if (this.state === CLMS.xiNET.Controller.PANNING) {
+				   this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
 				}
-				else { //left click; show matches for link, toggle form for protein, switch stick scale
-					if (typeof this.dragElement.x === 'undefined') { //if not protein
-						//~ this.dragElement.showID();
-					} else if (evt.shiftKey) { //if shift key
-						this.dragElement.switchStickScale(c);
-					} else {
-						if (this.sequenceInitComplete === true){
-							if (this.dragElement.form === 1) {
-								this.dragElement.setForm(0, c);
+				else {
+					this.showTooltip(p);
+				}
+		   // }
+			return false;
+		},
+
+
+		// this ends all dragging and rotating
+		mouseUp: function(evt) {
+			var time = new Date().getTime();
+			//console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
+			this.preventDefaultsAndStopPropagation(evt);
+			//eliminate some spurious mouse up events
+			if ((time - this.lastMouseUp) > 150){
+
+				var rightclick, middleclick; //which button has just been raised
+				if (evt.which)
+					rightclick = (evt.which === 3);
+				else if (evt.button)
+					rightclick = (evt.button === 2);
+				if (evt.which)
+					middleclick = (evt.which === 2);
+				else if (evt.button)
+					middleclick = (evt.button === 1);
+
+				var p = this.getEventPoint(evt);// seems to be correct, see below
+				var c = this.mouseToSVG(p.x, p.y);
+
+				if (this.dragElement != null) {
+					if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
+						if (rightclick) { // RIGHT click
+							if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
+								if (this.dragElement.selfLink() == true) {//if internal link
+									if (this.dragElement.proteinLink)//its a residueLink
+										this.dragElement.proteinLink.fromProtein.toggleFlipped();
+								} else {
+									if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
+										this.dragElement.hidden = true;
+									} else {//its a residue link
+										this.dragElement.proteinLink.hidden = true;
+									}
+									this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
+									this.checkLinks();
+								}
+							} else {//right click on protein
+								this.dragElement.setParked(!this.dragElement.isParked, c);
+							}
+						}
+						else if (middleclick) {
+							//can't be used? problem with IE (scroll thingy)
+						}
+						else { //left click; show matches for link, toggle form for protein, switch stick scale
+							if (typeof this.dragElement.x === 'undefined') { //if not protein
+								//~ this.dragElement.showID();
+							} else if (evt.shiftKey) { //if shift key
+								this.dragElement.switchStickScale(c);
 							} else {
-								this.dragElement.setForm(1, c);
+								if (this.sequenceInitComplete === true){
+									if (this.dragElement.form === 1) {
+										this.dragElement.setForm(0, c);
+									} else {
+										this.dragElement.setForm(1, c);
+									}
+								}
 							}
 						}
+						//~ this.checkLinks();
 					}
+					else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+						//round protein rotation to nearest 5 degrees (looks neater)
+						this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+					}
+					else {
+					} //end of protein drag; do nothing
 				}
-				//~ this.checkLinks();
+				else if (rightclick) { //right click on background; show all hidden links
+					var links = this.proteinLinks.values();
+					var linkCount = links.length;
+					for (var l = 0; l < linkCount; l++) {
+						var link = links[l];
+						link.hidden = false;
+					}
+					this.checkLinks();
+				} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+					this.model.set("selection", []);
+				}
+
+				if (this.state === CLMS.xiNET.Controller.SELECTING) {
+					clearInterval(this.marcher);
+					this.svgElement.removeChild(this.marquee);
+				}
 			}
-			else if (this.state === CLMS.xiNET.Controller.ROTATING) {
-				//round protein rotation to nearest 5 degrees (looks neater)
-				this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+
+			this.dragElement = null;
+			this.whichRotator = -1;
+			this.state = CLMS.xiNET.Controller.MOUSE_UP;
+
+			this.lastMouseUp = time;
+			return false;
+		},
+
+
+		//~ updateMarquee: function(rect, p1) {
+			//~ var p0 = this.dragStart;
+			//~ var xs = [p0.x, p1.x].sort(sortByNumber),
+					//~ ys = [p0.y, p1.y].sort(sortByNumber);
+			//~ rect.setAttribute('x', xs[0]);
+			//~ rect.setAttribute('y', ys[0]);
+			//~ rect.setAttribute('width', xs[1] - xs[0]);
+			//~ rect.setAttribute('height', ys[1] - ys[0]);
+		//~ },
+
+
+		//~ function sortByNumber(a, b) {
+			//~ return a - b
+		//~ }
+
+		/**
+		 * Handle mouse wheel event.
+		 */
+		mouseWheel: function(evt) {
+			this.preventDefaultsAndStopPropagation(evt);
+			var delta;
+			//see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
+			if (evt.wheelDelta) {
+				delta = evt.wheelDelta / 3600; // Chrome/Safari
 			}
 			else {
-			} //end of protein drag; do nothing
-		}
-		else if (rightclick) { //right click on background; show all hidden links
-			var links = this.proteinLinks.values();
-			var linkCount = links.length;
-			for (var l = 0; l < linkCount; l++) {
-				var link = links[l];
-				link.hidden = false;
+				delta = evt.detail / -90; // Mozilla
 			}
-			this.checkLinks();
-		} else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-			//~ this.clearSelection();
-		}
+			var z = 1 + delta;
+			var g = this.container;
+			var p = this.getEventPoint(evt);// seems to be correct, see above
+			var c = this.mouseToSVG(p.x, p.y);
+			var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
+			this.setCTM(g, g.getCTM().multiply(k));
+			this.scale();
+			return false;
+		},
 
-		if (this.state === CLMS.xiNET.Controller.SELECTING) {
-			clearInterval(this.marcher);
-			this.svgElement.removeChild(this.marquee);
-		}
-	}
+		//gets mouse position
+		getEventPoint: function(evt) {
+			var p = this.svgElement.createSVGPoint();
+			var element = this.svgElement.parentNode;
+			var top = 0, left = 0;
+			do {
+				top += element.offsetTop  || 0;
+				left += element.offsetLeft || 0;
+				element = element.offsetParent;
+		   } while(element);
+			p.x = evt.pageX - left;
+			p.y = evt.pageY - top;
+			return p;
+		},
 
-	this.dragElement = null;
-	this.whichRotator = -1;
-	this.state = CLMS.xiNET.Controller.MOUSE_UP;
+		// transform the mouse-position into a position on the svg
+		mouseToSVG: function(x, y) {
+			var p = this.svgElement.createSVGPoint();
+			p.x = x;
+			p.y = y;
+			var p = p.matrixTransform(this.container.getCTM().inverse());
+			return p;
+		},
 
-	this.lastMouseUp = time;
-	return false;
-},
-
-
-//~ updateMarquee: function(rect, p1) {
-	//~ var p0 = this.dragStart;
-	//~ var xs = [p0.x, p1.x].sort(sortByNumber),
-			//~ ys = [p0.y, p1.y].sort(sortByNumber);
-	//~ rect.setAttribute('x', xs[0]);
-	//~ rect.setAttribute('y', ys[0]);
-	//~ rect.setAttribute('width', xs[1] - xs[0]);
-	//~ rect.setAttribute('height', ys[1] - ys[0]);
-//~ },
-
-
-//~ function sortByNumber(a, b) {
-	//~ return a - b
-//~ }
-
-/**
- * Handle mouse wheel event.
- */
-mouseWheel: function(evt) {
-	this.preventDefaultsAndStopPropagation(evt);
-	var delta;
-	//see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
-	if (evt.wheelDelta) {
-		delta = evt.wheelDelta / 3600; // Chrome/Safari
-	}
-	else {
-		delta = evt.detail / -90; // Mozilla
-	}
-	var z = 1 + delta;
-	var g = this.container;
-	var p = this.getEventPoint(evt);// seems to be correct, see above
-	var c = this.mouseToSVG(p.x, p.y);
-	var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-	this.setCTM(g, g.getCTM().multiply(k));
-	this.scale();
-	return false;
-},
-
-//gets mouse position
-getEventPoint: function(evt) {
-	var p = this.svgElement.createSVGPoint();
-	var element = this.svgElement.parentNode;
-	var top = 0, left = 0;
-	do {
-		top += element.offsetTop  || 0;
-		left += element.offsetLeft || 0;
-		element = element.offsetParent;
-   } while(element);
-	p.x = evt.pageX - left;
-	p.y = evt.pageY - top;
-	return p;
-},
-
-// transform the mouse-position into a position on the svg
-mouseToSVG: function(x, y) {
-	var p = this.svgElement.createSVGPoint();
-	p.x = x;
-	p.y = y;
-	var p = p.matrixTransform(this.container.getCTM().inverse());
-	return p;
-},
-
-//stop event propogation and defaults; only do what we ask
-preventDefaultsAndStopPropagation: function(evt) {
-	if (evt.stopPropagation)
-		evt.stopPropagation();
-	if (evt.cancelBubble != null)
-		evt.cancelBubble = true;
-	if (evt.preventDefault)
-		evt.preventDefault();
-	// evt.returnValue = false;
-},
+		//stop event propogation and defaults; only do what we ask
+		preventDefaultsAndStopPropagation: function(evt) {
+			if (evt.stopPropagation)
+				evt.stopPropagation();
+			if (evt.cancelBubble != null)
+				evt.cancelBubble = true;
+			if (evt.preventDefault)
+				evt.preventDefault();
+			// evt.returnValue = false;
+		},
 
 		showTooltip: function(p) {
 			var ttX, ttY;
@@ -904,321 +885,324 @@ preventDefaultsAndStopPropagation: function(evt) {
 		},
 
 
-autoLayout: function() {
-	if (this.force) {this.force.stop();}
-	var width = this.svgElement.parentNode.clientWidth;
-	var height = this.svgElement.parentNode.clientHeight;
-	var self = this;
-	var prots = this.renderedProteins.values();
-	var proteinCount = prots.length;
-	//clear subgraphs
-	this.subgraphs.length = 0;
-	for (var p = 0; p < proteinCount; p++) {
-		prots[p].interactor.subgraph = null;
-	}
-	//~ for (var p = 0; p < proteinCount; p++) {
-		//~ var prot = prots[p];
-		//~ var park = true;
-		//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-			//~ var protLink = prot.proteinLinks.values()[ppl];
-			//~ if (protLink.getFilteredMatches().length > 0){
-				//~ if (this.intraHidden === false ||
-					//~ (this.intraHidden === true && protLink.intra != true)) {
-						//~ park = false;
+		autoLayout: function() {
+			if (this.force) {this.force.stop();}
+			var width = this.svgElement.parentNode.clientWidth;
+			var height = this.svgElement.parentNode.clientHeight;
+			var self = this;
+			var prots = this.renderedProteins.values();
+			//clear subgraphs
+			this.subgraphs.length = 0;
+			for (var prot of prots) {
+				prot.interactor.subgraph = null;
+			}
+			//~ for (var p = 0; p < proteinCount; p++) {
+				//~ var prot = prots[p];
+				//~ var park = true;
+				//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+					//~ var protLink = prot.proteinLinks.values()[ppl];
+					//~ if (protLink.getFilteredMatches().length > 0){
+						//~ if (this.intraHidden === false ||
+							//~ (this.intraHidden === true && protLink.intra != true)) {
+								//~ park = false;
+							//~ }
 					//~ }
+				//~ }
+				//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+					//~ // var protLink = prot.proteinLinks.values()[ppl];
+					//~ // if (protLink.getFilteredMatches().length > 0){
+						//~ // park = false;
+					//~ // }
+				//~ // }
+				//~ prot.setParked(park);
 			//~ }
-		//~ }
-		//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-			//~ // var protLink = prot.proteinLinks.values()[ppl];
-			//~ // if (protLink.getFilteredMatches().length > 0){
-				//~ // park = false;
-			//~ // }
-		//~ // }
-		//~ prot.setParked(park);
-	//~ }
-	//init subgraphs
-	for (var p = 0; p < proteinCount; p++) {
-		prots[p].interactor.getSubgraph();//adds new subgraphs to this.subgraphs
-	}
-	//sort subgraphs by size
-	this.subgraphs.sort(function(a, b) {
-		return a.nodes.values().length - b.nodes.values().length;
-	});
-
-	if (proteinCount === 1) {
-		var protein = prots[0];
-		protein.setPosition(width / 2, height / 2);
-		return;
-	}
-	else if (proteinCount === 2) {
-		var p1 = prots[0];
-		p1.setPosition(width / 2, height * 0.3);
-		p1.setAllLineCoordinates();
-		var p2 = prots[1];
-		p2.setPosition(width / 2, height * 0.6);
-		p2.setAllLineCoordinates();
-		return;
-	}
-	else {
-		  //Sort subgraphs into linear and non-linear sets
-		var linearGraphs = [];
-		var nonLinearGraphs = [];
-		var graphCount = this.subgraphs.length;
-		for (var g = 0; g < graphCount; g++) {
-			var graph = this.subgraphs[g];
-			var nodes = graph.nodes.values();
-			var nodeCount = nodes.length;
-			var isLinear = true;
-			if (nodeCount === 1) {
-				isLinear = true;
+			//init subgraphs
+			var proteinCount = 0;
+			prots = this.renderedProteins.values();
+			for (var prot of prots) {
+				proteinCount++;
+				prot.interactor.getSubgraph();//adds new subgraphs to this.subgraphs
+			}
+			//sort subgraphs by size
+			this.subgraphs.sort(function(a, b) {
+				return a.nodes.values().length - b.nodes.values().length;
+			});
+			
+			var prots = this.renderedProteins.values();
+			if (proteinCount === 1) {
+				var protein = prots.next().value;
+				protein.setPosition(width / 2, height / 2);
+				return;
+			}
+			else if (proteinCount === 2) {
+				var p1 = prots[0];
+				p1.setPosition(width / 2, height * 0.3);
+				p1.setAllLineCoordinates();
+				var p2 = prots[1];
+				p2.setPosition(width / 2, height * 0.6);
+				p2.setAllLineCoordinates();
+				return;
 			}
 			else {
-				var endFound = false;
-				for (var n = 0; n < nodeCount; n++) {
-					if (nodes[n].countExternalLinks() > 2) {
-						isLinear = false;
-						break;
-					}
-					else if (nodes[n].countExternalLinks() < 2) {
-						endFound = true;
-					}
-				}
-				//check not circular
-				if (!endFound) {
-					isLinear = false;
-				}
-			}
-			if (isLinear === true) {
-				linearGraphs.push(graph);
-			} else {
-				nonLinearGraphs.push(graph);
-			}
-		}
-		//Grid layout linear graphs
-		var column = 0, row = 0, parkedRow = 0, parkedColumn = -1;
-		if (linearGraphs.length > 0) {
-			column++;
-			for (var g = 0; g < linearGraphs.length; g++) {
-				var nodes = linearGraphs[g].nodes.keys(); //
-				var nodeCount = nodes.length;
-				if (nodeCount > 2) {
-					nodes = reorderedNodes(linearGraphs[g]);
-				}
-				for (var n = 0; n < nodeCount; n++) {
-					var p = this.renderedProteins.get(nodes[n]);
-					var x, y;
-					if (p.isParked === true) {
-						parkedRow++;
-						x = xForColumn(parkedColumn);
-						y = yForRow(parkedRow);
-						if (y > height) {
-							parkedColumn--;
-							parkedRow = 1;
-							x = xForColumn(parkedColumn);
-							y = yForRow(parkedRow);
-						}
+				  //Sort subgraphs into linear and non-linear sets
+				var linearGraphs = [];
+				var nonLinearGraphs = [];
+				var graphCount = this.subgraphs.length;
+				for (var g = 0; g < graphCount; g++) {
+					var graph = this.subgraphs[g];
+					var nodes = graph.nodes.values();
+					var nodeCount = nodes.length;
+					var isLinear = true;
+					if (nodeCount === 1) {
+						isLinear = true;
 					}
 					else {
-						row++;
-						if (proteinCount < 60 || nodeCount > 1) {
-						row++;
-						}
-						x = xForColumn(column);
-						y = yForRow(row);
-						var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
-						if ((lastNodeY + this.maxBlobRadius) > height) {
-							column++;
-							row = 1;
-							if (proteinCount < 60) {
-								row++;
+						var endFound = false;
+						for (var n = 0; n < nodeCount; n++) {
+							if (nodes[n].countExternalLinks() > 2) {
+								isLinear = false;
+								break;
 							}
-							x = xForColumn(column);
-							y = yForRow(row);
+							else if (nodes[n].countExternalLinks() < 2) {
+								endFound = true;
+							}
+						}
+						//check not circular
+						if (!endFound) {
+							isLinear = false;
 						}
 					}
-					p.setPosition(x, y);
-//                p.fixed = true;
-					//~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
-					p.setAllLineCoordinates();
+					if (isLinear === true) {
+						linearGraphs.push(graph);
+					} else {
+						nonLinearGraphs.push(graph);
+					}
 				}
-			}
-		}
-		//remember edge of gridded proteins
-		this.layoutXOffset = xForColumn(column + 0.5);
-		//if force is null choose nice starting points for nodes
-		if (typeof this.force === 'undefined' || this.force == null) {
-			//Get starting position for force layout by using d3 packed circles layout
-			var layoutObj = {};
-			var children = [];
-			layoutObj.NAME = "ALL";
-			layoutObj.children = children;
-			for (var g = 0; g < nonLinearGraphs.length; g++) {
-				var nodes = nonLinearGraphs[g].nodes.values();
-				var nodeCount = nodes.length;
-				for (var n = 0; n < nodeCount; n++) {
-					var prot = this.renderedProteins.get(nodes[n].id);
-					var nodeObj = {};
-					nodeObj.id = prot.id;
-					nodeObj.x = prot.x - this.layoutXOffset;
-					nodeObj.y = prot.y;
-					nodeObj.px = prot.x - this.layoutXOffset;
-					nodeObj.py = prot.y;
-					nodeObj.linkCount = prot.proteinLinks.keys().length;
-					nodeObj.size = 30;
-					layoutObj.children.push(nodeObj);
-				}
-			}
-			var packLayout = d3.layout.pack()
-					.size([width - this.layoutXOffset, height])
-					.value(function(d) {
-						return d.size;
-					})
-					.sort(function comparator(a, b) {
-						return (b.linkCount) - (a.linkCount);
-					});
-			var nodes = packLayout.nodes(layoutObj);
-			var nodeCount = nodes.length;
-			for (var n = 1; n < nodeCount; n++) {
-				var node = nodes[n];
-				var protein = this.renderedProteins.get(node.id);
-				var nx = node.x;
-				var ny = node.y;
-				var rotated = Protein.rotatePointAboutPoint([nx, ny],
-					[(width - this.layoutXOffset / 2), height / 2], 90)
-				protein.setPosition(rotated[0] + this.layoutXOffset, rotated[1]);
-				protein.setAllLineCoordinates(false);
-			}
-		}
-		//do force directed layout
-		var gWidth = width - this.layoutXOffset;
-		if (gWidth < 200) {
-			gWidth = width;
-		}
-		var linkDistance = 60;
-		layoutObj = {};
-		layoutObj.nodes = [];
-		layoutObj.links = [];
-		var protLookUp = {};
-		var pi = 0;
-
-		for (var g = 0; g < nonLinearGraphs.length; g++) {
-			var nodes = nonLinearGraphs[g].nodes.values();
-			var nodeCount = nodes.length;
-			for (var n = 0; n < nodeCount; n++) {
-				var prot = this.renderedProteins.get(nodes[n].id);
-//        if (prot.fixed === false) {
-				protLookUp[prot.id] = pi;
-				pi++;
-				var nodeObj = {};
-				nodeObj.id = prot.id;
-				nodeObj.x = prot.x - this.layoutXOffset;
-				nodeObj.y = prot.y;
-				nodeObj.px = prot.x - this.layoutXOffset;
-				nodeObj.py = prot.y;
-				layoutObj.nodes.push(nodeObj);
-			}
-//        }
-		}
-		for (var g = 0; g < nonLinearGraphs.length; g++) {
-			var links = nonLinearGraphs[g].links.values();
-			var linkCount = links.length;
-			for (var l = 0; l < linkCount; l++) {
-				var link = links[l];
-				var fromProt = link.fromProtein;
-				var toProt = link.toProtein;
-				if (toProt) {
-					var source = protLookUp[fromProt.id];
-					var target = protLookUp[toProt.id];
-
-					if (source !== target) {
-
-						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-							var linkObj = {};
-							linkObj.source = source;
-							linkObj.target = target;
-							linkObj.id = link.id;
-							layoutObj.links.push(linkObj);
+				//Grid layout linear graphs
+				var column = 0, row = 0, parkedRow = 0, parkedColumn = -1;
+				if (linearGraphs.length > 0) {
+					column++;
+					for (var g = 0; g < linearGraphs.length; g++) {
+						var nodes = linearGraphs[g].nodes.keys(); //
+						var nodeCount = nodes.length;
+						if (nodeCount > 2) {
+							nodes = reorderedNodes(linearGraphs[g]);
 						}
-						else {
-							alert("NOT RIGHT");
+						for (var n = 0; n < nodeCount; n++) {
+							var p = this.renderedProteins.get(nodes[n]);
+							var x, y;
+							if (p.isParked === true) {
+								parkedRow++;
+								x = xForColumn(parkedColumn);
+								y = yForRow(parkedRow);
+								if (y > height) {
+									parkedColumn--;
+									parkedRow = 1;
+									x = xForColumn(parkedColumn);
+									y = yForRow(parkedRow);
+								}
+							}
+							else {
+								row++;
+								if (proteinCount < 60 || nodeCount > 1) {
+								row++;
+								}
+								x = xForColumn(column);
+								y = yForRow(row);
+								var lastNodeY = yForRow(row + ((nodeCount - 1 - n) * 2));
+								if ((lastNodeY + this.maxBlobRadius) > height) {
+									column++;
+									row = 1;
+									if (proteinCount < 60) {
+										row++;
+									}
+									x = xForColumn(column);
+									y = yForRow(row);
+								}
+							}
+							p.setPosition(x, y);
+		//                p.fixed = true;
+							//~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
+							p.setAllLineCoordinates();
 						}
 					}
 				}
-			}
-		}
-		var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
-// mike suggests:
-//    .charge(-10 / k)
-//    .gravity(100 * k)
-		this.force = d3.layout.force()
-				.nodes(layoutObj.nodes)
-				.links(layoutObj.links)
-				.gravity(85 * k)
-				.linkDistance(linkDistance)
-				.charge(-30 / k)
-				.size([gWidth, height]);
-		var nodeCount = this.force.nodes().length;
-		var forceLinkCount = this.force.links().length;
-		this.force.on("tick", function(e) {
-			var nodes = self.force.nodes();
-			for (var n = 0; n < nodeCount; n++) {
-				var node = nodes[n];
-				var protein = self.proteins.get(node.id);
-				var nx = node.x;
-				var ny = node.y;
-				protein.setPosition(nx + self.layoutXOffset, ny);
-				protein.setAllLineCoordinates();
-			}
-		});
-		this.force.start();
-	}
-
-	function reorderedNodes(linearGraph) {
-		var reorderedNodes = [];
-		appendNode(getStartNode());
-		return reorderedNodes;
-
-		function getStartNode() {
-			var ns = linearGraph.nodes.values();
-			var count = ns.length;
-			//                    alert (nodeCount);
-			for (var n = 0; n < count; n++) {
-				if (ns[n].countExternalLinks() < 2) {
-					//                            alert("got start");
-					return ns[n];
+				//remember edge of gridded proteins
+				this.layoutXOffset = xForColumn(column + 0.5);
+				//if force is null choose nice starting points for nodes
+				if (typeof this.force === 'undefined' || this.force == null) {
+					//Get starting position for force layout by using d3 packed circles layout
+					var layoutObj = {};
+					var children = [];
+					layoutObj.NAME = "ALL";
+					layoutObj.children = children;
+					for (var g = 0; g < nonLinearGraphs.length; g++) {
+						var nodes = nonLinearGraphs[g].nodes.values();
+						var nodeCount = nodes.length;
+						for (var n = 0; n < nodeCount; n++) {
+							var prot = this.renderedProteins.get(nodes[n].id);
+							var nodeObj = {};
+							nodeObj.id = prot.id;
+							nodeObj.x = prot.x - this.layoutXOffset;
+							nodeObj.y = prot.y;
+							nodeObj.px = prot.x - this.layoutXOffset;
+							nodeObj.py = prot.y;
+							nodeObj.linkCount = prot.proteinLinks.keys().length;
+							nodeObj.size = 30;
+							layoutObj.children.push(nodeObj);
+						}
+					}
+					var packLayout = d3.layout.pack()
+							.size([width - this.layoutXOffset, height])
+							.value(function(d) {
+								return d.size;
+							})
+							.sort(function comparator(a, b) {
+								return (b.linkCount) - (a.linkCount);
+							});
+					var nodes = packLayout.nodes(layoutObj);
+					var nodeCount = nodes.length;
+					for (var n = 1; n < nodeCount; n++) {
+						var node = nodes[n];
+						var protein = this.renderedProteins.get(node.id);
+						var nx = node.x;
+						var ny = node.y;
+						var rotated = Protein.rotatePointAboutPoint([nx, ny],
+							[(width - this.layoutXOffset / 2), height / 2], 90)
+						protein.setPosition(rotated[0] + this.layoutXOffset, rotated[1]);
+						protein.setAllLineCoordinates(false);
+					}
 				}
-			}
-			console.error("missed linear subgraph start");
-			return null;
-		}
+				//do force directed layout
+				var gWidth = width - this.layoutXOffset;
+				if (gWidth < 200) {
+					gWidth = width;
+				}
+				var linkDistance = 60;
+				layoutObj = {};
+				layoutObj.nodes = [];
+				layoutObj.links = [];
+				var protLookUp = {};
+				var pi = 0;
 
-		function appendNode(currentNode) {
-			reorderedNodes.push(currentNode.id);
-			for (var l = 0; l < currentNode.proteinLinks.values().length; l++) {
-				var link = currentNode.proteinLinks.values()[l];
-				if (link.check() === true) {
-					var nextNode = link.getOtherEnd(currentNode);
-					if (reorderedNodes.indexOf(nextNode.id) === -1) {
-						//                    alert("here");
-						appendNode(nextNode);
-						break;
+				for (var g = 0; g < nonLinearGraphs.length; g++) {
+					var nodes = nonLinearGraphs[g].nodes.values();
+					var nodeCount = nodes.length;
+					for (var n = 0; n < nodeCount; n++) {
+						var prot = this.renderedProteins.get(nodes[n].id);
+		//        if (prot.fixed === false) {
+						protLookUp[prot.id] = pi;
+						pi++;
+						var nodeObj = {};
+						nodeObj.id = prot.id;
+						nodeObj.x = prot.x - this.layoutXOffset;
+						nodeObj.y = prot.y;
+						nodeObj.px = prot.x - this.layoutXOffset;
+						nodeObj.py = prot.y;
+						layoutObj.nodes.push(nodeObj);
+					}
+		//        }
+				}
+				for (var g = 0; g < nonLinearGraphs.length; g++) {
+					var links = nonLinearGraphs[g].links.values();
+					var linkCount = links.length;
+					for (var l = 0; l < linkCount; l++) {
+						var link = links[l];
+						var fromProt = link.fromProtein;
+						var toProt = link.toProtein;
+						if (toProt) {
+							var source = protLookUp[fromProt.id];
+							var target = protLookUp[toProt.id];
+
+							if (source !== target) {
+
+								if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+									var linkObj = {};
+									linkObj.source = source;
+									linkObj.target = target;
+									linkObj.id = link.id;
+									layoutObj.links.push(linkObj);
+								}
+								else {
+									alert("NOT RIGHT");
+								}
+							}
+						}
+					}
+				}
+				var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
+		// mike suggests:
+		//    .charge(-10 / k)
+		//    .gravity(100 * k)
+				this.force = d3.layout.force()
+						.nodes(layoutObj.nodes)
+						.links(layoutObj.links)
+						.gravity(85 * k)
+						.linkDistance(linkDistance)
+						.charge(-30 / k)
+						.size([gWidth, height]);
+				var nodeCount = this.force.nodes().length;
+				var forceLinkCount = this.force.links().length;
+				this.force.on("tick", function(e) {
+					var nodes = self.force.nodes();
+					for (var n = 0; n < nodeCount; n++) {
+						var node = nodes[n];
+						var protein = self.proteins.get(node.id);
+						var nx = node.x;
+						var ny = node.y;
+						protein.setPosition(nx + self.layoutXOffset, ny);
+						protein.setAllLineCoordinates();
+					}
+				});
+				this.force.start();
+			}
+
+			function reorderedNodes(linearGraph) {
+				var reorderedNodes = [];
+				appendNode(getStartNode());
+				return reorderedNodes;
+
+				function getStartNode() {
+					var ns = linearGraph.nodes.values();
+					var count = ns.length;
+					//                    alert (nodeCount);
+					for (var n = 0; n < count; n++) {
+						if (ns[n].countExternalLinks() < 2) {
+							//                            alert("got start");
+							return ns[n];
+						}
+					}
+					console.error("missed linear subgraph start");
+					return null;
+				}
+
+				function appendNode(currentNode) {
+					reorderedNodes.push(currentNode.id);
+					for (var l = 0; l < currentNode.proteinLinks.values().length; l++) {
+						var link = currentNode.proteinLinks.values()[l];
+						if (link.check() === true) {
+							var nextNode = link.getOtherEnd(currentNode);
+							if (reorderedNodes.indexOf(nextNode.id) === -1) {
+								//                    alert("here");
+								appendNode(nextNode);
+								break;
+							}
+						}
 					}
 				}
 			}
-		}
-	}
 
-	//functions used...
-	function xForColumn(c) {
-		return (c * ((2 * 30) + CLMS.xiNET.RenderedProtein.LABELMAXLENGTH)) - 30;
-	}
-	;
+			//functions used...
+			function xForColumn(c) {
+				return (c * ((2 * 30) + CLMS.xiNET.RenderedProtein.LABELMAXLENGTH)) - 30;
+			}
+			;
 
-	function yForRow(r) {
-		return (r * 30);
-	}
-	;
-},
+			function yForRow(r) {
+				return (r * 30);
+			}
+			;
+		},
 
 		downloadSVG: function () {
 			//~ var svgString = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
@@ -1246,6 +1230,41 @@ autoLayout: function() {
 			console.log ("re rendering cross-link viewer");
 			this.checkLinks();
 			//this.stage.handleResize();
+
+			return this;
+		},
+
+		highlightsChanged: function () {
+			//~ console.log ("cross-link viewer highlightsChanhged");
+			
+			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+				renderedCrossLink.showHighlight(false);
+			}
+			
+			var crossLink = this.model.get("highlights")[0];
+			
+			if (crossLink){
+				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+				renderedCrossLink.showHighlight(true);
+			}
+
+			return this;
+		},
+
+
+		selectionChanged: function () {
+			//~ console.log ("cross-link viewer highlightsChanhged");
+			
+			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+				renderedCrossLink.setSelected(false);
+			}
+			
+			var crossLink = this.model.get("highlights")[0];
+			
+			if (crossLink){
+				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+				renderedCrossLink.setSelected(true);
+			}
 
 			return this;
 		},

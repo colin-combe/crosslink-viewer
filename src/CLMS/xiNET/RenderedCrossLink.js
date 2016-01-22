@@ -8,25 +8,16 @@
 
 "use strict";
 
-CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
+CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 	this.crossLink = crossLink;
 	this.crosslinkViewer = crosslinkViewer;
-	this.renderedFromProtein = 
+
+	this.renderedFromProtein =
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
-	this.renderedToProtein = 
+	this.renderedToProtein =
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getToProtein().id);
-				
-	//~ this.id = id;
-	//    this.matches = new Array(0); //we don't initialise this here
-	// (save some memory in use case where there is no match info, only link info)
-	//~ this.proteinLink = proteinLink;
-	//~ this.fromResidue = fromResidue;
-	//~ this.toResidue = toResidue;
-	//~ this.ambig = false;
 	this.tooltip = this.crossLink.id;
-	//~ if (flip === true) {
-		//~ this.flip = true;
-	//~ }
+
 	//used to avoid some unnecessary manipulation of DOM
 	this.shown = false;
 	this.dashed = false;
@@ -50,7 +41,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 		this.line.setAttribute("class", "link");
 		this.line.setAttribute("fill", "none");
-			this.line.setAttribute("stroke", "#000000"); // temp
+		this.line.setAttribute("stroke", "#000000"); // temp
 		this.highlightLine.setAttribute("class", "link");
 		this.highlightLine.setAttribute("fill", "none");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -92,30 +83,20 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	this.isSelected = false;
 };
 
-//~ CLMS.xiNET.RenderedCrossLink.prototype.selfLink = function() {
-	//~ return this.crossLink.isSelfLink();
-//~ }
-//~ 
-//~ CLMS.xiNET.RenderedCrossLink.prototype.getFromProtein = function() {
-	//~ return this.crossLink.getFromProtein();
-//~ };
-//~ 
-//~ CLMS.xiNET.RenderedCrossLink.prototype.getToProtein = function() {
-	//~ return this.crossLink.getToProtein();
-//~ };
 
-//andAlternatives means highlight alternative links in case of site ambiguity
+// andAlternatives means highlight alternative links in case of site ambiguity, 
+// need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
-	if (!this.renderedFromProtein.busy && (!this.prenderedToProtein || !this.renderedToProtein.busy)) {
-		if (typeof andAlternatives === 'undefined') {
+	if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
+		/*if (typeof andAlternatives === 'undefined') {
 			andAlternatives = false;
-		}
+		}*/
 		if (this.shown) {
 			if (show) {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7");
-				/*var fromPeptides = [], toPeptides = [];
-				var filteredMatches = this.getFilteredMatches();
+				var fromPeptides = [], toPeptides = [];
+				var filteredMatches = this.crossLink.filteredMatches;
 				var fmc = filteredMatches.length;
 				for (var m = 0; m < fmc; m++) {
 					var match = filteredMatches[m][0];
@@ -128,26 +109,27 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 					fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
 					toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 				}
-				this.proteinLink.fromProtein.showPeptides(fromPeptides);
-				if (this.proteinLink.toProtein !== null) {
-					this.proteinLink.toProtein.showPeptides(toPeptides);
+				this.renderedFromProtein.showPeptides(fromPeptides);
+				if (this.renderedToProtein) {
+					this.renderedToProtein.showPeptides(toPeptides);
 				}
-				var temp = d3.map();
-				temp.set(this.id, this);
-				this.crosslinkViewer.linkHighlightsChanged(temp);*/
+				//~ var temp = d3.map();
+				//~ temp.set(this.crossLink.id, this.crossLink);
+				//~ this.crosslinkViewer.model.set("highlights",temp.values());
 			} else {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 				if (this.isSelected == false) {
 					this.highlightLine.setAttribute("stroke-opacity", "0");
 				}
-			/*	this.proteinLink.fromProtein.removePeptides();
-				if (this.proteinLink.toProtein !== null) {
-						this.proteinLink.toProtein.removePeptides();
+
+				this.renderedFromProtein.removePeptides();
+				if (this.renderedToProtein) {
+						this.renderedToProtein.removePeptides();
 				}
-				this.crosslinkViewer.linkHighlightsChanged(d3.map());*/
+				//~ this.crosslinkViewer.model.set("highlights",[]);
 			}
 		}
-		if (andAlternatives && this.ambig) {
+	/*	if (andAlternatives && this.ambig) {
 			//TODO: we want to highlight smallest possible set of alternatives?
 			var mc = this.matches? this.matches.length : 0;
 			for (var m = 0; m < mc; m++) {
@@ -163,7 +145,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 					}
 				}
 			}
-		}
+
+		} */
 	}
 };
 
@@ -173,14 +156,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 		this.isSelected = true;
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
-		this.crosslinkViewer.linkSelectionChanged();
 	}
 	else if (select === false && this.isSelected === true) {
 		this.crosslinkViewer.selectedLinks.remove(this.id);
 		this.isSelected = false;
 		this.highlightLine.setAttribute("stroke-opacity", "0");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-		this.crosslinkViewer.linkSelectionChanged();
 	}
 };
 
@@ -300,13 +281,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 			if (typeof this.line === 'undefined') {
 				this.initSVG();
 			}
-			if (this.crossLink.isSelfLink() || this.crossLink.getToProtein() === null) {
+			if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
 				//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
 
-					//problem here
-				//~ var renderedProtein = 
-					//~ this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
-				var path =  this.renderedFromProtein.getCrossLinkPath(this);
+				var path =  this.renderedToProtein.getCrossLinkPath(this);
 				this.line.setAttribute("d", path);
 				this.highlightLine.setAttribute("d", path);
 				this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
@@ -329,8 +307,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
 	//~ if (this.crosslinkViewer.sequenceInitComplete) {
 		if (this.shown) {
 			this.shown = false;
-			if (this.crossLink.isSelfLink() || this.renderedToProtein === null) {
-				//~ var renderedProtein = 
+
+			if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
+				//~ var renderedProtein =
 						//~ this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
 				this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
 				this.renderedFromProtein.selfLinks.removeChild(this.line);
@@ -349,14 +328,14 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 		return;
 	}
 	//non self, not linker modified pep's links only
-	if (this.crossLink.isSelfLink() === false && this.crossLink.getToProtein() !== null){
+	if (this.crossLink.isSelfLink() || !this.renderedToProtein){
 		//don't waste time changing DOM if link not visible
 		if (this.shown) {
 			var x, y;
-			if (this.renderedFromProtein === renderedInteractor) {
-				if (renderedInteractor.form === 0) {
-						x = renderedInteractor.x;
-						y = renderedInteractor.y;
+			if (this.renderedFromProtein === interactor) {
+				if (interactor.form === 0) {
+						x = interactor.x;
+						y = interactor.y;
 				}
 				else //if (this.form == 1)
 				{
@@ -369,10 +348,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 				this.highlightLine.setAttribute("x1", x);
 				this.highlightLine.setAttribute("y1", y);
 			}
-			else if (this.renderedToProtein === renderedInteractor) {
-				if (renderedInteractor.form === 0) {
-						x = renderedInteractor.x;
-						y = renderedInteractor.y;
+			else if (this.renderedToProtein === interactor) {
+				if (interactor.form === 0) {
+						x = interactor.x;
+						y = interactor.y;
 				}
 				else //if (this.form == 1)
 				{
@@ -396,7 +375,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 	var y = 0;
 	if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
 			//~ y = 10 * this.crosslinkViewer.z;
-		var from = this.getFromProtein(), to = this.getToProtein();
+		var from = this.renderedFromProtein, to = this.renderedToProtein;
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
 		var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
@@ -455,3 +434,4 @@ CLMS.xiNET.RenderedCrossLink.prototype.toJSON = function() {
 	//      m: m
 	};
 };
+
