@@ -10,10 +10,15 @@
 
 CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){ //id, proteinLink, fromResidue, toResidue, xlvController, flip) {
 	this.crossLink = crossLink;
+	this.crosslinkViewer = crosslinkViewer;
+	this.renderedFromProtein = 
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+	this.renderedToProtein = 
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.getToProtein().id);
+				
 	//~ this.id = id;
 	//    this.matches = new Array(0); //we don't initialise this here
 	// (save some memory in use case where there is no match info, only link info)
-	this.crosslinkViewer = crosslinkViewer;
 	//~ this.proteinLink = proteinLink;
 	//~ this.fromResidue = fromResidue;
 	//~ this.toResidue = toResidue;
@@ -32,7 +37,7 @@ CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	if (typeof this.line === 'undefined') {
-		if (this.crossLink.isSelfLink() === true || this.proteinLink.toProtein === null) {
+		if (this.crossLink.isSelfLink() === true || this.crossLink.getToProtein() === null) {
 			this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 			this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
 		} else {
@@ -87,22 +92,21 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	this.isSelected = false;
 };
 
-CLMS.xiNET.RenderedCrossLink.prototype.selfLink = function() {
-	//return (this.proteinLink.fromProtein === this.proteinLink.toProtein);
-	return this.crossLink.isSelfLink();
-}
-
-CLMS.xiNET.RenderedCrossLink.prototype.getFromProtein = function() {
-	return this.crossLink.getFromProtein();
-};
-
-CLMS.xiNET.RenderedCrossLink.prototype.getToProtein = function() {
-	return this.crossLink.getToProtein();
-};
+//~ CLMS.xiNET.RenderedCrossLink.prototype.selfLink = function() {
+	//~ return this.crossLink.isSelfLink();
+//~ }
+//~ 
+//~ CLMS.xiNET.RenderedCrossLink.prototype.getFromProtein = function() {
+	//~ return this.crossLink.getFromProtein();
+//~ };
+//~ 
+//~ CLMS.xiNET.RenderedCrossLink.prototype.getToProtein = function() {
+	//~ return this.crossLink.getToProtein();
+//~ };
 
 //andAlternatives means highlight alternative links in case of site ambiguity
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
-/*	if (!this.proteinLink.fromProtein.busy && (!this.proteinLink.toProtein || !this.proteinLink.toProtein.busy)) {
+	if (!this.renderedFromProtein.busy && (!this.prenderedToProtein || !this.renderedToProtein.busy)) {
 		if (typeof andAlternatives === 'undefined') {
 			andAlternatives = false;
 		}
@@ -110,7 +114,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 			if (show) {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7");
-				var fromPeptides = [], toPeptides = [];
+				/*var fromPeptides = [], toPeptides = [];
 				var filteredMatches = this.getFilteredMatches();
 				var fmc = filteredMatches.length;
 				for (var m = 0; m < fmc; m++) {
@@ -130,17 +134,17 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				}
 				var temp = d3.map();
 				temp.set(this.id, this);
-				this.crosslinkViewer.linkHighlightsChanged(temp);
+				this.crosslinkViewer.linkHighlightsChanged(temp);*/
 			} else {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 				if (this.isSelected == false) {
 					this.highlightLine.setAttribute("stroke-opacity", "0");
 				}
-				this.proteinLink.fromProtein.removePeptides();
+			/*	this.proteinLink.fromProtein.removePeptides();
 				if (this.proteinLink.toProtein !== null) {
 						this.proteinLink.toProtein.removePeptides();
 				}
-				this.crosslinkViewer.linkHighlightsChanged(d3.map());
+				this.crosslinkViewer.linkHighlightsChanged(d3.map());*/
 			}
 		}
 		if (andAlternatives && this.ambig) {
@@ -160,7 +164,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				}
 			}
 		}
-	}*/
+	}
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
@@ -180,34 +184,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 	}
 };
 
-CLMS.xiNET.RenderedCrossLink.prototype.getFilteredMatches = function() {
-	this.ambig = true;
-	this.hd = false;
-	this.intraMolecular = false; //i.e. type 1, loop link, intra peptide, internally linked peptide, etc
-	var filteredMatches = [];
-	var count = this.matches? this.matches.length : 0;
-	for (var i = 0; i < count; i++) {
-		var match = this.matches[i][0];
-		if (match.meetsFilterCriteria()) {
-			filteredMatches.push(this.matches[i]);
-			if (match.isAmbig() === false) {
-				this.ambig = false;
-			}
-			if (match.hd === true) {
-				this.hd = true;
-			}
-			if (match.type === 1){
-				this.intraMolecular = true;
-			}
-		}
-	}
-	return filteredMatches;
-};
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-	var filteredMatches = this.crossLink.getFilteredMatches();
+	var filteredMatches = this.crossLink.filteredMatches;
 	var countFilteredMatches = filteredMatches.length;
+	//~ alert("here"+filteredMatches.length);
 	if (countFilteredMatches > 0) {
 		this.show();
 		return true;
@@ -313,73 +295,72 @@ CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 	//~ if (this.crosslinkViewer.sequenceInitComplete) {
-		//~ if (!this.shown) {
+		if (!this.shown) {
 			this.shown = true;
 			if (typeof this.line === 'undefined') {
 				this.initSVG();
 			}
-			if (this.crossLink.isSelfLink() || this.proteinLink.toProtein === null) {
+			if (this.crossLink.isSelfLink() || this.crossLink.getToProtein() === null) {
 				//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
 
 					//problem here
-				var renderedProtein = 
-					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
-				var path =  renderedProtein.getCrossLinkPath(this);
+				//~ var renderedProtein = 
+					//~ this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+				var path =  this.renderedFromProtein.getCrossLinkPath(this);
 				this.line.setAttribute("d", path);
 				this.highlightLine.setAttribute("d", path);
-				renderedProtein.selfLinksHighlights.appendChild(this.highlightLine);
-				renderedProtein.selfLinks.appendChild(this.line);
+				this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
+				this.renderedFromProtein.selfLinks.appendChild(this.line);
 			//~
 			}
 			else {
-				this.line.setAttribute("stroke-width", this.crosslinkViewer.z * xiNET.linkWidth);
+				this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
 				this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
-				this.setLineCoordinates(this.getFromProtein());
-				this.setLineCoordinates(this.getToProtein());
+				this.setLineCoordinates(this.renderedFromProtein);
+				this.setLineCoordinates(this.renderedToProtein);
 				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
 				this.crosslinkViewer.res_resLinks.appendChild(this.line);
 			}
-		//~ }
+		}
 	//~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
 	//~ if (this.crosslinkViewer.sequenceInitComplete) {
-		//~ if (this.shown) {
+		if (this.shown) {
 			this.shown = false;
-			alert("you");
-			if (this.crossLink.isSelfLink() || this.proteinLink.toProtein === null) {
-				var renderedProtein = 
-						this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
-				renderedProtein.selfLinksHighlights.removeChild(this.highlightLine);
-				renderedProtein.selfLinks.removeChild(this.line);
+			if (this.crossLink.isSelfLink() || this.renderedToProtein === null) {
+				//~ var renderedProtein = 
+						//~ this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+				this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
+				this.renderedFromProtein.selfLinks.removeChild(this.line);
 			}
 			else {
 				this.crosslinkViewer.res_resLinks.removeChild(this.line);
 				this.crosslinkViewer.highlights.removeChild(this.highlightLine);
 			}
-		//~ }
+		}
 	//~ }
 };
 
-CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(interactor) {
+CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInteractor) {
 	//a defensive check
-	if (interactor.x == null || interactor.y == null) {
+	if (renderedInteractor.x == null || renderedInteractor.y == null) {
 		return;
 	}
 	//non self, not linker modified pep's links only
-	if (this.selfLink() === false && this.getToProtein() !== null){
+	if (this.crossLink.isSelfLink() === false && this.crossLink.getToProtein() !== null){
 		//don't waste time changing DOM if link not visible
 		if (this.shown) {
 			var x, y;
-			if (this.getFromProtein() === interactor) {
-				if (interactor.form === 0) {
-						x = interactor.x;
-						y = interactor.y;
+			if (this.renderedFromProtein === renderedInteractor) {
+				if (renderedInteractor.form === 0) {
+						x = renderedInteractor.x;
+						y = renderedInteractor.y;
 				}
 				else //if (this.form == 1)
 				{
-					var coord = this.getResidueCoordinates(this.fromResidue, interactor);
+					var coord = this.getResidueCoordinates(this.fromResidue, renderedInteractor);
 					x = coord[0];
 					y = coord[1];
 				}
@@ -388,14 +369,14 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(interactor)
 				this.highlightLine.setAttribute("x1", x);
 				this.highlightLine.setAttribute("y1", y);
 			}
-			else if (this.getToProtein() === interactor) {
-				if (interactor.form === 0) {
-						x = interactor.x;
-						y = interactor.y;
+			else if (this.renderedToProtein === renderedInteractor) {
+				if (renderedInteractor.form === 0) {
+						x = renderedInteractor.x;
+						y = renderedInteractor.y;
 				}
 				else //if (this.form == 1)
 				{
-					var coord = this.getResidueCoordinates(this.toResidue, interactor);
+					var coord = this.getResidueCoordinates(this.toResidue, renderedInteractor);
 					x = coord[0];
 					y = coord[1];
 				}
@@ -413,7 +394,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 	var x = interactor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
 	//var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.crosslinkViewer.z;
 	var y = 0;
-	if (Protein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
+	if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
 			//~ y = 10 * this.crosslinkViewer.z;
 		var from = this.getFromProtein(), to = this.getToProtein();
 		var deltaX = from.x - to.x;

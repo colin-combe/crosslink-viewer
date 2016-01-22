@@ -21,7 +21,7 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 		this.crosslinkViewer.force.stop();
 	}
 	this.crosslinkViewer.dragElement = this;
-	this.crosslinkViewer.clearSelection();
+	//~ this.crosslinkViewer.clearSelection();
 	this.setSelected(true);
 	//store start location
 	var p = this.crosslinkViewer.getEventPoint(evt);// seems to be correct, see above

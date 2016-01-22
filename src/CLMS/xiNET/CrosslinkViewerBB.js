@@ -163,7 +163,6 @@
 			this.svgElement.appendChild(this.tooltip_bg);
 			this.svgElement.appendChild(this.tooltip);
 
-			//~ this.xiNET_storage = new xiNET_Storage(this);
 			this.clear();
 			this.initProteins();
 			this.initLayout();
@@ -466,9 +465,9 @@ reset: function() {
 					var molsAnnotated = 0;
 					for (m = 0; m < molCount; m++) {
 						var mol = mols[m];
-						this.xiNET_storage.getUniProtFeatures(mol.id, function (id, fts){
-							var m = self.proteins.get(id);
-							if (m.accession.indexOf("-") === -1 || m.accession === "P02768-A") {
+						this.xiNET_storage.getUniProtFeatures(mol.interactor.id, function (id, fts){
+							var m = self.renderedProteins.get(id);
+							/*if (m.interactor.accession.indexOf("-") === -1 || m.interactor.accession === "P02768-A") {
 								if (m.accession === "P02768-A") {
 									var offset = -24;
 									for (var f = 0; f < fts.length; f++) {
@@ -476,9 +475,9 @@ reset: function() {
 										feature.start = feature.start + offset;
 										feature.end = feature.end + offset;
 									}
-								}
+								}*/
 								m.setPositionalFeatures(fts);
-							}
+							//~ }
 							molsAnnotated++;
 							if (molsAnnotated === molCount) {
 								chooseColours();
@@ -1211,7 +1210,7 @@ autoLayout: function() {
 
 	//functions used...
 	function xForColumn(c) {
-		return (c * ((2 * 30) + Protein.LABELMAXLENGTH)) - 30;
+		return (c * ((2 * 30) + CLMS.xiNET.RenderedProtein.LABELMAXLENGTH)) - 30;
 	}
 	;
 
