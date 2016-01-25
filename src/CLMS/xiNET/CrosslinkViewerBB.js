@@ -17,42 +17,19 @@
 	win.CLMS.xiNET = {}; //crosslinkviewer's javascript namespace
 
 	win.CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
-		tagName: "div",
-		//className: "dynDiv",
-		events: {
-			// following line commented out, mouseup sometimes not called on element if pointer drifts outside element
-			// and dragend not supported by zepto, fallback to d3 instead (see later)
-			// "mouseup .dynDiv_resizeDiv_tl, .dynDiv_resizeDiv_tr, .dynDiv_resizeDiv_bl, .dynDiv_resizeDiv_br": "relayout",    // do resize without dyn_div alter function
-			"click .downloadButton": "downloadSVG"
-		},
-
 		initialize: function (viewOptions) {
-			//~ console.log("arg options", viewOptions);
 			var defaultOptions = {};
 			this.options = _.extend(defaultOptions, viewOptions.myOptions);
-
-			this.displayEventName = viewOptions.displayEventName;
-
+			
 			var self = this;
-
-			// this.el is the dom element this should be getting added to, replaces targetDiv
-			var mainDivSel = d3.select(this.el);
-
-			mainDivSel.selectAll("*").remove();//avoids prob with 'save - web page complete'
-
-			//this is neded to allow the SVG export
-			var containingDiv = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
-			containingDiv.setAttribute("style", "width:100%;height:100%;display:block;");
-			mainDivSel.node().appendChild(containingDiv);
+			
+			d3.select(this.el).selectAll("*").remove();//avoids prob with 'save - web page complete'
 
 			//create SVG elemnent
 			this.svgElement = document.createElementNS(CLMS.xiNET.svgns, "svg");
 			this.svgElement.setAttribute('id', 'networkSVG');
 			this.svgElement.setAttribute("width", "100%");
 			this.svgElement.setAttribute("height", "100%");
-			//~ this.svgElement.setAttribute("preserveAspectRatio", "xMinYMin meet");
-			//~ this.svgElement.setAttribute("viewBox", "0 0 " + targetDiv.clientWidth + " " + targetDiv.clientHeight);
-			//~ this.svgElement.setAttribute("style", "display:block;");
 			// disable right click context menu (we wish to put right click to our own purposes)
 			this.svgElement.oncontextmenu = function() {
 				return false;
@@ -75,13 +52,8 @@
 			this.svgElement.ontouchstart = function(evt) { self.touchStart(evt); };
 			this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
 			this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
-			//selection and highlight callbacks
-			//~ this.linkSelectionCallbacks = [];
-			//~ this.linkHighlightsCallbacks = [];
-			//legend changed callbacks
-			this.legendCallbacks = new Array();
 
-			containingDiv.appendChild(this.svgElement);
+			this.el.appendChild(this.svgElement);
 
 			//these attributes are used by checkboxes to hide self links or ambiguous links
 			this.selfLinksShown = true;
@@ -158,6 +130,14 @@
 			this.initProteins();
 			this.initLayout();
 
+			//~ var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+			//~ for(var crossLink of crossLinks){
+//~ 
+				//~ var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+				//~ this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+//~ 
+			//~ }
+			
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
@@ -174,11 +154,12 @@
 			if (viewOptions.displayEventName) {
 				this.listenTo (CLMSUI.vent, viewOptions.displayEventName, this.setVisible);
 			}
+			this.render();
 		},
 
 		clear: function () {
 
-			this.sequenceInitComplete = false;
+			//this.sequenceInitComplete = false;
 			if (this.force) {
 				this.force.stop();
 			}
@@ -325,16 +306,16 @@
 			}
 		},
 
-reset: function() {
-	this.resetZoom();
-	var proteins = this.renderedProteins.values();
-	for (var prot of proteins) {
-		if (prot.isParked === false) {
-			prot.setForm(0);
-		}
-	}
-	this.autoLayout();
-},
+		reset: function() {
+			this.resetZoom();
+			var proteins = this.renderedProteins.values();
+			for (var prot of proteins) {
+				if (prot.isParked === false) {
+					prot.setForm(0);
+				}
+			}
+			this.autoLayout();
+		},
 
 
 		resetZoom: function () {
@@ -507,11 +488,11 @@ reset: function() {
 		},
 
 		legendChanged: function () {
-			var callbacks = this.legendCallbacks;
-			var count = callbacks.length;
-			for (var i = 0; i < count; i++) {
-				callbacks[i](this.linkColours, this.domainColours);
-			}
+			//~ var callbacks = this.legendCallbacks;
+			//~ var count = callbacks.length;
+			//~ for (var i = 0; i < count; i++) {
+				//~ callbacks[i](this.linkColours, this.domainColours);
+			//~ }
 		},
 
 
@@ -935,10 +916,10 @@ reset: function() {
 				return;
 			}
 			else if (proteinCount === 2) {
-				var p1 = prots[0];
+				var p1 = prots.next().value;
 				p1.setPosition(width / 2, height * 0.3);
 				p1.setAllLineCoordinates();
-				var p2 = prots[1];
+				var p2 = prots.next().value;
 				p2.setPosition(width / 2, height * 0.6);
 				p2.setAllLineCoordinates();
 				return;
@@ -1204,25 +1185,8 @@ reset: function() {
 			;
 		},
 
-		downloadSVG: function () {
-			//~ var svgString = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
-			//~ download(svgString, 'application/svg', 'distogram.svg');
-		},
-
-		hideView: function () {
-			win.CLMSUI.vent.trigger (this.displayEventName, false);
-		},
-
-		setVisible: function (show) {
-			console.log("event display in distogram", show);
-			d3.select(this.el).style('display', show ? 'block' : 'none');
-
-			if (show) {
-				this
-					.relayout() // need to resize first sometimes so render gets correct width/height coords
-					.render()
-				;
-			}
+		getSVG: function () {
+			return CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
 		},
 
 		render: function () {

@@ -324,16 +324,16 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
 
 CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInteractor) {
 	//a defensive check
-	if (renderedInteractor.x == null || renderedInteractor.y == null) {
-		return;
-	}
+	//~ if (renderedInteractor.x == null || renderedInteractor.y == null) {
+		//~ return;
+	//~ }
 	//non self, not linker modified pep's links only
 	if (this.crossLink.isSelfLink() || !this.renderedToProtein){
 		//don't waste time changing DOM if link not visible
 		if (this.shown) {
 			var x, y;
-			if (this.renderedFromProtein === interactor) {
-				if (interactor.form === 0) {
+			if (this.renderedFromProtein === renderedInteractor) {
+				if (renderedInteractor.form === 0) {
 						x = interactor.x;
 						y = interactor.y;
 				}
@@ -348,8 +348,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 				this.highlightLine.setAttribute("x1", x);
 				this.highlightLine.setAttribute("y1", y);
 			}
-			else if (this.renderedToProtein === interactor) {
-				if (interactor.form === 0) {
+			else if (this.renderedToProtein === renderedInteractor) {
+				if (renderedInteractor.form === 0) {
 						x = interactor.x;
 						y = interactor.y;
 				}
@@ -369,11 +369,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 }
 
 //calculate the  coordinates of a residue (relative to this.crosslinkViewer.container)
-CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, interactor) {
-	var x = interactor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
+CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, renderedInteractor) {
+	var x = renderedInteractor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
 	//var x = (r - (this.size/2)) * Protein.UNITS_PER_RESIDUE * this.stickZoom * this.crosslinkViewer.z;
 	var y = 0;
-	if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * interactor.stickZoom > 8) {//if sequence shown
+	if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * renderedInteractor.stickZoom > 8) {//if sequence shown
 			//~ y = 10 * this.crosslinkViewer.z;
 		var from = this.renderedFromProtein, to = this.renderedToProtein;
 		var deltaX = from.x - to.x;
@@ -386,7 +386,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 		}
 
 		var out;//'out' is value we use to decide which side of letter the line is drawn
-		if (interactor === from) {
+		if (renderedInteractor === from) {
 				out = (abmpDeg - from.rotation);
 				if (out < 0) {
 					out += 360;
@@ -398,7 +398,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 
 				y = fyOffset * this.crosslinkViewer.z;
 		}
-		else { // interactor === to
+		else { // renderedInteractor === to
 				out = (abmpDeg - to.rotation);
 				if (out < 0) {
 					out += 360;
@@ -411,7 +411,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, inter
 		}
 	}
 
-	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],interactor.rotation);
+	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],renderedInteractor.rotation);
 
 	x = rotated[0] + interactor.x;
 	y = rotated[1] + interactor.y;
