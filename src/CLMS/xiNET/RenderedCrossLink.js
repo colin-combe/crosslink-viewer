@@ -16,6 +16,7 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
 	this.renderedToProtein =
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getToProtein().id);
+					
 	this.tooltip = this.crossLink.id;
 
 	//used to avoid some unnecessary manipulation of DOM

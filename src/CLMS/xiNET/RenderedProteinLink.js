@@ -8,44 +8,51 @@
 
 "use strict";
 
-CLMS.xiNET.RenderedProteinLink = function (id, fromP, toP, xlvController) {
-	this.id = id;
-	this.residueLinks = d3.map();
-	this.controller = xlvController;
-	this.fromProtein = fromP; //its the object. not the ID number
-	this.toProtein = toP; //its the object. not the ID number
-	this.ambig = false;
-	this.tooltip = this.id;
+CLMS.xiNET.RenderedProteinLink = function (proteinLink, crosslinkViewer) {
+	
+	this.proteinLink = proteinLink;
+	this.crosslinkViewer = crosslinkViewer;
+	
+	this.renderedFromProtein =
+					this.crosslinkViewer.renderedProteins.get(this.proteinLink.fromProtein.id);
+	this.renderedToProtein =
+					this.crosslinkViewer.renderedProteins.get(this.proteinLink.toProtein.id);
+		
+	this.tooltip = this.proteinLink.id;
 	//used to avoid some unnecessary manipulation of DOM
 	this.shown = false;
 	//layout stuff
 	this.hidden = false;
 
-	if (!this.selfLink()) {
-		this.line = document.createElementNS(xiNET.svgns, "line");
-		this.highlightLine = document.createElementNS(xiNET.svgns, "line");
-		this.fatLine = document.createElementNS(xiNET.svgns, "line");
+	if (this.proteinLink.isSelfLink() === false) {
+		this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
+		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
+		this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
 	} else {
-		this.line = document.createElementNS(xiNET.svgns, "path");
-		this.highlightLine = document.createElementNS(xiNET.svgns, 'path');
-		this.fatLine = document.createElementNS(xiNET.svgns, 'path');
+		this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
+		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+		this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
 	}
+	
 	this.line.setAttribute("class", "link");
 	this.line.setAttribute("fill", "none");
 	this.line.setAttribute("stroke", "black");
 	this.line.setAttribute("stroke-width", 1);
 	this.line.setAttribute("stroke-linecap", "round");
+	
 	this.highlightLine.setAttribute("class", "link");
 	this.highlightLine.setAttribute("fill", "none");
 	this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 	this.highlightLine.setAttribute("stroke-width", "10");
 	this.highlightLine.setAttribute("stroke-linecap", "round");
 	this.highlightLine.setAttribute("stroke-opacity", "0");
-	this.fatLine.setAttribute("class", "link");
-	this.fatLine.setAttribute("fill", "none");
-	this.fatLine.setAttribute("stroke", "lightgray");
-	this.fatLine.setAttribute("stroke-linecap", "round");
-	this.fatLine.setAttribute("stroke-linejoin", "round");
+	
+	this.thickLine.setAttribute("class", "link");
+	this.thickLine.setAttribute("fill", "none");
+	this.thickLine.setAttribute("stroke", "lightgray");
+	this.thickLine.setAttribute("stroke-linecap", "round");
+	this.thickLine.setAttribute("stroke-linejoin", "round");
+	
 	//set the events for it
 	var self = this;
 	this.line.onmousedown = function(evt) {
@@ -74,19 +81,19 @@ CLMS.xiNET.RenderedProteinLink = function (id, fromP, toP, xlvController) {
 		self.touchStart(evt);
 	};
 
-	this.fatLine.onmousedown = function(evt) {
+	this.thickLine.onmousedown = function(evt) {
 		self.mouseDown(evt);
 	};
-	this.fatLine.onmousedown = function(evt) {
+	this.thickLine.onmousedown = function(evt) {
 		self.mouseDown(evt);
 	};
-	this.fatLine.onmouseover = function(evt) {
+	this.thickLine.onmouseover = function(evt) {
 		self.mouseOver(evt);
 	};
-	this.fatLine.onmouseout = function(evt) {
+	this.thickLine.onmouseout = function(evt) {
 		self.mouseOut(evt);
 	};
-	this.fatLine.ontouchstart = function(evt) {
+	this.thickLine.ontouchstart = function(evt) {
 		self.touchStart(evt);
 	};
 
@@ -99,23 +106,11 @@ CLMS.xiNET.RenderedProteinLink.maxNoCrossLinks = 0;
 
 CLMS.xiNET.RenderedProteinLink.prototype = new CLMS.xiNET.RenderedLink();
 
-CLMS.xiNET.RenderedProteinLink.prototype.selfLink = function() {
-	return (this.fromProtein === this.toProtein);
-}
-
 CLMS.xiNET.RenderedProteinLink.prototype.initSelfLinkSVG = function() {
-	var path = this.fromProtein.getAggregateSelfLinkPath();
+	var path = this.renderedFromProtein.getAggregateSelfLinkPath();
 	this.line.setAttribute('d', path);
 	this.highlightLine.setAttribute('d', path);
-	this.fatLine.setAttribute('d', path);
-};
-
-CLMS.xiNET.RenderedProteinLink.prototype.getFromProtein = function() {
-	return this.fromProtein;
-};
-
-CLMS.xiNET.RenderedProteinLink.prototype.getToProtein = function() {
-	return this.toProtein;
+	this.thickLine.setAttribute('d', path);
 };
 
 CLMS.xiNET.RenderedProteinLink.prototype.showHighlight = function(show, andAlternatives) {
@@ -166,18 +161,18 @@ CLMS.xiNET.RenderedProteinLink.prototype.showHighlight = function(show, andAlter
 
 CLMS.xiNET.RenderedProteinLink.prototype.setSelected = function(select) {
 	if (select === true && this.isSelected === false) {
-		this.controller.selectedLinks.set(this.id, this);//ok,
+		this.crosslinkViewer.selectedLinks.set(this.id, this);//ok,
 		this.isSelected = true;
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "1");
-		this.controller.linkSelectionChanged();
+		this.crosslinkViewer.linkSelectionChanged();
 	}
 	else if (select === false && this.isSelected === true) {
-		this.controller.selectedLinks.remove(this.id);
+		this.crosslinkViewer.selectedLinks.remove(this.id);
 		this.isSelected = false;
 		this.highlightLine.setAttribute("stroke-opacity", "0");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-		this.controller.linkSelectionChanged();
+		this.crosslinkViewer.linkSelectionChanged();
 	}
 };
 
@@ -203,11 +198,12 @@ CLMS.xiNET.RenderedProteinLink.prototype.getFilteredMatches = function() {
 
 CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 	//currently no representation of monolinks at proteinLink level (hence checks for this.toProtein !== null)
-	if (this.fromProtein.isParked || (this.toProtein !== null && this.toProtein.isParked)) {
+	/*if (this.renderedFromProtein.isParked || (this.renderedToProtein !== null && this.renderedToProtein.isParked)) {
 		this.hide();
 		return false;
-	}
-	if (this.selfLink() && this.controller.selfLinksShown === false) {
+	}*/
+	
+	/*if (this.proteinLink.isSelfLink()) && this.crosslinkViewer.selfLinksShown === false) {
 		if (this.fromProtein.form === 0) {
 			this.hide();
 		} else {
@@ -218,8 +214,9 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 			}
 		}
 		return false;
-	}
-	if (this.hidden) {
+	}*/
+	
+	/*if (this.hidden) {
 		if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
 			this.hide();
 		} else {
@@ -230,12 +227,13 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 			}
 		}
 		return false;
-	}
-	var resLinks = this.residueLinks.values();
-	var resLinkCount = resLinks.length;
-	this.hd = false;
-	if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
-
+	}*/
+	
+	//~ var resLinks = this.residueLinks.values();
+	//~ var resLinkCount = resLinks.length;
+	//~ this.hd = false;
+	//if (true){//this.renderedFromProtein.form === 0 && (this.toProtein !== null && this.renderedToProtein.form === 0)) {
+		/*
 		this.ambig = true;
 		var filteredResLinks = [];
 		var filteredMatches = d3.map();
@@ -287,7 +285,7 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 			this.ambig = (this.ambig && (altCLMS.xiNET.RenderedProteinLinks.keys().length > 1));
 			this.dashedLine(this.ambig);
 
-			if (this.controller.groups.values().length > 1 && this.controller.groups.values().length < 5) {
+			if (this.crosslinkViewer.groups.values().length > 1 && this.crosslinkViewer.groups.values().length < 5) {
 				var groupCheck = d3.set();
 				var matchArray = filteredMatches.values();
 				var countFilteredMatches = matchArray.length;
@@ -296,7 +294,7 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 					groupCheck.add(match.group);
 				}
 				if (groupCheck.values().length == 1){
-					var c = this.controller.linkColours(groupCheck.values()[0]);
+					var c = this.crosslinkViewer.linkColours(groupCheck.values()[0]);
 					//~ //console.log(">"+groupCheck.values()[0] + "\t" + c);
 					this.line.setAttribute("stroke", c);
 				}
@@ -314,17 +312,17 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 					this.line.setAttribute("stroke", "black");
 					this.line.setAttribute("stroke-width", 1);
 				}
-			}
+			}*/
 			this.show();
 			return true;
-		}
-		else {
-			this.hide();
-			return false;
-		}
-	}
+		//~ }
+		//~ else {
+			//~ this.hide();
+			//~ return false;
+		//~ }
+	/*}
 	else {
-		if (!(this.toProtein === null && this.fromProtein.form === 0)){
+		if (!(this.renderedToProtein === null && this.renderedFromProtein.form === 0)){
 			var showedResResLink = false;
 			//at least one end was in stick form
 			for (var rl = 0; rl < resLinkCount; rl++) {
@@ -334,16 +332,16 @@ CLMS.xiNET.RenderedProteinLink.prototype.check = function() {
 			}
 			return showedResResLink; //is this most sensible thing to return? Or false becuase CLMS.xiNET.RenderedProteinLink was not shown?
 		}
-	}
+	}*/
 };
 
 CLMS.xiNET.RenderedProteinLink.prototype.dashedLine = function(dash) {
-	if (this.controller.unambigLinkFound == true) {
+	if (this.crosslinkViewer.unambigLinkFound == true) {
 			if (dash){
 			if (this.selfLink() === true) {
 				this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
 			} else {
-				this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+				this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
 			}
 		}
 		else if (!dash){
@@ -354,40 +352,40 @@ CLMS.xiNET.RenderedProteinLink.prototype.dashedLine = function(dash) {
 
 CLMS.xiNET.RenderedProteinLink.prototype.show = function() {
 		// TODO?: check how some of this compares to whats in Refresh.js, scale()
-		if (!this.shown) {
-			this.shown = true;
-			if (this.selfLink()) {
-				if (CLMS.xiNET.RenderedProteinLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-					this.fatLine.setAttribute("transform", "translate(" +
+		//~ if (!this.shown) {
+			//~ this.shown = true;
+			if (this.proteinLink.isSelfLink() === true) {
+				if (CLMS.xiNET.RenderedProteinLink.maxNoCrossLinks > 1) {
+					this.thickLine.setAttribute("transform", "translate(" +
 						this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
-						+ " scale(" + (this.controller.z) + ")");
-					this.controller.p_pLinksWide.appendChild(this.fatLine);
+						+ " scale(" + (this.crosslinkViewer.z) + ")");
+					this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
 				}
-				this.line.setAttribute("transform", "translate(" + this.fromProtein.x
-						+ " " + this.fromProtein.y + ")" + " scale(" + (this.controller.z) + ")");
-				this.highlightLine.setAttribute("transform", "translate(" + this.fromProtein.x
-						+ " " + this.fromProtein.y + ")" + " scale(" + (this.controller.z) + ")");
+				this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+						+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+				this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+						+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
-				this.controller.highlights.appendChild(this.highlightLine);
-				this.controller.p_pLinks.appendChild(this.line);
+				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+				this.crosslinkViewer.p_pLinks.appendChild(this.line);
 			}
 			else {
-				this.line.setAttribute("stroke-width", this.controller.z * 1);
-				this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
-				this.setLineCoordinates(this.fromProtein);
-				this.setLineCoordinates(this.toProtein);
-				if (CLMS.xiNET.RenderedProteinLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-					this.controller.p_pLinksWide.appendChild(this.fatLine);
+				this.line.setAttribute("stroke-width", this.crosslinkViewer.z * 1);
+				this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+				this.setLineCoordinates(this.renderedFromProtein);
+				this.setLineCoordinates(this.renderedToProtein);
+				if (CLMS.xiNET.RenderedProteinLink.maxNoCrossLinks > 1) {
+					this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
 				}
-				this.controller.highlights.appendChild(this.highlightLine);
-				this.controller.p_pLinks.appendChild(this.line);
+				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+				this.crosslinkViewer.p_pLinks.appendChild(this.line);
 			}
-		}
-		if (CLMS.xiNET.RenderedProteinLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
+		//~ }
+		if (CLMS.xiNET.RenderedProteinLink.maxNoCrossLinks > 1) {
 			if (this.selfLink()) {
-				this.fatLine.setAttribute("stroke-width", this.w);
+				this.thickLine.setAttribute("stroke-width", this.w);
 			} else {
-				this.fatLine.setAttribute("stroke-width", this.controller.z * this.w);
+				this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
 			}
 		}
 };
@@ -396,45 +394,45 @@ CLMS.xiNET.RenderedProteinLink.prototype.hide = function() {
 	if (this.shown) {
 		this.shown = false;
 		if (this.selfLink()) {
-			//TODO: be more selective about when to show 'fatLine'
+			//TODO: be more selective about when to show 'thickLine'
 			if (CLMS.xiNET.RenderedProteinLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-				this.controller.p_pLinksWide.removeChild(this.fatLine);
+				this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
 			}
-			this.controller.highlights.removeChild(this.highlightLine);
-			this.controller.p_pLinks.removeChild(this.line);
+			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+			this.crosslinkViewer.p_pLinks.removeChild(this.line);
 		} else {
 			if (CLMS.xiNET.RenderedProteinLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-				this.controller.p_pLinksWide.removeChild(this.fatLine);
+				this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
 			}
-			this.controller.highlights.removeChild(this.highlightLine);
-			this.controller.p_pLinks.removeChild(this.line);
+			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+			this.crosslinkViewer.p_pLinks.removeChild(this.line);
 		}
 	}
 };
 
 CLMS.xiNET.RenderedProteinLink.prototype.setLineCoordinates = function(interactor) {
 	//if not linker modified pep
-	if (this.selfLink() === false && this.getToProtein() !== null){
+	//~ if (this.proteinLink.isSelfLink() === false && this.renderedToProtein !== null){
 		//don't waste time changing DOM if this not visible
-		if (this.shown) {
-			if (this.getFromProtein() === interactor) {
+		//~ if (this.shown) {
+			if (this.renderedFromProtein === interactor) {
 						this.line.setAttribute("x1", interactor.x);
 						this.line.setAttribute("y1", interactor.y);
 						this.highlightLine.setAttribute("x1", interactor.x);
 						this.highlightLine.setAttribute("y1", interactor.y);
-						this.fatLine.setAttribute("x1", interactor.x);
-						this.fatLine.setAttribute("y1", interactor.y);
+						this.thickLine.setAttribute("x1", interactor.x);
+						this.thickLine.setAttribute("y1", interactor.y);
 			}
-			else if (this.getToProtein() === interactor) {
+			else if (this.renderedToProtein === interactor) {
 						this.line.setAttribute("x2", interactor.x);
 						this.line.setAttribute("y2", interactor.y);
 						this.highlightLine.setAttribute("x2", interactor.x);
 						this.highlightLine.setAttribute("y2", interactor.y);
-						this.fatLine.setAttribute("x2", interactor.x);
-						this.fatLine.setAttribute("y2", interactor.y);
+						this.thickLine.setAttribute("x2", interactor.x);
+						this.thickLine.setAttribute("y2", interactor.y);
 			}
-		}
-	}
+		//~ }
+	//~ }
 }
 
 CLMS.xiNET.RenderedProteinLink.prototype.getOtherEnd = function(protein) {

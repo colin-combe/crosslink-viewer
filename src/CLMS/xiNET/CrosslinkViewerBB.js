@@ -9,7 +9,6 @@
 	//~ this.marquee.setAttribute('class', 'marquee');
 	//~ this.marquee.setAttribute('fill', 'red');
 
-
 (function(win) {
 	"use strict";
 
@@ -17,12 +16,15 @@
 	win.CLMS.xiNET = {}; //crosslinkviewer's javascript namespace
 
 	win.CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
+
 		initialize: function (viewOptions) {
+
 			var defaultOptions = {};
+			
 			this.options = _.extend(defaultOptions, viewOptions.myOptions);
-			
+
 			var self = this;
-			
+
 			d3.select(this.el).selectAll("*").remove();//avoids prob with 'save - web page complete'
 
 			//create SVG elemnent
@@ -53,11 +55,8 @@
 			this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
 			this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
+			//add SVG element to this.el
 			this.el.appendChild(this.svgElement);
-
-			//these attributes are used by checkboxes to hide self links or ambiguous links
-			this.selfLinksShown = true;
-			this.ambigShown = true;
 
 			// filled background needed, else cannot click/drag background
 			// size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
@@ -71,7 +70,8 @@
 			background.setAttribute("fill-opacity", "1");
 			background.setAttribute("fill", "#FFFFFF");
 			this.svgElement.appendChild(background);
-			// various groups needed
+			
+			// various SVG groups needed
 			this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.container.setAttribute("id", "container");
 
@@ -100,6 +100,7 @@
 			this.container.appendChild(this.proteinUpper);
 
 			this.svgElement.appendChild(this.container);
+			
 			//showing title as tooltips is NOT part of svg spec (even though browsers do this)
 			//also more repsonsive / more control if we do our own
 			this.tooltip = document.createElementNS(CLMS.xiNET.svgns, "text");
@@ -127,17 +128,19 @@
 			this.svgElement.appendChild(this.tooltip);
 
 			this.clear();
+			
 			this.initProteins();
+			
 			this.initLayout();
 
-			//~ var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
-			//~ for(var crossLink of crossLinks){
-//~ 
-				//~ var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-				//~ this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-//~ 
-			//~ }
-			
+			var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
+			for(var proteinLink of proteinLinks){
+
+				var renderedProteinLink = new CLMS.xiNET.RenderedProteinLink(proteinLink, this);
+				this.renderedProteinLinks.set(proteinLink.id, renderedProteinLink);
+
+			}
+
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
@@ -151,16 +154,12 @@
 			this.listenTo (this.model, "change:highlights", this.highlightsChanged);
 			this.listenTo (this.model, "change:selection", this.selectionChanged);
 
-			if (viewOptions.displayEventName) {
-				this.listenTo (CLMSUI.vent, viewOptions.displayEventName, this.setVisible);
-			}
 			this.render();
 		},
 
 		clear: function () {
 
-			//this.sequenceInitComplete = false;
-			if (this.force) {
+			if (this.force) { // d3 force directed layout
 				this.force.stop();
 			}
 			this.force = null;
@@ -171,18 +170,14 @@
 			d3.select(this.proteinLower).selectAll("*").remove();
 			d3.select(this.proteinUpper).selectAll("*").remove();
 
-			//are we panning?
 			this.panning = false;
-			// if we are dragging something at the moment - this will be the element that is draged
 			this.dragElement = null;
-			// are we dragging at the moment?
 			this.dragging = false;
-			// from where did we start dragging
 			this.dragStart = {};
-			// are we rotating at the moment
 			this.rotating = false;
 
 			this.renderedProteins = new Map();
+			this.renderedProteinLinks = new Map();
 			this.renderedCrossLinks = new Map();
 			this.matches = [];
 			this.groups = d3.set();
@@ -207,11 +202,17 @@
 		},
 
 		checkLinks: function() {
-			var links = this.renderedCrossLinks.values();
-			for (var link of links) {
-				link.check();
+			
+			var pLinks = this.renderedProteinLinks.values();
+			for (var pLink of pLinks) {
+				pLink.check();
 			}
-			//this.linkSelectionChanged();
+			
+			var  cLinks = this.renderedCrossLinks.values();
+			for (var cLink of cLinks) {
+				cLink.check();
+			}
+			
 		},
 
 		initLayout: function (){
@@ -291,7 +292,6 @@
 			for (var protein of prots){
 				protein.init();
 			}
-			this.sequenceInitComplete = true;
 			//~ if (protCount < 3) {
 				//~ for (var j =0; j < protCount; j++){
 					//~ prots[j].busy = false;
@@ -352,7 +352,7 @@
 							//~ if (protLink.fromProtein.form === 0 && protLink.toProtein.form === 0) {
 								//~ protLink.line.setAttribute("stroke-width", this.z * xiNET.linkWidth);
 								//~ protLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-								//~ protLink.fatLine.setAttribute("stroke-width", this.z * protLink.w);
+								//~ protLink.thickLine.setAttribute("stroke-width", this.z * protLink.w);
 								//~ if (protLink.ambig) {
 									//~ protLink.dashedLine(true); //rescale spacing of dashes
 								//~ }
@@ -563,15 +563,9 @@
 					if (this.state === CLMS.xiNET.Controller.DRAGGING) {
 						// we are currently dragging things around
 						var ox, oy, nx, ny;
-						if (typeof this.dragElement.x === 'undefined') { // if not a protein
+						if (!this.dragElement.x) { // if not a protein
 							//its a link - drag whole connected subgraph
-							var prot;
-							if (this.dragElement.fromProtein) {
-								prot = this.dragElement.fromProtein;
-							}
-							else {
-								prot = this.dragElement.proteinLink.fromProtein;
-							}
+							var prot = this.dragElement.renderedFromProtein;
 							var prots = this.renderedProteins.values();
 							for (var protein of prots) {
 								protein.subgraph = null;
@@ -709,7 +703,7 @@
 					} //end of protein drag; do nothing
 				}
 				else if (rightclick) { //right click on background; show all hidden links
-					var links = this.proteinLinks.values();
+					var links = this.renderedProteinLinks.values();
 					var linkCount = links.length;
 					for (var l = 0; l < linkCount; l++) {
 						var link = links[l];
@@ -908,7 +902,7 @@
 			this.subgraphs.sort(function(a, b) {
 				return a.nodes.values().length - b.nodes.values().length;
 			});
-			
+
 			var prots = this.renderedProteins.values();
 			if (proteinCount === 1) {
 				var protein = prots.next().value;
@@ -1200,13 +1194,13 @@
 
 		highlightsChanged: function () {
 			//~ console.log ("cross-link viewer highlightsChanhged");
-			
+
 			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
 				renderedCrossLink.showHighlight(false);
 			}
-			
+
 			var crossLink = this.model.get("highlights")[0];
-			
+
 			if (crossLink){
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
 				renderedCrossLink.showHighlight(true);
@@ -1218,13 +1212,13 @@
 
 		selectionChanged: function () {
 			//~ console.log ("cross-link viewer highlightsChanhged");
-			
+
 			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
 				renderedCrossLink.setSelected(false);
 			}
-			
+
 			var crossLink = this.model.get("highlights")[0];
-			
+
 			if (crossLink){
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
 				renderedCrossLink.setSelected(true);
