@@ -20,7 +20,7 @@
 		initialize: function (viewOptions) {
 
 			var defaultOptions = {};
-			
+
 			this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
 			var self = this;
@@ -70,7 +70,7 @@
 			background.setAttribute("fill-opacity", "1");
 			background.setAttribute("fill", "#FFFFFF");
 			this.svgElement.appendChild(background);
-			
+
 			// various SVG groups needed
 			this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
 			this.container.setAttribute("id", "container");
@@ -100,7 +100,7 @@
 			this.container.appendChild(this.proteinUpper);
 
 			this.svgElement.appendChild(this.container);
-			
+
 			//showing title as tooltips is NOT part of svg spec (even though browsers do this)
 			//also more repsonsive / more control if we do our own
 			this.tooltip = document.createElementNS(CLMS.xiNET.svgns, "text");
@@ -128,9 +128,9 @@
 			this.svgElement.appendChild(this.tooltip);
 
 			this.clear();
-			
+
 			this.initProteins();
-			
+
 			this.initLayout();
 
 			var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
@@ -149,8 +149,10 @@
 
 			}
 
+			this.listenTo (this.model.get("interactors"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
+			this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
 			this.listenTo (this.model.get("filterModel"), "change", this.render);    // any property changing in the filter model means rerendering this view
-			this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
+			//~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
 			this.listenTo (this.model, "change:highlights", this.highlightsChanged);
 			this.listenTo (this.model, "change:selection", this.selectionChanged);
 
@@ -201,18 +203,22 @@
 
 		},
 
+		dataChanged: function() {
+			console.log("data changed");
+		},
+
 		checkLinks: function() {
-			
+
 			var pLinks = this.renderedProteinLinks.values();
 			for (var pLink of pLinks) {
 				pLink.check();
 			}
-			
+
 			var  cLinks = this.renderedCrossLinks.values();
 			for (var cLink of cLinks) {
 				cLink.check();
 			}
-			
+
 		},
 
 		initLayout: function (){
@@ -684,12 +690,10 @@
 							} else if (evt.shiftKey) { //if shift key
 								this.dragElement.switchStickScale(c);
 							} else {
-								if (this.sequenceInitComplete === true){
-									if (this.dragElement.form === 1) {
-										this.dragElement.setForm(0, c);
-									} else {
-										this.dragElement.setForm(1, c);
-									}
+								if (this.dragElement.form === 1) {
+									this.dragElement.setForm(0, c);
+								} else {
+									this.dragElement.setForm(1, c);
 								}
 							}
 						}
@@ -858,7 +862,6 @@
 			this.tooltip_bg.setAttribute("display","none");
 			this.tooltip_subBg.setAttribute("display","none");
 		},
-
 
 		autoLayout: function() {
 			if (this.force) {this.force.stop();}

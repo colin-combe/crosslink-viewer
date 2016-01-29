@@ -4,7 +4,7 @@
 			<title>xiNET | Examples</title>
 			<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 			<meta name="description" content="xiNET is a visualisation tool for cross-linking and mass spectrometry data." />
-			<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />	
+			<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />
 			<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 			<meta name="apple-mobile-web-app-capable" content="yes">
 			<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -20,164 +20,66 @@
         <!--libraries-->
         <script type="text/javascript" src="./vendor/d3.js"></script>
         <script type="text/javascript" src="./vendor/colorbrewer.js"></script>
-       	<script type="text/javascript" src="./vendor/FileSaver.js"></script>
-        <script type="text/javascript" src="./vendor/rgbcolor.js"></script>   
-        <!--xiNET-->
-        <script type="text/javascript" src="./src/controller/Init.js"></script>
-        <script type="text/javascript" src="./src/controller/MouseEvents.js"></script>
-        <script type="text/javascript" src="./src/controller/Layout.js"></script>
-        <script type="text/javascript" src="./src/controller/Refresh.js"></script>
-        <script type="text/javascript" src="./src/controller/ToolTips.js"></script>
-        <script type="text/javascript" src="./src/model/Match.js"></script>
-        <script type="text/javascript" src="./src/model/Link.js"></script>
-        <script type="text/javascript" src="./src/model/Protein.js"></script>
-        <script type="text/javascript" src="./src/model/Annotation.js"></script>
-        <script type="text/javascript" src="./src/model/ProteinLink.js"></script>
-        <script type="text/javascript" src="./src/model/ResidueLink.js"></script>
-        <script type="text/javascript" src="./src/controller/ExternalControls.js"></script>
-        <script type="text/javascript" src="./src/controller/Rotator.js"></script>
-        <script type="text/javascript" src="./src/controller/xiNET_Storage.js"></script>
-        <script type="text/javascript" src="./src/controller/ReadCSV.js"></script>
-        <script type="text/javascript" src="./src/controller/Fasta.js"></script>
-	</head>	
+        <script type="text/javascript" src="./vendor/rgbcolor.js"></script>
+        <script type="text/javascript" src="./vendor/split.js"></script>
+
+        <script type="text/javascript" src="./vendor/underscore.js"></script>
+        <script type="text/javascript" src="./vendor/zepto.js"></script>
+        <script type="text/javascript" src="./vendor/backbone.js"></script>
+
+<!--
+       	<script type="text/javascript" src="./vendor/CLMS_model.js"></script>
+-->
+
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/SearchResultsModel.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/SpectrumMatch.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/Protein.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/AnnotatedRegion.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/ProteinLink.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/model/CrossLink.js"></script>
+        <script type="text/javascript" src="../CLMS-model/src/CLMS/util/xiNET_Storage.js"></script>
+
+<!--
+       <script type="text/javascript" src="./vendor/crosslinkviewer.js"></script>
+-->
+
+	 	<script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/CrosslinkViewerBB.js"></script>
+        <script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/RenderedLink.js"></script>
+        <script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/RenderedProtein.js"></script>
+        <script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/RenderedProteinLink.js"></script>
+        <script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/RenderedCrossLink.js"></script>
+        <script type="text/javascript" src="../crosslink-viewer/src/CLMS/xiNET/Rotator.js"></script>
+        
+        <script type="text/javascript" src="../CLMS-UI/js/compositeModelType.js"></script>
+                
+	</head>
 	<body>
 
-	<!-- Slidey panels -->	
-	<div class="overlay-box" id="infoPanel">
-	<div id="networkCaption">
-		<p>No selection.</p>
-	</div>
-	</div>
 
-	<div class="overlay-box" id="helpPanel">
-	<table class="overlay-table"  bordercolor="#eee" >
-		<tr>
-			<td>Toggle the proteins between a bar and a circle</td>
-			<td>Click on protein</td>
-		</tr>
-		<tr>
-			<td>Zoom</td>
-			<td>Mouse wheel</td>
-		</tr>
-		<tr>
-			<td>Pan</td>
-			<td>Click and drag on background</td>
-		</tr>
-		<tr>
-			<td>Move protein</td>
-			<td>Click and drag on protein</td>
-		</tr>
-		<tr>
-			<td>Expand bar <br>(increases bar length until sequence is visible)</td>
-			<td>Shift_left-click on protein</td>
-		</tr>
-		<tr>
-			<td>Rotate bar</td>
-			<td>Click and drag on handles that appear at end of bar</td>
-		</tr>
-		<tr>
-			<td>Hide/show protein (and all links to it)</td>
-			<td>Right-click on protein</td>
-		</tr>
-		<tr>
-			<td>Hide links between two specific proteins</td>
-			<td>Right click on any link between those proteins</td>
-		</tr>
-		<tr>
-			<td>Show all hidden links</td>
-			<td>Right click on background</td>
-		</tr>
-		<tr>
-			<td>'Flip' self-links</td>
-			<td>Right-click on self-link</td>
-		</tr>
-	</table> 
-</div>	
 
-<div class="overlay-box" id="legendPanel">
-	<div><img src="./demo/images/fig3_1.svg"></div>
-</div>	
-
-<script type="text/javascript">
-				//<![CDATA[
-				helpShown = false;
-				infoShown = false;
-				legendShown = false;
-				function toggleHelpPanel() {
-					if (helpShown){
-						hideHelpPanel();
-					}
-					else {
-						showHelpPanel();
-					}
-				}
-				
-				function toggleInfoPanel() {
-					if (infoShown){
-						hideInfoPanel();
-					}
-					else {
-						showInfoPanel();
-					}
-				}
-				function toggleLegendPanel() {
-					if (legendShown){
-						hideLegendPanel();
-					}
-					else {
-						showLegendPanel();
-					}
-				}
-				
-				function showHelpPanel() {
-						helpShown = true;
-						d3.select("#helpPanel").transition().style("height", "500px").style("top", "100px").duration(700);
-				}
-				function hideHelpPanel() {
-						helpShown = false;
-						d3.select("#helpPanel").transition().style("height", "0px").style("top", "-95px").duration(700);
-				}
-				function showInfoPanel() {
-						infoShown = true;
-						d3.select("#infoPanel").transition().style("height", "300px").style("bottom", "115px").duration(700);
-
-				}
-				function hideInfoPanel() {
-						infoShown = false;
-						d3.select("#infoPanel").transition().style("height", "0px").style("bottom", "-95px").duration(700);
-
-				}
-				function showLegendPanel() {
-						legendShown = true;
-						d3.select("#legendPanel").transition().style("height", "500px").style("top", "100px").duration(700);
-
-				}
-				function hideLegendPanel() {
-						legendShown = false;
-						d3.select("#legendPanel").transition().style("height", "0px").style("top", "-95px").duration(700);
-
-				}
-				//]]>
-</script>
 		<!-- Main -->
 		<div id="main">
-			<div class="container">   	 				
+			<div class="container">
 				<h1 class="page-header">Example:&nbsp;
 					<select class="btn btn-1 btn-1a" id="dataSets"  onchange="loadData();" >
 <!--
 						<option value="TFIIF">TFIIF</option>
 -->
+
 						<option selected value="PolII">PolII</option>
 						<option value="PP2A">PP2A</option>
 						<option value="NPC">NPC</option>
 					</select>
+<!--					
 					<div style='float:right'>
 						<button class="btn btn-1 btn-1a network-control resetzoom" onclick="xlv.reset();">
 							Reset
 						</button>
+-->
 						<!--
 						<button class="btn btn-1 btn-1a network-control" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
 						-->
+<!--
 						<label class="btn">
 								Legend
 								<input id="selection" onclick="toggleLegendPanel()" type="checkbox">
@@ -191,22 +93,24 @@
 								<input id="help" onclick="toggleHelpPanel()" type="checkbox">
 						</label>
 					</div>
+-->
 				</h1>
-   	 		</div>				   	
-			<div class="long-citation" id="citation"></div> 				
-			<div id="networkContainer" style="top:200px;"></div>
-			<div class="controlsexamplespage">						
+   	 		</div>
+			<div class="long-citation" id="citation"></div>
+			<div id="networkDiv" style="top:200px;"></div>
+			<div class="controlsexamplespage">
+<!--
 						<label>Self-Links
-								<input checked="checked" 
-									   id="selfLinks" 			
-									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)" 
+								<input checked="checked"
+									   id="selfLinks"
+									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)"
 									   type="checkbox"
 								/>
 						</label>
 						<label>&nbsp;Ambig.
-								<input checked="checked" 
-									   id="ambig" 			
-									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)" 
+								<input checked="checked"
+									   id="ambig"
+									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)"
 									   type="checkbox"
 								/>
 						</label>
@@ -215,59 +119,31 @@
 							<input id="slide" type="range" min="0" max="100" step="1" value="0" oninput="sliderChanged()"/>
 							&nbsp;<p class="scoreLabel" id="scoreLabel2"></p>
 							<p id="cutoffLabel">(cut-off)</p>
-							
-						</div> <!-- outlined scoreSlider -->
+
+						</div>
 						<div style='float:right'>
 							<label>Annotations
 							<select id="annotationsSelect" onChange="changeAnnotations();">
-								<option selected='selected'>Custom</option> 
-								<option>UniprotKB</option> 
-								<option>SuperFamily</option>  
-								<option>None</option>  
+								<option selected='selected'>Custom</option>
+								<option>UniprotKB</option>
+								<option>SuperFamily</option>
+								<option>None</option>
 							</select>
-							</label>	
+							</label>
 						</div>
-			
-					</div>
-					<script type="text/javascript">	
-							//<![CDATA[
-							
-							var sliderDecimalPlaces = 1;
-							function getMinScore(){
-								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
-									return (Math.floor(xlv.scores.min * powerOfTen) / powerOfTen)
-											.toFixed(sliderDecimalPlaces);
-								}
-							}
-							function getMaxScore(){
-								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
-									return (Math.ceil(xlv.scores.max * powerOfTen) / powerOfTen)
-											.toFixed(sliderDecimalPlaces);
-								}
-							}
-							function sliderChanged(){
-								var slide = document.getElementById('slide');
-								var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
-								
-								var cut = ((slide.value / 100) 
-											* (getMaxScore() - getMinScore()))
-											+ (getMinScore() / 1);
-								cut = cut.toFixed(sliderDecimalPlaces);
-								var cutoffLabel = document.getElementById("cutoffLabel");
-								cutoffLabel.innerHTML = '(' + cut + ')';
-								xlv.setCutOff(cut);
-							}
-							
-							//]]>
-					</script>
-						
+-->
+
+			</div>
+
+
 		</div> <!-- MAIN -->
-	  	
+
 	  	<script type="text/javascript">
-	  	//<![CDATA[	  	
-			var config = [				
+	  	//<![CDATA[
+
+			"use strict";
+
+			var config = [
 				//~ {//TFIIF
 					//~ file:"./data/TFIIF.csv",
 					//~ cite:"<p>Data from <a href='http://www.nature.com/emboj/journal/v29/n4/full/emboj2009401a.html' target='_blank'>Chen ZA, Jawhari A, Fischer L, Buchen C, Tahir S, Kamenski T, Rasmussen M, Lariviere L, Bukowski-Wills J-C, Nilges M, Cramer P &amp; Rappsilber J (2010) Architecture of the RNA polymerase II–TFIIF complex revealed by cross-linking and mass spectrometry. The EMBO Journal 29: 717–726</a>.</p>"
@@ -284,273 +160,55 @@
 				{//NPC
 					file:"./demo/data/NPC.csv",
 					cite:"<p>Data from <a href='http://www.sciencedirect.com/science/article/pii/S0092867413014165' target='_blank'>Bui, K. H., von Appen, A., DiGuilio, A. L., Ori, A., Sparks, L., Mackmull, M.-T., Bock, T., Hagen, W., Andrés-Pons, A., Glavy, J. S., and Beck, M. (2013) Integrated Structural Analysis of the Human Nuclear Pore Complex Scaffold. Cell 155, 1233–1243</a>.</p>"
-				}				
+				}
 			];
 			
+            var CLMSUI = CLMSUI || {};
+            
+			CLMSUI.clmsModelInst = new window.CLMS.model.SearchResultsModel ({});
+			
+			CLMSUI.compositeModelInst = new CLMSUI.BackboneModelTypes.CompositeModelType ({
+				//~ distancesModel: CLMSUI.distancesInst,
+				clmsModel: CLMSUI.clmsModelInst,
+				//~ rangeModel: CLMSUI.rangeModelInst,
+				//~ filterModel: CLMSUI.filterModelInst,
+				//~ tooltipModel: CLMSUI.tooltipModelInst,
+				selection: [], //will contain cross-link objects
+				highlights: [], //will contain cross-link objects 
+			});
+            
+           
+
+			var crosslinkViewer = new window.CLMS.xiNET.CrosslinkViewer ({
+				el: "#networkDiv", 
+				model: CLMSUI.compositeModelInst,
+			});
+
+			loadData();
+
 			function loadData(){
 				var dataSetsSelect = document.getElementById('dataSets');
 				var path = config[dataSetsSelect.selectedIndex].file;
 				document.getElementById('citation').innerHTML = config[dataSetsSelect.selectedIndex].cite;
-				
+
 				if (config[dataSetsSelect.selectedIndex].customAnnot){
 					d3.text(config[dataSetsSelect.selectedIndex].customAnnot, "text/csv", function(annot) {
 						d3.text(path, "text/csv", function(text) {
-							xlv.clear();
-							xlv.readCSV(text, null, annot);
-							initSlider();
+							//~ CLMSUI.clmsModelInst.clear();
+							CLMSUI.clmsModelInst.readCSV(text, null, annot);
 						});
 					});
 				}
 				else {
 					d3.text(path, "text/csv", function(text) {
-						xlv.clear();
-						xlv.readCSV(text);
-						initSlider();
+						//~ CLMSUI.clmsModelInst.clear();
+						CLMSUI.clmsModelInst.readCSV(text);
 					});
-				}						
-			}
-			
-			//~ window.addEventListener('load', function() {
-				var targetDiv = document.getElementById('networkContainer');
-                xlv = new xiNET.Controller(targetDiv);
-                
-                xlv.linkSelectionCallbacks.push(function (selectedResidueLinks){
-					console.log("SELECTED"+selectedResidueLinks);				
-				});
-				xlv.linkHighlightsCallbacks.push(function (highlightedLinks){
-					console.log("HIGHLIGHTED:"+highlightedLinks);				
-				});
-				
-				loadData();
-                changeAnnotations();
-                xlv.showSelfLinks(document.getElementById('selfLinks').checked);
-                xlv.showAmbig(document.getElementById('ambig').checked);
-			//~ }, false);
-            	 
-				 function changeAnnotations(){
-					var annotationSelect = document.getElementById('annotationsSelect');
-					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
-				 };
-				 function initSlider(){
-								if (xlv.scores === null){
-							d3.select('#scoreSlider').style('display', 'none');
-						}
-						else {
-							document.getElementById('scoreLabel1').innerHTML = "Score:" + getMinScore();
-							document.getElementById('scoreLabel2').innerHTML = getMaxScore();
-							sliderChanged();
-							d3.select('#scoreSlider').style('display', 'inline-block');
-						}
-				  };               
-           
-           
-           
-           
-           
-           /*
-//used when link clicked
-ProteinLink.prototype.showID = function() {
-    if (typeof send_match_ids === 'function') {
-        var matchIDs
-        var matches = this.getFilteredMatches();
-        var c = matches.length;
-        var matchIDs = "";
-        var firstMatch = true;
-        for (var i = 0; i < c; i++) {
-            if (firstMatch === true) {
-                firstMatch = false;
-            }
-            else {
-                matchIDs = matchIDs + ",";
-            }
-            matchIDs = matchIDs + matches[i];
-        }//
-        send_match_ids(matchIDs);
-    }
-    else {
-        var linkInfo = "<h5>" + this.fromProtein.name + " [" + this.fromProtein.id
-        + "] to " + this.toProtein.name + " [" + this.toProtein.id
-        + "]</h5>";
-        
-        //todo: remove this code duplication
-        var resLinks = this.residueLinks.values();
-        var resLinkCount = resLinks.length;
-      
-		var filteredResLinks = new Array();
-        var filteredMatches = d3.map();
-        var altProteinLinks = d3.map();
-          
-        for (var i = 0; i < resLinkCount; i++) {
-			var resLink = resLinks[i];
-			var resLinkMeetsCriteria = false;
-			if (resLink.matches) {
-				var mCount = resLink.matches.length;
-				for (var m = 0; m < mCount; m++) {
-					var match = resLink.matches[m][0];
-					if (match.meetsFilterCriteria()) {
-						if (resLinkMeetsCriteria === false) {
-							resLinkMeetsCriteria = true;
-							filteredResLinks.push(resLink);
-						}
-						filteredMatches.set(match.id);
-						if (match.isAmbig()) {
-							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
-							}
-						}
-						else {
-							this.ambig = false;
-						}
-					}
 				}
+				
 			}
-			else {
-				filteredResLinks.push(resLink);
-			}
-        }
-		var filteredResLinkCount = filteredResLinks.length;
 
-            
-		linkInfo += "<h5>" + filteredResLinkCount
-			+ " unique residue - residue linkage site";
-		if (filteredResLinkCount > 1){
-			 linkInfo += "s";
-		}
-		linkInfo += ". " + filteredMatches.values().length + " matches.</h5>";
-   
-		var scoresTable = "<table><tr>";
-		
-		scoresTable += "<th>Id</th>";
-		scoresTable += "<th>Protein1</th>";
-		scoresTable += "<th>PepPos1</th>";
-		scoresTable += "<th>PepSeq1</th>";
-		scoresTable += "<th>LinkPos1</th>";
-		scoresTable += "<th>Protein2</th>";
-		scoresTable += "<th>PepPos2</th>";
-		scoresTable += "<th>PepSeq2</th>";
-		scoresTable += "<th>LinkPos2</th>";
-		
-		scoresTable += "<th>Score</th>";
-		
-		if (this.controller.autoValidatedFound === true){
-			scoresTable += "<th>Auto</th>";
-		}
-		if (this.controller.manualValidatedFound === true){
-			scoresTable += "<th>Manual</th>";
-		}
-		
-		scoresTable += "</tr>";    
-      for (var i = 0; i < filteredResLinkCount; i ++ ){
-            var rl = filteredResLinks [i];
-            //~ linkInfo += "<h7>" + this.fromProtein.name + ", residue " + rl.fromResidue + " - "
-            //~ + this.toProtein.name + ", residue " + rl.toResidue + "</h7>";
-            var matches = rl.getFilteredMatches();
-			var c = matches.length;
-			//~ linkInfo += "<p>" + c + " match";
-			//~ if (c > 1){
-				//~ linkInfo += "es:</p>";
-			//~ } else {
-				//~ linkInfo += ":</p>";
-			//~ }
-			//~ var scoresTable = "<table><tr><th>Score</th>";//<th>Id</th>
-			//~ if (this.controller.autoValidatedFound === true){
-				//~ scoresTable += "<th>Auto</th>";
-			//~ }
-			//~ if (this.controller.manualValidatedFound === true){
-				//~ scoresTable += "<th>Manual</th>";
-			//~ }
-			//~ scoresTable += "<th>Pep Seq.1</th>";
-			//~ scoresTable += "<th>Link Pos.1</th>";
-			//~ scoresTable += "<th>Pep Seq.2</th>";
-			//~ scoresTable += "<th>Link Pos.2</th>";
-			//~ scoresTable += "</tr>";
-			for (var j = 0; j < c; j++) {
-			   scoresTable += matches[j][0].toTableRow();
-			}
-			//~ scoresTable += "</table><p>&nbsp;</p>";
-			//~ linkInfo += scoresTable;
-        }
-        			scoresTable += "</table>";//<p>&nbsp;</p>";
-			linkInfo += scoresTable;
-        this.controller.message(linkInfo);
-    }
-};*/
-   
-   
-   //used when link clicked
-/*ResidueLink.prototype.showID = function() {
-    if (typeof send_match_ids === 'function') {
-        var matches = this.getFilteredMatches();
-        var matchIDs = new Array();
-        var c = matches.length;
-        var firstMatch = true;
-        for (var i = 0; i < c; i++) {
-            if (firstMatch) {
-                firstMatch = false;
-            }
-            else {
-                matchIDs = matchIDs + ",";
-            }
-            matchIDs = matchIDs + matches[i].id;
-        }
-        send_match_ids(matchIDs);
-    }
-    else {
-		var fromProt = this.getFromProtein();
-		var toProt = this.getToProtein();
-
-		var linkInfo = "<h5>" + fromProt.name + " [" + fromProt.id
-			+ "], residue " + this.fromResidue + " to "
-			+ ((toProt)?toProt.name:"null") + " [" + ((toProt)?toProt.id:"")
-			+ "], residue " + this.toResidue + "</h5>";
-        
-        var matches = this.getFilteredMatches();
-        var c = matches.length;
-        linkInfo += "<p>" + c + " match";
-		if (c > 1){
-			linkInfo += "es:</p>";
-		} else {
-			linkInfo += ":</p>";
-		}
-		
-		var scoresTable = "<table><tr>";
-		
-		scoresTable += "<th>Id</th>";
-		scoresTable += "<th>Protein1</th>";
-		scoresTable += "<th>PepPos1</th>";
-		scoresTable += "<th>PepSeq1</th>";
-		scoresTable += "<th>LinkPos1</th>";
-		scoresTable += "<th>Protein2</th>";
-		scoresTable += "<th>PepPos2</th>";
-		scoresTable += "<th>PepSeq2</th>";
-		scoresTable += "<th>LinkPos2</th>";
-		
-		scoresTable += "<th>Score</th>";
-		
-		if (this.controller.autoValidatedFound === true){
-			scoresTable += "<th>Auto</th>";
-		}
-		if (this.controller.manualValidatedFound === true){
-			scoresTable += "<th>Manual</th>";
-		}
-		
-		scoresTable += "</tr>";
-		for (var j = 0; j < c; j++) {
-			scoresTable += matches[j][0].toTableRow();
-		}
-		
-		scoresTable += "</table><p>&nbsp;</p>";
-		
-		linkInfo += scoresTable;
-        this.controller.message(linkInfo);
-    }
-};*/
-   
-   
-                  
-                 //]]>
+        //]]>
 	  	</script>
 	</body>
 </html>
-
-
