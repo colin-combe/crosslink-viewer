@@ -291,9 +291,9 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
 				+ " scale(" + (this.crosslinkViewer.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
 				+ " scale(" + (this.crosslinkViewer.z) + ") ");
-		if (this.selfLink != null) {
-			if (typeof this.selfLink.fatLine !== 'undefined') {
-				this.selfLink.fatLine.setAttribute("transform", "translate(" + this.x
+		if (this.interactor.selfLink != null) {
+			if (typeof this.selfLink.thickLine !== 'undefined') {
+				this.selfLink.thickLine.setAttribute("transform", "translate(" + this.x
 						+ " " + this.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 			}
 				this.selfLink.line.setAttribute("transform", "translate(" + this.x
@@ -802,7 +802,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 		.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
 	 if (this.selfLink != null) {
-		var resLinks = this.selfLink.residueLinks.values();
+		var resLinks = this.selfLink.crossLinks.values();
 		var resLinkCount = resLinks.length;
 		for (var rl = 0; rl < resLinkCount; rl++) {
 			var residueLink = resLinks[rl];

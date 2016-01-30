@@ -32,6 +32,8 @@ CLMS.xiNET.RenderedProteinLink = function (proteinLink, crosslinkViewer) {
 		this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
 		this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+		
+		this.renderedFromProtein.selfLink = this;
 	}
 	
 	this.line.setAttribute("class", "link");
