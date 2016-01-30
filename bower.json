@@ -1,8 +1,8 @@
 {
   "name": "complexviewer",
-  "version": "1.0.1-beta1",
+  "version": "v1.0.1",
   "homepage": "https://github.com/MICommunity/interaction-viewer",
-  "license": "MIT",
+  "license": "Apache v2.0",
   "ignore": [
     "**/.*",
     "node_modules",
