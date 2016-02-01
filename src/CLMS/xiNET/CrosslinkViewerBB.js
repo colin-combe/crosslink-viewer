@@ -131,6 +131,7 @@
 
 			this.initProteins();
 
+			//u r here.. think about how all this gets init'ed
 		
 			var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
 			for(var proteinLink of proteinLinks){
@@ -148,7 +149,7 @@
 
 			}
 			
-	this.initLayout();
+			this.initLayout();
 
 			this.listenTo (this.model.get("interactors"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
 			this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view

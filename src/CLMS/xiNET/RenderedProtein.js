@@ -15,6 +15,10 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	//links
 	this.proteinLinks = d3.map();
 	this.selfLink = null;
+	
+	//this.renderedCrossLinks ?
+	//this.renderedSelfCrossLinks ?
+	
 	// layout info
 	this.x = 40;
 	this.y = 40;
