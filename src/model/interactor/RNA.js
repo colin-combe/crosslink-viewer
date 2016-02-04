@@ -75,7 +75,7 @@ function RNA(id, xlvController, json, name) {
     d3.select(this.labelSVG).attr("transform", 
 		"translate( -" + (15) + " " + Molecule.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
-   	 
+     
 	//make blob
 	this.outline = document.createElementNS(Config.svgns, "polygon");
 	this.outline.setAttribute("points", points);
@@ -106,4 +106,10 @@ function RNA(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
+RNA.prototype.showData = function(evt) {
+    var url = "http://rnacentral.org/rna/" + this.json.identifier.id;
+	//~ alert (url);
+	var win = window.open(url, '_blank');
+	//~ win.focus();
+}
 module.exports = RNA;

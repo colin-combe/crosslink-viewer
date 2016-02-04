@@ -86,7 +86,7 @@ function Protein(id, xinetController, json, name) {
 	this.annotationsSvgGroup = document.createElementNS(Config.svgns, "g");
     this.annotationsSvgGroup.setAttribute("opacity", 1);
 	this.upperGroup.appendChild(this.annotationsSvgGroup);
-	
+	 
 	//make outline
     this.outline = document.createElementNS(Config.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
@@ -115,4 +115,10 @@ function Protein(id, xinetController, json, name) {
 	this.showHighlight(false);
 };
 
+Protein.prototype.showData = function(evt) {
+    var url = "http://www.uniprot.org/uniprot/" + this.json.identifier.id;
+	//~ alert (url);
+	var win = window.open(url, '_blank');
+	//~ win.focus();
+}
 module.exports = Protein;

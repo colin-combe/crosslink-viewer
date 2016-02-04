@@ -98,7 +98,7 @@ function BioactiveEntity(id, xlvController, json, name) {
     };
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
-    };
+    };     
      
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
@@ -106,4 +106,10 @@ function BioactiveEntity(id, xlvController, json, name) {
     this.isSelected = false;
 };
 
+BioactiveEntity.prototype.showData = function(evt) {
+    var url = "https://www.ebi.ac.uk/chebi/searchId.do;?chebiId=" + this.json.identifier.id;
+	//~ alert (url);
+	var win = window.open(url, '_blank');
+	//~ win.focus();
+}
 module.exports = BioactiveEntity;

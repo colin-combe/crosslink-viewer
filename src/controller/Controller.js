@@ -222,15 +222,21 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 				if (jsonParticipant.features) features = jsonParticipant.features;
 
 				var fCount = features.length;
-				for (var f = 0; f < fCount; f++){
+				for (var f = 0; f < fCount; f++){// for each feature
 					var feature = features[f];
 					var fromSequenceData = feature.sequenceData;
-					if (feature.linkedFeatures) {
+					if (feature.linkedFeatures) { // if linked features
 						var linkedFeatureIDs = feature.linkedFeatures;
-						// break feature links to different nodes into seperate binary links
-						var toSequenceData_indexedByNodeId = d3.map();
+						
+						
 						var linkedFeatureCount = linkedFeatureIDs.length;
-						for (var lfi = 0; lfi < linkedFeatureCount; lfi++){
+						for (var lfi = 0; lfi < linkedFeatureCount; lfi++){ //for each linked feature
+							
+							// !! following is a hack, code can't deal with 
+							// !! composite binding region across two different interactors							
+							// break feature links to different nodes into seperate binary links
+							var toSequenceData_indexedByNodeId = d3.map();
+														
 							var linkedFeature = self.features.get(linkedFeatureIDs[lfi])
 							var seqDataCount = linkedFeature.sequenceData.length;
 							for (var s = 0; s < seqDataCount; s++){
@@ -246,26 +252,29 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 								}
 								toSequenceData = toSequenceData.push(seqData)
 							}
-						}
-						var countEndNodes = toSequenceData_indexedByNodeId.values().length;
-						for (var n = 0; n < countEndNodes; n++) {
-							toSequenceData = toSequenceData_indexedByNodeId.values()[n];
-							var fromMolecule = getNode(fromSequenceData[0]);
-							var toMolecule = getNode(toSequenceData[0]);
-							var link;
-							if (fromMolecule === toMolecule){
-								link = getUnaryLink(fromMolecule, interaction);
-							}
-							else {
-								link = getBinaryLink(fromMolecule, toMolecule, interaction);
-							}
-							var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
-							fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
-							toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
-							link.sequenceLinks.set(sequenceLink.id, sequenceLink);
-						}
-					}
-				}
+							
+							var countEndNodes = toSequenceData_indexedByNodeId.values().length;
+							for (var n = 0; n < countEndNodes; n++) {
+								toSequenceData = toSequenceData_indexedByNodeId.values()[n];
+								var fromMolecule = getNode(fromSequenceData[0]);
+								var toMolecule = getNode(toSequenceData[0]);
+								var link;
+								if (fromMolecule === toMolecule){
+									link = getUnaryLink(fromMolecule, interaction);
+								}
+								else {
+									link = getBinaryLink(fromMolecule, toMolecule, interaction);
+								}
+								var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
+								fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+								toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+								link.sequenceLinks.set(sequenceLink.id, sequenceLink);
+							}							
+							
+						}// end for each linked feature
+												
+					}// end if linked features
+				}// end for each feature
 			}
 		}
 	}
