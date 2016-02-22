@@ -1,12 +1,10 @@
-//		xiNET cross-link viewer
-//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//	xiNET cross-link viewer
+//	Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
-//		author: Colin Combe
+//	author: Colin Combe
 //
-//		CLMS.xiNET.RenderedCrossLink.js
-// 		the class representing a residue-residue link
-
-"use strict";
+//	CLMS.xiNET.RenderedCrossLink.js
+// 	the class representing a residue-residue link
 
 CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 	this.crossLink = crossLink;
@@ -16,7 +14,14 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
 	this.renderedToProtein =
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.getToProtein().id);
-					
+		
+	if (this.crossLink.isSelfLink() == true) {
+		this.renderedFromProtein.renderedSelfCrossLinks.set(crossLink.id, this);
+	} else {
+		this.renderedFromProtein.renderedInterCrossLinks.set(crossLink.id, this);
+		this.renderedToProtein.renderedInterCrossLinks.set(crossLink.id, this);
+	}
+				
 	this.tooltip = this.crossLink.id;
 
 	//used to avoid some unnecessary manipulation of DOM
@@ -329,7 +334,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 		//~ return;
 	//~ }
 	//non self, not linker modified pep's links only
-	if (this.crossLink.isSelfLink() || !this.renderedToProtein){
+	if (this.crossLink.isSelfLink() === false && this.renderedToProtein){
 		//don't waste time changing DOM if link not visible
 		if (this.shown) {
 			var x, y;

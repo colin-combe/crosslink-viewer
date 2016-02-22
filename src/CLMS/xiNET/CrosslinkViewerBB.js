@@ -1,21 +1,18 @@
-//		xiNET
+//	xiNET
 //
-//		Colin Combe, Martin Graham, Rappsilber Laboratory, 2015
+//	Colin Combe, Martin Graham, Rappsilber Laboratory, 2015
 //
-//		CrosslinkViewerBB.js
+//	CrosslinkViewerBB.js
 
 
 //~ this.marquee = document.createElementNS(xiNET.svgNS, 'rect');
 	//~ this.marquee.setAttribute('class', 'marquee');
 	//~ this.marquee.setAttribute('fill', 'red');
 
-(function(win) {
-	"use strict";
+	var CLMS = CLMS || {};
+	CLMS.xiNET = {}; //crosslink-viewer's javascript namespace
 
-	win.CLMS = win.CLMS || {};
-	win.CLMS.xiNET = {}; //crosslinkviewer's javascript namespace
-
-	win.CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
+	CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
 		initialize: function (viewOptions) {
 
@@ -131,22 +128,20 @@
 
 			this.initProteins();
 
-			//u r here.. think about how all this gets init'ed
-		
-			var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
+			/*var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
 			for(var proteinLink of proteinLinks){
 
 				var renderedProteinLink = new CLMS.xiNET.RenderedProteinLink(proteinLink, this);
 				this.renderedProteinLinks.set(proteinLink.id, renderedProteinLink);
 
-			}
+			}*/
 
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
 				var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
 				this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-
+				//renderedCrossLink.
 			}
 			
 			this.initLayout();
@@ -559,7 +554,6 @@
 		// dragging/rotation/panning/selecting
 		mouseMove: function(evt) {
 			//~ this.preventDefaultsAndStopPropagation(evt);
-		  //  if (this.sequenceInitComplete) { // just being cautious
 				var p = this.getEventPoint(evt);// seems to be correct, see below
 				var c = this.mouseToSVG(p.x, p.y);
 
@@ -571,7 +565,7 @@
 					if (this.state === CLMS.xiNET.Controller.DRAGGING) {
 						// we are currently dragging things around
 						var ox, oy, nx, ny;
-						if (!this.dragElement.x) { // if not a protein
+						if (!this.dragElement.interactor) { // if not a protein
 							//its a link - drag whole connected subgraph
 							var prot = this.dragElement.renderedFromProtein;
 							var prots = this.renderedProteins.values();
@@ -866,7 +860,9 @@
 		},
 
 		autoLayout: function() {
-			if (this.force) {this.force.stop();}
+			if (this.force) {
+				this.force.stop();
+			}
 			var width = this.svgElement.parentNode.clientWidth;
 			var height = this.svgElement.parentNode.clientHeight;
 			var self = this;
@@ -1247,9 +1243,6 @@
 		}
 
 	});
-
-} (this));
-
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 CLMS.xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements

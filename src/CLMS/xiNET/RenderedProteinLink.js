@@ -1,12 +1,10 @@
-//		xiNET Cross-link Viewer
-//		Copyright 2013 Rappsilber Laboratory
+//	xiNET Cross-link Viewer
+//	Copyright 2013 Rappsilber Laboratory
 //
-//		author: Colin Combe
+//	author: Colin Combe
 //
-//		CLMS.xiNET.RenderedProteinLink.js
-// 		the class representing a protein-protein link
-
-"use strict";
+//	CLMS.xiNET.RenderedProteinLink.js
+// 	the class representing a protein-protein link
 
 CLMS.xiNET.RenderedProteinLink = function (proteinLink, crosslinkViewer) {
 	

@@ -1,11 +1,9 @@
-//		xiNET cross-link viewer
-//		Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//	xiNET cross-link viewer
+//	Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
-//		authors: Lutz Fischer, Colin Combe
+//	authors: Lutz Fischer, Colin Combe
 //
-//		CLMS.xiNET.RenderedProtein.js
-
-"use strict";
+//	CLMS.xiNET.RenderedProtein.js
 
 CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.interactor = interactor;
@@ -13,11 +11,11 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.tooltip = this.interactor.name + ' [' + this.interactor.accession + ']';// + this.accession;
 
 	//links
-	this.proteinLinks = d3.map();
-	this.selfLink = null;
+	//~ this.proteinLinks = d3.map();
+	//~ this.selfLink = null;
 	
-	//this.renderedCrossLinks ?
-	//this.renderedSelfCrossLinks ?
+	this.renderedInterCrossLinks = new Map();
+	this.renderedSelfCrossLinks = new Map();
 	
 	// layout info
 	this.x = 40;
@@ -186,7 +184,6 @@ CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
 	return br;
 };
 
-
 //only output the info needed to reproduce the layout, used by save layout function
 CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 	return {
@@ -200,6 +197,7 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 		flipped: this.isFlipped
 	};
 };
+
 /*
 CLMS.xiNET.RenderedProtein.prototype.addLink = function(link) {
 	if (!this.proteinLinks.has(link.id)) {
@@ -712,23 +710,23 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 		self.setAllLineCoordinates();
 
 		if (interp ===  1){ // finished - tidy up
-			var links = self.proteinLinks.values();
-			var c = links.length;
-			for (var l = 0; l < c; l++) {
-				var link = links[l];
-				if (link.toProtein === null || (link.getFromProtein() === self && link.getToProtein().form === 0) ||
-						(link.getToProtein() === self && link.getFromProtein().form === 0) ||
-						(link.getToProtein() == link.getFromProtein()))
-				{
-					// swap links - out with the old
-					var resLinks = link.residueLinks.values();
-					var resLinkCount = resLinks.length;
-					for (var rl = 0; rl < resLinkCount; rl++) {
-						var resLink = resLinks[rl];
-							resLink.hide();
-					}
-				}
-			}
+			//~ var links = self.proteinLinks.values();
+			//~ var c = links.length;
+			//~ for (var l = 0; l < c; l++) {
+				//~ var link = links[l];
+				//~ if (link.toProtein === null || (link.getFromProtein() === self && link.getToProtein().form === 0) ||
+						//~ (link.getToProtein() === self && link.getFromProtein().form === 0) ||
+						//~ (link.getToProtein() == link.getFromProtein()))
+				//~ {
+					//~ // swap links - out with the old
+					//~ var resLinks = link.residueLinks.values();
+					//~ var resLinkCount = resLinks.length;
+					//~ for (var rl = 0; rl < resLinkCount; rl++) {
+						//~ var resLink = resLinks[rl];
+							//~ resLink.hide();
+					//~ }
+				//~ }
+			//~ }
 			//bring in new
 			self.form = 0;
 			//~ self.setPosition(self.x, self.y);
@@ -762,14 +760,14 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 	this.upperRotator.svg.setAttribute("transform",
 		"translate(" + (this.getResXwithStickZoom(this.interactor.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
    //remove prot-prot links - would it be better if checkLinks did this? - think not
-	var c = this.proteinLinks.values().length;
-	for (var l = 0; l < c; l++) {
-		var link = this.proteinLinks.values()[l];
-		//out with the old
-		if (link.shown) {
-			link.hide();
-		}
-	}
+	//~ var c = this.proteinLinks.values().length;
+	//~ for (var l = 0; l < c; l++) {
+		//~ var link = this.proteinLinks.values()[l];
+		//~ //out with the old
+		//~ if (link.shown) {
+			//~ link.hide();
+		//~ }
+	//~ }
 
 	var protLength = this.interactor.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
 	var r = this.getBlobRadius();
@@ -1039,7 +1037,12 @@ CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
-	var links = this.proteinLinks.values();
+	var links = this.renderedInterCrossLinks.values();
+	var c = links.length;
+	for (var l = 0; l < c; l++) {
+		links[l].check();
+	}
+	var links = this.renderedSelfCrossLinks.values();
 	var c = links.length;
 	for (var l = 0; l < c; l++) {
 		links[l].check();
@@ -1048,16 +1051,17 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
-	var links = this.proteinLinks.values();
-	var c = links.length;
-	for (var l = 0; l < c; l++) {
-		var link = links[l];
-		if (link.getToProtein() !== null &&
-			link.getFromProtein().form === 0 && link.getToProtein().form === 0) {
-			 link.setLineCoordinates(this);
-		}
-		else {
-			var resLinks = link.residueLinks.values();
+	//~ var links = this.proteinLinks.values();
+	//~ var c = links.length;
+	//~ for (var l = 0; l < c; l++) {
+		//~ var link = links[l];
+		//~ if (link.getToProtein() !== null &&
+			//~ link.getFromProtein().form === 0 && link.getToProtein().form === 0) {
+			 //~ link.setLineCoordinates(this);
+		//~ }
+		//~ else {
+			//~ var resLinks = link.residueLinks.values();
+			var resLinks = this.renderedInterCrossLinks.values();
 			var resLinkCount = resLinks.length;
 			for (var rl = 0; rl < resLinkCount; rl++) {
 				var residueLink = resLinks[rl];
@@ -1067,8 +1071,8 @@ CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 					residueLink.setLineCoordinates(otherEnd);
 				}
 			}
-		}
-	}
+		//~ }
+	//~ }
 };
 
 
