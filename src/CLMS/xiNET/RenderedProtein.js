@@ -1061,15 +1061,14 @@ CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 		//~ }
 		//~ else {
 			//~ var resLinks = link.residueLinks.values();
-			var resLinks = this.renderedInterCrossLinks.values();
-			var resLinkCount = resLinks.length;
-			for (var rl = 0; rl < resLinkCount; rl++) {
-				var residueLink = resLinks[rl];
+			var resLinkIter = this.renderedInterCrossLinks.values();
+			for (residueLink of resLinkIter) {
 				residueLink.setLineCoordinates(this);
-				var otherEnd = residueLink.proteinLink.getOtherEnd(this);
-				if (otherEnd && otherEnd.form === 1	&& otherEnd.stickZoom * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE > 8){
-					residueLink.setLineCoordinates(otherEnd);
-				}
+				//~ var otherEnd = residueLink.proteinLink.getOtherEnd(this); //todo
+				//deals with pointing line to right side of animo acid letter
+				//~ if (otherEnd && otherEnd.form === 1	&& otherEnd.stickZoom * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE > 8){
+					//~ residueLink.setLineCoordinates(otherEnd);
+				//~ }
 			}
 		//~ }
 	//~ }

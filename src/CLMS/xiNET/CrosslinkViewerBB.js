@@ -128,20 +128,12 @@
 
 			this.initProteins();
 
-			/*var proteinLinks = this.model.get("clmsModel").get("proteinLinks").values();
-			for(var proteinLink of proteinLinks){
-
-				var renderedProteinLink = new CLMS.xiNET.RenderedProteinLink(proteinLink, this);
-				this.renderedProteinLinks.set(proteinLink.id, renderedProteinLink);
-
-			}*/
 
 			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
 			for(var crossLink of crossLinks){
 
 				var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
 				this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-				//renderedCrossLink.
 			}
 			
 			this.initLayout();
@@ -176,9 +168,9 @@
 			this.rotating = false;
 
 			this.renderedProteins = new Map();
-			this.renderedProteinLinks = new Map();
 			this.renderedCrossLinks = new Map();
-			this.matches = [];
+			
+			//this.matches = [];
 			this.groups = d3.set();
 			this.subgraphs = [];
 			this.layoutXOffset = 0;

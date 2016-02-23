@@ -340,8 +340,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 			var x, y;
 			if (this.renderedFromProtein === renderedInteractor) {
 				if (renderedInteractor.form === 0) {
-						x = interactor.x;
-						y = interactor.y;
+						x = renderedInteractor.x;
+						y = renderedInteractor.y;
 				}
 				else //if (this.form == 1)
 				{
@@ -356,8 +356,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function(renderedInt
 			}
 			else if (this.renderedToProtein === renderedInteractor) {
 				if (renderedInteractor.form === 0) {
-						x = interactor.x;
-						y = interactor.y;
+						x = renderedInteractor.x;
+						y = renderedInteractor.y;
 				}
 				else //if (this.form == 1)
 				{
@@ -417,7 +417,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
 		}
 	}
 
-	var rotated = Protein.rotatePointAboutPoint([x, y],[0,0],renderedInteractor.rotation);
+	var rotated = CLMS.xiNET.RenderedProtein.rotatePointAboutPoint([x, y],[0,0],renderedInteractor.rotation);
 
 	x = rotated[0] + interactor.x;
 	y = rotated[1] + interactor.y;
