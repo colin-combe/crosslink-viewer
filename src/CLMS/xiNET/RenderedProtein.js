@@ -14,8 +14,8 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	//~ this.proteinLinks = d3.map();
 	//~ this.selfLink = null;
 	
-	this.renderedInterCrossLinks = new Map();
-	this.renderedSelfCrossLinks = new Map();
+	this.renderedCrossLinks = new Map();
+	//~ this.renderedSelfCrossLinks = new Map();
 	
 	// layout info
 	this.x = 40;
@@ -180,7 +180,6 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
 	var br = Math.sqrt(this.interactor.size / Math.PI);
-	console.log("*br"+br);
 	return br;
 };
 
@@ -513,9 +512,9 @@ CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
 		}
 		else if (bool == true) {
 			this.isParked = true;
-			var c = this.proteinLinks.values().length;
-			for (var l = 0; l < c; l++) {
-				var link = this.proteinLinks.values()[l];
+			var crossLinkIter = this.renderedCrossLinks.values();
+			for (link of crossLinkIter) {
+				//~ var link = this.proteinLinks.values()[l];
 				//out with the old (i.e. all links)
 				link.hide();
 				var resLinks = link.residueLinks.values();
@@ -627,23 +626,23 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 		.attr("rx", r + 2.5).attr("ry", r + 2.5)
 		.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-	if (this.selfLink != null) {
-		var resLinks = this.selfLink.residueLinks.values();
-		var resLinkCount = resLinks.length;
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var residueLink = resLinks[rl];
-			if (residueLink.shown) {
-						var selectLine = d3.select(residueLink.line);
-						selectLine.attr("d",this.getCLMS.xiNET.RenderedCrossLinkPath(residueLink));
-						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-						var highlightLine = d3.select(residueLink.highlightLine);
-						highlightLine.attr("d",this.getCLMS.xiNET.RenderedCrossLinkPath(residueLink));
-						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
-							.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-			}
-		}
+	//~ if (this.selfLink != null) {
+	var crossLinkIter = this.renderedCrossLinks.values();
+	//~ var resLinkCount = resLinks.length;
+	for (residueLink of crossLinkIter) {
+		//~ var residueLink = resLinks[rl];
+		//~ if (residueLink.shown) {
+					var selectLine = d3.select(residueLink.line);
+					selectLine.attr("d",this.getCrossLinkPath(residueLink));
+					selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+					var highlightLine = d3.select(residueLink.highlightLine);
+					highlightLine.attr("d",this.getCrossLinkPath(residueLink));
+					highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+		//~ }
 	}
+	//~ }
 
 	//linker modified peptides
 	if (this.linkerModifications != null) {
@@ -803,21 +802,23 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 		.attr("rx", 0).attr("ry", 0)
 		.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-	 if (this.selfLink != null) {
-		var resLinks = this.selfLink.crossLinks.values();
-		var resLinkCount = resLinks.length;
-		for (var rl = 0; rl < resLinkCount; rl++) {
-			var residueLink = resLinks[rl];
-			if (residueLink.shown) {
-				d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
-				d3.select(residueLink.line).transition().attr("d",this.getCLMS.xiNET.RenderedCrossLinkPath(residueLink))
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-				d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
-				d3.select(residueLink.highlightLine).transition().attr("d",this.getCLMS.xiNET.RenderedCrossLinkPath(residueLink))
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-			}
+	//~ if (this.selfLink != null) {
+		//~ var resLinks = this.selfLink.crossLinks.values();
+		//~ var resLinkCount = resLinks.length;
+	
+	var crossLinkIter = this.renderedCrossLinks.values();
+	for (residueLink of crossLinkIter) {
+		//~ var residueLink = resLinks[rl];
+		if (residueLink.crossLink.isSelfLink() === true) {
+			d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
+			d3.select(residueLink.line).transition().attr("d",this.getCrossLinkPath(residueLink))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			d3.select(residueLink.highlightLine).attr("d",this.getAggregateSelfLinkPath());
+			d3.select(residueLink.highlightLine).transition().attr("d",this.getCrossLinkPath(residueLink))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 		}
 	}
+	//~ }
 
    //linker modified peptides
 	if (this.linkerModifications != null) {
@@ -1037,16 +1038,16 @@ CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
-	var links = this.renderedInterCrossLinks.values();
+	var links = this.renderedCrossLinks.values();
 	var c = links.length;
 	for (var l = 0; l < c; l++) {
 		links[l].check();
 	}
-	var links = this.renderedSelfCrossLinks.values();
-	var c = links.length;
-	for (var l = 0; l < c; l++) {
-		links[l].check();
-	}
+	//~ var links = this.renderedSelfCrossLinks.values();
+	//~ var c = links.length;
+	//~ for (var l = 0; l < c; l++) {
+		//~ links[l].check();
+	//~ }
 }
 
 // update all lines (e.g after a move)
@@ -1061,7 +1062,7 @@ CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 		//~ }
 		//~ else {
 			//~ var resLinks = link.residueLinks.values();
-			var resLinkIter = this.renderedInterCrossLinks.values();
+			var resLinkIter = this.renderedCrossLinks.values();
 			for (residueLink of resLinkIter) {
 				residueLink.setLineCoordinates(this);
 				//~ var otherEnd = residueLink.proteinLink.getOtherEnd(this); //todo

@@ -136,7 +136,17 @@
 				this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 			}
 			
-			this.initLayout();
+			//this.initLayout();
+			if (this.options.layout) {
+				this.loadLayout(this.options.layout);
+			} else {
+				var proteins = this.renderedProteins.values();
+				for (var prot of proteins) {
+					this.proteinLower.appendChild(prot.lowerGroup);
+					this.proteinUpper.appendChild(prot.upperGroup);
+				}
+				this.autoLayout();
+			}
 
 			this.listenTo (this.model.get("interactors"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
 			this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
@@ -198,18 +208,14 @@
 
 		checkLinks: function() {
 
-			var pLinks = this.renderedProteinLinks.values();
-			for (var pLink of pLinks) {
-				pLink.check();
-			}
-
 			var  cLinks = this.renderedCrossLinks.values();
 			for (var cLink of cLinks) {
 				cLink.check();
 			}
 
 		},
-
+		
+		/*
 		initLayout: function (){
 			var prots = this.renderedProteins.values();
 			CLMS.xiNET.RenderedProtein.MAXSIZE = 400;
@@ -261,7 +267,7 @@
 				}
 				this.autoLayout();
 			}
-		},
+		},*/
 
 		initProteins: function () {
 			var interactors = this.model.get("clmsModel").get("interactors").values();
@@ -311,7 +317,6 @@
 			}
 			this.autoLayout();
 		},
-
 
 		resetZoom: function () {
 			this.container.setAttribute("transform", "scale(1)");
@@ -598,7 +603,7 @@
 						var _dy = c.y - this.dragElement.y;
 						//see http://en.wikipedia.org/wiki/Atan2#Motivation
 						var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-						if (this.whichCLMS.xiNET.Rotator === 0) {
+						if (this.whichRotator === 0) {
 							centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
 						}
 						var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
@@ -849,6 +854,87 @@
 			this.tooltip.setAttribute("display","none");
 			this.tooltip_bg.setAttribute("display","none");
 			this.tooltip_subBg.setAttribute("display","none");
+		},
+		
+		getLayout: function() {
+			var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
+			var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
+			var layout = myJSONText.replace(/\\u0000/gi, '');
+			//+ "\n{co:" + this.cutOff +"}";
+			return layout;
+		},
+		
+		loadLayout: function(layout) {
+			for (var prot in layout) {
+				var protLayout = layout[prot];
+				var protein = this.renderedProteins.get(protLayout.id);
+				if (protein !== undefined) {
+					this.proteinLower.appendChild(protein.lowerGroup);
+					this.proteinUpper.appendChild(protein.upperGroup);
+					protein.setPosition(protLayout["x"], protLayout["y"]);
+					if (typeof protLayout['rot'] !== 'undefined') {
+						protein.rotation = protLayout["rot"] - 0;
+					}
+					//some tidying required
+					if (protLayout["form"]) {
+						//~ if (protLayout["stickZoom"]) {
+							protein.stickZoom = 1;//protLayout["stickZoom"];
+						//~ }  
+						protein.form = protLayout["form"] - 0;
+						// protein.form =1;
+						// protein.scale();
+						// protein.toStick();
+						//~ //protein.setRotation(protein.rotation);
+					}
+					 //~ protein.form = 1;
+					//~ protein.init();
+					
+					//~ if (typeof protLayout["form"]) {
+					  //~ 
+					//~ }
+					
+					//~ protein.setAllLineCoordinates();// watch out for this
+
+					if (typeof protLayout["parked"] !== 'undefined') {
+						protein.setParked(protLayout["parked"]);
+					}
+					if (protLayout["flipped"]) { //TODO: fix this
+						protein.toggleFlipped(); // change to setFlipped(protLayout["flipped"])
+					}
+				}
+				else {console.log("!");}
+			}
+
+			// incase proteins have been added which are not included in layout -
+			var proteinIter = this.renderedProteins.values();
+			for (prot of proteinIter) {
+				if (prot.x == null) {
+					prot.toBlob();
+					prot.setPosition(20, 20);
+					this.proteinLower.appendChild(prot.lowerGroup);
+					this.proteinUpper.appendChild(prot.upperGroup);
+				}
+			}
+
+			// layout info for links (hidden / specified colour)
+			//~ for (var l in this.layout.links) {
+				//~ var linkState = this.layout.links[l];
+				//~ var link = this.proteinLinks.get(l);
+				//~ if (link !== undefined) {
+					//~ if (typeof linkState.hidden !== 'undefined')
+						//~ link.hidden = linkState.hidden;
+					//~ var c = linkState.colour;
+					//~ if (typeof c !== 'undefined') {
+						//~ var resLinks = link.residueLinks.values();
+						//~ var resLinkCount = resLinks.length;
+						//~ for (var r = 0; r < resLinkCount; r++) {
+							//~ var resLink = resLinks[r];
+							//~ resLink.initSVG();
+							//~ resLink.line.setAttribute('stroke', 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')');
+						//~ }
+					//~ }
+				//~ }
+			//~ }
 		},
 
 		autoLayout: function() {
