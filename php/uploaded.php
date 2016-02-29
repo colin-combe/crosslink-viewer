@@ -37,10 +37,12 @@
 		<!--libraries-->
         <script type="text/javascript" src="../vendor/d3.js"></script>
         <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
+<!--
        	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
+-->
         <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
         <!--xiNET-->
-		<script type="text/javascript" src="../build/crosslinkviewer.js"></script>
+		<script type="text/javascript" src="./crosslinkviewer.js"></script>
         <!--
         <script type="text/javascript" src="../src/controller/Init.js"></script>
         <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
