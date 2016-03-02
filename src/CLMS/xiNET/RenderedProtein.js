@@ -1012,7 +1012,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
 				annotColouredRect.setAttribute("height", yIncrement);
 
 				//style 'em
-				annotColouredRect.setAttribute("fill", xiNET.homodimerLinkColour.toRGB());
+				annotColouredRect.setAttribute("fill", CLMS.xiNET.homodimerLinkColour.toRGB());
 				annotColouredRect.setAttribute("fill-opacity", "0.5");
 
 				this.peptides.appendChild(annotColouredRect);
