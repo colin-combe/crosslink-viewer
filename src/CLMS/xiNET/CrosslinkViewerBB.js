@@ -23,7 +23,7 @@
 			var self = this;
 
 			d3.select(this.el).selectAll("*").remove();//avoids prob with 'save - web page complete'
-
+				
 			//create SVG elemnent
 			this.svgElement = document.createElementNS(CLMS.xiNET.svgns, "svg");
 			this.svgElement.setAttribute('id', 'networkSVG');
@@ -138,7 +138,7 @@
 			}
 			
 			//this.initLayout();
-			if (this.options.layout) {
+			if (this.options.layout != null) {
 				this.loadLayout(this.options.layout);
 			} else {
 				var proteins = this.renderedProteins.values();
@@ -155,8 +155,9 @@
 			//~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
 			this.listenTo (this.model, "change:highlights", this.highlightsChanged);
 			this.listenTo (this.model, "change:selection", this.selectionChanged);
-
+			this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
 			this.render();
+			this.linkColourChanged();
 		},
 
 		clear: function () {
@@ -203,8 +204,13 @@
 
 		},
 
-		dataChanged: function() {
-			console.log("data changed");
+		linkColourChanged: function() {
+			var colourAssignment = this.model.get("linkColourAssignment");
+			var renderedLinks = this.renderedCrossLinks.values();
+			for (var rLink of renderedLinks) {
+				var c = colourAssignment(rLink.crossLink);
+				rLink.line.setAttribute("stroke",c);
+			}	
 		},
 
 		checkLinks: function() {

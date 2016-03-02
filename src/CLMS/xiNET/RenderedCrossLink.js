@@ -37,10 +37,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	if (typeof this.line === 'undefined') {
 		if (this.crossLink.isSelfLink() === true || this.crossLink.getToProtein() === null) {
 			this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
+			this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
 			this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
 		} else {
 			this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
-			this.line.setAttribute("stroke", CLMS.xiNET.defaultInterLinkColour.toRGB());
 			this.line.setAttribute("stroke-linecap", "round");
 			this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
 			this.highlightLine.setAttribute("stroke-linecap", "round");
@@ -48,7 +48,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 		this.line.setAttribute("class", "link");
 		this.line.setAttribute("fill", "none");
-		this.line.setAttribute("stroke", "#000000"); // temp
+		//~ this.line.setAttribute("stroke", "#000000"); // temp
 		this.highlightLine.setAttribute("class", "link");
 		this.highlightLine.setAttribute("fill", "none");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -202,44 +202,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 	if (countFilteredMatches > 0) {
 		this.show();
 		this.dashedLine(this.ambig);
-		if (this.crosslinkViewer.groups.values().length > 1 && this.crosslinkViewer.groups.values().length < 5) {
-			var groupCheck = d3.set();
-			for (var i=0; i < countFilteredMatches; i++) {
-				var match = filteredMatches[i][0];//fix this weirdness with array?
-				groupCheck.add(match.group);
-			}
-			if (groupCheck.values().length == 1){
-				var c = this.crosslinkViewer.linkColours(groupCheck.values()[0]);
-				this.line.setAttribute("stroke", c);
-		  		this.line.setAttribute("transform", "scale (1 1)");
-				this.highlightLine.setAttribute("transform", "scale (1 1)");
-			}
-			else  {
-				this.line.setAttribute("stroke", "#000000");
-				if (this.selfLink()){
-					this.line.setAttribute("transform", "scale (1 -1)");
-					this.highlightLine.setAttribute("transform", "scale (1 -1)");
-				}
-			}
-			//else this.line.setAttribute("stroke", "purple");//shouldn't happen
-		}
-		else if (this.selfLink() === true && this.colour == null){
-			if (this.hd === true) {
-				this.line.setAttribute("stroke", CLMS.xiNET.homodimerLinkColour.toRGB());
-				this.line.setAttribute("transform", "scale(1, -1)");
-				this.line.setAttribute("stroke-width", CLMS.xiNET.homodimerLinkWidth);
-				this.highlightLine.setAttribute("transform", "scale(1, -1)");
-			}
-			else {
-				this.line.setAttribute("stroke", xiNET.defaultSelfLinkColour.toRGB());
-				this.line.setAttribute("transform", "scale(1, 1)");
-				this.line.setAttribute("stroke-width", xiNET.linkWidth);
-				this.highlightLine.setAttribute("transform", "scale(1, 1)");
-			}
-		}
-		else if (this.selfLink() === true) {
-			this.line.setAttribute("stroke-width", xiNET.linkWidth);
-		}
+		
 		this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
 					+ "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null')
 					+ '_' + this.toResidue + ' (' + countFilteredMatches;
@@ -286,7 +249,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 			//~ this.initSVG();
 		//~ }
 		if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
-			//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
 			var path;
 			if (this.renderedFromProtein.form === 1) {
 				path =  this.renderedFromProtein.getCrossLinkPath(this);
