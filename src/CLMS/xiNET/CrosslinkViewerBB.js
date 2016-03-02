@@ -134,6 +134,7 @@
 
 				var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
 				this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+				
 			}
 			
 			//this.initLayout();
@@ -1282,9 +1283,9 @@
 				renderedCrossLink.showHighlight(false);
 			}
 
-			var crossLink = this.model.get("highlights")[0];
+			var crossLinks = this.model.get("highlights");
 
-			if (crossLink){
+			for (crossLink of crossLinks) {
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
 				renderedCrossLink.showHighlight(true);
 			}
@@ -1300,9 +1301,9 @@
 				renderedCrossLink.setSelected(false);
 			}
 
-			var crossLink = this.model.get("highlights")[0];
-
-			if (crossLink){
+			var crossLinks = this.model.get("selection");
+			
+			for (crossLink of crossLinks) {
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
 				renderedCrossLink.setSelected(true);
 			}

@@ -21,8 +21,23 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 		this.crosslinkViewer.force.stop();
 	}
 	this.crosslinkViewer.dragElement = this;
-	this.crosslinkViewer.model.set("selection",[this.crossLink]);
-	//this.setSelected(true);
+	
+	if (this.renderedFromProtein.form === 0 && this.renderedToProtein.form === 0){
+		var fromProtId = this.renderedFromProtein.interactor.id;
+		var toProtId = this.renderedToProtein.interactor.id;		
+		var allCrossLinks = this.crosslinkViewer.model.get("clmsModel").get("crossLinks").values();
+		var selection = [];
+		for (crossLink of allCrossLinks){
+			if (crossLink.fromProtein.id === fromProtId && crossLink.toProtein.id === toProtId){
+				selection.push(crossLink);
+				alert("pushed");
+			}
+		}
+		this.crosslinkViewer.model.set("selection", selection);
+	} else {
+		this.crosslinkViewer.model.set("selection",[this.crossLink]);
+	}
+	
 	//store start location
 	var p = this.crosslinkViewer.getEventPoint(evt);// seems to be correct, see above
 	this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
@@ -31,12 +46,23 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
-	//console.log("clickable mouse over");
 	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-	//~ this.showHighlight(true, true);
-	this.crosslinkViewer.model.set("highlights",[this.crossLink]);
+	if (this.renderedFromProtein.form === 0 && this.renderedToProtein.form === 0){
+		var fromProtId = this.renderedFromProtein.interactor.id;
+		var toProtId = this.renderedToProtein.interactor.id;		
+		var allCrossLinks = this.crosslinkViewer.model.get("clmsModel").get("crossLinks").values();
+		var selection = [];
+		for (crossLink of allCrossLinks){
+			if (crossLink.fromProtein.id === fromProtId && crossLink.toProtein.id === toProtId){
+				selection.push(crossLink);
+				alert("pushed");
+			}
+		}
+		this.crosslinkViewer.model.set("highlights", selection);
+	} else {
+		this.crosslinkViewer.model.set("highlights",[this.crossLink]);
+	}
 	this.crosslinkViewer.setTooltip(this.tooltip);
-	//~ return false;
 };
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){

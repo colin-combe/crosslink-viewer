@@ -158,14 +158,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
-	if (select === true && this.isSelected === false) {
-		this.crosslinkViewer.selectedLinks.set(this.id, this);
+	if (select === true){// && this.isSelected === false) {
 		this.isSelected = true;
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
 		this.highlightLine.setAttribute("stroke-opacity", "0.7");
 	}
-	else if (select === false && this.isSelected === true) {
-		this.crosslinkViewer.selectedLinks.remove(this.id);
+	else { //if (select === false && this.isSelected === true) {
 		this.isSelected = false;
 		this.highlightLine.setAttribute("stroke-opacity", "0");
 		this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
