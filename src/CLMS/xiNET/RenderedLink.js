@@ -30,7 +30,6 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 		for (crossLink of allCrossLinks){
 			if (crossLink.fromProtein.id === fromProtId && crossLink.toProtein.id === toProtId){
 				selection.push(crossLink);
-				alert("pushed");
 			}
 		}
 		this.crosslinkViewer.model.set("selection", selection);
@@ -55,7 +54,6 @@ CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
 		for (crossLink of allCrossLinks){
 			if (crossLink.fromProtein.id === fromProtId && crossLink.toProtein.id === toProtId){
 				selection.push(crossLink);
-				alert("pushed");
 			}
 		}
 		this.crosslinkViewer.model.set("highlights", selection);
