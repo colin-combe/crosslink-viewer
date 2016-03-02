@@ -98,7 +98,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 		/*if (typeof andAlternatives === 'undefined') {
 			andAlternatives = false;
 		}*/
-		if (this.shown) {
+		//~ if (this.shown) {
 			if (show) {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7");
@@ -154,7 +154,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 			}
 
 		} */
-	}
+	//~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
@@ -290,7 +290,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 		if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
 			//~ this.line.setAttribute("stroke-width", xiNET.linkWidth);
 			var path;
-			if (this.renderedFromProtein === 1) {
+			if (this.renderedFromProtein.form === 1) {
 				path =  this.renderedFromProtein.getCrossLinkPath(this);
 			}
 			else {

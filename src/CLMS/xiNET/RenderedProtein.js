@@ -366,24 +366,24 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
 			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
 
 		//place rotators
-		this.lowerCLMS.xiNET.Rotator.svg.setAttribute("transform",
+		this.lowerRotator.svg.setAttribute("transform",
 			"translate(" + (this.getResXwithStickZoom(0.5) - CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
-		this.upperCLMS.xiNET.Rotator.svg.setAttribute("transform",
+		this.upperRotator.svg.setAttribute("transform",
 			"translate(" + (this.getResXwithStickZoom(this.interactor.size  - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
 		//internal links
-		if (this.selfLink != null) {
-			var resLinks = this.selfLink.residueLinks.values();
-			var iLinkCount = resLinks.length;
-			for (var l = 0; l < iLinkCount; l++) {
-				var residueLink = resLinks[l];
-				if (residueLink.shown) {
-					var path = this.getCLMS.xiNET.RenderedCrossLinkPath(residueLink);
+		//~ if (this.selfLink != null) {
+			var resLinks = this.renderedCrossLinks.values();
+			//~ var iLinkCount = resLinks.length;
+			for (residueLink of resLinks) {
+				//~ var residueLink = resLinks[l];
+				//~ if (residueLink.shown) {
+					var path = this.getCrossLinkPath(residueLink);
 					d3.select(residueLink.line).attr("d", path);
 					d3.select(residueLink.highlightLine).attr("d", path);
-				}
+				//~ }
 			}
-		}
+		//~ }
 
 		//linker modified peptides
 		if (this.linkerModifications != null) {
@@ -431,7 +431,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
 				}
 			}
 		}
-		if (pixPerRes >= 8 && this.sequence) {
+		if (pixPerRes >= 8 && this.interactor.sequence) {
 			var seqLabelGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
 			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
 			var seqLabel = document.createElementNS(CLMS.xiNET.svgns, "text");
@@ -440,7 +440,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
 			seqLabel.setAttribute("text-anchor", "middle");
 			seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
 			seqLabel.setAttribute("y", 3);
-			seqLabel.appendChild(document.createTextNode(this.sequence[res - 1]));
+			seqLabel.appendChild(document.createTextNode(this.interactor.sequence[res - 1]));
 			seqLabelGroup.appendChild(seqLabel);
 			this.scaleLabels.push(seqLabel);
 			this.ticks.appendChild(seqLabelGroup);

@@ -311,7 +311,7 @@
 			this.resetZoom();
 			var proteins = this.renderedProteins.values();
 			for (var prot of proteins) {
-				if (prot.isParked === false) {
+				if (prot.form === 1) {
 					prot.setForm(0);
 				}
 			}
@@ -569,11 +569,11 @@
 							for (var protein of prots) {
 								protein.subgraph = null;
 							}
-							var subgraph = prot.getSubgraph();
+							var subgraph = prot.interactor.getSubgraph();
 							var nodes = subgraph.nodes.values();
-							var nodeCount = nodes.length;
-							for (var i = 0; i < nodeCount; i++) {
-								var protein = nodes[i];
+							//~ var nodeCount = nodes.length;
+							for (node of nodes) {
+								var protein = this.renderedProteins.get(node.id);
 								ox = protein.x;
 								oy = protein.y;
 								nx = ox - dx;
@@ -581,7 +581,8 @@
 								protein.setPosition(nx, ny);
 								protein.setAllLineCoordinates();
 							}
-							for (i = 0; i < nodeCount; i++) {
+							for (node of nodes) {
+								var protein = this.renderedProteins.get(node.id);			
 								nodes[i].setAllLineCoordinates();
 							}
 						} else {
@@ -946,7 +947,7 @@
 			var self = this;
 			var prots = this.renderedProteins.values();
 			//clear subgraphs
-			this.subgraphs.length = 0;
+			CLMS.model.Protein.subgraphs.length = 0;
 			for (var prot of prots) {
 				prot.interactor.subgraph = null;
 			}
@@ -982,27 +983,28 @@
 				return a.nodes.values().length - b.nodes.values().length;
 			});
 
-			var prots = this.renderedProteins.values();
-			if (proteinCount === 1) {
-				var protein = prots.next().value;
-				protein.setPosition(width / 2, height / 2);
-				return;
-			}
-			else if (proteinCount === 2) {
-				var p1 = prots.next().value;
-				p1.setPosition(width / 2, height * 0.3);
-				p1.setAllLineCoordinates();
-				var p2 = prots.next().value;
-				p2.setPosition(width / 2, height * 0.6);
-				p2.setAllLineCoordinates();
-				return;
-			}
-			else {
+
+			//~ var prots = this.renderedProteins.values();
+			//~ if (proteinCount === 1) {
+				//~ var protein = prots.next().value;
+				//~ protein.setPosition(width / 2, height / 2);
+				//~ return;
+			//~ }
+			//~ else if (proteinCount === 2) {
+				//~ var p1 = prots.next().value;
+				//~ p1.setPosition(width / 2, height * 0.3);
+				//~ p1.setAllLineCoordinates();
+				//~ var p2 = prots.next().value;
+				//~ p2.setPosition(width / 2, height * 0.6);
+				//~ p2.setAllLineCoordinates();
+				//~ return;
+			//~ }
+			//~ else {
 				  //Sort subgraphs into linear and non-linear sets
-				var linearGraphs = [];
-				var nonLinearGraphs = [];
-				var graphCount = this.subgraphs.length;
-				for (var g = 0; g < graphCount; g++) {
+				//~ var linearGraphs = [];
+				var nonLinearGraphs = CLMS.model.Protein.subgraphs;
+				//~ var graphCount = this.subgraphs.length;
+			/*	for (var g = 0; g < graphCount; g++) {
 					var graph = this.subgraphs[g];
 					var nodes = graph.nodes.values();
 					var nodeCount = nodes.length;
@@ -1127,12 +1129,12 @@
 						protein.setAllLineCoordinates(false);
 					}
 				}
-				//do force directed layout
-				var gWidth = width - this.layoutXOffset;
-				if (gWidth < 200) {
-					gWidth = width;
-				}
-				var linkDistance = 60;
+				//do force directed layout*/
+				var gWidth = width;// - this.layoutXOffset;
+				//~ if (gWidth < 200) {
+					//~ gWidth = width;
+				//~ }
+				var linkDistance = 60; 
 				layoutObj = {};
 				layoutObj.nodes = [];
 				layoutObj.links = [];
@@ -1141,17 +1143,17 @@
 
 				for (var g = 0; g < nonLinearGraphs.length; g++) {
 					var nodes = nonLinearGraphs[g].nodes.values();
-					var nodeCount = nodes.length;
-					for (var n = 0; n < nodeCount; n++) {
-						var prot = this.renderedProteins.get(nodes[n].id);
+					//~ var nodeCount = nodes.length;
+					for (node of nodes) {
+						var prot = this.renderedProteins.get(node.id);
 		//        if (prot.fixed === false) {
-						protLookUp[prot.id] = pi;
+						protLookUp[prot.interactor.id] = pi;
 						pi++;
 						var nodeObj = {};
-						nodeObj.id = prot.id;
-						nodeObj.x = prot.x - this.layoutXOffset;
+						nodeObj.id = prot.interactor.id;
+						nodeObj.x = prot.x;// - this.layoutXOffset;
 						nodeObj.y = prot.y;
-						nodeObj.px = prot.x - this.layoutXOffset;
+						nodeObj.px = prot.x;// - this.layoutXOffset;
 						nodeObj.py = prot.y;
 						layoutObj.nodes.push(nodeObj);
 					}
@@ -1159,14 +1161,14 @@
 				}
 				for (var g = 0; g < nonLinearGraphs.length; g++) {
 					var links = nonLinearGraphs[g].links.values();
-					var linkCount = links.length;
-					for (var l = 0; l < linkCount; l++) {
-						var link = links[l];
-						var fromProt = link.fromProtein;
-						var toProt = link.toProtein;
-						if (toProt) {
-							var source = protLookUp[fromProt.id];
-							var target = protLookUp[toProt.id];
+					//~ var linkCount = links.length;
+					for (link of links) {
+						//~ var link = links[l];
+						//~ var fromProt = link.fromProtein;
+						//~ var toProt = link.toProtein;
+						//~ if (toProt) {
+							var source = protLookUp[link.source];
+							var target = protLookUp[link.target];
 
 							if (source !== target) {
 
@@ -1181,7 +1183,7 @@
 									alert("NOT RIGHT");
 								}
 							}
-						}
+						//~ }
 					}
 				}
 				var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
@@ -1191,9 +1193,11 @@
 				this.force = d3.layout.force()
 						.nodes(layoutObj.nodes)
 						.links(layoutObj.links)
-						.gravity(85 * k)
+						.gravity(100 * k)
+						//~ .gravity(85 * k)
 						.linkDistance(linkDistance)
-						.charge(-30 / k)
+						 .charge(-10 / k)
+						//~ .charge(-30 / k)
 						.size([gWidth, height]);
 				var nodeCount = this.force.nodes().length;
 				var forceLinkCount = this.force.links().length;
@@ -1201,7 +1205,7 @@
 					var nodes = self.force.nodes();
 					for (var n = 0; n < nodeCount; n++) {
 						var node = nodes[n];
-						var protein = self.proteins.get(node.id);
+						var protein = self.renderedProteins.get(node.id);
 						var nx = node.x;
 						var ny = node.y;
 						protein.setPosition(nx + self.layoutXOffset, ny);
@@ -1209,7 +1213,7 @@
 					}
 				});
 				this.force.start();
-			}
+			//~ }
 
 			function reorderedNodes(linearGraph) {
 				var reorderedNodes = [];
