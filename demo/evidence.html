@@ -15,7 +15,9 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
         <script type="text/javascript" src="../build/complexviewer.js"></script>
-       <script type="text/javascript" src="../bower_components/rgb-color/rgb-color.js"></script>
+ 
+        <script type="text/javascript" src="../bower_components/d3/d3.js"></script>
+        <script type="text/javascript" src="../bower_components/rgb-color/rgb-color.js"></script>
     </head>
     <body>
 
@@ -39,7 +41,9 @@
 		
 			<input onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
 			<button onclick="xlv.reset();">Reset</button>
-			<button onclick="xlv.exportSVG();">Export SVG</button>
+			<button onclick="exportSVG();">Export SVG</button>
+			<button onclick="xlv.expandAll();">Expand All</button>
+			<button onclick="xlv.collapseAll();">Collapse All</button>
 			
 			<select id="annotationsSelect" onChange="changeAnnotations();">
 				<option selected='selected'>MI features</option>
@@ -63,7 +67,7 @@
 						<div style="float:right">
 								<img src="../demo/svgForKey/smallMol.svg"></td>
 						</div>
-						<td>Small molecule</td>
+						<td>Bioactive Entity</td>
 					  </tr>				  
 					 <tr>
 						<td>
@@ -162,6 +166,12 @@
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
 				 }
                   
+				function exportSVG(){
+					var xml = xlv.getSVG();
+					xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+					xmlAsUrl += encodeURIComponent(xml);
+					var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+				}
                 //]]>
         </script>
 
