@@ -173,6 +173,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
+	
+	if (this.renderedFromProtein.isParked === true 
+		|| (this.renderedToProtein && this.renderedToProtein.isParked == true)) {
+			this.hide();
+			return false;	
+	}
+	
 	var filteredMatches = this.crossLink.filteredMatches;
 	var countFilteredMatches = filteredMatches.length;
 	//~ alert("here"+filteredMatches.length);

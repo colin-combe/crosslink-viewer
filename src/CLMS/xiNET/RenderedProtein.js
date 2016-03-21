@@ -512,7 +512,7 @@ CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
 		}
 		else if (bool == true) {
 			this.isParked = true;
-			var crossLinkIter = this.renderedCrossLinks.values();
+			/*var crossLinkIter = this.renderedCrossLinks.values();
 			for (link of crossLinkIter) {
 				//~ var link = this.proteinLinks.values()[l];
 				//out with the old (i.e. all links)
@@ -523,7 +523,7 @@ CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
 					var resLink = resLinks[rl];
 						resLink.hide();
 				}
-			}
+			}*/
 
 			if (this.form === 1){
 				this.toCircle(svgP);
@@ -557,6 +557,7 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
 	if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);
+			this.crosslinkViewer.checkLinks();
 		}
 		else
 		{

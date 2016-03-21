@@ -664,7 +664,7 @@
 
 				if (this.dragElement != null) {
 					if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-						/*if (rightclick) { // RIGHT click
+						if (rightclick) { // RIGHT click
 							if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
 								if (this.dragElement.selfLink() == true) {//if internal link
 									if (this.dragElement.proteinLink)//its a residueLink
@@ -680,12 +680,13 @@
 								}
 							} else {//right click on protein
 								this.dragElement.setParked(!this.dragElement.isParked, c);
+								this.checkLinks();
 							}
 						}
 						else if (middleclick) {
 							//can't be used? problem with IE (scroll thingy)
 						}
-						else { *///left click; show matches for link, toggle form for protein, switch stick scale
+						else { //left click; show matches for link, toggle form for protein, switch stick scale
 							if (typeof this.dragElement.x === 'undefined') { //if not protein
 								//~ this.dragElement.showID();
 							} else if (evt.shiftKey) { //if shift key
@@ -697,7 +698,7 @@
 									this.dragElement.setForm(1, c);
 								}
 							}
-						//~ }
+						}
 						//~ this.checkLinks();
 					}
 					else if (this.state === CLMS.xiNET.Controller.ROTATING) {
