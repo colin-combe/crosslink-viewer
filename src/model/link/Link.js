@@ -63,7 +63,7 @@ Link.prototype.mouseDown = function(evt) {
 Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
-    this.showHighlight(true, true);
+    //this.showHighlight(true, true);
     this.controller.setTooltip(this.getToolTip());
     return false;
 }
