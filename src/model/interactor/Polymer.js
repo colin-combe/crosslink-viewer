@@ -11,7 +11,7 @@
 "use strict";
 
 var Molecule = require('./Molecule');
-var Rotator = require('../../controller/Rotator');
+//var Rotator = require('../../controller/Rotator');
 var Config = require('../../controller/Config');
 
 Polymer.STICKHEIGHT = 20;//height of stick in pixels
@@ -142,11 +142,12 @@ Polymer.prototype.scale = function() {
 			.attr("width", protLength + 5)
 			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
 
-		//place rotators
+	/*	//place rotators
 		this.lowerRotator.svg.setAttribute("transform",
 			"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform",
-			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");
+			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
+			
    /*       //linker modified peptides
         if (this.linkerModifications != null) {
             var mods = this.linkerModifications.residueLinks.values();
@@ -280,8 +281,10 @@ Polymer.prototype.toCircle = function(svgP) {
     childNodes[i] = this.upperGroup.childNodes[i];
   }
 
+  /*
   if (childNodes.indexOf(this.lowerRotator.svg) > -1) this.upperGroup.removeChild(this.lowerRotator.svg);
   if (childNodes.indexOf(this.upperRotator.svg) > -1) this.upperGroup.removeChild(this.upperRotator.svg);
+  */
 
   var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
 	var r = this.getBlobRadius();
@@ -388,12 +391,13 @@ Polymer.prototype.toStick = function() {
     this.form = 1;
 
     //place rotators
-	this.upperGroup.appendChild(this.lowerRotator.svg);
+	/*this.upperGroup.appendChild(this.lowerRotator.svg);
 	this.upperGroup.appendChild(this.upperRotator.svg);
 	this.lowerRotator.svg.setAttribute("transform",
 		"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
 	this.upperRotator.svg.setAttribute("transform",
-		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");
+		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
+		
 	//remove prot-prot links - would it be better if checkLinks did this? - think not
 	var c = this.binaryLinks.values().length;
 	for (var l = 0; l < c; l++) {
