@@ -101,6 +101,8 @@ Molecule.prototype.showHighlight = function(show) {
 };
 
 Molecule.prototype.setSelected = function(select) {
+   //do nothing
+   /*
     if (select && this.isSelected === false) {
         this.controller.selected.set(this.id, this);
         this.isSelected = true;
@@ -112,7 +114,7 @@ Molecule.prototype.setSelected = function(select) {
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", Config.highlightColour);
-    }
+    }*/
 };
 
 Molecule.prototype.getPosition = function(){
