@@ -44,6 +44,19 @@ Polymer.prototype.getBlobRadius = function() {
 	else return 15;
 };
 
+Polymer.prototype.showHighlight = function(show) {
+	// the only highlighting thing
+    if (show === true) {
+        //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+        this.highlight.setAttribute("stroke-opacity", "1");
+    } else {
+		//~ if (this.isSelected == false) {
+                this.highlight.setAttribute("stroke-opacity", "0");
+        //~ }
+        //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+    }
+};
+
 Polymer.prototype.setRotation = function(angle) {
     this.rotation = angle % 360;
     if (this.rotation < 0) {

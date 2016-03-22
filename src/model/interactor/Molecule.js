@@ -86,6 +86,8 @@ Molecule.prototype.getBlobRadius = function() {
 
 
 Molecule.prototype.showHighlight = function(show) {
+	// default do nothing 
+	/*
     if (show === true) {
         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
@@ -95,6 +97,7 @@ Molecule.prototype.showHighlight = function(show) {
         //~ }
         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
+    * */
 };
 
 Molecule.prototype.setSelected = function(select) {
