@@ -169,7 +169,7 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
             for (var i = 0; i < accArray.length; i++) {
 				var id = accArray[i].trim();
 				if (id.trim() !== '-' && id.trim() !== 'n/a'){
-					var acc, name;
+					var acc = "", name = "";
 					if (accArray[i].indexOf('|') === -1) {
 						acc = accArray[i].trim();
 					}

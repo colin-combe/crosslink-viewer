@@ -392,6 +392,7 @@ xiNET.Controller.prototype.addMatches = function(matches) {
 // add annotation, 'HUMAN' RESIDUE NUMBERING - STARTS AT ONE
 //TODO: make start and end res last args
 xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes, endRes, colour) {
+    protId = protId.toString().trim();
     var protein = this.proteins.get(protId);
     if (protein) {
 		//lets just check a few things here...
