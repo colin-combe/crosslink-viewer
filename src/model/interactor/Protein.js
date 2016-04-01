@@ -12,7 +12,7 @@
 
 var Molecule = require('./Molecule');
 var Polymer = require('./Polymer');
-var Rotator = require('../../controller/Rotator');
+//~ var Rotator = require('../../controller/Rotator');
 var Config = require('../../controller/Config');
 
 Protein.prototype = new Polymer();
@@ -38,8 +38,8 @@ function Protein(id, xinetController, json, name) {
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isSelected = false;
     //rotators
-	this.lowerRotator = new Rotator(this, 0, this.controller);
-	this.upperRotator = new Rotator(this, 1, this.controller);
+/*	this.lowerRotator = new Rotator(this, 0, this.controller);
+	this.upperRotator = new Rotator(this, 1, this.controller); */
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");

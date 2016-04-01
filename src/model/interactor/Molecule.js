@@ -86,6 +86,8 @@ Molecule.prototype.getBlobRadius = function() {
 
 
 Molecule.prototype.showHighlight = function(show) {
+	// default do nothing 
+	/*
     if (show === true) {
         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
@@ -95,9 +97,12 @@ Molecule.prototype.showHighlight = function(show) {
         //~ }
         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
     }
+    * */
 };
 
 Molecule.prototype.setSelected = function(select) {
+   //do nothing
+   /*
     if (select && this.isSelected === false) {
         this.controller.selected.set(this.id, this);
         this.isSelected = true;
@@ -109,7 +114,7 @@ Molecule.prototype.setSelected = function(select) {
         this.isSelected = false;
 		this.highlight.setAttribute("stroke-opacity", "0");
 		this.highlight.setAttribute("stroke", Config.highlightColour);
-    }
+    }*/
 };
 
 Molecule.prototype.getPosition = function(){

@@ -44,7 +44,7 @@ function BioactiveEntity(id, xlvController, json, name) {
 	 */
      
     this.upperGroup = document.createElementNS(Config.svgns, "g");
-    this.upperGroup.setAttribute("class", "protein upperGroup");
+    //~ this.upperGroup.setAttribute("class", "protein upperGroup");
 
  	//for polygon
  	var points = "0, -10  8.66,5 -8.66,5";
@@ -65,7 +65,7 @@ function BioactiveEntity(id, xlvController, json, name) {
     this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
-    this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
+    this.labelSVG.setAttribute("class", "xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
     
