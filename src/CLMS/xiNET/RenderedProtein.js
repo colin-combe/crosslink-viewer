@@ -186,7 +186,7 @@ CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
 //only output the info needed to reproduce the layout, used by save layout function
 CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 	return {
-		id: this.id,
+		id: this.interactor.id,
 		x: this.x,
 		y: this.y,
 		rot: this.rotation,

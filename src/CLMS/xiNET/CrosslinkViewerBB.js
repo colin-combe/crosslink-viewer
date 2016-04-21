@@ -137,12 +137,12 @@
 				
 			}
 			
-			//this.initLayout();
 			if (this.options.layout != null) {
 				this.loadLayout(this.options.layout);
 			} else {
 				var proteins = this.renderedProteins.values();
 				for (var prot of proteins) {
+					prot.init();
 					this.proteinLower.appendChild(prot.lowerGroup);
 					this.proteinUpper.appendChild(prot.upperGroup);
 				}
@@ -277,6 +277,7 @@
 		},*/
 
 		initProteins: function () {
+			//poor design of code, this function isn't calling protein.init()
 			var interactors = this.model.get("clmsModel").get("interactors").values();
 			CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
 			for (var interactor of interactors) {
@@ -297,9 +298,7 @@
 					- CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
 			var prots = this.renderedProteins.values();
 			var protCount = prots.length;
-			for (var protein of prots){
-				protein.init();
-			}
+
 			//~ if (protCount < 3) {
 				//~ for (var j =0; j < protCount; j++){
 					//~ prots[j].busy = false;
@@ -886,17 +885,19 @@
 					}
 					//some tidying required
 					if (protLayout["form"]) {
-						//~ if (protLayout["stickZoom"]) {
-							protein.stickZoom = 1;//protLayout["stickZoom"];
-						//~ }  
+						if (protLayout["stickZoom"]) {
+							protein.stickZoom = protLayout["stickZoom"];
+						}  
 						protein.form = protLayout["form"] - 0;
 						// protein.form =1;
 						// protein.scale();
-						// protein.toStick();
+						if (protein.form === 1){
+							 protein.toStick();
+						}
 						//~ //protein.setRotation(protein.rotation);
 					}
 					 //~ protein.form = 1;
-					//~ protein.init();
+					protein.init();
 					
 					//~ if (typeof protLayout["form"]) {
 					  //~ 
@@ -918,7 +919,7 @@
 			var proteinIter = this.renderedProteins.values();
 			for (prot of proteinIter) {
 				if (prot.x == null) {
-					prot.toBlob();
+					prot.init()
 					prot.setPosition(20, 20);
 					this.proteinLower.appendChild(prot.lowerGroup);
 					this.proteinUpper.appendChild(prot.upperGroup);
