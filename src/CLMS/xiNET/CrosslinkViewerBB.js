@@ -1295,7 +1295,7 @@
 
 			for (crossLink of crossLinks) {
 				var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
-				renderedCrossLink.showHighlight(true);
+				renderedCrossLink.showHighlight(true, true);
 			}
 
 			return this;
