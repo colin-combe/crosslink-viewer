@@ -337,21 +337,18 @@
 		},
 
 		scale: function () {
-			//~ //if (this.sequenceInitComplete) {
-				//~ this.z = this.container.getScreenCTM().inverse().a;
-//~
-				//~ var proteins = this.renderedProteins.values();
-				//~ var proteinCount = proteins.length;
-				//~ for (var p = 0; p < proteinCount; p++) {
-					//~ var prot = proteins[p];
-					//~ prot.setPosition(prot.x, prot.y); // this rescales the protein //TODO: check if this always need to happen
-					//~ if (prot.form !== 0)
-						//~ prot.setAllLineCoordinates();
-				//~ }
-//~
-				//~ var links = this.proteinLinks.values();
+				this.z = this.container.getScreenCTM().inverse().a;
+//~ //~
+				var proteins = this.renderedProteins.values();
+				for (prot of proteins) {
+					prot.setPosition(prot.x, prot.y); // this rescales the protein //TODO: check if this always need to happen
+					if (prot.form !== 0)
+						prot.setAllLineCoordinates();
+				}
+//~ //~
+				var renderedLinks = this.renderedCrossLinks.values();
 				//~ var linkCount = links.length;
-				//~ for (var l = 0; l < linkCount; l++) {
+				for (renderedLink of renderedLinks) {
 					//~ var protLink = links[l];
 					//~ if (protLink.fromProtein !== protLink.toProtein && protLink.toProtein !== null) {
 						//~ if (!protLink.fromProtein.isParked && !protLink.toProtein.isParked) {
@@ -368,19 +365,15 @@
 								//~ var c2 = protLink.residueLinks.keys().length;
 								//~ for (var rl = 0; rl < c2; rl++) {
 									//~ var resLink = protLink.residueLinks.values()[rl];
-									//~ if (resLink.check()) {
-										//~ protLink.residueLinks.values()[rl].line.setAttribute("stroke-width", this.z * xiNET.linkWidth);
-										//~ protLink.residueLinks.values()[rl].highlightLine.setAttribute("stroke-width", this.z * 10);
-										//~ if (resLink.ambig) {
-											//~ resLink.dashedLine(true); //rescale spacing of dashes
-										//~ }
-									//~ }
-								//~ }
-							//~ }
-						//~ }
-					//~ }
-				//~ }
-			//~ //}
+									if (renderedLink.crossLink.check() && renderedLink.crossLink.isSelfLink() === false) {
+										renderedLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+										renderedLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+										if (renderedLink.crossLink.ambiguous === true) {
+											renderedLink.dashedLine(true); //rescale spacing of dashes
+										}
+									}
+								}
+
 		},
 
 		setAnnotations: function (annotationChoice) {
