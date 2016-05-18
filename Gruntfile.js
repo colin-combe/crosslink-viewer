@@ -61,6 +61,8 @@ module.exports = taskManager = function(grunt) {
     plugin = plugins[_i];
     grunt.loadNpmTasks(plugin);
   }
+  //todo: note that the 'test' task just returns true right now! Real tests need to be added.
+  grunt.registerTask('test', function() {return true});
   grunt.registerTask('setup', 'browserify');
   grunt.registerTask('package', ['browserify', 'uglify']);
   grunt.registerTask('build', ['browserify']);
