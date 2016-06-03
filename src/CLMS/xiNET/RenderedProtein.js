@@ -8,7 +8,7 @@
 CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.interactor = interactor;
 	this.crosslinkViewer = crosslinkViewer;
-	this.tooltip = this.interactor.name + ' [' + this.interactor.accession + ']';// + this.accession;
+	this.tooltip = this.interactor.description;
 
 	//links
 	//~ this.proteinLinks = d3.map();
