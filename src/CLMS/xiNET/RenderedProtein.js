@@ -75,7 +75,7 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	//create label - we will move this svg element around when protein form changes
 	this.labelSVG = document.createElementNS(CLMS.xiNET.svgns, "text");
 	this.labelSVG.setAttribute("text-anchor", "end");
-	this.labelSVG.setAttribute("fill", this.interactor.isDecoy()? "#FB8072":"black")
+	this.labelSVG.setAttribute("fill", this.interactor.is_decoy? "#FB8072":"black")
 	this.labelSVG.setAttribute("x", 0);
 	this.labelSVG.setAttribute("y", 10);
 	this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");

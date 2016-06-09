@@ -11,12 +11,12 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 	this.crosslinkViewer = crosslinkViewer;
 
 	this.renderedFromProtein =
-					this.crosslinkViewer.renderedProteins.get(this.crossLink.getFromProtein().id);
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);
 					
 	this.renderedFromProtein.renderedCrossLinks.set(crossLink.id, this);				
 	
 	this.renderedToProtein =
-					this.crosslinkViewer.renderedProteins.get(this.crossLink.getToProtein().id);
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
 		
 
 	if (this.renderedToProtein) {
@@ -35,7 +35,7 @@ CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 	if (typeof this.line === 'undefined') {
-		if (this.crossLink.isSelfLink() === true || this.crossLink.getToProtein() === null) {
+		if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
 			this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 			this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
 			this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
@@ -133,24 +133,24 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				//~ this.crosslinkViewer.model.set("highlights",[]);
 			}
 		}
-		if (andAlternatives && this.crossLink.ambiguous) {
-			//TODO: we want to highlight smallest possible set of alternatives?
-			var mc = this.crossLink.matches.length;
-			for (var m = 0; m < mc; m++) {
-				var match = this.crossLink.matches[m][0];
-				if (match.isAmbig()) {
-					var rc = match.crossLinks.length;
-					for (var rl = 0; rl < rc; rl++) {
-						var resLink = match.crossLinks[rl];
-						var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(resLink.id);
-					 //   if (resLink.isSelected == false) { //not right
-							renderedLink.showHighlight(show, false);
-					 //}
-					}
-				}
-			}
-
-		}
+		//~ if (andAlternatives && this.crossLink.ambiguous) {
+			//~ //TODO: we want to highlight smallest possible set of alternatives?
+			//~ var mc = this.crossLink.matches.length;
+			//~ for (var m = 0; m < mc; m++) {
+				//~ var match = this.crossLink.matches[m][0];
+				//~ if (match.isAmbig()) {
+					//~ var rc = match.crossLinks.length;
+					//~ for (var rl = 0; rl < rc; rl++) {
+						//~ var resLink = match.crossLinks[rl];
+						//~ var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(resLink.id);
+					 //~ //   if (resLink.isSelected == false) { //not right
+							//~ renderedLink.showHighlight(show, false);
+					 //~ //}
+					//~ }
+				//~ }
+			//~ }
+//~ 
+		//~ }
 		
 		
 	//~ }

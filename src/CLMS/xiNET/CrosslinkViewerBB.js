@@ -563,7 +563,7 @@
 						var ox, oy, nx, ny;
 						if (!this.dragElement.interactor) { // if not a protein
 							//its a link - drag whole connected subgraph
-							var prot = this.dragElement.renderedFromProtein;
+							/*var prot = this.dragElement.renderedFromProtein;
 							var prots = this.renderedProteins.values();
 							for (var protein of prots) {
 								protein.subgraph = null;
@@ -583,7 +583,7 @@
 							for (node of nodes) {
 								var protein = this.renderedProteins.get(node.id);			
 								nodes[i].setAllLineCoordinates();
-							}
+							}*/
 						} else {
 							//its a protein - drag it TODO: DRAG SELECTED
 							ox = this.dragElement.x;
@@ -945,47 +945,49 @@
 				this.force.stop();
 			}
 			var width = this.svgElement.parentNode.clientWidth;
-			var height = this.svgElement.parentNode.clientHeight;
+			var height = this.svgElement.parentNode.parentNode.clientHeight;
 			var self = this;
 			var prots = this.renderedProteins.values();
 			//clear subgraphs
-			CLMS.model.Protein.subgraphs.length = 0;
-			for (var prot of prots) {
-				prot.interactor.subgraph = null;
+			//~ CLMS.model.Protein.subgraphs.length = 0;
+			//~ for (var prot of prots) {
+				//~ prot.interactor.subgraph = null;
+			//~ } 
+			/*
+			for (var p = 0; p < proteinCount; p++) {
+				var prot = prots[p];
+				var park = true;
+				for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+					var protLink = prot.proteinLinks.values()[ppl];
+					if (protLink.getFilteredMatches().length > 0){
+						if (this.intraHidden === false ||
+							(this.intraHidden === true && protLink.intra != true)) {
+								park = false;
+							}
+					}
+				}
+				// for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+					// var protLink = prot.proteinLinks.values()[ppl];
+					// if (protLink.getFilteredMatches().length > 0){
+						// park = false;
+					// }
+				// }
+				prot.setParked(park);
 			}
-			//~ for (var p = 0; p < proteinCount; p++) {
-				//~ var prot = prots[p];
-				//~ var park = true;
-				//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-					//~ var protLink = prot.proteinLinks.values()[ppl];
-					//~ if (protLink.getFilteredMatches().length > 0){
-						//~ if (this.intraHidden === false ||
-							//~ (this.intraHidden === true && protLink.intra != true)) {
-								//~ park = false;
-							//~ }
-					//~ }
-				//~ }
-				//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-					//~ // var protLink = prot.proteinLinks.values()[ppl];
-					//~ // if (protLink.getFilteredMatches().length > 0){
-						//~ // park = false;
-					//~ // }
-				//~ // }
-				//~ prot.setParked(park);
+			//~ */
+			//~ //init subgraphs
+			//~ var proteinCount = 0;
+			//~ prots = this.renderedProteins.values();
+			//~ for (var prot of prots) {
+				//~ proteinCount++;
+				//~ prot.interactor.getSubgraph();//adds new subgraphs to this.subgraphs
 			//~ }
-			//init subgraphs
-			var proteinCount = 0;
-			prots = this.renderedProteins.values();
-			for (var prot of prots) {
-				proteinCount++;
-				prot.interactor.getSubgraph();//adds new subgraphs to this.subgraphs
-			}
-			//sort subgraphs by size
-			this.subgraphs.sort(function(a, b) {
-				return a.nodes.values().length - b.nodes.values().length;
-			});
+			//~ //sort subgraphs by size
+			//~ this.subgraphs.sort(function(a, b) {
+				//~ return a.nodes.values().length - b.nodes.values().length;
+			//~ });
 
-
+/*
 			//~ var prots = this.renderedProteins.values();
 			//~ if (proteinCount === 1) {
 				//~ var protein = prots.next().value;
@@ -1132,6 +1134,8 @@
 					}
 				}
 				//do force directed layout*/
+				
+				
 				var gWidth = width;// - this.layoutXOffset;
 				//~ if (gWidth < 200) {
 					//~ gWidth = width;
@@ -1139,28 +1143,114 @@
 				var linkDistance = 60; 
 				layoutObj = {};
 				layoutObj.nodes = [];
-				layoutObj.links = [];
 				var protLookUp = {};
 				var pi = 0;
-
-				for (var g = 0; g < nonLinearGraphs.length; g++) {
-					var nodes = nonLinearGraphs[g].nodes.values();
-					//~ var nodeCount = nodes.length;
-					for (node of nodes) {
-						var prot = this.renderedProteins.get(node.id);
-		//        if (prot.fixed === false) {
-						protLookUp[prot.interactor.id] = pi;
-						pi++;
-						var nodeObj = {};
-						nodeObj.id = prot.interactor.id;
-						nodeObj.x = prot.x;// - this.layoutXOffset;
-						nodeObj.y = prot.y;
-						nodeObj.px = prot.x;// - this.layoutXOffset;
-						nodeObj.py = prot.y;
-						layoutObj.nodes.push(nodeObj);
-					}
-		//        }
+				for (prot of prots) {
+					protLookUp[prot.interactor.id] = pi;
+					pi++;
+					var nodeObj = {};
+					nodeObj.id = prot.interactor.id;
+					nodeObj.x = prot.x;
+					nodeObj.y = prot.y;
+					nodeObj.px = prot.x;
+					nodeObj.py = prot.y;
+					layoutObj.nodes.push(nodeObj);
 				}
+				var links = new Map();
+				
+			
+			var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+			for(var crossLink of crossLinks){
+				console.log("check:" + crossLink.check());
+				//~ //visible, non-self cross-links only
+				if (crossLink.check() === true && !crossLink.isSelfLink() && crossLink.toProtein) {
+					var fromId = crossLink.fromProtein.id;
+					var toId = crossLink.toProtein.id;
+					var linkId = fromId + "-" + toId;
+					if (!links.has(linkId)){ 
+						var source = protLookUp[fromId];
+						var target = protLookUp[toId];
+						var linkObj = {};
+						linkObj.source = source;
+						linkObj.target = target;
+						linkObj.id = linkId;
+						links.set(linkId, linkObj);				
+					}
+				}
+			}
+			
+			layoutObj.links = Array.from(links.values());
+				
+			//~ if (crossLink.fromProtein !== crossLink.toProtein && crossLink.check() === true) {
+				//~ var linkId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+				//~ var link = {"source":crossLink.fromProtein.id, "target":crossLink.toProtein.id};
+				//~ if (!subgraph.links.has(linkId)) {
+					//~ subgraph.links.set(linkId, link);
+					//~ var otherEnd;
+					//~ if (crossLink.fromProtein === this) {
+						//~ otherEnd = crossLink.toProtein;
+					//~ }
+					//~ else {
+						//~ otherEnd = crossLink.fromProtein;
+					//~ }
+					//~ if (otherEnd !== null) {
+						//~ if (!subgraph.nodes.has(otherEnd.id)) {
+							//~ subgraph.nodes.set(otherEnd.id, otherEnd);
+							//~ otherEnd.subgraph = subgraph;
+							//~ otherEnd.addConnectedNodes(subgraph);
+						//~ }
+					//~ }
+				//~ }
+				//~ }
+			//~ }
+						
+//~ CLMS.model.Protein.prototype.getSubgraph = function(subgraphs) {
+   //~ if (this.subgraph == null) { // don't check for undefined here
+		//~ var subgraph = {
+			//~ nodes: new Map(),
+			//~ links: new Map()
+		//~ };
+		//~ subgraph.nodes.set(this.id, this);
+		//~ // if (this.isParked === false) {
+			//~ this.subgraph = this.addConnectedNodes(subgraph);
+		//~ // }
+		//~ CLMS.model.Protein.subgraphs.push(subgraph);
+	//~ }
+	//~ return this.subgraph;
+//~ };
+//~ 
+//~ CLMS.model.Protein.prototype.addConnectedNodes = function(subgraph) {
+	//~ // var links = this.crossLinks.values();
+	//~ for (crossLink of this.crossLinks) {
+		//~ //visible, non-self links only
+		//~ if (crossLink.fromProtein !== crossLink.toProtein && crossLink.check() === true) {
+			//~ var linkId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+			//~ var link = {"source":crossLink.fromProtein.id, "target":crossLink.toProtein.id};
+			//~ if (!subgraph.links.has(linkId)) {
+				//~ subgraph.links.set(linkId, link);
+				//~ var otherEnd;
+				//~ if (crossLink.fromProtein === this) {
+					//~ otherEnd = crossLink.toProtein;
+				//~ }
+				//~ else {
+					//~ otherEnd = crossLink.fromProtein;
+				//~ }
+				//~ if (otherEnd !== null) {
+					//~ if (!subgraph.nodes.has(otherEnd.id)) {
+						//~ subgraph.nodes.set(otherEnd.id, otherEnd);
+						//~ otherEnd.subgraph = subgraph;
+						//~ otherEnd.addConnectedNodes(subgraph);
+					//~ }
+				//~ }
+			//~ }
+		//~ }
+	//~ }
+	//~ return subgraph;
+//~ };
+//~ 
+				
+				/*
+
 				for (var g = 0; g < nonLinearGraphs.length; g++) {
 					var links = nonLinearGraphs[g].links.values();
 					//~ var linkCount = links.length;
@@ -1187,11 +1277,16 @@
 							}
 						//~ }
 					}
-				}
+				}*/
+				
+				
+				
+				
 				var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
 		// mike suggests:
 		//    .charge(-10 / k)
 		//    .gravity(100 * k)
+				alert("h: " + height);
 				this.force = d3.layout.force()
 						.nodes(layoutObj.nodes)
 						.links(layoutObj.links)
@@ -1210,7 +1305,7 @@
 						var protein = self.renderedProteins.get(node.id);
 						var nx = node.x;
 						var ny = node.y;
-						protein.setPosition(nx + self.layoutXOffset, ny);
+						protein.setPosition(nx, ny);
 						protein.setAllLineCoordinates();
 					}
 				});
