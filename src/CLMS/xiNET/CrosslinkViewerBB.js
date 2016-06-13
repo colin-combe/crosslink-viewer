@@ -1286,7 +1286,7 @@
 		// mike suggests:
 		//    .charge(-10 / k)
 		//    .gravity(100 * k)
-				alert("h: " + height);
+			//	alert("h: " + height);
 				this.force = d3.layout.force()
 						.nodes(layoutObj.nodes)
 						.links(layoutObj.links)
