@@ -28,7 +28,7 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 	//used to avoid some unnecessary manipulation of DOM
 	this.shown = false;
 	this.dashed = false;
-	this.initSVG();
+	//~ this.initSVG();
 }
 
 CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
@@ -55,9 +55,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 		this.highlightLine.setAttribute("stroke-width", "10");
 		this.highlightLine.setAttribute("stroke-opacity", "0")
 
-		if (typeof this.colour !== 'undefined'){
-			this.line.setAttribute("stroke", this.colour);
-		}
+		//~ if (typeof this.colour !== 'undefined'){
+			//~ this.line.setAttribute("stroke", this.colour);
+		//~ }
+
+		this.line.setAttribute("stroke", 
+			this.crosslinkViewer.model.get("linkColourAssignment")(this.crossLink));
 
 		//set the events for it
 		var self = this;
@@ -249,11 +252,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
-	//~ if (!this.shown) {
-		//~ this.shown = true;
-		//~ if (typeof this.line === 'undefined') {
-			//~ this.initSVG();
-		//~ }
+	if (!this.shown) {
+		this.shown = true;
+		if (typeof this.line === 'undefined') {
+			this.initSVG();
+		}
 		if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
 			var path;
 			if (this.renderedFromProtein.form === 1) {
@@ -276,12 +279,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 			this.crosslinkViewer.highlights.appendChild(this.highlightLine);
 			this.crosslinkViewer.res_resLinks.appendChild(this.line);
 		}
-	//~ }
+	}
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
-	//~ if (this.shown) {
-		//~ this.shown = false;
+	if (this.shown) {
+		this.shown = false;
 
 		if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
 			//TODO - there may be issue with contains() in IE
@@ -297,49 +300,50 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
 			}
 		}
 		
-	//~ }
+	}
 };
 
 // there's an efficiency saving possible by passing in the renderedInteractor thats moved, 
 // then only need to change that end
 CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
-	//if not self link && not linker modified pep
-	if (this.crossLink.isSelfLink() === false && this.renderedToProtein){		
-		//~ if (this.shown) {//don't waste time changing DOM if link not visible
-		var x, y;
-		// from end
-		if (this.renderedFromProtein.form === 0) {
-				x = this.renderedFromProtein.x;
-				y = this.renderedFromProtein.y;
-		}
-		else //if (this.form == 1)
-		{
-			var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
-			x = coord[0];
-			y = coord[1];
-		}
-		this.line.setAttribute("x1", x);
-		this.line.setAttribute("y1", y);
-		this.highlightLine.setAttribute("x1", x);
-		this.highlightLine.setAttribute("y1", y);
-		
-		// to end
-		if (this.renderedToProtein.form === 0) {
-				x = this.renderedToProtein.x;
-				y = this.renderedToProtein.y;
-		}
-		else //if (this.form == 1)
-		{
-			var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
-			x = coord[0];
-			y = coord[1];
-		}
-		this.line.setAttribute("x2", x);
-		this.line.setAttribute("y2", y);
-		this.highlightLine.setAttribute("x2", x);
-		this.highlightLine.setAttribute("y2", y);
+	if(this.shown){
+		//if not self link && not linker modified pep
+		if (this.crossLink.isSelfLink() === false && this.renderedToProtein){		
+			//~ if (this.shown) {//don't waste time changing DOM if link not visible
+			var x, y;
+			// from end
+			if (this.renderedFromProtein.form === 0) {
+					x = this.renderedFromProtein.x;
+					y = this.renderedFromProtein.y;
+			}
+			else //if (this.form == 1)
+			{
+				var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
+				x = coord[0];
+				y = coord[1];
+			}
+			this.line.setAttribute("x1", x);
+			this.line.setAttribute("y1", y);
+			this.highlightLine.setAttribute("x1", x);
+			this.highlightLine.setAttribute("y1", y);
 			
-		//~ } // end if(this.shown){, might put this back in
+			// to end
+			if (this.renderedToProtein.form === 0) {
+					x = this.renderedToProtein.x;
+					y = this.renderedToProtein.y;
+			}
+			else //if (this.form == 1)
+			{
+				var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
+				x = coord[0];
+				y = coord[1];
+			}
+			this.line.setAttribute("x2", x);
+			this.line.setAttribute("y2", y);
+			this.highlightLine.setAttribute("x2", x);
+			this.highlightLine.setAttribute("y2", y);
+				
+		}
 	}
 }
 

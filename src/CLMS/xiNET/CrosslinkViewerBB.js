@@ -208,8 +208,10 @@
 			var colourAssignment = this.model.get("linkColourAssignment");
 			var renderedLinks = this.renderedCrossLinks.values();
 			for (var rLink of renderedLinks) {
-				var c = colourAssignment(rLink.crossLink);
-				rLink.line.setAttribute("stroke",c);
+				if (rLink.shown) {
+					var c = colourAssignment(rLink.crossLink);
+					rLink.line.setAttribute("stroke",c);
+				}
 			}	
 		},
 
