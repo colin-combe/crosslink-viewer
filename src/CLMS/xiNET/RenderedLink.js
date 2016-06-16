@@ -60,7 +60,7 @@ CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
 	} else {
 		this.crosslinkViewer.model.set("highlights",[this.crossLink]);
 	}
-	this.crosslinkViewer.setTooltip(this.tooltip);
+//	this.crosslinkViewer.setTooltip(this.tooltip);
 };
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
@@ -75,7 +75,7 @@ CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 	//            this.showHighlight(false, true);
 	//        }
 	//    }
-	this.crosslinkViewer.hideTooltip();
+//	this.crosslinkViewer.hideTooltip();
 	//~ return false;
 }
 

@@ -9,13 +9,9 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.interactor = interactor;
 	this.crosslinkViewer = crosslinkViewer;
 	this.tooltip = this.interactor.description;
-
-	//links
-	//~ this.proteinLinks = d3.map();
-	//~ this.selfLink = null;
 	
+	this.renderedP_PLinks = new Map();
 	this.renderedCrossLinks = new Map();
-	//~ this.renderedSelfCrossLinks = new Map();
 	
 	// layout info
 	this.x = 40;
@@ -167,14 +163,14 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
 CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 		this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
 		this.showHighlight(true);
-		this.crosslinkViewer.setTooltip(this.tooltip);
+//		this.crosslinkViewer.setTooltip(this.tooltip);
 		return false;
 };
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
 		this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
 		this.showHighlight(false);
-		this.crosslinkViewer.hideTooltip();
+//		this.crosslinkViewer.hideTooltip();
 		return false;
 };
 
@@ -1039,10 +1035,13 @@ CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
+	var pLinks = this.renderedP_PLinks.values();
+	for (pLink of pLinks) {
+		pLink.check();
+	}	
 	var links = this.renderedCrossLinks.values();
-	var c = links.length;
-	for (var l = 0; l < c; l++) {
-		links[l].check();
+	for (link of links) {
+		link.check();
 	}
 	//~ var links = this.renderedSelfCrossLinks.values();
 	//~ var c = links.length;
@@ -1053,16 +1052,12 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
-	//~ var links = this.proteinLinks.values();
-	//~ var c = links.length;
-	//~ for (var l = 0; l < c; l++) {
-		//~ var link = links[l];
-		//~ if (link.getToProtein() !== null &&
-			//~ link.getFromProtein().form === 0 && link.getToProtein().form === 0) {
-			 //~ link.setLineCoordinates(this);
-		//~ }
-		//~ else {
-			//~ var resLinks = link.residueLinks.values();
+
+			var pLinks = this.renderedP_PLinks.values();
+			for (pLink of pLinks) {
+				pLink.setLineCoordinates(this);
+			}
+			
 			var resLinkIter = this.renderedCrossLinks.values();
 			for (residueLink of resLinkIter) {
 				residueLink.setLineCoordinates(this);
@@ -1072,8 +1067,7 @@ CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 					//~ residueLink.setLineCoordinates(otherEnd);
 				//~ }
 			}
-		//~ }
-	//~ }
+
 };
 
 
@@ -1116,13 +1110,13 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
 			anno.pieSlice.onmouseover = function(evt) {
 				var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
 				xlv.preventDefaultsAndStopPropagation(evt);
-				xlv.setTooltip(el.name, el.getAttribute('fill'));
+//				xlv.setTooltip(el.name, el.getAttribute('fill'));
 				self.showHighlight(true);
 			};
 			anno.colouredRect.onmouseover = function(evt) {
 				var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
 				xlv.preventDefaultsAndStopPropagation(evt);
-				xlv.setTooltip(el.name, el.getAttribute('fill'));
+//				xlv.setTooltip(el.name, el.getAttribute('fill'));
 				self.showHighlight(true);
 			};
 			this.circDomains.appendChild(anno.pieSlice);

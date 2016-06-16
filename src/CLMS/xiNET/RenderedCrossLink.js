@@ -11,17 +11,12 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 	this.crosslinkViewer = crosslinkViewer;
 
 	this.renderedFromProtein =
-					this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);
-					
+					this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);					
 	this.renderedFromProtein.renderedCrossLinks.set(crossLink.id, this);				
 	
 	this.renderedToProtein =
 					this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
-		
-
-	if (this.renderedToProtein) {
-		this.renderedToProtein.renderedCrossLinks.set(crossLink.id, this);
-	}
+	this.renderedToProtein.renderedCrossLinks.set(crossLink.id, this);
 				
 	this.tooltip = this.crossLink.id;
 
@@ -98,7 +93,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 // need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
 	if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
-		//~ if (this.shown) {
+		if (this.shown) {
 			if (show) {
 				this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 				this.highlightLine.setAttribute("stroke-opacity", "0.7");
@@ -156,7 +151,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 		//~ }
 		
 		
-	//~ }
+	}
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
@@ -175,6 +170,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
+	
+	if (this.renderedFromProtein.form == 0 && this.renderedToProtein.form == 0){
+			this.hide();
+			return false;	
+	}
 	
 	if (this.renderedFromProtein.isParked === true 
 		|| (this.renderedToProtein && this.renderedToProtein.isParked == true)) {
