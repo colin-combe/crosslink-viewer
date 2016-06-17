@@ -199,11 +199,11 @@ CLMS.xiNET.P_PLink.prototype.getFilteredMatches = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
-	//currently no representation of monolinks at proteinLink level (hence checks for this.toProtein !== null)
-	/*if (this.renderedFromProtein.isParked || (this.renderedToProtein !== null && this.renderedToProtein.isParked)) {
+	if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
+			|| this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
 		this.hide();
 		return false;
-	}*/
+	}
 	
 	/*if (this.proteinLink.isSelfLink()) && this.crosslinkViewer.selfLinksShown === false) {
 		if (this.fromProtein.form === 0) {
@@ -354,8 +354,8 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
 		// TODO?: check how some of this compares to whats in Refresh.js, scale()
-		//~ if (!this.shown) {
-			//~ this.shown = true;
+		if (!this.shown) {
+			this.shown = true;
 			//~ if (this.fromProtein === this.toProtein) {
 				//~ if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
 					//~ this.thickLine.setAttribute("transform", "translate(" +
@@ -382,33 +382,33 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
 				this.crosslinkViewer.p_pLinks.appendChild(this.line);
 			//~ }
-		//~ }
-		//~ if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
-			//~ if (this.selfLink()) {
-				//~ this.thickLine.setAttribute("stroke-width", this.w);
-			//~ } else {
-				//~ this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
-			//~ }
-		//~ }
+		}
+		if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
+			if (this.selfLink()) {
+				this.thickLine.setAttribute("stroke-width", this.w);
+			} else {
+				this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
+			}
+		}
 };
 
 CLMS.xiNET.P_PLink.prototype.hide = function() {
 	if (this.shown) {
 		this.shown = false;
-		if (this.selfLink()) {
-			//TODO: be more selective about when to show 'thickLine'
-			if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-				this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-			}
+		//~ if (this.selfLink()) {
+			//~ //TODO: be more selective about when to show 'thickLine'
+			//~ if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
+				//~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
+			//~ }
+			//~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+			//~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
+		//~ } else {
+			//~ if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
+				//~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
+			//~ }
 			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
 			this.crosslinkViewer.p_pLinks.removeChild(this.line);
-		} else {
-			if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-				this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-			}
-			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-			this.crosslinkViewer.p_pLinks.removeChild(this.line);
-		}
+		//~ }
 	}
 };
 

@@ -98,8 +98,8 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.outline.setAttribute("stroke-width", "1");
 	this.outline.setAttribute("fill", "#EEEEEE");
 	this.upperGroup.appendChild(this.outline);
-	 this.upperGroup.appendChild(this.ticks);
-   //domains as pie slices - shown on top of everything
+	this.upperGroup.appendChild(this.ticks);
+    //domains as pie slices - shown on top of everything
 	this.circDomains = document.createElementNS(CLMS.xiNET.svgns, "g");
 	//~ this.circDomains.setAttribute("class", "protein circDomains");
 	this.circDomains.setAttribute("opacity", 1);
@@ -381,19 +381,6 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
 			}
 		//~ }
 
-		//linker modified peptides
-		if (this.linkerModifications != null) {
-			var mods = this.linkerModifications.residueLinks.values();
-			var iModCount = mods.length;
-			for (var m = 0; m < iModCount; m++) {
-				var mod = mods[m];
-				if (mod.shown) {
-				   var path = this.getCLMS.xiNET.RenderedCrossLinkPath(mod);
-				   d3.select(mod.line).attr("d", path);
-				   d3.select(mod.highlightLine).attr("d", path);
-				}
-			}
-		}
 		this.setScaleGroup();
 		this.setRotation(this.rotation); // places ticks and rotators
 	}
@@ -641,20 +628,6 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 	}
 	//~ }
 
-	//linker modified peptides
-	if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var selectLine = d3.select(mod.line);
-				selectLine.attr("fill", "none");
-				selectLine.attr("d", "M 0,0 L 0,0");
-			}
-		}
-	}
-
 	var self = this;
 	if (this.annotations) {
 		var annots = this.annotations;
@@ -816,24 +789,6 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 		}
 	}
 	//~ }
-
-   //linker modified peptides
-	if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var path = this.getCLMS.xiNET.RenderedCrossLinkPath(mod);
-				d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
-				d3.select(mod.line).transition().attr("d",path)
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-				d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
-				d3.select(mod.highlightLine).transition().attr("d",path)
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-			}
-		}
-	}
 
 	if (this.annotations) {
 		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
@@ -1053,20 +1008,20 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 
-			var pLinks = this.renderedP_PLinks.values();
-			for (pLink of pLinks) {
-				pLink.setLineCoordinates(this);
-			}
-			
-			var resLinkIter = this.renderedCrossLinks.values();
-			for (residueLink of resLinkIter) {
-				residueLink.setLineCoordinates(this);
-				//~ var otherEnd = residueLink.proteinLink.getOtherEnd(this); //todo
-				//deals with pointing line to right side of animo acid letter
-				//~ if (otherEnd && otherEnd.form === 1	&& otherEnd.stickZoom * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE > 8){
-					//~ residueLink.setLineCoordinates(otherEnd);
-				//~ }
-			}
+	var pLinks = this.renderedP_PLinks.values();
+	for (pLink of pLinks) {
+		pLink.setLineCoordinates(this);
+	}
+	
+	var resLinkIter = this.renderedCrossLinks.values();
+	for (residueLink of resLinkIter) {
+		residueLink.setLineCoordinates(this);
+		//~ var otherEnd = residueLink.proteinLink.getOtherEnd(this); //todo
+		//deals with pointing line to right side of animo acid letter
+		//~ if (otherEnd && otherEnd.form === 1	&& otherEnd.stickZoom * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE > 8){
+			//~ residueLink.setLineCoordinates(otherEnd);
+		//~ }
+	}
 
 };
 
