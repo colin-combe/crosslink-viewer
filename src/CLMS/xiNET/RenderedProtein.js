@@ -288,7 +288,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
 				+ " scale(" + (this.crosslinkViewer.z) + ") ");
 		this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
 				+ " scale(" + (this.crosslinkViewer.z) + ") ");
-		if (this.interactor.selfLink != null) {
+		if (this.selfLink != null) {
 			if (typeof this.selfLink.thickLine !== 'undefined') {
 				this.selfLink.thickLine.setAttribute("transform", "translate(" + this.x
 						+ " " + this.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");

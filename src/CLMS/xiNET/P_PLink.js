@@ -19,7 +19,7 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
 					this.crosslinkViewer.renderedProteins.get(crossLink.toProtein.id);
 	this.renderedToProtein.renderedP_PLinks.set(p_pId, this);				
 		
-	this.tooltip = crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
+	this.name = crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
 	//used to avoid some unnecessary manipulation of DOM
 	this.shown = false;
 	//layout stuff
@@ -30,10 +30,11 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
 		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
 		this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
 	} else {
+		this.renderedFromProtein.selfLink = this;
+		
 		this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
 		this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
-		//this.renderedFromProtein.selfLink = this;
 	}
 	
 	this.line.setAttribute("class", "link");
@@ -181,22 +182,22 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
 
 
 //its an array of match id's its going to return
-CLMS.xiNET.P_PLink.prototype.getFilteredMatches = function() {
-	var resLinks = this.residueLinks.values();
-	var resLinkCount = resLinks.length;
-	var filteredMatches = d3.map();
-	for (var i = 0; i < resLinkCount; i++) {
-		var resLink = resLinks[i];
-		var mCount = resLink.matches.length;
-		for (var m = 0; m < mCount; m++) {
-			var match = resLink.matches[m];
-			if (match.meetsFilterCriteria()) {
-				filteredMatches.set(match.id);
-			}
-		}
-	}
-	return filteredMatches.keys();
-};
+//~ CLMS.xiNET.P_PLink.prototype.getFilteredMatches = function() {
+	//~ var resLinks = this.residueLinks.values();
+	//~ var resLinkCount = resLinks.length;
+	//~ var filteredMatches = d3.map();
+	//~ for (var i = 0; i < resLinkCount; i++) {
+		//~ var resLink = resLinks[i];
+		//~ var mCount = resLink.matches.length;
+		//~ for (var m = 0; m < mCount; m++) {
+			//~ var match = resLink.matches[m];
+			//~ if (match.meetsFilterCriteria()) {
+				//~ filteredMatches.set(match.id);
+			//~ }
+		//~ }
+	//~ }
+	//~ return filteredMatches.keys();
+//~ };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
 	if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
@@ -205,141 +206,86 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 		return false;
 	}
 	
-	/*if (this.proteinLink.isSelfLink()) && this.crosslinkViewer.selfLinksShown === false) {
-		if (this.fromProtein.form === 0) {
-			this.hide();
-		} else {
-			var resLinks = this.residueLinks.values();
-			var resLinkCount = resLinks.length;
-			for (var i = 0; i < resLinkCount; i++) {
-				resLinks[i].hide();
+	this.ambig = true;
+	this.hd = false;
+	
+	var filteredCrossLinks = new Set();
+	var filteredMatches = new Map ();
+	
+	for (crossLink of this.crossLinks) {
+		if (crossLink.filteredMatches.length > 1) {
+			filteredCrossLinks.add(crossLink);
+		}
+		for (match of crossLink.filteredMatches) {
+			match = match[0]; // arrrgg
+			filteredMatches.set(match.id, match);
+			if (match.hd === true) {
+				this.hd = true;
+			}
+			if (match.crossLinks.length === 1) {
+				this.ambig = false;
 			}
 		}
-		return false;
-	}*/
+	}
 	
-	/*if (this.hidden) {
-		if (this.fromProtein.form === 0 && (this.toProtein !== null && this.toProtein.form === 0)) {
-			this.hide();
-		} else {
-			var resLinks = this.residueLinks.values();
-			var resLinkCount = resLinks.length;
-			for (var i = 0; i < resLinkCount; i++) {
-				resLinks[i].hide();
-			}
+	var filteredCrossLinkCount = filteredCrossLinks.size;
+	if (filteredCrossLinkCount > 0) {
+		this.tooltip = this.id + ', ' + filteredCrossLinkCount + ' unique cross-link';
+		if (filteredCrossLinkCount > 1) {
+			this.tooltip += 's';
 		}
-		return false;
-	}*/
-	
-	//~ var resLinks = this.residueLinks.values();
-	//~ var resLinkCount = resLinks.length;
-	//~ this.hd = false;
-	//if (true){//this.renderedFromProtein.form === 0 && (this.toProtein !== null && this.renderedToProtein.form === 0)) {
-		/*
-		this.ambig = true;
-		var filteredResLinks = [];
-		var filteredMatches = d3.map();
-		var altProteinLinks = d3.map();
-		for (var i = 0; i < resLinkCount; i++) {
-			var resLink = resLinks[i];
-			var resLinkMeetsCriteria = false;
-			if (resLink.matches){
-				var mCount = resLink.matches.length;
-				for (var m = 0; m < mCount; m++) {
-					var match = resLink.matches[m][0];
-					if (match.meetsFilterCriteria()) {
-						if (match.hd === true) {
-							this.hd = true;
-						}
-						if (resLinkMeetsCriteria === false) {
-							resLinkMeetsCriteria = true;
-							filteredResLinks.push(resLink);
-						}
-						filteredMatches.set(match.id, match);
-						if (match.isAmbig()) {
-							for (var mrl = 0; mrl < match.residueLinks.length; mrl++) {
-								altProteinLinks.set(match.residueLinks[mrl].proteinLink.id);
-							}
-						}
-						else {
-							this.ambig = false;
-						}
-					}
-				}
+		this.tooltip += ' (' + filteredMatches.keys().length;
+		if (filteredMatches.keys().length === 1) {
+			this.tooltip += ' match)';
+		} else {
+			this.tooltip += ' matches)';
+		}
+		//this.w = filteredResLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks);
+		//acknowledge following line is a bit strange
+		//this.ambig = (this.ambig && (altCLMS.xiNET.P_PLinks.keys().length > 1));
+		this.dashedLine(this.ambig);
+
+/*
+		if (this.crosslinkViewer.groups.values().length > 1 && this.crosslinkViewer.groups.values().length < 5) {
+			var groupCheck = d3.set();
+			var matchArray = filteredMatches.values();
+			var countFilteredMatches = matchArray.length;
+			for (var i=0; i < countFilteredMatches; i++) {
+				var match = matchArray[i];
+				groupCheck.add(match.group);
+			}
+			if (groupCheck.values().length == 1){
+				var c = this.crosslinkViewer.linkColours(groupCheck.values()[0]);
+				//~ //console.log(">"+groupCheck.values()[0] + "\t" + c);
+				this.line.setAttribute("stroke", c);
+			}
+			else  {
+				this.line.setAttribute("stroke", "#000000");
+			}
+			//else this.line.setAttribute("stroke", "purple");//shouldn't happen
+		}
+		else if (this.selfLink()) {
+			if (this.hd) {
+				this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());
+				this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);
 			}
 			else {
-				filteredResLinks.push(resLink);
+				this.line.setAttribute("stroke", "black");
+				this.line.setAttribute("stroke-width", 1);
 			}
-		}
-		var filteredResLinkCount = filteredResLinks.length;
-		if (filteredResLinkCount > 0) {
-			this.tooltip = this.id + ', ' + filteredResLinkCount + ' unique cross-link';
-			if (filteredResLinkCount > 1)
-				this.tooltip += 's';
-			this.tooltip += ' (' + filteredMatches.keys().length;
-			if (filteredMatches.keys().length === 1) {
-				this.tooltip += ' match)';
-			} else {
-				this.tooltip += ' matches)';
-			}
-			this.w = filteredResLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks);
-			//acknowledge following line is a bit strange
-			this.ambig = (this.ambig && (altCLMS.xiNET.P_PLinks.keys().length > 1));
-			this.dashedLine(this.ambig);
-
-			if (this.crosslinkViewer.groups.values().length > 1 && this.crosslinkViewer.groups.values().length < 5) {
-				var groupCheck = d3.set();
-				var matchArray = filteredMatches.values();
-				var countFilteredMatches = matchArray.length;
-				for (var i=0; i < countFilteredMatches; i++) {
-					var match = matchArray[i];
-					groupCheck.add(match.group);
-				}
-				if (groupCheck.values().length == 1){
-					var c = this.crosslinkViewer.linkColours(groupCheck.values()[0]);
-					//~ //console.log(">"+groupCheck.values()[0] + "\t" + c);
-					this.line.setAttribute("stroke", c);
-				}
-				else  {
-					this.line.setAttribute("stroke", "#000000");
-				}
-				//else this.line.setAttribute("stroke", "purple");//shouldn't happen
-			}
-			else if (this.selfLink()) {
-				if (this.hd) {
-					this.line.setAttribute("stroke", xiNET.homodimerLinkColour.toRGB());
-					this.line.setAttribute("stroke-width", xiNET.homodimerLinkWidth);
-				}
-				else {
-					this.line.setAttribute("stroke", "black");
-					this.line.setAttribute("stroke-width", 1);
-				}
-			}*/
-			this.show();
-			return true;
-		//~ }
-		//~ else {
-			//~ this.hide();
-			//~ return false;
-		//~ }
-	/*}
+		}*/
+		this.show();
+		return true;
+	}
 	else {
-		if (!(this.renderedToProtein === null && this.renderedFromProtein.form === 0)){
-			var showedResResLink = false;
-			//at least one end was in stick form
-			for (var rl = 0; rl < resLinkCount; rl++) {
-				if (resLinks[rl].check() === true) {
-					showedResResLink = true;
-				}
-			}
-			return showedResResLink; //is this most sensible thing to return? Or false becuase CLMS.xiNET.P_PLink was not shown?
-		}
-	}*/
+		this.hide();
+		return false;
+	}
 };
 
 CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 	if (this.crosslinkViewer.unambigLinkFound == true) {
-			if (dash){
+		if (dash){
 			if (this.selfLink() === true) {
 				this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
 			} else {
@@ -353,25 +299,24 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 };
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
-		// TODO?: check how some of this compares to whats in Refresh.js, scale()
 		if (!this.shown) {
 			this.shown = true;
-			//~ if (this.fromProtein === this.toProtein) {
+			if (this.renderedFromProtein === this.renderedToProtein) {
 				//~ if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
 					//~ this.thickLine.setAttribute("transform", "translate(" +
 						//~ this.fromProtein.x + " " + this.fromProtein.y + ")"  // possibly not neccessary
 						//~ + " scale(" + (this.crosslinkViewer.z) + ")");
 					//~ this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
 				//~ }
-				//~ this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-						//~ + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-				//~ this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-						//~ + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-//~ 
-				//~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-				//~ this.crosslinkViewer.p_pLinks.appendChild(this.line);
-			//~ }
-			//~ else {
+				this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+						+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+				this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+						+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+
+				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+				this.crosslinkViewer.p_pLinks.appendChild(this.line);
+			}
+			else {
 				this.line.setAttribute("stroke-width", this.crosslinkViewer.z * 1);
 				this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
 				this.setLineCoordinates(this.renderedFromProtein);
@@ -381,34 +326,34 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 				//~ }
 				this.crosslinkViewer.highlights.appendChild(this.highlightLine);
 				this.crosslinkViewer.p_pLinks.appendChild(this.line);
-			//~ }
-		}
-		if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
-			if (this.selfLink()) {
-				this.thickLine.setAttribute("stroke-width", this.w);
-			} else {
-				this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
 			}
 		}
+		//~ if (CLMS.xiNET.P_PLink.maxNoCrossLinks > 1) {
+			//~ if (this.selfLink()) {
+				//~ this.thickLine.setAttribute("stroke-width", this.w);
+			//~ } else {
+				//~ this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
+			//~ }
+		//~ }
 };
 
 CLMS.xiNET.P_PLink.prototype.hide = function() {
 	if (this.shown) {
 		this.shown = false;
-		//~ if (this.selfLink()) {
-			//~ //TODO: be more selective about when to show 'thickLine'
-			//~ if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
-				//~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-			//~ }
-			//~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-			//~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
-		//~ } else {
+		if (this.renderedFromProtein === this.renderedToProtein) {
+			//TODO: be more selective about when to show 'thickLine'
 			//~ if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
 				//~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
 			//~ }
 			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
 			this.crosslinkViewer.p_pLinks.removeChild(this.line);
-		//~ }
+		} else {
+			//~ if (CLMS.xiNET.P_PLink.maxNoCLMS.xiNET.RenderedCrossLinks > 1) {
+				//~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
+			//~ }
+			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+			this.crosslinkViewer.p_pLinks.removeChild(this.line);
+		}
 	}
 };
 
