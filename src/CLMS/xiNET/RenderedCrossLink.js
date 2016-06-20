@@ -310,7 +310,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
 CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
 	if(this.shown){
 		//if not self link && not linker modified pep
-		if (this.crossLink.isSelfLink() === false && this.renderedToProtein){		
+		if (this.crossLink.isSelfLink() === false){		
 			//~ if (this.shown) {//don't waste time changing DOM if link not visible
 			var x, y;
 			// from end

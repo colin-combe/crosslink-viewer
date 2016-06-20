@@ -213,7 +213,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 	var filteredMatches = new Map ();
 	
 	for (crossLink of this.crossLinks) {
-		if (crossLink.filteredMatches.length > 1) {
+		if (crossLink.filteredMatches.length > 0) {
 			filteredCrossLinks.add(crossLink);
 		}
 		for (match of crossLink.filteredMatches) {
@@ -358,10 +358,8 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
-	//if not linker modified pep
-	//~ if (this.proteinLink.isSelfLink() === false && this.renderedToProtein !== null){
-		//don't waste time changing DOM if this not visible
-		//~ if (this.shown) {
+	if (this.renderedFromProtein != this.renderedToProtein){
+		if (this.shown) {
 			if (this.renderedFromProtein === interactor) {
 						this.line.setAttribute("x1", interactor.x);
 						this.line.setAttribute("y1", interactor.y);
@@ -378,8 +376,8 @@ CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
 						this.thickLine.setAttribute("x2", interactor.x);
 						this.thickLine.setAttribute("y2", interactor.y);
 			}
-		//~ }
-	//~ }
+		}
+	}
 }
 
 CLMS.xiNET.P_PLink.prototype.getOtherEnd = function(protein) {
