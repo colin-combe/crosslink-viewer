@@ -45,6 +45,10 @@ CLMS.xiNET.RenderedLink.prototype.mouseDown = function(evt) {
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
+	
+	var p = this.crosslinkViewer.getEventPoint(evt);// seems to be correct, see below
+			
+	
 	this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
 	if (this.renderedFromProtein.form === 0 && this.renderedToProtein.form === 0){
 		var fromProtId = this.renderedFromProtein.interactor.id;
@@ -60,7 +64,17 @@ CLMS.xiNET.RenderedLink.prototype.mouseOver = function(evt){
 	} else {
 		this.crosslinkViewer.model.set("highlights",[this.crossLink]);
 	}
+	
 //	this.crosslinkViewer.setTooltip(this.tooltip);
+this.crosslinkViewer.model.get("tooltipModel")
+                    .set("header", "Linked Residue Pair")
+                    .set("contents", [
+                        ["From", this.crossLink.fromResidue, this.crossLink.fromProtein.name],
+                        ["To", this.crossLink.toResidue, this.crossLink.toProtein.name],
+                        ["Current<br>Matches", this.crossLink.filteredMatches.length]
+                    ])
+                    .set("location", {pageX: p.x, pageY: p.y})
+                ;
 };
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
@@ -77,6 +91,8 @@ CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 	//    }
 //	this.crosslinkViewer.hideTooltip();
 	//~ return false;
+	
+	this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 }
 
 CLMS.xiNET.RenderedLink.prototype.touchStart = function(evt) {

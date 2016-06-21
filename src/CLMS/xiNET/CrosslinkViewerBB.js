@@ -110,6 +110,13 @@
 				p_pLink.crossLinks.add(crossLink);
 				
 			}
+			
+			for (p_pLink of this.renderedP_PLinks.values()) {
+				var p_pCrossLinkCount = p_pLink.crossLinks.size;
+				if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
+					CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
+				}
+			}
 
 			if (this.options.layout != null) {
 				this.loadLayout(this.options.layout);

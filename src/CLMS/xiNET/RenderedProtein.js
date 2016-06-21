@@ -123,7 +123,7 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
 	this.setForm(this.form);
 	if (this.selfLink) this.selfLink.initSelfLinkSVG();
-	this.setAllLineCoordinates();
+	//this.setAllLineCoordinates();
 }
 
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
