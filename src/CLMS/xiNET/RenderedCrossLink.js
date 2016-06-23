@@ -323,18 +323,18 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
 
-        if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
+        if (this.crossLink.isSelfLink()) {
             //TODO - there may be issue with contains() in IE
-            if (this.renderedFromProtein.selfLinks.contains(this.line)) {
-                //~ this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
+            //~ if (this.renderedFromProtein.selfLinks.contains(this.line)) {
+                this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
                 this.renderedFromProtein.selfLinks.removeChild(this.line);
-            }
+            //~ }
         }
         else {
-            if (this.crosslinkViewer.res_resLinks.contains(this.line)) {
-                //this.crosslinkViewer.res_resLinks.removeChild(this.line);
-                //~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            }
+            //~ if (this.crosslinkViewer.res_resLinks.contains(this.line)) {
+                this.crosslinkViewer.res_resLinks.removeChild(this.line);
+                this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+            //~ }
         }
 
     }

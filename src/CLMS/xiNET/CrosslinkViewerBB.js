@@ -911,20 +911,38 @@
         },
 
         selectionChanged: function () {
-            //~ console.log ("cross-link viewer highlightsChanhged");
-
             for (var renderedCrossLink of this.renderedCrossLinks.values()) {
                 renderedCrossLink.setSelected(false);
             }
-
-            var crossLinks = this.model.get("selection");
-
+            for (var p_pLink of this.renderedP_PLinks.values()) {
+                p_pLink.setSelected(false);
+            }
+            var crossLinks = this.model.get("highlights");
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
-                renderedCrossLink.setSelected(true);
+                if (renderedCrossLink.renderedFromProtein.form == 1
+					|| renderedCrossLink.renderedToProtein.form == 1) {
+					renderedCrossLink.setSelected(true);
+				} else {
+					var p_pLink = this.renderedP_PLinks.get(
+						renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+					p_pLink.setSelected(true);
+				}
             }
-
-            return this;
+            return this;//~ console.log ("cross-link viewer highlightsChanhged");
+//~ 
+            //~ for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+                //~ renderedCrossLink.setSelected(false);
+            //~ }
+//~ 
+            //~ var crossLinks = this.model.get("selection");
+//~ 
+            //~ for (crossLink of crossLinks) {
+                //~ var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+                //~ renderedCrossLink.setSelected(true);
+            //~ }
+//~ 
+            //~ return this;
         },
 
         // removes view

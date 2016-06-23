@@ -679,23 +679,9 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 		self.setAllLineCoordinates();
 
 		if (interp ===  1){ // finished - tidy up
-			//~ var links = self.proteinLinks.values();
-			//~ var c = links.length;
-			//~ for (var l = 0; l < c; l++) {
-				//~ var link = links[l];
-				//~ if (link.toProtein === null || (link.getFromProtein() === self && link.getToProtein().form === 0) ||
-						//~ (link.getToProtein() === self && link.getFromProtein().form === 0) ||
-						//~ (link.getToProtein() == link.getFromProtein()))
-				//~ {
-					//~ // swap links - out with the old
-					//~ var resLinks = link.residueLinks.values();
-					//~ var resLinkCount = resLinks.length;
-					//~ for (var rl = 0; rl < resLinkCount; rl++) {
-						//~ var resLink = resLinks[rl];
-							//~ resLink.hide();
-					//~ }
-				//~ }
-			//~ }
+			for (renderedCrossLink of self.renderedCrossLinks.values()) {
+				renderedCrossLink.hide();
+			}
 			//bring in new
 			self.form = 0;
 			//~ self.setPosition(self.x, self.y);
