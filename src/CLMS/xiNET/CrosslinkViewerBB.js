@@ -269,43 +269,36 @@
         },
 
         scale: function () {
-            /*  this.z = this.container.getScreenCTM().inverse().a;
-//~ //~
-                var proteins = this.renderedProteins.values();
-                for (prot of proteins) {
-                    prot.setPosition(prot.x, prot.y); // this rescales the protein //TODO: check if this always need to happen
-                    if (prot.form !== 0)
-                        prot.setAllLineCoordinates();
-                }
-//~ //~
-                var renderedLinks = this.renderedCrossLinks.values();
-                //~ var linkCount = links.length;
-                for (renderedLink of renderedLinks) {
-                    //~ var protLink = links[l];
-                    //~ if (protLink.fromProtein !== protLink.toProtein && protLink.toProtein !== null) {
-                        //~ if (!protLink.fromProtein.isParked && !protLink.toProtein.isParked) {
-                            //~ if (protLink.fromProtein.form === 0 && protLink.toProtein.form === 0) {
-                                //~ protLink.line.setAttribute("stroke-width", this.z * xiNET.linkWidth);
-                                //~ protLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                                //~ protLink.thickLine.setAttribute("stroke-width", this.z * protLink.w);
-                                //~ if (protLink.ambig) {
-                                    //~ protLink.dashedLine(true); //rescale spacing of dashes
-                                //~ }
-                            //~ }
-                            //~ else {
-                                //~ //inter protein res links
-                                //~ var c2 = protLink.residueLinks.keys().length;
-                                //~ for (var rl = 0; rl < c2; rl++) {
-                                    //~ var resLink = protLink.residueLinks.values()[rl];
-                                    if (renderedLink.crossLink.check() && renderedLink.crossLink.isSelfLink() === false) {
-                                        renderedLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-                                        renderedLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                                        if (renderedLink.crossLink.ambiguous === true) {
-                                            renderedLink.dashedLine(true); //rescale spacing of dashes
-                                        }
-                                    }
-                                }
-*/
+			this.z = this.container.getScreenCTM().inverse().a;
+			
+			var proteins = this.renderedProteins.values();
+			for (prot of proteins) {
+				prot.setPosition(prot.x, prot.y); // this rescales the protein
+				if (prot.form !== 0)
+					prot.setAllLineCoordinates();
+			}
+
+			for (renderedCrossLink of this.renderedCrossLinks.values()) {
+				if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
+					renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+					renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+					if (renderedCrossLink.crossLink.ambiguous === true) {
+						renderedCrossLink.dashedLine(true); //rescale spacing of dashes
+					}
+				}
+			}
+							
+			for (p_pLink of this.renderedP_PLinks.values()) {
+				if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein) 
+					&& p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
+					p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+					p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+					p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+					if (p_pLink.ambig) {
+						p_pLink.dashedLine(true); //rescale spacing of dashes
+					}
+				}
+			}
         },
 
         setAnnotations: function (annotationChoice) {
