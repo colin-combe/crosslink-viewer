@@ -130,7 +130,20 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    this.crosslinkViewer.model.set("selection", this.crossLinks);
+    if (evt.shiftKey || evt.ctrlKey) {
+		var selection = this.crosslinkViewer.model.get("selection");
+		if (this.isSelected){
+			var self =this;
+			selection = selection.filter(function (d) {
+					return self.crossLinks.indexOf(d) == -1;
+			});
+		} else {
+			selection = selection.concat(this.crossLinks);
+		}
+    	this.crosslinkViewer.model.set("selection",selection);
+	} else {
+		this.crosslinkViewer.model.set("selection", _.clone(this.crossLinks));
+    }
     //store start location
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);

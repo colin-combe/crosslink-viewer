@@ -107,7 +107,18 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    this.crosslinkViewer.model.set("selection",[this.crossLink]);
+    if (evt.shiftKey || evt.ctrlKey) {
+		var selection = _.clone(this.crosslinkViewer.model.get("selection"));
+		if (this.isSelected){
+			var index = selection.indexOf(this.crossLink);
+			selection.splice(index, 1);
+		} else {
+			selection.push(this.crossLink);
+		}
+    	this.crosslinkViewer.model.set("selection",selection);
+	} else {
+		this.crosslinkViewer.model.set("selection",[this.crossLink]);
+    }
     //store start location
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
@@ -284,8 +295,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
     }
-    console.log("clSS:"+this.isSelected);
-    
     this.setSelected(this.isSelected);
 };
 

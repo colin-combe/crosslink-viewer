@@ -593,7 +593,7 @@
                         else { //left click; show matches for link, toggle form for protein, switch stick scale
                             if (typeof this.dragElement.x === 'undefined') { //if not protein
                                 //~ this.dragElement.showID();
-                            } else if (evt.shiftKey) { //if shift key
+                            } else if (evt.shiftKey) {
                                 this.dragElement.switchStickScale(c);
                             } else {
                                 if (this.dragElement.form === 1) {
@@ -711,6 +711,7 @@
                 evt.preventDefault();
             // evt.returnValue = false;
         },
+        
         getLayout: function() {
             var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
             var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
@@ -915,7 +916,6 @@
                 p_pLink.setSelected(false);
             }
             var crossLinks = this.model.get("selection");
-            console.log("selectCount:" + crossLinks.length);
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);
