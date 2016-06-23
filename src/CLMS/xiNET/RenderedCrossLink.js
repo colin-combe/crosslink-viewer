@@ -86,6 +86,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.set("highlights",[this.crossLink]);
     this.crosslinkViewer.model.get("tooltipModel")
