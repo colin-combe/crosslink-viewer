@@ -158,17 +158,22 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
-		this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-		this.showHighlight(true);
-//		this.crosslinkViewer.setTooltip(this.tooltip);
-		return false;
+	//~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+	this.showHighlight(true);
+	var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.model.get("tooltipModel")
+		.set("header", this.interactor.name.replace("_", " "))
+		.set("contents", [
+			["ID", this.interactor.id], ["Accession", this.interactor.accession],["Size", this.interactor.size], ["Desc.", this.interactor.description]
+		])
+		.set("location", {pageX: p.x, pageY: p.y})
+		;
 };
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
-		this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-		this.showHighlight(false);
-//		this.crosslinkViewer.hideTooltip();
-		return false;
+	//~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+	this.showHighlight(false);
+    this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
@@ -503,6 +508,9 @@ CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
 
 CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
 	//this.form = form; //cant have this here
+	
+    this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
+
 	if (this.busy !== true) {
 		if (this.isParked) {
 			this.setParked(false);

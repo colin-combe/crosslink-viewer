@@ -87,7 +87,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     this.crosslinkViewer.model.set("highlights",[this.crossLink]);
     this.crosslinkViewer.model.get("tooltipModel")
                         .set("header", "Linked Residue Pair")
@@ -101,6 +100,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //if a force layout exists then stop it
     if (this.crosslinkViewer.force){
         this.crosslinkViewer.force.stop();
@@ -113,6 +113,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //if a force layout exists then stop it
     if (this.crosslinkViewer.force !== undefined){
         this.crosslinkViewer.force.stop();
