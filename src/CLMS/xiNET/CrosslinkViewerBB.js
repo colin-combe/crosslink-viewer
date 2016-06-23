@@ -915,6 +915,7 @@
                 p_pLink.setSelected(false);
             }
             var crossLinks = this.model.get("highlights");
+            console.log("selectCount:" + crossLinks.length);
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);

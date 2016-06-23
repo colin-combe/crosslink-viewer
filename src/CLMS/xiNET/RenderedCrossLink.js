@@ -153,9 +153,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 }
             } else {
                 if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-                //~ if (this.isSelected == false) {
-                    //~ this.highlightLine.setAttribute("stroke-opacity", "0");
-                //~ }
+                if (this.isSelected == false) {
+                    this.highlightLine.setAttribute("stroke-opacity", "0");
+                }
 
                 this.renderedFromProtein.removePeptides();
                 if (this.renderedToProtein) {
