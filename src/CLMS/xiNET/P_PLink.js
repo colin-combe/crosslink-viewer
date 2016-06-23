@@ -202,17 +202,18 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
 };
 
 CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
-    if (select === true && this.isSelected === false) {
-        this.crosslinkViewer.selectedLinks.set(this.id, this);//ok,
-        this.isSelected = true;
-        this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-        this.highlightLine.setAttribute("stroke-opacity", "1");
-    }
-    else if (select === false && this.isSelected === true) {
-        this.crosslinkViewer.selectedLinks.remove(this.id);
-        this.isSelected = false;
-        this.highlightLine.setAttribute("stroke-opacity", "0");
-        this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+    this.isSelected = select;
+    if (select === true) {
+        if (this.shown) {
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+			this.highlightLine.setAttribute("stroke-opacity", "1");
+		}
+   }
+    else {
+        if (this.shown) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+		}
     }
 };
 

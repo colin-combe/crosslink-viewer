@@ -177,10 +177,7 @@
             this.layout = null;
             this.z = 1;
             this.scores = null;
-            this.selectedLinks = d3.map();
-
-//          this.hideTooltip();
-
+            
             this.resetZoom();
             this.state = CLMS.xiNET.Controller.MOUSE_UP;
 
@@ -920,29 +917,12 @@
             var crossLinks = this.model.get("highlights");
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
-                if (renderedCrossLink.renderedFromProtein.form == 1
-					|| renderedCrossLink.renderedToProtein.form == 1) {
-					renderedCrossLink.setSelected(true);
-				} else {
-					var p_pLink = this.renderedP_PLinks.get(
-						renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
-					p_pLink.setSelected(true);
-				}
+                renderedCrossLink.setSelected(true);
+				var p_pLink = this.renderedP_PLinks.get(
+					renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+				p_pLink.setSelected(true);			
             }
-            return this;//~ console.log ("cross-link viewer highlightsChanhged");
-//~ 
-            //~ for (var renderedCrossLink of this.renderedCrossLinks.values()) {
-                //~ renderedCrossLink.setSelected(false);
-            //~ }
-//~ 
-            //~ var crossLinks = this.model.get("selection");
-//~ 
-            //~ for (crossLink of crossLinks) {
-                //~ var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
-                //~ renderedCrossLink.setSelected(true);
-            //~ }
-//~ 
-            //~ return this;
+            return this;
         },
 
         // removes view

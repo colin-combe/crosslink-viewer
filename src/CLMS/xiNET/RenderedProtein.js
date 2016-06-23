@@ -8,7 +8,6 @@
 CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	this.interactor = interactor;
 	this.crosslinkViewer = crosslinkViewer;
-	this.tooltip = this.interactor.description;
 	
 	this.renderedP_PLinks = new Map();
 	this.renderedCrossLinks = new Map();
@@ -26,7 +25,6 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 	//annotation scheme
 	this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
 	//rotators
-	//~ this.mouseoverControls = new MouseoverControls(this, this.crosslinkViewer);
 	this.lowerRotator = new CLMS.xiNET.Rotator(this, 0, this.crosslinkViewer);
 	this.upperRotator = new CLMS.xiNET.Rotator(this, 1, this.crosslinkViewer);
 
@@ -123,7 +121,6 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
 	this.setForm(this.form);
 	if (this.selfLink) this.selfLink.initSelfLinkSVG();
-	//this.setAllLineCoordinates();
 }
 
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
@@ -192,20 +189,6 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 		flipped: this.isFlipped
 	};
 };
-
-/*
-CLMS.xiNET.RenderedProtein.prototype.addLink = function(link) {
-	if (!this.proteinLinks.has(link.id)) {
-		this.proteinLinks.set(link.id, link);
-	}
-	if (link.selfLink() === true) {
-		this.selfLink = link;
-		if (this.interactor.size) this.selfLink.initSelfLinkSVG();
-	}
-	if (link.toProtein === null) {
-		this.linkerModifications = link;
-	}
-};*/
 
 CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
 	if (show === true) {
@@ -368,18 +351,13 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
 			"translate(" + (this.getResXwithStickZoom(this.interactor.size  - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
 		//internal links
-		//~ if (this.selfLink != null) {
-			var resLinks = this.renderedCrossLinks.values();
-			//~ var iLinkCount = resLinks.length;
-			for (residueLink of resLinks) {
-				//~ var residueLink = resLinks[l];
-				//~ if (residueLink.shown) {
-					var path = this.getCrossLinkPath(residueLink);
-					d3.select(residueLink.line).attr("d", path);
-					d3.select(residueLink.highlightLine).attr("d", path);
-				//~ }
+		for (residueLink of this.renderedCrossLinks.values()) {
+			if (residueLink.crossLink.isSelfLink()) {
+				var path = this.getCrossLinkPath(residueLink);
+				d3.select(residueLink.line).attr("d", path);
+				d3.select(residueLink.highlightLine).attr("d", path);
 			}
-		//~ }
+		}
 
 		this.setScaleGroup();
 		this.setRotation(this.rotation); // places ticks and rotators
@@ -495,18 +473,6 @@ CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
 		}
 		else if (bool == true) {
 			this.isParked = true;
-			/*var crossLinkIter = this.renderedCrossLinks.values();
-			for (link of crossLinkIter) {
-				//~ var link = this.proteinLinks.values()[l];
-				//out with the old (i.e. all links)
-				link.hide();
-				var resLinks = link.residueLinks.values();
-				var resLinkCount = resLinks.length;
-				for (var rl = 0; rl < resLinkCount; rl++) {
-					var resLink = resLinks[rl];
-						resLink.hide();
-				}
-			}*/
 
 			if (this.form === 1){
 				this.toCircle(svgP);
@@ -714,15 +680,6 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 		"translate(" + (this.getResXwithStickZoom(0.5) - CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 	this.upperRotator.svg.setAttribute("transform",
 		"translate(" + (this.getResXwithStickZoom(this.interactor.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
-   //remove prot-prot links - would it be better if checkLinks did this? - think not
-	//~ var c = this.proteinLinks.values().length;
-	//~ for (var l = 0; l < c; l++) {
-		//~ var link = this.proteinLinks.values()[l];
-		//~ //out with the old
-		//~ if (link.shown) {
-			//~ link.hide();
-		//~ }
-	//~ }
 
 	var protLength = this.interactor.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
 	var r = this.getBlobRadius();
@@ -757,10 +714,6 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) - 2.5)
 		.attr("rx", 0).attr("ry", 0)
 		.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-
-	//~ if (this.selfLink != null) {
-		//~ var resLinks = this.selfLink.crossLinks.values();
-		//~ var resLinkCount = resLinks.length;
 	
 	var crossLinkIter = this.renderedCrossLinks.values();
 	for (residueLink of crossLinkIter) {
@@ -774,7 +727,6 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 		}
 	}
-	//~ }
 
 	if (this.annotations) {
 		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
@@ -984,11 +936,6 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 	for (link of links) {
 		link.check();
 	}
-	//~ var links = this.renderedSelfCrossLinks.values();
-	//~ var c = links.length;
-	//~ for (var l = 0; l < c; l++) {
-		//~ links[l].check();
-	//~ }
 }
 
 // update all lines (e.g after a move)

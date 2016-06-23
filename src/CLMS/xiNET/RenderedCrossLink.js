@@ -20,6 +20,7 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
+    this.isSelected = false;
     this.dashed = false;
 }
 
@@ -82,12 +83,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
             self.touchStart(evt);
         };
     }
-    this.isSelected = false;
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
-    //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     this.crosslinkViewer.model.set("highlights",[this.crossLink]);
     this.crosslinkViewer.model.get("tooltipModel")
                         .set("header", "Linked Residue Pair")
@@ -108,7 +108,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.set("selection",[this.crossLink]);
     //store start location
-    var p = this.crosslinkViewer.getEventPoint(evt);// seems to be correct, see above
+    var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
 };
 
@@ -127,7 +127,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 // andAlternatives means highlight alternative links in case of site ambiguity,
 // need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
-    //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
+	//~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
         if (this.shown) {
             if (show) {
                 this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -150,22 +150,21 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 if (this.renderedToProtein) {
                     this.renderedToProtein.showPeptides(toPeptides);
                 }
-                //~ var temp = d3.map();
-                //~ temp.set(this.crossLink.id, this.crossLink);
-                //~ this.crosslinkViewer.model.set("highlights",temp.values());
             } else {
                 if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-                if (this.isSelected == false) {
-                    this.highlightLine.setAttribute("stroke-opacity", "0");
-                }
+                //~ if (this.isSelected == false) {
+                    //~ this.highlightLine.setAttribute("stroke-opacity", "0");
+                //~ }
 
                 this.renderedFromProtein.removePeptides();
                 if (this.renderedToProtein) {
                         this.renderedToProtein.removePeptides();
                 }
-                //~ this.crosslinkViewer.model.set("highlights",[]);
             }
         }
+        
+        
+        
         //~ if (andAlternatives && this.crossLink.ambiguous) {
             //~ //TODO: we want to highlight smallest possible set of alternatives?
             //~ var mc = this.crossLink.matches.length;
@@ -190,18 +189,19 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
-    if (this.shown) {
-        if (select === true){// && this.isSelected === false) {
-            this.isSelected = true;
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "0.7");
-        }
-        else { //if (select === false && this.isSelected === true) {
-            this.isSelected = false;
-            this.highlightLine.setAttribute("stroke-opacity", "0");
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-        }
-    }
+	this.isSelected = select;
+	if (select === true) {
+		if (this.shown) {
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+			this.highlightLine.setAttribute("stroke-opacity", "0.7");
+		}
+	}
+	else {
+		if (this.shown) {
+			this.highlightLine.setAttribute("stroke-opacity", "0");
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+		}
+	}    
 };
 
 
@@ -230,41 +230,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
         this.hide();
         return false;
     }
-    /*if (this.crosslinkViewer.selfLinkShown === false && this.selfLink()) {
-        this.hide();
-        return false;
-    }
-    if (this.proteinLink.hidden) {
-        this.hide();
-        return false;
-    }
-    if (typeof this.matches === 'undefined' || this.matches == null) {
-        this.ambig = false;
-        this.show();
-        return true;
-    }
-    var filteredMatches = this.getFilteredMatches();
-    var countFilteredMatches = filteredMatches.length;
-    if (countFilteredMatches > 0) {
-        this.show();
-        this.dashedLine(this.ambig);
-
-        this.tooltip = this.proteinLink.fromProtein.labelText + '_' + this.fromResidue
-                    + "-"  + ((this.proteinLink.toProtein != null)? this.proteinLink.toProtein.labelText:'null')
-                    + '_' + this.toResidue + ' (' + countFilteredMatches;
-        if (countFilteredMatches == 1) {
-            this.tooltip += ' match)';
-        } else {
-            this.tooltip += ' matches)';
-        }
-
-
-        return true;
-    }
-    else {
-        this.hide();
-        return false;
-    }*/
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
@@ -317,6 +282,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
     }
+    console.log("clSS:"+this.isSelected);
+    
+    this.setSelected(this.isSelected);
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
@@ -324,17 +292,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
         this.shown = false;
 
         if (this.crossLink.isSelfLink()) {
-            //TODO - there may be issue with contains() in IE
-            //~ if (this.renderedFromProtein.selfLinks.contains(this.line)) {
-                this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
-                this.renderedFromProtein.selfLinks.removeChild(this.line);
-            //~ }
+			this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
+			this.renderedFromProtein.selfLinks.removeChild(this.line);
         }
         else {
-            //~ if (this.crosslinkViewer.res_resLinks.contains(this.line)) {
-                this.crosslinkViewer.res_resLinks.removeChild(this.line);
-                this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            //~ }
+			this.crosslinkViewer.res_resLinks.removeChild(this.line);
+			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
         }
 
     }

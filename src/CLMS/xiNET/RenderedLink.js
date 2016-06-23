@@ -8,7 +8,7 @@
 //
 //  RenderedLink.js
 
-//'superclass' for CLMS.xiNET.RenderedCrossLink, CLMS.xiNET.RenderedProteinLink
+//'superclass' for CLMS.xiNET.RenderedCrossLink, CLMS.xiNET.P_PLink
 CLMS.xiNET.RenderedLink = function (){};
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
