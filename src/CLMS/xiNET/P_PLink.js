@@ -311,36 +311,37 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 };
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
-        if (!this.shown) {
-            this.shown = true;
-            if (this.renderedFromProtein === this.renderedToProtein) {
-                this.thickLine.setAttribute("transform", "translate(" +
-                    this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")"  // possibly not neccessary
-                    + " scale(" + (this.crosslinkViewer.z) + ")");
-                this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
-                this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-                        + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-                this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-                        + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+	if (!this.shown) {
+		this.shown = true;
+		if (this.renderedFromProtein === this.renderedToProtein) {
+			this.thickLine.setAttribute("transform", "translate(" +
+				this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")"  // possibly not neccessary
+				+ " scale(" + (this.crosslinkViewer.z) + ")");
+			this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+			this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+					+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+			this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
+					+ " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
-                this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-                this.crosslinkViewer.p_pLinks.appendChild(this.line);
-            }
-            else {
-                this.line.setAttribute("stroke-width", this.crosslinkViewer.z * 1);
-                this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
-                this.setLineCoordinates(this.renderedFromProtein);
-                this.setLineCoordinates(this.renderedToProtein);
-                this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
-                this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-                this.crosslinkViewer.p_pLinks.appendChild(this.line);
-            }
-        }
-        if (this.renderedFromProtein === this.renderedToProtein) {
-            this.thickLine.setAttribute("stroke-width", this.w);
-        } else {
-            this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
-        }
+			this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+			this.crosslinkViewer.p_pLinks.appendChild(this.line);
+		}
+		else {
+			this.line.setAttribute("stroke-width", this.crosslinkViewer.z * 1);
+			this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+			this.setLineCoordinates(this.renderedFromProtein);
+			this.setLineCoordinates(this.renderedToProtein);
+			this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+			this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+			this.crosslinkViewer.p_pLinks.appendChild(this.line);
+		}
+	}
+	if (this.renderedFromProtein === this.renderedToProtein) {
+		this.thickLine.setAttribute("stroke-width", this.w);
+	} else {
+		this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
+	}
+	this.setSelected(this.isSelected);
 };
 
 CLMS.xiNET.P_PLink.prototype.hide = function() {
