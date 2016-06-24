@@ -552,8 +552,8 @@
             this.preventDefaultsAndStopPropagation(evt);
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
-
-                var rightclick, middleclick; //which button has just been raised
+                //which button has just been raised
+                var rightclick, middleclick; 
                 if (evt.which)
                     rightclick = (evt.which === 3);
                 else if (evt.button)
@@ -563,12 +563,12 @@
                 else if (evt.button)
                     middleclick = (evt.button === 1);
 
-                var p = this.getEventPoint(evt);// seems to be correct, see below
+                var p = this.getEventPoint(evt);
                 var c = this.mouseToSVG(p.x, p.y);
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-                        if (rightclick) { // RIGHT click
+                        if (rightclick) {
                             if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
                                 if (this.dragElement.selfLink() == true) {//if internal link
                                     if (this.dragElement.proteinLink)//its a residueLink
@@ -590,10 +590,13 @@
                         else if (middleclick) {
                             //can't be used? problem with IE (scroll thingy)
                         }
-                        else { //left click; show matches for link, toggle form for protein, switch stick scale
+                        else { //left click; toggle form for protein, switch stick scale
                             if (typeof this.dragElement.x === 'undefined') { //if not protein
-                                //~ this.dragElement.showID();
-                            } else if (evt.shiftKey) {
+                                //do nothing
+                            } else if (evt.ctrlKey) {
+                                
+                                this.dragElement.switchStickScale(c);
+                            }else if (evt.shiftKey) {
                                 this.dragElement.switchStickScale(c);
                             } else {
                                 if (this.dragElement.form === 1) {
