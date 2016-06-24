@@ -9,11 +9,11 @@
 CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
     this.crossLink = crossLink;
     this.crosslinkViewer = crosslinkViewer;
-    
+
     this.renderedFromProtein =
                     this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);
     this.renderedFromProtein.renderedCrossLinks.set(crossLink.id, this);
-    
+
     this.renderedToProtein =
                     this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
     this.renderedToProtein.renderedCrossLinks.set(crossLink.id, this);
@@ -108,16 +108,16 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
     }
     this.crosslinkViewer.dragElement = this;
     if (evt.shiftKey || evt.ctrlKey) {
-		var selection = _.clone(this.crosslinkViewer.model.get("selection"));
-		if (this.isSelected){
-			var index = selection.indexOf(this.crossLink);
-			selection.splice(index, 1);
-		} else {
-			selection.push(this.crossLink);
-		}
-    	this.crosslinkViewer.model.set("selection",selection);
-	} else {
-		this.crosslinkViewer.model.set("selection",[this.crossLink]);
+        var selection = _.clone(this.crosslinkViewer.model.get("selection"));
+        if (this.isSelected){
+            var index = selection.indexOf(this.crossLink);
+            selection.splice(index, 1);
+        } else {
+            selection.push(this.crossLink);
+        }
+        this.crosslinkViewer.model.set("selection",selection);
+    } else {
+        this.crosslinkViewer.model.set("selection",[this.crossLink]);
     }
     //store start location
     var p = this.crosslinkViewer.getEventPoint(evt);
@@ -140,7 +140,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 // andAlternatives means highlight alternative links in case of site ambiguity,
 // need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
-	//~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
+    //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
         if (this.shown) {
             if (show) {
                 this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -175,9 +175,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 }
             }
         }
-        
-        
-        
+
+
+
         //~ if (andAlternatives && this.crossLink.ambiguous) {
             //~ //TODO: we want to highlight smallest possible set of alternatives?
             //~ var mc = this.crossLink.matches.length;
@@ -202,19 +202,19 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
-	this.isSelected = select;
-	if (select === true) {
-		if (this.shown) {
-			this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-			this.highlightLine.setAttribute("stroke-opacity", "0.7");
-		}
-	}
-	else {
-		if (this.shown) {
-			this.highlightLine.setAttribute("stroke-opacity", "0");
-			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-		}
-	}    
+    this.isSelected = select;
+    if (select === true) {
+        if (this.shown) {
+            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            this.highlightLine.setAttribute("stroke-opacity", "0.7");
+        }
+    }
+    else {
+        if (this.shown) {
+            this.highlightLine.setAttribute("stroke-opacity", "0");
+            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        }
+    }
 };
 
 
@@ -303,12 +303,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
         this.shown = false;
 
         if (this.crossLink.isSelfLink()) {
-			this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
-			this.renderedFromProtein.selfLinks.removeChild(this.line);
+            this.renderedFromProtein.selfLinksHighlights.removeChild(this.highlightLine);
+            this.renderedFromProtein.selfLinks.removeChild(this.line);
         }
         else {
-			this.crosslinkViewer.res_resLinks.removeChild(this.line);
-			this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+            this.crosslinkViewer.res_resLinks.removeChild(this.line);
+            this.crosslinkViewer.highlights.removeChild(this.highlightLine);
         }
 
     }

@@ -177,7 +177,7 @@
             this.layout = null;
             this.z = 1;
             this.scores = null;
-            
+
             this.resetZoom();
             this.state = CLMS.xiNET.Controller.MOUSE_UP;
 
@@ -266,36 +266,36 @@
         },
 
         scale: function () {
-			this.z = this.container.getScreenCTM().inverse().a;
-			
-			var proteins = this.renderedProteins.values();
-			for (prot of proteins) {
-				prot.setPosition(prot.x, prot.y); // this rescales the protein
-				if (prot.form !== 0)
-					prot.setAllLineCoordinates();
-			}
+            this.z = this.container.getScreenCTM().inverse().a;
 
-			for (renderedCrossLink of this.renderedCrossLinks.values()) {
-				if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-					renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-					renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-					if (renderedCrossLink.crossLink.ambiguous === true) {
-						renderedCrossLink.dashedLine(true); //rescale spacing of dashes
-					}
-				}
-			}
-							
-			for (p_pLink of this.renderedP_PLinks.values()) {
-				if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein) 
-					&& p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
-					p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-					p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-					p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
-					if (p_pLink.ambig) {
-						p_pLink.dashedLine(true); //rescale spacing of dashes
-					}
-				}
-			}
+            var proteins = this.renderedProteins.values();
+            for (prot of proteins) {
+                prot.setPosition(prot.x, prot.y); // this rescales the protein
+                if (prot.form !== 0)
+                    prot.setAllLineCoordinates();
+            }
+
+            for (renderedCrossLink of this.renderedCrossLinks.values()) {
+                if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
+                    renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+                    renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+                    if (renderedCrossLink.crossLink.ambiguous === true) {
+                        renderedCrossLink.dashedLine(true); //rescale spacing of dashes
+                    }
+                }
+            }
+
+            for (p_pLink of this.renderedP_PLinks.values()) {
+                if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
+                    && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
+                    p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+                    p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+                    p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+                    if (p_pLink.ambig) {
+                        p_pLink.dashedLine(true); //rescale spacing of dashes
+                    }
+                }
+            }
         },
 
         setAnnotations: function (annotationChoice) {
@@ -711,7 +711,7 @@
                 evt.preventDefault();
             // evt.returnValue = false;
         },
-        
+
         getLayout: function() {
             var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
             var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
@@ -887,7 +887,7 @@
         },
 
         highlightsChanged: function () {
-			for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
                 renderedCrossLink.showHighlight(false);
             }
             for (var p_pLink of this.renderedP_PLinks.values()) {
@@ -897,13 +897,13 @@
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 if (renderedCrossLink.renderedFromProtein.form == 1
-					|| renderedCrossLink.renderedToProtein.form == 1) {
-					renderedCrossLink.showHighlight(true, false);//true);
-				} else {
-					var p_pLink = this.renderedP_PLinks.get(
-						renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
-					p_pLink.showHighlight(true, false);//true);	
-				}
+                    || renderedCrossLink.renderedToProtein.form == 1) {
+                    renderedCrossLink.showHighlight(true, false);//true);
+                } else {
+                    var p_pLink = this.renderedP_PLinks.get(
+                        renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+                    p_pLink.showHighlight(true, false);//true);
+                }
             }
             return this;
         },
@@ -919,9 +919,9 @@
             for (crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);
-				var p_pLink = this.renderedP_PLinks.get(
-					renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
-				p_pLink.setSelected(true);			
+                var p_pLink = this.renderedP_PLinks.get(
+                    renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+                p_pLink.setSelected(true);
             }
             return this;
         },
