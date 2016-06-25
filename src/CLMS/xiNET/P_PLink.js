@@ -7,7 +7,7 @@
 //  the class representing a protein-protein link
 
 CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
-
+	this.id = p_pId;
     this.crosslinkViewer = crosslinkViewer;
     this.crossLinks = [];
 
@@ -184,7 +184,7 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
 
         }
     }
-    if (andAlternatives && this.ambig) {
+    if (andAlternatives && this.ambiguous) {
         //TODO: we want to highlight smallest possible set of alternatives
         var rc = this.residueLinks.values().length;
         for (var rl = 0; rl < rc; rl++) {
@@ -230,26 +230,6 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
     }
 };
 
-
-
-//its an array of match id's its going to return
-//~ CLMS.xiNET.P_PLink.prototype.getFilteredMatches = function() {
-    //~ var resLinks = this.residueLinks.values();
-    //~ var resLinkCount = resLinks.length;
-    //~ var filteredMatches = d3.map();
-    //~ for (var i = 0; i < resLinkCount; i++) {
-        //~ var resLink = resLinks[i];
-        //~ var mCount = resLink.matches.length;
-        //~ for (var m = 0; m < mCount; m++) {
-            //~ var match = resLink.matches[m];
-            //~ if (match.meetsFilterCriteria()) {
-                //~ filteredMatches.set(match.id);
-            //~ }
-        //~ }
-    //~ }
-    //~ return filteredMatches.keys();
-//~ };
-
 CLMS.xiNET.P_PLink.prototype.check = function() {
     if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
             || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
@@ -257,11 +237,12 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
         return false;
     }
 
-    this.ambig = true;
+    this.ambiguous = true;
     this.hd = false;
 
     var filteredCrossLinks = new Set();
     this.filteredMatches = new Map ();
+    this.altP_PLinks = new Map();
 
     for (crossLink of this.crossLinks) {
         if (crossLink.filteredMatches.length > 0) {
@@ -274,18 +255,24 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
                 this.hd = true;
             }
             if (match.crossLinks.length === 1) {
-                this.ambig = false;
-            }
+                this.ambiguous = false;
+            } else {
+				for (crossLink of match.crossLinks) {
+					var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+					var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
+                
+					this.altP_PLinks.set(p_pLink.id, p_pId);
+				}
+			}
+
         }
     }
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
         this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
-        //acknowledge following line is a bit strange
-        //this.ambig = (this.ambig && (altCLMS.xiNET.P_PLinks.keys().length > 1));
-        this.dashedLine(this.ambig);
-
+        this.ambig = this.ambiguous;
+        this.ambiguous = this.ambiguous && this.altP_PLinks.size > 1;
         this.show();
         return true;
     }
@@ -296,9 +283,9 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
-    if (this.crosslinkViewer.unambigLinkFound == true) {
+    //if (this.crosslinkViewer.unambigLinkFound == true) {
         if (dash){
-            if (this.selfLink() === true) {
+            if (this.renderedFromProtein === this.renderedToProtein) {
                 this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
             } else {
                 this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
@@ -307,7 +294,7 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
         else if (!dash){
             this.line.removeAttribute("stroke-dasharray");
         }
-    }
+    //}
 };
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
@@ -341,6 +328,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     } else {
         this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
     }
+    this.dashedLine(this.ambiguous);
     this.setSelected(this.isSelected);
 };
 

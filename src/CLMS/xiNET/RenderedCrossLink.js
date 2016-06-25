@@ -235,7 +235,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
     var filteredMatches = this.crossLink.filteredMatches;
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
-        this.dashedLine(this.crossLink.ambiguous);
         this.show();
         return true;
     }
@@ -247,11 +246,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
     //~ if (this.crosslinkViewer.unambigLinkFound == true) {
-        if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.crossLink.toResidue))) {
+        if (this.shown) {
             if (dash) {// && !this.dashed){
                 if (this.crossLink.isSelfLink() === true) {
-                    this.dashed = true;
                     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+
                 }
                 else {
                     this.dashed = true;
@@ -295,6 +294,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
     }
+    this.dashedLine(this.crossLink.ambiguous);
     this.setSelected(this.isSelected);
 };
 
@@ -407,21 +407,3 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
     y = rotated[1] + renderedInteractor.y;
     return [x, y];
 };
-
-/*
-// used by hover highlight?
-CLMS.xiNET.RenderedCrossLink.prototype.leastAmbiguousMatches = function() {// yes: plural
-    //var leastAmbigMatches
-    };
-
-CLMS.xiNET.RenderedCrossLink.prototype.toJSON = function() {
-    var m = [];
-    var mc = this.matches.length;
-    for (var i = 0; i < mc; i++) {
-        m.push(this.matches[i].id);
-    }
-    return {
-    //      m: m
-    };
-};
-*/
