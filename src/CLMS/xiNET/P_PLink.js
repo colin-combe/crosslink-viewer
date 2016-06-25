@@ -183,34 +183,33 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
             }
 
         }
-    }
-    if (andAlternatives && this.ambiguous) {
-        //TODO: we want to highlight smallest possible set of alternatives
-        var rc = this.residueLinks.values().length;
-        for (var rl = 0; rl < rc; rl++) {
-            var resLink = this.residueLinks.values()[rl];
-            var mc = resLink.matches.length;
-            for (var m = 0; m < mc; m++) {
-                var match = resLink.matches[m][0];
-                if (match.isAmbig()) {
-                    var mrc = match.residueLinks.length;
-                    for (var mrl = 0; mrl < mrc; mrl++) {
-                        var resLink = match.residueLinks[mrl];
-                        if (resLink.shown === true) {
-                            if (resLink.isSelected == false) {
-                                resLink.showHighlight(show, false);
-                            }
-                        }
-                        if (resLink.proteinLink.shown === true) {
-                            {
-                                resLink.proteinLink.showHighlight(show, false);
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
+		if (andAlternatives && this.ambiguous) {
+			//TODO: we might want to highlight smallest possible set of alternatives
+			//~ var rc = this.residueLinks.values().length;
+			for (crossLink of this.crossLinks) {
+				//~ var resLink = this.residueLinks.values()[rl];
+				//~ var mc = resLink.matches.length;
+				for (match of crossLink.matches) {
+					match = match[0];//sigh
+					if (match.crossLinks.length > 1) {
+						//~ var mrc = match.residueLinks.length;
+						for (altCrossLink of match.crossLinks) {
+							//~ var resLink = match.residueLinks[mrl];
+							//~ if (resLink.shown === true) {
+								//~ if (resLink.isSelected == false) {
+									//~ resLink.showHighlight(show, false);
+								//~ }
+							//~ }
+							//~ if (resLink.proteinLink.shown === true) {
+								//~ {
+									//~ resLink.proteinLink.showHighlight(show, false);
+								//~ }
+							//~ }
+						}
+					}
+				}
+			}
+		}
     }
 };
 

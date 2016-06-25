@@ -174,31 +174,19 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                         this.renderedToProtein.removePeptides();
                 }
             }
+            if (andAlternatives && this.crossLink.ambiguous) {
+            //TODO: we might want to highlight smallest possible set of alternatives?
+            for (match of this.crossLink.filteredMatches) {
+                match = match[0]; //no...
+                if (match.crossLinks.length > 1) {
+                   for (crossLink of match.crossLinks) {
+                        var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(crossLink.id);
+                        renderedLink.showHighlight(show, false);
+                    }
+                }
+			}
         }
-
-
-
-        //~ if (andAlternatives && this.crossLink.ambiguous) {
-            //~ //TODO: we want to highlight smallest possible set of alternatives?
-            //~ var mc = this.crossLink.matches.length;
-            //~ for (var m = 0; m < mc; m++) {
-                //~ var match = this.crossLink.matches[m][0];
-                //~ if (match.isAmbig()) {
-                    //~ var rc = match.crossLinks.length;
-                    //~ for (var rl = 0; rl < rc; rl++) {
-                        //~ var resLink = match.crossLinks[rl];
-                        //~ var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(resLink.id);
-                     //~ //   if (resLink.isSelected == false) { //not right
-                            //~ renderedLink.showHighlight(show, false);
-                     //~ //}
-                    //~ }
-                //~ }
-            //~ }
-//~
-        //~ }
-
-
-    //~ }
+    }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
