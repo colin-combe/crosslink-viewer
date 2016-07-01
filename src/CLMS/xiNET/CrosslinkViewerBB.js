@@ -164,13 +164,6 @@
             this.renderedCrossLinks = new Map();
             this.renderedP_PLinks = new Map();
 
-            //this.matches = [];
-            this.groups = d3.set();
-            this.subgraphs = [];
-            this.layoutXOffset = 0;
-
-            this.proteinCount = 0;
-            this.unambigLinkFound = false;
             this.maxBlobRadius = 30;
             //~ CLMS.xiNET.RenderedProtein.MAXSIZE = 100; **??
 
@@ -299,7 +292,7 @@
         },
 
         setAnnotations: function (annotationChoice) {
-            this.annotationChoice = annotationChoice;
+            /*this.annotationChoice = annotationChoice;
             //clear all annot's
             var mols = this.renderedProteins.values();
             for (var mol of mols) {
@@ -394,25 +387,14 @@
                     }
                 //~ }
                 self.legendChanged();
-            }
+            }*/
 
         },
-
-        legendChanged: function () {
-            //~ var callbacks = this.legendCallbacks;
-            //~ var count = callbacks.length;
-            //~ for (var i = 0; i < count; i++) {
-                //~ callbacks[i](this.linkColours, this.domainColours);
-            //~ }
-        },
-
 
         setCTM: function(element, matrix) {
             var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
             element.setAttribute("transform", s);
         },
-
-
 
         /**
          * Handle mousedown event.
@@ -420,7 +402,6 @@
         mouseDown: function(evt) {
             //prevent default, but allow propogation
             evt.preventDefault();
-            //evt.returnValue = false;
             //stop force layout
             if (typeof this.force !== 'undefined' && this.force != null) {
                 this.force.stop();
@@ -428,120 +409,84 @@
 
             var p = this.getEventPoint(evt);// seems to be correct, see below
             this.dragStart = this.mouseToSVG(p.x, p.y);
-
-            var rightClick; //which button has just been raised
-            if (evt.which)
-                rightClick = (evt.which === 3);
-            else if (evt.button)
-                rightClick = (evt.button === 2);
-
-            if (evt.ctrlKey === true || evt.shiftKey === true || rightClick) {
-        //        alert("here");
-        //        this.state = xiNET.Controller.SELECTING;
-        ////        //      marquee.style.strokeDashoffset=0;
-        //               this.marquee.setAttribute('x', 100);
-        //    this.marquee.setAttribute('y', 100);
-        //    this.marquee.setAttribute('width', 100);
-        //    this.marquee.setAttribute('height', 100);
-        //   this.svgElement.appendChild(this.marquee);
-        // //        this.updateMarquee(this.marquee, this.dragStart);
-        //////      var offset = 0, marcher = setInterval(function(){
-        //////        marquee.style.strokeDashoffset = offset--;
-        //////      },30);
-        ////        //clear selection if ctrl not pressed
-        ////        if (evt.ctrlKey === false) {
-        ////            this.clearSelection();
-        ////        }
-            } else {
             this.state = CLMS.xiNET.Controller.PANNING;
             this.panned = false;
-            }
-            return false;
         },
 
         // dragging/rotation/panning/selecting
         mouseMove: function(evt) {
             //~ this.preventDefaultsAndStopPropagation(evt);
-                var p = this.getEventPoint(evt);// seems to be correct, see below
-                var c = this.mouseToSVG(p.x, p.y);
+			var p = this.getEventPoint(evt);// seems to be correct, see below
+			var c = this.mouseToSVG(p.x, p.y);
 
-                if (this.dragElement != null) { //dragging or rotating
+			if (this.dragElement != null) { //dragging or rotating
 //                  this.hideTooltip();
-                    var dx = this.dragStart.x - c.x;
-                    var dy = this.dragStart.y - c.y;
+				var dx = this.dragStart.x - c.x;
+				var dy = this.dragStart.y - c.y;
 
-                    if (this.state === CLMS.xiNET.Controller.DRAGGING) {
-                        // we are currently dragging things around
-                        var ox, oy, nx, ny;
-                        if (!this.dragElement.interactor) { // if not a protein
-                            //its a link - drag whole connected subgraph
-                            /*var prot = this.dragElement.renderedFromProtein;
-                            var prots = this.renderedProteins.values();
-                            for (var protein of prots) {
-                                protein.subgraph = null;
-                            }
-                            var subgraph = prot.interactor.getSubgraph();
-                            var nodes = subgraph.nodes.values();
-                            //~ var nodeCount = nodes.length;
-                            for (node of nodes) {
-                                var protein = this.renderedProteins.get(node.id);
-                                ox = protein.x;
-                                oy = protein.y;
-                                nx = ox - dx;
-                                ny = oy - dy;
-                                protein.setPosition(nx, ny);
-                                protein.setAllLineCoordinates();
-                            }
-                            for (node of nodes) {
-                                var protein = this.renderedProteins.get(node.id);
-                                nodes[i].setAllLineCoordinates();
-                            }*/
-                        } else {
-                            //its a protein - drag it TODO: DRAG SELECTED
-                            ox = this.dragElement.x;
-                            oy = this.dragElement.y;
-                            nx = ox - dx;
-                            ny = oy - dy;
-                            this.dragElement.setPosition(nx, ny);
-                            this.dragElement.setAllLineCoordinates();
-                        }
-                        this.dragStart = c;
-                    }
+				if (this.state === CLMS.xiNET.Controller.DRAGGING) {
+					// we are currently dragging things around
+					var ox, oy, nx, ny;
+					if (!this.dragElement.interactor) { // if not a protein
+						//its a link - drag whole connected subgraph
+						/*var prot = this.dragElement.renderedFromProtein;
+						var prots = this.renderedProteins.values();
+						for (var protein of prots) {
+							protein.subgraph = null;
+						}
+						var subgraph = prot.interactor.getSubgraph();
+						var nodes = subgraph.nodes.values();
+						//~ var nodeCount = nodes.length;
+						for (node of nodes) {
+							var protein = this.renderedProteins.get(node.id);
+							ox = protein.x;
+							oy = protein.y;
+							nx = ox - dx;
+							ny = oy - dy;
+							protein.setPosition(nx, ny);
+							protein.setAllLineCoordinates();
+						}
+						for (node of nodes) {
+							var protein = this.renderedProteins.get(node.id);
+							nodes[i].setAllLineCoordinates();
+						}*/
+					} else {
+						//its a protein - drag it TODO: DRAG SELECTED
+						ox = this.dragElement.x;
+						oy = this.dragElement.y;
+						nx = ox - dx;
+						ny = oy - dy;
+						this.dragElement.setPosition(nx, ny);
+						this.dragElement.setAllLineCoordinates();
+					}
+					this.dragStart = c;
+				}
 
-                    else if (this.state === CLMS.xiNET.Controller.ROTATING) {
-                        // Distance from mouse x and center of stick.
-                        var _dx = c.x - this.dragElement.x
-                        // Distance from mouse y and center of stick.
-                        var _dy = c.y - this.dragElement.y;
-                        //see http://en.wikipedia.org/wiki/Atan2#Motivation
-                        var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                        if (this.whichRotator === 0) {
-                            centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-                        }
-                        var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-                        this.dragElement.setRotation(centreToMouseAngleDegrees);
-                        this.dragElement.setAllLineCoordinates();
-                    }
-                    else { //not dragging or rotating yet, maybe we should start
-                        // don't start dragging just on a click - we need to move the mouse a bit first
-                        if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                            this.state = CLMS.xiNET.Controller.DRAGGING;
+				else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+					// Distance from mouse x and center of stick.
+					var _dx = c.x - this.dragElement.x
+					// Distance from mouse y and center of stick.
+					var _dy = c.y - this.dragElement.y;
+					//see http://en.wikipedia.org/wiki/Atan2#Motivation
+					var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+					if (this.whichRotator === 0) {
+						centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+					}
+					var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+					this.dragElement.setRotation(centreToMouseAngleDegrees);
+					this.dragElement.setAllLineCoordinates();
+				}
+				else { //not dragging or rotating yet, maybe we should start
+					// don't start dragging just on a click - we need to move the mouse a bit first
+					if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+						this.state = CLMS.xiNET.Controller.DRAGGING;
 
-                        }
-                    }
-                }
-
-        //    else if (this.state === xiNET.Controller.SELECTING) {
-        //        this.updateMarquee(this.marquee, c);
-        //    }
-                else if (this.state === CLMS.xiNET.Controller.PANNING) {
-                   this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-                }
-                else {
-//                  this.showTooltip(p);
-                }
-           // }
-            return false;
+					}
+				}
+			}
+			else if (this.state === CLMS.xiNET.Controller.PANNING) {
+			   this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+			}
         },
 
 
@@ -640,22 +585,6 @@
             this.lastMouseUp = time;
             return false;
         },
-
-
-        //~ updateMarquee: function(rect, p1) {
-            //~ var p0 = this.dragStart;
-            //~ var xs = [p0.x, p1.x].sort(sortByNumber),
-                    //~ ys = [p0.y, p1.y].sort(sortByNumber);
-            //~ rect.setAttribute('x', xs[0]);
-            //~ rect.setAttribute('y', ys[0]);
-            //~ rect.setAttribute('width', xs[1] - xs[0]);
-            //~ rect.setAttribute('height', ys[1] - ys[0]);
-        //~ },
-
-
-        //~ function sortByNumber(a, b) {
-            //~ return a - b
-        //~ }
 
         /**
          * Handle mouse wheel event.
@@ -901,11 +830,11 @@
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 if (renderedCrossLink.renderedFromProtein.form == 1
                     || renderedCrossLink.renderedToProtein.form == 1) {
-                    renderedCrossLink.showHighlight(true, false);//true);
+                    renderedCrossLink.showHighlight(true, true);
                 } else {
                     var p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
-                    p_pLink.showHighlight(true, false);//true);
+                    p_pLink.showHighlight(true, true);
                 }
             }
             return this;
@@ -930,14 +859,8 @@
         },
 
         // removes view
-        // not really needed unless we want to do something extra on top of the prototype remove function (like destroy c3 view just to be sure)
+        // not really needed unless we want to do something extra on top of the prototype remove function
         remove: function () {
-            // this line destroys the c3 chart and it's events and points the this.chart reference to a dead end
-            this.chart = this.chart.destroy();
-
-            // remove drag listener
-            d3.select(this.el).selectAll(".dynDiv_resizeDiv_tl, .dynDiv_resizeDiv_tr, .dynDiv_resizeDiv_bl, .dynDiv_resizeDiv_br").on(".drag", null);
-
             // this line destroys the containing backbone view and it's events
             Backbone.View.prototype.remove.call(this);
         }

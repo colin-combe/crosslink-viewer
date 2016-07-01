@@ -174,31 +174,19 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                         this.renderedToProtein.removePeptides();
                 }
             }
+            if (andAlternatives && this.crossLink.ambiguous) {
+            //TODO: we might want to highlight smallest possible set of alternatives?
+            for (match of this.crossLink.filteredMatches) {
+                match = match[0]; //no...
+                if (match.crossLinks.length > 1) {
+                   for (crossLink of match.crossLinks) {
+                        var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(crossLink.id);
+                        renderedLink.showHighlight(show, false);
+                    }
+                }
+			}
         }
-
-
-
-        //~ if (andAlternatives && this.crossLink.ambiguous) {
-            //~ //TODO: we want to highlight smallest possible set of alternatives?
-            //~ var mc = this.crossLink.matches.length;
-            //~ for (var m = 0; m < mc; m++) {
-                //~ var match = this.crossLink.matches[m][0];
-                //~ if (match.isAmbig()) {
-                    //~ var rc = match.crossLinks.length;
-                    //~ for (var rl = 0; rl < rc; rl++) {
-                        //~ var resLink = match.crossLinks[rl];
-                        //~ var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(resLink.id);
-                     //~ //   if (resLink.isSelected == false) { //not right
-                            //~ renderedLink.showHighlight(show, false);
-                     //~ //}
-                    //~ }
-                //~ }
-            //~ }
-//~
-        //~ }
-
-
-    //~ }
+    }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
@@ -235,7 +223,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
     var filteredMatches = this.crossLink.filteredMatches;
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
-        this.dashedLine(this.crossLink.ambiguous);
         this.show();
         return true;
     }
@@ -247,11 +234,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
     //~ if (this.crosslinkViewer.unambigLinkFound == true) {
-        if (typeof this.line !== 'undefined' && !isNaN(parseFloat(this.crossLink.toResidue))) {
+        if (this.shown) {
             if (dash) {// && !this.dashed){
                 if (this.crossLink.isSelfLink() === true) {
-                    this.dashed = true;
                     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+
                 }
                 else {
                     this.dashed = true;
@@ -295,6 +282,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
     }
+    this.dashedLine(this.crossLink.ambiguous);
     this.setSelected(this.isSelected);
 };
 
@@ -407,21 +395,3 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
     y = rotated[1] + renderedInteractor.y;
     return [x, y];
 };
-
-/*
-// used by hover highlight?
-CLMS.xiNET.RenderedCrossLink.prototype.leastAmbiguousMatches = function() {// yes: plural
-    //var leastAmbigMatches
-    };
-
-CLMS.xiNET.RenderedCrossLink.prototype.toJSON = function() {
-    var m = [];
-    var mc = this.matches.length;
-    for (var i = 0; i < mc; i++) {
-        m.push(this.matches[i].id);
-    }
-    return {
-    //      m: m
-    };
-};
-*/
