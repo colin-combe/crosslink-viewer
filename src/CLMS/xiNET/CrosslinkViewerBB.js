@@ -803,7 +803,7 @@
                 this.force.stop();
             }
             var width = this.svgElement.parentNode.clientWidth;
-            var height = this.svgElement.parentNode.parentNode.clientHeight;
+            var height = this.svgElement.parentNode.clientHeight;
             var self = this;
             var prots = this.renderedProteins.values();
             //do force directed layout*/
