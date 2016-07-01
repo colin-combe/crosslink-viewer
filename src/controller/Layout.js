@@ -1,70 +1,61 @@
-//    xiNET interaction viewer
-//    Copyright 2013 Rappsilber Laboratory
-//
-//    This product includes software developed at
-//    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-//
-//    author: Colin Combe
-
-"use strict";
-
 xiNET.Controller.prototype.autoLayout = function() {
-    if (this.force) {this.force.stop();}
+    if (typeof this.force !== 'undefined' && this.force != null) {
+        this.force.stop();
+    }
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
-	var self = this;
-	//clear subgraphs
-	this.subgraphs.length = 0;
-	for (var p = 0; p < proteinCount; p++) {
-		prots[p].subgraph = null;
-	}
-	var prots = this.proteins.values();
-	var proteinCount = prots.length;
-	//~ for (var p = 0; p < proteinCount; p++) {
-		//~ var prot = prots[p];
-		//~ var park = true;
-		//~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-			//~ var protLink = prot.proteinLinks.values()[ppl];
-			//~ if (protLink.getFilteredMatches().length > 0){
-				//~ if (this.intraHidden === false || 
-					//~ (this.intraHidden === true && protLink.intra != true)) {
-						//~ park = false;
-					//~ }
-			//~ }
-		//~ }
-		//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
-			//~ // var protLink = prot.proteinLinks.values()[ppl];
-			//~ // if (protLink.getFilteredMatches().length > 0){
-				//~ // park = false;
-			//~ // }
-		//~ // }
-		//~ prot.setParked(park);
-	//~ }
-	//init subgraphs
-	for (var p = 0; p < proteinCount; p++) {
-		prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
-	}
-	//sort subgraphs by size
-	this.subgraphs.sort(function(a, b) {
-		return a.nodes.values().length - b.nodes.values().length;
-	});
-     
+
     if (proteinCount === 1) {
-        var protein = prots[0];
+        var protein = proteins[0];
         protein.setPosition(width / 2, height / 4 * 3);
         return;
     }
     else if (proteinCount === 2) {
-        var p1 = prots[0];
-        p1.setPosition(width / 2, height * 0.3);
-        p1.setAllLineCoordinates();
-        var p2 = prots[1];
-        p2.setPosition(width / 2, height * 0.6);
-        p2.setAllLineCoordinates();
+        var p1 = proteins[0];
+        p1.setPosition(width / 2, height / 2);
+        var p2 = proteins[1];
+        p2.setPosition(width / 2, height - 32);
         return;
     }
     else {
-          //Sort subgraphs into linear and non-linear sets
+        var self = this;
+        //Init subgraphs
+        //clear subgraphs
+        this.subgraphs.length = 0;
+        var prots = this.proteins.values();
+        var proteinCount = prots.length;
+        //~ for (var p = 0; p < proteinCount; p++) {
+            //~ var prot = prots[p];
+            //~ var park = true;
+            //~ for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+				//~ var protLink = prot.proteinLinks.values()[ppl];
+				//~ if (protLink.getFilteredMatches().length > 0){
+					//~ if (this.intraHidden === false || 
+						//~ (this.intraHidden === true && protLink.intra != true)) {
+							//~ park = false;
+						//~ }
+				//~ }
+			//~ }
+			//~ // for (var ppl = 0; ppl < prot.proteinLinks.values().length; ppl++){
+				//~ // var protLink = prot.proteinLinks.values()[ppl];
+				//~ // if (protLink.getFilteredMatches().length > 0){
+					//~ // park = false;
+				//~ // }
+			//~ // }
+			//~ prot.setParked(park);
+        //~ }
+        for (var p = 0; p < proteinCount; p++) {
+            prots[p].subgraph = null;
+        }
+        //init subgraphs
+        for (var p = 0; p < proteinCount; p++) {
+            prots[p].getSubgraph();//adds new subgraphs to this.subgraphs
+        }
+        //sort subgraphs by size
+        this.subgraphs.sort(function(a, b) {
+            return a.nodes.values().length - b.nodes.values().length;
+        });
+        //Sort subgraphs into linear and non-linear sets
         var linearGraphs = [];
         var nonLinearGraphs = [];
         var graphCount = this.subgraphs.length;
@@ -142,13 +133,13 @@ xiNET.Controller.prototype.autoLayout = function() {
                     }
                     p.setPosition(x, y);
 //                p.fixed = true;
-                    //~ this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
-                    p.setAllLineCoordinates();
+                    this.proteinUpper.appendChild(p.upperGroup);//TODO: why is this here?
+                    p.setAllLineCoordinates();//TODO: check this is needed
                 }
             }
         }
         //remember edge of gridded proteins
-        this.layoutXOffset = xForColumn(column + 0.5);
+        this.layoutXOffset = xForColumn(column + 3); //DKS
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
@@ -157,28 +148,20 @@ xiNET.Controller.prototype.autoLayout = function() {
             layoutObj.NAME = "ALL";
             layoutObj.children = children;
             for (var g = 0; g < nonLinearGraphs.length; g++) {
-				var nodes = nonLinearGraphs[g].nodes.values();
-				var nodeCount = nodes.length;
-				for (var n = 0; n < nodeCount; n++) {
-					var prot = this.proteins.get(nodes[n].id);
-					var nodeObj = {};
-					nodeObj.id = prot.id;
-					nodeObj.x = prot.x - this.layoutXOffset;
-					nodeObj.y = prot.y;
-					nodeObj.px = prot.x - this.layoutXOffset;
-					nodeObj.py = prot.y;
-					nodeObj.linkCount = prot.proteinLinks.keys().length;
-					nodeObj.size = 30;
-					layoutObj.children.push(nodeObj);
-				}
-			}
+                var nodes = nonLinearGraphs[g].nodes.values();
+                var nodeCount = nodes.length;
+                for (var n = 0; n < nodeCount; n++) {
+                    var prot = this.proteins.get(nodes[n].id);
+                    layoutObj.children.push(prot);
+                }
+            }
             var packLayout = d3.layout.pack()
                     .size([width - this.layoutXOffset, height])
                     .value(function(d) {
 						return d.size;
 					})
                     .sort(function comparator(a, b) {
-						return (b.linkCount) - (a.linkCount);
+						return (b.proteinLinks.keys().length) - (a.proteinLinks.keys().length);
 					});
             var nodes = packLayout.nodes(layoutObj);
             var nodeCount = nodes.length;
@@ -187,9 +170,7 @@ xiNET.Controller.prototype.autoLayout = function() {
                 var protein = this.proteins.get(node.id);
                 var nx = node.x;
                 var ny = node.y;
-                var rotated = Protein.rotatePointAboutPoint([nx, ny], 
-					[(width - this.layoutXOffset / 2), height / 2], 90)
-                protein.setPosition(rotated[0] + this.layoutXOffset, rotated[1]);
+                protein.setPosition(nx + this.layoutXOffset, ny);
                 protein.setAllLineCoordinates(false);
             }
         }
@@ -228,26 +209,26 @@ xiNET.Controller.prototype.autoLayout = function() {
             var linkCount = links.length;
             for (var l = 0; l < linkCount; l++) {
                 var link = links[l];
-				var fromProt = link.fromProtein;
-				var toProt = link.toProtein;
-				if (toProt) {
-					var source = protLookUp[fromProt.id];
-					var target = protLookUp[toProt.id];
+//            if (link.check() === true) { //not needed due to way subgraphs are initialised
+                var fromProt = link.fromProtein;
+                var toProt = link.toProtein;
+                var source = protLookUp[fromProt.id];
+                var target = protLookUp[toProt.id];
 
-					if (source !== target) {
+                if (source !== target) {
 
-						if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-							var linkObj = {};
-							linkObj.source = source;
-							linkObj.target = target;
-							linkObj.id = link.id;
-							layoutObj.links.push(linkObj);
-						}
-						else {
-							alert("NOT RIGHT");
-						}
-					}
+                    if (typeof source !== 'undefined' && typeof target !== 'undefined') {
+                        var linkObj = {};
+                        linkObj.source = source;
+                        linkObj.target = target;
+                        linkObj.id = link.id;
+                        layoutObj.links.push(linkObj);
+                    }
+                    else {
+                        alert("NOT RIGHT");
+                    }
                 }
+                //        } // closing unused link.check()
             }
         }
         var k = Math.sqrt(layoutObj.nodes.length / ((gWidth) * height));
@@ -273,6 +254,12 @@ xiNET.Controller.prototype.autoLayout = function() {
                 protein.setPosition(nx + self.layoutXOffset, ny);
                 protein.setAllLineCoordinates();
             }
+//            var forceLinks = self.force.links();
+//            for (var l = 0; l < forceLinkCount; l++) {
+//                var link = self.proteinLinks.get(forceLinks[l].id);
+//                link.fromProtein.setLineCoordinates(link);
+//                link.toProtein.setLineCoordinates(link);
+//            }
         });
         this.force.start();
     }
@@ -314,12 +301,12 @@ xiNET.Controller.prototype.autoLayout = function() {
 
     //functions used...
     function xForColumn(c) {
-        return (c * ((2 * 30) + Protein.LABELMAXLENGTH)) - 30;
+        return (c * ((2 * self.maxBlobRadius) + Protein.LABELMAXLENGTH)) - self.maxBlobRadius;
     }
     ;
 
     function yForRow(r) {
-        return (r * 30);
+        return (r * self.maxBlobRadius);
     }
     ;
 };
