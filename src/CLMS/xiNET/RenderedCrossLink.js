@@ -220,7 +220,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
             return false;
     }
 
-    var filteredMatches = this.crossLink.filteredMatches;
+    var filteredMatches = this.crossLink.filteredMatchesAndPeptidePositions;
     var countFilteredMatches = filteredMatches.length;
     if (countFilteredMatches > 0) {
         this.show();

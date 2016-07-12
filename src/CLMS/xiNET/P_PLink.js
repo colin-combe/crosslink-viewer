@@ -244,11 +244,11 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     this.altP_PLinks = new Map();
 
     for (crossLink of this.crossLinks) {
-        if (crossLink.filteredMatches.length > 0) {
+        if (crossLink.filteredMatchesAndPeptidePositions.length > 0) {
             filteredCrossLinks.add(crossLink);
         }
-        for (match of crossLink.filteredMatches) {
-            match = match[0]; // arrrgg
+        for (matchAndPepPos of crossLink.filteredMatchesAndPeptidePositions) {
+            match = matchAndPepPos.match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {
                 this.hd = true;

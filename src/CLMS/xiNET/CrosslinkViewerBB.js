@@ -97,18 +97,18 @@
 
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
             for(var crossLink of crossLinks){
+				if (crossLink.toProtein) {
+					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+					this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
-                var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-
-                var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
-                var p_pLink = this.renderedP_PLinks.get(p_pId);
-                if (typeof p_pLink == 'undefined') {
-                    p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
-                    this.renderedP_PLinks.set(p_pId, p_pLink);
-                }
-                p_pLink.crossLinks.push(crossLink);
-
+					var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+					var p_pLink = this.renderedP_PLinks.get(p_pId);
+					if (typeof p_pLink == 'undefined') {
+						p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
+						this.renderedP_PLinks.set(p_pId, p_pLink);
+					}
+					p_pLink.crossLinks.push(crossLink);
+				}
             }
 
             for (p_pLink of this.renderedP_PLinks.values()) {
@@ -758,7 +758,7 @@
         var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
         for(var crossLink of crossLinks){
             //visible, non-self cross-links only
-            if (crossLink.check() === true && !crossLink.isSelfLink() && crossLink.toProtein) {
+            if (crossLink.check() && !crossLink.isSelfLink() && crossLink.toProtein) {
                 var fromId = crossLink.fromProtein.id;
                 var toId = crossLink.toProtein.id;
                 var linkId = fromId + "-" + toId;
