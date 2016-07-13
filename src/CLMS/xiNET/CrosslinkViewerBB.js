@@ -181,7 +181,7 @@
             var renderedLinks = this.renderedCrossLinks.values();
             for (var rLink of renderedLinks) {
                 if (rLink.shown) {
-                    var c = colourAssignment(rLink.crossLink);
+                    var c = colourAssignment.getColour(rLink.crossLink);
                     rLink.line.setAttribute("stroke",c);
                 }
             }
