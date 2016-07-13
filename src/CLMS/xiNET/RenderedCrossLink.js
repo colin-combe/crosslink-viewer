@@ -53,7 +53,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
         //~ }
 
         this.line.setAttribute("stroke",
-            this.crosslinkViewer.model.get("linkColourAssignment")(this.crossLink));
+            this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
 
         //set the events for it
         var self = this;
