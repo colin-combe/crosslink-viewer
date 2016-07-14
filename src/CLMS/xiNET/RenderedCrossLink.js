@@ -48,10 +48,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
         this.highlightLine.setAttribute("stroke-width", "10");
         this.highlightLine.setAttribute("stroke-opacity", "0")
 
-        //~ if (typeof this.colour !== 'undefined'){
-            //~ this.line.setAttribute("stroke", this.colour);
-        //~ }
-
         this.line.setAttribute("stroke",
             this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
 
