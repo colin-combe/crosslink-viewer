@@ -90,7 +90,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
                         .set("contents", [
                             ["From", this.crossLink.fromResidue, this.crossLink.fromProtein.name],
                             ["To", this.crossLink.toResidue, this.crossLink.toProtein.name],
-                            ["Matches", this.crossLink.filteredMatches.length]
+                            ["Matches", this.crossLink.filteredMatchesAndPeptidePositions.length]
                         ])
                         .set("location", {pageX: p.x, pageY: p.y})
                     ;
@@ -142,15 +142,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
                 this.highlightLine.setAttribute("stroke-opacity", "0.7");
                 var fromPeptides = [], toPeptides = [];
-                var filteredMatches = this.crossLink.filteredMatches;
-                var fmc = filteredMatches.length;
-                for (var m = 0; m < fmc; m++) {
-                    var match = filteredMatches[m][0];
+                for (matchAndPepPos of this.crossLink.filteredMatchesAndPeptidePositions) {
+                    var match = matchAndPepPos.match;
 
-                    var fromPepStart = filteredMatches[m][1] - 1;
-                    var fromPepLength = filteredMatches[m][2];
-                    var toPepStart = filteredMatches[m][3] - 1;
-                    var toPepLength = filteredMatches[m][4];
+                    var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
+                    var fromPepLength = matchAndPepPos.pepPos[0].length;
+                    var toPepStart = matchAndPepPos.pepPos[1].start - 1;
+                    var toPepLength = matchAndPepPos.pepPos[1].length;
 
                     fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
                     toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
@@ -216,9 +214,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
             return false;
     }
 
-    var filteredMatches = this.crossLink.filteredMatchesAndPeptidePositions;
-    var countFilteredMatches = filteredMatches.length;
-    if (countFilteredMatches > 0) {
+    if (this.crossLink.filteredMatchesAndPeptidePositions.length > 0) {
         this.show();
         return true;
     }
