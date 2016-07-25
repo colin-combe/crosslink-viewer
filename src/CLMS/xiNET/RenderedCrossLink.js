@@ -90,7 +90,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
                         .set("contents", [
                             ["From", this.crossLink.fromResidue, this.crossLink.fromProtein.name],
                             ["To", this.crossLink.toResidue, this.crossLink.toProtein.name],
-                            ["Matches", this.crossLink.filteredMatchesAndPeptidePositions.length]
+                            ["Matches", this.crossLink.filteredMatches_pp.length]
                         ])
                         .set("location", {pageX: p.x, pageY: p.y})
                     ;
@@ -142,7 +142,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
                 this.highlightLine.setAttribute("stroke-opacity", "0.7");
                 var fromPeptides = [], toPeptides = [];
-                for (matchAndPepPos of this.crossLink.filteredMatchesAndPeptidePositions) {
+                for (matchAndPepPos of this.crossLink.filteredMatches_pp) {
                     var match = matchAndPepPos.match;
 
                     var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
@@ -214,7 +214,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
             return false;
     }
 
-    if (this.crossLink.filteredMatchesAndPeptidePositions.length > 0) {
+    if (this.crossLink.filteredMatches_pp.length > 0) {
         this.show();
         return true;
     }

@@ -189,8 +189,8 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
 			for (crossLink of this.crossLinks) {
 				//~ var resLink = this.residueLinks.values()[rl];
 				//~ var mc = resLink.matches.length;
-				for (match of crossLink.matches) {
-					match = match[0];//sigh
+				for (match_pp of crossLink.filteredMatches_pp) {
+					match = match_pp.match;
 					if (match.crossLinks.length > 1) {
 						//~ var mrc = match.residueLinks.length;
 						for (altCrossLink of match.crossLinks) {
@@ -244,10 +244,10 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     this.altP_PLinks = new Map();
 
     for (crossLink of this.crossLinks) {
-        if (crossLink.filteredMatchesAndPeptidePositions.length > 0) {
+        if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink);
         }
-        for (matchAndPepPos of crossLink.filteredMatchesAndPeptidePositions) {
+        for (matchAndPepPos of crossLink.filteredMatches_pp) {
             match = matchAndPepPos.match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {
