@@ -97,7 +97,7 @@
 
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
             for(var crossLink of crossLinks){
-				if (crossLink.toProtein) {
+				if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
 					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
 					this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
@@ -205,14 +205,15 @@
             var interactors = this.model.get("clmsModel").get("interactors").values();
             CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
             for (var interactor of interactors) {
+				if (interactor.is_decoy == false) {
+					var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
+					this.renderedProteins.set(interactor.id, newProt);
 
-                var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
-                this.renderedProteins.set(interactor.id, newProt);
-
-                var protSize = interactor.size;
-                if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
-                    CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
-                }
+					var protSize = interactor.size;
+					if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
+						CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
+					}
+				}
             }
             //this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
             var width = this.svgElement.parentNode.clientWidth;
