@@ -42,9 +42,9 @@
 -->
         <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
         <!--xiNET-->
-<!--
+
 		<script type="text/javascript" src="./crosslinkviewer.js"></script>
--->
+        <!--
         <script type="text/javascript" src="../src/controller/Init.js"></script>
         <script type="text/javascript" src="../src/controller/MouseEvents.js"></script>
         <script type="text/javascript" src="../src/controller/Layout.js"></script>
