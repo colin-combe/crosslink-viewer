@@ -148,7 +148,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             }
         }
         //remember edge of gridded proteins
-        this.layoutXOffset = xForColumn(column + 0.5);
+        this.layoutXOffset = xForColumn(column + 3); //DKS
         //if force is null choose nice starting points for nodes
         if (typeof this.force === 'undefined' || this.force == null) {
             //Get starting position for force layout by using d3 packed circles layout
@@ -314,12 +314,12 @@ xiNET.Controller.prototype.autoLayout = function() {
 
     //functions used...
     function xForColumn(c) {
-        return (c * ((2 * 30) + Protein.LABELMAXLENGTH)) - 30;
+        return (c * ((2 * self.maxBlobRadius) + Protein.LABELMAXLENGTH)) - self.maxBlobRadius;
     }
     ;
 
     function yForRow(r) {
-        return (r * 30);
+        return (r * self.maxBlobRadius);
     }
     ;
 };

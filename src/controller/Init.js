@@ -285,6 +285,8 @@ xiNET.Controller.prototype.initProteins = function() {
 		}
 	}
 	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / 10 * Math.PI); //DKS change max blob size to reduce grid sizes
+    this.maxBlobRadius = 10 // DKS maxBlobradius determines gridding, and display more than anything else
 	var width = this.svgElement.parentNode.clientWidth;
 	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
 	for (var i = 0; i < protCount; i++){
