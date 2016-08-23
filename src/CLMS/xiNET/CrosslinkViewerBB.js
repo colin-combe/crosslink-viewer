@@ -132,8 +132,8 @@
 
             this.listenTo (this.model.get("interactors"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
-            this.listenTo (this.model.get("filterModel"), "change", this.render);    // any property changing in the filter model means rerendering this view
-            //~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
+             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
+             //~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
