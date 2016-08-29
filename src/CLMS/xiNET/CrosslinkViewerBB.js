@@ -118,8 +118,8 @@
                 }
             }
 
-            if (this.options.layout != null) {
-                this.loadLayout(this.options.layout);
+            if (this.model.get("clmsModel").get("xiNETLayout")) {
+                this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
             } else {
                 var proteins = this.renderedProteins.values();
                 for (var prot of proteins) {
