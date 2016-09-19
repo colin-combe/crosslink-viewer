@@ -137,6 +137,7 @@
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
+            this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
             this.render();
             this.linkColourChanged();
         },
