@@ -9,6 +9,21 @@
     CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
     CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
+        events: {
+            "change .clickToSelect": "setClickModeSelect",
+            "change .clickToToggle": "setClickModeToggle",
+            "click .saveLayout": "saveLayout",
+            "click .resetLayout": "reset",
+            "click .downloadButton": "downloadSVG"
+        },
+
+		setClickModeSelect: function (){
+			this.clickModeIsToggle = false;
+		},
+		
+		setClickModeToggle: function (){
+			this.clickModeIsToggle = true;
+		},
 
         initialize: function (viewOptions) {
 
@@ -17,6 +32,23 @@
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
+
+            d3.select(this.el).html(
+                "<div class='xinetControls'>" +
+					"<div class='xinetToggles'>" +
+						"<label for='clickSelect'>CLICK TO: SELECT</label>" +
+						"<input type='radio' name='clickMode' class='clickToSelect'>" +
+						"<label for='clickToggle'>TOGGLE CIRCLE/BAR</label>" +
+						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
+					"</div>" +
+                    "<div class='xinetButtonBar'>" +
+						"<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
+						"<button class='btn btn-1 btn-1a resetLayout' >Reset Layout</button>" +
+						"<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
+					"</div>" +
+                "</div>");
+
+			this.clickModeIsToggle = true;
 
             //create SVG elemnent
             this.svgElement = document.createElementNS(CLMS.xiNET.svgns, "svg");
@@ -97,18 +129,18 @@
 
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
             for(var crossLink of crossLinks){
-				if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
-					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-					this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+                if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
+                    var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+                    this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
-					var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
-					var p_pLink = this.renderedP_PLinks.get(p_pId);
-					if (typeof p_pLink == 'undefined') {
-						p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
-						this.renderedP_PLinks.set(p_pId, p_pLink);
-					}
-					p_pLink.crossLinks.push(crossLink);
-				}
+                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+                    var p_pLink = this.renderedP_PLinks.get(p_pId);
+                    if (typeof p_pLink == 'undefined') {
+                        p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
+                        this.renderedP_PLinks.set(p_pId, p_pLink);
+                    }
+                    p_pLink.crossLinks.push(crossLink);
+                }
             }
 
             for (p_pLink of this.renderedP_PLinks.values()) {
@@ -206,15 +238,15 @@
             var interactors = this.model.get("clmsModel").get("interactors").values();
             CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
             for (var interactor of interactors) {
-				if (interactor.is_decoy == false) {
-					var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
-					this.renderedProteins.set(interactor.id, newProt);
+                if (interactor.is_decoy == false) {
+                    var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
+                    this.renderedProteins.set(interactor.id, newProt);
 
-					var protSize = interactor.size;
-					if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
-						CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
-					}
-				}
+                    var protSize = interactor.size;
+                    if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
+                        CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
+                    }
+                }
             }
             //this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
             var width = this.svgElement.parentNode.clientWidth;
@@ -418,77 +450,77 @@
         // dragging/rotation/panning/selecting
         mouseMove: function(evt) {
             //~ this.preventDefaultsAndStopPropagation(evt);
-			var p = this.getEventPoint(evt);// seems to be correct, see below
-			var c = this.mouseToSVG(p.x, p.y);
+            var p = this.getEventPoint(evt);// seems to be correct, see below
+            var c = this.mouseToSVG(p.x, p.y);
 
-			if (this.dragElement != null) { //dragging or rotating
+            if (this.dragElement != null) { //dragging or rotating
 //                  this.hideTooltip();
-				var dx = this.dragStart.x - c.x;
-				var dy = this.dragStart.y - c.y;
+                var dx = this.dragStart.x - c.x;
+                var dy = this.dragStart.y - c.y;
 
-				if (this.state === CLMS.xiNET.Controller.DRAGGING) {
-					// we are currently dragging things around
-					var ox, oy, nx, ny;
-					if (!this.dragElement.interactor) { // if not a protein
-						//its a link - drag whole connected subgraph
-						/*var prot = this.dragElement.renderedFromProtein;
-						var prots = this.renderedProteins.values();
-						for (var protein of prots) {
-							protein.subgraph = null;
-						}
-						var subgraph = prot.interactor.getSubgraph();
-						var nodes = subgraph.nodes.values();
-						//~ var nodeCount = nodes.length;
-						for (node of nodes) {
-							var protein = this.renderedProteins.get(node.id);
-							ox = protein.x;
-							oy = protein.y;
-							nx = ox - dx;
-							ny = oy - dy;
-							protein.setPosition(nx, ny);
-							protein.setAllLineCoordinates();
-						}
-						for (node of nodes) {
-							var protein = this.renderedProteins.get(node.id);
-							nodes[i].setAllLineCoordinates();
-						}*/
-					} else {
-						//its a protein - drag it TODO: DRAG SELECTED
-						ox = this.dragElement.x;
-						oy = this.dragElement.y;
-						nx = ox - dx;
-						ny = oy - dy;
-						this.dragElement.setPosition(nx, ny);
-						this.dragElement.setAllLineCoordinates();
-					}
-					this.dragStart = c;
-				}
+                if (this.state === CLMS.xiNET.Controller.DRAGGING) {
+                    // we are currently dragging things around
+                    var ox, oy, nx, ny;
+                    if (!this.dragElement.interactor) { // if not a protein
+                        //its a link - drag whole connected subgraph
+                        /*var prot = this.dragElement.renderedFromProtein;
+                        var prots = this.renderedProteins.values();
+                        for (var protein of prots) {
+                            protein.subgraph = null;
+                        }
+                        var subgraph = prot.interactor.getSubgraph();
+                        var nodes = subgraph.nodes.values();
+                        //~ var nodeCount = nodes.length;
+                        for (node of nodes) {
+                            var protein = this.renderedProteins.get(node.id);
+                            ox = protein.x;
+                            oy = protein.y;
+                            nx = ox - dx;
+                            ny = oy - dy;
+                            protein.setPosition(nx, ny);
+                            protein.setAllLineCoordinates();
+                        }
+                        for (node of nodes) {
+                            var protein = this.renderedProteins.get(node.id);
+                            nodes[i].setAllLineCoordinates();
+                        }*/
+                    } else {
+                        //its a protein - drag it TODO: DRAG SELECTED
+                        ox = this.dragElement.x;
+                        oy = this.dragElement.y;
+                        nx = ox - dx;
+                        ny = oy - dy;
+                        this.dragElement.setPosition(nx, ny);
+                        this.dragElement.setAllLineCoordinates();
+                    }
+                    this.dragStart = c;
+                }
 
-				else if (this.state === CLMS.xiNET.Controller.ROTATING) {
-					// Distance from mouse x and center of stick.
-					var _dx = c.x - this.dragElement.x
-					// Distance from mouse y and center of stick.
-					var _dy = c.y - this.dragElement.y;
-					//see http://en.wikipedia.org/wiki/Atan2#Motivation
-					var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-					if (this.whichRotator === 0) {
-						centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-					}
-					var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-					this.dragElement.setRotation(centreToMouseAngleDegrees);
-					this.dragElement.setAllLineCoordinates();
-				}
-				else { //not dragging or rotating yet, maybe we should start
-					// don't start dragging just on a click - we need to move the mouse a bit first
-					if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-						this.state = CLMS.xiNET.Controller.DRAGGING;
+                else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+                    // Distance from mouse x and center of stick.
+                    var _dx = c.x - this.dragElement.x
+                    // Distance from mouse y and center of stick.
+                    var _dy = c.y - this.dragElement.y;
+                    //see http://en.wikipedia.org/wiki/Atan2#Motivation
+                    var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+                    if (this.whichRotator === 0) {
+                        centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+                    }
+                    var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+                    this.dragElement.setRotation(centreToMouseAngleDegrees);
+                    this.dragElement.setAllLineCoordinates();
+                }
+                else { //not dragging or rotating yet, maybe we should start
+                    // don't start dragging just on a click - we need to move the mouse a bit first
+                    if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+                        this.state = CLMS.xiNET.Controller.DRAGGING;
 
-					}
-				}
-			}
-			else if (this.state === CLMS.xiNET.Controller.PANNING) {
-			   this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-			}
+                    }
+                }
+            }
+            else if (this.state === CLMS.xiNET.Controller.PANNING) {
+               this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+            }
         },
 
 
@@ -500,7 +532,7 @@
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
                 //which button has just been raised
-                var rightclick, middleclick; 
+                var rightclick, middleclick;
                 if (evt.which)
                     rightclick = (evt.which === 3);
                 else if (evt.button)
@@ -541,16 +573,20 @@
                             if (typeof this.dragElement.x === 'undefined') { //if not protein
                                 //do nothing
                             } else if (evt.ctrlKey) {
-                                
+
                                 this.dragElement.switchStickScale(c);
                             }else if (evt.shiftKey) {
                                 this.dragElement.switchStickScale(c);
                             } else {
-                                if (this.dragElement.form === 1) {
-                                    this.dragElement.setForm(0, c);
-                                } else {
-                                    this.dragElement.setForm(1, c);
-                                }
+								if (this.clickModeIsToggle) {
+									if (this.dragElement.form === 1) {
+										this.dragElement.setForm(0, c);
+									} else {
+										this.dragElement.setForm(1, c);
+									}
+								} else {
+									alert("NOT TOGGLING");
+								}
                             }
                         }
                         //~ this.checkLinks();
@@ -646,12 +682,25 @@
             // evt.returnValue = false;
         },
 
-        getLayout: function() {
+		saveLayout: function () {
             var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
             var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
             var layout = myJSONText.replace(/\\u0000/gi, '');
             //+ "\n{co:" + this.cutOff +"}";
-            return layout;
+
+			var xmlhttp = new XMLHttpRequest();
+			var url = "./php/saveLayout.php";
+			var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
+			var params =  "sid=" + sid + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
+			xmlhttp.open("POST", url, true);
+			//Send the proper header information along with the request
+			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+				if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					console.log("Saved layout " + xmlhttp.responseText, true);
+				}
+			};
+			xmlhttp.send(params);
         },
 
         loadLayout: function(layout) {
@@ -807,8 +856,9 @@
             this.force.start();
         },
 
-        getSVG: function () {
-            return CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
+        downloadSVG: function () {
+            var svg = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
+			download(svg, 'application/svg', 'xiNET-output.svg');//+s.keys().toString());
         },
 
         render: function () {

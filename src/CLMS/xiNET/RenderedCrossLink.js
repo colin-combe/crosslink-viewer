@@ -170,15 +170,15 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
             }
             if (andAlternatives && this.crossLink.ambiguous) {
             //TODO: we might want to highlight smallest possible set of alternatives?
-            for (match of this.crossLink.filteredMatches_pp) {
-                match = match_pp.match;
-                if (match.crossLinks.length > 1) {
-                   for (crossLink of match.crossLinks) {
-                        var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(crossLink.id);
-                        renderedLink.showHighlight(show, false);
-                    }
-                }
-			}
+            //~ for (match of this.crossLink.filteredMatches_pp) {
+                //~ match = match_pp.match;
+                //~ if (match.crossLinks.length > 1) {
+                   //~ for (crossLink of match.crossLinks) {
+                        //~ var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(crossLink.id);
+                        //~ renderedLink.showHighlight(show, false);
+                    //~ }
+                //~ }
+			//~ }
         }
     }
 };
