@@ -103,18 +103,30 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    if (evt.shiftKey || evt.ctrlKey) {
-        var selection = _.clone(this.crosslinkViewer.model.get("selection"));
-        if (this.isSelected){
-            var index = selection.indexOf(this.crossLink);
-            selection.splice(index, 1);
-        } else {
-            selection.push(this.crossLink);
-        }
-        this.crosslinkViewer.model.set("selection",selection);
-    } else {
-        this.crosslinkViewer.model.set("selection",[this.crossLink]);
-    }
+	var rightclick, middleclick;
+	if (evt.which)
+		rightclick = (evt.which === 3);
+	else if (evt.button)
+		rightclick = (evt.button === 2);
+	if (evt.which)
+		middleclick = (evt.which === 2);
+	else if (evt.button)
+		middleclick = (evt.button === 1);
+
+    if (!rightclick) {
+		if (evt.shiftKey || evt.ctrlKey) {
+			var selection = _.clone(this.crosslinkViewer.model.get("selection"));
+			if (this.isSelected){
+				var index = selection.indexOf(this.crossLink);
+				selection.splice(index, 1);
+			} else {
+				selection.push(this.crossLink);
+			}
+			this.crosslinkViewer.model.set("selection",selection);
+		} else {
+			this.crosslinkViewer.model.set("selection",[this.crossLink]);
+		}
+	}
     //store start location
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);

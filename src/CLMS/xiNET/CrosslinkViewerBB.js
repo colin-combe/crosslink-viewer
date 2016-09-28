@@ -549,9 +549,8 @@
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
                         if (rightclick) {
                             if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                                if (this.dragElement.selfLink() == true) {//if internal link
-                                    if (this.dragElement.proteinLink)//its a residueLink
-                                        this.dragElement.proteinLink.fromProtein.toggleFlipped();
+                                if (this.dragElement.crossLink.isSelfLink() == true) {//if internal link
+                                    this.dragElement.renderedFromProtein.toggleFlipped();
                                 } else {
                                     if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
                                         this.dragElement.hidden = true;
