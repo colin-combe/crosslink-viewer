@@ -36,7 +36,7 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
 					"<div class='xinetToggles'>" +
-						"<label for='clickSelect'>CLICK TO: SELECT</label>" +
+						"<label for='clickSelect'>CLICK TO SELECT</label>" +
 						"<input type='radio' name='clickMode' class='clickToSelect'>" +
 						"<label for='clickToggle'>TOGGLE CIRCLE/BAR</label>" +
 						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
@@ -170,8 +170,10 @@
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
+            this.listenTo (this.model, "change:selectedProtein", this.selectedInteractorsChanged);
             this.render();
             this.linkColourChanged();
+            return this;
         },
 
         clear: function () {
@@ -255,18 +257,18 @@
             var prots = this.renderedProteins.values();
             var protCount = prots.length;
 
-            //~ if (protCount < 3) {
-                //~ for (var j =0; j < protCount; j++){
-                    //~ prots[j].busy = false;
-                    //~ prots[j].setForm(1);
-                //~ }
-            //~ }
-            if (this.annotationSet){
-                this.setAnnotations(this.annotationSet);
-            }
-            else {
-                this.setAnnotations('CUSTOM');
-            }
+            // if (protCount < 3) {
+                // for (var j =0; j < protCount; j++){
+                    // prots[j].busy = false;
+                    // prots[j].setForm(1);
+                // }
+            // }
+            // if (this.annotationSet){
+                //~ this.setAnnotations(this.annotationSet);
+            // }
+            // else {
+                // this.setAnnotations('CUSTOM');
+            // }
         },
 
         reset: function() {
@@ -372,25 +374,19 @@
                         });
                     }
                 }
-                else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {
-                    var molsAnnotated = 0;
-                    for (m = 0; m < molCount; m++) {
-                        var mol = mols[m];
-                        this.xiNET_storage.getUniProtFeatures(mol.interactor.id, function (id, fts){
-                            var m = self.renderedProteins.get(id);
-                            m.setPositionalFeatures(fts);
-                            molsAnnotated++;
-                            if (molsAnnotated === molCount) {
-                                chooseColours();
-                            }
-                        });
-                    }
+                else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {*/
+                    for (prot of this.renderedProteins.values()) {
+						prot.setPositionalFeatures(prot.interactor.uniprotAnnotations);
+					}
+					var self = this;
+                    chooseColours();
+					/*
                 }
             }
-
+*/
             function chooseColours(){
                 var categories = d3.set();
-                for (var mol of mols) {
+                for (var mol of self.renderedProteins.values()) {
                     for (var a = 0; a < mol.annotations.length; a++){
                         categories.add(mol.annotations[a].name);
                     }
@@ -409,7 +405,7 @@
                     else {
                         self.domainColours = d3.scale.category20();
                     }
-                    for (var mol of mols) {
+                    for (var mol of self.renderedProteins.values()) {
                         for (a = 0; a < mol.annotations.length; a++) {
                             var anno = mol.annotations[a];
                             var c = self.domainColours(anno.name);
@@ -420,8 +416,8 @@
                         }
                     }
                 //~ }
-                self.legendChanged();
-            }*/
+                //~ self.legendChanged();
+            }
 
         },
 
@@ -461,37 +457,24 @@
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
-                    if (!this.dragElement.interactor) { // if not a protein
-                        //its a link - drag whole connected subgraph
-                        /*var prot = this.dragElement.renderedFromProtein;
-                        var prots = this.renderedProteins.values();
-                        for (var protein of prots) {
-                            protein.subgraph = null;
-                        }
-                        var subgraph = prot.interactor.getSubgraph();
-                        var nodes = subgraph.nodes.values();
-                        //~ var nodeCount = nodes.length;
-                        for (node of nodes) {
-                            var protein = this.renderedProteins.get(node.id);
-                            ox = protein.x;
-                            oy = protein.y;
-                            nx = ox - dx;
-                            ny = oy - dy;
-                            protein.setPosition(nx, ny);
-                            protein.setAllLineCoordinates();
-                        }
-                        for (node of nodes) {
-                            var protein = this.renderedProteins.get(node.id);
-                            nodes[i].setAllLineCoordinates();
-                        }*/
-                    } else {
-                        //its a protein - drag it TODO: DRAG SELECTED
-                        ox = this.dragElement.x;
-                        oy = this.dragElement.y;
-                        nx = ox - dx;
-                        ny = oy - dy;
-                        this.dragElement.setPosition(nx, ny);
-                        this.dragElement.setAllLineCoordinates();
+                    if (this.dragElement.interactor) {
+                        //its a protein - drag it, or drag all selcted if it is selected 
+                        var toDrag;
+						if (this.dragElement.isSelected === false) {
+							toDrag = [this.dragElement.interactor.id];
+						}
+						else {
+							toDrag = this.model.get("selectedProtein").keys();
+						}
+						for (interactorId of toDrag) {
+							var renderedProtein = this.renderedProteins.get(interactorId); 
+							ox = renderedProtein.x;
+							oy = renderedProtein.y;
+							nx = ox - dx;
+							ny = oy - dy;
+							renderedProtein.setPosition(nx, ny);
+							renderedProtein.setAllLineCoordinates();
+						}
                     }
                     this.dragStart = c;
                 }
@@ -569,22 +552,21 @@
                             //can't be used? problem with IE (scroll thingy)
                         }
                         else { //left click; toggle form for protein, switch stick scale
-                            if (typeof this.dragElement.x === 'undefined') { //if not protein
-                                //do nothing
-                            } else if (evt.ctrlKey) {
-
-                                this.dragElement.switchStickScale(c);
-                            }else if (evt.shiftKey) {
-                                this.dragElement.switchStickScale(c);
-                            } else {
-								if (this.clickModeIsToggle) {
-									if (this.dragElement.form === 1) {
-										this.dragElement.setForm(0, c);
-									} else {
-										this.dragElement.setForm(1, c);
+                            if (this.dragElement.x) { //if protein
+                            	if (this.clickModeIsToggle) {
+									if (evt.ctrlKey || evt.shiftKey) {
+										this.dragElement.switchStickScale(c);
+									}else {
+										if (this.dragElement.form === 1) {
+											this.dragElement.setForm(0, c);
+										} else {
+											this.dragElement.setForm(1, c);
+										}
 									}
 								} else {
-									alert("NOT TOGGLING");
+									var add = evt.ctrlKey || evt.shiftKey;
+									this.model.setSelectedProteins([this.dragElement.interactor.id], add);
+									this.model.calcMatchingCrosslinks ("selection", this.dragElement.interactor.crossLinks, false, add);
 								}
                             }
                         }
@@ -905,6 +887,18 @@
                 var p_pLink = this.renderedP_PLinks.get(
                     renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
                 p_pLink.setSelected(true);
+            }
+            return this;
+        },
+
+        selectedInteractorsChanged: function () {
+			for (var renderedInteractor of this.renderedProteins.values()) {
+                renderedInteractor.setSelected(false);
+            }
+            var selectedInteractors = this.model.get("selectedProtein").values();
+            for (interactor of selectedInteractors) {
+                var renderedInteractor = this.renderedProteins.get(interactor.id);
+                renderedInteractor.setSelected(true);
             }
             return this;
         },
