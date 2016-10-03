@@ -110,7 +110,23 @@ CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.model.set("highlights", this.crossLinks);
+
+	var toHighlight = this.crossLinks.slice(0);
+	if (this.ambiguous) {
+		//TODO: we might want to highlight smallest possible set of alternatives
+		for (crossLink of this.crossLinks) {
+			for (match_pp of crossLink.filteredMatches_pp) {
+				var match = match_pp.match;
+				for (crossLink of match.crossLinks) {
+					if (toHighlight.indexOf(crossLink) === -1) {
+						toHighlight.push(crossLink);
+					}
+				}
+			}
+		}
+	}
+    this.crosslinkViewer.model.set("highlights", toHighlight);
+    
     this.crosslinkViewer.model.get("tooltipModel")
                         .set("header", "Linked Protein Pair")
                         .set("contents", [
@@ -168,10 +184,7 @@ CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
     this.thickLine.setAttribute('d', path);
 };
 
-CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
-    if (typeof andAlternatives === 'undefined') {
-        andAlternatives = false;
-    }
+CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
             this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -181,35 +194,7 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show, andAlternatives) {
             if (this.isSelected == false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
-
         }
-		if (andAlternatives && this.ambiguous) {
-			//TODO: we might want to highlight smallest possible set of alternatives
-			//~ var rc = this.residueLinks.values().length;
-			for (crossLink of this.crossLinks) {
-				//~ var resLink = this.residueLinks.values()[rl];
-				//~ var mc = resLink.matches.length;
-				for (match_pp of crossLink.filteredMatches_pp) {
-					match = match_pp.match;
-					if (match.crossLinks.length > 1) {
-						//~ var mrc = match.residueLinks.length;
-						for (altCrossLink of match.crossLinks) {
-							//~ var resLink = match.residueLinks[mrl];
-							//~ if (resLink.shown === true) {
-								//~ if (resLink.isSelected == false) {
-									//~ resLink.showHighlight(show, false);
-								//~ }
-							//~ }
-							//~ if (resLink.proteinLink.shown === true) {
-								//~ {
-									//~ resLink.proteinLink.showHighlight(show, false);
-								//~ }
-							//~ }
-						}
-					}
-				}
-			}
-		}
     }
 };
 
@@ -270,7 +255,6 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
         this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
-        this.ambig = this.ambiguous;
         this.ambiguous = this.ambiguous && this.altP_PLinks.size > 1;
         this.show();
         return true;

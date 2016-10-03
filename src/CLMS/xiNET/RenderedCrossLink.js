@@ -84,7 +84,19 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.model.set("highlights",[this.crossLink]);
+
+	var toHighlight = [this.crossLink];
+    //TODO: we might want to highlight smallest possible set of alternatives?
+    if (this.crossLink.ambiguous) {
+		for (match_pp of this.crossLink.filteredMatches_pp) {
+			var match = match_pp.match;
+			for (crossLink of match.crossLinks) {
+				toHighlight.push(crossLink);
+			}
+		}
+	}
+	this.crosslinkViewer.model.set("highlights", toHighlight);
+   	    
     this.crosslinkViewer.model.get("tooltipModel")
                         .set("header", "Linked Residue Pair")
                         .set("contents", [
@@ -103,18 +115,30 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    if (evt.shiftKey || evt.ctrlKey) {
-        var selection = _.clone(this.crosslinkViewer.model.get("selection"));
-        if (this.isSelected){
-            var index = selection.indexOf(this.crossLink);
-            selection.splice(index, 1);
-        } else {
-            selection.push(this.crossLink);
-        }
-        this.crosslinkViewer.model.set("selection",selection);
-    } else {
-        this.crosslinkViewer.model.set("selection",[this.crossLink]);
-    }
+	var rightclick, middleclick;
+	if (evt.which)
+		rightclick = (evt.which === 3);
+	else if (evt.button)
+		rightclick = (evt.button === 2);
+	if (evt.which)
+		middleclick = (evt.which === 2);
+	else if (evt.button)
+		middleclick = (evt.button === 1);
+
+    if (!rightclick) {
+		if (evt.shiftKey || evt.ctrlKey) {
+			var selection = _.clone(this.crosslinkViewer.model.get("selection"));
+			if (this.isSelected){
+				var index = selection.indexOf(this.crossLink);
+				selection.splice(index, 1);
+			} else {
+				selection.push(this.crossLink);
+			}
+			this.crosslinkViewer.model.set("selection",selection);
+		} else {
+			this.crosslinkViewer.model.set("selection",[this.crossLink]);
+		}
+	}
     //store start location
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
@@ -137,49 +161,37 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 // need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
-        if (this.shown) {
-            if (show) {
-                this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-                this.highlightLine.setAttribute("stroke-opacity", "0.7");
-                var fromPeptides = [], toPeptides = [];
-                for (matchAndPepPos of this.crossLink.filteredMatches_pp) {
-                    var match = matchAndPepPos.match;
+	if (this.shown) {
+		if (show) {
+			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+			this.highlightLine.setAttribute("stroke-opacity", "0.7");
+			var fromPeptides = [], toPeptides = [];
+			for (matchAndPepPos of this.crossLink.filteredMatches_pp) {
+				var match = matchAndPepPos.match;
 
-                    var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
-                    var fromPepLength = matchAndPepPos.pepPos[0].length;
-                    var toPepStart = matchAndPepPos.pepPos[1].start - 1;
-                    var toPepLength = matchAndPepPos.pepPos[1].length;
+				var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
+				var fromPepLength = matchAndPepPos.pepPos[0].length;
+				var toPepStart = matchAndPepPos.pepPos[1].start - 1;
+				var toPepLength = matchAndPepPos.pepPos[1].length;
 
-                    fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
-                    toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
-                }
-                this.renderedFromProtein.showPeptides(fromPeptides);
-                if (this.renderedToProtein) {
-                    this.renderedToProtein.showPeptides(toPeptides);
-                }
-            } else {
-                if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-                if (this.isSelected == false) {
-                    this.highlightLine.setAttribute("stroke-opacity", "0");
-                }
-
-                this.renderedFromProtein.removePeptides();
-                if (this.renderedToProtein) {
-                        this.renderedToProtein.removePeptides();
-                }
-            }
-            if (andAlternatives && this.crossLink.ambiguous) {
-            //TODO: we might want to highlight smallest possible set of alternatives?
-            for (match of this.crossLink.filteredMatches_pp) {
-                match = match_pp.match;
-                if (match.crossLinks.length > 1) {
-                   for (crossLink of match.crossLinks) {
-                        var renderedLink = this.crosslinkViewer.renderedCrossLinks.get(crossLink.id);
-                        renderedLink.showHighlight(show, false);
-                    }
-                }
+				fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+				toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 			}
-        }
+			this.renderedFromProtein.showPeptides(fromPeptides);
+			if (this.renderedToProtein) {
+				this.renderedToProtein.showPeptides(toPeptides);
+			}
+		} else {
+			if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+			if (this.isSelected == false) {
+				this.highlightLine.setAttribute("stroke-opacity", "0");
+			}
+
+			this.renderedFromProtein.removePeptides();
+			if (this.renderedToProtein) {
+					this.renderedToProtein.removePeptides();
+			}
+		}
     }
 };
 
@@ -226,22 +238,22 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.dashedLine = function(dash) {
     //~ if (this.crosslinkViewer.unambigLinkFound == true) {
-        if (this.shown) {
-            if (dash) {// && !this.dashed){
-                if (this.crossLink.isSelfLink() === true) {
-                    this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+	if (this.shown) {
+		if (dash) {// && !this.dashed){
+			if (this.crossLink.isSelfLink() === true) {
+				this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
 
-                }
-                else {
-                    this.dashed = true;
-                    this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
-                }
-            }
-            else if (!dash) {// && this.dashed){
-                this.dashed = false;
-                this.line.removeAttribute("stroke-dasharray");
-            }
-        }
+			}
+			else {
+				this.dashed = true;
+				this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
+			}
+		}
+		else if (!dash) {// && this.dashed){
+			this.dashed = false;
+			this.line.removeAttribute("stroke-dasharray");
+		}
+	}
     //~ }
 };
 
