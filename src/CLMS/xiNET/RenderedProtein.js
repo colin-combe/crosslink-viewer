@@ -986,16 +986,27 @@ CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats
 CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) {
     this.clearPositionalFeatures();
     //create new annotations
-    if (posFeats) {
+    if (posFeats) {                    
         //draw longest regions first
         posFeats.sort(function(a, b) {
             return (b.end - b.start) - (a.end - a.start);
         });
+        
         this.annotations = posFeats;
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
-            anno.start = anno.start - 0;
-            anno.end = anno.end - 0;
+
+			var convStart = anno.start;
+			var convEnd = anno.end;
+			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+			if (alignModel) {
+				convStart = alignModel.mapToSearch ("Canonical", anno.start);
+				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
+				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
+				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+			}
+
+			//hmm - these var's end up in protein.interactor.uniprotFeatues, seems not right. TODO: fix
             anno.pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
             anno.colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
             if (this.form === 0) {
@@ -1010,21 +1021,38 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
             anno.colouredRect.setAttribute("stroke-width", 1);
             anno.colouredRect.setAttribute("fill-opacity", "0.5");
             var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
-            anno.pieSlice.name = text;
+            anno.pieSlice.setAttribute("data-feature", text + "~"  + convStart + "~" + convEnd);
             var xlv = this.crosslinkViewer;
             var self = this;
-            anno.pieSlice.onmouseover = function(evt) {
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-//              xlv.setTooltip(el.name, el.getAttribute('fill'));
-                self.showHighlight(true);
-            };
-            anno.colouredRect.onmouseover = function(evt) {
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-//              xlv.setTooltip(el.name, el.getAttribute('fill'));
-                self.showHighlight(true);
-            };
+            
+            anno.pieSlice.onmouseover = function (evt) {
+				self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+				var dataAtts = evt.target.getAttribute("data-feature").split('~');
+				
+				self.crosslinkViewer.model.get("tooltipModel")
+                    //.set("header", d.id.replace("_", " "))
+                    .set("header", "Feature")
+                    .set("contents", [
+                        ["Name", dataAtts[0]],
+                        ["Start", dataAtts[1]],
+                        ["End", dataAtts[2]]
+                    ])
+                    .set("location", {pageX: evt.pageX, pageY: evt.pageY})
+                ;
+			} ;
+            //~ anno.colouredRect.onmouseover = function (evt) {
+				//~ self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+				//~ self.crosslinkViewer.model.get("tooltipModel")
+                    //~ //.set("header", d.id.replace("_", " "))
+                    //~ .set("header", "Feature")
+                    //~ .set("contents", [
+                        //~ ["Name", anno.id],
+                        //~ ["Start", anno.fstart],
+                        //~ ["End", anno.fend]
+                    //~ ])
+                    //~ .set("location", {pageX: evt.pageX, pageY: evt.pageY})
+                //~ ;
+			//~ } ;
             this.circDomains.appendChild(anno.pieSlice);
             this.rectDomains.appendChild(anno.colouredRect);
         }
@@ -1042,8 +1070,18 @@ CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-    var startAngle = ((annotation.start - 1) / this.interactor.size) * 360;
-    var endAngle = ((annotation.end) / this.interactor.size) * 360;
+	var convStart = annotation.start;
+	var convEnd = annotation.end;
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+    if (alignModel) {
+		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
+		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
+		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+	}
+
+    var startAngle = ((convStart - 1) / this.interactor.size) * 360;
+    var endAngle = ((convEnd) / this.interactor.size) * 360;
     var radius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
@@ -1056,9 +1094,20 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
+	//TODO - eliminate duplication
+	var convStart = annotation.start;
+	var convEnd = annotation.end;
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+    if (alignModel) {
+		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
+		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
+		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+	}
+	
     //approximate pie slice
-    var startAngle = ((annotation.start - 1) / this.interactor.size) * 360;
-    var endAngle = ((annotation.end) / this.interactor.size) * 360;
+    var startAngle = ((convStart - 1) / this.interactor.size) * 360;
+    var endAngle = ((convEnd) / this.interactor.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(pieRadius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(pieRadius, endAngle - 90);
@@ -1075,10 +1124,21 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation) {
+	//TODO - eliminate duplication
+	var convStart = annotation.start;
+	var convEnd = annotation.end;
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+    if (alignModel) {
+		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
+		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
+		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+	}
+
     //domain as rectangular path
     var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
-    var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
-    var annotSize = (1 + (annotation.end - annotation.start));
+    var annotX = this.getResXwithStickZoom(convStart - 0.5);
+    var annotSize = (1 + (convEnd - convStart));
     var annotLength = annotSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     for (var sia = 0; sia <= CLMS.xiNET.RenderedProtein.stepsInArc; sia++) {

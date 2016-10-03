@@ -264,7 +264,7 @@
                 // }
             // }
             // if (this.annotationSet){
-                //~ this.setAnnotations(this.annotationSet);
+               this.setAnnotations(this.annotationSet);
             // }
             // else {
                 // this.setAnnotations('CUSTOM');
@@ -376,7 +376,7 @@
                 }
                 else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {*/
                     for (prot of this.renderedProteins.values()) {
-						prot.setPositionalFeatures(prot.interactor.uniprotAnnotations);
+						prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
 					}
 					var self = this;
                     chooseColours();
@@ -385,36 +385,38 @@
             }
 */
             function chooseColours(){
-                var categories = d3.set();
-                for (var mol of self.renderedProteins.values()) {
-                    for (var a = 0; a < mol.annotations.length; a++){
-                        categories.add(mol.annotations[a].name);
-                    }
-                }
-                var catCount = categories.values().length;
-                if (catCount < 3){catCount = 3;}
-                //~ if (catCount < 21) {
-                    if (catCount < 9) {
-                        var reversed = colorbrewer.Accent[catCount].slice().reverse();
-                        self.domainColours = d3.scale.ordinal().range(reversed);
-                    }
-                    else if (catCount < 13) {
-                        var reversed = colorbrewer.Set3[catCount].slice().reverse();
-                        self.domainColours = d3.scale.ordinal().range(reversed);
-                    }
-                    else {
-                        self.domainColours = d3.scale.category20();
-                    }
+                //~ var categories = d3.set();
+                //~ for (var mol of self.renderedProteins.values()) {
+                    //~ for (var a = 0; a < mol.annotations.length; a++){
+                        //~ categories.add(mol.annotations[a].name);
+                    //~ }
+                //~ }
+                //~ var catCount = categories.values().length;
+                //~ if (catCount < 3){catCount = 3;}
+                //if (catCount < 21) {
+                    //~ if (catCount < 9) {
+                        //~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
+                        //~ self.domainColours = d3.scale.ordinal().range(reversed);
+                    //~ }
+                    //~ else if (catCount < 13) {
+                        //~ var reversed = colorbrewer.Set3[catCount].slice().reverse();
+                        //~ self.domainColours = d3.scale.ordinal().range(reversed);
+                    //~ }
+                    //~ else {
+                        //~ self.domainColours = d3.scale.category20();
+                    //~ }
+                    
                     for (var mol of self.renderedProteins.values()) {
                         for (a = 0; a < mol.annotations.length; a++) {
                             var anno = mol.annotations[a];
-                            var c = self.domainColours(anno.name);
+                            var c = CLMSUI.domainColours(anno.name);
                             anno.pieSlice.setAttribute("fill", c);
                             anno.pieSlice.setAttribute("stroke", c);
                             anno.colouredRect.setAttribute("fill", c);
                             anno.colouredRect.setAttribute("stroke", c);
                         }
                     }
+                    
                 //~ }
                 //~ self.legendChanged();
             }
