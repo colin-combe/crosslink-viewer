@@ -7,8 +7,11 @@
     "email": "colin.combe@ed.ac.uk"
   },
   "contributors": [
-    {
-      "name": "Josh Heimbach",
+    { 
+      "name": "Colin Combe",
+      "email": "colin.combe@ed.ac.uk"
+    },
+    {     "name": "Josh Heimbach",
       "email": "joshkh@gmail.com"
     }
   ],
