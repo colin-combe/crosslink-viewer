@@ -205,6 +205,20 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 
 	var complexes = d3.map();
 	var needsSequence = d3.set();//things that need seq looked up
+
+	//get interactors
+	self.proteinCount = 0;
+	self.interactors = d3.map();
+	for (var n = 0; n < dataElementCount; n++) {
+		if (data[n].object === 'interactor') {
+			var interactor = data[n];
+			self.interactors.set(interactor.id, interactor);
+			if (interactor.id.indexOf('uniprotkb_') === 0) {
+				self.proteinCount++;
+			}			
+		}
+	}
+	
 	expand? readStoichExpanded() : readStoichUnexpanded();
 
 	// loop through particpants and features
@@ -369,15 +383,6 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 	}
 
 	function readStoichExpanded(){
-		//get interactors
-		var interactors = d3.map();
-		for (var n = 0; n < dataElementCount; n++) {
-			if (data[n].object === 'interactor') {
-				var interactor = data[n];
-				interactors.set(interactor.id, interactor);
-			}
-		}
-
 		//get maximum stoichiometry
 		var maxStoich = 0;
 		for (var l = 0; l < dataElementCount; l++) {
@@ -427,7 +432,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 					var participantId =  intRef + "(" + partRef + ")";
 					var participant = self.molecules.get(participantId);
 					if (typeof participant === 'undefined'){
-						var interactor = interactors.get(intRef);
+						var interactor = self.interactors.get(intRef);
 						participant = newMolecule(interactor, participantId);
 						self.molecules.set(participantId, participant);
 					}
@@ -544,52 +549,14 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 
 	function readStoichUnexpanded(){
 		//get interactors
-		for (var n = 0; n < dataElementCount; n++) {
-			if (data[n].object === 'interactor') {
-				var interactor = data[n];
-				var participant;
-				var participantId = interactor.id;
-						//~ if (interactor.type.name === 'molecule set') {
-							//~ participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
-						//~ }
-						//~ else if (interactor.type.name === 'small molecule') {
-							//~ participant = new BioactiveEntity(participantId, self, interactor, interactor.label);
-						//~ }
-						//~ else if (interactor.type.name === 'protein' || interactor.type.name === 'peptide') {
-							//~ participant = new Protein(participantId, self, interactor, interactor.label);
-							//~ if (typeof interactor.sequence !== 'undefined') {
-								//~ participant.setSequence(interactor.sequence);
-							//~ }
-							//~ else {
-								//~ //should look it up using accession number
-								//~ if (participantId.indexOf('uniprotkb') === 0){
-									//~ needsSequence.add(participantId);
-								//~ } else {
-									//~ participant.setSequence("SEQUENCEMISSING");
-								//~ }
-							//~ }
-						//~ }
-						//~ else if (interactor.type.name === 'peptide') {
-							//~ participant = new Protein(participantId, self, interactor, interactor.label);
-						//~ }
-						//~ else if (interactor.type.name === 'gene') {
-							//~ //its a small mol
-							//~ participant = new Gene(participantId, self, interactor, interactor.label);
-							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
-						//~ }else if (interactor.type.name === 'ribonucleic acid') {
-							//~ //its a small mol
-							//~ participant = new RNA(participantId, self, interactor, interactor.label);
-							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
-						//~ }else if (interactor.type.name === 'deoxyribonucleic acid') {
-							//~ //its a small mol
-							//~ participant = new DNA(participantId, self, interactor, interactor.label);
-							//~ //participant.initMolecule(interactor.label);// + ' (' + partRef + ')');
-						//~ } else {
-							//~ alert("Unrecognised type:" + interactor.type.name);
-						//~ }
-				participant = newMolecule (interactor, participantId);
-				self.molecules.set(participantId, participant);
-			}
+		var interactors = self.interactors.values();
+		var interactorCount = interactors.length;
+		for (var i = 0; i < interactorCount; i++) {
+			var interactor = interactors[i];
+			var participant;
+			var participantId = interactor.id;
+			participant = newMolecule (interactor, participantId);
+			self.molecules.set(participantId, participant);
 		}
 
 		indexFeatures();
@@ -913,14 +880,18 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
 			chooseColours();
 		}
 		else if (annotationChoice.toUpperCase() === "INTERACTOR") {
-			for (m = 0; m < molCount; m++) {
-				var mol = mols[m];
-				if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
-					var annotation = new Annotation (mol.json.label, 1, mol.size);
-					mol.setPositionalFeatures([annotation]);
+			if (self.proteinCount < 21) {
+				for (m = 0; m < molCount; m++) {
+					var mol = mols[m];
+					if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+						var annotation = new Annotation (mol.json.label, 1, mol.size);
+						mol.setPositionalFeatures([annotation]);
+					}
 				}
+				chooseColours();
+			} else {
+				alert("Too many types of protein (> 20) - can't colour by interactor.");
 			}
-			chooseColours();
 		}
 		else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
 			var molsAnnotated = 0;
