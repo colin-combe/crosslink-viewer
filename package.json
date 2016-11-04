@@ -1,17 +1,18 @@
 {
   "name": "complexviewer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A network visualisation that displays molecular interaction data, including detailed residue-level information such as binding sites. v1 is used in EBI's Complex Portal. The aim for v2 is a general purpose viewer for PSI-MI XML data",
   "author": {
     "name": "Colin Combe",
     "email": "colin.combe@ed.ac.uk"
   },
   "contributors": [
-    { 
+    {
       "name": "Colin Combe",
       "email": "colin.combe@ed.ac.uk"
     },
-    {     "name": "Josh Heimbach",
+    {
+      "name": "Josh Heimbach",
       "email": "joshkh@gmail.com"
     }
   ],
