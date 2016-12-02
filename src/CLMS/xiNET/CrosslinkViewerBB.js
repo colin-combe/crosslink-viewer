@@ -162,7 +162,7 @@
                 this.autoLayout();
             }
 
-            this.listenTo (this.model.get("interactors"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
+            this.listenTo (this.model.get("participants"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
              this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
              //~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
@@ -237,7 +237,7 @@
         },
 
         initProteins: function () {
-            var interactors = this.model.get("clmsModel").get("interactors").values();
+            var interactors = this.model.get("clmsModel").get("participants").values();
             CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
             for (var interactor of interactors) {
                 if (interactor.is_decoy == false) {
