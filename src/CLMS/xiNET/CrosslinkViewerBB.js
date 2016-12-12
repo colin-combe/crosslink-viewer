@@ -35,15 +35,13 @@
 
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
-					"<div class='xinetToggles'>" +
-						"<label for='clickSelect'>CLICK TO SELECT</label>" +
-						"<input type='radio' name='clickMode' class='clickToSelect'>" +
-						"<label for='clickToggle'>TOGGLE CIRCLE/BAR</label>" +
-						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
-					"</div>" +
-                    "<div class='xinetButtonBar'>" +
+					"<div class='xinetButtonBar'>" +
+						"<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
 						"<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
-						"<button class='btn btn-1 btn-1a resetLayout' >Reset Layout</button>" +
+						"<label for='clickSelect'>SELECT</label>" +
+						"<input type='radio' name='clickMode' class='clickToSelect'>" +
+						"<label for='clickToggle'>EXPAND/COLLAPSE</label>" +
+						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
 						"<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
 					"</div>" +
                 "</div>");
@@ -320,7 +318,7 @@
                     p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
                     p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                     p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
-                    if (p_pLink.ambig) {
+                    if (p_pLink.ambiguous) {
                         p_pLink.dashedLine(true); //rescale spacing of dashes
                     }
                 }
@@ -770,21 +768,33 @@
             var self = this;
             var prots = this.renderedProteins.values();
             //do force directed layout*/
-            var linkDistance = 60;
             layoutObj = {};
-            layoutObj.nodes = [];
+            layoutObj.nodes = [];//todo - dont want to be recreating obj's inside this if using cola.js
             var protLookUp = {};
             var pi = 0;
             for (prot of prots) {
-                protLookUp[prot.interactor.id] = pi;
-                pi++;
-                var nodeObj = {};
-                nodeObj.id = prot.interactor.id;
-                nodeObj.x = prot.x;
-                nodeObj.y = prot.y;
-                nodeObj.px = prot.x;
-                nodeObj.py = prot.y;
-                layoutObj.nodes.push(nodeObj);
+				//~ var p_pLinks = prot.renderedP_PLinks.values(); 
+				//~ if (p_pLinks.length > 1){// || p_pLinks.length == 1 && p_pLinks[0].crossLinks[0].isSelfLink() == false) {
+				//if (prot.hasExternalLink() === true) {
+					protLookUp[prot.interactor.id] = pi;
+					pi++;
+					var nodeObj = {};
+					nodeObj.id = prot.interactor.id;
+					nodeObj.x = prot.x;
+					nodeObj.y = prot.y;
+					nodeObj.px = prot.x;
+					nodeObj.py = prot.y;
+
+					var bb = prot.upperGroup.getBBox();
+
+					nodeObj.height = bb.height;//2 * prot.getBlobRadius;
+					nodeObj.width = bb.width;
+					
+					layoutObj.nodes.push(nodeObj);
+				//~ }
+				//~ else {
+					//~ prot.setPosition(20, 20);
+				//~ }
             }
             var links = new Map();
 
@@ -810,19 +820,16 @@
 
         layoutObj.links = Array.from(links.values());
 
-        var k = Math.sqrt(layoutObj.nodes.length / ((width) * height));
-        // mike suggests:
-        //    .charge(-10 / k)
-        //    .gravity(100 * k)
-            this.force = d3.layout.force()
-                    .nodes(layoutObj.nodes)
+        this.force =  cola.d3adaptor()//d3.layout.force()
+                    .size([width, height])
+			.symmetricDiffLinkLengths(25)
+			//	.linkDistance(60)
+					.avoidOverlaps(true)
+					.nodes(layoutObj.nodes)
                     .links(layoutObj.links)
-                    .gravity(100 * k)
-                    //~ .gravity(85 * k)
-                    .linkDistance(linkDistance)
-                     .charge(-10 / k)
-                    //~ .charge(-30 / k)
-                    .size([width, height]);
+                    //~ .avoidOverlaps(true);
+					//~ .size([width, height]);
+
             var nodeCount = this.force.nodes().length;
             var forceLinkCount = this.force.links().length;
             this.force.on("tick", function(e) {
@@ -836,7 +843,7 @@
                     protein.setAllLineCoordinates();
                 }
             });
-            this.force.start();
+            this.force.start(10, 15, 20);
         },
 
         downloadSVG: function () {

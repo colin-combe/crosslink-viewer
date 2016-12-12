@@ -958,24 +958,25 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
-
+	
     var pLinks = this.renderedP_PLinks.values();
     for (pLink of pLinks) {
         pLink.setLineCoordinates(this);
     }
-
-    var resLinkIter = this.renderedCrossLinks.values();
-    for (residueLink of resLinkIter) {
-        residueLink.setLineCoordinates(this);
-        //~ var otherEnd = residueLink.proteinLink.getOtherEnd(this); //todo
-        //deals with pointing line to right side of animo acid letter
-        //~ if (otherEnd && otherEnd.form === 1 && otherEnd.stickZoom * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE > 8){
-            //~ residueLink.setLineCoordinates(otherEnd);
-        //~ }
+    
+    var renderedCrosslinkIter = this.renderedCrossLinks.values();
+    for (renderedCrosslink of renderedCrosslinkIter) {
+        renderedCrosslink.setLineCoordinates(this);
     }
-
+    
 };
 
+CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
+	for (p_pLink of this.renderedP_PLinks.values()) {
+		if (p_pLink.crossLinks[0].isSelfLink() === false) return true; 
+	}
+	return false;
+};
 
 CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats) {
     this.annotations = [];
