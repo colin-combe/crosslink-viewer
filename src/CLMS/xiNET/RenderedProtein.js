@@ -73,8 +73,6 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
-    this.labelSVG.setAttribute('font-family', 'Arial');
-    this.labelSVG.setAttribute('font-size', '16');
     //choose label text
     this.labelText = this.interactor.name;
     if (this.labelText.length > 25) {
@@ -177,7 +175,7 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
-    var br = Math.sqrt(this.interactor.size / Math.PI);
+    var br = Math.sqrt(this.interactor.size / Math.PI) * 0.7;
     return br;
 };
 

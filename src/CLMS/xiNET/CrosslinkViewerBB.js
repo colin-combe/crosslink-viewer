@@ -36,12 +36,12 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
 					"<div class='xinetButtonBar'>" +
-						"<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
-						"<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
 						"<label for='clickSelect'>SELECT</label>" +
 						"<input type='radio' name='clickMode' class='clickToSelect'>" +
 						"<label for='clickToggle'>EXPAND/COLLAPSE</label>" +
 						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
+						"<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
+						"<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
 						"<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
 					"</div>" +
                 "</div>");
@@ -49,7 +49,7 @@
 			this.clickModeIsToggle = true;
 
             //create SVG elemnent
-            this.svgElement = document.createElementNS(CLMS.xiNET.svgns, "svg");
+            this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
             // disable right click context menu (we wish to put right click to our own purposes)
@@ -76,7 +76,7 @@
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
             //add SVG element to this.el
-            this.el.appendChild(this.svgElement);
+            
 
             // filled background needed, else cannot click/drag background
             // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
@@ -197,9 +197,6 @@
             this.renderedCrossLinks = new Map();
             this.renderedP_PLinks = new Map();
 
-            this.maxBlobRadius = 30;
-            //~ CLMS.xiNET.RenderedProtein.MAXSIZE = 100; **??
-
             this.layout = null;
             this.z = 1;
             this.scores = null;
@@ -271,12 +268,6 @@
 
         reset: function() {
             this.resetZoom();
-            var proteins = this.renderedProteins.values();
-            for (var prot of proteins) {
-                if (prot.form === 1) {
-                    prot.setForm(0);
-                }
-            }
             this.autoLayout();
         },
 
@@ -763,8 +754,8 @@
             if (this.force) {
                 this.force.stop();
             }
-            var width = this.svgElement.parentNode.clientWidth;
-            var height = this.svgElement.parentNode.clientHeight;
+            var width = this.svgElement.clientWidth;
+            var height = this.svgElement.clientHeight;
             var self = this;
             var prots = this.renderedProteins.values();
             //do force directed layout*/
