@@ -17,36 +17,37 @@
             "click .downloadButton": "downloadSVG"
         },
 
-		setClickModeSelect: function (){
-			this.clickModeIsToggle = false;
-		},
-		
-		setClickModeToggle: function (){
-			this.clickModeIsToggle = true;
-		},
+        setClickModeSelect: function (){
+            this.clickModeIsToggle = false;
+        },
+
+        setClickModeToggle: function (){
+            this.clickModeIsToggle = true;
+        },
 
         initialize: function (viewOptions) {
 
             var defaultOptions = {};
             this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
+            this.clickModeIsToggle = true;
+
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
 
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
-					"<div class='xinetButtonBar'>" +
-						"<label for='clickSelect'>SELECT</label>" +
-						"<input type='radio' name='clickMode' class='clickToSelect'>" +
-						"<label for='clickToggle'>EXPAND/COLLAPSE</label>" +
-						"<input type='radio' name='clickMode' class='clickToToggle' checked>" +
-						"<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
-						"<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
-						"<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
-					"</div>" +
+                    "<div class='xinetButtonBar'>" +
+                        "<label for='clickSelect'>SELECT</label>" +
+                        "<input type='radio' name='clickMode' class='clickToSelect'>" +
+                        "<label for='clickToggle'>EXPAND/COLLAPSE</label>" +
+                        "<input type='radio' name='clickMode' class='clickToToggle' checked>" +
+                        "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
+                        "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
+                        "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
+                    "</div>" +
                 "</div>");
 
-			this.clickModeIsToggle = true;
 
             //create SVG elemnent
             this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
@@ -76,7 +77,7 @@
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
             //add SVG element to this.el
-            
+
 
             // filled background needed, else cannot click/drag background
             // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
@@ -365,11 +366,11 @@
                 }
                 else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {*/
                     for (prot of this.renderedProteins.values()) {
-						prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
-					}
-					var self = this;
+                        prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
+                    }
+                    var self = this;
                     chooseColours();
-					/*
+                    /*
                 }
             }
 */
@@ -394,7 +395,7 @@
                     //~ else {
                         //~ self.domainColours = d3.scale.category20();
                     //~ }
-                    
+
                     for (var mol of self.renderedProteins.values()) {
                         for (a = 0; a < mol.annotations.length; a++) {
                             var anno = mol.annotations[a];
@@ -405,7 +406,7 @@
                             anno.colouredRect.setAttribute("stroke", c);
                         }
                     }
-                    
+
                 //~ }
                 //~ self.legendChanged();
             }
@@ -449,23 +450,23 @@
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
                     if (this.dragElement.interactor) {
-                        //its a protein - drag it, or drag all selcted if it is selected 
+                        //its a protein - drag it, or drag all selcted if it is selected
                         var toDrag;
-						if (this.dragElement.isSelected === false) {
-							toDrag = [this.dragElement.interactor.id];
-						}
-						else {
-							toDrag = this.model.get("selectedProtein").keys();
-						}
-						for (interactorId of toDrag) {
-							var renderedProtein = this.renderedProteins.get(interactorId); 
-							ox = renderedProtein.x;
-							oy = renderedProtein.y;
-							nx = ox - dx;
-							ny = oy - dy;
-							renderedProtein.setPosition(nx, ny);
-							renderedProtein.setAllLineCoordinates();
-						}
+                        if (this.dragElement.isSelected === false) {
+                            toDrag = [this.dragElement.interactor.id];
+                        }
+                        else {
+                            toDrag = this.model.get("selectedProtein").keys();
+                        }
+                        for (interactorId of toDrag) {
+                            var renderedProtein = this.renderedProteins.get(interactorId);
+                            ox = renderedProtein.x;
+                            oy = renderedProtein.y;
+                            nx = ox - dx;
+                            ny = oy - dy;
+                            renderedProtein.setPosition(nx, ny);
+                            renderedProtein.setAllLineCoordinates();
+                        }
                     }
                     this.dragStart = c;
                 }
@@ -544,21 +545,21 @@
                         }
                         else { //left click; toggle form for protein, switch stick scale
                             if (this.dragElement.x) { //if protein
-                            	if (this.clickModeIsToggle) {
-									if (evt.ctrlKey || evt.shiftKey) {
-										this.dragElement.switchStickScale(c);
-									}else {
-										if (this.dragElement.form === 1) {
-											this.dragElement.setForm(0, c);
-										} else {
-											this.dragElement.setForm(1, c);
-										}
-									}
-								} else {
-									var add = evt.ctrlKey || evt.shiftKey;
-									this.model.setSelectedProteins([this.dragElement.interactor.id], add);
-									this.model.calcMatchingCrosslinks ("selection", this.dragElement.interactor.crossLinks, false, add);
-								}
+                                if (this.clickModeIsToggle) {
+                                    if (evt.ctrlKey || evt.shiftKey) {
+                                        this.dragElement.switchStickScale(c);
+                                    }else {
+                                        if (this.dragElement.form === 1) {
+                                            this.dragElement.setForm(0, c);
+                                        } else {
+                                            this.dragElement.setForm(1, c);
+                                        }
+                                    }
+                                } else {
+                                    var add = evt.ctrlKey || evt.shiftKey;
+                                    this.model.setSelectedProteins([this.dragElement.interactor.id], add);
+                                    this.model.calcMatchingCrosslinks ("selection", this.dragElement.interactor.crossLinks, false, add);
+                                }
                             }
                         }
                         //~ this.checkLinks();
@@ -654,25 +655,25 @@
             // evt.returnValue = false;
         },
 
-		saveLayout: function () {
+        saveLayout: function () {
             var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
             var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
             var layout = myJSONText.replace(/\\u0000/gi, '');
             //+ "\n{co:" + this.cutOff +"}";
 
-			var xmlhttp = new XMLHttpRequest();
-			var url = "./php/saveLayout.php";
-			var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
-			var params =  "sid=" + sid + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
-			xmlhttp.open("POST", url, true);
-			//Send the proper header information along with the request
-			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-				if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					console.log("Saved layout " + xmlhttp.responseText, true);
-				}
-			};
-			xmlhttp.send(params);
+            var xmlhttp = new XMLHttpRequest();
+            var url = "./php/saveLayout.php";
+            var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
+            var params =  "sid=" + sid + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
+            xmlhttp.open("POST", url, true);
+            //Send the proper header information along with the request
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
+                if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    console.log("Saved layout " + xmlhttp.responseText, true);
+                }
+            };
+            xmlhttp.send(params);
         },
 
         loadLayout: function(layout) {
@@ -751,44 +752,37 @@
         },
 
         autoLayout: function() {
-            if (this.force) {
-                this.force.stop();
+            if (this.cola) {
+                this.cola.stop();
+            } else {
+                
             }
             var width = this.svgElement.clientWidth;
             var height = this.svgElement.clientHeight;
             var self = this;
-            var prots = this.renderedProteins.values();
+            //~ var prots = this.renderedProteins.values();
             //do force directed layout*/
-            layoutObj = {};
-            layoutObj.nodes = [];//todo - dont want to be recreating obj's inside this if using cola.js
-            var protLookUp = {};
-            var pi = 0;
-            for (prot of prots) {
-				//~ var p_pLinks = prot.renderedP_PLinks.values(); 
-				//~ if (p_pLinks.length > 1){// || p_pLinks.length == 1 && p_pLinks[0].crossLinks[0].isSelfLink() == false) {
-				//if (prot.hasExternalLink() === true) {
-					protLookUp[prot.interactor.id] = pi;
-					pi++;
-					var nodeObj = {};
-					nodeObj.id = prot.interactor.id;
-					nodeObj.x = prot.x;
-					nodeObj.y = prot.y;
-					nodeObj.px = prot.x;
-					nodeObj.py = prot.y;
+            //~ layoutObj = {};
 
-					var bb = prot.upperGroup.getBBox();
-
-					nodeObj.height = bb.height;//2 * prot.getBlobRadius;
-					nodeObj.width = bb.width;
-					
-					layoutObj.nodes.push(nodeObj);
-				//~ }
-				//~ else {
-					//~ prot.setPosition(20, 20);
-				//~ }
-            }
-            var links = new Map();
-
+            //~ layoutObj.nodes = [];//todo - dont want to be recreating obj's inside this if using cola.js
+            //~ var protLookUp = {};
+            //~ var pi = 0;
+            //~ for (prot of prots) {
+                    //~ protLookUp[prot.interactor.id] = pi;
+                    //~ pi++;
+                    //~ var nodeObj = {};
+                    //~ nodeObj.id = prot.interactor.id;
+                    //~ nodeObj.x = prot.x;
+                    //~ nodeObj.y = prot.y;
+                    //~ nodeObj.px = prot.x;
+                    //~ nodeObj.py = prot.y;
+                    //~ var bb = prot.upperGroup.getBBox();
+                    //~ nodeObj.height = bb.height;//2 * prot.getBlobRadius;
+                    //~ nodeObj.width = bb.width;
+                    //~ layoutObj.nodes.push(nodeObj);
+            //~ }
+            
+        var links = new Map();
 
         var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
         for(var crossLink of crossLinks){
@@ -798,8 +792,8 @@
                 var toId = crossLink.toProtein.id;
                 var linkId = fromId + "-" + toId;
                 if (!links.has(linkId)){
-                    var source = protLookUp[fromId];
-                    var target = protLookUp[toId];
+                    var source = this.renderedProteins.keys().indexOf//protLookUp[fromId];
+                    var target = //protLookUp[toId];
                     var linkObj = {};
                     linkObj.source = source;
                     linkObj.target = target;
@@ -813,13 +807,13 @@
 
         this.force =  cola.d3adaptor()//d3.layout.force()
                     .size([width, height])
-			.symmetricDiffLinkLengths(25)
-			//	.linkDistance(60)
-					.avoidOverlaps(true)
-					.nodes(layoutObj.nodes)
+            .symmetricDiffLinkLengths(20)
+            //  .linkDistance(60)
+                    .avoidOverlaps(true)
+                    .nodes(layoutObj.nodes)
                     .links(layoutObj.links)
                     //~ .avoidOverlaps(true);
-					//~ .size([width, height]);
+                    //~ .size([width, height]);
 
             var nodeCount = this.force.nodes().length;
             var forceLinkCount = this.force.links().length;
@@ -839,7 +833,7 @@
 
         downloadSVG: function () {
             var svg = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
-			download(svg, 'application/svg', 'xiNET-output.svg');//+s.keys().toString());
+            download(svg, 'application/svg', 'xiNET-output.svg');//+s.keys().toString());
         },
 
         render: function () {
@@ -892,7 +886,7 @@
         },
 
         selectedInteractorsChanged: function () {
-			for (var renderedInteractor of this.renderedProteins.values()) {
+            for (var renderedInteractor of this.renderedProteins.values()) {
                 renderedInteractor.setSelected(false);
             }
             var selectedInteractors = this.model.get("selectedProtein").values();
@@ -924,7 +918,7 @@ CLMS.xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
 CLMS.xiNET.defaultInterLinkColour = new RGBColor("#35978f");
 CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 
-//static var's signifying Controller's status
+//static var's signifying Controller's status - TOD: get rid of all th`is
 CLMS.xiNET.Controller = {};
 CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 CLMS.xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
