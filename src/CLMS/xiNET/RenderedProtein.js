@@ -108,7 +108,7 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
     this.upperGroup.onmouseover = function(evt) {self.mouseOver(evt);};
     this.upperGroup.onmouseout = function(evt) {self.mouseOut(evt);};
     this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
-    this.isSelected = false;
+    
     this.busy = false;
     this.showHighlight(false);
     

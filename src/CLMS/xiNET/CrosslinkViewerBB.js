@@ -76,7 +76,7 @@
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
-            this.svgElement.setAttribute("style", "pointer-events:bounding-box");
+            this.svgElement.setAttribute("style", "pointer-events:visible");
 
             // various SVG groups needed
             this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
@@ -663,6 +663,7 @@
             } else {
 				this.cola =  cola.d3adaptor()
                     .symmetricDiffLinkLengths(20)
+                     //~ .jaccardLinkLengths(20)
                     .avoidOverlaps(true)
                     .nodes(Array.from(this.renderedProteins.values()));
             }
@@ -700,7 +701,9 @@
             this.cola.on("tick", function(e) {
                 var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
                 for (node of nodes) {
-                    node.setPosition(node.x, node.y);
+					var offsetX = node.x;// - node.upperGroup.getBBox().x;
+                    var offsetY = node.y ;//- node.upperGroup.getBBox().y;
+                    node.setPosition(offsetX, offsetY);
                     node.setAllLineCoordinates();
                 }
             });
