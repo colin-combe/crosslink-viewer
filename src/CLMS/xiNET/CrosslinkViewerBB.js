@@ -76,21 +76,7 @@
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
-            //add SVG element to this.el
-
-
-            // filled background needed, else cannot click/drag background
-            // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
-            // TODO: dynamically resize background to match screen bounding box
-            var background = document.createElementNS(CLMS.xiNET.svgns, "rect");
-            background.setAttribute("id", "background_fill");
-            background.setAttribute("x", 0);
-            background.setAttribute("y", 0);
-            background.setAttribute("width", 2560 * 2);
-            background.setAttribute("height", 2048 * 2);
-            background.setAttribute("fill-opacity", "1");
-            background.setAttribute("fill", "#FFFFFF");
-            this.svgElement.appendChild(background);
+            this.svgElement.setAttribute("style", "pointer-events:bounding-box");
 
             // various SVG groups needed
             this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
@@ -177,10 +163,10 @@
 
         clear: function () {
 
-            if (this.force) { // d3 force directed layout
-                this.force.stop();
+            if (this.cola) { // cola layout
+                this.cola.stop();
             }
-            this.force = null;
+            this.cola = null;
             d3.select(this.p_pLinksWide).selectAll("*").remove();
             d3.select(this.highlights).selectAll("*").remove();
             d3.select(this.p_pLinks).selectAll("*").remove();
@@ -234,7 +220,6 @@
 
         initProteins: function () {
             var interactors = this.model.get("clmsModel").get("participants").values();
-            CLMS.xiNET.RenderedProtein.MAXSIZE = 0;
             for (var interactor of interactors) {
                 if (interactor.is_decoy == false) {
                     var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
@@ -246,7 +231,6 @@
                     }
                 }
             }
-            //this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
             var width = this.svgElement.parentNode.clientWidth;
             CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2)
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
@@ -275,13 +259,13 @@
         resetZoom: function () {
             this.container.setAttribute("transform", "scale(1)");
             this.scale();
-            //~ var proteins = this.renderedProteins.values();
-            //~ var proteinCount = proteins.length;
-            //~ for (var p = 0; p < proteinCount; p++) {
-                //~ var prot = proteins[p];
-                //~ prot.stickZoom = 1;
-                //~ prot.scale();
-            //~ }
+            var proteins = this.renderedProteins.values();
+            var proteinCount = proteins.length;
+            for (var p = 0; p < proteinCount; p++) {
+                var prot = proteins[p];
+                prot.stickZoom = 1;
+                prot.scale();
+            }
         },
 
         scale: function () {
@@ -318,99 +302,21 @@
         },
 
         setAnnotations: function (annotationChoice) {
-            /*this.annotationChoice = annotationChoice;
-            //clear all annot's
-            var mols = this.renderedProteins.values();
-            for (var mol of mols) {
-                mol.clearPositionalFeatures();
+            for (prot of this.renderedProteins.values()) {
+                prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
             }
-            this.domainColours = null;
-            this.legendChanged();
-            if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
-                var self = this;
-                if (annotationChoice.toUpperCase() === "CUSTOM"){
-                    for (var mol of mols) {
-                        mol.setPositionalFeatures(mol.customAnnotations);
-                    }
-                    chooseColours();
-                }
-                else if (annotationChoice.toUpperCase() === "LYSINES") {
-                    for (m = 0; m < molCount; m++) {
-                        var mol = mols[m];
-                        var seq = mol.sequence;
-                        var annots = [];
-                        for (var i =0; i < mol.size; i++){
-                            var aa = seq[i];
-                            if (aa === 'K'){
-                                annots.push(new Annotation ("Lysine", i+1, i+1));
-                            }
+            var self = this;
 
-                        }
-                        mol.setPositionalFeatures(annots);
-                    }
-                    chooseColours();
-                }
-                else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
-                    var molsAnnotated = 0;
-                    for (m = 0; m < molCount; m++) {
-                        var mol = mols[m];
-                        this.xiNET_storage.getSuperFamFeatures(mol.id, function (id, fts){
-                            var m = self.proteins.get(id);
-                            m.setPositionalFeatures(fts);
-                            molsAnnotated++;
-                            if (molsAnnotated === molCount) {
-                                chooseColours();
-                            }
-                        });
-                    }
-                }
-                else if (annotationChoice.toUpperCase() === "UNIPROT" || annotationChoice.toUpperCase() === "UNIPROTKB") {*/
-                    for (prot of this.renderedProteins.values()) {
-                        prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
-                    }
-                    var self = this;
-                    chooseColours();
-                    /*
+            for (var mol of self.renderedProteins.values()) {
+                for (a = 0; a < mol.annotations.length; a++) {
+                    var anno = mol.annotations[a];
+                    var c = CLMSUI.domainColours(anno.name);
+                    anno.pieSlice.setAttribute("fill", c);
+                    anno.pieSlice.setAttribute("stroke", c);
+                    anno.colouredRect.setAttribute("fill", c);
+                    anno.colouredRect.setAttribute("stroke", c);
                 }
             }
-*/
-            function chooseColours(){
-                //~ var categories = d3.set();
-                //~ for (var mol of self.renderedProteins.values()) {
-                    //~ for (var a = 0; a < mol.annotations.length; a++){
-                        //~ categories.add(mol.annotations[a].name);
-                    //~ }
-                //~ }
-                //~ var catCount = categories.values().length;
-                //~ if (catCount < 3){catCount = 3;}
-                //if (catCount < 21) {
-                    //~ if (catCount < 9) {
-                        //~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
-                        //~ self.domainColours = d3.scale.ordinal().range(reversed);
-                    //~ }
-                    //~ else if (catCount < 13) {
-                        //~ var reversed = colorbrewer.Set3[catCount].slice().reverse();
-                        //~ self.domainColours = d3.scale.ordinal().range(reversed);
-                    //~ }
-                    //~ else {
-                        //~ self.domainColours = d3.scale.category20();
-                    //~ }
-
-                    for (var mol of self.renderedProteins.values()) {
-                        for (a = 0; a < mol.annotations.length; a++) {
-                            var anno = mol.annotations[a];
-                            var c = CLMSUI.domainColours(anno.name);
-                            anno.pieSlice.setAttribute("fill", c);
-                            anno.pieSlice.setAttribute("stroke", c);
-                            anno.colouredRect.setAttribute("fill", c);
-                            anno.colouredRect.setAttribute("stroke", c);
-                        }
-                    }
-
-                //~ }
-                //~ self.legendChanged();
-            }
-
         },
 
         setCTM: function(element, matrix) {
@@ -425,8 +331,8 @@
             //prevent default, but allow propogation
             evt.preventDefault();
             //stop force layout
-            if (typeof this.force !== 'undefined' && this.force != null) {
-                this.force.stop();
+            if (typeof this.cola !== 'undefined' && this.cola != null) {
+                this.cola.stop();
             }
 
             var p = this.getEventPoint(evt);// seems to be correct, see below
@@ -755,93 +661,60 @@
             if (this.cola) {
                 this.cola.stop();
             } else {
-                
+				this.cola =  cola.d3adaptor()
+                    .symmetricDiffLinkLengths(20)
+                    .avoidOverlaps(true)
+                    .nodes(Array.from(this.renderedProteins.values()));
             }
+            
+            var nodeIds =  Array.from(this.renderedProteins.keys());
+            var links = new Map();
+
+            var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+            for(var crossLink of crossLinks){
+                //visible, non-self cross-links only
+                if (crossLink.check() && !crossLink.isSelfLink() && crossLink.toProtein) {
+                    var fromId = crossLink.fromProtein.id;
+                    var toId = crossLink.toProtein.id;
+                    var linkId = fromId + "-" + toId;
+                    if (!links.has(linkId)){
+                        var source = nodeIds.indexOf(fromId);
+                        var target = nodeIds.indexOf(toId);
+                        var linkObj = {};
+                        linkObj.source = source;
+                        linkObj.target = target;
+                        linkObj.id = linkId;
+                        links.set(linkId, linkObj);
+                    }
+                }
+            }
+
             var width = this.svgElement.clientWidth;
             var height = this.svgElement.clientHeight;
+            var linkArr = Array.from(links.values());
+			
+			this.cola.size([width, height]).links(linkArr);
+
             var self = this;
-            //~ var prots = this.renderedProteins.values();
-            //do force directed layout*/
-            //~ layoutObj = {};
-
-            //~ layoutObj.nodes = [];//todo - dont want to be recreating obj's inside this if using cola.js
-            //~ var protLookUp = {};
-            //~ var pi = 0;
-            //~ for (prot of prots) {
-                    //~ protLookUp[prot.interactor.id] = pi;
-                    //~ pi++;
-                    //~ var nodeObj = {};
-                    //~ nodeObj.id = prot.interactor.id;
-                    //~ nodeObj.x = prot.x;
-                    //~ nodeObj.y = prot.y;
-                    //~ nodeObj.px = prot.x;
-                    //~ nodeObj.py = prot.y;
-                    //~ var bb = prot.upperGroup.getBBox();
-                    //~ nodeObj.height = bb.height;//2 * prot.getBlobRadius;
-                    //~ nodeObj.width = bb.width;
-                    //~ layoutObj.nodes.push(nodeObj);
-            //~ }
-            
-        var links = new Map();
-
-        var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
-        for(var crossLink of crossLinks){
-            //visible, non-self cross-links only
-            if (crossLink.check() && !crossLink.isSelfLink() && crossLink.toProtein) {
-                var fromId = crossLink.fromProtein.id;
-                var toId = crossLink.toProtein.id;
-                var linkId = fromId + "-" + toId;
-                if (!links.has(linkId)){
-                    var source = this.renderedProteins.keys().indexOf//protLookUp[fromId];
-                    var target = //protLookUp[toId];
-                    var linkObj = {};
-                    linkObj.source = source;
-                    linkObj.target = target;
-                    linkObj.id = linkId;
-                    links.set(linkId, linkObj);
-                }
-            }
-        }
-
-        layoutObj.links = Array.from(links.values());
-
-        this.force =  cola.d3adaptor()//d3.layout.force()
-                    .size([width, height])
-            .symmetricDiffLinkLengths(20)
-            //  .linkDistance(60)
-                    .avoidOverlaps(true)
-                    .nodes(layoutObj.nodes)
-                    .links(layoutObj.links)
-                    //~ .avoidOverlaps(true);
-                    //~ .size([width, height]);
-
-            var nodeCount = this.force.nodes().length;
-            var forceLinkCount = this.force.links().length;
-            this.force.on("tick", function(e) {
-                var nodes = self.force.nodes();
-                for (var n = 0; n < nodeCount; n++) {
-                    var node = nodes[n];
-                    var protein = self.renderedProteins.get(node.id);
-                    var nx = node.x;
-                    var ny = node.y;
-                    protein.setPosition(nx, ny);
-                    protein.setAllLineCoordinates();
+           
+            this.cola.on("tick", function(e) {
+                var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
+                for (node of nodes) {
+                    node.setPosition(node.x, node.y);
+                    node.setAllLineCoordinates();
                 }
             });
-            this.force.start(10, 15, 20);
+            this.cola.start(10, 15, 20);
         },
 
         downloadSVG: function () {
             var svg = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
-            download(svg, 'application/svg', 'xiNET-output.svg');//+s.keys().toString());
+            download(svg, 'application/svg', 'xiNET-output.svg');
         },
 
         render: function () {
-
             console.log ("re rendering cross-link viewer");
             this.checkLinks();
-            //this.stage.handleResize();
-
             return this;
         },
 
@@ -907,7 +780,6 @@
     });
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-CLMS.xiNET.xlinkNS = "http://www.w3.org/1999/xlink";// namespace for xlink, for use/defs elements
 CLMS.xiNET.linkWidth = 1.3;// default line width
 CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global

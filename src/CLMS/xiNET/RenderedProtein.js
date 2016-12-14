@@ -97,7 +97,6 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
     this.upperGroup.appendChild(this.ticks);
     //domains as pie slices - shown on top of everything
     this.circDomains = document.createElementNS(CLMS.xiNET.svgns, "g");
-    //~ this.circDomains.setAttribute("class", "protein circDomains");
     this.circDomains.setAttribute("opacity", 1);
     this.upperGroup.appendChild(this.circDomains);
 
@@ -112,6 +111,18 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
     this.isSelected = false;
     this.busy = false;
     this.showHighlight(false);
+    
+    //this.get width() {return 50;};
+    Object.defineProperty(this, "width", {
+		get: function width() {
+			return  this.upperGroup.getBBox().width;
+		}
+	});
+    Object.defineProperty(this, "height", {
+		get: function height() {
+			return  this.upperGroup.getBBox().height;
+		}
+	});
 };
 
 
@@ -124,8 +135,8 @@ CLMS.xiNET.RenderedProtein.prototype.init = function() {
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
            this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
-        if (this.crosslinkViewer.force) {
-            this.crosslinkViewer.force.stop();
+        if (this.crosslinkViewer.cola) {
+            this.crosslinkViewer.cola.stop();
         }
         this.crosslinkViewer.dragElement = this;
         //~ if (evt.ctrlKey === false) {
@@ -261,6 +272,8 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
+    this.px = this.x;
+    this.py = this.y;
     this.x = x;
     this.y = y;
     if (this.form === 1 && this.isParked === false){
