@@ -1001,18 +1001,18 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
     if (posFeats) {                    
         //draw longest regions first
         posFeats.sort(function(a, b) {
-            return (b.end - b.start) - (a.end - a.start);
+            return (b.end - b.begin) - (a.end - a.begin);
         });
         
         this.annotations = posFeats;
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
 
-			var convStart = anno.start;
+			var convStart = anno.begin;
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
 			if (alignModel) {
-				convStart = alignModel.mapToSearch ("Canonical", anno.start);
+				convStart = alignModel.mapToSearch ("Canonical", anno.begin);
 				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
@@ -1032,7 +1032,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
             anno.pieSlice.setAttribute("fill-opacity", "0.5");
             anno.colouredRect.setAttribute("stroke-width", 1);
             anno.colouredRect.setAttribute("fill-opacity", "0.5");
-            var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
+            var text = anno.type + " [" + anno.begin + " - " + anno.end + "]";
             anno.pieSlice.setAttribute("data-feature", text + "~"  + convStart + "~" + convEnd);
             var xlv = this.crosslinkViewer;
             var self = this;
@@ -1082,11 +1082,11 @@ CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-	var convStart = annotation.start;
+	var convStart = annotation.begin;
 	var convEnd = annotation.end;
 	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
     if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
 		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
@@ -1107,11 +1107,11 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
 	//TODO - eliminate duplication
-	var convStart = annotation.start;
+	var convStart = annotation.begin;
 	var convEnd = annotation.end;
 	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
     if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
 		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
@@ -1137,11 +1137,11 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation) {
 	//TODO - eliminate duplication
-	var convStart = annotation.start;
+	var convStart = annotation.begin;
 	var convEnd = annotation.end;
 	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
     if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.start);
+		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
 		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
