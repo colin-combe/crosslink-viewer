@@ -29,16 +29,16 @@
 		$annotData = addslashes(file_get_contents($_FILES['upannot']['tmp_name']));
 		//echo $annotData;
 		
-		$dbconn = mysql_connect($server,$user,$password) or die('Could not connect: ' . mysql_error()); 
-		mysql_select_db($db, $dbconn) or die("Could not select database.");
+		$dbconn = pg_connect($connectionString)
+				or die('Could not connect: ' . pg_last_error());
 		$query = "INSERT INTO upload (rand, links, fileName, fasta, annot) "
 				. "VALUES ('".$rand."','".$linkData."','".$fileName."','".$fastaData."','".$annotData."');";
 		//echo $query;
-		$result = mysql_query($query) or die('Query failed: ' . mysql_error());
+		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 		// Free resultset
-		mysql_free_result($result);
+		pg_free_result($result);
 		// Closing connection
-		mysql_close($dbconn);
+		pg_close($dbconn);
 		//redirect to page with unique url
 		header('Location: ./uploaded.php?uid='.$rand);
 	}

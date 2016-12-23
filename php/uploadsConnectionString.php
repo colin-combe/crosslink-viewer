@@ -1,6 +1,1 @@
-<?php 
-$server = "mysql";
-$user = "username";
-$password = "pwd";
-$db = "database"; 
-?>
+<?php $connectionString = "host=localhost dbname=yourdbname user=yourusername password='yourpassword'"; ?>
