@@ -658,12 +658,14 @@
         },
 
         autoLayout: function() {
+			
             if (this.cola) {
                 this.cola.stop();
             } else {
 				this.cola =  cola.d3adaptor()
-                    .symmetricDiffLinkLengths(20)
+                    //~ .symmetricDiffLinkLengths(k, 0.6)
                      //~ .jaccardLinkLengths(20)
+                     //.linkDistance(k)
                     .avoidOverlaps(true)
                     .nodes(Array.from(this.renderedProteins.values()));
             }
@@ -690,15 +692,18 @@
                 }
             }
 
-            var width = this.svgElement.clientWidth;
+			var width = this.svgElement.clientWidth;
             var height = this.svgElement.clientHeight;
+			var k = Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size * 2));
+			alert(k);
+            
             var linkArr = Array.from(links.values());
 			
 			this.cola.size([width, height]).links(linkArr);
 
             var self = this;
            
-            this.cola.on("tick", function(e) {
+            this.cola.jaccardLinkLengths(k, 0.7).on("tick", function(e) {
                 var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
                 for (node of nodes) {
 					var offsetX = node.x;// - node.upperGroup.getBBox().x;
