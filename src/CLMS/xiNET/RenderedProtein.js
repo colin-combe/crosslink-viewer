@@ -432,7 +432,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
         var scaleLabelGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
         scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
         var scaleLabel = document.createElementNS(CLMS.xiNET.svgns, "text");
-        scaleLabel.setAttribute("class", "protein xlv_text proteinLabel");
+        scaleLabel.setAttribute("class", "xinetAxisLabel");
         scaleLabel.setAttribute('font-family', "'Courier New', monospace");
         scaleLabel.setAttribute('font-size', '14');
         scaleLabel.setAttribute("text-anchor", "middle");

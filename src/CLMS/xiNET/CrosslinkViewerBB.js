@@ -300,7 +300,8 @@
         },
 
         setAnnotations: function (annotationChoice) {
-			alert("whoa");
+			//alert("whoa");
+			
             //~ for (prot of this.renderedProteins.values()) {
                 //~ prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
             //~ }
