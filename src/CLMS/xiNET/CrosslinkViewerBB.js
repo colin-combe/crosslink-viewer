@@ -147,14 +147,12 @@
                 this.autoLayout();
             }
 
-            this.listenTo (this.model.get("participants"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
-            this.listenTo (this.model.get("matches"), "change", this.dataChanged);    // any property changing in the filter model means rerendering this view
-             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
-             //~ this.listenTo (this.model.get("rangeModel"), "change:scale", this.relayout);
+            this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
+            this.listenTo (this.model, "change:annotationTypes", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedInteractorsChanged);
             this.render();
             this.linkColourChanged();
@@ -302,21 +300,22 @@
         },
 
         setAnnotations: function (annotationChoice) {
-            for (prot of this.renderedProteins.values()) {
-                prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
-            }
-            var self = this;
-
-            for (var mol of self.renderedProteins.values()) {
-                for (a = 0; a < mol.annotations.length; a++) {
-                    var anno = mol.annotations[a];
-                    var c = CLMSUI.domainColours(anno.name);
-                    anno.pieSlice.setAttribute("fill", c);
-                    anno.pieSlice.setAttribute("stroke", c);
-                    anno.colouredRect.setAttribute("fill", c);
-                    anno.colouredRect.setAttribute("stroke", c);
-                }
-            }
+			alert("whoa");
+            //~ for (prot of this.renderedProteins.values()) {
+                //~ prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
+            //~ }
+            //~ var self = this;
+//~ 
+            //~ for (var mol of self.renderedProteins.values()) {
+                //~ for (a = 0; a < mol.annotations.length; a++) {
+                    //~ var anno = mol.annotations[a];
+                    //~ var c = CLMSUI.domainColours(anno.name);
+                    //~ anno.pieSlice.setAttribute("fill", c);
+                    //~ anno.pieSlice.setAttribute("stroke", c);
+                    //~ anno.colouredRect.setAttribute("fill", c);
+                    //~ anno.colouredRect.setAttribute("stroke", c);
+                //~ }
+            //~ }
         },
 
         setCTM: function(element, matrix) {
