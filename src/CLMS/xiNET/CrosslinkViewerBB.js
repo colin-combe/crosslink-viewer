@@ -694,8 +694,8 @@
 
 			var width = this.svgElement.clientWidth;
             var height = this.svgElement.clientHeight;
-			var k = Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size * 2));
-			alert(k);
+			var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
+			console.log("autolayout link length:",k);
             
             var linkArr = Array.from(links.values());
 			
@@ -703,7 +703,7 @@
 
             var self = this;
            
-            this.cola.jaccardLinkLengths(k, 0.7).on("tick", function(e) {
+            this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
                 var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
                 for (node of nodes) {
 					var offsetX = node.x;// - node.upperGroup.getBBox().x;
