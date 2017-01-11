@@ -5,8 +5,8 @@
 //
 //  CLMS.xiNET.RenderedProtein.js
 
-CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
-    this.interactor = interactor;
+CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
+    this.participant = participant;
     this.crosslinkViewer = crosslinkViewer;
 
     this.renderedP_PLinks = new Map();
@@ -69,12 +69,12 @@ CLMS.xiNET.RenderedProtein = function (interactor, crosslinkViewer) {
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(CLMS.xiNET.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
-    this.labelSVG.setAttribute("fill", this.interactor.is_decoy? "#FB8072":"black")
+    this.labelSVG.setAttribute("fill", this.participant.is_decoy? "#FB8072":"black")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     //choose label text
-    this.labelText = this.interactor.name;
+    this.labelText = this.participant.name;
     if (this.labelText.length > 25) {
         this.labelText = this.labelText.substr(0, 16) + "...";
     }
@@ -171,9 +171,9 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.get("tooltipModel")
-        .set("header", this.interactor.name.replace("_", " "))
+        .set("header", this.participant.name.replace("_", " "))
         .set("contents", [
-            ["ID", this.interactor.id], ["Accession", this.interactor.accession],["Size", this.interactor.size], ["Desc.", this.interactor.description]
+            ["ID", this.participant.id], ["Accession", this.participant.accession],["Size", this.participant.size], ["Desc.", this.participant.description]
         ])
         .set("location", {pageX: p.x, pageY: p.y})
         ;
@@ -186,14 +186,14 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
-    var br = Math.sqrt(this.interactor.size / Math.PI) * 0.7;
+    var br = Math.sqrt(this.participant.size / Math.PI) * 0.7;
     return br;
 };
 
 //only output the info needed to reproduce the layout, used by save layout function
 CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
     return {
-        id: this.interactor.id,
+        id: this.participant.id,
         x: this.x,
         y: this.y,
         rot: this.rotation,
@@ -334,11 +334,11 @@ CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.scale = function() {
-    var protLength = (this.interactor.size) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = (this.participant.size) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-            .translate((-(((this.interactor.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
+            .translate((-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
         this.labelSVG.transform.baseVal.initialize(this.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations){
@@ -364,7 +364,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
         this.lowerRotator.svg.setAttribute("transform",
             "translate(" + (this.getResXwithStickZoom(0.5) - CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform",
-            "translate(" + (this.getResXwithStickZoom(this.interactor.size  - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
+            "translate(" + (this.getResXwithStickZoom(this.participant.size  - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
         //internal links
         for (residueLink of this.renderedCrossLinks.values()) {
@@ -389,9 +389,9 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     var ScaleTicksPerLabel = 2; // varies with scale?
     var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
     var tick = -1;
-    var lastTickX = this.getResXwithStickZoom(this.interactor.size);
+    var lastTickX = this.getResXwithStickZoom(this.participant.size);
 
-    for (var res = 1; res <= this.interactor.size; res++) {
+    for (var res = 1; res <= this.participant.size; res++) {
         if (res === 1 ||
                 ((res % 100 === 0) && (200 * pixPerRes > CLMS.xiNET.RenderedProtein.minXDist)) ||
                 ((res % 10 === 0) && (20 * pixPerRes > CLMS.xiNET.RenderedProtein.minXDist))
@@ -408,7 +408,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
                 }
             }
         }
-        if (pixPerRes >= 8 && this.interactor.sequence) {
+        if (pixPerRes >= 8 && this.participant.sequence) {
             var seqLabelGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
             seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
             var seqLabel = document.createElementNS(CLMS.xiNET.svgns, "text");
@@ -417,13 +417,13 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
             seqLabel.setAttribute("text-anchor", "middle");
             seqLabel.setAttribute("x", 0);//protein.getResXwithStickZoom(res));
             seqLabel.setAttribute("y", 3);
-            seqLabel.appendChild(document.createTextNode(this.interactor.sequence[res - 1]));
+            seqLabel.appendChild(document.createTextNode(this.participant.sequence[res - 1]));
             seqLabelGroup.appendChild(seqLabel);
             this.scaleLabels.push(seqLabel);
             this.ticks.appendChild(seqLabelGroup);
         }
     }
-    scaleLabelAt(this, this.interactor.size, lastTickX);
+    scaleLabelAt(this, this.participant.size, lastTickX);
     if (pixPerRes > 8) {
         tickAt(this, lastTickX);
     }
@@ -564,14 +564,14 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
     if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
 
-    var protLength = this.interactor.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     var r = this.getBlobRadius();
 
     var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
     var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);
     //todo: should take current tranform of label as start
     var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-    var labelStartPoint = labelTransform.translate[0];//-(((this.interactor.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
+    var labelStartPoint = labelTransform.translate[0];//-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
     var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 
     var xInterpol = null, yInterpol = null;
@@ -698,15 +698,15 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     this.lowerRotator.svg.setAttribute("transform",
         "translate(" + (this.getResXwithStickZoom(0.5) - CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
     this.upperRotator.svg.setAttribute("transform",
-        "translate(" + (this.getResXwithStickZoom(this.interactor.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
+        "translate(" + (this.getResXwithStickZoom(this.participant.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
-    var protLength = this.interactor.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     var r = this.getBlobRadius();
 
     var lengthInterpol = d3.interpolate((2 * r), protLength);
     var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
     var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);
-    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.interactor.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10));
 
     var origStickZoom = this.stickZoom;
     this.stickZoom = 0;
@@ -907,7 +907,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
             //make domain rect's
             var annoSize = pep[1];
             if (annoSize > 0){
-                var annotX = ((pep[0] + 0.5) - (this.interactor.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annotX = ((pep[0] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
                 var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
                 annotColouredRect.setAttribute("x", annotX);
                 annotColouredRect.setAttribute("y", y);
@@ -923,7 +923,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
                 //TODO: eliminate duplication
                 annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
                 annotColouredRect.setAttribute("class", "protein");
-                var annotX = ((pep[2] + 0.5) - (this.interactor.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annotX = ((pep[2] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
                 var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
                 annotColouredRect.setAttribute("x", annotX);
                 annotColouredRect.setAttribute("y", y);
@@ -946,7 +946,7 @@ CLMS.xiNET.RenderedProtein.prototype.removePeptides = function() {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
-    return (r - (this.interactor.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    return (r - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
  };
 
 CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
@@ -1010,7 +1010,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
 
 			var convStart = anno.begin;
 			var convEnd = anno.end;
-			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
 			if (alignModel) {
 				convStart = alignModel.mapToSearch ("Canonical", anno.begin);
 				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
@@ -1018,7 +1018,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
 			}
 
-			//hmm - these var's end up in protein.interactor.uniprotFeatues, seems not right. TODO: fix
+			//hmm - these var's end up in protein.participant.uniprotFeatues, seems not right. TODO: fix
             anno.pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
             anno.colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
             if (this.form === 0) {
@@ -1084,7 +1084,7 @@ CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	var convStart = annotation.begin;
 	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
     if (alignModel) {
 		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
@@ -1092,8 +1092,8 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
 	}
 
-    var startAngle = ((convStart - 1) / this.interactor.size) * 360;
-    var endAngle = ((convEnd) / this.interactor.size) * 360;
+    var startAngle = ((convStart - 1) / this.participant.size) * 360;
+    var endAngle = ((convEnd) / this.participant.size) * 360;
     var radius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
@@ -1109,7 +1109,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
 	//TODO - eliminate duplication
 	var convStart = annotation.begin;
 	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
     if (alignModel) {
 		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
@@ -1118,8 +1118,8 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
 	}
 	
     //approximate pie slice
-    var startAngle = ((convStart - 1) / this.interactor.size) * 360;
-    var endAngle = ((convEnd) / this.interactor.size) * 360;
+    var startAngle = ((convStart - 1) / this.participant.size) * 360;
+    var endAngle = ((convEnd) / this.participant.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(pieRadius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(pieRadius, endAngle - 90);
@@ -1139,7 +1139,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation
 	//TODO - eliminate duplication
 	var convStart = annotation.begin;
 	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.interactor.id);
+	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
     if (alignModel) {
 		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
 		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
@@ -1168,6 +1168,6 @@ CLMS.xiNET.RenderedProtein.MAXSIZE = 100;           // residue count of longest 
 CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = 1;   // this value is changed during init (calculated on basis of MAXSIZE)
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60;     // maximal width reserved for protein-labels
 CLMS.xiNET.RenderedProtein.labelY = -5;             // label Y offset, better if calc'd half height of label once rendered
-CLMS.xiNET.RenderedProtein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
+//~ CLMS.xiNET.RenderedProtein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
 CLMS.xiNET.RenderedProtein.transitionTime = 650;
 CLMS.xiNET.RenderedProtein.stepsInArc = 5;

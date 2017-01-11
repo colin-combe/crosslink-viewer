@@ -152,8 +152,8 @@
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
-            this.listenTo (this.model, "change:annotationTypes", this.setAnnotations);
-            this.listenTo (this.model, "change:selectedProtein", this.selectedInteractorsChanged);
+            this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
+            this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.render();
             this.linkColourChanged();
             return this;
@@ -299,24 +299,36 @@
             }
         },
 
-        setAnnotations: function (annotationChoice) {
-			//alert("whoa");
-			
-            //~ for (prot of this.renderedProteins.values()) {
-                //~ prot.setPositionalFeatures(prot.interactor.uniprotFeatures);
-            //~ }
-            //~ var self = this;
-//~ 
-            //~ for (var mol of self.renderedProteins.values()) {
-                //~ for (a = 0; a < mol.annotations.length; a++) {
-                    //~ var anno = mol.annotations[a];
-                    //~ var c = CLMSUI.domainColours(anno.name);
-                    //~ anno.pieSlice.setAttribute("fill", c);
-                    //~ anno.pieSlice.setAttribute("stroke", c);
-                    //~ anno.colouredRect.setAttribute("fill", c);
-                    //~ anno.colouredRect.setAttribute("stroke", c);
-                //~ }
-            //~ }
+        setAnnotations: function () {
+			var annotationTypes = this.model.get("annotationTypes");
+			for (prot of this.renderedProteins.values()) {
+                var featuresShown = [];
+                //here we need to add the aligned region annotatiion, if they're selected
+				
+				//add uniprot features
+				for (feature of prot.participant.uniprot.features) {
+					var annotationTypeId = feature.category + "-" + feature.type
+					var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
+					var annotationType = filtered[0];
+					if (annotationType.get("shown") === true) {
+						featuresShown.push(feature);
+					}
+				}
+				//set positional features, aka annotated regions 
+				prot.setPositionalFeatures(featuresShown);
+            }
+            var self = this;
+
+            for (var mol of self.renderedProteins.values()) {
+                for (a = 0; a < mol.annotations.length; a++) {
+                    var anno = mol.annotations[a];
+                    var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+                    anno.pieSlice.setAttribute("fill", c);
+                    anno.pieSlice.setAttribute("stroke", c);
+                    anno.colouredRect.setAttribute("fill", c);
+                    anno.colouredRect.setAttribute("stroke", c);
+                }
+            }
         },
 
         setCTM: function(element, matrix) {
@@ -355,11 +367,11 @@
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
-                    if (this.dragElement.interactor) {
+                    if (this.dragElement.participant) {
                         //its a protein - drag it, or drag all selcted if it is selected
                         var toDrag;
                         if (this.dragElement.isSelected === false) {
-                            toDrag = [this.dragElement.interactor.id];
+                            toDrag = [this.dragElement.participant.id];
                         }
                         else {
                             toDrag = this.model.get("selectedProtein").keys();
@@ -463,8 +475,8 @@
                                     }
                                 } else {
                                     var add = evt.ctrlKey || evt.shiftKey;
-                                    this.model.setSelectedProteins([this.dragElement.interactor.id], add);
-                                    this.model.calcMatchingCrosslinks ("selection", this.dragElement.interactor.crossLinks, false, add);
+                                    this.model.setSelectedProteins([this.dragElement.participant.id], add);
+                                    this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
                                 }
                             }
                         }
@@ -741,7 +753,7 @@
                     renderedCrossLink.showHighlight(true, true);
                 } else {
                     var p_pLink = this.renderedP_PLinks.get(
-                        renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+                        renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
                     p_pLink.showHighlight(true, true);
                 }
             }
@@ -760,13 +772,13 @@
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);
                 var p_pLink = this.renderedP_PLinks.get(
-                    renderedCrossLink.renderedFromProtein.interactor.id + "-" + renderedCrossLink.renderedToProtein.interactor.id);
+                    renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
                 p_pLink.setSelected(true);
             }
             return this;
         },
 
-        selectedInteractorsChanged: function () {
+        selectedParticipantsChanged: function () {
             for (var renderedInteractor of this.renderedProteins.values()) {
                 renderedInteractor.setSelected(false);
             }
