@@ -38,10 +38,8 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
                     "<div class='xinetButtonBar'>" +
-                        "<label for='clickSelect'>SELECT</label>" +
-                        "<input type='radio' name='clickMode' class='clickToSelect'>" +
-                        "<label for='clickToggle'>EXPAND/COLLAPSE</label>" +
-                        "<input type='radio' name='clickMode' class='clickToToggle' checked>" +
+                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+                        "<label><span>EXPAND/COLLAPSE</span><input type='radio' name='clickMode' class='clickToToggle' checked></label>" +
                         "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
                         "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
                         "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
