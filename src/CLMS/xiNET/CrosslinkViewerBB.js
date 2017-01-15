@@ -304,12 +304,14 @@
                 //here we need to add the aligned region annotatiion, if they're selected
 				
 				//add uniprot features
-				for (feature of prot.participant.uniprot.features) {
-					var annotationTypeId = feature.category + "-" + feature.type
-					var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
-					var annotationType = filtered[0];
-					if (annotationType.get("shown") === true) {
-						featuresShown.push(feature);
+				if (prot.participant.uniprot) {
+					for (feature of prot.participant.uniprot.features) {
+						var annotationTypeId = feature.category + "-" + feature.type
+						var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
+						var annotationType = filtered[0];
+						if (annotationType.get("shown") === true) {
+							featuresShown.push(feature);
+						}
 					}
 				}
 				//set positional features, aka annotated regions 
@@ -686,7 +688,9 @@
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
             for(var crossLink of crossLinks){
                 //visible, non-self cross-links only
-                if (crossLink.check() && !crossLink.isSelfLink() && crossLink.toProtein) {
+                if (crossLink.check() === true && crossLink.is &&
+					(crossLink.fromProtein.is_decoy ===false && crossLink.toProtein.is_decoy === false)
+					& crossLink.isSelfLink() === false && crossLink.toProtein) {
                     var fromId = crossLink.fromProtein.id;
                     var toId = crossLink.toProtein.id;
                     var linkId = fromId + "-" + toId;
@@ -787,14 +791,7 @@
             }
             return this;
         },
-
-        // removes view
-        // not really needed unless we want to do something extra on top of the prototype remove function
-        remove: function () {
-            // this line destroys the containing backbone view and it's events
-            Backbone.View.prototype.remove.call(this);
-        }
-
+        
     });
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
