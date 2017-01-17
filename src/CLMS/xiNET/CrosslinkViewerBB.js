@@ -688,8 +688,8 @@
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
             for(var crossLink of crossLinks){
                 //visible, non-self cross-links only
-                if (crossLink.check() === true && crossLink.is &&
-					(crossLink.fromProtein.is_decoy ===false && crossLink.toProtein.is_decoy === false)
+                if (crossLink.check() === true &&
+					(crossLink.fromProtein.is_decoy === false && crossLink.toProtein.is_decoy === false)
 					& crossLink.isSelfLink() === false && crossLink.toProtein) {
                     var fromId = crossLink.fromProtein.id;
                     var toId = crossLink.toProtein.id;
