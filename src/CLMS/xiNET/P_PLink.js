@@ -130,8 +130,8 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     this.crosslinkViewer.model.get("tooltipModel")
                         .set("header", "Linked Protein Pair")
                         .set("contents", [
-                            ["From", this.renderedFromProtein.interactor.name],
-                            ["To", this.renderedToProtein.interactor.name],
+                            ["From", this.renderedFromProtein.participant.name],
+                            ["To", this.renderedToProtein.participant.name],
                             ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
                             ["Matches", this.filteredMatches.size]
                         ])
