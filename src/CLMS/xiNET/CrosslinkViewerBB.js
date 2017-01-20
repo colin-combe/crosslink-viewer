@@ -52,9 +52,9 @@
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
             // disable right click context menu (we wish to put right click to our own purposes)
-            this.svgElement.oncontextmenu = function() {
-                return false;
-            };
+            //~ this.svgElement.oncontextmenu = function() {
+                //~ return false;
+            //~ };
 
             //add listeners
             var self = this;
@@ -453,9 +453,6 @@
                                     this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
                                     this.checkLinks();
                                 }
-                            } else {//right click on protein
-                                this.dragElement.setParked(!this.dragElement.isParked, c);
-                                this.checkLinks();
                             }
                         }
                         else if (middleclick) {
@@ -736,6 +733,7 @@
 
         render: function () {
             console.log ("re rendering cross-link viewer");
+            this.hiddenParticipantsChanged();
             this.checkLinks();
             return this;
         },
@@ -788,6 +786,14 @@
             for (interactor of selectedInteractors) {
                 var renderedInteractor = this.renderedProteins.get(interactor.id);
                 renderedInteractor.setSelected(true);
+            }
+            return this;
+        },
+        
+
+        hiddenParticipantsChanged: function () {
+            for (var renderedInteractor of this.renderedProteins.values()) {
+                renderedInteractor.setHidden(renderedInteractor.participant.hidden);
             }
             return this;
         },

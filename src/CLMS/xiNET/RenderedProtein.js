@@ -19,7 +19,6 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
     this.form = 0;//null; // 0 = blob, 1 = stick
-    this.isParked = false;
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
@@ -199,7 +198,6 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
         rot: this.rotation,
         form: this.form,
         stickZoom: this.stickZoom,
-        parked: this.isParked,
         flipped: this.isFlipped
     };
 };
@@ -276,7 +274,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
     this.py = this.y;
     this.x = x;
     this.y = y;
-    if (this.form === 1 && this.isParked === false){
+    if (this.form === 1 /*&& this.isParked === false*/){
         this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
                 + " scale(" + (this.crosslinkViewer.z) + ") " + "rotate(" + this.rotation + ")");
         this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
@@ -303,9 +301,6 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
 CLMS.xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
 CLMS.xiNET.RenderedProtein.minXDist = 30;
 CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
-    if (this.isParked) {
-        this.toggleParked();
-    }
     if (this.form === 0) {
         this.toStick();
     }
@@ -467,54 +462,17 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
     }
 };
 
-CLMS.xiNET.RenderedProtein.prototype.setParked = function(bool, svgP) {
-   this.isParked = bool;
-   if (this.busy !== true) {
-        if (bool == false) {
-            if (this.form === 0) {
-                d3.select(this.outline).transition()
-                    .attr("stroke-opacity", 1).attr("fill-opacity", 1)
-                    .attr("fill", "#ffffff")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-                this.checkLinks();
-                d3.select(this.circDomains).transition().attr("opacity", 1)
-                    .attr("transform", "scale(1, 1)")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            }
-            else {
-                this.toStick();
-            }
-            this.scale();
-            this.setAllLineCoordinates();
-        }
-        else if (bool == true) {
-            this.isParked = true;
-
-            if (this.form === 1){
-                this.toCircle(svgP);
-                var r = this.getBlobRadius();
-                d3.select(this.outline).transition()
-                    .attr("stroke-opacity", 0).attr("fill-opacity", 1)
-                    .attr("fill", "#EEEEEE")
-                    .attr("x", -r).attr("y", -r)
-                    .attr("width", r * 2).attr("height", r * 2)
-                    .attr("rx", r).attr("ry", r)
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-                d3.select(this.rectDomains).transition().attr("opacity", 0)
-                    .attr("transform", "scale(1, 1)")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            }
-            else {
-                d3.select(this.outline).transition()
-                    .attr("stroke-opacity", 0)
-                    .attr("fill", "#EEEEEE")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-                d3.select(this.circDomains).transition().attr("opacity", 0)
-                    .attr("transform", "scale(1, 1)")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            }
-        }
-    }
+CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
+	//~ if (bool != this.hidden) {
+	if (bool) {
+		d3.select(this.upperGroup).attr("opacity", 0);
+		d3.select(this.lowerGroup).attr("opacity", 0);
+	} else {
+		d3.select(this.upperGroup).attr("opacity", 1);
+		d3.select(this.lowerGroup).attr("opacity", 1);
+	}
+	//~ }
+    this.hidden = bool; 
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
@@ -523,12 +481,6 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 
     if (this.busy !== true) {
-        if (this.isParked) {
-            this.setParked(false);
-            this.crosslinkViewer.checkLinks();
-        }
-        else
-        {
             if (form == 1) {
                 this.toStick();
             }
@@ -553,7 +505,7 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
                     .attr("transform", "scale(1, 1)")
                     .duration(CLMS.xiNET.RenderedProtein.transitionTime);
             }
-        }
+        //~ }
     }
 };
 

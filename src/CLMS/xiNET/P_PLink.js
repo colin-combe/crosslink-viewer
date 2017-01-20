@@ -215,11 +215,11 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
-    if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
-            || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
-        this.hide();
-        return false;
-    }
+    //~ if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
+            //~ || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
+        //~ this.hide();
+        //~ return false;
+    //~ }
 
     this.ambiguous = true;
     this.hd = false;
