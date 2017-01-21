@@ -426,40 +426,40 @@
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
                 //which button has just been raised
-                var rightclick, middleclick;
-                if (evt.which)
-                    rightclick = (evt.which === 3);
-                else if (evt.button)
-                    rightclick = (evt.button === 2);
-                if (evt.which)
-                    middleclick = (evt.which === 2);
-                else if (evt.button)
-                    middleclick = (evt.button === 1);
+                //~ var rightclick, middleclick;
+                //~ if (evt.which)
+                    //~ rightclick = (evt.which === 3);
+                //~ else if (evt.button)
+                    //~ rightclick = (evt.button === 2);
+                //~ if (evt.which)
+                    //~ middleclick = (evt.which === 2);
+                //~ else if (evt.button)
+                    //~ middleclick = (evt.button === 1);
 
                 var p = this.getEventPoint(evt);
                 var c = this.mouseToSVG(p.x, p.y);
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-                        if (rightclick) {
-                            if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                                if (this.dragElement.crossLink.isSelfLink() == true) {//if internal link
-                                    this.dragElement.renderedFromProtein.toggleFlipped();
-                                } else {
-                                    if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
-                                        this.dragElement.hidden = true;
-                                    } else {//its a residue link
-                                        this.dragElement.proteinLink.hidden = true;
-                                    }
-                                    this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-                                    this.checkLinks();
-                                }
-                            }
-                        }
-                        else if (middleclick) {
-                            //can't be used? problem with IE (scroll thingy)
-                        }
-                        else { //left click; toggle form for protein, switch stick scale
+                        //~ if (rightclick) {
+                            //~ if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
+                                //~ if (this.dragElement.crossLink.isSelfLink() == true) {//if internal link
+                                    //~ this.dragElement.renderedFromProtein.toggleFlipped();
+                                //~ } else {
+                                    //~ if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
+                                        //~ this.dragElement.hidden = true;
+                                    //~ } else {//its a residue link
+                                        //~ this.dragElement.proteinLink.hidden = true;
+                                    //~ }
+                                    //~ this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
+                                    //~ this.checkLinks();
+                                //~ }
+                            //~ }
+                        //~ }
+                        //~ else if (middleclick) {
+                            //~ //can't be used? problem with IE (scroll thingy)
+                        //~ }
+                        //~ else { //left click; toggle form for protein, switch stick scale
                             if (this.dragElement.x) { //if protein
                                 if (this.clickModeIsToggle) {
                                     if (evt.ctrlKey || evt.shiftKey) {
@@ -477,8 +477,8 @@
                                     this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
                                 }
                             }
-                        }
-                        //~ this.checkLinks();
+                        //~ }
+                        // this.checkLinks();
                     }
                     else if (this.state === CLMS.xiNET.Controller.ROTATING) {
                         //round protein rotation to nearest 5 degrees (looks neater)
@@ -487,7 +487,7 @@
                     else {
                     } //end of protein drag; do nothing
                 }
-                else if (rightclick) { //right click on background; show all hidden links
+                //~ else if (rightclick) { //right click on background; show all hidden links
                     //~ var links = this.renderedProteinLinks.values();
                     //~ var linkCount = links.length;
                     //~ for (var l = 0; l < linkCount; l++) {
@@ -495,8 +495,10 @@
                         //~ link.hidden = false;
                     //~ }
                     //~ this.checkLinks();
-                } else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+                //~ } 
+                else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
                     this.model.set("selection", []);
+                    this.model.setSelectedProteins([]);
                 }
 
                 if (this.state === CLMS.xiNET.Controller.SELECTING) {
