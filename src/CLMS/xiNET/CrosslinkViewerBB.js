@@ -146,6 +146,7 @@
             }
 
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
+            this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
@@ -733,7 +734,6 @@
 
         render: function () {
             console.log ("re rendering cross-link viewer");
-            this.hiddenParticipantsChanged();
             this.checkLinks();
             return this;
         },

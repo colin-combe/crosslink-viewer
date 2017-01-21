@@ -220,11 +220,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
             return false;
     }
 
-    //~ if (this.renderedFromProtein.isParked === true
-        //~ || (this.renderedToProtein && this.renderedToProtein.isParked == true)) {
-            //~ this.hide();
-            //~ return false;
-    //~ }
+    if (this.renderedFromProtein.participant.hidden === true
+        || this.renderedToProtein.participant.hidden == true) {
+            this.hide();
+            return false;
+    }
 
     if (this.crossLink.filteredMatches_pp.length > 0) {
         this.show();

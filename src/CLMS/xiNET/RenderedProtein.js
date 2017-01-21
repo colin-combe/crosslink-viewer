@@ -274,7 +274,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
     this.py = this.y;
     this.x = x;
     this.y = y;
-    if (this.form === 1 /*&& this.isParked === false*/){
+    if (this.form === 1){
         this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
                 + " scale(" + (this.crosslinkViewer.z) + ") " + "rotate(" + this.rotation + ")");
         this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
