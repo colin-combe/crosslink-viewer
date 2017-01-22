@@ -132,7 +132,7 @@ CLMS.xiNET.RenderedProtein.prototype.init = function() {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
-           this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+        this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
         //if a force layout exists then stop it
         if (this.crosslinkViewer.cola) {
             this.crosslinkViewer.cola.stop();
@@ -463,21 +463,17 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
-	//~ if (bool != this.hidden) {
 	if (bool) {
-		d3.select(this.upperGroup).attr("opacity", 0);
-		d3.select(this.lowerGroup).attr("opacity", 0);
+		this.upperGroup.remove();
+		this.lowerGroup.remove();
 	} else {
-		d3.select(this.upperGroup).attr("opacity", 1);
-		d3.select(this.lowerGroup).attr("opacity", 1);
-	}
-	//~ }
+		this.crosslinkViewer.proteinUpper.append(this.upperGroup);
+		this.crosslinkViewer.proteinLower.append(this.lowerGroup);	}
     this.hidden = bool; 
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
-    //this.form = form; //cant have this here
-
+    
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 
     if (this.busy !== true) {

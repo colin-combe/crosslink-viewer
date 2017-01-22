@@ -621,15 +621,6 @@
                      //~ protein.form = 1;
                     protein.init();
 
-                    //~ if (typeof protLayout["form"]) {
-                      //~
-                    //~ }
-
-                    //~ protein.setAllLineCoordinates();// watch out for this
-
-                    if (typeof protLayout["parked"] !== 'undefined') {
-                        protein.setParked(protLayout["parked"]);
-                    }
                     if (protLayout["flipped"]) { //TODO: fix this
                         protein.toggleFlipped(); // change to setFlipped(protLayout["flipped"])
                     }
