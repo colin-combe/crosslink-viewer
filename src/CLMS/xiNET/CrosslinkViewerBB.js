@@ -240,12 +240,6 @@
                     // prots[j].setForm(1);
                 // }
             // }
-            // if (this.annotationSet){
-               this.setAnnotations(this.annotationSet);
-            // }
-            // else {
-                // this.setAnnotations('CUSTOM');
-            // }
         },
 
         reset: function() {
@@ -661,18 +655,23 @@
         },
 
         autoLayout: function() {
-			
             if (this.cola) {
                 this.cola.stop();
-            } else {
-				this.cola =  cola.d3adaptor()
-                    //~ .symmetricDiffLinkLengths(k, 0.6)
-                     //~ .jaccardLinkLengths(20)
-                     //.linkDistance(k)
-                    .avoidOverlaps(true)
-                    .nodes(Array.from(this.renderedProteins.values()));
-            }
+            } 
+            //~ else {
+				//~ this.cola =  cola.d3adaptor().avoidOverlaps(true);
+            //~ }
             
+			var nodes = []; // not hidden nodes
+            for (renderedParticipant of this.renderedProteins.values()) {
+				if (renderedParticipant.participant.hidden === false) {
+					nodes.push(renderedParticipant);
+				}
+			}			
+            
+			this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
+            //~ .nodes(Array.from(this.renderedProteins.values()))
+                    
             var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
@@ -686,11 +685,11 @@
                     var toId = crossLink.toProtein.id;
                     var linkId = fromId + "-" + toId;
                     if (!links.has(linkId)){
-                        var source = nodeIds.indexOf(fromId);
-                        var target = nodeIds.indexOf(toId);
+                        //~ var source = nodeIds.indexOf(fromId);
+                        //~ var target = nodeIds.indexOf(toId);
                         var linkObj = {};
-                        linkObj.source = source;
-                        linkObj.target = target;
+                        linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id);
+                        linkObj.target = this.renderedProteins.get(crossLink.toProtein.id);
                         linkObj.id = linkId;
                         links.set(linkId, linkObj);
                     }

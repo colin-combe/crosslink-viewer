@@ -8,6 +8,7 @@
 CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.participant = participant;
     this.crosslinkViewer = crosslinkViewer;
+    //~ this.index = participant.id;
 
     this.renderedP_PLinks = new Map();
     this.renderedCrossLinks = new Map();
@@ -216,13 +217,11 @@ CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
 
 CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
     if (select){// && this.isSelected === false) {
-        //~ this.crosslinkViewer.selected.set(this.id, this);
         this.isSelected = true;
         this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     }
     else {//if (select === false && this.isSelected === true) {
-        //~ this.crosslinkViewer.selected.remove(this.id);
         this.isSelected = false;
         this.highlight.setAttribute("stroke-opacity", "0");
         this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
