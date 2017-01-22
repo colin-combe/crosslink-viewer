@@ -11,18 +11,18 @@
     CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         events: {
             "change .clickToSelect": "setClickModeSelect",
-            "change .clickToToggle": "setClickModeToggle",
+            "change .clickToPan": "setClickModePan",
             "click .saveLayout": "saveLayout",
             "click .resetLayout": "reset",
             "click .downloadButton": "downloadSVG"
         },
 
         setClickModeSelect: function (){
-            this.clickModeIsToggle = false;
+            this.clickModeIsSelect = true;
         },
 
-        setClickModeToggle: function (){
-            this.clickModeIsToggle = true;
+        setClickModePan: function (){
+            this.clickModeIsSelect = false;
         },
 
         initialize: function (viewOptions) {
@@ -30,7 +30,7 @@
             var defaultOptions = {};
             this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
-            this.clickModeIsToggle = true;
+            this.clickModeIsSelect = true;
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
@@ -38,8 +38,8 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
                     "<div class='xinetButtonBar'>" +
-                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                        "<label><span>EXPAND/COLLAPSE</span><input type='radio' name='clickMode' class='clickToToggle' checked></label>" +
+                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect' checked></label>" +
+                        "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan'></label>" +
                         "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
                         "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
                         "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
@@ -58,7 +58,7 @@
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
             this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
             this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
-            this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
+            //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
             var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
             if (document.attachEvent){ //if IE (and Opera depending on user setting)
                 this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
@@ -101,7 +101,21 @@
             this.container.appendChild(this.proteinUpper);
 
             this.svgElement.appendChild(this.container);
-
+            
+            //var is a d3 selection unlike those above
+            this.selectionRectSel = d3.select(this.svgElement).append("rect")
+					.attr("x", 10)
+                    .attr("y", 10)
+                    .attr("width", 50)
+                    .attr("height", 100)
+                    .attr("stroke", "red")
+                    .attr("stroke-dasharray","4,4")
+                    .attr("stroke-dashoffset","32")
+                    .style("animation", "dash 2s linear infinite")
+                    .attr("fill", "none")
+                    .attr("display", "none")
+                    ;
+                    
             this.clear();
 
             this.initProteins();
@@ -167,11 +181,11 @@
             d3.select(this.proteinLower).selectAll("*").remove();
             d3.select(this.proteinUpper).selectAll("*").remove();
 
-            this.panning = false;
+            //~ this.panning = false;
             this.dragElement = null;
-            this.dragging = false;
+            //~ this.dragging = false;
             this.dragStart = {};
-            this.rotating = false;
+            //~ this.rotating = false;
 
             this.renderedProteins = new Map();
             this.renderedCrossLinks = new Map();
@@ -230,12 +244,12 @@
             var prots = this.renderedProteins.values();
             var protCount = prots.length;
 
-            // if (protCount < 3) {
-                // for (var j =0; j < protCount; j++){
-                    // prots[j].busy = false;
-                    // prots[j].setForm(1);
-                // }
-            // }
+            if (protCount < 3) {
+                 for (var j =0; j < protCount; j++){
+                     prots[j].busy = false;
+                     prots[j].setForm(1);
+                }
+            }
         },
 
         reset: function() {
@@ -340,21 +354,20 @@
 
             var p = this.getEventPoint(evt);// seems to be correct, see below
             this.dragStart = this.mouseToSVG(p.x, p.y);
-            this.state = CLMS.xiNET.Controller.PANNING;
+            this.state = CLMS.xiNET.Controller.SELECT_PAN;
             this.panned = false;
         },
 
-        // dragging/rotation/panning/selecting
+        // dragging/rotation/SELECT_PAN/selecting
         mouseMove: function(evt) {
-            //~ this.preventDefaultsAndStopPropagation(evt);
             var p = this.getEventPoint(evt);// seems to be correct, see below
             var c = this.mouseToSVG(p.x, p.y);
+			var dx = c.x - this.dragStart.x;
+            var dy = c.y - this.dragStart.y;
 
             if (this.dragElement != null) { //dragging or rotating
 //                  this.hideTooltip();
-                var dx = this.dragStart.x - c.x;
-                var dy = this.dragStart.y - c.y;
-
+                
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
@@ -402,8 +415,30 @@
                     }
                 }
             }
-            else if (this.state === CLMS.xiNET.Controller.PANNING) {
-               this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
+            else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
+				if (this.clickModeIsSelect) {
+					var rectX = this.dragStart.x;
+					if (dx < 0) {
+						rectX += dx;
+					}
+					var rectY = this.dragStart.y;
+					if (dy < 0) {
+						rectY += dy;
+					}
+					
+					this.selectionRectSel.attr("display", "inline")
+						.attr("x", rectX)
+						.attr("y", rectY)
+						.attr("width", Math.abs(dx))
+						.attr("height", Math.abs(dy));
+                    ;
+										
+				} else {
+					this.setCTM(this.container, 
+								this.container.getCTM()
+								.translate(c.x - this.dragStart.x, c.y - this.dragStart.y)
+								);
+				}
             }
         },
 
@@ -413,45 +448,20 @@
             var time = new Date().getTime();
             //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
             this.preventDefaultsAndStopPropagation(evt);
+            
+            //remove selection rect, may not be shown but just do this now
+            this.selectionRectSel.attr("display", "none");
+            
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
-                //which button has just been raised
-                //~ var rightclick, middleclick;
-                //~ if (evt.which)
-                    //~ rightclick = (evt.which === 3);
-                //~ else if (evt.button)
-                    //~ rightclick = (evt.button === 2);
-                //~ if (evt.which)
-                    //~ middleclick = (evt.which === 2);
-                //~ else if (evt.button)
-                    //~ middleclick = (evt.button === 1);
 
                 var p = this.getEventPoint(evt);
                 var c = this.mouseToSVG(p.x, p.y);
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-                        //~ if (rightclick) {
-                            //~ if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                                //~ if (this.dragElement.crossLink.isSelfLink() == true) {//if internal link
-                                    //~ this.dragElement.renderedFromProtein.toggleFlipped();
-                                //~ } else {
-                                    //~ if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
-                                        //~ this.dragElement.hidden = true;
-                                    //~ } else {//its a residue link
-                                        //~ this.dragElement.proteinLink.hidden = true;
-                                    //~ }
-                                    //~ this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-                                    //~ this.checkLinks();
-                                //~ }
-                            //~ }
-                        //~ }
-                        //~ else if (middleclick) {
-                            //~ //can't be used? problem with IE (scroll thingy)
-                        //~ }
-                        //~ else { //left click; toggle form for protein, switch stick scale
                             if (this.dragElement.x) { //if protein
-                                if (this.clickModeIsToggle) {
+                                //~ if (this.clickModeIsToggle) {
                                     if (evt.ctrlKey || evt.shiftKey) {
                                         this.dragElement.switchStickScale(c);
                                     }else {
@@ -461,14 +471,12 @@
                                             this.dragElement.setForm(1, c);
                                         }
                                     }
-                                } else {
-                                    var add = evt.ctrlKey || evt.shiftKey;
-                                    this.model.setSelectedProteins([this.dragElement.participant.id], add);
-                                    this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
-                                }
+                                //~ } else {
+                                    //~ var add = evt.ctrlKey || evt.shiftKey;
+                                    //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
+                                    //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
+                                //~ }
                             }
-                        //~ }
-                        // this.checkLinks();
                     }
                     else if (this.state === CLMS.xiNET.Controller.ROTATING) {
                         //round protein rotation to nearest 5 degrees (looks neater)
@@ -477,16 +485,8 @@
                     else {
                     } //end of protein drag; do nothing
                 }
-                //~ else if (rightclick) { //right click on background; show all hidden links
-                    //~ var links = this.renderedProteinLinks.values();
-                    //~ var linkCount = links.length;
-                    //~ for (var l = 0; l < linkCount; l++) {
-                        //~ var link = links[l];
-                        //~ link.hidden = false;
-                    //~ }
-                    //~ this.checkLinks();
-                //~ } 
-                else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
+
+                else if (/*this.state !== xiNET.Controller.SELECT_PAN &&*/ evt.ctrlKey === false) {
                     this.model.set("selection", []);
                     this.model.setSelectedProteins([]);
                 }
@@ -800,7 +800,7 @@ CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 //static var's signifying Controller's status - TOD: get rid of all th`is
 CLMS.xiNET.Controller = {};
 CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-CLMS.xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+CLMS.xiNET.Controller.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
 CLMS.xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
 CLMS.xiNET.Controller.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
 CLMS.xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
