@@ -51,10 +51,7 @@
             this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
-            // disable right click context menu (we wish to put right click to our own purposes)
-            //~ this.svgElement.oncontextmenu = function() {
-                //~ return false;
-            //~ };
+			this.svgElement.setAttribute("style", "pointer-events:visible");
 
             //add listeners
             var self = this;
@@ -74,8 +71,7 @@
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
-            this.svgElement.setAttribute("style", "pointer-events:visible");
-
+            
             // various SVG groups needed
             this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
             this.container.setAttribute("id", "container");
@@ -495,10 +491,10 @@
                     this.model.setSelectedProteins([]);
                 }
 
-                if (this.state === CLMS.xiNET.Controller.SELECTING) {
-                    clearInterval(this.marcher);
-                    this.svgElement.removeChild(this.marquee);
-                }
+                //~ if (this.state === CLMS.xiNET.Controller.SELECTING) {
+                    //~ clearInterval(this.marcher);
+                    //~ this.svgElement.removeChild(this.marquee);
+                //~ }
             }
 
             this.dragElement = null;
@@ -532,6 +528,7 @@
             return false;
         },
 
+		
         //gets mouse position
         getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
@@ -552,7 +549,8 @@
             var p = this.svgElement.createSVGPoint();
             p.x = x;
             p.y = y;
-            var p = p.matrixTransform(this.container.getCTM().inverse());
+			//todo: check - should this be getScreenCTM()
+			var p = p.matrixTransform(this.container.getCTM().inverse());
             return p;
         },
 
@@ -658,9 +656,6 @@
             if (this.cola) {
                 this.cola.stop();
             } 
-            //~ else {
-				//~ this.cola =  cola.d3adaptor().avoidOverlaps(true);
-            //~ }
             
 			var nodes = []; // not hidden nodes
             for (renderedParticipant of this.renderedProteins.values()) {
@@ -670,7 +665,6 @@
 			}			
             
 			this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
-            //~ .nodes(Array.from(this.renderedProteins.values()))
                     
             var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
