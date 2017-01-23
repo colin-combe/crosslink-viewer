@@ -417,26 +417,32 @@
             }
             else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
 				if (this.clickModeIsSelect) {
+					//SELECT
+					
+					var sx = p.x - this.dragStart.x;
+					var sy = p.y - this.dragStart.y;
+
 					var rectX = this.dragStart.x;
-					if (dx < 0) {
-						rectX += dx;
+					if (sx < 0) {
+						rectX += sx;
 					}
 					var rectY = this.dragStart.y;
-					if (dy < 0) {
-						rectY += dy;
+					if (sy < 0) {
+						rectY += sy;
 					}
 					
 					this.selectionRectSel.attr("display", "inline")
 						.attr("x", rectX)
 						.attr("y", rectY)
-						.attr("width", Math.abs(dx))
-						.attr("height", Math.abs(dy));
+						.attr("width", Math.abs(sx))
+						.attr("height", Math.abs(sy));
                     ;
 										
 				} else {
+					//PAN
 					this.setCTM(this.container, 
 								this.container.getCTM()
-								.translate(c.x - this.dragStart.x, c.y - this.dragStart.y)
+								.translate(dx, dy)
 								);
 				}
             }
