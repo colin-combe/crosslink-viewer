@@ -489,7 +489,8 @@
 
         // this ends all dragging and rotating
         mouseUp: function(evt) {
-            var time = new Date().getTime();
+            var add = evt.ctrlKey || evt.shiftKey;
+			var time = new Date().getTime();
             //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
             this.preventDefaultsAndStopPropagation(evt);
             
@@ -527,14 +528,18 @@
                 else if (/*this.state !== xiNET.Controller.SELECT_PAN &&*/ evt.ctrlKey === false) {
                     if (this.clickModeIsSelect) {
 						//this.model.set("selection", this.toSelect);
-						var add = evt.ctrlKey || evt.shiftKey;
 						this.model.setSelectedProteins(this.idsToSelect, add);
                  
+
                                 //~ } else {
                                     //~ var add = evt.ctrlKey || evt.shiftKey;
                                     //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
                                     //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
                                 //~ }
+					}
+					//hmmm...
+					if (this.idsToSelect.length === 0 && add === false) {
+						this.model.calcMatchingCrosslinks ("selection", [], false, add);
 					}
                 }
  
