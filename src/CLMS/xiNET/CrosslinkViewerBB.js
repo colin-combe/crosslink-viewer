@@ -356,6 +356,9 @@
             this.dragStart = this.getEventPoint(evt);//this.mouseToSVG(p.x, p.y);
             this.state = CLMS.xiNET.Controller.SELECT_PAN;
             this.panned = false;
+            
+            //var toHighlight = [] // oops we dont have synched participant highlighting
+            this.idsToSelect = [];                 
         },
 
         // dragging/rotation/SELECT_PAN/selecting
@@ -440,6 +443,31 @@
 						.attr("width", Math.abs(sx))
 						.attr("height", Math.abs(sy));
                     ;
+                    
+                    for (renderedParticipant of this.renderedProteins.values()) {
+						if (renderedParticipant.participant.hidden !== true) {
+							var svgRect = this.svgElement.createSVGRect();
+							svgRect.x = rectX;
+							svgRect.y = rectY;
+							svgRect.width = Math.abs(sx);
+							svgRect.height = Math.abs(sy);
+							//~ d3.select(svgRect).attr("x", rectX)
+								//~ .attr("y", rectY)
+								//~ .attr("width", Math.abs(sx))
+								//~ .attr("height", Math.abs(sy));
+							var intersects = this.svgElement.getIntersectionList(svgRect, renderedParticipant.upperGroup );
+							//~ var intersects = this.svgElement.checkIntersection(
+									//~ renderedParticipant.upperGroup.getBBox(), this.selectionRectSel.node());
+							if (intersects.length > 0) {
+								renderedParticipant.showHighlight(true);
+								this.idsToSelect.push(renderedParticipant.participant.id);
+							} else {
+								renderedParticipant.showHighlight(false);
+							}
+						}
+					
+					}
+                    
 										
 				} else {
 					//PAN
@@ -477,21 +505,15 @@
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
                             if (this.dragElement.x) { //if protein
-                                //~ if (this.clickModeIsToggle) {
-                                    if (evt.ctrlKey || evt.shiftKey) {
-                                        this.dragElement.switchStickScale(c);
-                                    }else {
-                                        if (this.dragElement.form === 1) {
-                                            this.dragElement.setForm(0, c);
-                                        } else {
-                                            this.dragElement.setForm(1, c);
-                                        }
-                                    }
-                                //~ } else {
-                                    //~ var add = evt.ctrlKey || evt.shiftKey;
-                                    //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
-                                    //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
-                                //~ }
+								if (evt.ctrlKey || evt.shiftKey) {
+									this.dragElement.switchStickScale(c);
+								}else {
+									if (this.dragElement.form === 1) {
+										this.dragElement.setForm(0, c);
+									} else {
+										this.dragElement.setForm(1, c);
+									}
+								}
                             }
                     }
                     else if (this.state === CLMS.xiNET.Controller.ROTATING) {
@@ -503,14 +525,25 @@
                 }
 
                 else if (/*this.state !== xiNET.Controller.SELECT_PAN &&*/ evt.ctrlKey === false) {
-                    this.model.set("selection", []);
-                    this.model.setSelectedProteins([]);
+                    if (this.clickModeIsSelect) {
+						//this.model.set("selection", this.toSelect);
+						var add = evt.ctrlKey || evt.shiftKey;
+						this.model.setSelectedProteins(this.idsToSelect, add);
+                 
+                                //~ } else {
+                                    //~ var add = evt.ctrlKey || evt.shiftKey;
+                                    //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
+                                    //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
+                                //~ }
+					}
                 }
+ 
+				this.dragElement = null;
+				this.whichRotator = -1;
+				this.state = CLMS.xiNET.Controller.MOUSE_UP;           
+            
             }
 
-            this.dragElement = null;
-            this.whichRotator = -1;
-            this.state = CLMS.xiNET.Controller.MOUSE_UP;
 
             this.lastMouseUp = time;
             return false;
@@ -554,16 +587,6 @@
             p.y = evt.pageY - top;
             return p;
         },
-
-        // transform the mouse-position into a position on the svg
-        //~ mouseToSVG: function(x, y) {
-            //~ var p = this.svgElement.createSVGPoint();
-            //~ p.x = x;
-            //~ p.y = y;
-			//~ //todo: check - should this be getScreenCTM() - answer- rumor is they're the same?
-			//~ var p = p.matrixTransform(this.container.getCTM().inverse());
-            //~ return p;
-        //~ },
 
         //stop event propogation and defaults; only do what we ask
         preventDefaultsAndStopPropagation: function(evt) {
