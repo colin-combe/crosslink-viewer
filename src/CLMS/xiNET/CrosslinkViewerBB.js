@@ -418,7 +418,7 @@
             else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
 				if (this.clickModeIsSelect) {
 					//SELECT
-					
+					//var c = p.matrixTransform(this.svgElement.getCTM().inverse());
 					var sx = p.x - this.dragStart.x;
 					var sy = p.y - this.dragStart.y;
 
@@ -496,11 +496,6 @@
                     this.model.set("selection", []);
                     this.model.setSelectedProteins([]);
                 }
-
-                //~ if (this.state === CLMS.xiNET.Controller.SELECTING) {
-                    //~ clearInterval(this.marcher);
-                    //~ this.svgElement.removeChild(this.marquee);
-                //~ }
             }
 
             this.dragElement = null;
