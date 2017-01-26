@@ -466,8 +466,9 @@ CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
 		this.upperGroup.remove();
 		this.lowerGroup.remove();
 	} else {
-		this.crosslinkViewer.proteinUpper.append(this.upperGroup);
-		this.crosslinkViewer.proteinLower.append(this.lowerGroup);	}
+		this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
+		this.crosslinkViewer.proteinLower.appendChild(this.lowerGroup);
+	}
     this.hidden = bool; 
 };
 
