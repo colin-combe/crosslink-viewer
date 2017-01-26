@@ -147,7 +147,7 @@ CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
         //~ }
         //store start location
         var p = this.crosslinkViewer.getEventPoint(evt);
-        this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+        this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
         return false;
 };
 

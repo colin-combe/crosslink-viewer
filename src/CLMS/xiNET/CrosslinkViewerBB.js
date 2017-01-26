@@ -352,8 +352,8 @@
                 this.cola.stop();
             }
 
-            var p = this.getEventPoint(evt);// seems to be correct, see below
-            this.dragStart = this.mouseToSVG(p.x, p.y);
+            //var p = this.getEventPoint(evt);// seems to be correct, see below
+            this.dragStart = this.getEventPoint(evt);//this.mouseToSVG(p.x, p.y);
             this.state = CLMS.xiNET.Controller.SELECT_PAN;
             this.panned = false;
         },
@@ -361,13 +361,13 @@
         // dragging/rotation/SELECT_PAN/selecting
         mouseMove: function(evt) {
             var p = this.getEventPoint(evt);// seems to be correct, see below
-            var c = this.mouseToSVG(p.x, p.y);
-			var dx = c.x - this.dragStart.x;
-            var dy = c.y - this.dragStart.y;
-
+            var c = p.matrixTransform(this.container.getCTM().inverse());//this.mouseToSVG(p.x, p.y);
+            
+			
             if (this.dragElement != null) { //dragging or rotating
-//                  this.hideTooltip();
-                
+				var ds = this.dragStart.matrixTransform(this.container.getCTM().inverse());
+                var dx = ds.x - c.x;
+				var dy = ds.y - c.y;
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
@@ -390,7 +390,7 @@
                             renderedProtein.setAllLineCoordinates();
                         }
                     }
-                    this.dragStart = c;
+                    this.dragStart = p;
                 }
 
                 else if (this.state === CLMS.xiNET.Controller.ROTATING) {
@@ -418,15 +418,18 @@
             else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
 				if (this.clickModeIsSelect) {
 					//SELECT
-					//var c = p.matrixTransform(this.svgElement.getCTM().inverse());
-					var sx = p.x - this.dragStart.x;
-					var sy = p.y - this.dragStart.y;
+					var ds = this.dragStart.matrixTransform(this.svgElement.getCTM().inverse());
+					var dx = c.x - ds.x;
+					var dy = c.y - ds.y;
+					
+					var sx = p.x - ds.x;
+					var sy = p.y - ds.y;
 
-					var rectX = this.dragStart.x;
+					var rectX = ds.x;
 					if (sx < 0) {
 						rectX += sx;
 					}
-					var rectY = this.dragStart.y;
+					var rectY = ds.y;
 					if (sy < 0) {
 						rectY += sy;
 					}
@@ -440,12 +443,19 @@
 										
 				} else {
 					//PAN
+					var ds = this.dragStart.matrixTransform(this.container.getCTM().inverse());
+					var dx = c.x - ds.x;
+					var dy = c.y - ds.y;
+				
 					this.setCTM(this.container, 
 								this.container.getCTM()
 								.translate(dx, dy)
 								);
-				}
-            }
+					this.dragStart = p;
+  				}
+          }
+
+  
         },
 
 
@@ -462,7 +472,7 @@
             if ((time - this.lastMouseUp) > 150){
 
                 var p = this.getEventPoint(evt);
-                var c = this.mouseToSVG(p.x, p.y);
+                var c = p.matrixTransform(this.container.getCTM().inverse());
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
@@ -522,7 +532,7 @@
             var z = 1 + delta;
             var g = this.container;
             var p = this.getEventPoint(evt);// seems to be correct, see above
-            var c = this.mouseToSVG(p.x, p.y);
+            var c = p.matrixTransform(this.container.getCTM().inverse());
             var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
             this.setCTM(g, g.getCTM().multiply(k));
             this.scale();
@@ -546,14 +556,14 @@
         },
 
         // transform the mouse-position into a position on the svg
-        mouseToSVG: function(x, y) {
-            var p = this.svgElement.createSVGPoint();
-            p.x = x;
-            p.y = y;
-			//todo: check - should this be getScreenCTM()
-			var p = p.matrixTransform(this.container.getCTM().inverse());
-            return p;
-        },
+        //~ mouseToSVG: function(x, y) {
+            //~ var p = this.svgElement.createSVGPoint();
+            //~ p.x = x;
+            //~ p.y = y;
+			//~ //todo: check - should this be getScreenCTM() - answer- rumor is they're the same?
+			//~ var p = p.matrixTransform(this.container.getCTM().inverse());
+            //~ return p;
+        //~ },
 
         //stop event propogation and defaults; only do what we ask
         preventDefaultsAndStopPropagation: function(evt) {
