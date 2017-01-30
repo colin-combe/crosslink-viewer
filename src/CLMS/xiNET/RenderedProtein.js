@@ -906,11 +906,11 @@ CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
     var pLinks = this.renderedP_PLinks.values();
-    for (pLink of pLinks) {
+    for (var pLink of pLinks) {
         pLink.check();
     }
     var links = this.renderedCrossLinks.values();
-    for (link of links) {
+    for (var link of links) {
         link.check();
     }
 }
@@ -919,12 +919,12 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 	
     var pLinks = this.renderedP_PLinks.values();
-    for (pLink of pLinks) {
+    for (var pLink of pLinks) {
         pLink.setLineCoordinates(this);
     }
     
     var renderedCrosslinkIter = this.renderedCrossLinks.values();
-    for (renderedCrosslink of renderedCrosslinkIter) {
+    for (var renderedCrosslink of renderedCrosslinkIter) {
         renderedCrosslink.setLineCoordinates(this);
     }
     
