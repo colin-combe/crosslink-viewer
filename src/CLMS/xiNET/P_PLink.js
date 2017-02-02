@@ -27,9 +27,14 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     
     this.isSelected = false;
 };
+
+//static variable used to calculate width of the background line
+CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
+   
+CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
    
 CLMS.xiNET.P_PLink.prototype.initSVG = function() {
-    if (crossLink.isSelfLink() === false) {
+    if (this.crossLinks[0].isSelfLink() === false) {
         this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
         this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
@@ -39,6 +44,8 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
         this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
         this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
         this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+        
+		this.initSelfLinkSVG();
     }
 
     this.line.setAttribute("class", "link");
@@ -104,12 +111,6 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     };
 
 }
-
-
-//static variable used to calculate width of the background line
-CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
-
-CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);

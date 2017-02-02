@@ -129,7 +129,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 //by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
     this.setForm(this.form);
-    if (this.selfLink) this.selfLink.initSelfLinkSVG();
+    //if (this.selfLink) this.selfLink.initSelfLinkSVG();
 }
 
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
@@ -506,130 +506,130 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
-    //~ if (this.form == 1){
-     this.busy = true;
-    this.removePeptides();
-    if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
-    if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
+    if (!this.participant.hidden){
+		this.busy = true;
+		this.removePeptides();
+		if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
+		if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
 
-    var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
-    var r = this.getBlobRadius();
+		var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+		var r = this.getBlobRadius();
 
-    var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
-    var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);
-    //todo: should take current tranform of label as start
-    var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-    var labelStartPoint = labelTransform.translate[0];//-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
-    var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
+		var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
+		var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);
+		//todo: should take current tranform of label as start
+		var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+		var labelStartPoint = labelTransform.translate[0];//-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
+		var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 
-    var xInterpol = null, yInterpol = null;
-    if (typeof svgP !== 'undefined' && svgP !== null) {
-        xInterpol = d3.interpolate(this.x, svgP.x);
-        yInterpol = d3.interpolate(this.y, svgP.y);
-    }
+		var xInterpol = null, yInterpol = null;
+		if (typeof svgP !== 'undefined' && svgP !== null) {
+			xInterpol = d3.interpolate(this.x, svgP.x);
+			yInterpol = d3.interpolate(this.y, svgP.y);
+		}
 
-    var self = this;
-    d3.select(this.ticks).transition().attr("opacity", 0).duration(CLMS.xiNET.RenderedProtein.transitionTime / 4)
-                .each("end",
-                    function () {
-                        d3.select(this).selectAll("*").remove();//this === self.ticks
-                        //if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
-                    }
-                );
+		var self = this;
+		d3.select(this.ticks).transition().attr("opacity", 0).duration(CLMS.xiNET.RenderedProtein.transitionTime / 4)
+					.each("end",
+						function () {
+							d3.select(this).selectAll("*").remove();//this === self.ticks
+							//if (self.upperGroup.contains(self.ticks))self.upperGroup.removeChild(self.ticks);
+						}
+					);
 
-    d3.select(this.highlight).transition()
-        .attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
-        .attr("x", -r - 2.5).attr("y", -r - 2.5)
-        .attr("rx", r + 2.5).attr("ry", r + 2.5)
-        .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+		d3.select(this.highlight).transition()
+			.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+			.attr("x", -r - 2.5).attr("y", -r - 2.5)
+			.attr("rx", r + 2.5).attr("ry", r + 2.5)
+			.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-    //~ if (this.selfLink != null) {
-    var crossLinkIter = this.renderedCrossLinks.values();
-    //~ var resLinkCount = resLinks.length;
-    for (residueLink of crossLinkIter) {
-        //~ var residueLink = resLinks[rl];
-        //~ if (residueLink.shown) {
-                    var selectLine = d3.select(residueLink.line);
-                    selectLine.attr("d",this.getCrossLinkPath(residueLink));
-                    selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
-                        .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-                    var highlightLine = d3.select(residueLink.highlightLine);
-                    highlightLine.attr("d",this.getCrossLinkPath(residueLink));
-                    highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
-                        .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-        //~ }
-    }
-    //~ }
+		//~ if (this.selfLink != null) {
+		var crossLinkIter = this.renderedCrossLinks.values();
+		//~ var resLinkCount = resLinks.length;
+		for (residueLink of crossLinkIter) {
+			//~ var residueLink = resLinks[rl];
+			//~ if (residueLink.shown) {
+						var selectLine = d3.select(residueLink.line);
+						selectLine.attr("d",this.getCrossLinkPath(residueLink));
+						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+						var highlightLine = d3.select(residueLink.highlightLine);
+						highlightLine.attr("d",this.getCrossLinkPath(residueLink));
+						highlightLine.transition().attr("d",this.getAggregateSelfLinkPath())
+							.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			//~ }
+		}
+		//~ }
 
-    var self = this;
-    if (this.annotations) {
-        var annots = this.annotations;
-        var ca = annots.length;
-        for (var a = 0; a < ca; a++) {
-            var anno = annots[a];
-            var pieSlice = anno.pieSlice;
-            var rectDomain = anno.colouredRect;
-            d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
-                    function () {
-                        for (var b = 0; b < ca; b++) {
-                            var annoB = self.annotations[b];
-                            if (this === annoB.pieSlice){
-                                d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
-                            }
-                        }
-                    }
-                );
-            d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-        }
-    }
+		var self = this;
+		if (this.annotations) {
+			var annots = this.annotations;
+			var ca = annots.length;
+			for (var a = 0; a < ca; a++) {
+				var anno = annots[a];
+				var pieSlice = anno.pieSlice;
+				var rectDomain = anno.colouredRect;
+				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
+						function () {
+							for (var b = 0; b < ca; b++) {
+								var annoB = self.annotations[b];
+								if (this === annoB.pieSlice){
+									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
+								}
+							}
+						}
+					);
+				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			}
+		}
 
-    var originalStickZoom = this.stickZoom;
-    var originalRotation = this.rotation;
-    var cubicInOut = d3.ease('cubic-in-out');
-    d3.timer(function(elapsed) {
-      return update(elapsed / CLMS.xiNET.RenderedProtein.transitionTime);
-    });
- //~ }
- //~ else {
-     //~ var self = this;
-        //~ var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-        //~ var k = self.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(1)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
-        //~ self.labelSVG.transform.baseVal.initialize(self.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
+		var originalStickZoom = this.stickZoom;
+		var originalRotation = this.rotation;
+		var cubicInOut = d3.ease('cubic-in-out');
+		d3.timer(function(elapsed) {
+		  return update(elapsed / CLMS.xiNET.RenderedProtein.transitionTime);
+		});
+	 //~ }
+	 //~ else {
+		 //~ var self = this;
+			//~ var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+			//~ var k = self.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(1)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
+			//~ self.labelSVG.transform.baseVal.initialize(self.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
- //~ }
-    function update(interp) {
-        var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-        var k = self.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
-        self.labelSVG.transform.baseVal.initialize(self.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
-        if (xInterpol !== null){
-             self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
-        }
-        var rot = rotationInterpol(cubicInOut(interp));
-        self.stickZoom = stickZoomInterpol(cubicInOut(interp));
-        if (self.form == 1) self.setRotation(rot);
-        self.setAllLineCoordinates();
+	 //~ }
+		function update(interp) {
+			var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+			var k = self.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
+			self.labelSVG.transform.baseVal.initialize(self.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
+			if (xInterpol !== null){
+				 self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+			}
+			var rot = rotationInterpol(cubicInOut(interp));
+			self.stickZoom = stickZoomInterpol(cubicInOut(interp));
+			if (self.form == 1) self.setRotation(rot);
+			self.setAllLineCoordinates();
 
-        if (interp ===  1){ // finished - tidy up
-            for (renderedCrossLink of self.renderedCrossLinks.values()) {
-                renderedCrossLink.hide();
-            }
-            //bring in new
-            self.form = 0;
-            //~ self.setPosition(self.x, self.y);
-            self.checkLinks();
-            self.stickZoom = originalStickZoom;
-            self.rotation = originalRotation;
-            self.busy = false;
-            return true;
-        } else if (interp > 1){
-            return update(1);
-        } else {
-            return false;
-        }
-    }
-
+			if (interp ===  1){ // finished - tidy up
+				for (renderedCrossLink of self.renderedCrossLinks.values()) {
+					renderedCrossLink.hide();
+				}
+				//bring in new
+				self.form = 0;
+				//~ self.setPosition(self.x, self.y);
+				self.checkLinks();
+				self.stickZoom = originalStickZoom;
+				self.rotation = originalRotation;
+				self.busy = false;
+				return true;
+			} else if (interp > 1){
+				return update(1);
+			} else {
+				return false;
+			}
+		}
+	}
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getX = function() {return this.x;}

@@ -27,7 +27,7 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
-    if (typeof this.line === 'undefined') {
+    //~ if (typeof this.line === 'undefined') {
         if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
             this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
             this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
@@ -78,7 +78,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
         this.highlightLine.ontouchstart = function(evt) {
             self.touchStart(evt);
         };
-    }
+    //~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
