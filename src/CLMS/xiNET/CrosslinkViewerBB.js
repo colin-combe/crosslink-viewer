@@ -576,10 +576,8 @@
             this.scale();
             return false;
         },
-
-		
-        //gets mouse position
-        getEventPoint: function(evt) {
+        
+       getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
             var element = this.svgElement.parentNode;
             var top = 0, left = 0;
@@ -588,10 +586,10 @@
                 left += element.offsetLeft || 0;
                 element = element.offsetParent;
            } while(element);
-            p.x = evt.pageX - left;
-            p.y = evt.pageY - top;
+            p.x = evt.pageX - left;// - CLMSUI.utils.crossBrowserElementX; //? tried it
+            p.y = evt.pageY - top;// - CLMSUI.utils.crossBrowserElementY;
             return p;
-        },
+        },   
 
         //stop event propogation and defaults; only do what we ask
         preventDefaultsAndStopPropagation: function(evt) {
@@ -708,12 +706,12 @@
             var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
-            var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
-            for(var crossLink of crossLinks){
+            var filteredCrossLinks = this.model.filteredNotDecoyNotLinearCrossLinks;//get("clmsModel").get("crossLinks").values();
+            var clCount = filteredCrossLinks.length;
+            for(var cl = 0; cl < clCount; ++cl){
+				var crossLink = filteredCrossLinks[cl];
                 //visible, non-self cross-links only
-                if (crossLink.check() === true &&
-					(crossLink.fromProtein.is_decoy === false && crossLink.toProtein.is_decoy === false)
-					& crossLink.isSelfLink() === false && crossLink.toProtein) {
+                if (crossLink.isSelfLink() === false) {
                     var fromId = crossLink.fromProtein.id;
                     var toId = crossLink.toProtein.id;
                     var linkId = fromId + "-" + toId;

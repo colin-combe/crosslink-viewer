@@ -162,7 +162,7 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
         //~ this.setSelected(true);
         //store start location
         var p = this.crosslinkViewer.getTouchEventPoint(evt);
-        this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+        this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
         return false;
 };
 

@@ -24,7 +24,11 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     this.shown = false;
     //layout stuff
     this.hidden = false;
-
+    
+    this.isSelected = false;
+};
+   
+CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     if (crossLink.isSelfLink() === false) {
         this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
@@ -99,7 +103,6 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
         self.touchStart(evt);
     };
 
-    this.isSelected = false;
 }
 
 
@@ -282,6 +285,9 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
     if (!this.shown) {
+        if (typeof this.line === 'undefined') {
+            this.initSVG();
+        }
         this.shown = true;
         if (this.renderedFromProtein === this.renderedToProtein) {
             this.thickLine.setAttribute("transform", "translate(" +
