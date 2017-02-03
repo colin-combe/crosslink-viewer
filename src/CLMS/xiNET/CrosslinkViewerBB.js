@@ -281,23 +281,29 @@
 
             for (renderedCrossLink of this.renderedCrossLinks.values()) {
                 if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-                    renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-                    renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                    if (renderedCrossLink.crossLink.ambiguous === true) {
-                        renderedCrossLink.dashedLine(true); //rescale spacing of dashes
-                    }
+					//TODO: hmmm
+					if (renderedCrossLink.line) {
+						renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+						renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+						if (renderedCrossLink.crossLink.ambiguous === true) {
+							renderedCrossLink.dashedLine(true); //rescale spacing of dashes
+						}
+					}
                 }
             }
 
             for (p_pLink of this.renderedP_PLinks.values()) {
                 if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                     && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
-                    p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-                    p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                    p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
-                    if (p_pLink.ambiguous) {
-                        p_pLink.dashedLine(true); //rescale spacing of dashes
-                    }
+                    //TODO: hmmm
+					if (p_pLink.line) {
+						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						if (p_pLink.ambiguous) {
+							p_pLink.dashedLine(true); //rescale spacing of dashes
+						}
+					}
                 }
             }
         },
