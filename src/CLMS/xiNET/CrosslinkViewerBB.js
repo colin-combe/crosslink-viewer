@@ -270,7 +270,7 @@
         },
 
         scale: function () {
-            this.z = this.container.getScreenCTM().inverse().a;
+            this.z = this.container.getCTM().inverse().a;
 
             var proteins = this.renderedProteins.values();
             for (prot of proteins) {
@@ -427,7 +427,7 @@
             else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
 				if (this.clickModeIsSelect) {
 					//SELECT
-					var ds = this.dragStart.matrixTransform(this.svgElement.getCTM().inverse());
+					var ds = this.dragStart.matrixTransform(this.svgElement.getScreenCTM().inverse());
 					var dx = c.x - ds.x;
 					var dy = c.y - ds.y;
 					
@@ -578,22 +578,22 @@
             var p = this.getEventPoint(evt);// seems to be correct, see above
             var c = p.matrixTransform(this.container.getCTM().inverse());
             var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-            this.setCTM(g, g.getCTM().multiply(k));
+            this.setCTM(g, g.getScreenCTM().multiply(k));
             this.scale();
             return false;
         },
         
        getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
-            var element = this.svgElement.parentNode;
-            var top = 0, left = 0;
-            do {
-                top += element.offsetTop  || 0;
-                left += element.offsetLeft || 0;
-                element = element.offsetParent;
-           } while(element);
-            p.x = evt.pageX - left;// - CLMSUI.utils.crossBrowserElementX; //? tried it
-            p.y = evt.pageY - top;// - CLMSUI.utils.crossBrowserElementY;
+            //~ var element = this.svgElement.parentNode;
+            //~ var top = 0, left = 0;
+            //~ do {
+                //~ top += element.offsetTop  || 0;
+                //~ left += element.offsetLeft || 0;
+                //~ element = element.offsetParent;
+           //~ } while(element);
+            p.x = evt.pageX;//CLMSUI.utils.crossBrowserElementX(evt);//, this.svgElement);
+            p.y = evt.pageY;//CLMSUI.utils.crossBrowserElementY(evt);//, this.svgElement);
             return p;
         },   
 
@@ -733,9 +733,10 @@
                 }
             }
 
-			var width = this.svgElement.clientWidth;
-            var height = this.svgElement.clientHeight;
-			var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
+			var bBox = this.svgElement.getBoundingClientRect();
+			var width = bBox.width;
+            var height = bBox.height;
+            var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
 			console.log("autolayout link length:",k);
             
             var linkArr = Array.from(links.values());
@@ -840,7 +841,7 @@ CLMS.xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
 CLMS.xiNET.defaultInterLinkColour = new RGBColor("#35978f");
 CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 
-//static var's signifying Controller's status - TOD: get rid of all th`is
+//static var's signifying Controller's status - TOD: get rid of all this
 CLMS.xiNET.Controller = {};
 CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 CLMS.xiNET.Controller.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
