@@ -706,8 +706,10 @@
                 }
             }
 
-			var width = this.svgElement.clientWidth;
-            var height = this.svgElement.clientHeight;
+			var bBox = this.svgElement.getBoundingClientRect();
+			var width = bBox.width;
+            		var height = bBox.height;
+            
 			var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
 			console.log("autolayout link length:",k);
             
