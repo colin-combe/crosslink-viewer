@@ -121,8 +121,10 @@
             this.initProteins();
 
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+            
             for(var crossLink of crossLinks){
                 if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
+            
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
@@ -135,8 +137,8 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
-
-            for (p_pLink of this.renderedP_PLinks.values()) {
+			
+            for (var p_pLink of this.renderedP_PLinks.values()) {
                 var p_pCrossLinkCount = p_pLink.crossLinks.length;
                 if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
@@ -273,13 +275,13 @@
             this.z = this.container.getCTM().inverse().a;
 
             var proteins = this.renderedProteins.values();
-            for (prot of proteins) {
+            for (var prot of proteins) {
                 prot.setPosition(prot.x, prot.y); // this rescales the protein
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
 
-            for (renderedCrossLink of this.renderedCrossLinks.values()) {
+            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
                 if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
 					//TODO: hmmm
 					if (renderedCrossLink.line) {
@@ -292,7 +294,7 @@
                 }
             }
 
-            for (p_pLink of this.renderedP_PLinks.values()) {
+            for (var p_pLink of this.renderedP_PLinks.values()) {
                 if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                     && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
                     //TODO: hmmm
@@ -310,13 +312,13 @@
 
         setAnnotations: function () {
 			var annotationTypes = this.model.get("annotationTypes");
-			for (prot of this.renderedProteins.values()) {
+			for (var prot of this.renderedProteins.values()) {
                 var featuresShown = [];
                 //here we need to add the aligned region annotatiion, if they're selected
 				
 				//add uniprot features
 				if (prot.participant.uniprot) {
-					for (feature of prot.participant.uniprot.features) {
+					for (var feature of prot.participant.uniprot.features) {
 						var annotationTypeId = feature.category + "-" + feature.type
 						var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
 						var annotationType = filtered[0];
@@ -665,7 +667,7 @@
 
             // incase proteins have been added which are not included in layout -
             var proteinIter = this.renderedProteins.values();
-            for (prot of proteinIter) {
+            for (var prot of proteinIter) {
                 if (prot.x == null) {
                     prot.init()
                     prot.setPosition(20, 20);
@@ -701,7 +703,7 @@
             } 
             
 			var nodes = []; // not hidden nodes
-            for (renderedParticipant of this.renderedProteins.values()) {
+            for (var renderedParticipant of this.renderedProteins.values()) {
 				if (renderedParticipant.participant.hidden === false) {
 					nodes.push(renderedParticipant);
 				}
@@ -747,7 +749,7 @@
            
             this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
                 var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
-                for (node of nodes) {
+                for (var node of nodes) {
 					var offsetX = node.x;// - node.upperGroup.getBBox().x;
                     var offsetY = node.y ;//- node.upperGroup.getBBox().y;
                     node.setPosition(offsetX, offsetY);
@@ -776,7 +778,7 @@
                 p_pLink.showHighlight(false);
             }
             var crossLinks = this.model.get("highlights");
-            for (crossLink of crossLinks) {
+            for (var crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 if (renderedCrossLink.renderedFromProtein.form == 1
                     || renderedCrossLink.renderedToProtein.form == 1) {
@@ -798,7 +800,7 @@
                 p_pLink.setSelected(false);
             }
             var crossLinks = this.model.get("selection");
-            for (crossLink of crossLinks) {
+            for (var crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);
                 var p_pLink = this.renderedP_PLinks.get(
@@ -813,7 +815,7 @@
                 renderedInteractor.setSelected(false);
             }
             var selectedInteractors = this.model.get("selectedProtein").values();
-            for (interactor of selectedInteractors) {
+            for (var interactor of selectedInteractors) {
                 var renderedInteractor = this.renderedProteins.get(interactor.id);
                 renderedInteractor.setSelected(true);
             }
