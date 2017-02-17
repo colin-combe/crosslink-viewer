@@ -165,8 +165,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.model.set("selection", _.clone(this.crossLinks));
     }
     //store start location
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 };
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
@@ -177,8 +177,8 @@ CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.set("selection", this.crossLinks);
     //store start location
-    var p = this.crosslinkViewer.getTouchEventPoint(evt);// seems to be correct, see above
-    this.crosslinkViewer.dragStart = p;
+    //var p = this.crosslinkViewer.getTouchEventPoint(evt);// oh dear, now broken
+    this.crosslinkViewer.dragStart = evt;
 }
 
 CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {

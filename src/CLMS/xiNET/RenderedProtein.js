@@ -146,8 +146,8 @@ CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
             //~ this.setSelected(!this.isSelected);
         //~ }
         //store start location
-        var p = this.crosslinkViewer.getEventPoint(evt);
-        this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+        //var p = this.crosslinkViewer.getEventPoint(evt);
+        this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
         return false;
 };
 
@@ -161,8 +161,8 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
         //~ this.crosslinkViewer.clearSelection();
         //~ this.setSelected(true);
         //store start location
-        var p = this.crosslinkViewer.getTouchEventPoint(evt);
-        this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+        //var p = this.crosslinkViewer.getTouchEventPoint(evt); //oh dear - now broken
+        this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
         return false;
 };
 

@@ -73,9 +73,13 @@
 
             
             // various SVG groups needed
+            this.wrapper = document.createElementNS(CLMS.xiNET.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
+            var identM = this.svgElement.createSVGMatrix()
+            var s = "matrix(" + identM.a + "," + identM.b + "," + identM.c + "," + identM.d + "," + identM.e + "," + identM.f + ")";
+            this.wrapper.setAttribute("transform", s);
             this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
             this.container.setAttribute("id", "container");
-
+			this.wrapper.appendChild(this.container);
             this.p_pLinksWide = document.createElementNS(CLMS.xiNET.svgns, "g");
             this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
             this.container.appendChild(this.p_pLinksWide);
@@ -100,7 +104,7 @@
             this.proteinUpper.setAttribute("id", "proteinUpper");
             this.container.appendChild(this.proteinUpper);
 
-            this.svgElement.appendChild(this.container);
+            this.svgElement.appendChild(this.wrapper);
             
             //var is a d3 selection unlike those above
             this.selectionRectSel = d3.select(this.svgElement).append("rect")
@@ -360,8 +364,8 @@
                 this.cola.stop();
             }
 
-            //var p = this.getEventPoint(evt);// seems to be correct, see below
-            this.dragStart = this.getEventPoint(evt);//this.mouseToSVG(p.x, p.y);
+            //var p = this.getEventPoint(evt);
+            this.dragStart = evt;//this.mouseToSVG(p.x, p.y);
             this.state = CLMS.xiNET.Controller.SELECT_PAN;
             this.panned = false;
             
@@ -374,9 +378,8 @@
             var p = this.getEventPoint(evt);// seems to be correct, see below
             var c = p.matrixTransform(this.container.getCTM().inverse());//this.mouseToSVG(p.x, p.y);
             
-			
             if (this.dragElement != null) { //dragging or rotating
-				var ds = this.dragStart.matrixTransform(this.container.getCTM().inverse());
+				var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
                 var dx = ds.x - c.x;
 				var dy = ds.y - c.y;
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
@@ -401,7 +404,7 @@
                             renderedProtein.setAllLineCoordinates();
                         }
                     }
-                    this.dragStart = p;
+                    this.dragStart = evt;
                 }
 
                 else if (this.state === CLMS.xiNET.Controller.ROTATING) {
@@ -429,7 +432,7 @@
             else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
 				if (this.clickModeIsSelect) {
 					//SELECT
-					var ds = this.dragStart.matrixTransform(this.svgElement.getScreenCTM().inverse());
+					var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
 					var dx = c.x - ds.x;
 					var dy = c.y - ds.y;
 					
@@ -479,7 +482,7 @@
 										
 				} else {
 					//PAN
-					var ds = this.dragStart.matrixTransform(this.container.getCTM().inverse());
+					var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
 					var dx = c.x - ds.x;
 					var dy = c.y - ds.y;
 				
@@ -487,7 +490,7 @@
 								this.container.getCTM()
 								.translate(dx, dy)
 								);
-					this.dragStart = p;
+					this.dragStart = evt;
   				}
           }
 
@@ -587,15 +590,15 @@
         
        getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
-            //~ var element = this.svgElement.parentNode;
-            //~ var top = 0, left = 0;
-            //~ do {
-                //~ top += element.offsetTop  || 0;
-                //~ left += element.offsetLeft || 0;
-                //~ element = element.offsetParent;
-           //~ } while(element);
-            p.x = evt.pageX;//CLMSUI.utils.crossBrowserElementX(evt);//, this.svgElement);
-            p.y = evt.pageY;//CLMSUI.utils.crossBrowserElementY(evt);//, this.svgElement);
+            var element = this.svgElement.parentNode;
+            var top = 0, left = 0;
+            do {
+                top += element.offsetTop  || 0;
+                left += element.offsetLeft || 0;
+                element = element.offsetParent;
+           } while(element);
+            p.x = evt.clientX - left;//CLMSUI.utils.crossBrowserElementX(evt);//, this.svgElement);
+            p.y = evt.clientY - top;//CLMSUI.utils.crossBrowserElementY(evt);//, this.svgElement);
             return p;
         },   
 
@@ -821,7 +824,6 @@
             }
             return this;
         },
-        
 
         hiddenParticipantsChanged: function () {
             for (var renderedInteractor of this.renderedProteins.values()) {

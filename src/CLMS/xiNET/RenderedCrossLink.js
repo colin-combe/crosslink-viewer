@@ -140,8 +140,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 		}
 	}
     //store start location
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
@@ -153,8 +153,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.set("selection", [this.crossLink]);
     //store start location
-    var p = this.crosslinkViewer.getTouchEventPoint(evt);// seems to be correct, see above
-    this.crosslinkViewer.dragStart = p;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getTouchEventPoint(evt);// broke
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 }
 
 // andAlternatives means highlight alternative links in case of site ambiguity,
