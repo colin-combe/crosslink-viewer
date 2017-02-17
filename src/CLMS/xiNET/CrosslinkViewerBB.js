@@ -30,7 +30,7 @@
             var defaultOptions = {};
             this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
-            this.clickModeIsSelect = true;
+            this.clickModeIsSelect = false;
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
@@ -38,8 +38,8 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
                     "<div class='xinetButtonBar'>" +
-                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect' checked></label>" +
-                        "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan'></label>" +
+                        "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
                         "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
                         "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
                         "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
