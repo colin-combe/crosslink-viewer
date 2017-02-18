@@ -217,7 +217,7 @@ CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
 
 CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
     if (select){// && this.isSelected === false) {
-        this.isSelected = true;
+		this.isSelected = true;
         this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     }
@@ -506,7 +506,7 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
-    if (!this.participant.hidden){
+    //if (!this.participant.hidden){
 		this.busy = true;
 		this.removePeptides();
 		if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
@@ -629,7 +629,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 				return false;
 			}
 		}
-	}
+	//~ }
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getX = function() {return this.x;}
