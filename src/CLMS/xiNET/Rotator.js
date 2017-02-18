@@ -93,7 +93,7 @@ CLMS.xiNET.Rotator.prototype.rotatorMouseDown = function (evt) {
 	this.ctrl.state = CLMS.xiNET.Controller.ROTATING;
 	this.ctrl.dragElement = this.proteinOrPartThereof;
 	var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
-	var c = this.ctrl.mouseToSVG(p.x, p.y);
+	var c = p.matrixTransform(this.ctrl.container.getCTM().inverse());
 	this.ctrl.whichRotator = this.upperOrLower;
 	return false;
 }

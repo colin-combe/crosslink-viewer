@@ -11,18 +11,18 @@
     CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         events: {
             "change .clickToSelect": "setClickModeSelect",
-            "change .clickToToggle": "setClickModeToggle",
+            "change .clickToPan": "setClickModePan",
             "click .saveLayout": "saveLayout",
             "click .resetLayout": "reset",
             "click .downloadButton": "downloadSVG"
         },
 
         setClickModeSelect: function (){
-            this.clickModeIsToggle = false;
+            this.clickModeIsSelect = true;
         },
 
-        setClickModeToggle: function (){
-            this.clickModeIsToggle = true;
+        setClickModePan: function (){
+            this.clickModeIsSelect = false;
         },
 
         initialize: function (viewOptions) {
@@ -30,7 +30,7 @@
             var defaultOptions = {};
             this.options = _.extend(defaultOptions, viewOptions.myOptions);
 
-            this.clickModeIsToggle = true;
+            this.clickModeIsSelect = false;
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
@@ -38,8 +38,8 @@
             d3.select(this.el).html(
                 "<div class='xinetControls'>" +
                     "<div class='xinetButtonBar'>" +
+                        "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
                         "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                        "<label><span>EXPAND/COLLAPSE</span><input type='radio' name='clickMode' class='clickToToggle' checked></label>" +
                         "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
                         "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
                         "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
@@ -51,17 +51,14 @@
             this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
-            // disable right click context menu (we wish to put right click to our own purposes)
-            this.svgElement.oncontextmenu = function() {
-                return false;
-            };
+			this.svgElement.setAttribute("style", "pointer-events:visible");
 
             //add listeners
             var self = this;
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
             this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
             this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
-            this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
+            //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
             var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
             if (document.attachEvent){ //if IE (and Opera depending on user setting)
                 this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
@@ -74,12 +71,15 @@
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
-            this.svgElement.setAttribute("style", "pointer-events:visible");
-
+            
             // various SVG groups needed
+            this.wrapper = document.createElementNS(CLMS.xiNET.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
+            var identM = this.svgElement.createSVGMatrix()
+            var s = "matrix(" + identM.a + "," + identM.b + "," + identM.c + "," + identM.d + "," + identM.e + "," + identM.f + ")";
+            this.wrapper.setAttribute("transform", s);
             this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
             this.container.setAttribute("id", "container");
-
+			this.wrapper.appendChild(this.container);
             this.p_pLinksWide = document.createElementNS(CLMS.xiNET.svgns, "g");
             this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
             this.container.appendChild(this.p_pLinksWide);
@@ -104,15 +104,31 @@
             this.proteinUpper.setAttribute("id", "proteinUpper");
             this.container.appendChild(this.proteinUpper);
 
-            this.svgElement.appendChild(this.container);
-
+            this.svgElement.appendChild(this.wrapper);
+            
+            //var is a d3 selection unlike those above
+            this.selectionRectSel = d3.select(this.svgElement).append("rect")
+					.attr("x", 10)
+                    .attr("y", 10)
+                    .attr("width", 50)
+                    .attr("height", 100)
+                    .attr("stroke", "red")
+                    .attr("stroke-dasharray","4,4")
+                    .attr("stroke-dashoffset","32")
+                    .style("animation", "dash 2s linear infinite")
+                    .attr("fill", "none")
+                    .attr("display", "none")
+                    ;
+                    
             this.clear();
 
             this.initProteins();
 
             var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
+            
             for(var crossLink of crossLinks){
                 if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
+            
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 
@@ -125,8 +141,8 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
-
-            for (p_pLink of this.renderedP_PLinks.values()) {
+			
+            for (var p_pLink of this.renderedP_PLinks.values()) {
                 var p_pCrossLinkCount = p_pLink.crossLinks.length;
                 if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
@@ -146,6 +162,7 @@
             }
 
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
+            this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
@@ -170,11 +187,11 @@
             d3.select(this.proteinLower).selectAll("*").remove();
             d3.select(this.proteinUpper).selectAll("*").remove();
 
-            this.panning = false;
+            //~ this.panning = false;
             this.dragElement = null;
-            this.dragging = false;
+            //~ this.dragging = false;
             this.dragStart = {};
-            this.rotating = false;
+            //~ this.rotating = false;
 
             this.renderedProteins = new Map();
             this.renderedCrossLinks = new Map();
@@ -233,18 +250,12 @@
             var prots = this.renderedProteins.values();
             var protCount = prots.length;
 
-            // if (protCount < 3) {
-                // for (var j =0; j < protCount; j++){
-                    // prots[j].busy = false;
-                    // prots[j].setForm(1);
-                // }
-            // }
-            // if (this.annotationSet){
-               this.setAnnotations(this.annotationSet);
-            // }
-            // else {
-                // this.setAnnotations('CUSTOM');
-            // }
+            if (protCount < 3) {
+                 for (var j =0; j < protCount; j++){
+                     prots[j].busy = false;
+                     prots[j].setForm(1);
+                }
+            }
         },
 
         reset: function() {
@@ -265,47 +276,53 @@
         },
 
         scale: function () {
-            this.z = this.container.getScreenCTM().inverse().a;
+            this.z = this.container.getCTM().inverse().a;
 
             var proteins = this.renderedProteins.values();
-            for (prot of proteins) {
+            for (var prot of proteins) {
                 prot.setPosition(prot.x, prot.y); // this rescales the protein
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
 
-            for (renderedCrossLink of this.renderedCrossLinks.values()) {
+            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
                 if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-                    renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-                    renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                    if (renderedCrossLink.crossLink.ambiguous === true) {
-                        renderedCrossLink.dashedLine(true); //rescale spacing of dashes
-                    }
+					//TODO: hmmm
+					if (renderedCrossLink.line) {
+						renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+						renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+						if (renderedCrossLink.crossLink.ambiguous === true) {
+							renderedCrossLink.dashedLine(true); //rescale spacing of dashes
+						}
+					}
                 }
             }
 
-            for (p_pLink of this.renderedP_PLinks.values()) {
+            for (var p_pLink of this.renderedP_PLinks.values()) {
                 if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                     && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
-                    p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
-                    p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                    p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
-                    if (p_pLink.ambiguous) {
-                        p_pLink.dashedLine(true); //rescale spacing of dashes
-                    }
+                    //TODO: hmmm
+					if (p_pLink.line) {
+						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
+						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						if (p_pLink.ambiguous) {
+							p_pLink.dashedLine(true); //rescale spacing of dashes
+						}
+					}
                 }
             }
         },
 
         setAnnotations: function () {
 			var annotationTypes = this.model.get("annotationTypes");
-			for (prot of this.renderedProteins.values()) {
+			for (var prot of this.renderedProteins.values()) {
                 var featuresShown = [];
                 //here we need to add the aligned region annotatiion, if they're selected
 				
 				//add uniprot features
 				if (prot.participant.uniprot) {
-					for (feature of prot.participant.uniprot.features) {
+					for (var feature of prot.participant.uniprot.features) {
 						var annotationTypeId = feature.category + "-" + feature.type
 						var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
 						var annotationType = filtered[0];
@@ -347,23 +364,24 @@
                 this.cola.stop();
             }
 
-            var p = this.getEventPoint(evt);// seems to be correct, see below
-            this.dragStart = this.mouseToSVG(p.x, p.y);
-            this.state = CLMS.xiNET.Controller.PANNING;
+            //var p = this.getEventPoint(evt);
+            this.dragStart = evt;//this.mouseToSVG(p.x, p.y);
+            this.state = CLMS.xiNET.Controller.SELECT_PAN;
             this.panned = false;
+            
+            //var toHighlight = [] // oops we dont have synched participant highlighting
+            this.idsToSelect = [];                 
         },
 
-        // dragging/rotation/panning/selecting
+        // dragging/rotation/SELECT_PAN/selecting
         mouseMove: function(evt) {
-            //~ this.preventDefaultsAndStopPropagation(evt);
             var p = this.getEventPoint(evt);// seems to be correct, see below
-            var c = this.mouseToSVG(p.x, p.y);
-
+            var c = p.matrixTransform(this.container.getCTM().inverse());//this.mouseToSVG(p.x, p.y);
+            
             if (this.dragElement != null) { //dragging or rotating
-//                  this.hideTooltip();
-                var dx = this.dragStart.x - c.x;
-                var dy = this.dragStart.y - c.y;
-
+				var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+                var dx = ds.x - c.x;
+				var dy = ds.y - c.y;
                 if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
@@ -386,7 +404,7 @@
                             renderedProtein.setAllLineCoordinates();
                         }
                     }
-                    this.dragStart = c;
+                    this.dragStart = evt;
                 }
 
                 else if (this.state === CLMS.xiNET.Controller.ROTATING) {
@@ -411,76 +429,104 @@
                     }
                 }
             }
-            else if (this.state === CLMS.xiNET.Controller.PANNING) {
-               this.setCTM(this.container, this.container.getCTM().translate(c.x - this.dragStart.x, c.y - this.dragStart.y));
-            }
+            else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
+				if (this.clickModeIsSelect) {
+					//SELECT
+					var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
+					var dx = c.x - ds.x;
+					var dy = c.y - ds.y;
+					
+					var sx = p.x - ds.x;
+					var sy = p.y - ds.y;
+
+					var rectX = ds.x;
+					if (sx < 0) {
+						rectX += sx;
+					}
+					var rectY = ds.y;
+					if (sy < 0) {
+						rectY += sy;
+					}
+					
+					this.selectionRectSel.attr("display", "inline")
+						.attr("x", rectX)
+						.attr("y", rectY)
+						.attr("width", Math.abs(sx))
+						.attr("height", Math.abs(sy));
+                    ;
+                    
+                    for (renderedParticipant of this.renderedProteins.values()) {
+						if (renderedParticipant.participant.hidden !== true) {
+							var svgRect = this.svgElement.createSVGRect();
+							svgRect.x = rectX;
+							svgRect.y = rectY;
+							svgRect.width = Math.abs(sx);
+							svgRect.height = Math.abs(sy);
+							//~ d3.select(svgRect).attr("x", rectX)
+								//~ .attr("y", rectY)
+								//~ .attr("width", Math.abs(sx))
+								//~ .attr("height", Math.abs(sy));
+							var intersects = this.svgElement.getIntersectionList(svgRect, renderedParticipant.upperGroup );
+							//~ var intersects = this.svgElement.checkIntersection(
+									//~ renderedParticipant.upperGroup.getBBox(), this.selectionRectSel.node());
+							if (intersects.length > 0) {
+								renderedParticipant.showHighlight(true);
+								this.idsToSelect.push(renderedParticipant.participant.id);
+							} else {
+								renderedParticipant.showHighlight(false);
+							}
+						}
+					
+					}
+                    
+										
+				} else {
+					//PAN
+					var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+					var dx = c.x - ds.x;
+					var dy = c.y - ds.y;
+				
+					this.setCTM(this.container, 
+								this.container.getCTM()
+								.translate(dx, dy)
+								);
+					this.dragStart = evt;
+  				}
+          }
+
+  
         },
 
 
         // this ends all dragging and rotating
         mouseUp: function(evt) {
-            var time = new Date().getTime();
+            var add = evt.ctrlKey || evt.shiftKey;
+			var time = new Date().getTime();
             //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
             this.preventDefaultsAndStopPropagation(evt);
+            
+            //remove selection rect, may not be shown but just do this now
+            this.selectionRectSel.attr("display", "none");
+            
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
-                //which button has just been raised
-                var rightclick, middleclick;
-                if (evt.which)
-                    rightclick = (evt.which === 3);
-                else if (evt.button)
-                    rightclick = (evt.button === 2);
-                if (evt.which)
-                    middleclick = (evt.which === 2);
-                else if (evt.button)
-                    middleclick = (evt.button === 1);
 
                 var p = this.getEventPoint(evt);
-                var c = this.mouseToSVG(p.x, p.y);
+                var c = p.matrixTransform(this.container.getCTM().inverse());
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
-                        if (rightclick) {
-                            if (typeof this.dragElement.x === 'undefined') {//if not protein or p.group
-                                if (this.dragElement.crossLink.isSelfLink() == true) {//if internal link
-                                    this.dragElement.renderedFromProtein.toggleFlipped();
-                                } else {
-                                    if (this.dragElement.hidden !== undefined) {//if CLMS.xiNET.RenderedProteinLink
-                                        this.dragElement.hidden = true;
-                                    } else {//its a residue link
-                                        this.dragElement.proteinLink.hidden = true;
-                                    }
-                                    this.dragElement.highlightLine.setAttribute("stroke-opacity", "0");
-                                    this.checkLinks();
-                                }
-                            } else {//right click on protein
-                                this.dragElement.setParked(!this.dragElement.isParked, c);
-                                this.checkLinks();
-                            }
-                        }
-                        else if (middleclick) {
-                            //can't be used? problem with IE (scroll thingy)
-                        }
-                        else { //left click; toggle form for protein, switch stick scale
                             if (this.dragElement.x) { //if protein
-                                if (this.clickModeIsToggle) {
-                                    if (evt.ctrlKey || evt.shiftKey) {
-                                        this.dragElement.switchStickScale(c);
-                                    }else {
-                                        if (this.dragElement.form === 1) {
-                                            this.dragElement.setForm(0, c);
-                                        } else {
-                                            this.dragElement.setForm(1, c);
-                                        }
-                                    }
-                                } else {
-                                    var add = evt.ctrlKey || evt.shiftKey;
-                                    this.model.setSelectedProteins([this.dragElement.participant.id], add);
-                                    this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
-                                }
+								if (evt.ctrlKey || evt.shiftKey) {
+									this.dragElement.switchStickScale(c);
+								}else {
+									if (this.dragElement.form === 1) {
+										this.dragElement.setForm(0, c);
+									} else {
+										this.dragElement.setForm(1, c);
+									}
+								}
                             }
-                        }
-                        //~ this.checkLinks();
                     }
                     else if (this.state === CLMS.xiNET.Controller.ROTATING) {
                         //round protein rotation to nearest 5 degrees (looks neater)
@@ -489,27 +535,31 @@
                     else {
                     } //end of protein drag; do nothing
                 }
-                else if (rightclick) { //right click on background; show all hidden links
-                    //~ var links = this.renderedProteinLinks.values();
-                    //~ var linkCount = links.length;
-                    //~ for (var l = 0; l < linkCount; l++) {
-                        //~ var link = links[l];
-                        //~ link.hidden = false;
-                    //~ }
-                    //~ this.checkLinks();
-                } else if (/*this.state !== xiNET.Controller.PANNING &&*/ evt.ctrlKey === false) {
-                    this.model.set("selection", []);
-                }
 
-                if (this.state === CLMS.xiNET.Controller.SELECTING) {
-                    clearInterval(this.marcher);
-                    this.svgElement.removeChild(this.marquee);
+                else if (/*this.state !== xiNET.Controller.SELECT_PAN &&*/ evt.ctrlKey === false) {
+                    if (this.clickModeIsSelect) {
+						//this.model.set("selection", this.toSelect);
+						this.model.setSelectedProteins(this.idsToSelect, add);
+                 
+
+                                //~ } else {
+                                    //~ var add = evt.ctrlKey || evt.shiftKey;
+                                    //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
+                                    //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
+                                //~ }
+					}
+					//hmmm...
+					if (this.idsToSelect.length === 0 && add === false) {
+						this.model.calcMatchingCrosslinks ("selection", [], false, add);
+					}
                 }
+ 
+				this.dragElement = null;
+				this.whichRotator = -1;
+				this.state = CLMS.xiNET.Controller.MOUSE_UP;           
+            
             }
 
-            this.dragElement = null;
-            this.whichRotator = -1;
-            this.state = CLMS.xiNET.Controller.MOUSE_UP;
 
             this.lastMouseUp = time;
             return false;
@@ -531,15 +581,14 @@
             var z = 1 + delta;
             var g = this.container;
             var p = this.getEventPoint(evt);// seems to be correct, see above
-            var c = this.mouseToSVG(p.x, p.y);
+            var c = p.matrixTransform(this.container.getCTM().inverse());
             var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-            this.setCTM(g, g.getCTM().multiply(k));
+            this.setCTM(g, g.getScreenCTM().multiply(k));
             this.scale();
             return false;
         },
-
-        //gets mouse position
-        getEventPoint: function(evt) {
+        
+       getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
             var element = this.svgElement.parentNode;
             var top = 0, left = 0;
@@ -548,19 +597,10 @@
                 left += element.offsetLeft || 0;
                 element = element.offsetParent;
            } while(element);
-            p.x = evt.pageX - left;
-            p.y = evt.pageY - top;
+            p.x = evt.clientX - left;//CLMSUI.utils.crossBrowserElementX(evt);//, this.svgElement);
+            p.y = evt.clientY - top;//CLMSUI.utils.crossBrowserElementY(evt);//, this.svgElement);
             return p;
-        },
-
-        // transform the mouse-position into a position on the svg
-        mouseToSVG: function(x, y) {
-            var p = this.svgElement.createSVGPoint();
-            p.x = x;
-            p.y = y;
-            var p = p.matrixTransform(this.container.getCTM().inverse());
-            return p;
-        },
+        },   
 
         //stop event propogation and defaults; only do what we ask
         preventDefaultsAndStopPropagation: function(evt) {
@@ -621,15 +661,6 @@
                      //~ protein.form = 1;
                     protein.init();
 
-                    //~ if (typeof protLayout["form"]) {
-                      //~
-                    //~ }
-
-                    //~ protein.setAllLineCoordinates();// watch out for this
-
-                    if (typeof protLayout["parked"] !== 'undefined') {
-                        protein.setParked(protLayout["parked"]);
-                    }
                     if (protLayout["flipped"]) { //TODO: fix this
                         protein.toggleFlipped(); // change to setFlipped(protLayout["flipped"])
                     }
@@ -639,7 +670,7 @@
 
             // incase proteins have been added which are not included in layout -
             var proteinIter = this.renderedProteins.values();
-            for (prot of proteinIter) {
+            for (var prot of proteinIter) {
                 if (prot.x == null) {
                     prot.init()
                     prot.setPosition(20, 20);
@@ -670,36 +701,37 @@
         },
 
         autoLayout: function() {
-			
             if (this.cola) {
                 this.cola.stop();
-            } else {
-				this.cola =  cola.d3adaptor()
-                    //~ .symmetricDiffLinkLengths(k, 0.6)
-                     //~ .jaccardLinkLengths(20)
-                     //.linkDistance(k)
-                    .avoidOverlaps(true)
-                    .nodes(Array.from(this.renderedProteins.values()));
-            }
+            } 
             
+			var nodes = []; // not hidden nodes
+            for (var renderedParticipant of this.renderedProteins.values()) {
+				if (renderedParticipant.participant.hidden === false) {
+					nodes.push(renderedParticipant);
+				}
+			}			
+            
+			this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
+                    
             var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
-            var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
-            for(var crossLink of crossLinks){
+            var filteredCrossLinks = this.model.filteredNotDecoyNotLinearCrossLinks;//get("clmsModel").get("crossLinks").values();
+            var clCount = filteredCrossLinks.length;
+            for(var cl = 0; cl < clCount; ++cl){
+				var crossLink = filteredCrossLinks[cl];
                 //visible, non-self cross-links only
-                if (crossLink.check() === true &&
-					(crossLink.fromProtein.is_decoy === false && crossLink.toProtein.is_decoy === false)
-					& crossLink.isSelfLink() === false && crossLink.toProtein) {
+                if (crossLink.isSelfLink() === false) {
                     var fromId = crossLink.fromProtein.id;
                     var toId = crossLink.toProtein.id;
                     var linkId = fromId + "-" + toId;
                     if (!links.has(linkId)){
-                        var source = nodeIds.indexOf(fromId);
-                        var target = nodeIds.indexOf(toId);
+                        //~ var source = nodeIds.indexOf(fromId);
+                        //~ var target = nodeIds.indexOf(toId);
                         var linkObj = {};
-                        linkObj.source = source;
-                        linkObj.target = target;
+                        linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id);
+                        linkObj.target = this.renderedProteins.get(crossLink.toProtein.id);
                         linkObj.id = linkId;
                         links.set(linkId, linkObj);
                     }
@@ -708,9 +740,8 @@
 
 			var bBox = this.svgElement.getBoundingClientRect();
 			var width = bBox.width;
-            		var height = bBox.height;
-            
-			var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
+            var height = bBox.height;
+            var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
 			console.log("autolayout link length:",k);
             
             var linkArr = Array.from(links.values());
@@ -721,7 +752,7 @@
            
             this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
                 var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
-                for (node of nodes) {
+                for (var node of nodes) {
 					var offsetX = node.x;// - node.upperGroup.getBBox().x;
                     var offsetY = node.y ;//- node.upperGroup.getBBox().y;
                     node.setPosition(offsetX, offsetY);
@@ -750,7 +781,7 @@
                 p_pLink.showHighlight(false);
             }
             var crossLinks = this.model.get("highlights");
-            for (crossLink of crossLinks) {
+            for (var crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 if (renderedCrossLink.renderedFromProtein.form == 1
                     || renderedCrossLink.renderedToProtein.form == 1) {
@@ -772,7 +803,7 @@
                 p_pLink.setSelected(false);
             }
             var crossLinks = this.model.get("selection");
-            for (crossLink of crossLinks) {
+            for (var crossLink of crossLinks) {
                 var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
                 renderedCrossLink.setSelected(true);
                 var p_pLink = this.renderedP_PLinks.get(
@@ -787,9 +818,16 @@
                 renderedInteractor.setSelected(false);
             }
             var selectedInteractors = this.model.get("selectedProtein").values();
-            for (interactor of selectedInteractors) {
+            for (var interactor of selectedInteractors) {
                 var renderedInteractor = this.renderedProteins.get(interactor.id);
                 renderedInteractor.setSelected(true);
+            }
+            return this;
+        },
+
+        hiddenParticipantsChanged: function () {
+            for (var renderedInteractor of this.renderedProteins.values()) {
+                renderedInteractor.setHidden(renderedInteractor.participant.hidden);
             }
             return this;
         },
@@ -807,10 +845,10 @@ CLMS.xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
 CLMS.xiNET.defaultInterLinkColour = new RGBColor("#35978f");
 CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 
-//static var's signifying Controller's status - TOD: get rid of all th`is
+//static var's signifying Controller's status - TOD: get rid of all this
 CLMS.xiNET.Controller = {};
 CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-CLMS.xiNET.Controller.PANNING = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+CLMS.xiNET.Controller.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
 CLMS.xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
 CLMS.xiNET.Controller.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
 CLMS.xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?

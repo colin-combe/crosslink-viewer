@@ -24,8 +24,17 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     this.shown = false;
     //layout stuff
     this.hidden = false;
+    
+    this.isSelected = false;
+};
 
-    if (crossLink.isSelfLink() === false) {
+//static variable used to calculate width of the background line
+CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
+   
+CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
+   
+CLMS.xiNET.P_PLink.prototype.initSVG = function() {
+    if (this.crossLinks[0].isSelfLink() === false) {
         this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
         this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
         this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
@@ -35,6 +44,8 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
         this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
         this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
         this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+        
+		this.initSelfLinkSVG();
     }
 
     this.line.setAttribute("class", "link");
@@ -99,14 +110,7 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
         self.touchStart(evt);
     };
 
-    this.isSelected = false;
 }
-
-
-//static variable used to calculate width of the background line
-CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
-
-CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
@@ -161,8 +165,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.model.set("selection", _.clone(this.crossLinks));
     }
     //store start location
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 };
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
@@ -173,8 +177,8 @@ CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.set("selection", this.crossLinks);
     //store start location
-    var p = this.crosslinkViewer.getTouchEventPoint(evt);// seems to be correct, see above
-    this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getTouchEventPoint(evt);// oh dear, now broken
+    this.crosslinkViewer.dragStart = evt;
 }
 
 CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
@@ -215,7 +219,7 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
-    if (this.renderedFromProtein.isParked || this.renderedToProtein.isParked
+    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden
             || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
         this.hide();
         return false;
@@ -282,6 +286,9 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
     if (!this.shown) {
+        if (typeof this.line === 'undefined') {
+            this.initSVG();
+        }
         this.shown = true;
         if (this.renderedFromProtein === this.renderedToProtein) {
             this.thickLine.setAttribute("transform", "translate(" +

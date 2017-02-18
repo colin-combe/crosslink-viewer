@@ -27,7 +27,7 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
-    if (typeof this.line === 'undefined') {
+    //~ if (typeof this.line === 'undefined') {
         if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
             this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
             this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
@@ -78,7 +78,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
         this.highlightLine.ontouchstart = function(evt) {
             self.touchStart(evt);
         };
-    }
+    //~ }
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
@@ -140,8 +140,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 		}
 	}
     //store start location
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
@@ -153,8 +153,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.set("selection", [this.crossLink]);
     //store start location
-    var p = this.crosslinkViewer.getTouchEventPoint(evt);// seems to be correct, see above
-    this.crosslinkViewer.dragStart = this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.crosslinkViewer.getTouchEventPoint(evt);// broke
+    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 }
 
 // andAlternatives means highlight alternative links in case of site ambiguity,
@@ -220,8 +220,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
             return false;
     }
 
-    if (this.renderedFromProtein.isParked === true
-        || (this.renderedToProtein && this.renderedToProtein.isParked == true)) {
+    if (this.renderedFromProtein.participant.hidden === true
+        || this.renderedToProtein.participant.hidden == true) {
             this.hide();
             return false;
     }
