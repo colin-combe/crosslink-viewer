@@ -171,12 +171,10 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.get("tooltipModel")
-        .set("header", this.participant.name.replace("_", " "))
-        .set("contents", [
-            ["ID", this.participant.id], ["Accession", this.participant.accession],["Size", this.participant.size], ["Desc.", this.participant.description]
-        ])
+		.set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor (this.participant))
+		.set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor (this.participant))
         .set("location", {pageX: p.x, pageY: p.y})
-        ;
+    ;
 };
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
@@ -938,23 +936,40 @@ CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats) {
-    this.annotations = [];
+    this.annotations = new Map ();
     if (this.circDomains) d3.select(this.circDomains).selectAll("*").remove();
     if (this.rectDomains) d3.select(this.rectDomains).selectAll("*").remove();
 }
 
-CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) {
+CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     this.clearPositionalFeatures();
     //create new annotations
-    if (posFeats) {                    
+    var featuresShown = [];         
+    			    
+	//TODO: here we need to add the aligned region annotatiion, if they're selected
+	
+	//add uniprot features
+	if (this.participant.uniprot) {
+		for (var feature of this.participant.uniprot.features) {
+			var annotationTypeId = feature.category + "-" + feature.type
+			var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:annotationTypeId})
+			var annotationType = filtered[0];
+			if (annotationType.get("shown") === true) {
+				featuresShown.push(feature);
+			}
+		}
+	}
+	
+	if (featuresShown) {                    
         //draw longest regions first
-        posFeats.sort(function(a, b) {
+        featuresShown.sort(function(a, b) {
             return (b.end - b.begin) - (a.end - a.begin);
         });
         
-        this.annotations = posFeats;
-        for (var i = 0; i < posFeats.length; i++) {
-            var anno = posFeats[i];
+        var fsLen = featuresShown.length;
+        for (var f = 0; f < fsLen;f++) {
+            
+            var anno = featuresShown[f];
 
 			var convStart = anno.begin;
 			var convEnd = anno.end;
@@ -964,57 +979,53 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
 				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+				anno.fstart = convStart;
+				anno.fend =convEnd;
 			}
+			
+			var fid = anno.category + "-" + anno.type + "[" + convStart + " - " + convEnd + "]";
+            this.annotations.set(fid, anno);
 
-			//hmm - these var's end up in protein.participant.uniprotFeatues, seems not right. TODO: fix
-            anno.pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
-            anno.colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
+			var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
+            var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
             if (this.form === 0) {
-                anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+                pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+                colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
             } else {
-                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+                pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+                colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
             }
-            anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.5");
-            anno.colouredRect.setAttribute("stroke-width", 1);
-            anno.colouredRect.setAttribute("fill-opacity", "0.5");
-            var text = anno.type + " [" + anno.begin + " - " + anno.end + "]";
-            anno.pieSlice.setAttribute("data-feature", text + "~"  + convStart + "~" + convEnd);
-            var xlv = this.crosslinkViewer;
+            pieSlice.setAttribute("stroke-width", 1);
+            pieSlice.setAttribute("fill-opacity", "0.5");
+            colouredRect.setAttribute("stroke-width", 1);
+            colouredRect.setAttribute("fill-opacity", "0.5");
+	
+			var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+			pieSlice.setAttribute("fill", c);
+			pieSlice.setAttribute("stroke", c);
+			colouredRect.setAttribute("fill", c);
+			colouredRect.setAttribute("stroke", c);
+            
+            pieSlice.setAttribute("data-feature", fid);
+            
             var self = this;
             
-            anno.pieSlice.onmouseover = function (evt) {
+            //only needs tooltip on pie slice, its always on top even if transparent
+            pieSlice.onmouseover = function (evt) {
 				self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-				var dataAtts = evt.target.getAttribute("data-feature").split('~');
-				
+				var feature = self.annotations.get(evt.target.getAttribute("data-feature"));
 				self.crosslinkViewer.model.get("tooltipModel")
                     //.set("header", d.id.replace("_", " "))
-                    .set("header", "Feature")
-                    .set("contents", [
-                        ["Name", dataAtts[0]],
-                        ["Start", dataAtts[1]],
-                        ["End", dataAtts[2]]
-                    ])
+                    .set("header", CLMSUI.modelUtils.makeTooltipTitle.feature())
+                    .set("contents", 
+						CLMSUI.modelUtils.makeTooltipContents.feature(feature)
+					)
                     .set("location", {pageX: evt.pageX, pageY: evt.pageY})
                 ;
 			} ;
-            //~ anno.colouredRect.onmouseover = function (evt) {
-				//~ self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-				//~ self.crosslinkViewer.model.get("tooltipModel")
-                    //~ //.set("header", d.id.replace("_", " "))
-                    //~ .set("header", "Feature")
-                    //~ .set("contents", [
-                        //~ ["Name", anno.id],
-                        //~ ["Start", anno.fstart],
-                        //~ ["End", anno.fend]
-                    //~ ])
-                    //~ .set("location", {pageX: evt.pageX, pageY: evt.pageY})
-                //~ ;
-			//~ } ;
-            this.circDomains.appendChild(anno.pieSlice);
-            this.rectDomains.appendChild(anno.colouredRect);
+
+            this.circDomains.appendChild(pieSlice);
+            this.rectDomains.appendChild(colouredRect);
         }
     }
 };
@@ -1110,12 +1121,11 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation
     return rectPath;
 };
 
-//should be some sort of config options
+//TODO: should be some sort of config options
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20;        // height of stick in pixels
 CLMS.xiNET.RenderedProtein.MAXSIZE = 100;           // residue count of longest sequence
 CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = 1;   // this value is changed during init (calculated on basis of MAXSIZE)
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60;     // maximal width reserved for protein-labels
 CLMS.xiNET.RenderedProtein.labelY = -5;             // label Y offset, better if calc'd half height of label once rendered
-//~ CLMS.xiNET.RenderedProtein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
 CLMS.xiNET.RenderedProtein.transitionTime = 650;
 CLMS.xiNET.RenderedProtein.stepsInArc = 5;

@@ -168,6 +168,7 @@
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
+            //TODO - potentially needs to redraw annotations if alignment changes
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.render();
             this.linkColourChanged();
@@ -301,8 +302,7 @@
             for (var p_pLink of this.renderedP_PLinks.values()) {
                 if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                     && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
-                    //TODO: hmmm
-					if (p_pLink.line) {
+                    if (p_pLink.line) {
 						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
 						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
@@ -316,35 +316,10 @@
 
         setAnnotations: function () {
 			var annotationTypes = this.model.get("annotationTypes");
-			for (var prot of this.renderedProteins.values()) {
-                var featuresShown = [];
-                //here we need to add the aligned region annotatiion, if they're selected
-				
-				//add uniprot features
-				if (prot.participant.uniprot) {
-					for (var feature of prot.participant.uniprot.features) {
-						var annotationTypeId = feature.category + "-" + feature.type
-						var filtered = this.model.get("annotationTypes").filter({id:annotationTypeId})
-						var annotationType = filtered[0];
-						if (annotationType.get("shown") === true) {
-							featuresShown.push(feature);
-						}
-					}
-				}
-				//set positional features, aka annotated regions 
-				prot.setPositionalFeatures(featuresShown);
-            }
-            var self = this;
-
-            for (var mol of self.renderedProteins.values()) {
-                for (a = 0; a < mol.annotations.length; a++) {
-                    var anno = mol.annotations[a];
-                    var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
-                    anno.pieSlice.setAttribute("fill", c);
-                    anno.pieSlice.setAttribute("stroke", c);
-                    anno.colouredRect.setAttribute("fill", c);
-                    anno.colouredRect.setAttribute("stroke", c);
-                }
+			var renderedParticipants = Array.from(this.renderedProteins.values());
+			var rpLen = renderedParticipants.length;
+			for (var p = 0; p < rpLen; p++ ) {
+				renderedParticipants[p].setPositionalFeatures();
             }
         },
 
@@ -549,7 +524,7 @@
                                 //~ }
 					}
 					//hmmm...
-					if (this.idsToSelect.length === 0 && add === false) {
+					if ((!this.idsToSelect || this.idsToSelect.length === 0) && add === false) {
 						this.model.calcMatchingCrosslinks ("selection", [], false, add);
 					}
                 }

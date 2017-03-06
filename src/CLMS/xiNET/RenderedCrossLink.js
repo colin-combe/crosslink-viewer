@@ -98,14 +98,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
 	this.crosslinkViewer.model.set("highlights", toHighlight);
    	    
     this.crosslinkViewer.model.get("tooltipModel")
-                        .set("header", "Linked Residue Pair")
-                        .set("contents", [
-                            ["From", this.crossLink.fromResidue, this.crossLink.fromProtein.name],
-                            ["To", this.crossLink.toResidue, this.crossLink.toProtein.name],
-                            ["Matches", this.crossLink.filteredMatches_pp.length]
-                        ])
-                        .set("location", {pageX: p.x, pageY: p.y})
-                    ;
+		.set("header", CLMSUI.modelUtils.makeTooltipTitle.link())
+		.set("contents", CLMSUI.modelUtils.makeTooltipContents.link (this.crossLink))
+		.set("location", {pageX: p.x, pageY: p.y})
+	;
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
