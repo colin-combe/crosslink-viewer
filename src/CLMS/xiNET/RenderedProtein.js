@@ -23,7 +23,6 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
-    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
     //rotators
     this.lowerRotator = new CLMS.xiNET.Rotator(this, 0, this.crosslinkViewer);
     this.upperRotator = new CLMS.xiNET.Rotator(this, 1, this.crosslinkViewer);
@@ -333,14 +332,15 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
             .translate((-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
         this.labelSVG.transform.baseVal.initialize(this.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
-        if (this.annotations){
-            var ca = this.annotations.length;
-            for (var a = 0; a < ca; a++){
-                var anno = this.annotations[a];
-                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
-            }
-        }
+        if (this.annotations) {
+			var annotArr = Array.from(this.annotations.values());
+			var annotationCount = annotArr.length;
+			for (var a = 0; a < annotationCount; a++){
+				var anno = annotArr[a], feature = anno.feature;
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(feature));
+				anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(feature));
+			}
+		}
 
         d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 
@@ -561,24 +561,25 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 		var self = this;
 		if (this.annotations) {
-			var annots = this.annotations;
-			var ca = annots.length;
-			for (var a = 0; a < ca; a++) {
-				var anno = annots[a];
-				var pieSlice = anno.pieSlice;
-				var rectDomain = anno.colouredRect;
-				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+			var annotArr = Array.from(this.annotations.values());
+			var annotationCount = annotArr.length;
+			for (var a = 0; a < annotationCount; a++){
+				var anno = annotArr[a], feature = anno.feature, 
+					pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
+				
+				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(feature))
 					.duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
 						function () {
-							for (var b = 0; b < ca; b++) {
-								var annoB = self.annotations[b];
+							for (var b = 0; b < annotationCount; b++) {
+								var annoB = annotArr[b];
 								if (this === annoB.pieSlice){
-									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
+									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.feature));
 								}
 							}
 						}
 					);
-				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
+					
+				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(feature))
 					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 			}
 		}
@@ -694,20 +695,19 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     }
 
     if (this.annotations) {
-        var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
-        var annots = this.annotations;
-        var ca = annots.length;
-        for (var a = 0; a < ca; a++) {
-            var anno = annots[a];
-            var pieSlice = anno.pieSlice;
-            var rectDomain = anno.colouredRect;
-            pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-            d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-        }
-    }
+		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+		var annotArr = Array.from(this.annotations.values());
+		var annotationCount = annotArr.length;
+		for (var a = 0; a < annotationCount; a++){
+			var anno = annotArr[a], feature = anno.feature, 
+				pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
+			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
+			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(feature))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(feature))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+		}
+	}
 
     var self = this;
     var cubicInOut = d3.ease('cubic-in-out');
@@ -979,13 +979,13 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+				//TODO: tooltip requring these to be written into feature object, seems wrong? 
 				anno.fstart = convStart;
 				anno.fend =convEnd;
 			}
 			
 			var fid = anno.category + "-" + anno.type + "[" + convStart + " - " + convEnd + "]";
-            this.annotations.set(fid, anno);
-
+            
 			var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
             var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
             if (this.form === 0) {
@@ -1013,7 +1013,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             //only needs tooltip on pie slice, its always on top even if transparent
             pieSlice.onmouseover = function (evt) {
 				self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-				var feature = self.annotations.get(evt.target.getAttribute("data-feature"));
+				var feature = self.annotations.get(evt.target.getAttribute("data-feature")).feature;
 				self.crosslinkViewer.model.get("tooltipModel")
                     //.set("header", d.id.replace("_", " "))
                     .set("header", CLMSUI.modelUtils.makeTooltipTitle.feature())
@@ -1023,8 +1023,9 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     .set("location", {pageX: evt.pageX, pageY: evt.pageY})
                 ;
 			} ;
-
-            this.circDomains.appendChild(pieSlice);
+			
+			this.annotations.set(fid, {feature: anno, pieSlice:pieSlice, colouredRect: colouredRect});
+			this.circDomains.appendChild(pieSlice);
             this.rectDomains.appendChild(colouredRect);
         }
     }
