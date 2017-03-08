@@ -132,6 +132,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     this.crosslinkViewer.model.set("highlights", toHighlight);
     
     this.crosslinkViewer.model.get("tooltipModel")
+						//TODO - reuse other multiLink tooltips in CLM-UI?
                         .set("header", "Linked Protein Pair")
                         .set("contents", [
                             ["From", this.renderedFromProtein.participant.name],

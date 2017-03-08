@@ -23,7 +23,6 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.isFlipped = false;
     this.isSelected = false;
     //annotation scheme
-    this.customAnnotations = null;//TODO: tidy up, not needed have this.annotations instead
     //rotators
     this.lowerRotator = new CLMS.xiNET.Rotator(this, 0, this.crosslinkViewer);
     this.upperRotator = new CLMS.xiNET.Rotator(this, 1, this.crosslinkViewer);
@@ -171,12 +170,10 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.get("tooltipModel")
-        .set("header", this.participant.name.replace("_", " "))
-        .set("contents", [
-            ["ID", this.participant.id], ["Accession", this.participant.accession],["Size", this.participant.size], ["Desc.", this.participant.description]
-        ])
+		.set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor (this.participant))
+		.set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor (this.participant))
         .set("location", {pageX: p.x, pageY: p.y})
-        ;
+    ;
 };
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
@@ -335,14 +332,15 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
             .translate((-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY);//.scale(z).translate(-c.x, -c.y);
         this.labelSVG.transform.baseVal.initialize(this.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
-        if (this.annotations){
-            var ca = this.annotations.length;
-            for (var a = 0; a < ca; a++){
-                var anno = this.annotations[a];
-                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
-            }
-        }
+        if (this.annotations) {
+			var annotArr = Array.from(this.annotations.values());
+			var annotationCount = annotArr.length;
+			for (var a = 0; a < annotationCount; a++){
+				var anno = annotArr[a], feature = anno.feature;
+				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(feature));
+				anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(feature));
+			}
+		}
 
         d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 
@@ -563,24 +561,25 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 		var self = this;
 		if (this.annotations) {
-			var annots = this.annotations;
-			var ca = annots.length;
-			for (var a = 0; a < ca; a++) {
-				var anno = annots[a];
-				var pieSlice = anno.pieSlice;
-				var rectDomain = anno.colouredRect;
-				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+			var annotArr = Array.from(this.annotations.values());
+			var annotationCount = annotArr.length;
+			for (var a = 0; a < annotationCount; a++){
+				var anno = annotArr[a], feature = anno.feature, 
+					pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
+				
+				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(feature))
 					.duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
 						function () {
-							for (var b = 0; b < ca; b++) {
-								var annoB = self.annotations[b];
+							for (var b = 0; b < annotationCount; b++) {
+								var annoB = annotArr[b];
 								if (this === annoB.pieSlice){
-									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
+									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.feature));
 								}
 							}
 						}
 					);
-				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(anno))
+					
+				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(feature))
 					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 			}
 		}
@@ -696,20 +695,19 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     }
 
     if (this.annotations) {
-        var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
-        var annots = this.annotations;
-        var ca = annots.length;
-        for (var a = 0; a < ca; a++) {
-            var anno = annots[a];
-            var pieSlice = anno.pieSlice;
-            var rectDomain = anno.colouredRect;
-            pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-            d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(anno))
-                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-        }
-    }
+		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+		var annotArr = Array.from(this.annotations.values());
+		var annotationCount = annotArr.length;
+		for (var a = 0; a < annotationCount; a++){
+			var anno = annotArr[a], feature = anno.feature, 
+				pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
+			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
+			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(feature))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(feature))
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+		}
+	}
 
     var self = this;
     var cubicInOut = d3.ease('cubic-in-out');
@@ -938,23 +936,40 @@ CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats) {
-    this.annotations = [];
+    this.annotations = new Map ();
     if (this.circDomains) d3.select(this.circDomains).selectAll("*").remove();
     if (this.rectDomains) d3.select(this.rectDomains).selectAll("*").remove();
 }
 
-CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) {
+CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     this.clearPositionalFeatures();
     //create new annotations
-    if (posFeats) {                    
+    var featuresShown = [];         
+    			    
+	//TODO: here we need to add the aligned region annotatiion, if they're selected
+	
+	//add uniprot features
+	if (this.participant.uniprot) {
+		for (var feature of this.participant.uniprot.features) {
+			var annotationTypeId = feature.category + "-" + feature.type
+			var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:annotationTypeId})
+			var annotationType = filtered[0];
+			if (annotationType.get("shown") === true) {
+				featuresShown.push(feature);
+			}
+		}
+	}
+	
+	if (featuresShown) {                    
         //draw longest regions first
-        posFeats.sort(function(a, b) {
+        featuresShown.sort(function(a, b) {
             return (b.end - b.begin) - (a.end - a.begin);
         });
         
-        this.annotations = posFeats;
-        for (var i = 0; i < posFeats.length; i++) {
-            var anno = posFeats[i];
+        var fsLen = featuresShown.length;
+        for (var f = 0; f < fsLen;f++) {
+            
+            var anno = featuresShown[f];
 
 			var convStart = anno.begin;
 			var convEnd = anno.end;
@@ -964,57 +979,54 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function(posFeats) 
 				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
+				//TODO: tooltip requring these to be written into feature object, seems wrong? 
+				anno.fstart = convStart;
+				anno.fend =convEnd;
 			}
-
-			//hmm - these var's end up in protein.participant.uniprotFeatues, seems not right. TODO: fix
-            anno.pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
-            anno.colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
+			
+			var fid = anno.category + "-" + anno.type + "[" + convStart + " - " + convEnd + "]";
+            
+			var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
+            var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
             if (this.form === 0) {
-                anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+                pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+                colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
             } else {
-                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+                pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+                colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
             }
-            anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.5");
-            anno.colouredRect.setAttribute("stroke-width", 1);
-            anno.colouredRect.setAttribute("fill-opacity", "0.5");
-            var text = anno.type + " [" + anno.begin + " - " + anno.end + "]";
-            anno.pieSlice.setAttribute("data-feature", text + "~"  + convStart + "~" + convEnd);
-            var xlv = this.crosslinkViewer;
+            pieSlice.setAttribute("stroke-width", 1);
+            pieSlice.setAttribute("fill-opacity", "0.5");
+            colouredRect.setAttribute("stroke-width", 1);
+            colouredRect.setAttribute("fill-opacity", "0.5");
+	
+			var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+			pieSlice.setAttribute("fill", c);
+			pieSlice.setAttribute("stroke", c);
+			colouredRect.setAttribute("fill", c);
+			colouredRect.setAttribute("stroke", c);
+            
+            pieSlice.setAttribute("data-feature", fid);
+            
             var self = this;
             
-            anno.pieSlice.onmouseover = function (evt) {
+            //only needs tooltip on pie slice, its always on top even if transparent
+            pieSlice.onmouseover = function (evt) {
 				self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-				var dataAtts = evt.target.getAttribute("data-feature").split('~');
-				
+				var feature = self.annotations.get(evt.target.getAttribute("data-feature")).feature;
 				self.crosslinkViewer.model.get("tooltipModel")
                     //.set("header", d.id.replace("_", " "))
-                    .set("header", "Feature")
-                    .set("contents", [
-                        ["Name", dataAtts[0]],
-                        ["Start", dataAtts[1]],
-                        ["End", dataAtts[2]]
-                    ])
+                    .set("header", CLMSUI.modelUtils.makeTooltipTitle.feature())
+                    .set("contents", 
+						CLMSUI.modelUtils.makeTooltipContents.feature(feature)
+					)
                     .set("location", {pageX: evt.pageX, pageY: evt.pageY})
                 ;
 			} ;
-            //~ anno.colouredRect.onmouseover = function (evt) {
-				//~ self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-				//~ self.crosslinkViewer.model.get("tooltipModel")
-                    //~ //.set("header", d.id.replace("_", " "))
-                    //~ .set("header", "Feature")
-                    //~ .set("contents", [
-                        //~ ["Name", anno.id],
-                        //~ ["Start", anno.fstart],
-                        //~ ["End", anno.fend]
-                    //~ ])
-                    //~ .set("location", {pageX: evt.pageX, pageY: evt.pageY})
-                //~ ;
-			//~ } ;
-            this.circDomains.appendChild(anno.pieSlice);
-            this.rectDomains.appendChild(anno.colouredRect);
+			
+			this.annotations.set(fid, {feature: anno, pieSlice:pieSlice, colouredRect: colouredRect});
+			this.circDomains.appendChild(pieSlice);
+            this.rectDomains.appendChild(colouredRect);
         }
     }
 };
@@ -1110,12 +1122,11 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation
     return rectPath;
 };
 
-//should be some sort of config options
+//TODO: should be some sort of config options
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20;        // height of stick in pixels
 CLMS.xiNET.RenderedProtein.MAXSIZE = 100;           // residue count of longest sequence
 CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = 1;   // this value is changed during init (calculated on basis of MAXSIZE)
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60;     // maximal width reserved for protein-labels
 CLMS.xiNET.RenderedProtein.labelY = -5;             // label Y offset, better if calc'd half height of label once rendered
-//~ CLMS.xiNET.RenderedProtein.domainColours = d3.scale.ordinal().range(colorbrewer.Paired[5]);
 CLMS.xiNET.RenderedProtein.transitionTime = 650;
 CLMS.xiNET.RenderedProtein.stepsInArc = 5;
