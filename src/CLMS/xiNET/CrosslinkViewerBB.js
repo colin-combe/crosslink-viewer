@@ -523,7 +523,6 @@
                                     //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
                                 //~ }
 					}
-					//hmmm...
 					if ((!this.idsToSelect || this.idsToSelect.length === 0) && add === false) {
 						this.model.calcMatchingCrosslinks ("selection", [], false, add);
 					}
@@ -555,10 +554,10 @@
             }
             var z = 1 + delta;
             var g = this.container;
-            var p = this.getEventPoint(evt);// seems to be correct, see above
-            var c = p.matrixTransform(this.container.getCTM().inverse());
+            var p = this.getEventPoint(evt);
+            var c = p.matrixTransform(g.getCTM().inverse());
             var k = this.svgElement.createSVGMatrix().translate(c.x, c.y).scale(z).translate(-c.x, -c.y);
-            this.setCTM(g, g.getScreenCTM().multiply(k));
+            this.setCTM(g, g.getCTM().multiply(k));
             this.scale();
             return false;
         },
