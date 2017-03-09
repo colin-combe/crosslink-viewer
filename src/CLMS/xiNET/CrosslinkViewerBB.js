@@ -52,7 +52,10 @@
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
 			this.svgElement.setAttribute("style", "pointer-events:visible");
-
+			// disable right click context menu (we wish to put right click to our own purposes)
+			this.svgElement.oncontextmenu = function() {
+				return false;
+			};
             //add listeners
             var self = this;
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
@@ -124,9 +127,10 @@
 
             this.initProteins();
 
-            var crossLinks = this.model.get("clmsModel").get("crossLinks").values();
-            
-            for(var crossLink of crossLinks){
+            var crossLinksArr = Array.from(this.model.get("clmsModel").get("crossLinks").values());
+            var clCount = crossLinksArr.length;           
+            for(var cl =0 ; cl < clCount; cl++){
+				var crossLink = crossLinksArr[cl];
                 if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
             
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
@@ -142,6 +146,7 @@
                 }
             }
 			
+            //TODO - move, remove 'of'
             for (var p_pLink of this.renderedP_PLinks.values()) {
                 var p_pCrossLinkCount = p_pLink.crossLinks.length;
                 if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
@@ -152,9 +157,11 @@
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
             } else {
-                var proteins = this.renderedProteins.values();
-                for (var prot of proteins) {
-                    prot.init();
+                var renderedParticipantArr = Array.from(this.renderedProteins.values());
+                var rpCount = renderedParticipantArr.length;
+                for (var rp = 0 ; rp < pCount; rp++) {
+					var prot = renderedParticipantArr[rp];
+                    prot.init();//prot.init() is just calling prot.setForm(prot.form))
                     this.proteinLower.appendChild(prot.lowerGroup);
                     this.proteinUpper.appendChild(prot.upperGroup);
                 }
@@ -209,8 +216,10 @@
 
         linkColourChanged: function() {
             var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedLinks = this.renderedCrossLinks.values();
-            for (var rLink of renderedLinks) {
+            var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+            var rclCount = renderedCrossLinksArr.length;
+            for (var rcl = 0 ; rcl < rclCount; rcl++) {
+				var rLink = renderedCrossLinksArr[rcl];
                 if (rLink.shown) {
                     var c = colourAssignment.getColour(rLink.crossLink);
                     rLink.line.setAttribute("stroke",c);
@@ -220,26 +229,30 @@
 
         checkLinks: function() {
 
-            var  pLinks = this.renderedP_PLinks.values();
-            for (var pLink of pLinks) {
-                pLink.check();
+            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var plCount = pLinksArr.length;
+            for (var pl = 0; pl < plCount; pl++) {
+                pLinksArr[pl].check();
             }
 
-            var  cLinks = this.renderedCrossLinks.values();
-            for (var cLink of cLinks) {
-                cLink.check();
+            var cLinksArr = Array.from(this.renderedCrossLinks.values());
+            var clCount = cLinksArr.length;
+            for (var cl = 0; cl < clCount; cl++) {
+                cLinksArr[cl].check();
             }
 
         },
 
         initProteins: function () {
-            var interactors = this.model.get("clmsModel").get("participants").values();
-            for (var interactor of interactors) {
-                if (interactor.is_decoy == false) {
-                    var newProt = new CLMS.xiNET.RenderedProtein(interactor, this);
-                    this.renderedProteins.set(interactor.id, newProt);
+            var participantsArr = Array.from(this.model.get("clmsModel").get("participants").values());
+            var pCount = participantsArr.length;
+            for (var p =0; p < pCount; p++) {
+				var participant = participantsArr[p];
+                if (participant.is_decoy == false) {
+                    var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
+                    this.renderedProteins.set(participant.id, newProt);
 
-                    var protSize = interactor.size;
+                    var protSize = participant.size;
                     if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
                         CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
                     }
@@ -248,13 +261,11 @@
             var width = this.svgElement.parentNode.clientWidth;
             CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2)
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
-            var prots = this.renderedProteins.values();
-            var protCount = prots.length;
-
-            if (protCount < 3) {
-                 for (var j =0; j < protCount; j++){
-                     prots[j].busy = false;
-                     prots[j].setForm(1);
+           
+           if (pCount < 3) {
+                 for (var j = 0; j < participantCount; j++){
+                     participantsArr[j].busy = false;
+                     participantsArr[j].setForm(1);
                 }
             }
         },
@@ -279,17 +290,21 @@
         scale: function () {
             this.z = this.container.getCTM().inverse().a;
 
-            var proteins = this.renderedProteins.values();
-            for (var prot of proteins) {
-                prot.setPosition(prot.x, prot.y); // this rescales the protein
+            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var prot = renderedParticipantArr[rp];
+				prot.setPosition(prot.x, prot.y); // this rescales the protein
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
 
-            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
+			var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+            var rclCount = renderedCrossLinksArr.length;
+            for (var rcl = 0 ; rcl < rclCount; rcl++) {
+				var renderedCrossLink = renderedCrossLinksArr[rcl];
                 if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-					//TODO: hmmm
-					if (renderedCrossLink.line) {
+					if (renderedCrossLink.line) {//TODO: er, whys this here? looks like a hack filtering out never rendered crossLinks that somehow have shown = true?
 						renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
 						if (renderedCrossLink.crossLink.ambiguous === true) {
@@ -299,7 +314,10 @@
                 }
             }
 
-            for (var p_pLink of this.renderedP_PLinks.values()) {
+            var p_pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var plCount = p_pLinksArr.length;
+            for (var pl = 0; pl < plCount; pl++) {
+            	var p_pLink = p_pLinksArr[pl];
                 if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                     && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
                     if (p_pLink.line) {
@@ -339,25 +357,26 @@
                 this.cola.stop();
             }
 
-            //var p = this.getEventPoint(evt);
-            this.dragStart = evt;//this.mouseToSVG(p.x, p.y);
+            this.dragStart = evt;
             this.state = CLMS.xiNET.Controller.SELECT_PAN;
-            this.panned = false;
+            this.mouseMoved = false;
             
-            //var toHighlight = [] // oops we dont have synched participant highlighting
+            //var toHighlight = [] // todo we dont have synched participant highlighting
             this.idsToSelect = [];                 
         },
 
         // dragging/rotation/SELECT_PAN/selecting
         mouseMove: function(evt) {
             var p = this.getEventPoint(evt);// seems to be correct, see below
-            var c = p.matrixTransform(this.container.getCTM().inverse());//this.mouseToSVG(p.x, p.y);
-            
+            var c = p.matrixTransform(this.container.getCTM().inverse());
+            var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+			var dx = ds.x - c.x;
+			var dy = ds.y - c.y;
+			if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+				this.mouseMoved = true;
+			}  
             if (this.dragElement != null) { //dragging or rotating
-				var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
-                var dx = ds.x - c.x;
-				var dy = ds.y - c.y;
-                if (this.state === CLMS.xiNET.Controller.DRAGGING) {
+				if (this.state === CLMS.xiNET.Controller.DRAGGING) {
                     // we are currently dragging things around
                     var ox, oy, nx, ny;
                     if (this.dragElement.participant) {
@@ -367,10 +386,11 @@
                             toDrag = [this.dragElement.participant.id];
                         }
                         else {
-                            toDrag = this.model.get("selectedProtein").keys();
+                            toDrag = Array.from(this.model.get("selectedProtein").keys());
                         }
-                        for (interactorId of toDrag) {
-                            var renderedProtein = this.renderedProteins.get(interactorId);
+                        
+                        for (var d = 0; d < toDrag.length; d++) {
+                            var renderedProtein = this.renderedProteins.get(toDrag[d]);
                             ox = renderedProtein.x;
                             oy = renderedProtein.y;
                             nx = ox - dx;
@@ -430,7 +450,10 @@
 						.attr("height", Math.abs(sy));
                     ;
                     
-                    for (renderedParticipant of this.renderedProteins.values()) {
+                    var renderedParticipantArr = Array.from(this.renderedProteins.values());
+					var rpCount = renderedParticipantArr.length;
+					for (var rp = 0 ; rp < rpCount; rp++) {
+						var renderedParticipant = renderedParticipantArr[rp];
 						if (renderedParticipant.participant.hidden !== true) {
 							var svgRect = this.svgElement.createSVGRect();
 							svgRect.x = rectX;
@@ -466,7 +489,8 @@
 								.translate(dx, dy)
 								);
 					this.dragStart = evt;
-  				}
+  				}                    
+  				
           }
 
   
@@ -475,8 +499,7 @@
 
         // this ends all dragging and rotating
         mouseUp: function(evt) {
-            var add = evt.ctrlKey || evt.shiftKey;
-			var time = new Date().getTime();
+            var time = new Date().getTime();
             //console.log("Mouse up: " + evt.srcElement + " " + (time - this.lastMouseUp));
             this.preventDefaultsAndStopPropagation(evt);
             
@@ -501,7 +524,7 @@
 										this.dragElement.setForm(1, c);
 									}
 								}
-                            }
+                            } // else flip selflink
                     }
                     else if (this.state === CLMS.xiNET.Controller.ROTATING) {
                         //round protein rotation to nearest 5 degrees (looks neater)
@@ -510,24 +533,18 @@
                     else {
                     } //end of protein drag; do nothing
                 }
-
-                else if (/*this.state !== xiNET.Controller.SELECT_PAN &&*/ evt.ctrlKey === false) {
-                    if (this.clickModeIsSelect) {
-						//this.model.set("selection", this.toSelect);
-						this.model.setSelectedProteins(this.idsToSelect, add);
-                 
-
-                                //~ } else {
-                                    //~ var add = evt.ctrlKey || evt.shiftKey;
-                                    //~ this.model.setSelectedProteins([this.dragElement.participant.id], add);
-                                    //~ this.model.calcMatchingCrosslinks ("selection", this.dragElement.participant.crossLinks, false, add);
-                                //~ }
-					}
-					if ((!this.idsToSelect || this.idsToSelect.length === 0) && add === false) {
-						this.model.calcMatchingCrosslinks ("selection", [], false, add);
+                else if (!this.mouseMoved) { //unselct crosslinks
+					this.model.calcMatchingCrosslinks ("selection", [], false, add);
+					if (!this.clickModeIsSelect) {
+						this.model.setSelectedProteins([]);
 					}
                 }
- 
+                
+				if (this.clickModeIsSelect) {
+					var add = evt.ctrlKey || evt.shiftKey;
+					this.model.setSelectedProteins(this.idsToSelect, add);
+				}
+				
 				this.dragElement = null;
 				this.whichRotator = -1;
 				this.state = CLMS.xiNET.Controller.MOUSE_UP;           
@@ -643,9 +660,11 @@
             }
 
             // incase proteins have been added which are not included in layout -
-            var proteinIter = this.renderedProteins.values();
-            for (var prot of proteinIter) {
-                if (prot.x == null) {
+            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var prot = renderedParticipantArr[rp];
+			    if (prot.x == null) {
                     prot.init()
                     prot.setPosition(20, 20);
                     this.proteinLower.appendChild(prot.lowerGroup);
@@ -680,7 +699,10 @@
             } 
             
 			var nodes = []; // not hidden nodes
-            for (var renderedParticipant of this.renderedProteins.values()) {
+            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var renderedParticipant = renderedParticipantArr[rp];
 				if (renderedParticipant.participant.hidden === false) {
 					nodes.push(renderedParticipant);
 				}
@@ -688,7 +710,7 @@
             
 			this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
                     
-            var nodeIds =  Array.from(this.renderedProteins.keys());
+            //~ var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
             var filteredCrossLinks = this.model.filteredNotDecoyNotLinearCrossLinks;//get("clmsModel").get("crossLinks").values();
@@ -725,8 +747,10 @@
             var self = this;
            
             this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
-                var nodes = self.cola.nodes(); // these nodes are our RenderedProteins
-                for (var node of nodes) {
+                var nodesArr = self.cola.nodes(); // these nodes are our RenderedProteins
+                var nCount = nodesArr.length;
+                for (var n = 0; n < nCount; n++) {
+					var node = nodesArr[n];
 					var offsetX = node.x;// - node.upperGroup.getBBox().x;
                     var offsetY = node.y ;//- node.upperGroup.getBBox().y;
                     node.setPosition(offsetX, offsetY);
@@ -747,16 +771,23 @@
             return this;
         },
 
+		//todo: could have an 'iterateRenderedLinks(callBackFunction)' function or something (visitor pattern?), it recurs in several places
         highlightsChanged: function () {
-            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
-                renderedCrossLink.showHighlight(false);
+            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var plCount = pLinksArr.length;
+            for (var pl = 0; pl < plCount; pl++) {
+                pLinksArr[pl].showHighlight(false);
             }
-            for (var p_pLink of this.renderedP_PLinks.values()) {
-                p_pLink.showHighlight(false);
+            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
+            var rclCount = rcLinksArr.length;
+            for (var rcl = 0; rcl < rclCount; rcl++) {
+                rcLinksArr[rcl].showHighlight(false);
             }
-            var crossLinks = this.model.get("highlights");
-            for (var crossLink of crossLinks) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+            
+            var crossLinksArr = this.model.get("highlights");
+            var clCount = crossLinksArr.length;
+            for (var cl =0; cl < clCount; cl++) {
+                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
                 if (renderedCrossLink.renderedFromProtein.form == 1
                     || renderedCrossLink.renderedToProtein.form == 1) {
                     renderedCrossLink.showHighlight(true, true);
@@ -770,15 +801,20 @@
         },
 
         selectionChanged: function () {
-            for (var renderedCrossLink of this.renderedCrossLinks.values()) {
-                renderedCrossLink.setSelected(false);
+            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var plCount = pLinksArr.length;
+            for (var pl = 0; pl < plCount; pl++) {
+                pLinksArr[pl].setSelected(false);
             }
-            for (var p_pLink of this.renderedP_PLinks.values()) {
-                p_pLink.setSelected(false);
+            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
+            var rclCount = rcLinksArr.length;
+            for (var rcl = 0; rcl < rclCount; rcl++) {
+                rcLinksArr[rcl].setSelected(false);
             }
-            var crossLinks = this.model.get("selection");
-            for (var crossLink of crossLinks) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLink.id);
+            var crossLinksArr = this.model.get("selection");
+            var clCount = crossLinksArr.length;
+            for (var cl =0; cl < clCount; cl++) {
+                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
                 renderedCrossLink.setSelected(true);
                 var p_pLink = this.renderedP_PLinks.get(
                     renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
@@ -788,20 +824,27 @@
         },
 
         selectedParticipantsChanged: function () {
-            for (var renderedInteractor of this.renderedProteins.values()) {
-                renderedInteractor.setSelected(false);
+            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var renderedParticipant = renderedParticipantArr[rp];
+			    renderedParticipant.setSelected(false);
             }
-            var selectedInteractors = this.model.get("selectedProtein").values();
-            for (var interactor of selectedInteractors) {
-                var renderedInteractor = this.renderedProteins.get(interactor.id);
-                renderedInteractor.setSelected(true);
+            var selectedParticipantsArr = Array.from(this.model.get("selectedProtein").values());
+            var spCount = selectedParticipantsArr.length
+            for (var sp =0; sp < spCount; sp++ ) {
+                var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
+                renderedParticipant.setSelected(true);
             }
             return this;
         },
 
         hiddenParticipantsChanged: function () {
-            for (var renderedInteractor of this.renderedProteins.values()) {
-                renderedInteractor.setHidden(renderedInteractor.participant.hidden);
+            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var renderedParticipant = renderedParticipantArr[rp];
+			    renderedParticipant.setHidden(renderedParticipant.participant.hidden);
             }
             return this;
         },

@@ -126,6 +126,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 
 
 //by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
+// - could remove this as part of tidying up overall initialisation 
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
     this.setForm(this.form);
     //if (this.selfLink) this.selfLink.initSelfLinkSVG();
