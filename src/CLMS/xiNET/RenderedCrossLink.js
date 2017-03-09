@@ -111,33 +111,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-	var rightclick, middleclick;
-	if (evt.which)
-		rightclick = (evt.which === 3);
-	else if (evt.button)
-		rightclick = (evt.button === 2);
-	if (evt.which)
-		middleclick = (evt.which === 2);
-	else if (evt.button)
-		middleclick = (evt.button === 1);
 
-    if (!rightclick) {
-		if (evt.shiftKey || evt.ctrlKey) {
-			var selection = _.clone(this.crosslinkViewer.model.get("selection"));
-			if (this.isSelected){
-				var index = selection.indexOf(this.crossLink);
-				selection.splice(index, 1);
-			} else {
-				selection.push(this.crossLink);
-			}
-			this.crosslinkViewer.model.set("selection",selection);
-		} else {
-			this.crosslinkViewer.model.set("selection",[this.crossLink]);
-		}
-	}
+	var add = evt.shiftKey || evt.ctrlKey;
+	this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
+
     //store start location
-    //var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    this.crosslinkViewer.dragStart = evt;
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
@@ -147,8 +126,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    this.crosslinkViewer.model.set("selection", [this.crossLink]);
-    //store start location
+    var add = evt.shiftKey || evt.ctrlKey;
+	this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
+	//store start location
     //var p = this.crosslinkViewer.getTouchEventPoint(evt);// broke
     this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
 }
