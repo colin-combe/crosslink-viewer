@@ -159,7 +159,7 @@
             } else {
                 var renderedParticipantArr = Array.from(this.renderedProteins.values());
                 var rpCount = renderedParticipantArr.length;
-                for (var rp = 0 ; rp < pCount; rp++) {
+                for (var rp = 0 ; rp < rpCount; rp++) {
 					var prot = renderedParticipantArr[rp];
                     prot.init();//prot.init() is just calling prot.setForm(prot.form))
                     this.proteinLower.appendChild(prot.lowerGroup);
@@ -263,7 +263,7 @@
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
            
            if (pCount < 3) {
-                 for (var j = 0; j < participantCount; j++){
+                 for (var j = 0; j < pCount; j++){
                      participantsArr[j].busy = false;
                      participantsArr[j].setForm(1);
                 }
