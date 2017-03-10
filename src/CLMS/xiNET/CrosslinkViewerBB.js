@@ -261,13 +261,16 @@
             var width = this.svgElement.parentNode.clientWidth;
             CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2)
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
-           
-           if (pCount < 3) {
-                 for (var j = 0; j < pCount; j++){
-                     participantsArr[j].busy = false;
-                     participantsArr[j].setForm(1);
-                }
-            }
+
+			if (pCount < 3) {
+				var renderedParticipantsArr = Array.from(this.renderedProteins.values());
+				var rpCount =  renderedParticipantsArr.length;
+				for (var rp = 0; rp < rpCount; rp++ ) {
+					var renderedParticipant = renderedParticipantsArr[rp];
+					renderedParticipant.busy = false;
+					renderedParticipant.setForm(1); 
+				}
+			}
         },
 
         reset: function() {
