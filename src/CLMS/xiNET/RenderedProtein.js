@@ -139,15 +139,7 @@ CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
             this.crosslinkViewer.cola.stop();
         }
         this.crosslinkViewer.dragElement = this;
-        //~ if (evt.ctrlKey === false) {
-            //~ this.crosslinkViewer.clearSelection();
-            //~ this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        //var p = this.crosslinkViewer.getEventPoint(evt);
-        this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+        this.crosslinkViewer.dragStart = evt;
         return false;
 };
 
@@ -158,8 +150,6 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
             this.crosslinkViewer.force.stop();
         }
         this.crosslinkViewer.dragElement = this;
-        //~ this.crosslinkViewer.clearSelection();
-        //~ this.setSelected(true);
         //store start location
         //var p = this.crosslinkViewer.getTouchEventPoint(evt); //oh dear - now broken
         this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
@@ -944,16 +934,24 @@ CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats
 
 CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     this.clearPositionalFeatures();
+    var annotationTypes = this.crosslinkViewer.model.get("annotationTypes");
     //create new annotations
     var featuresShown = [];         
     			    
-	//TODO: here we need to add the aligned region annotatiion, if they're selected
-	
+	//here we need to add the aligned region annotatiion, if they're selected
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Alignment-PDB aligned region"})
+	var alignmentAnnotationType = filtered[0];
+	if (alignmentAnnotationType.get("shown") === true) {
+		var alignedRegions = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
+		console.log("alignment>", alignedRegions);
+		featuresShown = alignedRegions;
+	}
+
 	//add uniprot features
 	if (this.participant.uniprot) {
 		for (var feature of this.participant.uniprot.features) {
 			var annotationTypeId = feature.category + "-" + feature.type
-			var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:annotationTypeId})
+			var filtered = annotationTypes.filter({id:annotationTypeId})
 			var annotationType = filtered[0];
 			if (annotationType.get("shown") === true) {
 				featuresShown.push(feature);
@@ -976,16 +974,17 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
 			if (alignModel) {
-				convStart = alignModel.mapToSearch ("Canonical", anno.begin);
-				convEnd = alignModel.mapToSearch ("Canonical", anno.end);
+				var alignmentID = anno.alignmentID || "Canonical";
+				convStart = alignModel.mapToSearch (alignmentID, anno.begin);
+				convEnd = alignModel.mapToSearch (alignmentID, anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
 				//TODO: tooltip requring these to be written into feature object, seems wrong? 
 				anno.fstart = convStart;
-				anno.fend =convEnd;
+				anno.fend = convEnd;
 			}
 			
-			var fid = anno.category + "-" + anno.type + "[" + convStart + " - " + convEnd + "]";
+			var fid = anno.category + "-" + anno.type + "-" + anno.alignmentID + "[" + convStart + " - " + convEnd + "]";
             
 			var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
             var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
@@ -1043,18 +1042,8 @@ CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-	var convStart = annotation.begin;
-	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-    if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
-		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
-		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
-		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
-	}
-
-    var startAngle = ((convStart - 1) / this.participant.size) * 360;
-    var endAngle = ((convEnd) / this.participant.size) * 360;
+    var startAngle = ((annotation.fstart - 1) / this.participant.size) * 360;
+    var endAngle = (annotation.fend / this.participant.size) * 360;
     var radius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
@@ -1067,20 +1056,9 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
-	//TODO - eliminate duplication
-	var convStart = annotation.begin;
-	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-    if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
-		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
-		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
-		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
-	}
-	
     //approximate pie slice
-    var startAngle = ((convStart - 1) / this.participant.size) * 360;
-    var endAngle = ((convEnd) / this.participant.size) * 360;
+    var startAngle = ((annotation.fstart - 1) / this.participant.size) * 360;
+    var endAngle = ((annotation.fend) / this.participant.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(pieRadius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(pieRadius, endAngle - 90);
@@ -1097,21 +1075,10 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation) {
-	//TODO - eliminate duplication
-	var convStart = annotation.begin;
-	var convEnd = annotation.end;
-	var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-    if (alignModel) {
-		convStart = alignModel.mapToSearch ("Canonical", annotation.begin);
-		convEnd = alignModel.mapToSearch ("Canonical", annotation.end);
-		if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
-		if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
-	}
-
-    //domain as rectangular path
+	//domain as rectangular path
     var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
-    var annotX = this.getResXwithStickZoom(convStart - 0.5);
-    var annotSize = (1 + (convEnd - convStart));
+    var annotX = this.getResXwithStickZoom(annotation.fstart - 0.5);
+    var annotSize = (1 + (annotation.fend - annotation.fstart));
     var annotLength = annotSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     for (var sia = 0; sia <= CLMS.xiNET.RenderedProtein.stepsInArc; sia++) {
