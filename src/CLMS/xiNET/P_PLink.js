@@ -220,12 +220,6 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
-    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden
-            || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1) {
-        this.hide();
-        return false;
-    }
-
     this.ambiguous = true;
     this.hd = false;
 
@@ -259,15 +253,9 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
-        this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
         this.ambiguous = this.ambiguous && this.altP_PLinks.size > 1;
-        this.show();
-        return true;
     }
-    else {
-        this.hide();
-        return false;
-    }
+    return this.filteredCrossLinkCount;
 };
 
 CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
@@ -284,6 +272,17 @@ CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
         }
     //}
 };
+
+CLMS.xiNET.P_PLink.prototype.update = function() {
+	if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden
+            || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1
+            || this.filteredCrossLinkCount === 0) {
+        this.hide();
+    }
+	else {
+		this.show();
+	}
+}
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
     if (!this.shown) {
@@ -314,11 +313,17 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
             this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
     }
-    if (this.renderedFromProtein === this.renderedToProtein) {
-        this.thickLine.setAttribute("stroke-width", this.w);
-    } else {
-        this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
-    }
+	if (this.filteredCrossLinkCount < 2) {
+		this.thickLine.setAttribute("stroke-width", 0);
+	} else {
+		var w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
+		console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
+		if (this.renderedFromProtein === this.renderedToProtein) {
+			this.thickLine.setAttribute("stroke-width", w);
+		} else {
+			this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * w);
+		}
+	}
     this.dashedLine(this.ambiguous);
     this.setSelected(this.isSelected);
 };

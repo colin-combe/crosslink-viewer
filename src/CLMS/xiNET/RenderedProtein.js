@@ -611,6 +611,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 				self.checkLinks();
 				self.stickZoom = originalStickZoom;
 				self.rotation = originalRotation;
+				self.removePeptides();
 				self.busy = false;
 				return true;
 			} else if (interp > 1){
@@ -898,6 +899,10 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
     for (var pLink of pLinks) {
         pLink.check();
     }
+    pLinks = this.renderedP_PLinks.values();
+    for (var pLink of pLinks) {
+        pLink.update();
+    }
     var links = this.renderedCrossLinks.values();
     for (var link of links) {
         link.check();
@@ -943,7 +948,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
 		var alignedRegions = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
-		console.log("alignment>", alignedRegions);
+		//~ console.log("alignment>", alignedRegions);
 		featuresShown = alignedRegions;
 	}
 

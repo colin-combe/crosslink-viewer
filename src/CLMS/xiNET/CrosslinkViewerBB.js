@@ -145,14 +145,6 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
-			
-            //TODO - move, remove 'of'
-            for (var p_pLink of this.renderedP_PLinks.values()) {
-                var p_pCrossLinkCount = p_pLink.crossLinks.length;
-                if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
-                    CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
-                }
-            }
 
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
@@ -227,20 +219,25 @@
             }
         },
 
-        checkLinks: function() {
-
+        render: function() {
+			CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
-                pLinksArr[pl].check();
+                var p_pCrossLinkCount = pLinksArr[pl].check();
+				if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
+                    CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
+                }
             }
-
+			for (var pl = 0; pl < plCount; pl++) {
+                pLinksArr[pl].update();
+            }
+          
             var cLinksArr = Array.from(this.renderedCrossLinks.values());
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
             }
-
         },
 
         initProteins: function () {
@@ -766,12 +763,6 @@
         downloadSVG: function () {
             var svg = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
             download(svg, 'application/svg', 'xiNET-output.svg');
-        },
-
-        render: function () {
-            console.log ("re rendering cross-link viewer");
-            this.checkLinks();
-            return this;
         },
 
 		//todo: could have an 'iterateRenderedLinks(callBackFunction)' function or something (visitor pattern?), it recurs in several places
