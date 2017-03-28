@@ -317,7 +317,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 		this.thickLine.setAttribute("stroke-width", 0);
 	} else {
 		var w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
-		console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
+		//console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
 		if (this.renderedFromProtein === this.renderedToProtein) {
 			this.thickLine.setAttribute("stroke-width", w);
 		} else {
