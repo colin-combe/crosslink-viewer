@@ -14,8 +14,8 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.renderedCrossLinks = new Map();
 
     // layout info
-    this.x = null;
-    this.y = null;
+    this.x = 100;
+    this.y = 20;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -128,6 +128,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 //by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
 // - could remove this as part of tidying up overall initialisation 
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
+    this.setPosition(this.x, this.y);
     this.setForm(this.form);
     //if (this.selfLink) this.selfLink.initSelfLinkSVG();
 }
