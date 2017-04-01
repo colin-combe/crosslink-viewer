@@ -944,11 +944,20 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     //create new annotations
     var featuresShown = [];         
     			    
-	//here we need to add the aligned region annotatiion, if they're selected
+	//add the aligned regions, if they're selected
 	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Alignment-PDB aligned region"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
 		var alignedRegions = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
+		//~ console.log("alignment>", alignedRegions);
+		featuresShown = alignedRegions;
+	}
+	
+	//add the digestible residues, if they're selected
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Residue-Digestible"})
+	var alignmentAnnotationType = filtered[0];
+	if (alignmentAnnotationType.get("shown") === true) {
+		var alignedRegions = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
 		//~ console.log("alignment>", alignedRegions);
 		featuresShown = alignedRegions;
 	}
@@ -979,13 +988,16 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var convStart = anno.begin;
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-			if (alignModel) {
+			if (anno.category != "Digestible residue" && alignModel) {
 				var alignmentID = anno.alignmentID || "Canonical";
 				convStart = alignModel.mapToSearch (alignmentID, anno.begin);
 				convEnd = alignModel.mapToSearch (alignmentID, anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
 				//TODO: tooltip requring these to be written into feature object, seems wrong? 
+				anno.fstart = convStart;
+				anno.fend = convEnd;
+			} else {
 				anno.fstart = convStart;
 				anno.fend = convEnd;
 			}
