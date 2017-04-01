@@ -948,18 +948,26 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Alignment-PDB aligned region"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
-		var alignedRegions = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
+		var features = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
 		//~ console.log("alignment>", alignedRegions);
-		featuresShown = alignedRegions;
+		featuresShown = featuresShown.concat(features);
 	}
 	
 	//add the digestible residues, if they're selected
 	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Residue-Digestible"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
-		var alignedRegions = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
+		var features = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
+		featuresShown = featuresShown.concat(features);
+	}
+
+	//add the crosslinkable residues, if they're selected
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Residue-Cross-linkable"})
+	var alignmentAnnotationType = filtered[0];
+	if (alignmentAnnotationType.get("shown") === true) {
+		var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant);
 		//~ console.log("alignment>", alignedRegions);
-		featuresShown = alignedRegions;
+		featuresShown = featuresShown.concat(features);
 	}
 
 	//add uniprot features
@@ -988,7 +996,9 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var convStart = anno.begin;
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-			if (anno.category != "Digestible residue" && alignModel) {
+			if (anno.category != "Digestible residue" // this handles not aligning certain features, todo; check for tidier way 
+				&& anno.category != "Crosslinkable residue" 
+				&& alignModel) {
 				var alignmentID = anno.alignmentID || "Canonical";
 				convStart = alignModel.mapToSearch (alignmentID, anno.begin);
 				convEnd = alignModel.mapToSearch (alignmentID, anno.end);
