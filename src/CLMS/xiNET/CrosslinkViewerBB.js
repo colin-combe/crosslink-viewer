@@ -134,7 +134,8 @@
                 if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
             
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                    this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+					this.renderedCrossLinks.push(renderedCrossLink);
 
                     var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
                     var p_pLink = this.renderedP_PLinks.get(p_pId);
@@ -194,7 +195,7 @@
             //~ this.rotating = false;
 
             this.renderedProteins = new Map();
-            this.renderedCrossLinks = new Map();
+            this.renderedCrossLinks = []; // new Map();
             this.renderedP_PLinks = new Map();
 
             this.layout = null;
@@ -208,7 +209,8 @@
 
         linkColourChanged: function() {
             var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+            //TODO: tidy
+            var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var rLink = renderedCrossLinksArr[rcl];
@@ -232,8 +234,8 @@
 			for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
-          
-            var cLinksArr = Array.from(this.renderedCrossLinks.values());
+			//TODO: tidy
+            var cLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
@@ -298,8 +300,8 @@
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
-
-			var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+			//TODO: tdiy
+			var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var renderedCrossLink = renderedCrossLinksArr[rcl];
@@ -765,32 +767,32 @@
             download(svg, 'application/svg', 'xiNET-output.svg');
         },
 
-		//todo: could have an 'iterateRenderedLinks(callBackFunction)' function or something (visitor pattern?), it recurs in several places
-        highlightsChanged: function () {
+		highlightsChanged: function () {
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].showHighlight(false);
             }
-            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
-            var rclCount = rcLinksArr.length;
-            for (var rcl = 0; rcl < rclCount; rcl++) {
-                rcLinksArr[rcl].showHighlight(false);
-            }
-            
-            var crossLinksArr = this.model.get("highlights");
-            var clCount = crossLinksArr.length;
-            for (var cl =0; cl < clCount; cl++) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
-                if (renderedCrossLink.renderedFromProtein.form == 1
-                    || renderedCrossLink.renderedToProtein.form == 1) {
-                    renderedCrossLink.showHighlight(true, true);
-                } else {
-                    var p_pLink = this.renderedP_PLinks.get(
-                        renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                    p_pLink.showHighlight(true, true);
-                }
-            }
+
+            var highlightedCrossLinks = this.model.get("highlights");
+            var renderedCrossLinks = this.renderedCrossLinks;
+            var rclCount = renderedCrossLinks.length;
+            for (var rcl =0; rcl < rclCount; rcl++) {
+                var renderedCrossLink = renderedCrossLinks[rcl];
+				if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
+					
+					if (renderedCrossLink.renderedFromProtein.form == 1
+						|| renderedCrossLink.renderedToProtein.form == 1) {
+						renderedCrossLink.showHighlight(true, true);
+					} else {
+						var p_pLink = this.renderedP_PLinks.get(
+							renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
+						p_pLink.showHighlight(true, true);
+					}
+				}else {
+					renderedCrossLink.showHighlight(false);
+				}
+            }    
             return this;
         },
 
@@ -800,19 +802,18 @@
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].setSelected(false);
             }
-            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
-            var rclCount = rcLinksArr.length;
-            for (var rcl = 0; rcl < rclCount; rcl++) {
-                rcLinksArr[rcl].setSelected(false);
-            }
-            var crossLinksArr = this.model.get("selection");
-            var clCount = crossLinksArr.length;
-            for (var cl =0; cl < clCount; cl++) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
-                renderedCrossLink.setSelected(true);
-                var p_pLink = this.renderedP_PLinks.get(
-                    renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                p_pLink.setSelected(true);
+
+            var selectedCrossLinks = this.model.get("selection");
+            var renderedCrossLinks = this.renderedCrossLinks;
+            var rclCount = renderedCrossLinks.length;
+            for (var rcl =0; rcl < rclCount; rcl++) {
+                var renderedCrossLink = renderedCrossLinks[rcl];
+                if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
+					renderedCrossLink.setSelected(true);
+					var p_pLink = this.renderedP_PLinks.get(
+						renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
+					p_pLink.setSelected(true);
+				}
             }
             return this;
         },
