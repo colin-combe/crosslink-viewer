@@ -239,7 +239,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
         if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink);
         }
-        for (matchAndPepPos of crossLink.filteredMatches_pp) {
+        for (var matchAndPepPos of crossLink.filteredMatches_pp) {
             match = matchAndPepPos.match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {

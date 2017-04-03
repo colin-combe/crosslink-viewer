@@ -149,9 +149,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 			//this is where we need the peptide positions
 			var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
 			var fm_ppCount = filteredMatchesAndPeptidePositions.length;
-			for (var fm_pp = 0; fm_pp <fm_ppCount; fm-pp++) {
-				
-				var match = filteredMatchesAndPeptidePositions[fm_pp].match;
+			for (var fm_pp = 0; fm_pp <fm_ppCount; fm_pp++) {
+				var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
+				var match = matchAndPepPos.match;
 
 				var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
 				var fromPepLength = matchAndPepPos.pepPos[0].length;
