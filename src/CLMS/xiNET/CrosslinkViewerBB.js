@@ -168,6 +168,7 @@
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
+            this.listenTo (this.model.get("bulkAlignChange"), this.setAnnotations);
             //TODO - potentially needs to redraw annotations if alignment changes
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.render();
@@ -774,9 +775,15 @@
                 pLinksArr[pl].showHighlight(false);
             }
 
-            var highlightedCrossLinks = this.model.get("highlights");
+			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protien)
             var renderedCrossLinks = this.renderedCrossLinks;
             var rclCount = renderedCrossLinks.length;
+	        for (var rcl =0; rcl < rclCount; rcl++) {
+				renderedCrossLinks[rcl].showHighlight(false);
+			}
+
+			var highlightedCrossLinks = this.model.get("highlights");
+
             for (var rcl =0; rcl < rclCount; rcl++) {
                 var renderedCrossLink = renderedCrossLinks[rcl];
 				if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
@@ -789,9 +796,12 @@
 							renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
 						p_pLink.showHighlight(true, true);
 					}
-				}else {
-					renderedCrossLink.showHighlight(false);
 				}
+				// can't have this here, it calls remove Peptides which removes ALL highlighted pep's from protein
+				// so need peptide removing loop before
+				//~ else {
+					//~ renderedCrossLink.showHighlight(false);
+				//~ }
             }    
             return this;
         },
@@ -813,6 +823,8 @@
 					var p_pLink = this.renderedP_PLinks.get(
 						renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
 					p_pLink.setSelected(true);
+				}else {
+					renderedCrossLink.setSelected(false);
 				}
             }
             return this;
