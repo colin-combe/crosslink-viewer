@@ -15,7 +15,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 
     // layout info
     this.x = 100;
-    this.y = 20;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;

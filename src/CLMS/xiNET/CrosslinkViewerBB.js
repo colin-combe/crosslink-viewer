@@ -267,8 +267,10 @@
 				var rpCount =  renderedParticipantsArr.length;
 				for (var rp = 0; rp < rpCount; rp++ ) {
 					var renderedParticipant = renderedParticipantsArr[rp];
-					renderedParticipant.busy = false;
-					renderedParticipant.setForm(1); 
+					if (renderedParticipant.hidden = false) {
+						renderedParticipant.busy = false;
+						renderedParticipant.setForm(1);
+					} 
 				}
 			}
         },
