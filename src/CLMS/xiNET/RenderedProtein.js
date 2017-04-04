@@ -954,7 +954,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 	}
 	
 	//add the digestible residues, if they're selected
-	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AT_Residue-Digestible"})
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AA-Digestible"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
 		var features = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
@@ -962,7 +962,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 	}
 
 	//add the crosslinkable residues, if they're selected
-	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AT_Residue-Cross-linkable"})
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AA-Cross-linkable"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
 		var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant);
