@@ -118,12 +118,20 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 	var toHighlight = this.crossLinks.slice(0);
 	if (this.ambiguous) {
 		//TODO: we might want to highlight smallest possible set of alternatives
-		for (crossLink of this.crossLinks) {
-			for (match_pp of crossLink.filteredMatches_pp) {
+		var crossLinks = this.crossLinks;
+		var iCount = crossLinks.length;
+		for (var i = 0; i < iCount; cl++) {
+			var crossLink = crossLinks[i];
+			var matches = crossLink.matches;
+			var matchCount = matches.length;
+			for (var m = 0; m < matchCount; m++) {
 				var match = match_pp.match;
-				for (crossLink of match.crossLinks) {
-					if (toHighlight.indexOf(crossLink) === -1) {
-						toHighlight.push(crossLink);
+				var matchCrossLinks = match.crossLinks;
+				var jCount = matchCrossLinks.length;
+				for (var j = 0; j < jCount; j++) {
+					var mCrossLink = matchCrossLinks[j];
+					if (toHighlight.indexOf(mCrossLink) === -1) {
+						toHighlight.push(mCrossLink);
 					}
 				}
 			}
@@ -231,7 +239,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
         if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink);
         }
-        for (matchAndPepPos of crossLink.filteredMatches_pp) {
+        for (var matchAndPepPos of crossLink.filteredMatches_pp) {
             match = matchAndPepPos.match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {
@@ -240,7 +248,9 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
             if (match.crossLinks.length === 1) {
                 this.ambiguous = false;
             } else {
-				for (crossLink of match.crossLinks) {
+				var clCount = crossLinks.length;
+				for (var cl = 0; cl < clCount; cl++) {
+					var crossLink = crossLinks[cl];
 					var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
 					var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
                 

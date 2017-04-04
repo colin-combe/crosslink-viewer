@@ -15,7 +15,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 
     // layout info
     this.x = 100;
-    this.y = 20;
+    this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
@@ -944,13 +944,30 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     //create new annotations
     var featuresShown = [];         
     			    
-	//here we need to add the aligned region annotatiion, if they're selected
+	//add the aligned regions, if they're selected
 	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"Alignment-PDB aligned region"})
 	var alignmentAnnotationType = filtered[0];
 	if (alignmentAnnotationType.get("shown") === true) {
-		var alignedRegions = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
+		var features = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
 		//~ console.log("alignment>", alignedRegions);
-		featuresShown = alignedRegions;
+		featuresShown = featuresShown.concat(features);
+	}
+	
+	//add the digestible residues, if they're selected
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AA-Digestible"})
+	var alignmentAnnotationType = filtered[0];
+	if (alignmentAnnotationType.get("shown") === true) {
+		var features = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
+		featuresShown = featuresShown.concat(features);
+	}
+
+	//add the crosslinkable residues, if they're selected
+	var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({id:"AA-Cross-linkable"})
+	var alignmentAnnotationType = filtered[0];
+	if (alignmentAnnotationType.get("shown") === true) {
+		var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant);
+		//~ console.log("alignment>", alignedRegions);
+		featuresShown = featuresShown.concat(features);
 	}
 
 	//add uniprot features
@@ -979,13 +996,18 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var convStart = anno.begin;
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
-			if (alignModel) {
+			if (anno.category != "Digestible residue" // this handles not aligning certain features, todo; check for tidier way 
+				&& anno.category != "Crosslinkable residue" 
+				&& alignModel) {
 				var alignmentID = anno.alignmentID || "Canonical";
 				convStart = alignModel.mapToSearch (alignmentID, anno.begin);
 				convEnd = alignModel.mapToSearch (alignmentID, anno.end);
 				if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
 				if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
 				//TODO: tooltip requring these to be written into feature object, seems wrong? 
+				anno.fstart = convStart;
+				anno.fend = convEnd;
+			} else {
 				anno.fstart = convStart;
 				anno.fend = convEnd;
 			}

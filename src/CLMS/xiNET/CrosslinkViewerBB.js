@@ -53,9 +53,9 @@
             this.svgElement.setAttribute("height", "100%");
 			this.svgElement.setAttribute("style", "pointer-events:visible");
 			// disable right click context menu (we wish to put right click to our own purposes)
-			this.svgElement.oncontextmenu = function() {
-				return false;
-			};
+			//~ this.svgElement.oncontextmenu = function() {
+				//~ return false;
+			//~ };
             //add listeners
             var self = this;
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
@@ -134,7 +134,8 @@
                 if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
             
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                    this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+					this.renderedCrossLinks.push(renderedCrossLink);
 
                     var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
                     var p_pLink = this.renderedP_PLinks.get(p_pId);
@@ -167,6 +168,7 @@
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
+            this.listenTo (this.model.get("bulkAlignChange"), this.setAnnotations);
             //TODO - potentially needs to redraw annotations if alignment changes
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.render();
@@ -194,7 +196,7 @@
             //~ this.rotating = false;
 
             this.renderedProteins = new Map();
-            this.renderedCrossLinks = new Map();
+            this.renderedCrossLinks = []; // new Map();
             this.renderedP_PLinks = new Map();
 
             this.layout = null;
@@ -208,7 +210,8 @@
 
         linkColourChanged: function() {
             var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+            //TODO: tidy
+            var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var rLink = renderedCrossLinksArr[rcl];
@@ -232,8 +235,8 @@
 			for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
-          
-            var cLinksArr = Array.from(this.renderedCrossLinks.values());
+			//TODO: tidy
+            var cLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
@@ -264,8 +267,10 @@
 				var rpCount =  renderedParticipantsArr.length;
 				for (var rp = 0; rp < rpCount; rp++ ) {
 					var renderedParticipant = renderedParticipantsArr[rp];
-					renderedParticipant.busy = false;
-					renderedParticipant.setForm(1); 
+					if (renderedParticipant.hidden = false) {
+						renderedParticipant.busy = false;
+						renderedParticipant.setForm(1);
+					} 
 				}
 			}
         },
@@ -298,8 +303,8 @@
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
-
-			var renderedCrossLinksArr = Array.from(this.renderedCrossLinks.values());
+			//TODO: tdiy
+			var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var renderedCrossLink = renderedCrossLinksArr[rcl];
@@ -640,6 +645,7 @@
                     if (protLayout["form"]) {
                         if (protLayout["stickZoom"]) {
                             protein.stickZoom = protLayout["stickZoom"];
+                            d3.select(protein.peptides).attr("transform", "scale(" + (protein.stickZoom) + ", 1)");
                         }
                         protein.form = protLayout["form"] - 0;
                         // protein.form =1;
@@ -765,32 +771,41 @@
             download(svg, 'application/svg', 'xiNET-output.svg');
         },
 
-		//todo: could have an 'iterateRenderedLinks(callBackFunction)' function or something (visitor pattern?), it recurs in several places
-        highlightsChanged: function () {
+		highlightsChanged: function () {
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].showHighlight(false);
             }
-            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
-            var rclCount = rcLinksArr.length;
-            for (var rcl = 0; rcl < rclCount; rcl++) {
-                rcLinksArr[rcl].showHighlight(false);
-            }
-            
-            var crossLinksArr = this.model.get("highlights");
-            var clCount = crossLinksArr.length;
-            for (var cl =0; cl < clCount; cl++) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
-                if (renderedCrossLink.renderedFromProtein.form == 1
-                    || renderedCrossLink.renderedToProtein.form == 1) {
-                    renderedCrossLink.showHighlight(true, true);
-                } else {
-                    var p_pLink = this.renderedP_PLinks.get(
-                        renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                    p_pLink.showHighlight(true, true);
-                }
-            }
+
+			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protien)
+            var renderedCrossLinks = this.renderedCrossLinks;
+            var rclCount = renderedCrossLinks.length;
+	        for (var rcl =0; rcl < rclCount; rcl++) {
+				renderedCrossLinks[rcl].showHighlight(false);
+			}
+
+			var highlightedCrossLinks = this.model.get("highlights");
+
+            for (var rcl =0; rcl < rclCount; rcl++) {
+                var renderedCrossLink = renderedCrossLinks[rcl];
+				if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
+					
+					if (renderedCrossLink.renderedFromProtein.form == 1
+						|| renderedCrossLink.renderedToProtein.form == 1) {
+						renderedCrossLink.showHighlight(true, true);
+					} else {
+						var p_pLink = this.renderedP_PLinks.get(
+							renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
+						p_pLink.showHighlight(true, true);
+					}
+				}
+				// can't have this here, it calls remove Peptides which removes ALL highlighted pep's from protein
+				// so need peptide removing loop before
+				//~ else {
+					//~ renderedCrossLink.showHighlight(false);
+				//~ }
+            }    
             return this;
         },
 
@@ -800,19 +815,20 @@
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].setSelected(false);
             }
-            var rcLinksArr = Array.from(this.renderedCrossLinks.values());
-            var rclCount = rcLinksArr.length;
-            for (var rcl = 0; rcl < rclCount; rcl++) {
-                rcLinksArr[rcl].setSelected(false);
-            }
-            var crossLinksArr = this.model.get("selection");
-            var clCount = crossLinksArr.length;
-            for (var cl =0; cl < clCount; cl++) {
-                var renderedCrossLink = this.renderedCrossLinks.get(crossLinksArr[cl].id);
-                renderedCrossLink.setSelected(true);
-                var p_pLink = this.renderedP_PLinks.get(
-                    renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                p_pLink.setSelected(true);
+
+            var selectedCrossLinks = this.model.get("selection");
+            var renderedCrossLinks = this.renderedCrossLinks;
+            var rclCount = renderedCrossLinks.length;
+            for (var rcl =0; rcl < rclCount; rcl++) {
+                var renderedCrossLink = renderedCrossLinks[rcl];
+                if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
+					renderedCrossLink.setSelected(true);
+					var p_pLink = this.renderedP_PLinks.get(
+						renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
+					p_pLink.setSelected(true);
+				}else {
+					renderedCrossLink.setSelected(false);
+				}
             }
             return this;
         },

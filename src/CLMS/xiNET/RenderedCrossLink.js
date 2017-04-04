@@ -88,10 +88,14 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
 	var toHighlight = [this.crossLink];
     //TODO: we might want to highlight smallest possible set of alternatives?
     if (this.crossLink.ambiguous) {
-		for (match_pp of this.crossLink.filteredMatches_pp) {
-			var match = match_pp.match;
-			for (crossLink of match.crossLinks) {
-				toHighlight.push(crossLink);
+		var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
+		var fm_ppCount = filteredMatchesAndPeptidePositions.length;
+		for (var fm_pp = 0; fm_pp <fm_ppCount; fm-pp++) {
+			var crossLinks = filteredMatchesAndPeptidePositions[fm_pp].match.crossLinks;
+			var clCount = crossLinks.length;
+			
+			for (var cl = 0; cl < clCount; cl++) {
+				toHighlight.push(crossLinks[cl]);
 			}
 		}
 	}
@@ -142,7 +146,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 			this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
 			this.highlightLine.setAttribute("stroke-opacity", "0.7");
 			var fromPeptides = [], toPeptides = [];
-			for (matchAndPepPos of this.crossLink.filteredMatches_pp) {
+			//this is where we need the peptide positions
+			var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
+			var fm_ppCount = filteredMatchesAndPeptidePositions.length;
+			for (var fm_pp = 0; fm_pp <fm_ppCount; fm_pp++) {
+				var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
 				var match = matchAndPepPos.match;
 
 				var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
@@ -153,6 +161,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
 				toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 			}
+			//TODO: make 'shown peptides' attribute of renderedCrossLink - allows improving the highlightsChanged function in CrossLinkViewerBB 
 			this.renderedFromProtein.showPeptides(fromPeptides);
 			if (this.renderedToProtein) {
 				this.renderedToProtein.showPeptides(toPeptides);
