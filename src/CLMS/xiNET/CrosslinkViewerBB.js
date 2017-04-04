@@ -53,9 +53,9 @@
             this.svgElement.setAttribute("height", "100%");
 			this.svgElement.setAttribute("style", "pointer-events:visible");
 			// disable right click context menu (we wish to put right click to our own purposes)
-			this.svgElement.oncontextmenu = function() {
-				return false;
-			};
+			//~ this.svgElement.oncontextmenu = function() {
+				//~ return false;
+			//~ };
             //add listeners
             var self = this;
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
@@ -643,6 +643,7 @@
                     if (protLayout["form"]) {
                         if (protLayout["stickZoom"]) {
                             protein.stickZoom = protLayout["stickZoom"];
+                            d3.select(protein.peptides).attr("transform", "scale(" + (protein.stickZoom) + ", 1)");
                         }
                         protein.form = protLayout["form"] - 0;
                         // protein.form =1;

@@ -161,6 +161,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
 				toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 			}
+			//TODO: make 'shown peptides' attribute of renderedCrossLink - allows improving the highlightsChanged function in CrossLinkViewerBB 
 			this.renderedFromProtein.showPeptides(fromPeptides);
 			if (this.renderedToProtein) {
 				this.renderedToProtein.showPeptides(toPeptides);
