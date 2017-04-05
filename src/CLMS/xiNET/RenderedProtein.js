@@ -352,7 +352,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
 
         //internal links
         var renderedCrossLinks = this.renderedCrossLinks;
-        var rclCount = renderedCrosslinks.length;
+        var rclCount = renderedCrossLinks.length;
         for (var rcl = 0; rcl < rclCount; rcl++) {
 			var residueLink = renderedCrossLinks[rcl];
             if (residueLink.crossLink.isSelfLink()) {
