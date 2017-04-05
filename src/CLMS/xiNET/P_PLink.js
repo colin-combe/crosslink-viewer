@@ -13,11 +13,13 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
 
     this.renderedFromProtein =
                     this.crosslinkViewer.renderedProteins.get(crossLink.fromProtein.id);
-    this.renderedFromProtein.renderedP_PLinks.set(p_pId, this);
+    this.renderedFromProtein.renderedP_PLinks.push(this);
 
-    this.renderedToProtein =
+    if (crossLink.toProtein) {
+		this.renderedToProtein =
                     this.crosslinkViewer.renderedProteins.get(crossLink.toProtein.id);
-    this.renderedToProtein.renderedP_PLinks.set(p_pId, this);
+		this.renderedToProtein.renderedP_PLinks.push(this);
+	}
 
     this.name = crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
     //used to avoid some unnecessary manipulation of DOM
@@ -233,14 +235,19 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     var filteredCrossLinks = new Set();
     this.filteredMatches = new Map ();
-    this.altP_PLinks = new Map();
-
-    for (crossLink of this.crossLinks) {
+    var altP_PLinks = new Map();
+	
+	var crossLinks = this.crossLinks;
+	var clCount = crossLinks.length;
+    for (var cl = 0; cl < clCount; cl++) {
+		var crossLink = crossLinks[cl];
         if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink);
         }
-        for (var matchAndPepPos of crossLink.filteredMatches_pp) {
-            match = matchAndPepPos.match;
+        var filteredMatchesAndPepPos =  crossLink.filteredMatches_pp;
+        var fm_ppCount = filteredMatchesAndPepPos.length;
+        for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
+            var match = filteredMatchesAndPepPos[fm_pp].match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {
                 this.hd = true;
@@ -248,10 +255,11 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
             if (match.crossLinks.length === 1) {
                 this.ambiguous = false;
             } else {
-				var clCount = crossLinks.length;
-				for (var cl = 0; cl < clCount; cl++) {
-					var crossLink = crossLinks[cl];
-					var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+				var matchCrossLinks = match.crossLinks;
+				var mclCount = matchCrossLinks.length;
+				for (var mcl = 0; mcl < mclCount; mcl++) {
+					var matchCrossLink = matchCrossLinks[mcl];
+					var p_pId = matchCrossLink.fromProtein.id + "-" + matchCrossLink.toProtein.id;
 					var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
                 
 					this.altP_PLinks.set(p_pLink.id, p_pId);

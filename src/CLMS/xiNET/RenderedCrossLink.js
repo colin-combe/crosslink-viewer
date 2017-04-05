@@ -12,12 +12,12 @@ CLMS.xiNET.RenderedCrossLink = function (crossLink, crosslinkViewer){
 
     this.renderedFromProtein =
                     this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);
-    this.renderedFromProtein.renderedCrossLinks.set(crossLink.id, this);
-
-    this.renderedToProtein =
-                    this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
-    this.renderedToProtein.renderedCrossLinks.set(crossLink.id, this);
-
+    this.renderedFromProtein.renderedCrossLinks.push(this);
+	if (this.crossLink.toProtein){
+		this.renderedToProtein =
+						this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
+		this.renderedToProtein.renderedCrossLinks.push(this);
+	}
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     this.isSelected = false;

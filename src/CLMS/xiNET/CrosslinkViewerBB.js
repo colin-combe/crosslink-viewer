@@ -232,11 +232,11 @@
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
                 }
             }
-			for (var pl = 0; pl < plCount; pl++) {
+			for (pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
-			//TODO: tidy
-            var cLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
+			
+            var cLinksArr = this.renderedCrossLinks;
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
@@ -267,7 +267,7 @@
 				var rpCount =  renderedParticipantsArr.length;
 				for (var rp = 0; rp < rpCount; rp++ ) {
 					var renderedParticipant = renderedParticipantsArr[rp];
-					if (renderedParticipant.hidden = false) {
+					if (renderedParticipant.hidden == false) {//todo: appears to be not working
 						renderedParticipant.busy = false;
 						renderedParticipant.setForm(1);
 					} 

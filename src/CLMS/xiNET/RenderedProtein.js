@@ -10,8 +10,8 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.crosslinkViewer = crosslinkViewer;
     //~ this.index = participant.id;
 
-    this.renderedP_PLinks = new Map();
-    this.renderedCrossLinks = new Map();
+    this.renderedP_PLinks = [];
+    this.renderedCrossLinks = [];
 
     // layout info
     this.x = 100;
@@ -351,7 +351,10 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
             "translate(" + (this.getResXwithStickZoom(this.participant.size  - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
         //internal links
-        for (residueLink of this.renderedCrossLinks.values()) {
+        var renderedCrossLinks = this.renderedCrossLinks;
+        var rclCount = renderedCrosslinks.length;
+        for (var rcl = 0; rcl < rclCount; rcl++) {
+			var residueLink = renderedCrossLinks[rcl];
             if (residueLink.crossLink.isSelfLink()) {
                 var path = this.getCrossLinkPath(residueLink);
                 d3.select(residueLink.line).attr("d", path);
@@ -534,11 +537,11 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 			.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
 		//~ if (this.selfLink != null) {
-		var crossLinkIter = this.renderedCrossLinks.values();
-		//~ var resLinkCount = resLinks.length;
-		for (residueLink of crossLinkIter) {
-			//~ var residueLink = resLinks[rl];
-			//~ if (residueLink.shown) {
+		var renderedCrossLinks = this.renderedCrossLinks;
+        var rclCount = renderedCrossLinks.length;
+        for (var rcl = 0; rcl < rclCount; rcl++) {
+			var residueLink = renderedCrossLinks[rcl];
+        	//~ if (residueLink.shown) {
 						var selectLine = d3.select(residueLink.line);
 						selectLine.attr("d",this.getCrossLinkPath(residueLink));
 						selectLine.transition().attr("d",this.getAggregateSelfLinkPath())
@@ -603,8 +606,10 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 			self.setAllLineCoordinates();
 
 			if (interp ===  1){ // finished - tidy up
-				for (renderedCrossLink of self.renderedCrossLinks.values()) {
-					renderedCrossLink.hide();
+				var renderedCrossLinks = self.renderedCrossLinks;
+				var rclCount = renderedCrossLinks.length;
+				for (var rcl = 0; rcl < rclCount; rcl++) {
+					renderedCrossLinks[rcl].hide();
 				}
 				//bring in new
 				self.form = 0;
@@ -674,10 +679,11 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         .attr("rx", 0).attr("ry", 0)
         .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-    var crossLinkIter = this.renderedCrossLinks.values();
-    for (residueLink of crossLinkIter) {
-        //~ var residueLink = resLinks[rl];
-        if (residueLink.crossLink.isSelfLink() === true) {
+    var renderedCrossLinks = this.renderedCrossLinks;
+	var rclCount = renderedCrossLinks.length;
+	for (var rcl = 0; rcl < rclCount; rcl++) {
+		var residueLink = renderedCrossLinks[rcl];
+		if (residueLink.crossLink.isSelfLink() === true) {
             d3.select(residueLink.line).attr("d",this.getAggregateSelfLinkPath());
             d3.select(residueLink.line).transition().attr("d",this.getCrossLinkPath(residueLink))
                 .duration(CLMS.xiNET.RenderedProtein.transitionTime);
@@ -896,38 +902,43 @@ CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
 }
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
-    var pLinks = this.renderedP_PLinks.values();
-    for (var pLink of pLinks) {
-        pLink.check();
+    var pLinks = this.renderedP_PLinks;
+    var plCount = pLinks.length;
+    for (var pl = 0; pl < plCount; pl++) {
+        pLinks[pl].check();
     }
-    pLinks = this.renderedP_PLinks.values();
-    for (var pLink of pLinks) {
-        pLink.update();
+    for (pl = 0; pl < plCount; pl++) {
+        pLinks[pl].update();
     }
-    var links = this.renderedCrossLinks.values();
-    for (var link of links) {
-        link.check();
+	var renderedCrossLinks = this.renderedCrossLinks;
+	var rclCount = renderedCrossLinks.length;
+	for (var rcl = 0; rcl < rclCount; rcl++) {
+		renderedCrossLinks[rcl].check();
     }
 }
 
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
 	
-    var pLinks = this.renderedP_PLinks.values();
-    for (var pLink of pLinks) {
-        pLink.setLineCoordinates(this);
+    var pLinks = this.renderedP_PLinks;
+    var plCount = pLinks.length;
+    for (var pl = 0; pl < plCount; pl++) {
+        pLinks[pl].setLineCoordinates(this);
     }
     
-    var renderedCrosslinkIter = this.renderedCrossLinks.values();
-    for (var renderedCrosslink of renderedCrosslinkIter) {
-        renderedCrosslink.setLineCoordinates(this);
+    var renderedCrossLinks = this.renderedCrossLinks;
+	var rclCount = renderedCrossLinks.length;
+	for (var rcl = 0; rcl < rclCount; rcl++) {
+		renderedCrossLinks[rcl].setLineCoordinates(this);
     }
     
 };
 
 CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
-	for (p_pLink of this.renderedP_PLinks.values()) {
-		if (p_pLink.crossLinks[0].isSelfLink() === false) return true; 
+	var pLinks = this.renderedP_PLinks;
+    var plCount = pLinks.length;
+    for (var pl = 0; pl < plCount; pl++) {
+       if (pLinks[pl].crossLinks[0].isSelfLink() === false) return true; 
 	}
 	return false;
 };
