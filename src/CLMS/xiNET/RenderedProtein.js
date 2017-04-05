@@ -983,7 +983,10 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 
 	//add uniprot features
 	if (this.participant.uniprot) {
-		for (var feature of this.participant.uniprot.features) {
+		var features = this.participant.uniprot.features;
+		var fCount = features.length;
+		for (var f = 0; f < fCount; f++ ) {
+			var feature = features[f];
 			var annotationTypeId = feature.category + "-" + feature.type
 			var filtered = annotationTypes.filter({id:annotationTypeId})
 			var annotationType = filtered[0];
