@@ -122,12 +122,12 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 		//TODO: we might want to highlight smallest possible set of alternatives
 		var crossLinks = this.crossLinks;
 		var iCount = crossLinks.length;
-		for (var i = 0; i < iCount; cl++) {
+		for (var i = 0; i < iCount; i++) {
 			var crossLink = crossLinks[i];
-			var matches = crossLink.matches;
+			var matches = crossLink.filteredMatches_pp;
 			var matchCount = matches.length;
 			for (var m = 0; m < matchCount; m++) {
-				var match = match_pp.match;
+				var match = matches[m].match;
 				var matchCrossLinks = match.crossLinks;
 				var jCount = matchCrossLinks.length;
 				for (var j = 0; j < jCount; j++) {
@@ -262,7 +262,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 					var p_pId = matchCrossLink.fromProtein.id + "-" + matchCrossLink.toProtein.id;
 					var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
                 
-					this.altP_PLinks.set(p_pLink.id, p_pId);
+					altP_PLinks.set(p_pLink.id, p_pId);
 				}
 			}
 
@@ -271,7 +271,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
-        this.ambiguous = this.ambiguous && this.altP_PLinks.size > 1;
+        this.ambiguous = this.ambiguous && altP_PLinks.size > 1;
     }
     return this.filteredCrossLinkCount;
 };
