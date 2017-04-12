@@ -90,7 +90,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
     if (this.crossLink.ambiguous) {
 		var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
 		var fm_ppCount = filteredMatchesAndPeptidePositions.length;
-		for (var fm_pp = 0; fm_pp <fm_ppCount; fm-pp++) {
+		for (var fm_pp = 0; fm_pp <fm_ppCount; fm_pp++) {
 			var crossLinks = filteredMatchesAndPeptidePositions[fm_pp].match.crossLinks;
 			var clCount = crossLinks.length;
 			
