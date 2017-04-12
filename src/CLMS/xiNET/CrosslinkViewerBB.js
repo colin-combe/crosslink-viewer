@@ -201,7 +201,6 @@
 
             this.layout = null;
             this.z = 1;
-            this.scores = null;
 
             this.resetZoom();
             this.state = CLMS.xiNET.Controller.MOUSE_UP;
