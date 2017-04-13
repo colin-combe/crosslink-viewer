@@ -25,10 +25,7 @@
             this.clickModeIsSelect = false;
         },
 
-        initialize: function (viewOptions) {
-
-            var defaultOptions = {};
-            this.options = _.extend(defaultOptions, viewOptions.myOptions);
+        initialize: function () {
 
             this.clickModeIsSelect = false;
 
@@ -125,41 +122,9 @@
                     
             this.clear();
 
-            this.initProteins();
+            this.update();
 
-            var crossLinksArr = Array.from(this.model.get("clmsModel").get("crossLinks").values());
-            var clCount = crossLinksArr.length;           
-            for(var cl =0 ; cl < clCount; cl++){
-				var crossLink = crossLinksArr[cl];
-                if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
-            
-                    var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-					this.renderedCrossLinks.push(renderedCrossLink);
 
-                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
-                    var p_pLink = this.renderedP_PLinks.get(p_pId);
-                    if (typeof p_pLink == 'undefined') {
-                        p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
-                        this.renderedP_PLinks.set(p_pId, p_pLink);
-                    }
-                    p_pLink.crossLinks.push(crossLink);
-                }
-            }
-
-            if (this.model.get("clmsModel").get("xiNETLayout")) {
-                this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-            } else {
-                var renderedParticipantArr = Array.from(this.renderedProteins.values());
-                var rpCount = renderedParticipantArr.length;
-                for (var rp = 0 ; rp < rpCount; rp++) {
-					var prot = renderedParticipantArr[rp];
-                    prot.init();//prot.init() is just calling prot.setForm(prot.form))
-                    this.proteinLower.appendChild(prot.lowerGroup);
-                    this.proteinUpper.appendChild(prot.upperGroup);
-                }
-                this.autoLayout();
-            }
 
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
@@ -168,9 +133,9 @@
             this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
             this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
-            this.listenTo (this.model.get("bulkAlignChange"), this.setAnnotations);
-            //TODO - potentially needs to redraw annotations if alignment changes
+            this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
+            this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
             this.render();
             this.linkColourChanged();
             return this;
@@ -209,8 +174,7 @@
 
         linkColourChanged: function() {
             var colourAssignment = this.model.get("linkColourAssignment");
-            //TODO: tidy
-            var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
+            var renderedCrossLinksArr = this.renderedCrossLinks;
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var rLink = renderedCrossLinksArr[rcl];
@@ -222,6 +186,14 @@
         },
 
         render: function() {
+			if (this.cola == null) { 
+				if (this.model.get("clmsModel").get("xiNETLayout")) {
+					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				} else {
+					this.autoLayout();
+				}
+			}
+			
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
             var plCount = pLinksArr.length;
@@ -242,7 +214,12 @@
             }
         },
 
-        initProteins: function () {
+        update: function () {
+			if (this.cola) { // cola layout
+                this.cola.stop();
+            }
+            this.cola = null;
+            
             var participantsArr = Array.from(this.model.get("clmsModel").get("participants").values());
             var pCount = participantsArr.length;
             for (var p =0; p < pCount; p++) {
@@ -261,17 +238,51 @@
             CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2)
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
 
-			if (pCount < 3) {
-				var renderedParticipantsArr = Array.from(this.renderedProteins.values());
-				var rpCount =  renderedParticipantsArr.length;
-				for (var rp = 0; rp < rpCount; rp++ ) {
-					var renderedParticipant = renderedParticipantsArr[rp];
-					if (renderedParticipant.hidden == false) {//todo: appears to be not working
-						renderedParticipant.busy = false;
-						renderedParticipant.setForm(1);
-					} 
-				}
+
+			var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var rpCount = renderedParticipantArr.length;
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var prot = renderedParticipantArr[rp];
+				prot.init();//prot.init() is just calling prot.setForm(prot.form))
+				this.proteinLower.appendChild(prot.lowerGroup);
+				this.proteinUpper.appendChild(prot.upperGroup);
 			}
+                
+                
+			//~ if (pCount < 3) {
+				//~ var renderedParticipantsArr = Array.from(this.renderedProteins.values());
+				//~ var rpCount =  renderedParticipantsArr.length;
+				//~ for (var rp = 0; rp < rpCount; rp++ ) {
+					//~ var renderedParticipant = renderedParticipantsArr[rp];
+					//~ if (renderedParticipant.hidden == false) {//todo: appears to be not working
+						//~ renderedParticipant.busy = false;
+						//~ renderedParticipant.setForm(1);
+					//~ } 
+				//~ }
+			//~ }
+			
+			this.renderedCrossLinks = [];
+			
+			var crossLinksArr = Array.from(this.model.get("clmsModel").get("crossLinks").values());
+            var clCount = crossLinksArr.length;           
+            for(var cl =0 ; cl < clCount; cl++){
+				var crossLink = crossLinksArr[cl];
+                if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
+            
+                    var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+					this.renderedCrossLinks.push(renderedCrossLink);
+
+                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+                    var p_pLink = this.renderedP_PLinks.get(p_pId);
+                    if (typeof p_pLink == 'undefined') {
+                        p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
+                        this.renderedP_PLinks.set(p_pId, p_pLink);
+                    }
+                    p_pLink.crossLinks.push(crossLink);
+                }
+            }
+            //this.autoLayout();
         },
 
         reset: function() {
