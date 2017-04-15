@@ -729,7 +729,7 @@
             //~ var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
-            var filteredCrossLinks = this.model.filteredNotDecoyNotLinearCrossLinks;//get("clmsModel").get("crossLinks").values();
+            var filteredCrossLinks = this.model.getFilteredCrossLinks();
             var clCount = filteredCrossLinks.length;
             for(var cl = 0; cl < clCount; ++cl){
 				var crossLink = filteredCrossLinks[cl];
