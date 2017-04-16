@@ -264,12 +264,12 @@
 			this.renderedCrossLinks = [];
 			
 			var crossLinksArr = Array.from(this.model.get("clmsModel").get("crossLinks").values());
-            var clCount = crossLinksArr.length;           
+            var clCount = crossLinksArr.length; 
+            var clmsModel = this.model.get("clmsModel");          
             for(var cl =0 ; cl < clCount; cl++){
 				var crossLink = crossLinksArr[cl];
-                if (crossLink.matches_pp[0].match.is_decoy == false && crossLink.toProtein) {
-            
-                    var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+                if (clmsModel.isDecoyLink(crossLink) == false) {
+					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 					this.renderedCrossLinks.push(renderedCrossLink);
 

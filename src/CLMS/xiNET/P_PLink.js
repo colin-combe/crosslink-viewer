@@ -120,7 +120,6 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 	var toHighlight = this.crossLinks.slice(0);
 	
 	/*if (this.ambiguous) {
-		//TODO: we might want to highlight smallest possible set of alternatives
 		var crossLinks = this.crossLinks;
 		var iCount = crossLinks.length;
 		for (var i = 0; i < iCount; i++) {
