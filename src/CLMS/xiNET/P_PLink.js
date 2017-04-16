@@ -118,7 +118,8 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
 
 	var toHighlight = this.crossLinks.slice(0);
-	if (this.ambiguous) {
+	
+	/*if (this.ambiguous) {
 		//TODO: we might want to highlight smallest possible set of alternatives
 		var crossLinks = this.crossLinks;
 		var iCount = crossLinks.length;
@@ -139,7 +140,9 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 			}
 		}
 	}
-    this.crosslinkViewer.model.set("highlights", toHighlight);
+    this.crosslinkViewer.model.set("highlights", toHighlight);*/
+    
+    this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
     
     this.crosslinkViewer.model.get("tooltipModel")
 						//TODO - reuse other multiLink tooltips in CLM-UI?

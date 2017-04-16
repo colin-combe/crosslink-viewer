@@ -313,8 +313,8 @@
                 if (prot.form !== 0)
                     prot.setAllLineCoordinates();
             }
-			//TODO: tdiy
-			var renderedCrossLinksArr = this.renderedCrossLinks;//Array.from(this.renderedCrossLinks.values());
+			
+			var renderedCrossLinksArr = this.renderedCrossLinks;
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var renderedCrossLink = renderedCrossLinksArr[rcl];
