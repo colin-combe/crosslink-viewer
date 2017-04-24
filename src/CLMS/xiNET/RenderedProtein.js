@@ -130,7 +130,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
     this.setPosition(this.x, this.y);
     this.setForm(this.form);
-    //if (this.selfLink) this.selfLink.initSelfLinkSVG();
+    d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 }
 
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {

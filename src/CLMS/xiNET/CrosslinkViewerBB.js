@@ -123,9 +123,7 @@
             this.clear();
 
             this.update();
-
-
-
+            
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
@@ -136,7 +134,6 @@
             this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
-            this.render();
             this.linkColourChanged();
             return this;
         },
@@ -186,13 +183,6 @@
         },
 
         render: function() {
-			if (this.cola == null) { 
-				if (this.model.get("clmsModel").get("xiNETLayout")) {
-					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-				} else {
-					this.autoLayout();
-				}
-			}
 			
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
@@ -212,6 +202,7 @@
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
             }
+
         },
 
         update: function () {
@@ -243,7 +234,6 @@
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
-				prot.init();//prot.init() is just calling prot.setForm(prot.form))
 				this.proteinLower.appendChild(prot.lowerGroup);
 				this.proteinUpper.appendChild(prot.upperGroup);
 			}
@@ -282,7 +272,17 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
-            //this.autoLayout();
+			if (this.model.get("clmsModel").get("xiNETLayout")) {
+				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+			} else {
+				var renderedParticipantArr = Array.from(this.renderedProteins.values());
+				var rpCount = renderedParticipantArr.length;
+				for (var rp = 0 ; rp < rpCount; rp++) {
+					var prot = renderedParticipantArr[rp];
+					prot.init();
+				}
+				this.autoLayout();
+			}
         },
 
         reset: function() {
@@ -645,34 +645,18 @@
                 var protLayout = layout[prot];
                 var protein = this.renderedProteins.get(protLayout.id);
                 if (protein !== undefined) {
-                    this.proteinLower.appendChild(protein.lowerGroup);
-                    this.proteinUpper.appendChild(protein.upperGroup);
-                    protein.setPosition(protLayout["x"], protLayout["y"]);
+					protein.setPosition(protLayout["x"], protLayout["y"]);
                     if (typeof protLayout['rot'] !== 'undefined') {
                         protein.rotation = protLayout["rot"] - 0;
                     }
-                    //some tidying required
-                    if (protLayout["form"]) {
-                        if (protLayout["stickZoom"]) {
-                            protein.stickZoom = protLayout["stickZoom"];
-                            d3.select(protein.peptides).attr("transform", "scale(" + (protein.stickZoom) + ", 1)");
-                        }
+                        protein.x = protLayout["x"];
+                        protein.y =  protLayout["y"];
                         protein.form = protLayout["form"] - 0;
-                        // protein.form =1;
-                        // protein.scale();
-                        if (protein.form === 1){
-                             protein.toStick();
-                        }
-                        //~ //protein.setRotation(protein.rotation);
-                    }
-                     //~ protein.form = 1;
-                    protein.init();
-
-                    if (protLayout["flipped"]) { //TODO: fix this
-                        protein.toggleFlipped(); // change to setFlipped(protLayout["flipped"])
-                    }
+                        protein.stickZoom = protLayout["stickZoom"];
+                        protein.rotation = protLayout["rot"] - 0;
+                        protein.flipped = protLayout["flipped"]
                 }
-                else {console.log("!");}
+                else {console.log("!protein in layout but not search");}
             }
 
             // incase proteins have been added which are not included in layout -
@@ -680,33 +664,8 @@
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
-			    if (prot.x == null) {
-                    prot.init()
-                    prot.setPosition(20, 20);
-                    this.proteinLower.appendChild(prot.lowerGroup);
-                    this.proteinUpper.appendChild(prot.upperGroup);
-                }
+			    prot.init();
             }
-
-            // layout info for links (hidden / specified colour)
-            //~ for (var l in this.layout.links) {
-                //~ var linkState = this.layout.links[l];
-                //~ var link = this.proteinLinks.get(l);
-                //~ if (link !== undefined) {
-                    //~ if (typeof linkState.hidden !== 'undefined')
-                        //~ link.hidden = linkState.hidden;
-                    //~ var c = linkState.colour;
-                    //~ if (typeof c !== 'undefined') {
-                        //~ var resLinks = link.residueLinks.values();
-                        //~ var resLinkCount = resLinks.length;
-                        //~ for (var r = 0; r < resLinkCount; r++) {
-                            //~ var resLink = resLinks[r];
-                            //~ resLink.initSVG();
-                            //~ resLink.line.setAttribute('stroke', 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')');
-                        //~ }
-                    //~ }
-                //~ }
-            //~ }
         },
 
         autoLayout: function() {
@@ -726,7 +685,6 @@
             
 			this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
                     
-            //~ var nodeIds =  Array.from(this.renderedProteins.keys());
             var links = new Map();
 
             var filteredCrossLinks = this.model.getFilteredCrossLinks();
