@@ -118,28 +118,6 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
 
 	var toHighlight = this.crossLinks.slice(0);
-	
-	/*if (this.ambiguous) {
-		var crossLinks = this.crossLinks;
-		var iCount = crossLinks.length;
-		for (var i = 0; i < iCount; i++) {
-			var crossLink = crossLinks[i];
-			var matches = crossLink.filteredMatches_pp;
-			var matchCount = matches.length;
-			for (var m = 0; m < matchCount; m++) {
-				var match = matches[m].match;
-				var matchCrossLinks = match.crossLinks;
-				var jCount = matchCrossLinks.length;
-				for (var j = 0; j < jCount; j++) {
-					var mCrossLink = matchCrossLinks[j];
-					if (toHighlight.indexOf(mCrossLink) === -1) {
-						toHighlight.push(mCrossLink);
-					}
-				}
-			}
-		}
-	}
-    this.crosslinkViewer.model.set("highlights", toHighlight);*/
     
     this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
     

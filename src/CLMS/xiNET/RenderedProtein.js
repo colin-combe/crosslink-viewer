@@ -614,7 +614,16 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 				//bring in new
 				self.form = 0;
 				//~ self.setPosition(self.x, self.y);
-				self.checkLinks();
+				//heres ur prob:todo fix
+				//~ self.checkLinks();
+				var pLinks = self.renderedP_PLinks;
+				var plCount = pLinks.length;
+				//~ for (var pl = 0; pl < plCount; pl++) {
+					//~ pLinks[pl].check();
+				//~ }
+				for (pl = 0; pl < plCount; pl++) {
+					pLinks[pl].update();
+				}
 				self.stickZoom = originalStickZoom;
 				self.rotation = originalRotation;
 				self.removePeptides();

@@ -183,8 +183,9 @@
         },
 
         render: function() {
-			
-			CLMS.xiNET.P_PLink.maxNoCrossLinks = 0;
+			//~ alert("renderin");
+			//~ doesn't get called first time
+			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = Array.from(this.renderedP_PLinks.values());
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
@@ -193,6 +194,7 @@
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
                 }
             }
+            console.log("xinet render:",  CLMS.xiNET.P_PLink.maxNoCrossLinks);
 			for (pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
