@@ -245,7 +245,7 @@
 				//~ for (var rp = 0; rp < rpCount; rp++ ) {
 					//~ var renderedParticipant = renderedParticipantsArr[rp];
 					//~ if (renderedParticipant.hidden == false) {//todo: appears to be not working
-						//~ renderedParticipant.busy = false;
+						//~ //renderedParticipant.busy = false;
 						//~ renderedParticipant.setForm(1);
 					//~ } 
 				//~ }
@@ -292,14 +292,14 @@
 
         resetZoom: function () {
             this.container.setAttribute("transform", "scale(1)");
-            this.scale();
-            var proteins = this.renderedProteins.values();
-            var proteinCount = proteins.length;
-            for (var p = 0; p < proteinCount; p++) {
-                var prot = proteins[p];
-                prot.stickZoom = 1;
-                prot.scale();
-            }
+            //~ this.scale();
+            //~ var proteins = this.renderedProteins.values();
+            //~ var proteinCount = proteins.length;
+            //~ for (var p = 0; p < proteinCount; p++) {
+                //~ var prot = proteins[p];
+                //~ prot.stickZoom = 1;
+                //~ prot.scale();
+            //~ }
         },
 
         scale: function () {
@@ -338,7 +338,7 @@
                     if (p_pLink.line) {
 						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						//~ p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
 						if (p_pLink.ambiguous) {
 							p_pLink.dashedLine(true); //rescale spacing of dashes
 						}
