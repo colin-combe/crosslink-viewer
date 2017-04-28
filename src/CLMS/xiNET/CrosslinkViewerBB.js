@@ -748,7 +748,7 @@
                 pLinksArr[pl].showHighlight(false);
             }
 
-			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protien)
+			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protein)
             var renderedCrossLinks = this.renderedCrossLinks;
             var rclCount = renderedCrossLinks.length;
 	        for (var rcl =0; rcl < rclCount; rcl++) {

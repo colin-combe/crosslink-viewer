@@ -603,16 +603,22 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 			var rot = rotationInterpol(cubicInOut(interp));
 			self.stickZoom = stickZoomInterpol(cubicInOut(interp));
 			if (self.form == 1) self.setRotation(rot);
-			self.setAllLineCoordinates();
+
+			//self.setAllLineCoordinates();
+	        var renderedCrossLinks = self.renderedCrossLinks;
+			var rclCount = renderedCrossLinks.length;
+			for (var rcl = 0; rcl < rclCount; rcl++) {
+				renderedCrossLinks[rcl].setLineCoordinates(this);
+			}
 
 			if (interp ===  1){ // finished - tidy up
+				//bring in new
+				self.form = 0;
 				var renderedCrossLinks = self.renderedCrossLinks;
 				var rclCount = renderedCrossLinks.length;
 				for (var rcl = 0; rcl < rclCount; rcl++) {
-					renderedCrossLinks[rcl].hide();
+					renderedCrossLinks[rcl].check();
 				}
-				//bring in new
-				self.form = 0;
 				//~ self.setPosition(self.x, self.y);
 				//heres ur prob:todo fix
 				//~ self.checkLinks();
@@ -736,7 +742,13 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         var currentLength = lengthInterpol(cubicInOut(interp));
         d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * self.stickZoom));
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-        self.setAllLineCoordinates();
+        //self.setAllLineCoordinates();
+
+        var renderedCrossLinks = self.renderedCrossLinks;
+		var rclCount = renderedCrossLinks.length;
+		for (var rcl = 0; rcl < rclCount; rcl++) {
+			renderedCrossLinks[rcl].setLineCoordinates(this);
+		}
 
         if (interp ===  1){ // finished - tidy up
             self.busy = false;

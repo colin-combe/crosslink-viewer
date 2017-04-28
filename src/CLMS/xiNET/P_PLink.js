@@ -128,7 +128,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
                             ["From", this.renderedFromProtein.participant.name],
                             ["To", this.renderedToProtein.participant.name],
                             ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
-                            ["Matches", this.filteredMatches.size]
+                            ["Matches", this.filteredMatches? this.filteredMatches.size : "filter not yet applied"]
                         ])
                         .set("location", {pageX: p.x, pageY: p.y})
                     ;
@@ -315,7 +315,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 		this.thickLine.setAttribute("stroke-width", 0);
 	} else {
 		var w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
-		console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
+		//console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
 		if (this.renderedFromProtein === this.renderedToProtein) {
 			this.thickLine.setAttribute("stroke-width", w);
 		} else {
