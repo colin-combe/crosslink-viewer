@@ -302,7 +302,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
             this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
         else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * 1);
+            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);

@@ -294,7 +294,7 @@
 
         resetZoom: function () {
             this.container.setAttribute("transform", "scale(1)");
-            //~ this.scale();
+            this.scale();
             //~ var proteins = this.renderedProteins.values();
             //~ var proteinCount = proteins.length;
             //~ for (var p = 0; p < proteinCount; p++) {
@@ -340,7 +340,7 @@
                     if (p_pLink.line) {
 						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-						//~ p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						//p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
 						if (p_pLink.ambiguous) {
 							p_pLink.dashedLine(true); //rescale spacing of dashes
 						}
