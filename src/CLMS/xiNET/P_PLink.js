@@ -118,28 +118,8 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
 
 	var toHighlight = this.crossLinks.slice(0);
-	if (this.ambiguous) {
-		//TODO: we might want to highlight smallest possible set of alternatives
-		var crossLinks = this.crossLinks;
-		var iCount = crossLinks.length;
-		for (var i = 0; i < iCount; i++) {
-			var crossLink = crossLinks[i];
-			var matches = crossLink.filteredMatches_pp;
-			var matchCount = matches.length;
-			for (var m = 0; m < matchCount; m++) {
-				var match = matches[m].match;
-				var matchCrossLinks = match.crossLinks;
-				var jCount = matchCrossLinks.length;
-				for (var j = 0; j < jCount; j++) {
-					var mCrossLink = matchCrossLinks[j];
-					if (toHighlight.indexOf(mCrossLink) === -1) {
-						toHighlight.push(mCrossLink);
-					}
-				}
-			}
-		}
-	}
-    this.crosslinkViewer.model.set("highlights", toHighlight);
+    
+    this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
     
     this.crosslinkViewer.model.get("tooltipModel")
 						//TODO - reuse other multiLink tooltips in CLM-UI?
@@ -148,7 +128,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
                             ["From", this.renderedFromProtein.participant.name],
                             ["To", this.renderedToProtein.participant.name],
                             ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
-                            ["Matches", this.filteredMatches.size]
+                            ["Matches", this.filteredMatches? this.filteredMatches.size : "filter not yet applied"]
                         ])
                         .set("location", {pageX: p.x, pageY: p.y})
                     ;

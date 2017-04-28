@@ -86,20 +86,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
     var p = this.crosslinkViewer.getEventPoint(evt);
 
 	var toHighlight = [this.crossLink];
-    //TODO: we might want to highlight smallest possible set of alternatives?
-    if (this.crossLink.ambiguous) {
-		var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
-		var fm_ppCount = filteredMatchesAndPeptidePositions.length;
-		for (var fm_pp = 0; fm_pp <fm_ppCount; fm_pp++) {
-			var crossLinks = filteredMatchesAndPeptidePositions[fm_pp].match.crossLinks;
-			var clCount = crossLinks.length;
-			
-			for (var cl = 0; cl < clCount; cl++) {
-				toHighlight.push(crossLinks[cl]);
-			}
-		}
-	}
-	this.crosslinkViewer.model.set("highlights", toHighlight);
+	
+	this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
    	    
     this.crosslinkViewer.model.get("tooltipModel")
 		.set("header", CLMSUI.modelUtils.makeTooltipTitle.link())
