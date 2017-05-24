@@ -1,24 +1,6 @@
 {
     "data": [
         {
-            "id": "chebi_CHEBI:30408", 
-            "identifier": {
-                "db": "chebi", 
-                "id": "CHEBI:30408"
-            }, 
-            "label": "fe-s cluster", 
-            "object": "interactor", 
-            "organism": {
-                "common": "chemical synthesis", 
-                "scientific": "Chemical synthesis (Chemical synthesis)", 
-                "taxid": "-2"
-            }, 
-            "type": {
-                "id": "MI:0328", 
-                "name": "small molecule"
-            }
-        }, 
-        {
             "id": "chebi_CHEBI:49601", 
             "identifier": {
                 "db": "chebi", 
@@ -61,6 +43,24 @@
                 "id": "CHEBI:58210"
             }, 
             "label": "fmn(3-)", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "id": "chebi_CHEBI:30408", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:30408"
+            }, 
+            "label": "fe-s cluster", 
             "object": "interactor", 
             "organism": {
                 "common": "chemical synthesis", 
@@ -942,16 +942,16 @@
                     "id": "R-HSA-6799192"
                 }, 
                 {
-                    "db": "efo", 
-                    "id": "Orphanet:2609"
-                }, 
-                {
                     "db": "intenz", 
                     "id": "1.6.99.3"
                 }, 
                 {
                     "db": "intenz", 
                     "id": "1.6.5.3"
+                }, 
+                {
+                    "db": "efo", 
+                    "id": "Orphanet:2609"
                 }, 
                 {
                     "db": "intact", 
@@ -981,10 +981,10 @@
                             "linkedFeatures": [
                                 "3"
                             ], 
-                            "name": "ndufs3 binding region", 
+                            "name": "NDUFS1 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:30408", 
+                                    "interactorRef": "chebi_CHEBI:49601", 
                                     "participantRef": "1", 
                                     "pos": "?-?"
                                 }
@@ -996,35 +996,6 @@
                         }
                     ], 
                     "id": "1", 
-                    "interactorRef": "chebi_CHEBI:30408"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0682", 
-                        "name": "cofactor"
-                    }, 
-                    "features": [
-                        {
-                            "category": "bindingSites", 
-                            "id": "5", 
-                            "linkedFeatures": [
-                                "6"
-                            ], 
-                            "name": "NDUFS1 binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "chebi_CHEBI:49601", 
-                                    "participantRef": "4", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }
-                    ], 
-                    "id": "4", 
                     "interactorRef": "chebi_CHEBI:49601", 
                     "stoichiometry": "1"
                 }, 
@@ -1036,15 +1007,15 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "8", 
+                            "id": "5", 
                             "linkedFeatures": [
-                                "6"
+                                "3"
                             ], 
                             "name": "NDUFS1 binding region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "chebi_CHEBI:64607", 
-                                    "participantRef": "7", 
+                                    "participantRef": "4", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -1054,9 +1025,38 @@
                             }
                         }
                     ], 
-                    "id": "7", 
+                    "id": "4", 
                     "interactorRef": "chebi_CHEBI:64607", 
                     "stoichiometry": "2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "NDUFV1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:64607", 
+                                    "participantRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "6", 
+                    "interactorRef": "chebi_CHEBI:64607"
                 }, 
                 {
                     "bioRole": {
@@ -1073,7 +1073,7 @@
                             "name": "NDUFV1 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:64607", 
+                                    "interactorRef": "chebi_CHEBI:58210", 
                                     "participantRef": "9", 
                                     "pos": "?-?"
                                 }
@@ -1085,7 +1085,7 @@
                         }
                     ], 
                     "id": "9", 
-                    "interactorRef": "chebi_CHEBI:64607"
+                    "interactorRef": "chebi_CHEBI:58210"
                 }, 
                 {
                     "bioRole": {
@@ -1099,10 +1099,10 @@
                             "linkedFeatures": [
                                 "14"
                             ], 
-                            "name": "NDUFV1 binding region", 
+                            "name": "NDUFS2 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:58210", 
+                                    "interactorRef": "chebi_CHEBI:64607", 
                                     "participantRef": "12", 
                                     "pos": "?-?"
                                 }
@@ -1114,7 +1114,7 @@
                         }
                     ], 
                     "id": "12", 
-                    "interactorRef": "chebi_CHEBI:58210"
+                    "interactorRef": "chebi_CHEBI:64607"
                 }, 
                 {
                     "bioRole": {
@@ -1128,10 +1128,10 @@
                             "linkedFeatures": [
                                 "17"
                             ], 
-                            "name": "NDUFS2 binding region", 
+                            "name": "ndufs3 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:64607", 
+                                    "interactorRef": "chebi_CHEBI:30408", 
                                     "participantRef": "15", 
                                     "pos": "?-?"
                                 }
@@ -1143,7 +1143,7 @@
                         }
                     ], 
                     "id": "15", 
-                    "interactorRef": "chebi_CHEBI:64607"
+                    "interactorRef": "chebi_CHEBI:30408"
                 }, 
                 {
                     "bioRole": {
@@ -1157,10 +1157,10 @@
                             "linkedFeatures": [
                                 "20"
                             ], 
-                            "name": "NDUFS8 binding region", 
+                            "name": "NDUFV2 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:64607", 
+                                    "interactorRef": "chebi_CHEBI:49601", 
                                     "participantRef": "18", 
                                     "pos": "?-?"
                                 }
@@ -1172,8 +1172,7 @@
                         }
                     ], 
                     "id": "18", 
-                    "interactorRef": "chebi_CHEBI:64607", 
-                    "stoichiometry": "2"
+                    "interactorRef": "chebi_CHEBI:49601"
                 }, 
                 {
                     "bioRole": {
@@ -1187,10 +1186,10 @@
                             "linkedFeatures": [
                                 "23"
                             ], 
-                            "name": "NDUFS7 binding region", 
+                            "name": "NDUFA10 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:64607", 
+                                    "interactorRef": "chebi_CHEBI:16238", 
                                     "participantRef": "21", 
                                     "pos": "?-?"
                                 }
@@ -1202,7 +1201,7 @@
                         }
                     ], 
                     "id": "21", 
-                    "interactorRef": "chebi_CHEBI:64607"
+                    "interactorRef": "chebi_CHEBI:16238"
                 }, 
                 {
                     "bioRole": {
@@ -1216,10 +1215,10 @@
                             "linkedFeatures": [
                                 "26"
                             ], 
-                            "name": "NDUFV2 binding region", 
+                            "name": "NDUFS8 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:49601", 
+                                    "interactorRef": "chebi_CHEBI:64607", 
                                     "participantRef": "24", 
                                     "pos": "?-?"
                                 }
@@ -1231,7 +1230,8 @@
                         }
                     ], 
                     "id": "24", 
-                    "interactorRef": "chebi_CHEBI:49601"
+                    "interactorRef": "chebi_CHEBI:64607", 
+                    "stoichiometry": "2"
                 }, 
                 {
                     "bioRole": {
@@ -1245,10 +1245,10 @@
                             "linkedFeatures": [
                                 "29"
                             ], 
-                            "name": "NDUFA10 binding region", 
+                            "name": "NDUFS7 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "chebi_CHEBI:16238", 
+                                    "interactorRef": "chebi_CHEBI:64607", 
                                     "participantRef": "27", 
                                     "pos": "?-?"
                                 }
@@ -1260,7 +1260,7 @@
                         }
                     ], 
                     "id": "27", 
-                    "interactorRef": "chebi_CHEBI:16238"
+                    "interactorRef": "chebi_CHEBI:64607"
                 }, 
                 {
                     "bioRole": {
@@ -1286,9 +1286,9 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "20", 
+                            "id": "26", 
                             "linkedFeatures": [
-                                "19"
+                                "25"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1347,9 +1347,9 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "29", 
+                            "id": "23", 
                             "linkedFeatures": [
-                                "28"
+                                "22"
                             ], 
                             "name": "FAD binding region", 
                             "sequenceData": [
@@ -1496,9 +1496,9 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "26", 
+                            "id": "20", 
                             "linkedFeatures": [
-                                "25"
+                                "19"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1525,9 +1525,9 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "23", 
+                            "id": "29", 
                             "linkedFeatures": [
-                                "22"
+                                "28"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1562,9 +1562,9 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "14", 
+                            "id": "11", 
                             "linkedFeatures": [
-                                "13"
+                                "10"
                             ], 
                             "name": "FMN binding region", 
                             "sequenceData": [
@@ -1581,9 +1581,9 @@
                         }, 
                         {
                             "category": "bindingSites", 
-                            "id": "11", 
+                            "id": "8", 
                             "linkedFeatures": [
-                                "10"
+                                "7"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1677,9 +1677,9 @@
                         }, 
                         {
                             "category": "bindingSites", 
-                            "id": "3", 
+                            "id": "17", 
                             "linkedFeatures": [
-                                "2"
+                                "16"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1733,9 +1733,9 @@
                         }, 
                         {
                             "category": "bindingSites", 
-                            "id": "17", 
+                            "id": "14", 
                             "linkedFeatures": [
-                                "16"
+                                "13"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [
@@ -1762,64 +1762,64 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "6", 
+                            "id": "3", 
                             "linkedFeatures": [
-                                "8", 
                                 "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5", 
-                                "5"
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2", 
+                                "2"
                             ], 
                             "name": "Fe-S binding region", 
                             "sequenceData": [

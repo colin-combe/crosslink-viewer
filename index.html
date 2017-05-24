@@ -8,6 +8,7 @@
         <meta name="xiNET Interaction Viewer" content="xiNET Interaction Viewer">
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
+        <link rel="stylesheet" href="./demo/css/style.css">
         <link rel="stylesheet" href="./demo/css/demo.css">
         <link rel='stylesheet' type='text/css' href='./demo/css/XLV.css'/>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
@@ -17,17 +18,51 @@
         <script type="text/javascript" src="./build/complexviewer.js"></script>
 
         <script type="text/javascript" src="./node_modules/d3/d3.js"></script>
+<!--
         <script type="text/javascript" src="./node_modules/rgb-color/rgb-color.js"></script>
+-->
         <script type="text/javascript" src="./demo/legend.js"></script>
 
     </head>
     <body>
+        <!-- Main -->
+        <div id="main">
 
-        <div style="height:100%;">
+            <div class="page-header">
+                    ComplexViewer
+
+                    <p id="annotationsDropdownPlaceholder"></p>
+
+                    <i class="fa fa-github" onclick="window.location = 'https://github.com/MICommunity/ComplexViewer';" title="Go to GitHub project"></i>
+
+
+            </div>
+
+            <div class="mainContent">
+                <div id="topDiv">
+                    <div id="networkDiv"></div>
+<!--
+                    <div id="sliderDiv"></div>
+-->
+                </div>
+                <div id="bottomDiv"></div>
+            </div>
+
+            <div class="controls">
+                <div id="filterPlaceholder"></div>
+                <div class="filterResultGroup">
+                    <div id="filterReportPlaceholder"></div>
+                    <div id="fdrSummaryPlaceholder"></div>
+                </div>
+            </div>
+        </div><!-- MAIN -->
+
+        <!-- <div style="height:100%;">
         <div id="networkContainer"></div>
         <div id='controls'>
 
             <select id="dataSets" onChange="loadData();">
+                <option>./demo/data/complex/EBI-10887677.json</option>
                 <option>./demo/data/complex/EBI-1202920.json</option>
                 <option>./demo/data/complex/EBI-9696567.json</option>
                 <option>./demo/data/complex/EBI-9082861.json</option>
@@ -64,7 +99,7 @@
     <!--
                     LEGEND
     -->
-                    <table>
+             <!--       <table>
                      <tr>
                         <td>
                             <div style="float:right">
@@ -116,13 +151,13 @@
                 <a href="./demo/evidence.html"><h2>Evidence data examples</h2></a>
                 <a href="https://github.com/MICommunity/interaction-viewer/tree/master/src/controller"><h2>GitHub</h2></a>
 -->
-            </div>
-        </div>
+           <!-- </div>
+        </div> -->
 
         <script type="text/javascript">
                 //<![CDATA[
 
-                var targetDiv = document.getElementById('networkContainer');
+                var targetDiv = document.getElementById('networkDiv');
                 xlv = new xiNET(targetDiv);
 /*
                 var legend = d3.select("svg").append("g");
@@ -167,9 +202,9 @@
 
                 function loadData(){
                     xlv.clear();
-                    var matrixExpansion = document.getElementById("chkexpansion").checked;
+                    var matrixExpansion = true;//document.getElementById("chkexpansion").checked;
                     var dataSetsSelect = document.getElementById('dataSets');
-                    var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
+                    var path = "./demo/data/complex/EBI-10887677.json";//dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
                     d3.json(path, function(data) {
                         xlv.readMIJSON(data, matrixExpansion);
                     });

@@ -28,15 +28,15 @@
                 "id": "ECO:0000353", 
                 "name": "physical interaction evidence used in manual assertion"
             }, 
-            "id": "intenz_EC 3.6.4.12", 
+            "id": "emdb_EMD-2322", 
             "identifiers": [
-                {
-                    "db": "intenz", 
-                    "id": "EC 3.6.4.12"
-                }, 
                 {
                     "db": "emdb", 
                     "id": "EMD-2322"
+                }, 
+                {
+                    "db": "intenz", 
+                    "id": "3.6.4.12"
                 }, 
                 {
                     "db": "intact", 
@@ -61,30 +61,17 @@
                     }, 
                     "features": [
                         {
-                            "category": "otherFeatures", 
-                            "id": "2", 
-                            "name": "dnag hdb binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P0ACB0", 
-                                    "participantRef": "1", 
-                                    "pos": "1-152"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0442", 
-                                "name": "sufficient binding region"
-                            }
-                        }, 
-                        {
                             "category": "bindingSites", 
-                            "id": "3", 
-                            "name": "hexamerisation", 
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "hexamerisation region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "uniprotkb_P0ACB0", 
                                     "participantRef": "1", 
-                                    "pos": "1-471"
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
@@ -93,25 +80,273 @@
                             }
                         }, 
                         {
-                            "category": "otherFeatures", 
+                            "category": "bindingSites", 
                             "id": "4", 
-                            "name": "dna binding site", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "hexamerisation region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "uniprotkb_P0ACB0", 
                                     "participantRef": "1", 
-                                    "pos": "186-454"
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
-                                "id": "MI:0442", 
-                                "name": "sufficient binding region"
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
                             }
                         }
                     ], 
                     "id": "1", 
                     "interactorRef": "uniprotkb_P0ACB0", 
-                    "stoichiometry": "6"
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "6", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "6", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "9", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "12", 
+                            "linkedFeatures": [
+                                "13"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "9", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "9", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "14", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "14", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "14", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "13", 
+                            "linkedFeatures": [
+                                "12"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "17", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "16", 
+                            "linkedFeatures": [
+                                "15"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "17", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "17", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "11", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "hexamerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "18", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "1"
                 }
             ]
         }

@@ -66,47 +66,47 @@
                 "id": "ECO:0000353", 
                 "name": "physical interaction evidence used in manual assertion"
             }, 
-            "id": "wwpdb_1pdg", 
+            "id": "omim_131440", 
             "identifiers": [
+                {
+                    "db": "omim", 
+                    "id": "131440"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "228550"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "615483"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "607907"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "607174"
+                }, 
                 {
                     "db": "wwpdb", 
                     "id": "1pdg"
                 }, 
                 {
-                    "db": "reactome", 
-                    "id": "R-HSA-389076"
-                }, 
-                {
-                    "db": "efo", 
-                    "id": "Orphanet:2495"
-                }, 
-                {
-                    "db": "efo", 
-                    "id": "Orphanet:31112"
-                }, 
-                {
-                    "db": "efo", 
-                    "id": "Orphanet:1980"
+                    "db": "intenz", 
+                    "id": "2.7.10.1"
                 }, 
                 {
                     "db": "reactome", 
-                    "id": "R-HSA-389077"
+                    "id": "REACT_17875"
                 }, 
                 {
-                    "db": "efo", 
-                    "id": "Orphanet:2591"
-                }, 
-                {
-                    "db": "efo", 
-                    "id": "Orphanet:168943"
+                    "db": "reactome", 
+                    "id": "REACT_17544"
                 }, 
                 {
                     "db": "chembl target", 
                     "id": "CHEMBL2095189"
-                }, 
-                {
-                    "db": "intenz", 
-                    "id": "2.7.10.1"
                 }, 
                 {
                     "db": "intact", 
@@ -201,6 +201,25 @@
                     "features": [
                         {
                             "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "PDGF binding region 2", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P16234", 
+                                    "participantRef": "8", 
+                                    "pos": "1-524"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
                             "id": "9", 
                             "linkedFeatures": [
                                 "10"
@@ -236,25 +255,6 @@
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
-                        }, 
-                        {
-                            "category": "bindingSites", 
-                            "id": "7", 
-                            "linkedFeatures": [
-                                "6"
-                            ], 
-                            "name": "PDGF binding region 2", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P16234", 
-                                    "participantRef": "8", 
-                                    "pos": "1-524"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
                         }
                     ], 
                     "id": "8", 
@@ -267,6 +267,25 @@
                         "name": "enzyme"
                     }, 
                     "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "PDGF binding region 2", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P09619", 
+                                    "participantRef": "13", 
+                                    "pos": "1-529"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
                         {
                             "category": "bindingSites", 
                             "id": "12", 
@@ -304,25 +323,6 @@
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
-                        }, 
-                        {
-                            "category": "bindingSites", 
-                            "id": "3", 
-                            "linkedFeatures": [
-                                "2"
-                            ], 
-                            "name": "PDGF binding region 2", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P09619", 
-                                    "participantRef": "13", 
-                                    "pos": "1-529"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
                         }
                     ], 
                     "id": "13", 
@@ -335,6 +335,25 @@
                         "name": "unspecified role"
                     }, 
                     "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "14"
+                            ], 
+                            "name": "receptor beta binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P01127", 
+                                    "participantRef": "16", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
                         {
                             "category": "bindingSites", 
                             "id": "10", 
@@ -372,25 +391,6 @@
                             "type": {
                                 "id": "MI:1125", 
                                 "name": "direct binding region"
-                            }
-                        }, 
-                        {
-                            "category": "bindingSites", 
-                            "id": "15", 
-                            "linkedFeatures": [
-                                "14"
-                            ], 
-                            "name": "receptor beta binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P01127", 
-                                    "participantRef": "16", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
                             }
                         }
                     ], 

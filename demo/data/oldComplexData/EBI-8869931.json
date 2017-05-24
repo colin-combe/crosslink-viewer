@@ -47,19 +47,19 @@
                 "id": "ECO:0000353", 
                 "name": "physical interaction evidence used in manual assertion"
             }, 
-            "id": "wwpdb_3lvk", 
+            "id": "wwpdb_3lvj", 
             "identifiers": [
-                {
-                    "db": "wwpdb", 
-                    "id": "3lvk"
-                }, 
                 {
                     "db": "wwpdb", 
                     "id": "3lvj"
                 }, 
                 {
+                    "db": "wwpdb", 
+                    "id": "3lvk"
+                }, 
+                {
                     "db": "intenz", 
-                    "id": "2.8.1.7"
+                    "id": "EC 2.8.1.7"
                 }, 
                 {
                     "db": "intact", 
@@ -193,25 +193,6 @@
                     }, 
                     "features": [
                         {
-                            "category": "ptms", 
-                            "id": "9", 
-                            "linkedFeatures": [
-                                "8"
-                            ], 
-                            "name": "tusa binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P0A6B7", 
-                                    "participantRef": "10", 
-                                    "pos": "328-328"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MOD:00274", 
-                                "name": "L-cysteine persulfide"
-                            }
-                        }, 
-                        {
                             "category": "bindingSites", 
                             "id": "5", 
                             "linkedFeatures": [
@@ -228,6 +209,25 @@
                             "type": {
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "ptms", 
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "tusa binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0A6B7", 
+                                    "participantRef": "10", 
+                                    "pos": "328-328"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MOD:00274", 
+                                "name": "L-cysteine persulfide"
                             }
                         }
                     ], 

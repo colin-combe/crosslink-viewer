@@ -1,13 +1,17 @@
+/*
 body {
     margin:0px;
     padding: 0px;
-    /*background: #c7e9c0;*/
 }
 
 html, body, #outerDiv  {
-    /*margin: 4px;*/
     height: 100%;
-	font-family: "Helvetica", Arial, serif;
+    font-family: "Helvetica", Arial, serif;
+}
+*/
+
+#topDiv {
+    height: 100%;
 }
 
 div#networkContainer{
@@ -19,15 +23,15 @@ div#networkContainer{
     width:75%;
     overflow: hidden;
     margin: 8px;
-	margin-right:25%;
+    margin-right:25%;
  }
 
 div#controls{
-	position:absolute;
+    position:absolute;
     bottom: 0px;
     margin: 16px;
 }
- 
+
 div#networkCaption{
     /*clear: both;*/
     /*border: 1px solid black;*/
@@ -39,10 +43,10 @@ div#networkCaption{
     line-height: 1;
     top:0px;
     max-height:100%;
-	width:23%;
-	max-width:33%;
+    width:23%;
+    max-width:33%;
 }
 
 h2{
-	text-decoration: underline;
+    text-decoration: underline;
 }

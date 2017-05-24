@@ -8,11 +8,6 @@
             }, 
             "label": "fad", 
             "object": "interactor", 
-            "organism": {
-                "common": "chemical synthesis", 
-                "scientific": "Chemical synthesis (Chemical synthesis)", 
-                "taxid": "-2"
-            }, 
             "type": {
                 "id": "MI:0328", 
                 "name": "small molecule"
@@ -26,11 +21,6 @@
             }, 
             "label": "thiamine(1+) diphosphate(3-)", 
             "object": "interactor", 
-            "organism": {
-                "common": "chemical synthesis", 
-                "scientific": "Chemical synthesis (Chemical synthesis)", 
-                "taxid": "-2"
-            }, 
             "type": {
                 "id": "MI:0328", 
                 "name": "small molecule"
@@ -46,7 +36,7 @@
             "object": "interactor", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "sequence": "MLRIRSLLNNKRAFSSTVRTLTINKSHDVVIIGGGPAGYVAAIKAAQLGFNTACVEKRGKLGGTCLNVGCIPSKALLNNSHLFHQMHTEAQKRGIDVNGDIKINVANFQKAKDDAVKQLTGGIELLFKKNKVTYYKGNGSFEDETKIRVTPVDGLEGTVKEDHILDVKNIIVATGSEVTPFPGIEIDEEKIVSSTGALSLKEIPKRLTIIGGGIIGLEMGSVYSRLGSKVTVVEFQPQIGASMDGEVAKATQKFLKKQGLDFKLSTKVISAKRNDDKNVVEIVVEDTKTNKQENLEAEVLLVAVGRRPYIAGLGAEKIGLEVDKRGRLVIDDQFNSKFPHIKVVGDVTFGPMLAHKAEEEGIAAVEMLKTGHGHVNYNNIPSVMYSHPEVAWVGKTEEQLKEAGIDYKIGKFPFAANSRAKTNQDTEGFVKILIDSKTERILGAHIIGPNAGEMIAEAGLALEYGASAEDVARVCHAHPTLSEAFKEANMAAYDKAIHC", 
@@ -65,7 +55,7 @@
             "object": "interactor", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "sequence": "MFSRLPTSLARNVARRAPTSFVRPSAAAAALRFSSTKTMTVREALNSAMAEELDRDDDVFLIGEEVAQYNGAYKVSKGLLDRFGERRVVDTPITEYGFTGLAVGAALKGLKPIVEFMSFNFSMQAIDHVVNSAAKTHYMSGGTQKCQMVFRGPNGAAVGVGAQHSQDFSPWYGSIPGLKVLVPYSAEDARGLLKAAIRDPNPVVFLENELLYGESFEISEEALSPEFTLPYKAKIEREGTDISIVTYTRNVQFSLEAAEILQKKYGVSAEVINLRSIRPLDTEAIIKTVKKTNHLITVESTFPSFGVGAEIVAQVMESEAFDYLDAPIQRVTGADVPTPYAKELEDFAFPDTPTIVKAVKEVLSIE", 
@@ -84,7 +74,7 @@
             "object": "interactor", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "sequence": "MSAFVRVVPRISRSSVLTRSLRLQLRCYASYPEHTIIGMPALSPTMTQGNLAAWTKKEGDQLSPGEVIAEIETDKAQMDFEFQEDGYLAKILVPEGTKDIPVNKPIAVYVEDKADVPAFKDFKLEDSGSDSKTSTKAQPAEPQAEKKQEAPAEETKTSAPEAKKSDVAAPQGRIFASPLAKTIALEKGISLKDVHGTGPRGRITKADIESYLEKSSKQSSQTSGAAAATPAAATSSTTAGSAPSPSSTASYEDVPISTMRSIIGERLLQSTQGIPSYIVSSKISISKLLKLRQSLNATANDKYKLSINDLLVKAITVAAKRVPDANAYWLPNENVIRKFKNVDVSVAVATPTGLLTPIVKNCEAKGLSQISNEIKELVKRARINKLAPEEFQGGTICISNMGMNNAVNMFTSIINPPQSTILAIATVERVAVEDAAAENGFSFDNQVTITGTFDHRTIDGAKGAEFMKELKTVIENPLEMLL", 
@@ -103,7 +93,7 @@
             "object": "interactor", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "sequence": "MLAASFKRQPSQLVRGLGAVLRTPTRIGHVRTMATLKTTDKKAPEDIEGSDTVQIELPESSFESYMLEPPDLSYETSKATLLQMYKDMVIIRRMEMACDALYKAKKIRGFCHLSVGQEAIAVGIENAITKLDSIITSYRCHGFTFMRGASVKAVLAELMGRRAGVSYGKGGSMHLYAPGFYGGNGIVGAQVPLGAGLAFAHQYKNEDACSFTLYGDGASNQGQVFESFNMAKLWNLPVVFCCENNKYGMGTAASRSSAMTEYFKRGQYIPGLKVNGMDILAVYQASKFAKDWCLSGKGPLVLEYETYRYGGHSMSDPGTTYRTRDEIQHMRSKNDPIAGLKMHLIDLGIATEAEVKAYDKSARKYVDEQVELADAAPPPEAKLSILFEDVYVKGTETPTLRGRIPEDTWDFKKQGFASRD", 
@@ -122,7 +112,7 @@
             "object": "interactor", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "sequence": "MLSAISKVSTLKSCTRYLTKCNYHASAKLLAVKTFSMPAMSPTMEKGGIVSWKYKVGEPFSAGDVILEVETDKSQIDVEALDDGKLAKILKDEGSKDVDVGEPIAYIADVDDDLATIKLPQEANTANAKSIEIKKPSADSTEATQQHLKKATVTPIKTVDGSQANLEQTLLPSVSLLLAENNISKQKALKEIAPSGSNGRLLKGDVLAYLGKIPQDSVNKVTEFIKKNERLDLSNIKPIQLKPKIAEQAQTKAADKPKITPVEFEEQLVFHAPASIPFDKLSESLNSFMKEAYQFSHGTPLMDTNSKYFDPIFEDLVTLSPREPRFKFSYDLMQIPKANNMQDTYGQEDIFDLLTGSDATASSVRPVEKNLPEKNEYILALNVSVNNKKFNDAEAKAKRFLDYVRELESF", 
@@ -140,11 +130,11 @@
                 "id": "ECO:0000306", 
                 "name": "inference from background scientific knowledge used in manual assertion"
             }, 
-            "id": "intenz_2.3.1.12", 
+            "id": "intenz_1.8.1.4", 
             "identifiers": [
                 {
                     "db": "intenz", 
-                    "id": "2.3.1.12"
+                    "id": "1.8.1.4"
                 }, 
                 {
                     "db": "intenz", 
@@ -152,7 +142,11 @@
                 }, 
                 {
                     "db": "intenz", 
-                    "id": "1.8.1.4"
+                    "id": "2.3.1.12"
+                }, 
+                {
+                    "db": "evidence ontology", 
+                    "id": "ECO:0000306"
                 }, 
                 {
                     "db": "intact", 
@@ -166,7 +160,7 @@
             "object": "interaction", 
             "organism": {
                 "common": "yeast", 
-                "scientific": "Saccharomyces cerevisiae", 
+                "scientific": "Saccharomyces cerevisiae (strain ATCC 204508 / S288c)", 
                 "taxid": "559292"
             }, 
             "participants": [
