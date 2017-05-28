@@ -1,36 +1,60 @@
+h1 {
+ font-size:1.6em;
+ display:inline;
+}
+
+.page-header {
+	width:100%;
+}
+
+.fa-github{
+	float:right;
+}
+
+div#leftDiv {
 /*
-body {
-    margin:0px;
-    padding: 0px;
-}
-
-html, body, #outerDiv  {
-    height: 100%;
-    font-family: "Helvetica", Arial, serif;
-}
-*/
-
-#topDiv {
-    height: 100%;
-}
-
-div#networkContainer{
-    clear: both;
     border: 1px solid black;
+*/
     position:absolute;
-    bottom:0px;
     top:0px;
-    width:75%;
+    bottom:0px;
+    left:0px;
+    right:400px;
+/*
+    width:25%;
+*/
+/*
     overflow: hidden;
+*/
+/*
     margin: 8px;
     margin-right:25%;
+*/
+}
+
+div#rightDiv{
+	float:right;
+/*
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    left: calc (100% - 400px);
+    right: 0px;
+*/
+    width:400px;
+    background:#ecedf2;
+    color:#091D42;
+    padding-left: 10px;
+    padding-right: 10px;
  }
 
+/*
 div#controls{
     position:absolute;
     bottom: 0px;
     margin: 16px;
 }
+*/
 
 div#networkCaption{
     /*clear: both;*/

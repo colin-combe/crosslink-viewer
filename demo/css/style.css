@@ -148,7 +148,9 @@ tbody tr:hover td, tbody tr:hover td a, .spectrumShown{
 /* Common */
 body, html{
     background: #fff;
+/*
     height:100%;
+*/
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
@@ -157,7 +159,9 @@ body, html{
 }
 body, input, select, textarea {
     Font-family: "Lato-Regular", Helvetica, Arial, sans-serif;
+/*
     font-size: 10pt;
+*/
     font-weight: 300;
     line-height: 1.75em;
     color: #888;
@@ -171,16 +175,22 @@ body, input, select, textarea {
 }
 
 .page-header{
+/*
     height:35px;
-    padding-left: 10px;
+*/
+    padding: 10px;
     background-color: #091D42;
     color: #fff;
+/*
     position: absolute;
+*/
     /* increased z-index to 50 so it's children (i.e. drop-down menus) overlay floating windows */
 /*
     todo? would be better if floaty windows didn't go under this -- cc
 */
+/*
     z-index: 50;
+*/
 }
 
 .headerLabel{
@@ -385,7 +395,7 @@ body, input, select, textarea {
     color: #777;
 }
 
-#main .controls{
+.controls{
     overflow: hidden;
     /*display: table-row;*/
 

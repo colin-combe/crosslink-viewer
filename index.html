@@ -4,13 +4,15 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>xiNET Interaction Viewer</title>
-        <meta name="xiNET Interaction Viewer" content="xiNET Interaction Viewer">
+        <title>ComplexViewer Demo</title>
+        <meta name="ComplexViewer Demo" content="ComplexViewer Demo">
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
         <!-- css -->
+        <link rel="stylesheet" href="./demo/css/reset.css">
         <link rel="stylesheet" href="./demo/css/style.css">
         <link rel="stylesheet" href="./demo/css/demo.css">
-        <link rel='stylesheet' type='text/css' href='./demo/css/XLV.css'/>
+        <link rel="stylesheet" type='text/css' href="./demo/css/XLV.css"/>
+        
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -21,47 +23,28 @@
 <!--
         <script type="text/javascript" src="./node_modules/rgb-color/rgb-color.js"></script>
 -->
-        <script type="text/javascript" src="./demo/legend.js"></script>
+        <script type="text/javascript" src="./demo/data/complex/index.js"></script>
+		<script type="text/javascript" src="./demo/legend.js"></script>
 
     </head>
     <body>
         <!-- Main -->
+<!--
         <div id="main">
+-->
 
             <div class="page-header">
-                    ComplexViewer
-
-                    <p id="annotationsDropdownPlaceholder"></p>
-
+                    <h1>ComplexViewer</h1>
+                    <p>Colin Combe, Marine (Dumousseau) Sivade, Henning Hermjakob, Joshua Heimbach, Birgit Meldal, Gos Micklem, Sandra Orchard, Juri Rappsilber</p>
                     <i class="fa fa-github" onclick="window.location = 'https://github.com/MICommunity/ComplexViewer';" title="Go to GitHub project"></i>
-
-
             </div>
 
-            <div class="mainContent">
-                <div id="topDiv">
-                    <div id="networkDiv"></div>
+
+                <div id="leftDiv"></div>
+                <div id="rightDiv">
+					<span>Choose Example:</span>
+					<select id="dataSets" onChange="loadData();">
 <!--
-                    <div id="sliderDiv"></div>
--->
-                </div>
-                <div id="bottomDiv"></div>
-            </div>
-
-            <div class="controls">
-                <div id="filterPlaceholder"></div>
-                <div class="filterResultGroup">
-                    <div id="filterReportPlaceholder"></div>
-                    <div id="fdrSummaryPlaceholder"></div>
-                </div>
-            </div>
-        </div><!-- MAIN -->
-
-        <!-- <div style="height:100%;">
-        <div id="networkContainer"></div>
-        <div id='controls'>
-
-            <select id="dataSets" onChange="loadData();">
                 <option>./demo/data/complex/EBI-10887677.json</option>
                 <option>./demo/data/complex/EBI-1202920.json</option>
                 <option>./demo/data/complex/EBI-9696567.json</option>
@@ -75,8 +58,29 @@
                 <option>./demo/data/complex/EBI-9997373.json</option>
                 <option>./demo/data/complex/EBI-11509704.json</option>
                 <option>./demo/data/complex/EBI-1245484.json</option>
+-->
             </select>
 
+                </div>
+
+            <div class="controls">
+                <div id="filterPlaceholder"></div>
+                <div class="filterResultGroup">
+                    <div id="filterReportPlaceholder"></div>
+                    IUJBKJBJKBKJBKJBKJBKJBKJBKJBKJBKBKBKKBKBKBKBKBK
+                    <div id="fdrSummaryPlaceholder"></div>
+                </div>
+            </div>
+
+<!--
+        </div>
+--><!-- MAIN -->
+
+        <!-- <div style="height:100%;">
+        <div id="networkContainer"></div>
+        <div id='controls'>
+
+            
             <input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
             <button onclick="xlv.reset();">Reset</button>
             <button onclick="exportSVG();">Export SVG</button>
@@ -157,7 +161,7 @@
         <script type="text/javascript">
                 //<![CDATA[
 
-                var targetDiv = document.getElementById('networkDiv');
+                var targetDiv = document.getElementById('leftDiv');
                 xlv = new xiNET(targetDiv);
 /*
                 var legend = d3.select("svg").append("g");
@@ -197,6 +201,15 @@
 
               //  });
 
+				for (var i = 0; i < exampleIndex.length; i++) {
+					var example = exampleIndex[i];
+					var dataSetsSelect = document.getElementById('dataSets');
+                    var opt = document.createElement('option');
+					opt.value = "./demo/data/complex/" + example.ac + ".json";
+					opt.innerHTML = example.name;
+					dataSetsSelect.appendChild(opt);
+				}
+
                 loadData();
                 //~ changeAnnotations();
 
@@ -204,7 +217,7 @@
                     xlv.clear();
                     var matrixExpansion = true;//document.getElementById("chkexpansion").checked;
                     var dataSetsSelect = document.getElementById('dataSets');
-                    var path = "./demo/data/complex/EBI-10887677.json";//dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
+                    var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
                     d3.json(path, function(data) {
                         xlv.readMIJSON(data, matrixExpansion);
                     });
