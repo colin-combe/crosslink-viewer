@@ -5,21 +5,45 @@ h1 {
 
 .page-header {
 	width:100%;
+	clear:both;
 }
 
 .fa-github{
 	float:right;
 }
 
+
+.noShrink {
+flex-shrink: 0;
+}
+
+div#centre {
+display: flex;
+flex-direction: row;
+flex-grow: 1;
+width: 100%
+}
+
 div#leftDiv {
+/*
+display:none;
+*/
+/*
+float: left;
+*/
+      display: flex;
+      flex-grow:1;
+       flex-direction: column;
 /*
     border: 1px solid black;
 */
+/*
     position:absolute;
     top:0px;
     bottom:0px;
     left:0px;
     right:400px;
+*/
 /*
     width:25%;
 */
@@ -33,7 +57,14 @@ div#leftDiv {
 }
 
 div#rightDiv{
+ flex-grow: 1;
+
+      display: flex;
+      flex-direction: column;
+/*  */
+/*
 	float:right;
+*/
 /*
     position:absolute;
     top:0px;
@@ -41,11 +72,43 @@ div#rightDiv{
     left: calc (100% - 400px);
     right: 0px;
 */
+
+/*
+  height: 80%;
+*/
+
+
     width:400px;
+    max-width:400px;
     background:#ecedf2;
     color:#091D42;
     padding-left: 10px;
     padding-right: 10px;
+    
+
+ }
+ 
+ #complexDetails {
+       display: flex;
+             flex-direction: column;
+/*
+ overflow:auto;
+*/
+ flex-grow: 1;
+/*
+   background: gold;
+  overflow: auto;
+*/
+ }
+.detailsInner {
+       display: flex;
+             flex-direction: column;
+/*
+ overflow:auto;
+*/
+ flex-grow: 1;
+   background: gold;
+  overflow: auto;
  }
 
 /*
@@ -74,3 +137,10 @@ div#networkCaption{
 h2{
     text-decoration: underline;
 }
+
+#main {
+
+      display: flex;
+  flex-direction: column;
+
+} 

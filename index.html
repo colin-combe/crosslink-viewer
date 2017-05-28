@@ -29,9 +29,7 @@
     </head>
     <body>
         <!-- Main -->
-<!--
         <div id="main">
--->
 
             <div class="page-header">
                     <h1>ComplexViewer</h1>
@@ -39,30 +37,20 @@
                     <i class="fa fa-github" onclick="window.location = 'https://github.com/MICommunity/ComplexViewer';" title="Go to GitHub project"></i>
             </div>
 
-
-                <div id="leftDiv"></div>
-                <div id="rightDiv">
+<div id="centre">
+                  <div id="leftDiv"></div>
+                 <div id="rightDiv">
 					<span>Choose Example:</span>
-					<select id="dataSets" onChange="loadData();">
-<!--
-                <option>./demo/data/complex/EBI-10887677.json</option>
-                <option>./demo/data/complex/EBI-1202920.json</option>
-                <option>./demo/data/complex/EBI-9696567.json</option>
-                <option>./demo/data/complex/EBI-9082861.json</option>
-                <option>./demo/data/complex/EBI-9691559.json</option>
-                <option>./demo/data/complex/EBI-10828997.json</option>
-                <option>./demo/data/complex/EBI-9008420.json</option>
-                <option>./demo/data/complex/EBI-6554207.json</option>
-                <option>./demo/data/complex/EBI-8869931.json</option>
-                <option>./demo/data/complex/EBI-9008283.json</option>
-                <option>./demo/data/complex/EBI-9997373.json</option>
-                <option>./demo/data/complex/EBI-11509704.json</option>
-                <option>./demo/data/complex/EBI-1245484.json</option>
--->
-            </select>
-
+					<select id="dataSets" class="noShrink" onChange="loadData();"></select>
+					<div id="complexDetails"></div>
+					<div>END</div>
                 </div>
 
+               
+ </div>
+
+
+<!--
             <div class="controls">
                 <div id="filterPlaceholder"></div>
                 <div class="filterResultGroup">
@@ -71,10 +59,10 @@
                     <div id="fdrSummaryPlaceholder"></div>
                 </div>
             </div>
+-->
+<div class="page-header">PAGE END</div>
 
-<!--
-        </div>
---><!-- MAIN -->
+        </div><!-- MAIN -->
 
         <!-- <div style="height:100%;">
         <div id="networkContainer"></div>
@@ -210,16 +198,37 @@
 					dataSetsSelect.appendChild(opt);
 				}
 
-                loadData();
+                //loadData();
                 //~ changeAnnotations();
 
                 function loadData(){
                     xlv.clear();
                     var matrixExpansion = true;//document.getElementById("chkexpansion").checked;
                     var dataSetsSelect = document.getElementById('dataSets');
+                    
+                    var complexDetailsSel = d3.select('#complexDetails');
+                    var example = exampleIndex[dataSetsSelect.selectedIndex];
+                    
+                    complexDetailsSel.selectAll("*").remove("*");
+                    
+                    complexDetailsSel.append("p").text(example.ac);
+                    complexDetailsSel.append("p").text(example.name);
+                    complexDetailsSel.append("p").text(example.complexAssemblies[0]);
+                    
+                    complexDetailsSel.append("a")
+						.attr("href","http://www.ebi.ac.uk/complex/"+example.ac)
+						.text("View on ComplexPortal");
+						
+					var innerSel = complexDetailsSel.append("div").classed("detailsInner", true);	
+						
+					innerSel.append("p").text(example.properties);
+                    innerSel.append("p").text(example.functions);
+                    innerSel.append("p").text(example.synonyms);
+                   	
+                    
                     var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
                     d3.json(path, function(data) {
-                        xlv.readMIJSON(data, matrixExpansion);
+                       xlv.readMIJSON(data, matrixExpansion);
                     });
                  }
 
