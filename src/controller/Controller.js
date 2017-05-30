@@ -11,7 +11,7 @@
 "use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
-var RGBColor = require('rgbcolor');
+//var RGBColor = require('rgbcolor');
 var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
@@ -50,9 +50,7 @@ xiNET.Controller = function(targetDiv) {
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
-    this.svgElement.setAttribute("width", "100%");
-    this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("style", "display:block;");
+
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {self.mouseDown(evt);};
