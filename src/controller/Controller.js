@@ -597,11 +597,24 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                     if (nLink.interactors.indexOf(participant) === -1){
                         nLink.interactors.push(participant);
                     }
-                    //~ if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-                        //~ var interactor = self.molecules.get(participantId);
-                        //~ interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
-                    //~ }
+                    //temp - to give sensible info when stoich collapsed
+                    var interactor = self.molecules.get(participantId);
+                    interactor.stoich = interactor.stoich? interactor.stoich : 0;
+                    if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
+                        interactor.stoich = interactor.stoich + +jsonParticipant.stoichiometry;
+                    }
+                    else {
+                        interactor.stoich = interactor.stoich + 1;
+                    }
                 }
+
+                var interactorArr = self.molecules.values();
+                var iCount = interactorArr.length
+                for (var ii = 0; ii < iCount; ii++){
+                    var int = interactorArr[ii];
+                    int.addStoichiometryLabel(int.stoich);
+                }
+
             }
         }
 
