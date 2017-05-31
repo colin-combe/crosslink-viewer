@@ -39,19 +39,14 @@
                 <div id="detailsDiv">
                     <span>Choose Example:</span>
                     <select id="dataSets" class="noShrink" onChange="loadData();"></select>
+                    <br>
                     <div id="complexDetails"></div>
-                    <div>END</div>
                 </div>
                 
                 <div id="middleDiv">
 					<div id="networkDiv"></div>
 					<div class="controls">
-						<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">Stoich. expansion
-						<button onclick="xlv.reset();">Reset</button>
-						<button onclick="exportSVG();">Export SVG</button>
-						<button onclick="xlv.expandAll();">Expand All</button>
-						<button onclick="xlv.collapseAll();">Collapse All</button>
-
+						Annotations:
 						<select id="annotationsSelect" onChange="changeAnnotations();">
 							<option selected='selected'>MI features</option>
 							<option>UniprotKB</option>
@@ -59,16 +54,23 @@
 							<option>None</option>
 							<option>Interactor</option>
 						</select>
+						<label>&nbsp;&nbsp;Expand Stoich.
+						<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">
+						</label>
+						&nbsp;&nbsp;<button onclick="xlv.expandAll();">Expand Proteins</button>
+						<button onclick="xlv.reset();">Reset</button>
+						<button onclick="exportSVG();">Export Graphic</button>
+<!--
+						<button onclick="xlv.collapseAll();">Collapse All</button>
+-->
+
+
 					</div>
 				</div>
 				
 				
                 <div id="legend">
-<!--
-                    <h2>Legend</h2>
--->
-
-                    <div id="legendInner">
+				<div id="legendInner">
                         <table>
                          <tr>
                             <td>
@@ -87,8 +89,7 @@
                                 </div>
                             </td>
                             <td>
-                                Protein<br>
-                                 - click or tap to toggle between circle and bar (bar shows binding sites, if known).</td>
+                                Protein - click to toggle between circle and bar</td>
                           </tr>
                           <tr>
                             <td>
@@ -125,9 +126,9 @@
 
 
 
-			<div class="page-header" style="justify-content:flex-end";>
+			<div class="logoBar" style="justify-content:flex-end";>
                         <div class= "logos">
-                            <a class ="logo" href="http://rappsilberlab.org/" target="_blank"><img src="./demo/images/RapLabTextLogo.png"  target="_blank" style="height:50px;"></a>
+                            <a class ="logo" href="http://rappsilberlab.org/" target="_blank"><img src="./demo/images/RapLabTextLogoSmall.png"  target="_blank" style="height:50px;"></a>
                             <a class ="logo" href="http://www.ed.ac.uk/"  target="_blank"><img src="./demo/images/eduni.jpeg" style="margin:5px;height:70px;"></a>
                             <a class ="logo" href="http://www.wcb.ed.ac.uk/"  target="_blank"><img src="./demo/images/WTCCB.png" style="margin-top:5px;height:50px;"></a>
                         </div>
@@ -159,11 +160,15 @@
                     var coloursKeyDiv = document.getElementById('colours');
                     if (colourAssignment){
 
-                        //html legened
+                        //html legend
+					var dataSetsSelect = document.getElementById('dataSets');
 
-                        var table = "<table background:#EEEEEE;><tr style='height:10px;'></tr><tr><td style='width:80px;margin:10px;"
+                    var example = exampleIndex[dataSetsSelect.selectedIndex];
+
+                  
+                        var table = "<table background:#EEEEEE;><tr style='height:10px;'></tr><tr><td style='width:100px;margin:10px;"
                                     + "background:#70BDBD;opacity:0.3;border:none;'>"
-                                    + "</td><td>your complex</td></tr>";
+                                    + "</td><td >"+example.ac+"</td></tr>";
                                 var domain = colourAssignment.domain();
                             //~ //console.log("Domain:"+domain);
                             var range = colourAssignment.range();
@@ -208,25 +213,32 @@
                     var matrixExpansion = document.getElementById("chkexpansion").checked;
                     var dataSetsSelect = document.getElementById('dataSets');
 
-                    var complexDetailsSel = d3.select('#complexDetails');
                     var example = exampleIndex[dataSetsSelect.selectedIndex];
-
+                    
+                    var complexDetailsSel = d3.select('#complexDetails');
+                    
                     complexDetailsSel.selectAll("*").remove("*");
-
-                    complexDetailsSel.append("p").text(example.ac);
-                    complexDetailsSel.append("p").text(example.name);
-                    complexDetailsSel.append("p").text(example.complexAssemblies[0]);
 
                     complexDetailsSel.append("a")
                         .attr("href","http://www.ebi.ac.uk/complex/"+example.ac)
-                        .text("View on ComplexPortal");
-
+                        .attr("target", "_blank")
+                        .html("<b>" + example.ac + "</b> - View on ComplexPortal");
+					if (example.complexAssemblies[0]) {
+						complexDetailsSel.append("p").html("<b>Type:</b> " + example.complexAssemblies[0]);
+					}
+					
+                    
                     var innerSel = complexDetailsSel.append("div").classed("detailsInner", true);
 
-                    innerSel.append("p").text(example.properties);
-                    //~ innerSel.append("p").text(example.functions);
-                    //~ innerSel.append("p").text(example.synonyms);
-
+                    innerSel.append("p").html("<b>Properties:</b> " + example.properties);
+                    innerSel.append("p").html("<b>Viewer Notes:</b> " + example.viewerNotes);
+                    //~ innerSel.append("p").html("<b>Functions:</b> " + example.functions);
+                    
+                    if (example.disableStoichExpand) {
+						d3.select("#chkexpansion").attr("disabled", "disabled");
+					} else {
+						d3.select("#chkexpansion").attr("disabled", null);
+					}
 
                     var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
                     d3.json(path, function(data) {

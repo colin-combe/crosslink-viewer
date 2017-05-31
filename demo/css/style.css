@@ -161,15 +161,15 @@ body, html{
     -o-user-select: none;
     user-select: none;
 }
-body, input, select, textarea {
+body, input, select, textarea, button {
     Font-family: "Lato-Regular", Helvetica, Arial, sans-serif;
 /*
     font-size: 10pt;
 */
     font-weight: 300;
     line-height: 1.75em;
-    color: #888;
-    -webkit-text-stroke: .15px;
+     color:#091D42;
+   -webkit-text-stroke: .15px;
 }
 .centre {
     text-align: center;
@@ -178,7 +178,7 @@ body, input, select, textarea {
     vertical-align: middle;
 }
 
-.page-header{
+.page-header, .logoBar{
 /*
     height:35px;
 */
@@ -402,22 +402,16 @@ body, input, select, textarea {
 }
 
 .controls{
-/*
-    overflow: hidden;
-*/
-    /*display: table-row;*/
-
-/*
-    position: fixed;
-    bottom: 0;
-    height: 65px;
-*/
-
-    width: 100%;
+    margin-top: 0px;
+    margin-right: 10px;
+    margin-bottom:10px;
+    margin-left: 10px;
     background:#ecedf2;
     color:#091D42;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;

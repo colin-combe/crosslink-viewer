@@ -10,17 +10,13 @@ h1 {
 
 .page-header {
     width:100%;
-    display: flex;
-    flex-direction: row;
-    
-    flex-shrink: 0;
 }
 
-/*
-.fa-github{
-    float:right;
+.logoBar {
+    display: flex;
+    flex-direction: row;   
+    flex-shrink: 0;
 }
-*/
 
 .noShrink {
     flex-shrink: 0;
@@ -50,17 +46,17 @@ div#legendInner {
     overflow: auto;
 }
 
+/*
+tr {
+margin: 10px;
+}
+*/
+
 div.logos {
     background: white;
     margin-left: 10px;
         padding-left: 10px;
     padding-right: 10px;
-/*
-    padding: 10px;
-*/
-/*
-    max-width:280px;
-*/
     border-radius:10px;
     border: 1px solid grey;
     display: flex;
@@ -69,22 +65,11 @@ div.logos {
     text-align:center;
 }
 .logo{
-
-	
+	margin: auto;
 }
-a {
-margin: auto;
-/*
-vertical-align:middle;
-*/
-/*
-margin-left: auto;
-margin-right: auto;
-*/
 
-}
 img {
- vertical-align: middle;
+	vertical-align: middle;
 }
 
 div#middleDiv, div#networkDiv {
@@ -97,11 +82,15 @@ div#detailsDiv{
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    width:400px;
-    max-width:400px;
+    width:350px;
+    max-width:350px;
     background:#ecedf2;
     color:#091D42;
     padding: 10px;
+}
+
+select, button {
+	font-size:1em;
 }
 
 #complexDetails {
@@ -115,4 +104,8 @@ div#detailsDiv{
     flex-direction: column;
     flex-grow: 1;
     overflow: auto;
+}
+
+b {
+	font-weight:bold;
 }

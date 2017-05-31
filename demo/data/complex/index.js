@@ -23,53 +23,6 @@ var exampleIndex = [
         "systematicName": "PCNA trimer",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-1202920"
     },
-    //~ {
-        //~ "ac": "EBI-1245484",
-        //~ "complexAssemblies": [],
-        //~ "diseases": [
-            //~ "Isolated complex I deficiency [Orphanet:2609]: The most common enzymatic defect of the oxidative phosphorylation disorders. It causes a wide range of clinical disorders, ranging from lethal neonatal disease to adult-onset neurodegenerative disorders. The majority of cases are caused by mutations in nuclear-encoded genes"
-        //~ ],
-        //~ "functions": [
-            //~ "Catalyses the first step of electron transport by the oxidation of NADH, thus providing two electrons for the reduction of ubiquinone. Electron transfer is coupled with the translocation of protons across the membrane, generating a proton motive force. An additional protein, NDUFA4L2 (Q9NRX3), may also be part of the complex."
-        //~ ],
-        //~ "id": "EBI-1245484",
-        //~ "ligands": [],
-        //~ "name": "Mitochondrial respiratory chain complex I",
-        //~ "properties": [
-            //~ "Consists of  two  arms  that  are  perpendicular  to  each  other, a hydrophobic arm embedded in the lipid membrane and a hydrophilic, hydrogenase-like peripheral arm protruding into the mitochondrial matrix. The peripheral arm of the L-shaped molecule contains flavin mononucleotide and eight or nine iron-sulfur clusters as redox prosthetic groups. Seven of the iron-sulfur clusters form a linear electron transfer chain between flavin and quinone."
-        //~ ],
-        //~ "species": "Homo sapiens; 9606",
-        //~ "synonyms": [
-            //~ "Mitochondrial Complex I",
-            //~ "NADH Coenzyme Q oxidoreductase",
-            //~ "Complex I - NADH:Ubiquinone oxidoreductase",
-            //~ "Coenzyme Q reductase",
-            //~ "Complex 1 dehydrogenase",
-            //~ "Complex I (electron transport chain)",
-            //~ "Complex I (mitochondrial electron transport)",
-            //~ "Complex I (NADH:Q1 oxidoreductase)",
-            //~ "Dihydronicotinamide adenine dinucleotide-coenzyme Q reductase",
-            //~ "DPNH-coenzyme Q reductase",
-            //~ "DPNH-ubiquinone reductase",
-            //~ "Electron transfer complex I.  Mitochondrial electron transport complex 1.  Mitochondrial electron transport complex I",
-            //~ "NADH coenzyme Q1 reductase",
-            //~ "NADH-coenzyme Q oxidoreductase",
-            //~ "NADH-coenzyme Q reductase",
-            //~ "NADH-CoQ oxidoreductase",
-            //~ "NADH-CoQ reductase",
-            //~ "NADH-Q6 oxidoreductase",
-            //~ "NADH-ubiquinone oxidoreductase",
-            //~ "NADH-ubiquinone reductase",
-            //~ "NADH-ubiquinone-1 reductase",
-            //~ "NADH:ubiquinone oxidoreductase complex",
-            //~ "Reduced nicotinamide adenine dinucleotide-coenzyme Q reductase",
-            //~ "Type 1 dehydrogenase",
-            //~ "Ubiquinone reductase",
-            //~ "NADH:ubiquinone oxidoreductase"
-        //~ ],
-        //~ "systematicName": "Mitochondrial respiratory chain complex I",
-        //~ "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-1245484"
-    //~ },
     {
         "ac": "EBI-6554207",
         "complexAssemblies": [],
@@ -226,7 +179,8 @@ var exampleIndex = [
             "pyruvate dehydrogenase complex (lipoamide)"
         ],
         "systematicName": "LAT1:LPD1:PDA1:PDB1:PDX1",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9691559"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9691559",
+        "disableStoichExpand": true,
     },
     {
         "ac": "EBI-9696567",
@@ -309,28 +263,4 @@ var exampleIndex = [
         "systematicName": "ACD:POT1:TERF2IP:2xTERF1:2xTERF2:TINF2",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10887677"
     },
-    //~ {
-        //~ "ac": "EBI-11509704",
-        //~ "complexAssemblies": [],
-        //~ "diseases": [
-            //~ "Neurodegenerative disease [EFO:0005772]: A disorder of the central nervous system characterized by gradual and progressive loss of neural tissue and neurological function. Some patients with neurodegenerative diseases exhibit dysfunctions of endosomal trafficking and autophagosome accumulation in the cell that are linked to mutations in ESCRT proteins."
-        //~ ],
-        //~ "functions": [
-            //~ "The ESCRT machinery has been implicated in membrane scission steps, transforming a single, continuous bilayer into two distinct bilayers, either from within the neck of a vesicle budding away from the cytoplasm or from within a membrane tubule, while segregating cargo throughout the process. Membrane fission processes include: a) the sorting of multivesicular bodies (MVB) in the endocytic pathway; cargoes destined for inclusion into the MVB pathway are covalently modified with ubiquitin, recognized by ubiquitin-binding domains in the early ESCRTs (ESCRT-0, -I, and -II) and sequestered into endosomal microdomains that bud into the endosome as intralumenal vesicles aided by ESCRT-III, b) downregulation of cell-surface receptors, c) repair of plasma membrane wounds, d) abscission of the cellular bridge during cytokineses, d) nuclear envelope sealing by annular fusion and e) budding of virions (especially HIV-1) from the plasma membrane. The ESCRT machinery seems to play an indirect role in the proper functioning of cellular polarity and migration, the miRNA machinery and gene expression regulation. \r\n\r\nESCRT-0 recruits ESCRT-I which engages ESCRT-II to nucleate ESCRT-III polymerization. VPS4A/B complex, also known as ESCRT-IV, disassembles ESCRT-III to recycle its subunits. The ESCRT-III complex facilitates changes in membrane architecture by oligomerizing to form spiral, filament-like tubules, accumulation of which is associated with membrane constriction and fission. Disassembly of ESCRT-III by VPS4A/B may be a required step for fission. \r\n\r\nCHMP1A, CHMP1B and CHMP5 are sometimes regarded as ESCRT-III accessory proteins rather than full complex members, suggesting that multiple variants with different core components and/or associated auxiliary factors may exist within the same cell and be active in different processes."
-        //~ ],
-        //~ "id": "EBI-11509704",
-        //~ "ligands": [],
-        //~ "name": "ESCRT-III complex",
-        //~ "properties": [
-            //~ "Monomers of ESCRT-III components take on a closed, self-inhibitory conformation. They are soluble owning to their N-terminal basic and C-terminal acidic regions that form tightly packed, helical hairpins. Structural studies suggest all ESCRT-III subunits are likely to adopt the 4-helix bundle configuration, with a fifth helix connected by a highly flexible linker. Subunits CHMP3 and CHMP6 facilitate anchorage of ESCRT-III to the membrane via the interaction of CHMP3 with phosphatidylinositol phosphate, releasing the conformational inhibition and allowing the complex to assemble into higher-order structures."
-        //~ ],
-        //~ "species": "Homo sapiens; 9606",
-        //~ "synonyms": [
-            //~ "ESCRT3 complex",
-            //~ "ESCRT III complex",
-            //~ "Endosomal sorting complex required for transport-III complex"
-        //~ ],
-        //~ "systematicName": "CHMP1A:CHMP1B:CHMP2A:CHMP2B:CHMP3:CHMP4A:CHMP4B:CHMP4C:CHMP5:CHMP6:CHMP7",
-        //~ "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-11509704"
-    //~ }
 ];
