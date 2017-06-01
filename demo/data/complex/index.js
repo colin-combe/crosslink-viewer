@@ -21,7 +21,8 @@ var exampleIndex = [
             "Proliferating Cell Nuclear Antigen"
         ],
         "systematicName": "PCNA trimer",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-1202920"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-1202920",
+        "viewerNotes":"There is no binding information for this complex."
     },
     {
         "ac": "EBI-6554207",
@@ -44,7 +45,8 @@ var exampleIndex = [
             "DnaB complex"
         ],
         "systematicName": "dnaB hexamer",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-6554207"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-6554207",
+        "viewerNotes":"Superfamily contains annotations for the proteins."
     },
     {
         "ac": "EBI-8869931",
@@ -64,7 +66,8 @@ var exampleIndex = [
         "species": "Escherichia coli (strain K12); 83333",
         "synonyms": [],
         "systematicName": "2xiscS:2xtusA",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-8869931"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-8869931",
+        "viewerNotes":"The binding sites between iscs and tusa are known, click individual proteins or 'Expand Proteins' to see them. The binding sites between the two copies of iscs are unknown.",
     },
     {
         "ac": "EBI-9008283",
@@ -91,7 +94,8 @@ var exampleIndex = [
             "CCT"
         ],
         "systematicName": "2x[TCP1:CCT2:CCT3:CCT4:CCT5:CCT6:CCT7:CCT8]",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9008283"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9008283",
+        "viewerNotes":"Setting the annotations to 'Interactor' highlights the pairs of proteins."
     },
     {
         "ac": "EBI-9008420",
@@ -126,7 +130,8 @@ var exampleIndex = [
             "Haemoglobin HbA complex"
         ],
         "systematicName": "2xHBA1:2xHBB",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9008420"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9008420",
+        "viewerNotes":"Which participants directly interact is known, but binding sites are not."
     },
     {
         "ac": "EBI-9082861",
@@ -158,7 +163,8 @@ var exampleIndex = [
             "PDGFR receptor alpha-beta - PDGF-BB complex"
         ],
         "systematicName": "PDGFRA:PDGFRB:2xPDGFB",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9082861"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9082861",
+        "viewerNotes":"Half the binding sites are known, half are not.",
     },
     {
         "ac": "EBI-9691559",
@@ -181,6 +187,7 @@ var exampleIndex = [
         "systematicName": "LAT1:LPD1:PDA1:PDB1:PDX1",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9691559",
         "disableStoichExpand": true,
+        "viewerNotes":"Largest complex in the Complex portal, expanding stoichiometry is disabled because the large number of copies would clutter the view.",
     },
     {
         "ac": "EBI-9696567",
@@ -201,7 +208,8 @@ var exampleIndex = [
             "Trap complex"
         ],
         "systematicName": "MED1:MED4:MED6:MED7:MED8:MED9:MED10:MED11:MED14:MED15:MED16:MED17:MED18:MED19:MED20:MED21:MED22:MED23:MED24:MED25:MED26:MED27:MED28:MED29:MED30:MED31",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9696567"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9696567",
+        "viewerNotes":"Which participants directly interact is known, but binding sites are not.",
     },
     {
         "ac": "EBI-9997373",
@@ -219,7 +227,8 @@ var exampleIndex = [
         "species": "Saccharomyces cerevisiae; 559292",
         "synonyms": [],
         "systematicName": "EST1:EST2:EST3:TLC1",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9997373"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9997373",
+        "viewerNotes":"Includes RNA molecule.",
     },
     {
         "ac": "EBI-10828997",
@@ -241,7 +250,8 @@ var exampleIndex = [
             "SUFU-GLI1 complex"
         ],
         "systematicName": "GLI3:SUFU",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997"
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997",
+        "viewerNotes":"Includes composite binding site (i.e. binding site that consists of more than one non-contiguous region).",
     },
     {
         "ac": "EBI-10887677",

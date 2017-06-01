@@ -37,7 +37,7 @@
 
                 <div id="detailsDiv">
                     <span>Choose Example:</span>
-                    <select id="dataSets" class="noShrink" onChange=" document.getElementById("chkexpansion").checked = true;loadData();"></select>
+                    <select id="dataSets" class="noShrink" onChange="document.getElementById('chkexpansion').checked = true;loadData();"></select>
                     <br>
                     <div id="complexDetails"></div>
                 </div>
@@ -243,7 +243,9 @@
                     var innerSel = complexDetailsSel.append("div").classed("detailsInner", true);
 
                     innerSel.append("p").html("<b>Properties:</b> " + example.properties);
-                    innerSel.append("p").html("<b>Viewer Notes:</b> " + example.viewerNotes);
+                    if (example.viewerNotes) {
+						innerSel.append("p").html("<b>Viewer Notes:</b> " + example.viewerNotes);
+					}
                     //~ innerSel.append("p").html("<b>Functions:</b> " + example.functions);
 
                     if (example.disableStoichExpand) {
