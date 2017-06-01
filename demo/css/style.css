@@ -28,10 +28,16 @@
     color: inherit;
     background: 0 0;/*#091D42;*/
     cursor: pointer;
+/*
     padding: 5px 15px;
+*/
     margin: 2px 5px 2px 5px;
+/*
     text-transform: uppercase;
+*/
+/*
     letter-spacing: 1px;
+*/
     font-weight: 300;
     outline: 0;
     -webkit-transition: all .3s;
@@ -178,7 +184,7 @@ body, input, select, textarea, button {
     vertical-align: middle;
 }
 
-.page-header, .logoBar{
+.page-header{
 /*
     height:35px;
 */
@@ -267,11 +273,13 @@ body, input, select, textarea, button {
     overflow:hidden;
 }
 
+/*
 #networkDiv {
     width:100%;
     height:100%;
     display:block;
 }
+*/
 
 #spectrumDiv {
     background-color: white;

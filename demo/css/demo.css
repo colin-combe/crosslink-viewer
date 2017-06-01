@@ -3,23 +3,13 @@
     flex-direction: column;
 }
 
-h1 {
-    font-size:1.6em;
-    display:inline;
-}
-
 .page-header {
     width:100%;
 }
 
-.logoBar {
-    display: flex;
-    flex-direction: row;   
-    flex-shrink: 0;
-}
-
-.noShrink {
-    flex-shrink: 0;
+h1 {
+    font-size:1.6em;
+    display:inline;
 }
 
 div#centre {
@@ -27,55 +17,6 @@ div#centre {
     flex-direction: row;
     flex-grow: 1;
     width: 100%;
-}
-
-div#legend {
-    display: flex;
-    flex-grow:1;
-    flex-direction: column;
-    width: 300px;
-    max-width:300px;
-    background:#ecedf2;
-    color:#091D42;
-}
-
-div#legendInner {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: auto;
-}
-
-/*
-tr {
-margin: 10px;
-}
-*/
-
-div.logos {
-    background: white;
-    margin-left: 10px;
-        padding-left: 10px;
-    padding-right: 10px;
-    border-radius:10px;
-    border: 1px solid grey;
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    text-align:center;
-}
-.logo{
-	margin: auto;
-}
-
-img {
-	vertical-align: middle;
-}
-
-div#middleDiv, div#networkDiv {
-      display: flex;
-      flex-direction:column;
-      flex-grow:1;
 }
 
 div#detailsDiv{
@@ -87,6 +28,7 @@ div#detailsDiv{
     background:#ecedf2;
     color:#091D42;
     padding: 10px;
+    margin: 10px;
 }
 
 select, button {
@@ -108,4 +50,76 @@ select, button {
 
 b {
 	font-weight:bold;
+}
+
+div#middleDiv, div#networkDiv {
+      display: flex;
+      flex-direction:column;
+      flex-grow:1;
+}
+div#innerMiddleDiv {
+      display: flex;
+      flex-direction:row;
+      flex-grow:1;
+}
+
+div#legend {
+    display: flex;
+    flex-grow:1;
+    flex-direction: column;
+    width: 300px;
+    max-width:300px;
+/*
+    background:#ecedf2;
+*/
+    color:#091D42;
+    overflow: auto;
+}
+
+/*
+div#legendInner {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+}
+*/
+
+.controls {
+    background-color: #091D42;
+    color: #fff;
+    margin-left: 0px;
+}
+
+.logoBar {
+    display: flex;
+    flex-direction: row;   
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    
+}
+
+.noShrink {
+    flex-shrink: 0;
+}
+
+div.logos {
+    background: white;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius:10px;
+    border: 1px solid grey;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    text-align:center;
+}
+
+.logo{
+	margin: auto;
+}
+
+img {
+	vertical-align: middle;
 }

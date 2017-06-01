@@ -6,14 +6,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>ComplexViewer Demo</title>
         <meta name="ComplexViewer Demo" content="ComplexViewer Demo">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!-- css -->
         <link rel="stylesheet" type='text/css' href="./demo/css/reset.css">
         <link rel="stylesheet" type='text/css' href="./demo/css/style.css">
         <link rel="stylesheet" type='text/css' href="./demo/css/demo.css">
         <link rel="stylesheet" type='text/css' href="./demo/css/XLV.css"/>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <!--libraries-->
         <script type="text/javascript" src="./build/complexviewer.js"></script>
         <script type="text/javascript" src="./node_modules/d3/d3.js"></script>
@@ -31,127 +31,140 @@
                     <i class="fa fa-github" onclick="window.location = 'https://github.com/MICommunity/ComplexViewer';" title="Go to GitHub project" style="margin-right:5px;"></i>
                     <h1>ComplexViewer</h1>
                     <p>Colin Combe, Marine (Dumousseau) Sivade, Henning Hermjakob, Joshua Heimbach, Birgit Meldal, Gos Micklem, Sandra Orchard, Juri Rappsilber</p>
-
             </div>
 
             <div id="centre">
 
                 <div id="detailsDiv">
                     <span>Choose Example:</span>
-                    <select id="dataSets" class="noShrink" onChange="loadData();"></select>
+                    <select id="dataSets" class="noShrink" onChange=" document.getElementById("chkexpansion").checked = true;loadData();"></select>
                     <br>
                     <div id="complexDetails"></div>
                 </div>
-                
+
                 <div id="middleDiv">
-					<div id="networkDiv"></div>
-					<div class="controls">
-						Annotations:
-						<select id="annotationsSelect" onChange="changeAnnotations();">
-							<option selected='selected'>MI features</option>
-							<option>UniprotKB</option>
-							<option>SuperFamily</option>
-							<option>None</option>
-							<option>Interactor</option>
-						</select>
-						<label>&nbsp;&nbsp;Expand Stoich.
-						<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">
-						</label>
-						&nbsp;&nbsp;<button onclick="xlv.expandAll();">Expand Proteins</button>
-						<button onclick="xlv.reset();">Reset</button>
-						<button onclick="exportSVG();">Export Graphic</button>
+					<div id="innerMiddleDiv">			
+									
+
+						<div id="networkDiv"></div>
+						<div id="legend">
+	
+								<table>
+								 <tr>					                
+									<td>
+										<div style="float:right">
+											<img src="./demo/svgForKey/smallMol.svg">
+										</div>
+									</td>
+									<td>Bioactive Entity</td>
+								  </tr>
+								 <tr style="border: 1px grey;">
+									<td>
+										<div style="float:right">
+											<img src="./demo/svgForKey/proteinBlob.svg" >
+										</div>
+										<div style="float:right">
+											<img src="./demo/svgForKey/proteinBar.svg">
+										</div>
+									</td>
+									<td>Protein - click to toggle between circle and bar</td>
+								  </tr>
+								  <tr>
+									<td>
+										<div style="float:right">
+											<img src="./demo/svgForKey/gene.svg">
+										</div>
+									</td>
+									<td>Gene</td>
+								  </tr>
+								  <tr>
+									<td>
+										<div style="float:right">
+											<img src="./demo/svgForKey/DNA.svg">
+										</div>
+									</td>
+									<td>DNA</td>
+								  </tr>
+								<tr>
+									<td>
+										<div style="float:right">
+											<img src="./demo/svgForKey/RNA.svg">
+										</div>
+									</td>
+									<td>RNA</td>
+								 </tr>
+							</table>
+	   
+					   <div id="colours"></div>
+				</div><!-- legend -->
+
+
+				</div> <!-- innerMiddleDiv -->
+
+            
+			<div>
+				<div class="controls">
+					Annotations:
+					<select class="btn btn-1 btn-1a" id="annotationsSelect" onChange="changeAnnotations();">
+						<option selected='selected'>MI features</option>
+						<option>UniprotKB</option>
+						<option>SuperFamily</option>
+						<option>None</option>
+						<option>Interactor</option>
+					</select>
+					<label>&nbsp;&nbsp;Expand Stoich.
+					<input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">
+					</label>
+					&nbsp;&nbsp;<button class="btn btn-1 btn-1a" onclick="xlv.expandAll();">Expand Proteins</button>
+					<button class="btn btn-1 btn-1a" onclick="xlv.reset();">Reset</button>
+					<button class="btn btn-1 btn-1a" onclick="exportSVG();">Export Graphic</button>
+				</div>
+
+		
+		
+		</div> <!-- bottom bar -->
+
+			</div> <!-- middleDiv -->
+
+		</div> <!-- centreDiv -->
+			
+<div class="logoBar" style="justify-content:flex-end";>
 <!--
-						<button onclick="xlv.collapseAll();">Collapse All</button>
+			<div class= "logos">
+-->
+				<a class ="logo" href="http://rappsilberlab.org/" target="_blank"><img src="./demo/images/RapLabTextLogoSmall.png"  target="_blank" style="height:50px;"></a>
+				<a class ="logo" href="http://www.ed.ac.uk/"  target="_blank"><img src="./demo/images/eduni.jpeg" style="margin:5px;height:70px;"></a>
+				<a class ="logo" href="http://www.wcb.ed.ac.uk/"  target="_blank"><img src="./demo/images/WTCCB.png" style="margin-top:5px;height:50px;"></a>
+<!--
+			</div>
 -->
 
-
-					</div>
-				</div>
-				
-				
-                <div id="legend">
-				<div id="legendInner">
-                        <table>
-                         <tr>
-                            <td>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/smallMol.svg"></td>
-                                </div>
-                            <td>Bioactive Entity</td>
-                          </tr>
-                         <tr>
-                            <td>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/proteinBlob.svg" >
-                                </div>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/proteinBar.svg">
-                                </div>
-                            </td>
-                            <td>
-                                Protein - click to toggle between circle and bar</td>
-                          </tr>
-                          <tr>
-                            <td>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/gene.svg"></td>
-                                </div>
-                            <td>Gene</td>
-                          </tr>
-                          <tr>
-                            <td>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/DNA.svg"></td>
-                                </div>
-                            <td>DNA</td>
-                          </tr>
-                        <tr>
-                            <td>
-                                <div style="float:right">
-                                    <img src="./demo/svgForKey/RNA.svg"></td>
-                                </div>
-                            <td>RNA</td>
-                          </tr>
-                        </table>
-
-                        <div id="colours"></div>
-
-                    </div>
-
-                    <div>
-
-                    </div>
-                </div>
-            </div>
-
-
-
-			<div class="logoBar" style="justify-content:flex-end";>
-                        <div class= "logos">
-                            <a class ="logo" href="http://rappsilberlab.org/" target="_blank"><img src="./demo/images/RapLabTextLogoSmall.png"  target="_blank" style="height:50px;"></a>
-                            <a class ="logo" href="http://www.ed.ac.uk/"  target="_blank"><img src="./demo/images/eduni.jpeg" style="margin:5px;height:70px;"></a>
-                            <a class ="logo" href="http://www.wcb.ed.ac.uk/"  target="_blank"><img src="./demo/images/WTCCB.png" style="margin-top:5px;height:50px;"></a>
-                        </div>
-                        
-                        <div class= "logos">
-                            <a class ="logo" href="http://www.ebi.ac.uk/"  target="_blank"><img src="./demo/images/ebiLogo2.jpeg"  style="height:40px"></a>
-                        </div>
-     
-                        <div class= "logos">
-                            <a class ="logo" href="http://intermine.org/" target="_blank"><img src="./demo/images/intermine.png"  style="height:20px;margin-right:10px;"></a>
-                            <a class ="logo" href="https://www.cam.ac.uk/" target="_blank"><img src="./demo/images/cambridge-blue.png" style="height:30px"></a>
-                        </div>
+<!--
+			<div class= "logos">
+-->
+				<a class ="logo" href="http://www.ebi.ac.uk/"  target="_blank"><img src="./demo/images/ebiLogo2.jpeg"  style="height:40px"></a>
+<!--
 			</div>
+-->
 
-        </div><!-- MAIN -->
+<!--
+			<div class= "logos">
+-->
+				<a class ="logo" href="http://intermine.org/" target="_blank"><img src="./demo/images/intermine.png"  style="height:20px;margin-right:10px;"></a>
+				<a class ="logo" href="https://www.cam.ac.uk/" target="_blank"><img src="./demo/images/cambridge-blue.png" style="height:30px"></a>
+<!--
+			</div>
+-->
+		</div>
+
+	</div><!-- MAIN -->
 
         <script type="text/javascript">
                 //<![CDATA[
 
                 var targetDiv = document.getElementById('networkDiv');
                 xlv = new xiNET(targetDiv);
-                xlv.svgElement.setAttribute("style", "display:flex;");
-                xlv.svgElement.setAttribute("style", "flex-grow:1;");
+                xlv.svgElement.setAttribute("style", "display:flex;flex-grow:1;");
 
 
                 var legend = d3.select("svg").append("g");
@@ -161,11 +174,11 @@
                     if (colourAssignment){
 
                         //html legend
-					var dataSetsSelect = document.getElementById('dataSets');
+                    var dataSetsSelect = document.getElementById('dataSets');
 
                     var example = exampleIndex[dataSetsSelect.selectedIndex];
 
-                  
+
                         var table = "<table background:#EEEEEE;><tr style='height:10px;'></tr><tr><td style='width:100px;margin:10px;"
                                     + "background:#70BDBD;opacity:0.3;border:none;'>"
                                     + "</td><td >"+example.ac+"</td></tr>";
@@ -210,36 +223,38 @@
 
                 function loadData(){
                     xlv.clear();
-                    var matrixExpansion = document.getElementById("chkexpansion").checked;
                     var dataSetsSelect = document.getElementById('dataSets');
 
                     var example = exampleIndex[dataSetsSelect.selectedIndex];
-                    
+
                     var complexDetailsSel = d3.select('#complexDetails');
-                    
+
                     complexDetailsSel.selectAll("*").remove("*");
 
                     complexDetailsSel.append("a")
                         .attr("href","http://www.ebi.ac.uk/complex/"+example.ac)
                         .attr("target", "_blank")
                         .html("<b>" + example.ac + "</b> - View on ComplexPortal");
-					if (example.complexAssemblies[0]) {
-						complexDetailsSel.append("p").html("<b>Type:</b> " + example.complexAssemblies[0]);
-					}
-					
-                    
+                    if (example.complexAssemblies[0]) {
+                        complexDetailsSel.append("p").html("<b>Type:</b> " + example.complexAssemblies[0]);
+                    }
+
+
                     var innerSel = complexDetailsSel.append("div").classed("detailsInner", true);
 
                     innerSel.append("p").html("<b>Properties:</b> " + example.properties);
                     innerSel.append("p").html("<b>Viewer Notes:</b> " + example.viewerNotes);
                     //~ innerSel.append("p").html("<b>Functions:</b> " + example.functions);
-                    
-                    if (example.disableStoichExpand) {
-						d3.select("#chkexpansion").attr("disabled", "disabled");
-					} else {
-						d3.select("#chkexpansion").attr("disabled", null);
-					}
 
+                    if (example.disableStoichExpand) {
+                        d3.select("#chkexpansion").attr("disabled", "disabled");
+                        document.getElementById("chkexpansion").checked = false;
+                    } else {
+                        d3.select("#chkexpansion").attr("disabled", null);
+                        //~ document.getElementById("chkexpansion").checked = true;
+                    }
+					var matrixExpansion = document.getElementById("chkexpansion").checked;
+                   
                     var path = dataSetsSelect.options[dataSetsSelect.selectedIndex].value;
                     d3.json(path, function(data) {
                        xlv.readMIJSON(data, matrixExpansion);
@@ -255,6 +270,7 @@
                     var xml = xlv.getSVG();
                     xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
                     xmlAsUrl += encodeURIComponent(xml);
+                    alert("Downloading as SVG. You may need to change to file extension to '.svg' before opening.");
                     var win = window.open(xmlAsUrl, 'xiNET-output.svg');
                 }
                 //]]>
