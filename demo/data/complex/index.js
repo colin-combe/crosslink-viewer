@@ -46,7 +46,7 @@ var exampleIndex = [
         ],
         "systematicName": "dnaB hexamer",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-6554207",
-        "viewerNotes":"Superfamily contains annotations for the proteins."
+        "viewerNotes":"SuperFamily contains annotations for the proteins."
     },
     {
         "ac": "EBI-8869931",

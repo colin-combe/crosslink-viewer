@@ -164,7 +164,7 @@
 
                 var targetDiv = document.getElementById('networkDiv');
                 xlv = new xiNET(targetDiv);
-                xlv.svgElement.setAttribute("style", "display:flex;flex-grow:1;");
+                xlv.svgElement.setAttribute("style", "display: -webkit-box;display: -moz-box;display: -ms-flexbox; display: -webkit-flex;display: flex;flex-grow:1;");
 
 
                 var legend = d3.select("svg").append("g");
@@ -272,7 +272,7 @@
                     var xml = xlv.getSVG();
                     xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
                     xmlAsUrl += encodeURIComponent(xml);
-                    alert("Downloading as SVG. You may need to change to file extension to '.svg' before opening.");
+                    alert("Downloading as SVG. You may need to change the file extension to '.svg' before opening.");
                     var win = window.open(xmlAsUrl, 'xiNET-output.svg');
                 }
                 //]]>

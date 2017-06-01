@@ -1,6 +1,14 @@
 #main {
-    display: flex;
-    flex-direction: column;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+      min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
+    max-height:100%;
+    height:100%;
 }
 
 .page-header {
@@ -13,16 +21,29 @@ h1 {
 }
 
 div#centre {
-    display: flex;
-    flex-direction: row;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: row;
     flex-grow: 1;
     width: 100%;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
+    
 }
 
 div#detailsDiv{
-    display: flex;
+    display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
     flex-grow: 1;
     flex-direction: column;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
     width:350px;
     max-width:350px;
     background:#ecedf2;
@@ -36,16 +57,27 @@ select, button {
 }
 
 #complexDetails {
-    display: flex;
-    flex-direction: column;
+    display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;flex-direction: column;
     flex-grow: 1;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
 }
 
 .detailsInner {
-    display: flex;
-    flex-direction: column;
+    display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: column;
     flex-grow: 1;
     overflow: auto;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
 }
 
 b {
@@ -53,19 +85,35 @@ b {
 }
 
 div#middleDiv, div#networkDiv {
-      display: flex;
+      display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  display: flex;
       flex-direction:column;
       flex-grow:1;
 }
 div#innerMiddleDiv {
-      display: flex;
-      flex-direction:row;
+      display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  flex-direction:row;
       flex-grow:1;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
+      
 }
 
 div#legend {
-    display: flex;
-    flex-grow:1;
+      display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  flex-grow:1;
     flex-direction: column;
     width: 300px;
     max-width:300px;
@@ -74,6 +122,8 @@ div#legend {
 */
     color:#091D42;
     overflow: auto;
+    min-height: 0;           /* NEW */
+    min-width: 0;            /* NEW */
 }
 
 /*
@@ -89,11 +139,26 @@ div#legendInner {
     background-color: #091D42;
     color: #fff;
     margin-left: 0px;
+    
+/*
+    display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 0;
+*/
 }
 
 .logoBar {
-    display: flex;
-    flex-direction: row;   
+      display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  flex-direction: row;   
     flex-shrink: 0;
     flex-wrap: wrap;
     
@@ -110,8 +175,12 @@ div.logos {
     padding-right: 10px;
     border-radius:10px;
     border: 1px solid grey;
-    display: flex;
-    flex-direction: row;
+      display: -webkit-box;
+	  display: -moz-box;
+	  display: -ms-flexbox;
+	  display: -webkit-flex;
+	  display: flex;
+	  flex-direction: row;
     flex-shrink: 0;
     text-align:center;
 }
