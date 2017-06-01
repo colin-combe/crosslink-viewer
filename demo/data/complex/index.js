@@ -251,7 +251,7 @@ var exampleIndex = [
         ],
         "systematicName": "GLI3:SUFU",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997",
-        "viewerNotes":"Includes composite binding site (i.e. binding site that consists of more than one non-contiguous region).",
+        "viewerNotes":"Includes composite binding site (i.e. binding site that consists of non-contiguous regions).",
     },
     {
         "ac": "EBI-10887677",
