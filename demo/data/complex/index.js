@@ -1,5 +1,83 @@
 var exampleIndex = [
     {
+        "ac": "EBI-9691559",
+        "complexAssemblies": [],
+        "diseases": [],
+        "functions": [
+            "Pyruvate dehydrogenase (PDH) is a mitochondrial matrix enzyme that converts pyruvate to acetyl-CoA and CO2. This provides a metabolic connection between glycolysis, whose end product is pyruvate, and the tricarboxylic acid cycle, which starts with acetyl-CoA. PDH activity is negatively regulated via phosphorylation of its Pda1 subunit. The protein kinases Pkp1 and Pkp2 phosphorylate Pda1, and the protein phosphatases Ptc5 and Ptc6 mediate its dephosphorylation."
+        ],
+        "id": "EBI-9691559",
+        "ligands": [],
+        "name": "Mitochondrial pyruvate dehydrogenase complex",
+        "properties": [
+            "Pyruvate dehydrogenase consists of five subunits that are assembled into a huge heteromultimer of 8-9 megadaltons. The core is comprised of 60 copies of Lat1 (also known as E2; dihydrolipoamide acyltransferase) that form a pentagonal dodecahedron. Twelve copies of Lpd1 (also known as E3; dihydrolipoamide dehydrogenase) are attached to the Lat1p core via the binding protein Pdx1. A variable number of Pda1 and Pdb1 (also known as E1 alpha and E1 beta, respectively) subunits bind as heterotetramers to the Lat1 core. \r\n\r\nIn the reaction mediated by the PDH complex, pyruvate becomes covalently linked to the thiamine diphosphate (TPP) cofactor of E1 (Pda1 and Pdb1), creating 2-alpha-hydroxy-ethyl-TPP. The alpha-hydroxy group of 2-alpha-hydroxy-ethyl-TPP is subsequently oxidized, creating an acetyl group that becomes bound to the dihydrolipoyllysine group of E2 (Lat1). Lat1 transfers this acetyl group to CoA to generate acetyl-CoA."
+        ],
+        "species": "Saccharomyces cerevisiae; 559292",
+        "synonyms": [
+            "PDH",
+            "pyruvate dehydrogenase complex (lipoamide)"
+        ],
+        "systematicName": "LAT1:LPD1:PDA1:PDB1:PDX1",
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9691559",
+        "disableStoichExpand": true,
+        "viewerNotes":"Largest complex in the Complex portal, expanding stoichiometry is disabled because the large number of copies would clutter the view.",
+    },
+    
+        {
+        "ac": "EBI-10887677",
+        "complexAssemblies": [
+            "Hetero-octamer"
+        ],
+        "diseases": [],
+        "functions": [
+            "The Shelterin (Telosome) complex is a DNA-binding protein complex that associates with the telomeres that cap the ends of eukaryotic chromosomes and distinguishes them from sites of DNA damage thus sheltering chromosome ends from being inappropriately processed by the DNA repair machinery. Consequently it plays an essential role in maintaining telomere structure and integrity. Three subunits can interact directly either with single-stranded (POT1) or double-stranded telomeric DNA (TERF1 and TERF2)."
+        ],
+        "id": "EBI-10887677",
+        "ligands": [],
+        "name": "Shelterin complex",
+        "properties": [
+            "MW ~ 1 MDa"
+        ],
+        "species": "Homo sapiens; 9606",
+        "synonyms": [],
+        "systematicName": "ACD:POT1:TERF2IP:2xTERF1:2xTERF2:TINF2",
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10887677"
+    },
+       {
+        "ac": "EBI-9082861",
+        "complexAssemblies": [
+            "Heterotetramer"
+        ],
+        "diseases": [
+            "Meningioma [Orphanet:2495]: a mostly benign primary tumor of the meninges (arachnoid cap cells), usually located in the supratentorial compartment, commonly appearing in the sixth and seventh decade of life, clinically silent in most cases or causing hyperostosis close to the tumor and resulting in focal bulging and localized pain in less than 10% of cases. Additional features may include headache, seizures, gradual personality changes (apathy and dementia), anosmia, impaired vision, exophthalmos, hearing loss, ataxia, dysmetria, hypotonia, nystagmus, and rarely spontaneous bleeding.",
+            "Dermatofibrosarcoma protuberans (DFSP) [Orphanet:31112]: a rare infiltrating soft tissue sarcoma, generally of low grade malignancy, arising from the dermis of the skin and characteristically associated with a specific chromosomal translocation t(17;22). DFSP can present at any age, including infancy and childhood, but usually presents in the 2nd to 5th decade of life. Between 85 and 90% of tumors are low grade lesions, with the remainder classified as the high grade fibrosarcomatous (FS) type. The lesions typically present as an indurated pink or violet-red plaque or nodular mass on the trunk, proximal extremities, or head and neck region. Growth tends to be slow with local infiltration into deeper tissues and a propensity for local recurrence after excision. However, metastases are rare. Occurrence is sporadic.",
+            "Bilateral striopallidodentate calcinosis (Idiopathic basal ganglia calcification) [Orphanet:1980]: Bilateral striopallidodentate calcinosis (BSPDC, also erroneously called Fahr disease) is characterized by the accumulation of calcium deposits in different brain regions, particularly the basal ganglia and dentate nucleus, and is often associated with neurodegeneration.",
+            "Myeloid neoplasms associated with eosinophilia and abnormality of PDGFRA, PDGFRB or FGFR1 [Orphanet:168943]",
+            "Infantile myofibromatosis (IM) [Orphanet:2591]: a rare benign soft tissue tumor characterized by the development of nodules in the skin, striated muscles, bones, and in exceptional cases, visceral organs, leading to a broad spectrum of clinical symptoms. IM contains myofibroblasts."
+        ],
+        "functions": [
+            "Platelet-derived growth factor (PDGF) receptors alpha and beta (PDGFRalpha-beta) that are activated by their bound ligand, PDGF B-chain. PDGFRalpha-beta is a tyrosine-protein kinase that acts as a cell-surface receptor for PDGFB, and its related C- and D-chains, PDGFC (Q9NRA1) and PDGFD (Q9GZP0). It autophosphorylates on multiple tyrosines upon ligand binding initiating several signalling cascades and phosphorylation of downstream targets. Growth factor that plays an essential role in the regulation of embryonic development, cell proliferation, cell migration, survival and chemotaxis. Potent mitogen for cells of mesenchymal origin. Required for normal proliferation and recruitment of pericytes and vascular smooth muscle cells in the central nervous system, skin, lung, heart and placenta. Required for normal blood vessel development, and for normal development of kidney glomeruli. Plays an important role in wound healing."
+        ],
+        "id": "EBI-9082861",
+        "ligands": [],
+        "name": "PDGF receptor alpha-beta - PDGF-BB heterotetramer",
+        "properties": [
+            "Heterotetramer, consisting of a dimeric ligand, PDGF-BB (EBI-2881451), and two receptor subunits, PDGFRalpha and PDGFRbeta, that dimerise upon ligand binding."
+        ],
+        "species": "Homo sapiens; 9606",
+        "synonyms": [
+            "PDGFRA-PDGFRB-PDGFB heterotetramer",
+            "PDGFRA-PDGFRB-PDGFB complex",
+            "PDGFR alpha-beta - PDGF-BB heterotetramer",
+            "PDGFR alpha-beta - PDGF-BB complex",
+            "PDGFR receptor alpha-beta - PDGF-BB complex"
+        ],
+        "systematicName": "PDGFRA:PDGFRB:2xPDGFB",
+        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9082861",
+        "viewerNotes":"Half the binding sites are known, half are not.",
+    },
+     
+    {
         "ac": "EBI-1202920",
         "complexAssemblies": [
             "Homotrimer."
@@ -133,62 +211,7 @@ var exampleIndex = [
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9008420",
         "viewerNotes":"Which participants directly interact is known, but binding sites are not."
     },
-    {
-        "ac": "EBI-9082861",
-        "complexAssemblies": [
-            "Heterotetramer"
-        ],
-        "diseases": [
-            "Meningioma [Orphanet:2495]: a mostly benign primary tumor of the meninges (arachnoid cap cells), usually located in the supratentorial compartment, commonly appearing in the sixth and seventh decade of life, clinically silent in most cases or causing hyperostosis close to the tumor and resulting in focal bulging and localized pain in less than 10% of cases. Additional features may include headache, seizures, gradual personality changes (apathy and dementia), anosmia, impaired vision, exophthalmos, hearing loss, ataxia, dysmetria, hypotonia, nystagmus, and rarely spontaneous bleeding.",
-            "Dermatofibrosarcoma protuberans (DFSP) [Orphanet:31112]: a rare infiltrating soft tissue sarcoma, generally of low grade malignancy, arising from the dermis of the skin and characteristically associated with a specific chromosomal translocation t(17;22). DFSP can present at any age, including infancy and childhood, but usually presents in the 2nd to 5th decade of life. Between 85 and 90% of tumors are low grade lesions, with the remainder classified as the high grade fibrosarcomatous (FS) type. The lesions typically present as an indurated pink or violet-red plaque or nodular mass on the trunk, proximal extremities, or head and neck region. Growth tends to be slow with local infiltration into deeper tissues and a propensity for local recurrence after excision. However, metastases are rare. Occurrence is sporadic.",
-            "Bilateral striopallidodentate calcinosis (Idiopathic basal ganglia calcification) [Orphanet:1980]: Bilateral striopallidodentate calcinosis (BSPDC, also erroneously called Fahr disease) is characterized by the accumulation of calcium deposits in different brain regions, particularly the basal ganglia and dentate nucleus, and is often associated with neurodegeneration.",
-            "Myeloid neoplasms associated with eosinophilia and abnormality of PDGFRA, PDGFRB or FGFR1 [Orphanet:168943]",
-            "Infantile myofibromatosis (IM) [Orphanet:2591]: a rare benign soft tissue tumor characterized by the development of nodules in the skin, striated muscles, bones, and in exceptional cases, visceral organs, leading to a broad spectrum of clinical symptoms. IM contains myofibroblasts."
-        ],
-        "functions": [
-            "Platelet-derived growth factor (PDGF) receptors alpha and beta (PDGFRalpha-beta) that are activated by their bound ligand, PDGF B-chain. PDGFRalpha-beta is a tyrosine-protein kinase that acts as a cell-surface receptor for PDGFB, and its related C- and D-chains, PDGFC (Q9NRA1) and PDGFD (Q9GZP0). It autophosphorylates on multiple tyrosines upon ligand binding initiating several signalling cascades and phosphorylation of downstream targets. Growth factor that plays an essential role in the regulation of embryonic development, cell proliferation, cell migration, survival and chemotaxis. Potent mitogen for cells of mesenchymal origin. Required for normal proliferation and recruitment of pericytes and vascular smooth muscle cells in the central nervous system, skin, lung, heart and placenta. Required for normal blood vessel development, and for normal development of kidney glomeruli. Plays an important role in wound healing."
-        ],
-        "id": "EBI-9082861",
-        "ligands": [],
-        "name": "PDGF receptor alpha-beta - PDGF-BB heterotetramer",
-        "properties": [
-            "Heterotetramer, consisting of a dimeric ligand, PDGF-BB (EBI-2881451), and two receptor subunits, PDGFRalpha and PDGFRbeta, that dimerise upon ligand binding."
-        ],
-        "species": "Homo sapiens; 9606",
-        "synonyms": [
-            "PDGFRA-PDGFRB-PDGFB heterotetramer",
-            "PDGFRA-PDGFRB-PDGFB complex",
-            "PDGFR alpha-beta - PDGF-BB heterotetramer",
-            "PDGFR alpha-beta - PDGF-BB complex",
-            "PDGFR receptor alpha-beta - PDGF-BB complex"
-        ],
-        "systematicName": "PDGFRA:PDGFRB:2xPDGFB",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9082861",
-        "viewerNotes":"Half the binding sites are known, half are not.",
-    },
-    {
-        "ac": "EBI-9691559",
-        "complexAssemblies": [],
-        "diseases": [],
-        "functions": [
-            "Pyruvate dehydrogenase (PDH) is a mitochondrial matrix enzyme that converts pyruvate to acetyl-CoA and CO2. This provides a metabolic connection between glycolysis, whose end product is pyruvate, and the tricarboxylic acid cycle, which starts with acetyl-CoA. PDH activity is negatively regulated via phosphorylation of its Pda1 subunit. The protein kinases Pkp1 and Pkp2 phosphorylate Pda1, and the protein phosphatases Ptc5 and Ptc6 mediate its dephosphorylation."
-        ],
-        "id": "EBI-9691559",
-        "ligands": [],
-        "name": "Mitochondrial pyruvate dehydrogenase complex",
-        "properties": [
-            "Pyruvate dehydrogenase consists of five subunits that are assembled into a huge heteromultimer of 8-9 megadaltons. The core is comprised of 60 copies of Lat1 (also known as E2; dihydrolipoamide acyltransferase) that form a pentagonal dodecahedron. Twelve copies of Lpd1 (also known as E3; dihydrolipoamide dehydrogenase) are attached to the Lat1p core via the binding protein Pdx1. A variable number of Pda1 and Pdb1 (also known as E1 alpha and E1 beta, respectively) subunits bind as heterotetramers to the Lat1 core. \r\n\r\nIn the reaction mediated by the PDH complex, pyruvate becomes covalently linked to the thiamine diphosphate (TPP) cofactor of E1 (Pda1 and Pdb1), creating 2-alpha-hydroxy-ethyl-TPP. The alpha-hydroxy group of 2-alpha-hydroxy-ethyl-TPP is subsequently oxidized, creating an acetyl group that becomes bound to the dihydrolipoyllysine group of E2 (Lat1). Lat1 transfers this acetyl group to CoA to generate acetyl-CoA."
-        ],
-        "species": "Saccharomyces cerevisiae; 559292",
-        "synonyms": [
-            "PDH",
-            "pyruvate dehydrogenase complex (lipoamide)"
-        ],
-        "systematicName": "LAT1:LPD1:PDA1:PDB1:PDX1",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9691559",
-        "disableStoichExpand": true,
-        "viewerNotes":"Largest complex in the Complex portal, expanding stoichiometry is disabled because the large number of copies would clutter the view.",
-    },
+
     {
         "ac": "EBI-9696567",
         "complexAssemblies": [],
@@ -253,24 +276,5 @@ var exampleIndex = [
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997",
         "viewerNotes":"Includes composite binding site (i.e. binding site that consists of non-contiguous regions).",
     },
-    {
-        "ac": "EBI-10887677",
-        "complexAssemblies": [
-            "Hetero-octamer"
-        ],
-        "diseases": [],
-        "functions": [
-            "The Shelterin (Telosome) complex is a DNA-binding protein complex that associates with the telomeres that cap the ends of eukaryotic chromosomes and distinguishes them from sites of DNA damage thus sheltering chromosome ends from being inappropriately processed by the DNA repair machinery. Consequently it plays an essential role in maintaining telomere structure and integrity. Three subunits can interact directly either with single-stranded (POT1) or double-stranded telomeric DNA (TERF1 and TERF2)."
-        ],
-        "id": "EBI-10887677",
-        "ligands": [],
-        "name": "Shelterin complex",
-        "properties": [
-            "MW ~ 1 MDa"
-        ],
-        "species": "Homo sapiens; 9606",
-        "synonyms": [],
-        "systematicName": "ACD:POT1:TERF2IP:2xTERF1:2xTERF2:TINF2",
-        "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10887677"
-    },
+
 ];
