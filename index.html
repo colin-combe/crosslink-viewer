@@ -242,10 +242,11 @@
 
                     var innerSel = complexDetailsSel.append("div").classed("detailsInner", true);
 
-                    innerSel.append("p").html("<b>Properties:</b> " + example.properties);
+                    var detailsHtml = "<b>Properties:</b> " + example.properties;
                     if (example.viewerNotes) {
-                        innerSel.append("p").html("<b>Viewer Notes:</b> " + example.viewerNotes);
+                        detailsHtml += "<br><b>Viewer Notes:</b> " + example.viewerNotes;
                     }
+                    innerSel.append("p").html(detailsHtml);
                     //~ innerSel.append("p").html("<b>Functions:</b> " + example.functions);
 
                     if (example.disableStoichExpand) {
