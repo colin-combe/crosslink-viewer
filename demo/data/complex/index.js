@@ -22,7 +22,7 @@ var exampleIndex = [
         "disableStoichExpand": true,
         "viewerNotes":"Largest complex in the Complex portal, expanding stoichiometry is disabled because the large number of copies would clutter the view.",
     },
-    
+
         {
         "ac": "EBI-10887677",
         "complexAssemblies": [
@@ -76,7 +76,7 @@ var exampleIndex = [
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-9082861",
         "viewerNotes":"Half the binding sites are known, half are not.",
     },
-     
+
     {
         "ac": "EBI-1202920",
         "complexAssemblies": [
@@ -145,7 +145,7 @@ var exampleIndex = [
         "synonyms": [],
         "systematicName": "2xiscS:2xtusA",
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-8869931",
-        "viewerNotes":"The binding sites between iscs and tusa are known, click individual proteins or 'Expand Proteins' to see them. The binding sites between the two copies of iscs are unknown.",
+        "viewerNotes":"The binding sites between IscS and TusA are known, click individual proteins or 'Expand Proteins' to see them. The binding sites between the two copies of IscS are unknown.",
     },
     {
         "ac": "EBI-9008283",
