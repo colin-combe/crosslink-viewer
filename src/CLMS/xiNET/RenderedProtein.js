@@ -325,7 +325,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
         this.labelSVG.transform.baseVal.initialize(this.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations) {
-			var annotArr = Array.from(this.annotations.values());
+			var annotArr = CLMS.arrayFromMapValues(this.annotations);
 			var annotationCount = annotArr.length;
 			for (var a = 0; a < annotationCount; a++){
 				var anno = annotArr[a], feature = anno.feature;
@@ -556,7 +556,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 		var self = this;
 		if (this.annotations) {
-			var annotArr = Array.from(this.annotations.values());
+			var annotArr = CLMS.arrayFromMapValues(this.annotations);
 			var annotationCount = annotArr.length;
 			for (var a = 0; a < annotationCount; a++){
 				var anno = annotArr[a], feature = anno.feature, 
@@ -710,7 +710,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 
     if (this.annotations) {
 		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
-		var annotArr = Array.from(this.annotations.values());
+		var annotArr = CLMS.arrayFromMapValues(this.annotations);
 		var annotationCount = annotArr.length;
 		for (var a = 0; a < annotationCount; a++){
 			var anno = annotArr[a], feature = anno.feature, 

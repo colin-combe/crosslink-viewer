@@ -186,7 +186,7 @@
 			//~ alert("renderin");
 			//~ doesn't get called first time
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
-            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
                 var p_pCrossLinkCount = pLinksArr[pl].check();
@@ -194,7 +194,7 @@
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
                 }
             }
-            console.log("xinet render:",  CLMS.xiNET.P_PLink.maxNoCrossLinks);
+            //console.log("xinet render:",  CLMS.xiNET.P_PLink.maxNoCrossLinks);
 			for (pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
@@ -213,7 +213,7 @@
             }
             this.cola = null;
             
-            var participantsArr = Array.from(this.model.get("clmsModel").get("participants").values());
+            var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
             var pCount = participantsArr.length;
             for (var p =0; p < pCount; p++) {
 				var participant = participantsArr[p];
@@ -232,7 +232,7 @@
                     - CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
 
 
-			var renderedParticipantArr = Array.from(this.renderedProteins.values());
+			var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
@@ -255,7 +255,7 @@
 			
 			this.renderedCrossLinks = [];
 			
-			var crossLinksArr = Array.from(this.model.get("clmsModel").get("crossLinks").values());
+			var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
             var clCount = crossLinksArr.length; 
             var clmsModel = this.model.get("clmsModel");          
             for(var cl =0 ; cl < clCount; cl++){
@@ -277,7 +277,7 @@
 			if (this.model.get("clmsModel").get("xiNETLayout")) {
 				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
 			} else {
-				var renderedParticipantArr = Array.from(this.renderedProteins.values());
+				var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 				var rpCount = renderedParticipantArr.length;
 				for (var rp = 0 ; rp < rpCount; rp++) {
 					var prot = renderedParticipantArr[rp];
@@ -307,7 +307,7 @@
         scale: function () {
             this.z = this.container.getCTM().inverse().a;
 
-            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+            var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
@@ -331,7 +331,7 @@
                 }
             }
 
-            var p_pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var p_pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = p_pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
             	var p_pLink = p_pLinksArr[pl];
@@ -351,7 +351,7 @@
 
         setAnnotations: function () {
 			var annotationTypes = this.model.get("annotationTypes");
-			var renderedParticipants = Array.from(this.renderedProteins.values());
+			var renderedParticipants = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpLen = renderedParticipants.length;
 			for (var p = 0; p < rpLen; p++ ) {
 				renderedParticipants[p].setPositionalFeatures();
@@ -467,7 +467,7 @@
 						.attr("height", Math.abs(sy));
                     ;
                     
-                    var renderedParticipantArr = Array.from(this.renderedProteins.values());
+                    var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 					var rpCount = renderedParticipantArr.length;
 					for (var rp = 0 ; rp < rpCount; rp++) {
 						var renderedParticipant = renderedParticipantArr[rp];
@@ -622,7 +622,7 @@
         },
 
         saveLayout: function () {
-            var myJSONText = JSON.stringify(Array.from(this.renderedProteins.values()), null, '\t');
+            var myJSONText = JSON.stringify(CLMS.arrayFromMapValues(this.renderedProteins), null, '\t');
             var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
             var layout = myJSONText.replace(/\\u0000/gi, '');
             //+ "\n{co:" + this.cutOff +"}";
@@ -662,7 +662,7 @@
             }
 
             // incase proteins have been added which are not included in layout -
-            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+            var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
@@ -676,7 +676,7 @@
             } 
             
 			var nodes = []; // not hidden nodes
-            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+            var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var renderedParticipant = renderedParticipantArr[rp];
@@ -716,7 +716,7 @@
             var k = 30;//Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
 			console.log("autolayout link length:",k);
             
-            var linkArr = Array.from(links.values());
+            var linkArr = CLMS.arrayFromMapValues(links);
 			
 			this.cola.size([width, height]).links(linkArr);
 
@@ -742,7 +742,7 @@
         },
 
 		highlightsChanged: function () {
-            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].showHighlight(false);
@@ -780,7 +780,7 @@
         },
 
         selectionChanged: function () {
-            var pLinksArr = Array.from(this.renderedP_PLinks.values());
+            var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
             for (var pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].setSelected(false);
@@ -804,13 +804,13 @@
         },
 
         selectedParticipantsChanged: function () {
-            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+            var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var renderedParticipant = renderedParticipantArr[rp];
 			    renderedParticipant.setSelected(false);
             }
-            var selectedParticipantsArr = Array.from(this.model.get("selectedProtein").values());
+            var selectedParticipantsArr = CLMS.arrayFromMapValues(this.model.get("selectedProtein"));
             var spCount = selectedParticipantsArr.length
             for (var sp =0; sp < spCount; sp++ ) {
                 var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
@@ -820,7 +820,7 @@
         },
 
         hiddenParticipantsChanged: function () {
-            var renderedParticipantArr = Array.from(this.renderedProteins.values());
+            var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var renderedParticipant = renderedParticipantArr[rp];
