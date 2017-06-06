@@ -502,9 +502,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //if (!this.participant.hidden){
 		this.busy = true;
 		this.removePeptides();
-		//for IE (using document contains)
-		if (document.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
-		if (document.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
+		//for IE
 		//~ if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
 		//~ if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
 
