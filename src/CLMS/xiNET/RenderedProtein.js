@@ -456,8 +456,8 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
 	if (bool) {
-		this.upperGroup.remove();
-		this.lowerGroup.remove();
+		this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
+		this.crosslinkViewer.proteinLower.removeChild(this.lowerGroup);
 	} else {
 		this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
 		this.crosslinkViewer.proteinLower.appendChild(this.lowerGroup);
@@ -470,31 +470,30 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 
     if (this.busy !== true) {
-            if (form == 1) {
-                this.toStick();
-            }
-            else {
-                this.toCircle(svgP);
-                var r = this.getBlobRadius();
+		if (form == 1) {
+			this.toStick();
+		}
+		else {
+			this.toCircle(svgP);
+			var r = this.getBlobRadius();
 
-                var self = this;
-                d3.select(this.outline).transition()
-                    .attr("stroke-opacity", 1).attr("fill-opacity", 1)
-                    .attr("fill", "#ffffff")
-                    .attr("x", -r).attr("y", -r)
-                    .attr("width", r * 2).attr("height", r * 2)
-                    .attr("rx", r).attr("ry", r)
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			var self = this;
+			d3.select(this.outline).transition()
+				.attr("stroke-opacity", 1).attr("fill-opacity", 1)
+				.attr("fill", "#ffffff")
+				.attr("x", -r).attr("y", -r)
+				.attr("width", r * 2).attr("height", r * 2)
+				.attr("rx", r).attr("ry", r)
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-                d3.select(this.rectDomains).transition().attr("opacity", 0)
-                    .attr("transform", "scale(1, 1)")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+			d3.select(this.rectDomains).transition().attr("opacity", 0)
+				.attr("transform", "scale(1, 1)")
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-                d3.select(this.circDomains).transition().attr("opacity", 1)
-                    .attr("transform", "scale(1, 1)")
-                    .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            }
-        //~ }
+			d3.select(this.circDomains).transition().attr("opacity", 1)
+				.attr("transform", "scale(1, 1)")
+				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+		}
     }
 };
 
@@ -502,7 +501,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //if (!this.participant.hidden){
 		this.busy = true;
 		this.removePeptides();
-		//for IE
+		//commented out for IE
 		//~ if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
 		//~ if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
 
