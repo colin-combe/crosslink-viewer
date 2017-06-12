@@ -119,12 +119,6 @@
             this.clear();
 
             this.update();
-
-            if (this.model.get("clmsModel").get("xiNETLayout")) {
-				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-			} else {
-				this.autoLayout();
-			}
             
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
@@ -217,6 +211,9 @@
             
             var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
             var pCount = participantsArr.length;
+
+			var wasEmpty = (this.renderedProteins.size == 0);
+            
             for (var p =0; p < pCount; p++) {
 				var participant = participantsArr[p];
                 if (participant.is_decoy == false) {
@@ -279,7 +276,15 @@
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
 				prot.init();
-			}			
+			}
+
+			if (wasEmpty) {
+				if (this.model.get("clmsModel").get("xiNETLayout")) {
+					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				} else {
+					this.autoLayout();
+				};
+			}						
         },
 
         reset: function() {
