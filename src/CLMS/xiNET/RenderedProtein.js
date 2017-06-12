@@ -857,7 +857,7 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
     //~ }
 }
 
-
+//TODO: this should be with the links not with the rendered proteins
 CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
     if (this.form=== 1){
         var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
@@ -1107,15 +1107,23 @@ CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     var startAngle = ((annotation.fstart - 1) / this.participant.size) * 360;
     var endAngle = (annotation.fend / this.participant.size) * 360;
+	var largeArcFlag = 0, sweepFlag = 0;
+    if ((endAngle - startAngle) > 180) {
+        largeArcFlag = 1;
+    }
+	//hacky
+	if (annotation.fstart == 1 && annotation.fend == this.participant.size) {
+        startAngle  = 0.5;
+        endAngle = 359.5;
+        sweepFlag = 1;
+    }
+    
+
     var radius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
-    var largeArch = 0;
-    if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
-        largeArch = 1;
-    }
     return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + ","
-        + radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z";
+        + radius + " 0 " + largeArcFlag + " " + sweepFlag + " " + arcEnd.x + "," + arcEnd.y + " Z";
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
