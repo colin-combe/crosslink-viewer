@@ -274,6 +274,7 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
+            /*
 			if (this.model.get("clmsModel").get("xiNETLayout")) {
 				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
 			} else {
@@ -285,6 +286,7 @@
 				}
 				this.autoLayout();
 			}
+			*/
         },
 
         reset: function() {
