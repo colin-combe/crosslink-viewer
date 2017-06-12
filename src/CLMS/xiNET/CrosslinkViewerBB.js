@@ -49,10 +49,6 @@
             this.svgElement.setAttribute("width", "100%");
             this.svgElement.setAttribute("height", "100%");
 			this.svgElement.setAttribute("style", "pointer-events:visible");
-			// disable right click context menu (we wish to put right click to our own purposes)
-			//~ this.svgElement.oncontextmenu = function() {
-				//~ return false;
-			//~ };
             //add listeners
             var self = this;
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
@@ -123,6 +119,12 @@
             this.clear();
 
             this.update();
+
+            if (this.model.get("clmsModel").get("xiNETLayout")) {
+				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+			} else {
+				this.autoLayout();
+			}
             
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
@@ -194,8 +196,8 @@
                     CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
                 }
             }
-            //console.log("xinet render:",  CLMS.xiNET.P_PLink.maxNoCrossLinks);
-			for (pl = 0; pl < plCount; pl++) {
+
+            for (pl = 0; pl < plCount; pl++) {
                 pLinksArr[pl].update();
             }
 			
@@ -274,17 +276,10 @@
                     p_pLink.crossLinks.push(crossLink);
                 }
             }
-			if (this.model.get("clmsModel").get("xiNETLayout")) {
-				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-			} else {
-				var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-				var rpCount = renderedParticipantArr.length;
-				for (var rp = 0 ; rp < rpCount; rp++) {
-					var prot = renderedParticipantArr[rp];
-					prot.init();
-				}
-				this.autoLayout();
-			}
+			for (var rp = 0 ; rp < rpCount; rp++) {
+				var prot = renderedParticipantArr[rp];
+				prot.init();
+			}			
         },
 
         reset: function() {

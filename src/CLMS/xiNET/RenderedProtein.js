@@ -456,8 +456,8 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
 	if (bool) {
-		this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
-		this.crosslinkViewer.proteinLower.removeChild(this.lowerGroup);
+		CLMS.removeDomElement(this.upperGroup);
+		CLMS.removeDomElement(this.lowerGroup);
 	} else {
 		this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
 		this.crosslinkViewer.proteinLower.appendChild(this.lowerGroup);
