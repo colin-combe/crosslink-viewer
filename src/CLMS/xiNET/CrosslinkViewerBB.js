@@ -179,8 +179,14 @@
         },
 
         render: function() {
-			//~ alert("renderin");
-			//~ doesn't get called first time
+			if (this.wasEmpty) {
+				this.wasEmpty = false;
+				if (this.model.get("clmsModel").get("xiNETLayout")) {
+					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				} else {
+					this.autoLayout();
+				};
+			}
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -212,7 +218,7 @@
             var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
             var pCount = participantsArr.length;
 
-			var wasEmpty = (this.renderedProteins.size == 0);
+			this.wasEmpty = (this.renderedProteins.size == 0);
             
             for (var p =0; p < pCount; p++) {
 				var participant = participantsArr[p];
@@ -276,14 +282,6 @@
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var prot = renderedParticipantArr[rp];
 				prot.init();
-			}
-
-			if (wasEmpty) {
-				if (this.model.get("clmsModel").get("xiNETLayout")) {
-					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-				} else {
-					this.autoLayout();
-				};
 			}						
         },
 
