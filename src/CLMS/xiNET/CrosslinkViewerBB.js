@@ -173,6 +173,7 @@
 				var rLink = renderedCrossLinksArr[rcl];
                 if (rLink.shown) {
                     var c = colourAssignment.getColour(rLink.crossLink);
+                    if (!c) {c = "gray";}
                     rLink.line.setAttribute("stroke",c);
                 }
             }
