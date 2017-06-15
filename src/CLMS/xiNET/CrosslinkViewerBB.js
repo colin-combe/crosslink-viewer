@@ -222,7 +222,7 @@
             
             for (var p =0; p < pCount; p++) {
 				var participant = participantsArr[p];
-                if (participant.is_decoy == false) {
+                if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
                     var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
                     this.renderedProteins.set(participant.id, newProt);
 
