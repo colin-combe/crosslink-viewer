@@ -265,7 +265,7 @@
             var clmsModel = this.model.get("clmsModel");          
             for(var cl =0 ; cl < clCount; cl++){
 				var crossLink = crossLinksArr[cl];
-                if (clmsModel.isDecoyLink(crossLink) == false) {
+                if (crossLink.isDecoyLink() == false) {
 					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 					this.renderedCrossLinks.push(renderedCrossLink);
