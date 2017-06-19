@@ -180,14 +180,15 @@
         },
 
         render: function() {
-			if (this.wasEmpty) {
+		/*	if (this.wasEmpty) {
 				this.wasEmpty = false;
-				if (this.model.get("clmsModel").get("xiNETLayout")) {
-					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-				} else {
+				//TODO: fix this
+				//~ if (this.model.get("clmsModel").get("xiNETLayout")) {
+					//~ this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				//~ } else {
 					this.autoLayout();
-				};
-			}
+				//~ };
+			}*/
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -339,7 +340,7 @@
                     if (p_pLink.line) {
 						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-						//p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
 						if (p_pLink.ambiguous) {
 							p_pLink.dashedLine(true); //rescale spacing of dashes
 						}
@@ -595,7 +596,7 @@
             return false;
         },
         
-       getEventPoint: function(evt) {
+        getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
             var element = this.svgElement.parentNode;
             var top = 0, left = 0;
@@ -831,7 +832,7 @@
     });
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-CLMS.xiNET.linkWidth = 1.3;// default line width
+CLMS.xiNET.linkWidth = 1.1;// default line width
 CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global
 // (because all instances of CLMS.xiNET should use same colours for this)

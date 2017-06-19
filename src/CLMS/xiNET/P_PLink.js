@@ -53,7 +53,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
     this.line.setAttribute("stroke", "black");
-    this.line.setAttribute("stroke-width", 1);
+    this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
 
     this.highlightLine.setAttribute("class", "link");
@@ -314,12 +314,11 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 	if (this.filteredCrossLinkCount < 2) {
 		this.thickLine.setAttribute("stroke-width", 0);
 	} else {
-		var w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
-		//console.log("w", w, CLMS.xiNET.P_PLink.maxNoCrossLinks);
+		this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
 		if (this.renderedFromProtein === this.renderedToProtein) {
-			this.thickLine.setAttribute("stroke-width", w);
+			this.thickLine.setAttribute("stroke-width", this.w);
 		} else {
-			this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * w);
+			this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
 		}
 	}
     this.dashedLine(this.ambiguous);
