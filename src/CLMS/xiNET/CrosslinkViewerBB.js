@@ -180,15 +180,20 @@
         },
 
         render: function() {
-		/*	if (this.wasEmpty) {
+			if (this.wasEmpty) {
 				this.wasEmpty = false;
-				//TODO: fix this
-				//~ if (this.model.get("clmsModel").get("xiNETLayout")) {
-					//~ this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-				//~ } else {
+				if (this.model.get("clmsModel").get("xiNETLayout")) {
+					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				} else {
+					var renderedParticipantsArr = CLMS.arrayFromMapValues(this.renderedProteins);
+					var rpCount = renderedParticipantsArr.length;
+					for (var rp = 0 ; rp < rpCount; rp++) {
+						var prot = renderedParticipantsArr[rp];
+						prot.init();
+					}	
 					this.autoLayout();
-				//~ };
-			}*/
+				};
+			}
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -232,6 +237,9 @@
                     if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
                         CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
                     }
+                    if (this.wasEmpty == false) {
+							newProt.init();
+					}
                 }
             }
             var width = this.svgElement.parentNode.clientWidth;
@@ -280,11 +288,7 @@
                     }
                     p_pLink.crossLinks.push(crossLink);
                 }
-            }
-			for (var rp = 0 ; rp < rpCount; rp++) {
-				var prot = renderedParticipantArr[rp];
-				prot.init();
-			}						
+            }					
         },
 
         reset: function() {
@@ -661,7 +665,6 @@
                 else {console.log("!protein in layout but not search");}
             }
 
-            // incase proteins have been added which are not included in layout -
             var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
