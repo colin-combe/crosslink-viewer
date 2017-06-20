@@ -119,12 +119,6 @@
             this.clear();
 
             this.update();
-
-            if (this.model.get("clmsModel").get("xiNETLayout")) {
-				this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
-			} else {
-				this.autoLayout();
-			}
             
             this.listenTo (this.model, "filteringDone", this.render);    // any property changing in the filter model means rerendering this view
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
@@ -179,14 +173,27 @@
 				var rLink = renderedCrossLinksArr[rcl];
                 if (rLink.shown) {
                     var c = colourAssignment.getColour(rLink.crossLink);
+                    if (!c) {c = "gray";}
                     rLink.line.setAttribute("stroke",c);
                 }
             }
         },
 
         render: function() {
-			//~ alert("renderin");
-			//~ doesn't get called first time
+			if (this.wasEmpty) {
+				this.wasEmpty = false;
+				if (this.model.get("clmsModel").get("xiNETLayout")) {
+					this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+				} else {
+					var renderedParticipantsArr = CLMS.arrayFromMapValues(this.renderedProteins);
+					var rpCount = renderedParticipantsArr.length;
+					for (var rp = 0 ; rp < rpCount; rp++) {
+						var prot = renderedParticipantsArr[rp];
+						prot.init();
+					}	
+					this.autoLayout();
+				};
+			}
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -217,9 +224,12 @@
             
             var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
             var pCount = participantsArr.length;
+
+			this.wasEmpty = (this.renderedProteins.size == 0);
+            
             for (var p =0; p < pCount; p++) {
 				var participant = participantsArr[p];
-                if (participant.is_decoy == false) {
+                if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
                     var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
                     this.renderedProteins.set(participant.id, newProt);
 
@@ -227,6 +237,9 @@
                     if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE){
                         CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
                     }
+                    if (this.wasEmpty == false) {
+							newProt.init();
+					}
                 }
             }
             var width = this.svgElement.parentNode.clientWidth;
@@ -262,7 +275,7 @@
             var clmsModel = this.model.get("clmsModel");          
             for(var cl =0 ; cl < clCount; cl++){
 				var crossLink = crossLinksArr[cl];
-                if (clmsModel.isDecoyLink(crossLink) == false) {
+                if (crossLink.isDecoyLink() == false) {
 					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
 					this.renderedCrossLinks.push(renderedCrossLink);
@@ -275,11 +288,7 @@
                     }
                     p_pLink.crossLinks.push(crossLink);
                 }
-            }
-			for (var rp = 0 ; rp < rpCount; rp++) {
-				var prot = renderedParticipantArr[rp];
-				prot.init();
-			}			
+            }					
         },
 
         reset: function() {
@@ -335,7 +344,7 @@
                     if (p_pLink.line) {
 						p_pLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
 						p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-						//p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
+						p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
 						if (p_pLink.ambiguous) {
 							p_pLink.dashedLine(true); //rescale spacing of dashes
 						}
@@ -591,7 +600,7 @@
             return false;
         },
         
-       getEventPoint: function(evt) {
+        getEventPoint: function(evt) {
             var p = this.svgElement.createSVGPoint();
             var element = this.svgElement.parentNode;
             var top = 0, left = 0;
@@ -656,7 +665,6 @@
                 else {console.log("!protein in layout but not search");}
             }
 
-            // incase proteins have been added which are not included in layout -
             var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
@@ -827,7 +835,7 @@
     });
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-CLMS.xiNET.linkWidth = 1.3;// default line width
+CLMS.xiNET.linkWidth = 1.1;// default line width
 CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global
 // (because all instances of CLMS.xiNET should use same colours for this)
