@@ -501,9 +501,8 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //if (!this.participant.hidden){
 		this.busy = true;
 		this.removePeptides();
-		//commented out for IE
-		//~ if (this.upperGroup.contains(this.lowerRotator.svg)) this.upperGroup.removeChild(this.lowerRotator.svg);
-		//~ if (this.upperGroup.contains(this.upperRotator.svg))this.upperGroup.removeChild(this.upperRotator.svg);
+		CLMS.removeDomElement(this.lowerRotator.svg);
+		CLMS.removeDomElement(this.upperRotator.svg);
 
 		var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
 		var r = this.getBlobRadius();
