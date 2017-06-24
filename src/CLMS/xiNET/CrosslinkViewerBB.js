@@ -154,7 +154,7 @@
             //~ this.rotating = false;
 
             this.renderedProteins = new Map();
-            this.renderedCrossLinks = []; // new Map();
+            this.renderedCrossLinks = new Map();
             this.renderedP_PLinks = new Map();
 
             this.layout = null;
@@ -167,7 +167,7 @@
 
         linkColourChanged: function() {
             var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedCrossLinksArr = this.renderedCrossLinks;
+            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var rLink = renderedCrossLinksArr[rcl];
@@ -208,7 +208,7 @@
                 pLinksArr[pl].update();
             }
 			
-            var cLinksArr = this.renderedCrossLinks;
+            var cLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
@@ -268,7 +268,7 @@
 				//~ }
 			//~ }
 			
-			this.renderedCrossLinks = [];
+			//~  oops! this.renderedCrossLinks = [];
 			
 			var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
             var clCount = crossLinksArr.length; 
@@ -276,17 +276,19 @@
             for(var cl =0 ; cl < clCount; cl++){
 				var crossLink = crossLinksArr[cl];
                 if (crossLink.isDecoyLink() == false) {
-					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-					this.renderedCrossLinks.push(renderedCrossLink);
+					if (!this.renderedCrossLinks.has(crossLink.id)) {
+						var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+						this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+						//this.renderedCrossLinks.push(renderedCrossLink);
 
-                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
-                    var p_pLink = this.renderedP_PLinks.get(p_pId);
-                    if (typeof p_pLink == 'undefined') {
-                        p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
-                        this.renderedP_PLinks.set(p_pId, p_pLink);
-                    }
-                    p_pLink.crossLinks.push(crossLink);
+						var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+						var p_pLink = this.renderedP_PLinks.get(p_pId);
+						if (typeof p_pLink == 'undefined') {
+							p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
+							this.renderedP_PLinks.set(p_pId, p_pLink);
+						}
+						p_pLink.crossLinks.push(crossLink);
+					}
                 }
             }					
         },
@@ -320,7 +322,7 @@
                     prot.setAllLineCoordinates();
             }
 			
-			var renderedCrossLinksArr = this.renderedCrossLinks;
+			var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var renderedCrossLink = renderedCrossLinksArr[rcl];
@@ -752,16 +754,16 @@
             }
 
 			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protein)
-            var renderedCrossLinks = this.renderedCrossLinks;
-            var rclCount = renderedCrossLinks.length;
+            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            var rclCount = renderedCrossLinksArr.length;
 	        for (var rcl =0; rcl < rclCount; rcl++) {
-				renderedCrossLinks[rcl].showHighlight(false);
+				renderedCrossLinksArr[rcl].showHighlight(false);
 			}
 
 			var highlightedCrossLinks = this.model.get("highlights");
 
             for (var rcl =0; rcl < rclCount; rcl++) {
-                var renderedCrossLink = renderedCrossLinks[rcl];
+                var renderedCrossLink = renderedCrossLinksArr[rcl];
 				if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
 					
 					if (renderedCrossLink.renderedFromProtein.form == 1
@@ -790,10 +792,10 @@
             }
 
             var selectedCrossLinks = this.model.get("selection");
-            var renderedCrossLinks = this.renderedCrossLinks;
-            var rclCount = renderedCrossLinks.length;
+            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            var rclCount = renderedCrossLinksArr.length;
             for (var rcl =0; rcl < rclCount; rcl++) {
-                var renderedCrossLink = renderedCrossLinks[rcl];
+                var renderedCrossLink = renderedCrossLinksArr[rcl];
                 if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
 					renderedCrossLink.setSelected(true);
 					var p_pLink = this.renderedP_PLinks.get(
