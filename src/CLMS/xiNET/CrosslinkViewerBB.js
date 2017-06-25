@@ -124,8 +124,8 @@
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
-            this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
-            this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
+            this.listenTo (this.model, "change:linkColourAssignment", this.render);
+            this.listenTo (this.model, "currentColourModelChanged", this.render); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
             this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
@@ -165,19 +165,41 @@
 
         },
 
-        linkColourChanged: function() {
-            var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
-            var rclCount = renderedCrossLinksArr.length;
-            for (var rcl = 0 ; rcl < rclCount; rcl++) {
-				var rLink = renderedCrossLinksArr[rcl];
-                if (rLink.shown) {
-                    var c = colourAssignment.getColour(rLink.crossLink);
-                    if (!c) {c = "gray";}
-                    rLink.line.setAttribute("stroke",c);
-                }
-            }
-        },
+        //~ linkColourChanged: function() {
+			//~ 
+            //~ var colourAssignment = this.model.get("linkColourAssignment");
+            //~ 
+            //~ var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
+            //~ var plCount = pLinksArr.length;
+            //~ for (var pl = 0; pl < plCount; pl++) {
+				//~ var pLink = pLinksArr[pl];
+				//~ var colours = new Set();
+				//~ var clArr = pLink.crossLinks;;
+				//~ var p_pClCount = clArr.length;
+				//~ for (var cl = 0 ; cl < p_pClCount; cl++) {
+					//~ var c = colourAssignment.getColour(clArr[cl]);
+					//~ if (!c) {c = "gray";}
+					//~ colours.add(c);
+				//~ }
+				//~ if (colours.size == 1) {
+					//~ pLink.line.setAttribute("stroke", colours.values().next());//todo:IE?
+				//~ } else {
+					//~ pLink.line.setAttribute("stroke","black");
+				//~ }
+				//~ 
+            //~ }
+//~ 
+            //~ var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            //~ var rclCount = renderedCrossLinksArr.length;
+            //~ for (var rcl = 0 ; rcl < rclCount; rcl++) {
+				//~ var rLink = renderedCrossLinksArr[rcl];
+               // if (rLink.shown) { //todo: may be some issues, e.g. colour changing coz filter changes
+                    //~ var c = colourAssignment.getColour(rLink.crossLink);
+                    //~ if (!c) {c = "gray";}
+                    //~ rLink.line.setAttribute("stroke",c);
+               // }
+            //~ }
+        //~ },
 
         render: function() {
 			if (this.wasEmpty) {
@@ -194,6 +216,7 @@
 					this.autoLayout();
 				};
 			}
+			
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -838,7 +861,6 @@
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 CLMS.xiNET.linkWidth = 1.1;// default line width
-CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global
 // (because all instances of CLMS.xiNET should use same colours for this)
 CLMS.xiNET.highlightColour = new RGBColor("#fdc086");

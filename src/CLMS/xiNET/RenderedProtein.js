@@ -915,11 +915,22 @@ CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
  };
 
 CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
-    theta = (theta / 360) * Math.PI * 2;
+    theta = (theta / 360) * Math.PI * 2; // todo: make everything use radians 
     var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
     var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
     return [rx, ry];
 }
+
+
+//TODO: remove this, use rotateAboutPoint instead [0,0]
+CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
+        //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+        var radians = (angleDegrees / 360) * Math.PI * 2;
+        return {
+            x: (radius * Math.cos(radians)),
+            y: (radius * Math.sin(radians))
+        };
+};
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
     var pLinks = this.renderedP_PLinks;
@@ -1091,16 +1102,6 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             this.rectDomains.appendChild(colouredRect);
         }
     }
-};
-
-//TODO: remove this, use rotateAboutPoint instead
-CLMS.xiNET.RenderedProtein.trig = function(radius, angleDegrees) {
-        //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-        var radians = (angleDegrees / 360) * Math.PI * 2;
-        return {
-            x: (radius * Math.cos(radians)),
-            y: (radius * Math.sin(radians))
-        };
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {

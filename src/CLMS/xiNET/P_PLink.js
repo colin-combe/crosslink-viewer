@@ -52,7 +52,6 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
 
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
-    this.line.setAttribute("stroke", "black");
     this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
 
@@ -256,21 +255,6 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     return this.filteredCrossLinkCount;
 };
 
-CLMS.xiNET.P_PLink.prototype.dashedLine = function(dash) {
-    //if (this.crosslinkViewer.unambigLinkFound == true) {
-        if (dash){
-            if (this.renderedFromProtein === this.renderedToProtein) {
-                this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-            } else {
-                this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
-            }
-        }
-        else if (!dash){
-            this.line.removeAttribute("stroke-dasharray");
-        }
-    //}
-};
-
 CLMS.xiNET.P_PLink.prototype.update = function() {
 	if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden
             || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1
@@ -321,7 +305,19 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 			this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
 		}
 	}
-    this.dashedLine(this.ambiguous);
+	if (this.ambiguous){
+		if (this.renderedFromProtein === this.renderedToProtein) {
+			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+		} else {
+			this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
+		}
+	}
+	else if (!dash){
+		this.line.removeAttribute("stroke-dasharray");
+	}
+	//U R HERE - colours
+    this.line.setAttribute("stroke", "black");
+    
     this.setSelected(this.isSelected);
 };
 
