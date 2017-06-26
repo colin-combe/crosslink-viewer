@@ -18,5 +18,22 @@ CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
 }
 
 
+CLMS.xiNET.RenderedLink.prototype.dashedLine = function(dash) {
+	if (this.shown) {
+		if (dash) {
+			if (this.renderedFromProtein === this.renderedToProtein) {
+				this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+			}
+			else {
+				this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
+			}
+		}
+		else {
+			this.line.removeAttribute("stroke-dasharray");
+		}
+	}
+};
+
+
 
 

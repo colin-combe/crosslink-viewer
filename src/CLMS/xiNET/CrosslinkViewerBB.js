@@ -66,7 +66,6 @@
             this.svgElement.ontouchstart = function(evt) { self.touchStart(evt); };
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
-
             
             // various SVG groups needed
             this.wrapper = document.createElementNS(CLMS.xiNET.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
@@ -130,7 +129,6 @@
             this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
-            this.linkColourChanged();
             return this;
         },
 

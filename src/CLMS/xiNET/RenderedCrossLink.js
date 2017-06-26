@@ -229,17 +229,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
     }
-    if (this.crossLink.ambiguous) {
-		if (this.crossLink.isSelfLink() === true) {
-			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-		}
-		else {
-			this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
-		}
-	}
-	else {
-		this.line.removeAttribute("stroke-dasharray");
-	}
+    this.dashedLine(this.crossLink.ambiguous);
 	
 	this.line.setAttribute("stroke",
 		this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));

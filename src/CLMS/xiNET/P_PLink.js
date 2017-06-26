@@ -305,16 +305,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 			this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
 		}
 	}
-	if (this.ambiguous){
-		if (this.renderedFromProtein === this.renderedToProtein) {
-			this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-		} else {
-			this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
-		}
-	}
-	else if (!dash){
-		this.line.removeAttribute("stroke-dasharray");
-	}
+	this.dashedLine(this.ambiguous);
 	//U R HERE - colours
     this.line.setAttribute("stroke", "black");
     
