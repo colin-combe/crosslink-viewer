@@ -39,6 +39,25 @@
             }
         }, 
         {
+            "id": "uniprotkb_Q8WUX9", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q8WUX9"
+            }, 
+            "label": "chmp7_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MWSPEREAEAPAGGDPAGLLPPEWEEDEERMSFLFSAFKRSREVNSTDWDSKMGFWAPLVLSHSRRQGVVRLRLRDLQEAFQRKGSVPLGLATVLQDLLRRGELQRESDFMASVDSSWISWGVGVFLLKPLKWTLSNMLGDNKVPAEEVLVAVELLKEKAEEVYRLYQNSPLSSHPVVALSELSTLCANSCPDERTFYLVLLQLQKEKRVTVLEQNGEKIVKFARGPRAKVSPVNDVDVGVYQLMQSEQLLSRKVESLSQEAERCKEEARRACRAGKKQLALRSLKAKQRTEKRIEALHAKLDTVQGILDRIYASQTDQMVFNAYQAGVGALKLSMKDVTVEKAESLVDQIQELCDTQDEVSQTLAGGVTNGLDFDSEELEKELDILLQDTTKEPLDLPDNPRNRHFTNSVPNPRISDAELEAELEKLSLSEGGLVPSSKSPKRQLEPTLKPL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
             "id": "uniprotkb_Q96FZ7", 
             "identifier": {
                 "db": "uniprotkb", 
@@ -115,19 +134,19 @@
             }
         }, 
         {
-            "id": "uniprotkb_O43633", 
+            "id": "uniprotkb_Q9UQN3", 
             "identifier": {
                 "db": "uniprotkb", 
-                "id": "O43633"
+                "id": "Q9UQN3"
             }, 
-            "label": "chm2a_human", 
+            "label": "chm2b_human", 
             "object": "interactor", 
             "organism": {
                 "common": "human", 
                 "scientific": "Homo sapiens", 
                 "taxid": "9606"
             }, 
-            "sequence": "MDLLFGRRKTPEELLRQNQRALNRAMRELDRERQKLETQEKKIIADIKKMAKQGQMDAVRIMAKDLVRTRRYVRKFVLMRANIQAVSLKIQTLKSNNSMAQAMKGVTKAMGTMNRQLKLPQIQKIMMEFERQAEIMDMKEEMMNDAIDDAMGDEEDEEESDAVVSQVLDELGLSLTDELSNLPSTGGSLSVAAGGKKAEAAASALADADADLEERLKNLRRD", 
+            "sequence": "MASLFKKKTVDDVIKEQNRELRGTQRAIIRDRAALEKQEKQLELEIKKMAKIGNKEACKVLAKQLVHLRKQKTRTFAVSSKVTSMSTQTKVMNSQMKMAGAMSTTAKTMQAVNKKMDPQKTLQTMQNFQKENMKMEMTEEMINDTLDDIFDGSDDEEESQDIVNQVLDEIGIEISGKMAKAPSAARSLPSASTSKATISDEEIERQLKALGVD", 
             "type": {
                 "id": "MI:0326", 
                 "name": "protein"
@@ -147,6 +166,25 @@
                 "taxid": "9606"
             }, 
             "sequence": "MDDTLFQLKFTAKQLEKLAKKAEKDSKAEQAKVKKALLQKNVECARVYAENAIRKKNEGVNWLRMASRVDAVASKVQTAVTMKGVTKNMAQVTKALDKALSTMDLQKVSSVMDRFEQQVQNLDVHTSVMEDSMSSATTLTTPQEQVDSLIMQIAEENGLEVLDQLSQLPEGASAVGESSVRSQEDQLSRRLAALRN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O43633", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O43633"
+            }, 
+            "label": "chm2a_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDLLFGRRKTPEELLRQNQRALNRAMRELDRERQKLETQEKKIIADIKKMAKQGQMDAVRIMAKDLVRTRRYVRKFVLMRANIQAVSLKIQTLKSNNSMAQAMKGVTKAMGTMNRQLKLPQIQKIMMEFERQAEIMDMKEEMMNDAIDDAMGDEEDEEESDAVVSQVLDELGLSLTDELSNLPSTGGSLSVAAGGKKAEAAASALADADADLEERLKNLRRD", 
             "type": {
                 "id": "MI:0326", 
                 "name": "protein"
@@ -177,14 +215,18 @@
                 "name": "stable complex"
             }, 
             "evidenceType": {
-                "id": "ECO:0000353", 
-                "name": "physical interaction evidence used in manual assertion"
+                "id": "ECO:0005547", 
+                "name": "biological system reconstruction evidence based on inference from background scientific knowledge used in manual assertion"
             }, 
             "id": "reactome_R-HSA-917723", 
             "identifiers": [
                 {
                     "db": "reactome", 
                     "id": "R-HSA-917723"
+                }, 
+                {
+                    "db": "efo", 
+                    "id": "EFO:0005772"
                 }, 
                 {
                     "db": "intact", 
@@ -214,6 +256,103 @@
                         "id": "MI:0499", 
                         "name": "unspecified role"
                     }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3E7", 
+                                    "participantRef": "1", 
+                                    "pos": "9-183"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3E7", 
+                                    "participantRef": "1", 
+                                    "pos": "9-183"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "chmp2b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3E7", 
+                                    "participantRef": "1", 
+                                    "pos": "9-183"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "chmp2a binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3E7", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "8", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3E7", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
                     "id": "1", 
                     "interactorRef": "uniprotkb_Q9Y3E7"
                 }, 
@@ -225,90 +364,91 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "3", 
+                            "id": "11", 
                             "linkedFeatures": [
-                                "4", 
-                                "5", 
-                                "6"
+                                "12"
                             ], 
-                            "name": "feature3", 
+                            "name": "dimerisation region", 
                             "sequenceData": [
                                 {
                                     "interactorRef": "uniprotkb_Q7LBR1", 
-                                    "participantRef": "2", 
-                                    "pos": "100-110"
+                                    "participantRef": "10", 
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
-                        }
-                    ], 
-                    "id": "2", 
-                    "interactorRef": "uniprotkb_Q7LBR1"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "id": "7", 
-                    "interactorRef": "uniprotkb_Q96FZ7"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "id": "8", 
-                    "interactorRef": "uniprotkb_Q9NZZ3"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "id": "9", 
-                    "interactorRef": "uniprotkb_Q96CF2"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "id": "10", 
-                    "interactorRef": "uniprotkb_Q9BY43"
-                }, 
-                {
-                    "bioRole": {
-                        "id": "MI:0499", 
-                        "name": "unspecified role"
-                    }, 
-                    "features": [
+                        }, 
                         {
                             "category": "bindingSites", 
                             "id": "12", 
-                            "name": "feature12", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "dimerisation region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_O43633", 
-                                    "participantRef": "11", 
-                                    "pos": "1-1"
-                                }, 
+                                    "interactorRef": "uniprotkb_Q7LBR1", 
+                                    "participantRef": "10", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "13", 
+                            "linkedFeatures": [
+                                "14"
+                            ], 
+                            "name": "chmp5 binding region", 
+                            "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_O43633", 
-                                    "participantRef": "11", 
-                                    "pos": "10-10"
-                                }, 
+                                    "interactorRef": "uniprotkb_Q7LBR1", 
+                                    "participantRef": "10", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_O43633", 
-                                    "participantRef": "11", 
-                                    "pos": "20-50"
-                                }, 
+                                    "interactorRef": "uniprotkb_Q7LBR1", 
+                                    "participantRef": "10", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "17", 
+                            "linkedFeatures": [
+                                "18"
+                            ], 
+                            "name": "chmp1a binding region", 
+                            "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_O43633", 
-                                    "participantRef": "11", 
+                                    "interactorRef": "uniprotkb_Q7LBR1", 
+                                    "participantRef": "10", 
                                     "pos": "?-?"
                                 }
                             ], 
@@ -318,8 +458,8 @@
                             }
                         }
                     ], 
-                    "id": "11", 
-                    "interactorRef": "uniprotkb_O43633"
+                    "id": "10", 
+                    "interactorRef": "uniprotkb_Q7LBR1"
                 }, 
                 {
                     "bioRole": {
@@ -328,20 +468,58 @@
                     }, 
                     "features": [
                         {
+                            "InterPro": "IPR005024", 
                             "category": "bindingSites", 
-                            "id": "5", 
+                            "id": "20", 
                             "linkedFeatures": [
-                                "4", 
-                                "14", 
-                                "6", 
-                                "3"
+                                "21"
                             ], 
-                            "name": "feature5", 
+                            "name": "chmp4b binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_Q9HD42", 
-                                    "participantRef": "13", 
-                                    "pos": "50-60"
+                                    "interactorRef": "uniprotkb_Q8WUX9", 
+                                    "participantRef": "19", 
+                                    "pos": "223-453"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "InterPro": "IPR005024", 
+                            "category": "bindingSites", 
+                            "id": "22", 
+                            "linkedFeatures": [
+                                "23"
+                            ], 
+                            "name": "chmp4c binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q8WUX9", 
+                                    "participantRef": "19", 
+                                    "pos": "223-453"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "InterPro": "IPR005024", 
+                            "category": "bindingSites", 
+                            "id": "24", 
+                            "linkedFeatures": [
+                                "25"
+                            ], 
+                            "name": "chmp4a binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q8WUX9", 
+                                    "participantRef": "19", 
+                                    "pos": "223-453"
                                 }
                             ], 
                             "type": {
@@ -350,8 +528,8 @@
                             }
                         }
                     ], 
-                    "id": "13", 
-                    "interactorRef": "uniprotkb_Q9HD42"
+                    "id": "19", 
+                    "interactorRef": "uniprotkb_Q8WUX9"
                 }, 
                 {
                     "bioRole": {
@@ -361,18 +539,16 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "4", 
+                            "id": "27", 
                             "linkedFeatures": [
-                                "6", 
-                                "5", 
-                                "3"
+                                "28"
                             ], 
-                            "name": "feature4", 
+                            "name": "chmp4b binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_O43633", 
-                                    "participantRef": "15", 
-                                    "pos": "1-10"
+                                    "interactorRef": "uniprotkb_Q96FZ7", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
@@ -381,8 +557,8 @@
                             }
                         }
                     ], 
-                    "id": "15", 
-                    "interactorRef": "uniprotkb_O43633"
+                    "id": "26", 
+                    "interactorRef": "uniprotkb_Q96FZ7"
                 }, 
                 {
                     "bioRole": {
@@ -392,18 +568,73 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "6", 
+                            "id": "30", 
                             "linkedFeatures": [
-                                "4", 
-                                "5", 
-                                "3"
+                                "31"
                             ], 
-                            "name": "feature6", 
+                            "name": "dimerisation region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_Q9H444", 
-                                    "participantRef": "16", 
-                                    "pos": "20-30"
+                                    "interactorRef": "uniprotkb_Q9NZZ3", 
+                                    "participantRef": "29", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "31", 
+                            "linkedFeatures": [
+                                "30"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NZZ3", 
+                                    "participantRef": "29", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "32", 
+                            "linkedFeatures": [
+                                "33"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NZZ3", 
+                                    "participantRef": "29", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "34", 
+                            "linkedFeatures": [
+                                "35"
+                            ], 
+                            "name": "chmp4a binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NZZ3", 
+                                    "participantRef": "29", 
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
@@ -415,14 +646,14 @@
                             "category": "bindingSites", 
                             "id": "14", 
                             "linkedFeatures": [
-                                "5"
+                                "13"
                             ], 
-                            "name": "feature14", 
+                            "name": "chmp1b1 binding region", 
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_Q9H444", 
-                                    "participantRef": "16", 
-                                    "pos": "100-150"
+                                    "interactorRef": "uniprotkb_Q9NZZ3", 
+                                    "participantRef": "29", 
+                                    "pos": "?-?"
                                 }
                             ], 
                             "type": {
@@ -431,7 +662,633 @@
                             }
                         }
                     ], 
-                    "id": "16", 
+                    "id": "29", 
+                    "interactorRef": "uniprotkb_Q9NZZ3"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "23", 
+                            "linkedFeatures": [
+                                "22"
+                            ], 
+                            "name": "chmp7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96CF2", 
+                                    "participantRef": "36", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "37", 
+                            "linkedFeatures": [
+                                "38"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96CF2", 
+                                    "participantRef": "36", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "36", 
+                    "interactorRef": "uniprotkb_Q96CF2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "25", 
+                            "linkedFeatures": [
+                                "24"
+                            ], 
+                            "name": "chmp7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BY43", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "35", 
+                            "linkedFeatures": [
+                                "34"
+                            ], 
+                            "name": "chmp5 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BY43", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "40", 
+                            "linkedFeatures": [
+                                "41"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BY43", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "42", 
+                            "linkedFeatures": [
+                                "43"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BY43", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "43", 
+                            "linkedFeatures": [
+                                "42"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BY43", 
+                                    "participantRef": "39", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "39", 
+                    "interactorRef": "uniprotkb_Q9BY43"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "45", 
+                            "linkedFeatures": [
+                                "46"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9UQN3", 
+                                    "participantRef": "44", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "chmp3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9UQN3", 
+                                    "participantRef": "44", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "47", 
+                            "linkedFeatures": [
+                                "48"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9UQN3", 
+                                    "participantRef": "44", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "48", 
+                            "linkedFeatures": [
+                                "47"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9UQN3", 
+                                    "participantRef": "44", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "44", 
+                    "interactorRef": "uniprotkb_Q9UQN3"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "18", 
+                            "linkedFeatures": [
+                                "17"
+                            ], 
+                            "name": "chmp1b1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9HD42", 
+                                    "participantRef": "49", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "50", 
+                            "linkedFeatures": [
+                                "51"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9HD42", 
+                                    "participantRef": "49", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "51", 
+                            "linkedFeatures": [
+                                "50"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9HD42", 
+                                    "participantRef": "49", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "49", 
+                    "interactorRef": "uniprotkb_Q9HD42"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "53", 
+                            "linkedFeatures": [
+                                "54"
+                            ], 
+                            "name": "chmp4b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "52", 
+                                    "pos": "9-161"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "chmp3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "52", 
+                                    "pos": "9-161"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "55", 
+                            "linkedFeatures": [
+                                "56"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "52", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "56", 
+                            "linkedFeatures": [
+                                "55"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "52", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "52", 
+                    "interactorRef": "uniprotkb_O43633"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "46", 
+                            "linkedFeatures": [
+                                "45"
+                            ], 
+                            "name": "chmp2b binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "1-175"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "204-224"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "8"
+                            ], 
+                            "name": "chmp3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "1-175"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "204-224"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "38", 
+                            "linkedFeatures": [
+                                "37"
+                            ], 
+                            "name": "chmp4c binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "58", 
+                            "linkedFeatures": [
+                                "59"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "1-193"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "59", 
+                            "linkedFeatures": [
+                                "58"
+                            ], 
+                            "name": "dimerisation region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "1-193"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "54", 
+                            "linkedFeatures": [
+                                "53"
+                            ], 
+                            "name": "chmp2a binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "1-175"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "204-224"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "21", 
+                            "linkedFeatures": [
+                                "20"
+                            ], 
+                            "name": "chmp7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "28", 
+                            "linkedFeatures": [
+                                "27"
+                            ], 
+                            "name": "chmp6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "33", 
+                            "linkedFeatures": [
+                                "32"
+                            ], 
+                            "name": "chmp5 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "41", 
+                            "linkedFeatures": [
+                                "40"
+                            ], 
+                            "name": "chmp4a binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "16", 
+                            "linkedFeatures": [
+                                "15"
+                            ], 
+                            "name": "chmp1b1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "57", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "57", 
                     "interactorRef": "uniprotkb_Q9H444"
                 }
             ]

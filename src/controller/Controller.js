@@ -11,7 +11,7 @@
 "use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
-var RGBColor = require('rgbcolor');
+//var RGBColor = require('rgbcolor');
 var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
 var xiNET_Storage = require('./xiNET_Storage');
@@ -50,9 +50,7 @@ xiNET.Controller = function(targetDiv) {
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
-    this.svgElement.setAttribute("width", "100%");
-    this.svgElement.setAttribute("height", "100%");
-    this.svgElement.setAttribute("style", "display:block;");
+
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {self.mouseDown(evt);};
@@ -599,11 +597,24 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                     if (nLink.interactors.indexOf(participant) === -1){
                         nLink.interactors.push(participant);
                     }
-                    //~ if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-                        //~ var interactor = self.molecules.get(participantId);
-                        //~ interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
-                    //~ }
+                    //temp - to give sensible info when stoich collapsed
+                    var interactor = self.molecules.get(participantId);
+                    interactor.stoich = interactor.stoich? interactor.stoich : 0;
+                    if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
+                        interactor.stoich = interactor.stoich + +jsonParticipant.stoichiometry;
+                    }
+                    else {
+                        interactor.stoich = interactor.stoich + 1;
+                    }
                 }
+
+                var interactorArr = self.molecules.values();
+                var iCount = interactorArr.length
+                for (var ii = 0; ii < iCount; ii++){
+                    var int = interactorArr[ii];
+                    int.addStoichiometryLabel(int.stoich);
+                }
+
             }
         }
 

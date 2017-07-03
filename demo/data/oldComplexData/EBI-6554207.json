@@ -1,0 +1,119 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_P0ACB0", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P0ACB0"
+            }, 
+            "label": "dnab_ecoli", 
+            "object": "interactor", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "sequence": "MAGNKPFNKQQAEPRERDPQVAGLKVPPHSIEAEQSVLGGLMLDNERWDDVAERVVADDFYTRPHRHIFTEMARLQESGSPIDLITLAESLERQGQLDSVGGFAYLAELSKNTPSAANISAYADIVRERAVVREMISVANEIAEAGFDPQGRTSEDLLDLAESRVFKIAESRANKDEGPKNIADVLDATVARIEQLFQQPHDGVTGVNTGYDDLNKKTAGLQPSDLIIVAARPSMGKTTFAMNLVENAAMLQDKPVLIFSLEMPSEQIMMRSLASLSRVDQTKIRTGQLDDEDWARISGTMGILLEKRNIYIDDSSGLTPTEVRSRARRIAREHGGIGLIMIDYLQLMRVPALSDNRTLEIAEISRSLKALAKELNVPVVALSQLNRSLEQRADKRPVNSDLRESGSIEQDADLIMFIYRDEVYHENSDLKGIAEIIIGKQRNGPIGTVRLTFNGQWSRFDNYAGPQYDDE", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "intenz_EC 3.6.4.12", 
+            "identifiers": [
+                {
+                    "db": "intenz", 
+                    "id": "EC 3.6.4.12"
+                }, 
+                {
+                    "db": "emdb", 
+                    "id": "EMD-2322"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-6554207"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "ecoli", 
+                "scientific": "Escherichia coli (strain K12)", 
+                "taxid": "83333"
+            }, 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0501", 
+                        "name": "enzyme"
+                    }, 
+                    "features": [
+                        {
+                            "category": "otherFeatures", 
+                            "id": "2", 
+                            "name": "dnag hdb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "1", 
+                                    "pos": "1-152"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0442", 
+                                "name": "sufficient binding region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "name": "hexamerisation", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "1", 
+                                    "pos": "1-471"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "otherFeatures", 
+                            "id": "4", 
+                            "name": "dna binding site", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0ACB0", 
+                                    "participantRef": "1", 
+                                    "pos": "186-454"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0442", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_P0ACB0", 
+                    "stoichiometry": "6"
+                }
+            ]
+        }
+    ]
+}
