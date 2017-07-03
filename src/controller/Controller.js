@@ -1320,7 +1320,7 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
  */
 xiNET.Controller.prototype.touchStart = function(evt) {
     //prevent default, but allow propogation
-    evt.preventDefault();
+    //~ evt.preventDefault();
     //~ //evt.returnValue = false;
     //~ this.preventDefaultsAndStopPropagation(evt);
 
