@@ -1,16 +1,16 @@
-//    	xiNET Interaction Viewer
-//    	Copyright 2013 Rappsilber Laboratory
+//      xiNET Interaction Viewer
+//      Copyright 2013 Rappsilber Laboratory
 //
-//    	This product includes software developed at
-//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//      This product includes software developed at
+//      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		author: Colin Combe
+//      author: Colin Combe
 //
-//		Link.js
-//		The graphical representation of one or many interactions.
-//		One link represents all interactions with same particpants.
-//		E.g. psi-mi may conatins multiple experiments giving evidence for same interaction
-//		- using one glyph to represent them all prevents uppermost graphic from occluding those lower down
+//      Link.js
+//      The graphical representation of one or many interactions.
+//      One link represents all interactions with same particpants.
+//      E.g. psi-mi may conatins multiple experiments giving evidence for same interaction
+//      - using one glyph to represent them all prevents uppermost graphic from occluding those lower down
 
 "use strict";
 
@@ -20,26 +20,26 @@ var Link = function (){};
 Link.maxNoEvidences = 0;
 
 Link.prototype.addEvidence = function(interaction) {
-	if (!this.evidences) {
-		this.evidences = d3.map();
-	}
-	if (this.evidences.has(interaction.id) === false) {
-		this.evidences.set(interaction.id, interaction);
-		if (this.evidences.values().length > Link.maxNoEvidences) {
-			//values().length can be replaced with size() in newer d3 lib
+    if (!this.evidences) {
+        this.evidences = d3.map();
+    }
+    if (this.evidences.has(interaction.id) === false) {
+        this.evidences.set(interaction.id, interaction);
+        if (this.evidences.values().length > Link.maxNoEvidences) {
+            //values().length can be replaced with size() in newer d3 lib
             Link.maxNoEvidences = this.evidences.values().length;
             return true;
         }
-	} else {
-		return false;
-	}
+    } else {
+        return false;
+    }
 };
 
 Link.prototype.highlightMolecules = function(show){
-	var interactors = this.interactors;
-	for (var i = 0; i < interactors.length; i++) {
-		interactors[i].showHighlight(show);
-	}
+    var interactors = this.interactors;
+    for (var i = 0; i < interactors.length; i++) {
+        interactors[i].showHighlight(show);
+    }
 }
 
 // event handler for starting dragging or rotation (or flipping internal links)
@@ -55,7 +55,7 @@ Link.prototype.mouseDown = function(evt) {
     //store start location
     var p = this.controller.getEventPoint(evt);// seems to be correct, see above
     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    this.showData();
+    //~ this.showData();
     return false;
 }
 
@@ -89,20 +89,20 @@ Link.prototype.touchStart = function(evt) {
     //store start location
     var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    this.showData();
+    //~ this.showData();
     return false;
 }
 
 //used when link clicked
-Link.prototype.showData = function() {
+/*Link.prototype.showData = function() {
     if (document.getElementById('jsonHeading')) {
-		document.getElementById('jsonHeading').innerHTML = this.id;
-	}
+        document.getElementById('jsonHeading').innerHTML = this.id;
+    }
     if (document.getElementById('json')) {
-		document.getElementById('json').innerHTML =
-			"<pre>" + JSON.stringify(this.filteredEvidence(), null, ' ') + "</pre>";
-	}
-};
+        document.getElementById('json').innerHTML =
+            "<pre>" + JSON.stringify(this.filteredEvidence(), null, ' ') + "</pre>";
+    }
+};*/
 
 Link.prototype.filteredEvidence = function() {
     //TODO - filtering
@@ -121,31 +121,31 @@ Link.prototype.filteredEvidence = function() {
 
 //used by BinaryLink and UnaryLink
 Link.prototype.hide = function() {
-	var p_pLinksWide = []
-	var highlights = []
-	var p_pLinks = []
+    var p_pLinksWide = []
+    var highlights = []
+    var p_pLinks = []
 
-	for (var i = 0; i < this.controller.p_pLinksWide.childNodes.length; i++) {
-		p_pLinksWide[i] = this.controller.p_pLinksWide.childNodes[i];
-	}
+    for (var i = 0; i < this.controller.p_pLinksWide.childNodes.length; i++) {
+        p_pLinksWide[i] = this.controller.p_pLinksWide.childNodes[i];
+    }
 
-	for (var i = 0; i < this.controller.highlights.childNodes.length; i++) {
-		highlights[i] = this.controller.highlights.childNodes[i];
-	}
+    for (var i = 0; i < this.controller.highlights.childNodes.length; i++) {
+        highlights[i] = this.controller.highlights.childNodes[i];
+    }
 
-	for (var i = 0; i < this.controller.p_pLinks.childNodes.length; i++) {
-		p_pLinks[i] = this.controller.p_pLinks.childNodes[i];
-	}
+    for (var i = 0; i < this.controller.p_pLinks.childNodes.length; i++) {
+        p_pLinks[i] = this.controller.p_pLinks.childNodes[i];
+    }
 
-	if (p_pLinksWide.indexOf(this.thickLine) > -1) {
-		this.controller.p_pLinksWide.removeChild(this.thickLine);
-	}
-	if (highlights.indexOf(this.highlightLine) > -1) {
-		this.controller.highlights.removeChild(this.highlightLine);
-	}
-	if (p_pLinks.indexOf(this.line) > -1) {
-		this.controller.p_pLinks.removeChild(this.line);
-	}
+    if (p_pLinksWide.indexOf(this.thickLine) > -1) {
+        this.controller.p_pLinksWide.removeChild(this.thickLine);
+    }
+    if (highlights.indexOf(this.highlightLine) > -1) {
+        this.controller.highlights.removeChild(this.highlightLine);
+    }
+    if (p_pLinks.indexOf(this.line) > -1) {
+        this.controller.p_pLinks.removeChild(this.line);
+    }
 };
 
 module.exports = Link;

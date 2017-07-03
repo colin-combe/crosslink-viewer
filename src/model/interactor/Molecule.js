@@ -62,7 +62,7 @@ Molecule.prototype.touchStart = function(evt) {
         //store start location
         var p = this.controller.getTouchEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        this.showData();
+//        this.showData();
         return false;
 };
 
