@@ -1,12 +1,12 @@
-//    	xiNET Interaction Viewer
-//    	Copyright 2013 Rappsilber Laboratory
+//      xiNET Interaction Viewer
+//      Copyright 2013 Rappsilber Laboratory
 //
-//    	This product includes software developed at
-//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//      This product includes software developed at
+//      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		Polymer.js
+//      Polymer.js
 //
-//		authors: Lutz Fischer, Colin Combe
+//      authors: Lutz Fischer, Colin Combe
 
 "use strict";
 
@@ -38,19 +38,20 @@ Polymer.prototype.init = function() {
 };
 
 Polymer.prototype.getBlobRadius = function() {
-    if (this.size) {
-		return Math.sqrt(this.size / 2 / Math.PI);
-    }
-	else return 15;
+    //~ if (this.size) {
+        //~ return Math.sqrt(this.size / 2 / Math.PI);
+    //~ }
+    //~ else
+    return 10;
 };
 
 Polymer.prototype.showHighlight = function(show) {
-	// the only highlighting thing
+    // the only highlighting thing
     if (show === true) {
         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     } else {
-		//~ if (this.isSelected == false) {
+        //~ if (this.isSelected == false) {
                 this.highlight.setAttribute("stroke-opacity", "0");
         //~ }
         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
@@ -61,37 +62,37 @@ Polymer.prototype.setRotation = function(angle) {
     this.rotation = angle % 360;
     if (this.rotation < 0) {
         this.rotation += 360;
-	}
+    }
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
-			+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+            + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 
     var svg = this.controller.svgElement;
-	var transformToContainingGroup = this.labelSVG.getAttribute("transform");
-	var labelTransform = d3.transform(transformToContainingGroup);
-	var sll = this.scaleLabels.length;
-	if (this.rotation >= 90 && this.rotation < 270) {
-			var k = svg.createSVGMatrix()
-						.translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
-						.rotate(180, 0, 0);
-			this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.form ===1){
-				for (var i = 0; i < sll; i++) {
-					   this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
-					}
-					this.ticks.setAttribute("transform", "scale(1,-1)");
-			}
-	}
+    var transformToContainingGroup = this.labelSVG.getAttribute("transform");
+    var labelTransform = d3.transform(transformToContainingGroup);
+    var sll = this.scaleLabels.length;
+    if (this.rotation >= 90 && this.rotation < 270) {
+            var k = svg.createSVGMatrix()
+                        .translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
+                        .rotate(180, 0, 0);
+            this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+            if (this.form ===1){
+                for (var i = 0; i < sll; i++) {
+                       this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
+                    }
+                    this.ticks.setAttribute("transform", "scale(1,-1)");
+            }
+    }
     else {
-    		var k = svg.createSVGMatrix()
-						.translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
-			 this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-			if (this.form ===1){
-				for (var j = 0; j < sll; j++) {
-					this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
-				}
-				this.ticks.setAttribute("transform", "scale(1,1)");
-			}
-	}
+            var k = svg.createSVGMatrix()
+                        .translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
+             this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
+            if (this.form ===1){
+                for (var j = 0; j < sll; j++) {
+                    this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
+                }
+                this.ticks.setAttribute("transform", "scale(1,1)");
+            }
+    }
 };
 
 Polymer.rotOffset = 20 * 0.7; // see Rotator.js
@@ -130,48 +131,48 @@ Polymer.prototype.switchStickScale = function(svgP) {
 Polymer.prototype.scale = function() {
     var protLength = (this.size) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
-      	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-		var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-			.translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
-		this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
+        var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+        var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
+            .translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
+        this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 
-		if (this.annotations){
-			var ca = this.annotations.length;
-			for (var a = 0; a < ca; a++){
-				var anno = this.annotations[a];
-				anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-			}
-		}
+        if (this.annotations){
+            var ca = this.annotations.length;
+            for (var a = 0; a < ca; a++){
+                var anno = this.annotations[a];
+                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+            }
+        }
 
-		d3.select(this.background)
-			.attr("width", protLength)
-			.attr("x", this.getResXwithStickZoom(0.5));
+        d3.select(this.background)
+            .attr("width", protLength)
+            .attr("x", this.getResXwithStickZoom(0.5));
 
-		d3.select(this.outline)
-			.attr("width", protLength)
-			.attr("x", this.getResXwithStickZoom(0.5));
+        d3.select(this.outline)
+            .attr("width", protLength)
+            .attr("x", this.getResXwithStickZoom(0.5));
 
-		d3.select(this.highlight)
-			.attr("width", protLength + 5)
-			.attr("x", this.getResXwithStickZoom(0.5) - 2.5);
+        d3.select(this.highlight)
+            .attr("width", protLength + 5)
+            .attr("x", this.getResXwithStickZoom(0.5) - 2.5);
 
-	/*	//place rotators
-		this.lowerRotator.svg.setAttribute("transform",
-			"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
+    /*  //place rotators
+        this.lowerRotator.svg.setAttribute("transform",
+            "translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
         this.upperRotator.svg.setAttribute("transform",
-			"translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
-			
+            "translate(" + (this.getResXwithStickZoom(this.size  - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
+
    /*       //linker modified peptides
         if (this.linkerModifications != null) {
             var mods = this.linkerModifications.residueLinks.values();
             var iModCount = mods.length;
             for (var m = 0; m < iModCount; m++) {
-				var mod = mods[m];
-				if (mod.shown) {
-				   var path = this.getResidueLinkPath(mod);
-				   d3.select(mod.line).attr("d", path);
-				   d3.select(mod.highlightLine).attr("d", path);
-				}
+                var mod = mods[m];
+                if (mod.shown) {
+                   var path = this.getResidueLinkPath(mod);
+                   d3.select(mod.line).attr("d", path);
+                   d3.select(mod.highlightLine).attr("d", path);
+                }
             }
         }*/
         this.setScaleGroup();
@@ -180,114 +181,114 @@ Polymer.prototype.scale = function() {
 };
 
 Polymer.prototype.setScaleGroup = function() {
-	this.controller.emptyElement(this.ticks);
-	this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
+    this.controller.emptyElement(this.ticks);
+    this.upperGroup.appendChild(this.ticks);//will do nothing if this.ticks already appended to this.uppergroup
 
     this.scaleLabels = new Array();
-	var ScaleMajTick = 100;
-	var ScaleTicksPerLabel = 2; // varies with scale?
-	var pixPerRes = Polymer.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
-	var tick = -1;
-	var lastTickX = this.getResXwithStickZoom(this.size);
+    var ScaleMajTick = 100;
+    var ScaleTicksPerLabel = 2; // varies with scale?
+    var pixPerRes = Polymer.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
+    var tick = -1;
+    var lastTickX = this.getResXwithStickZoom(this.size);
 
-	for (var res = 1; res <= this.size; res++) {
-		if (res === 1 ||
-				((res % 100 === 0) && (200 * pixPerRes > Polymer.minXDist)) ||
-				((res % 10 === 0) && (20 * pixPerRes > Polymer.minXDist))
-				) {
-			var tx = this.getResXwithStickZoom(res);
-			if (pixPerRes >= 8 || res !== 1) {
-				tickAt(this, tx);
-			}
-			tick = (tick + 1) % ScaleTicksPerLabel;
-			// does this one get a label?
-			if (tick === 0) {// && tx > 20) {
-				if ((tx + Polymer.minXDist) < lastTickX) {
-					scaleLabelAt(this, res, tx);
-				}
-			}
-		}
-		if (pixPerRes > 8) {
-			var seqLabelGroup = document.createElementNS(Config.svgns, "g");
-			seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
-			var seqLabel = document.createElementNS(Config.svgns, "text");
-			seqLabel.setAttribute('font-family', "'Courier New', monospace");
-			seqLabel.setAttribute('font-size', '10px');
-			seqLabel.setAttribute("text-anchor", "middle");
-			seqLabel.setAttribute("x", 0);//Polymer.getResXwithStickZoom(res));
-			seqLabel.setAttribute("y", 3);
-			seqLabel.appendChild(document.createTextNode(this.sequence[res - 1]));
-			seqLabelGroup.appendChild(seqLabel);
-			this.scaleLabels.push(seqLabel);
-			this.ticks.appendChild(seqLabelGroup);
-		}
-	}
-	scaleLabelAt(this, this.size, lastTickX);
-	if (pixPerRes > 8) {
-		tickAt(this, lastTickX);
-	}
+    for (var res = 1; res <= this.size; res++) {
+        if (res === 1 ||
+                ((res % 100 === 0) && (200 * pixPerRes > Polymer.minXDist)) ||
+                ((res % 10 === 0) && (20 * pixPerRes > Polymer.minXDist))
+                ) {
+            var tx = this.getResXwithStickZoom(res);
+            if (pixPerRes >= 8 || res !== 1) {
+                tickAt(this, tx);
+            }
+            tick = (tick + 1) % ScaleTicksPerLabel;
+            // does this one get a label?
+            if (tick === 0) {// && tx > 20) {
+                if ((tx + Polymer.minXDist) < lastTickX) {
+                    scaleLabelAt(this, res, tx);
+                }
+            }
+        }
+        if (pixPerRes > 8) {
+            var seqLabelGroup = document.createElementNS(Config.svgns, "g");
+            seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
+            var seqLabel = document.createElementNS(Config.svgns, "text");
+            seqLabel.setAttribute('font-family', "'Courier New', monospace");
+            seqLabel.setAttribute('font-size', '10px');
+            seqLabel.setAttribute("text-anchor", "middle");
+            seqLabel.setAttribute("x", 0);//Polymer.getResXwithStickZoom(res));
+            seqLabel.setAttribute("y", 3);
+            seqLabel.appendChild(document.createTextNode(this.sequence[res - 1]));
+            seqLabelGroup.appendChild(seqLabel);
+            this.scaleLabels.push(seqLabel);
+            this.ticks.appendChild(seqLabelGroup);
+        }
+    }
+    scaleLabelAt(this, this.size, lastTickX);
+    if (pixPerRes > 8) {
+        tickAt(this, lastTickX);
+    }
 
-	function scaleLabelAt(self, text, tickX) {
-		var scaleLabelGroup = document.createElementNS(Config.svgns, "g");
-		scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-		var scaleLabel = document.createElementNS(Config.svgns, "text");
-		scaleLabel.setAttribute("class", "Polymer xlv_text PolymerLabel");
-		scaleLabel.setAttribute('font-family', "'Courier New', monospace");
-		scaleLabel.setAttribute('font-size', '14');
-		scaleLabel.setAttribute("text-anchor", "middle");
-		scaleLabel.setAttribute("x", 0);
-		scaleLabel.setAttribute("y", Polymer.STICKHEIGHT + 4);
-		scaleLabel.appendChild(document.createTextNode(text));
-		scaleLabelGroup.appendChild(scaleLabel);
-		self.scaleLabels.push(scaleLabel);
-		self.ticks.appendChild(scaleLabelGroup);
-	}
+    function scaleLabelAt(self, text, tickX) {
+        var scaleLabelGroup = document.createElementNS(Config.svgns, "g");
+        scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
+        var scaleLabel = document.createElementNS(Config.svgns, "text");
+        scaleLabel.setAttribute("class", "Polymer xlv_text PolymerLabel");
+        scaleLabel.setAttribute('font-family', "'Courier New', monospace");
+        scaleLabel.setAttribute('font-size', '14');
+        scaleLabel.setAttribute("text-anchor", "middle");
+        scaleLabel.setAttribute("x", 0);
+        scaleLabel.setAttribute("y", Polymer.STICKHEIGHT + 4);
+        scaleLabel.appendChild(document.createTextNode(text));
+        scaleLabelGroup.appendChild(scaleLabel);
+        self.scaleLabels.push(scaleLabel);
+        self.ticks.appendChild(scaleLabelGroup);
+    }
 
-	function tickAt(self, tickX) {
-		var tick = document.createElementNS(Config.svgns, "line");
-		tick.setAttribute("x1", tickX);
-		tick.setAttribute("y1", 5);
-		tick.setAttribute("x2", tickX);
-		tick.setAttribute("y2", 10);
-		tick.setAttribute("stroke", "black");
-		self.ticks.appendChild(tick);
-	}
+    function tickAt(self, tickX) {
+        var tick = document.createElementNS(Config.svgns, "line");
+        tick.setAttribute("x1", tickX);
+        tick.setAttribute("y1", 5);
+        tick.setAttribute("x2", tickX);
+        tick.setAttribute("y2", 10);
+        tick.setAttribute("stroke", "black");
+        self.ticks.appendChild(tick);
+    }
 };
 
 Polymer.prototype.setForm = function(form, svgP) {
     if (this.busy !== true) {
-		if (form == 1) {
-			this.toStick();
-		}
-		else {
-			this.toCircle(svgP);
-			var r = this.getBlobRadius();
-			var self = this;
-			d3.select(this.background).transition()
-				.attr("x", -r).attr("y", -r)
-				.attr("width", r * 2).attr("height", r * 2)
-				.attr("rx", r).attr("ry", r)
-				.duration(Polymer.transitionTime);
-			d3.select(this.outline).transition()
-				.attr("x", -r).attr("y", -r)
-				.attr("width", r * 2).attr("height", r * 2)
-				.attr("rx", r).attr("ry", r)
-				.duration(Polymer.transitionTime);
-			d3.select(this.annotationsSvgGroup).transition()
-				.attr("transform", "scale(1, 1)")
-				.duration(Polymer.transitionTime);
-			d3.select(this.highlight).transition()
-				.attr("x", -r).attr("y", -r)
-				.attr("width", r * 2).attr("height", r * 2)
-				.attr("rx", r).attr("ry", r)
-				.duration(Polymer.transitionTime);
-		}
-	}
+        if (form == 1) {
+            this.toStick();
+        }
+        else {
+            this.toCircle(svgP);
+            var r = this.getBlobRadius();
+            var self = this;
+            d3.select(this.background).transition()
+                .attr("x", -r).attr("y", -r)
+                .attr("width", r * 2).attr("height", r * 2)
+                .attr("rx", r).attr("ry", r)
+                .duration(Polymer.transitionTime);
+            d3.select(this.outline).transition()
+                .attr("x", -r).attr("y", -r)
+                .attr("width", r * 2).attr("height", r * 2)
+                .attr("rx", r).attr("ry", r)
+                .duration(Polymer.transitionTime);
+            d3.select(this.annotationsSvgGroup).transition()
+                .attr("transform", "scale(1, 1)")
+                .duration(Polymer.transitionTime);
+            d3.select(this.highlight).transition()
+                .attr("x", -r).attr("y", -r)
+                .attr("width", r * 2).attr("height", r * 2)
+                .attr("rx", r).attr("ry", r)
+                .duration(Polymer.transitionTime);
+        }
+    }
 };
 
 Polymer.prototype.toCircle = function(svgP) {
-	//svgP = null;// temp hack - you can uncomment this is you experience things 'flying off screen'
-	this.busy = true;
+    //svgP = null;// temp hack - you can uncomment this is you experience things 'flying off screen'
+    this.busy = true;
 
   var childNodes = []
   for (var i = 0; i < this.upperGroup.childNodes.length; i++) {
@@ -300,228 +301,228 @@ Polymer.prototype.toCircle = function(svgP) {
   */
 
   var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
-	var r = this.getBlobRadius();
+    var r = this.getBlobRadius();
 
-	var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
-	var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);
-	var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-	var labelStartPoint = labelTransform.translate[0];//-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10);
-	var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
+    var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
+    var rotationInterpol = d3.interpolate((this.rotation > 180)? this.rotation - 360 : this.rotation, 0);
+    var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
+    var labelStartPoint = labelTransform.translate[0];//-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10);
+    var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 
-	var xInterpol = null, yInterpol = null;
-	if (typeof svgP !== 'undefined' && svgP !== null) {
-		xInterpol = d3.interpolate(this.x, svgP.x);
-		yInterpol = d3.interpolate(this.y, svgP.y);
-	}
+    var xInterpol = null, yInterpol = null;
+    if (typeof svgP !== 'undefined' && svgP !== null) {
+        xInterpol = d3.interpolate(this.x, svgP.x);
+        yInterpol = d3.interpolate(this.y, svgP.y);
+    }
 
-	var self = this;
+    var self = this;
   d3.select(this.ticks).transition().attr("opacity", 0).duration(Polymer.transitionTime / 4)
-				.each("end",
-					function () {
-						if (childNodes.indexOf(self.ticks) > -1) self.upperGroup.removeChild(self.ticks);
-					}
-				);
+                .each("end",
+                    function () {
+                        if (childNodes.indexOf(self.ticks) > -1) self.upperGroup.removeChild(self.ticks);
+                    }
+                );
 
-	d3.select(this.highlight).transition()
-		.attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
-		.attr("x", -r - 2.5).attr("y", -r - 2.5)
-		.attr("rx", r + 2.5).attr("ry", r + 2.5)
-		.duration(Polymer.transitionTime);
+    d3.select(this.highlight).transition()
+        .attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+        .attr("x", -r - 2.5).attr("y", -r - 2.5)
+        .attr("rx", r + 2.5).attr("ry", r + 2.5)
+        .duration(Polymer.transitionTime);
 
-	//linker modified peptides
-	/*if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var selectLine = d3.select(mod.line);
-				selectLine.attr("fill", "none");
-				selectLine.attr("d", "M 0,0 L 0,0");
-			}
-		}
-	}*/
+    //linker modified peptides
+    /*if (this.linkerModifications != null) {
+        var mods = this.linkerModifications.residueLinks.values();
+        var iModCount = mods.length;
+        for (var m = 0; m < iModCount; m++) {
+            var mod = mods[m];
+            if (mod.shown) {
+                var selectLine = d3.select(mod.line);
+                selectLine.attr("fill", "none");
+                selectLine.attr("d", "M 0,0 L 0,0");
+            }
+        }
+    }*/
 
-	var self = this;
-	if (this.annotations) {
-		var annots = this.annotations;
-		var ca = annots.length;
-		for (var a = 0; a < ca; a++) {
-			var anno = annots[a];
-			var pieSlice = anno.pieSlice;
-			d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
-				.duration(Polymer.transitionTime).each("end",
-					function () {
-						for (var b = 0; b < ca; b++) {
-							var annoB = self.annotations[b];
-							if (this === annoB.pieSlice){
-								d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
-							}
-						}
-					}
-				);
-		}
-	}
+    var self = this;
+    if (this.annotations) {
+        var annots = this.annotations;
+        var ca = annots.length;
+        for (var a = 0; a < ca; a++) {
+            var anno = annots[a];
+            var pieSlice = anno.pieSlice;
+            d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(anno))
+                .duration(Polymer.transitionTime).each("end",
+                    function () {
+                        for (var b = 0; b < ca; b++) {
+                            var annoB = self.annotations[b];
+                            if (this === annoB.pieSlice){
+                                d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB));
+                            }
+                        }
+                    }
+                );
+        }
+    }
 
-	var originalStickZoom = this.stickZoom;
-	var originalRotation = this.rotation;
-	var cubicInOut = d3.ease('cubic-in-out');
-	d3.timer(function(elapsed) {
-	  return update(elapsed / Polymer.transitionTime);
-	});
+    var originalStickZoom = this.stickZoom;
+    var originalRotation = this.rotation;
+    var cubicInOut = d3.ease('cubic-in-out');
+    d3.timer(function(elapsed) {
+      return update(elapsed / Polymer.transitionTime);
+    });
 
-	function update(interp) {
-		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
-		//~
-		if (xInterpol !== null){
-			self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
-		}
+    function update(interp) {
+        var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
+        self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
+        //~
+        if (xInterpol !== null){
+            self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+        }
 
-	   	var rot = rotationInterpol(cubicInOut(interp));
-		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-		self.setRotation(rot);
-		self.setAllLinkCoordinates();
+        var rot = rotationInterpol(cubicInOut(interp));
+        self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+        self.setRotation(rot);
+        self.setAllLinkCoordinates();
 
-		if (interp ===  1){ // finished - tidy up
-			self.form = 0;
-			self.checkLinks();
-			self.stickZoom = originalStickZoom;
-			self.rotation = originalRotation;
-			self.busy = false;
-			return true;
-		} else if (interp > 1){
-			return update(1);
-		} else {
-			return false;
-		}
-	}
+        if (interp ===  1){ // finished - tidy up
+            self.form = 0;
+            self.checkLinks();
+            self.stickZoom = originalStickZoom;
+            self.rotation = originalRotation;
+            self.busy = false;
+            return true;
+        } else if (interp > 1){
+            return update(1);
+        } else {
+            return false;
+        }
+    }
 };
 
 Polymer.prototype.toStick = function() {
-	this.busy = true;
+    this.busy = true;
     this.form = 1;
 
     //place rotators
-	/*this.upperGroup.appendChild(this.lowerRotator.svg);
-	this.upperGroup.appendChild(this.upperRotator.svg);
-	this.lowerRotator.svg.setAttribute("transform",
-		"translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
-	this.upperRotator.svg.setAttribute("transform",
-		"translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
-		
-	//remove prot-prot links - would it be better if checkLinks did this? - think not
-	var c = this.binaryLinks.values().length;
-	for (var l = 0; l < c; l++) {
-		var link = this.binaryLinks.values()[l];
-		//out with the old
-		if (link.shown) {
-			link.hide();
-		}
-	}
+    /*this.upperGroup.appendChild(this.lowerRotator.svg);
+    this.upperGroup.appendChild(this.upperRotator.svg);
+    this.lowerRotator.svg.setAttribute("transform",
+        "translate(" + (this.getResXwithStickZoom(0.5) - Polymer.rotOffset) + " 0)");
+    this.upperRotator.svg.setAttribute("transform",
+        "translate(" + (this.getResXwithStickZoom(this.size - 0 + 0.5) + Polymer.rotOffset) + " 0)");*/
+
+    //remove prot-prot links - would it be better if checkLinks did this? - think not
+    var c = this.binaryLinks.values().length;
+    for (var l = 0; l < c; l++) {
+        var link = this.binaryLinks.values()[l];
+        //out with the old
+        if (link.shown) {
+            link.hide();
+        }
+    }
 
     var protLength = this.size * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
-	var r = this.getBlobRadius();
+    var r = this.getBlobRadius();
 
- 	var lengthInterpol = d3.interpolate((2 * r), protLength);
-	var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
-	var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);
-	var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+    var lengthInterpol = d3.interpolate((2 * r), protLength);
+    var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
+    var rotationInterpol = d3.interpolate(0, (this.rotation > 180)? this.rotation - 360 : this.rotation);
+    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10));
 
     var origStickZoom = this.stickZoom;
-	this.stickZoom = 0;
+    this.stickZoom = 0;
     this.checkLinks(this.binaryLinks);
-	this.checkLinks(this.selfLink);
-	this.checkLinks(this.sequenceLinks);
-	this.stickZoom = origStickZoom;
+    this.checkLinks(this.selfLink);
+    this.checkLinks(this.sequenceLinks);
+    this.stickZoom = origStickZoom;
 
-	d3.select(this.background).transition()//.attr("stroke-opacity", 1)
-		.attr("height", Polymer.STICKHEIGHT)
-		.attr("y",  -Polymer.STICKHEIGHT / 2)
-		.attr("rx", 0).attr("ry", 0)
-		.duration(Polymer.transitionTime);
+    d3.select(this.background).transition()//.attr("stroke-opacity", 1)
+        .attr("height", Polymer.STICKHEIGHT)
+        .attr("y",  -Polymer.STICKHEIGHT / 2)
+        .attr("rx", 0).attr("ry", 0)
+        .duration(Polymer.transitionTime);
 
-	d3.select(this.outline).transition()//.attr("stroke-opacity", 1)
-		.attr("height", Polymer.STICKHEIGHT)
-		.attr("y",  -Polymer.STICKHEIGHT / 2)
-		.attr("rx", 0).attr("ry", 0)
-		.duration(Polymer.transitionTime);
+    d3.select(this.outline).transition()//.attr("stroke-opacity", 1)
+        .attr("height", Polymer.STICKHEIGHT)
+        .attr("y",  -Polymer.STICKHEIGHT / 2)
+        .attr("rx", 0).attr("ry", 0)
+        .duration(Polymer.transitionTime);
 
-	d3.select(this.highlight).transition()
-		.attr("width", protLength + 5).attr("height", Polymer.STICKHEIGHT + 5)
-		.attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Polymer.STICKHEIGHT / 2) - 2.5)
-		.attr("rx", 0).attr("ry", 0)
-		.duration(Polymer.transitionTime);
-	//linker modified peptides
-	/*if (this.linkerModifications != null) {
-		var mods = this.linkerModifications.residueLinks.values();
-		var iModCount = mods.length;
-		for (var m = 0; m < iModCount; m++) {
-			var mod = mods[m];
-			if (mod.shown) {
-				var path = this.getResidueLinkPath(mod);
-				d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
-				d3.select(mod.line).transition().attr("d",path)
-					.duration(Polymer.transitionTime);
-				d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
-				d3.select(mod.highlightLine).transition().attr("d",path)
-					.duration(Polymer.transitionTime);
-			}
-		}
-	}*/
-	if (this.annotations) {
-		var annots = this.annotations;
-		var ca = annots.length;
-		for (var a = 0; a < ca; a++) {
-			var anno = annots[a];
-			var pieSlice = anno.pieSlice;
-			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
-				.duration(Polymer.transitionTime);
-		}
-	}
+    d3.select(this.highlight).transition()
+        .attr("width", protLength + 5).attr("height", Polymer.STICKHEIGHT + 5)
+        .attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-Polymer.STICKHEIGHT / 2) - 2.5)
+        .attr("rx", 0).attr("ry", 0)
+        .duration(Polymer.transitionTime);
+    //linker modified peptides
+    /*if (this.linkerModifications != null) {
+        var mods = this.linkerModifications.residueLinks.values();
+        var iModCount = mods.length;
+        for (var m = 0; m < iModCount; m++) {
+            var mod = mods[m];
+            if (mod.shown) {
+                var path = this.getResidueLinkPath(mod);
+                d3.select(mod.line).attr("d","M 0,0 L 0,0 L 0,0 L 0,0");
+                d3.select(mod.line).transition().attr("d",path)
+                    .duration(Polymer.transitionTime);
+                d3.select(mod.highlightLine).attr("d","M 0,0 L 0,0");
+                d3.select(mod.highlightLine).transition().attr("d",path)
+                    .duration(Polymer.transitionTime);
+            }
+        }
+    }*/
+    if (this.annotations) {
+        var annots = this.annotations;
+        var ca = annots.length;
+        for (var a = 0; a < ca; a++) {
+            var anno = annots[a];
+            var pieSlice = anno.pieSlice;
+            pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+            d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(anno))
+                .duration(Polymer.transitionTime);
+        }
+    }
 
-	var self = this;
-	var cubicInOut = d3.ease('cubic-in-out');
-	d3.timer(function(elapsed) {
-	  return update(elapsed / Polymer.transitionTime);
-	});
+    var self = this;
+    var cubicInOut = d3.ease('cubic-in-out');
+    d3.timer(function(elapsed) {
+      return update(elapsed / Polymer.transitionTime);
+    });
 
-	function update(interp) {
-		var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-		var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
-		self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
+    function update(interp) {
+        var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), Molecule.labelY);//.scale(z).translate(-c.x, -c.y);
+        self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 
-	   	var rot = rotationInterpol(cubicInOut(interp));
-		self.setRotation(rot);
+        var rot = rotationInterpol(cubicInOut(interp));
+        self.setRotation(rot);
 
-		var currentLength = lengthInterpol(cubicInOut(interp));
-		d3.select(self.highlight).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
-		d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
-		//d3.select(self.annotationsSvgGroup).attr("transform", "scale(" + (self.stickZoom) + ", 1)");
-		d3.select(self.background).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
-		self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-		self.setAllLinkCoordinates();
+        var currentLength = lengthInterpol(cubicInOut(interp));
+        d3.select(self.highlight).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
+        d3.select(self.outline).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
+        //d3.select(self.annotationsSvgGroup).attr("transform", "scale(" + (self.stickZoom) + ", 1)");
+        d3.select(self.background).attr("width", currentLength).attr("x", - (currentLength / 2) + (0.5 * Polymer.UNITS_PER_RESIDUE * self.stickZoom));
+        self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+        self.setAllLinkCoordinates();
 
-		if (interp ===  1){ // finished - tidy up
-			self.busy = false;
-			return true;
-		} else if (interp > 1){
-			return update(1);
-		} else {
-			return false;
-		}
-	}
+        if (interp ===  1){ // finished - tidy up
+            self.busy = false;
+            return true;
+        } else if (interp > 1){
+            return update(1);
+        } else {
+            return false;
+        }
+    }
 
-	d3.select(this.ticks).attr("opacity", 0);
+    d3.select(this.ticks).attr("opacity", 0);
     this.setScaleGroup();
     d3.select(this.ticks).transition().attr("opacity", 1)
-		.delay(Polymer.transitionTime * 0.8).duration(Polymer.transitionTime / 2);
+        .delay(Polymer.transitionTime * 0.8).duration(Polymer.transitionTime / 2);
 };
 
 Polymer.prototype.getResXwithStickZoom = function(r) {
-	if (isNaN(r) || r === '?' || r === 'n') {
+    if (isNaN(r) || r === '?' || r === 'n') {
         return ((0 - (this.size/2)) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) - 8;// ;
     }
     return (r - (this.size/2)) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
@@ -594,7 +595,7 @@ Polymer.prototype.getAnnotationRectPath = function(annotation) {
     var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
     var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
     var annotSize = (1 + (annotation.end - annotation.start));
-	var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
+    var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {
         var step = annotX + (annotLength * (sia / Polymer.stepsInArc));
