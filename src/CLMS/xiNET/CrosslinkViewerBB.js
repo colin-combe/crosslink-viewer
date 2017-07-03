@@ -66,7 +66,6 @@
             this.svgElement.ontouchstart = function(evt) { self.touchStart(evt); };
             this.svgElement.ontouchmove = function(evt) { self.touchMove(evt); };
             this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
-
             
             // various SVG groups needed
             this.wrapper = document.createElementNS(CLMS.xiNET.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
@@ -124,13 +123,12 @@
             this.listenTo (this.model, "hiddenChanged", this.hiddenParticipantsChanged);
             this.listenTo (this.model, "change:highlights", this.highlightsChanged);
             this.listenTo (this.model, "change:selection", this.selectionChanged);
-            this.listenTo (this.model, "change:linkColourAssignment", this.linkColourChanged);
-            this.listenTo (this.model, "currentColourModelChanged", this.linkColourChanged); // mjg - when current colour scale changes its internal values
+            this.listenTo (this.model, "change:linkColourAssignment", this.render);
+            this.listenTo (this.model, "currentColourModelChanged", this.render); // mjg - when current colour scale changes its internal values
             this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
             this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
-            this.linkColourChanged();
             return this;
         },
 
@@ -154,7 +152,7 @@
             //~ this.rotating = false;
 
             this.renderedProteins = new Map();
-            this.renderedCrossLinks = []; // new Map();
+            this.renderedCrossLinks = new Map();
             this.renderedP_PLinks = new Map();
 
             this.layout = null;
@@ -165,19 +163,41 @@
 
         },
 
-        linkColourChanged: function() {
-            var colourAssignment = this.model.get("linkColourAssignment");
-            var renderedCrossLinksArr = this.renderedCrossLinks;
-            var rclCount = renderedCrossLinksArr.length;
-            for (var rcl = 0 ; rcl < rclCount; rcl++) {
-				var rLink = renderedCrossLinksArr[rcl];
-                if (rLink.shown) {
-                    var c = colourAssignment.getColour(rLink.crossLink);
-                    if (!c) {c = "gray";}
-                    rLink.line.setAttribute("stroke",c);
-                }
-            }
-        },
+        //~ linkColourChanged: function() {
+			//~ 
+            //~ var colourAssignment = this.model.get("linkColourAssignment");
+            //~ 
+            //~ var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
+            //~ var plCount = pLinksArr.length;
+            //~ for (var pl = 0; pl < plCount; pl++) {
+				//~ var pLink = pLinksArr[pl];
+				//~ var colours = new Set();
+				//~ var clArr = pLink.crossLinks;;
+				//~ var p_pClCount = clArr.length;
+				//~ for (var cl = 0 ; cl < p_pClCount; cl++) {
+					//~ var c = colourAssignment.getColour(clArr[cl]);
+					//~ if (!c) {c = "gray";}
+					//~ colours.add(c);
+				//~ }
+				//~ if (colours.size == 1) {
+					//~ pLink.line.setAttribute("stroke", colours.values().next());//todo:IE?
+				//~ } else {
+					//~ pLink.line.setAttribute("stroke","black");
+				//~ }
+				//~ 
+            //~ }
+//~ 
+            //~ var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            //~ var rclCount = renderedCrossLinksArr.length;
+            //~ for (var rcl = 0 ; rcl < rclCount; rcl++) {
+				//~ var rLink = renderedCrossLinksArr[rcl];
+               // if (rLink.shown) { //todo: may be some issues, e.g. colour changing coz filter changes
+                    //~ var c = colourAssignment.getColour(rLink.crossLink);
+                    //~ if (!c) {c = "gray";}
+                    //~ rLink.line.setAttribute("stroke",c);
+               // }
+            //~ }
+        //~ },
 
         render: function() {
 			if (this.wasEmpty) {
@@ -194,6 +214,7 @@
 					this.autoLayout();
 				};
 			}
+			
 			CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
             var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
             var plCount = pLinksArr.length;
@@ -208,7 +229,7 @@
                 pLinksArr[pl].update();
             }
 			
-            var cLinksArr = this.renderedCrossLinks;
+            var cLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var clCount = cLinksArr.length;
             for (var cl = 0; cl < clCount; cl++) {
                 cLinksArr[cl].check();
@@ -268,7 +289,7 @@
 				//~ }
 			//~ }
 			
-			this.renderedCrossLinks = [];
+			//~  oops! this.renderedCrossLinks = [];
 			
 			var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
             var clCount = crossLinksArr.length; 
@@ -276,17 +297,19 @@
             for(var cl =0 ; cl < clCount; cl++){
 				var crossLink = crossLinksArr[cl];
                 if (crossLink.isDecoyLink() == false) {
-					var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
-                    //this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-					this.renderedCrossLinks.push(renderedCrossLink);
+					if (!this.renderedCrossLinks.has(crossLink.id)) {
+						var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
+						this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
+						//this.renderedCrossLinks.push(renderedCrossLink);
 
-                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
-                    var p_pLink = this.renderedP_PLinks.get(p_pId);
-                    if (typeof p_pLink == 'undefined') {
-                        p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
-                        this.renderedP_PLinks.set(p_pId, p_pLink);
-                    }
-                    p_pLink.crossLinks.push(crossLink);
+						var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+						var p_pLink = this.renderedP_PLinks.get(p_pId);
+						if (typeof p_pLink == 'undefined') {
+							p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
+							this.renderedP_PLinks.set(p_pId, p_pLink);
+						}
+						p_pLink.crossLinks.push(crossLink);
+					}
                 }
             }					
         },
@@ -320,7 +343,7 @@
                     prot.setAllLineCoordinates();
             }
 			
-			var renderedCrossLinksArr = this.renderedCrossLinks;
+			var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var rclCount = renderedCrossLinksArr.length;
             for (var rcl = 0 ; rcl < rclCount; rcl++) {
 				var renderedCrossLink = renderedCrossLinksArr[rcl];
@@ -752,16 +775,16 @@
             }
 
 			//TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protein)
-            var renderedCrossLinks = this.renderedCrossLinks;
-            var rclCount = renderedCrossLinks.length;
+            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            var rclCount = renderedCrossLinksArr.length;
 	        for (var rcl =0; rcl < rclCount; rcl++) {
-				renderedCrossLinks[rcl].showHighlight(false);
+				renderedCrossLinksArr[rcl].showHighlight(false);
 			}
 
 			var highlightedCrossLinks = this.model.get("highlights");
 
             for (var rcl =0; rcl < rclCount; rcl++) {
-                var renderedCrossLink = renderedCrossLinks[rcl];
+                var renderedCrossLink = renderedCrossLinksArr[rcl];
 				if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
 					
 					if (renderedCrossLink.renderedFromProtein.form == 1
@@ -790,10 +813,10 @@
             }
 
             var selectedCrossLinks = this.model.get("selection");
-            var renderedCrossLinks = this.renderedCrossLinks;
-            var rclCount = renderedCrossLinks.length;
+            var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
+            var rclCount = renderedCrossLinksArr.length;
             for (var rcl =0; rcl < rclCount; rcl++) {
-                var renderedCrossLink = renderedCrossLinks[rcl];
+                var renderedCrossLink = renderedCrossLinksArr[rcl];
                 if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
 					renderedCrossLink.setSelected(true);
 					var p_pLink = this.renderedP_PLinks.get(
@@ -836,7 +859,6 @@
 
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 CLMS.xiNET.linkWidth = 1.1;// default line width
-CLMS.xiNET.homodimerLinkWidth = 1.3;// have considered varying this line width
 // highlight and selection colours are global
 // (because all instances of CLMS.xiNET should use same colours for this)
 CLMS.xiNET.highlightColour = new RGBColor("#fdc086");
