@@ -1157,6 +1157,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 	var largeArcFlag = 0, sweepFlag = 0;
     if ((endAngle - startAngle) > 180) {
         largeArcFlag = 1;
+        sweepFlag = 1;
     }
 	//hacky
 	if (annotation.fstart == 1 && annotation.fend == this.participant.size) {

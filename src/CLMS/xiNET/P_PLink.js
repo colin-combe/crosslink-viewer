@@ -314,7 +314,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     }
     this.dashedLine(this.ambiguous);
 
-    if (this.colours.size == 1) {
+    if (this.colours.size == 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") != "Default") {
         this.line.setAttribute("stroke", Array.from(this.colours)[0]);
     }
     else {
