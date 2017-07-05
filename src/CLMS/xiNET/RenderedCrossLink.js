@@ -94,10 +94,24 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-
-	var add = evt.shiftKey || evt.ctrlKey;
-	this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
-
+    
+	var rightclick, middleclick; //which button has just been raised
+	if (evt.which)
+		rightclick = (evt.which === 3);
+	else if (evt.button)
+		rightclick = (evt.button === 2);
+	if (evt.which)
+		middleclick = (evt.which === 2);
+	else if (evt.button)
+		middleclick = (evt.button === 1);
+	
+	if (rightclick && this.crossLink.isSelfLink()) {
+		this.renderedFromProtein.toggleFlipped();
+		
+	} else {			
+		var add = evt.shiftKey || evt.ctrlKey;
+		this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
+	}
     //store start location
     this.crosslinkViewer.dragStart = evt;
 };

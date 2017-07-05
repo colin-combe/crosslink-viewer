@@ -64,7 +64,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.selfLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
     this.upperGroup.appendChild(this.selfLinksHighlights);
     this.upperGroup.appendChild(this.selfLinks);
-
+    
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(CLMS.xiNET.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
@@ -107,7 +107,11 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.upperGroup.onmouseover = function(evt) {self.mouseOver(evt);};
     this.upperGroup.onmouseout = function(evt) {self.mouseOut(evt);};
     this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
-    
+    //going to use right click ourselves
+    this.upperGroup.oncontextmenu = function() {
+        return false;
+    };
+        
     this.busy = false;
     this.showHighlight(false);
     

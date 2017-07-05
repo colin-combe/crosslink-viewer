@@ -54,6 +54,10 @@
             this.svgElement.onmousedown = function(evt) { self.mouseDown(evt); };
             this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
             this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
+			//going to use right click ourselves
+			this.svgElement.oncontextmenu = function() {
+				return false;
+			};
             //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
             var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
             if (document.attachEvent){ //if IE (and Opera depending on user setting)
@@ -553,20 +557,35 @@
             //eliminate some spurious mouse up events
             if ((time - this.lastMouseUp) > 150){
 
+				var rightclick, middleclick; //which button has just been raised
+				if (evt.which)
+					rightclick = (evt.which === 3);
+				else if (evt.button)
+					rightclick = (evt.button === 2);
+				if (evt.which)
+					middleclick = (evt.which === 2);
+				else if (evt.button)
+					middleclick = (evt.button === 1);
+
                 var p = this.getEventPoint(evt);
                 var c = p.matrixTransform(this.container.getCTM().inverse());
 
                 if (this.dragElement != null) {
                     if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
                             if (this.dragElement.x) { //if protein
-								if (evt.ctrlKey || evt.shiftKey) {
-									this.dragElement.switchStickScale(c);
-								}else {
-									if (this.dragElement.form === 1) {
-										this.dragElement.setForm(0, c);
-									} else {
-										this.dragElement.setForm(1, c);
+								if (rightclick) {
+									if (evt.ctrlKey || evt.shiftKey) {
+										this.dragElement.switchStickScale(c);
+									}else {
+										if (this.dragElement.form === 1) {
+											this.dragElement.setForm(0, c);
+										} else {
+											this.dragElement.setForm(1, c);
+										}
 									}
+								} else  {
+									var add = evt.ctrlKey || evt.shiftKey;
+									this.model.setSelectedProteins([this.dragElement.participant.id], add);	
 								}
                             } // else flip selflink
                     }
