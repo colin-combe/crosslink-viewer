@@ -65,43 +65,51 @@
                 "id": "ECO:0000353", 
                 "name": "physical interaction evidence used in manual assertion"
             }, 
-            "id": "omim_604131", 
+            "id": "reactome_R-HSA-2168856", 
             "identifiers": [
                 {
-                    "db": "omim", 
-                    "id": "604131"
+                    "db": "reactome", 
+                    "id": "R-HSA-2168856"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "613978"
+                    "db": "efo", 
+                    "id": "Orphanet:46532"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "611162"
+                    "db": "efo", 
+                    "id": "Orphanet:178330"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "613985"
+                    "db": "efo", 
+                    "id": "Orphanet:232"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "603902"
+                    "db": "efo", 
+                    "id": "Orphanet:848"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "603903"
+                    "db": "efo", 
+                    "id": "Orphanet:846"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "140700"
+                    "db": "reactome", 
+                    "id": "R-HSA-1237312"
                 }, 
                 {
-                    "db": "omim", 
-                    "id": "141749"
+                    "db": "reactome", 
+                    "id": "R-HSA-1237320"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "R-HSA-2168866"
+                }, 
+                {
+                    "db": "chembl target", 
+                    "id": "CHEMBL2095168"
                 }, 
                 {
                     "db": "wwpdb", 
-                    "id": "2dn3"
+                    "id": "2dn1"
                 }, 
                 {
                     "db": "wwpdb", 
@@ -109,31 +117,7 @@
                 }, 
                 {
                     "db": "wwpdb", 
-                    "id": "2dn1"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_161051.1"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_123853.1"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_125222.1"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_160621.1"
-                }, 
-                {
-                    "db": "reactome", 
-                    "id": "REACT_125469.1"
-                }, 
-                {
-                    "db": "chembl target", 
-                    "id": "CHEMBL2095168"
+                    "id": "2dn3"
                 }, 
                 {
                     "db": "intact", 
@@ -385,25 +369,6 @@
                     "features": [
                         {
                             "category": "bindingSites", 
-                            "id": "7", 
-                            "linkedFeatures": [
-                                "6"
-                            ], 
-                            "name": "hbb binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P69905", 
-                                    "participantRef": "18", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "category": "bindingSites", 
                             "id": "19", 
                             "linkedFeatures": [
                                 "20"
@@ -439,6 +404,25 @@
                                 "id": "MI:0117", 
                                 "name": "binding-associated region"
                             }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
                         }
                     ], 
                     "id": "18", 
@@ -451,25 +435,6 @@
                         "name": "unspecified role"
                     }, 
                     "features": [
-                        {
-                            "category": "bindingSites", 
-                            "id": "10", 
-                            "linkedFeatures": [
-                                "9"
-                            ], 
-                            "name": "hba binding region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P68871", 
-                                    "participantRef": "23", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
                         {
                             "category": "bindingSites", 
                             "id": "16", 
@@ -494,6 +459,25 @@
                             "id": "22", 
                             "linkedFeatures": [
                                 "21"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "23", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
                             ], 
                             "name": "hba binding region", 
                             "sequenceData": [

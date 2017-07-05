@@ -8,20 +8,6 @@
 */
 }
 
-.marquee {
-    fill-opacity:0.2;
-    stroke:#000;
-    stroke-dasharray:2,4;
-    vector-effect:non-scaling-stroke; /* not for FF */
-}
-
-.highlight {
-    background-color: yellow;
-}
-.NOT {
-    background-color: red;
-}
-
 /*you need this to stop horrible looking flickering of text as you drag*/
 svg {
     -webkit-user-select: none;
@@ -44,5 +30,3 @@ svg {
         -2px 1px 0 white,
         2px 1px 0 white;*/
 }
-
-/*.proteinScaleLabelText { font-size: 8pt; }*/

@@ -1,238 +1,238 @@
 {
     "data": [
         {
-            "id": "uniprotkb_P0A6B7", 
+            "id": "uniprotkb_P0A6B7",
             "identifier": {
-                "db": "uniprotkb", 
+                "db": "uniprotkb",
                 "id": "P0A6B7"
-            }, 
-            "label": "iscs_ecoli", 
-            "object": "interactor", 
+            },
+            "label": "IscS",
+            "object": "interactor",
             "organism": {
-                "common": "ecoli", 
-                "scientific": "Escherichia coli (strain K12)", 
+                "common": "ecoli",
+                "scientific": "Escherichia coli (strain K12)",
                 "taxid": "83333"
-            }, 
-            "sequence": "MKLPIYLDYSATTPVDPRVAEKMMQFMTMDGTFGNPASRSHRFGWQAEEAVDIARNQIADLVGADPREIVFTSGATESDNLAIKGAANFYQKKGKHIITSKTEHKAVLDTCRQLEREGFEVTYLAPQRNGIIDLKELEAAMRDDTILVSIMHVNNEIGVVQDIAAIGEMCRARGIIYHVDATQSVGKLPIDLSQLKVDLMSFSGHKIYGPKGIGALYVRRKPRVRIEAQMHGGGHERGMRSGTLPVHQIVGMGEAYRIAKEEMATEMERLRGLRNRLWNGIKDIEEVYLNGDLEHGAPNILNVSFNYVEGESLIMALKDLAVSSGSACTSASLEPSYVLRALGLNDELAHSSIRFSLGRFTTEEEIDYTIELVRKSIGRLRDLSPLWEMYKQGVDLNSIEWAHH", 
+            },
+            "sequence": "MKLPIYLDYSATTPVDPRVAEKMMQFMTMDGTFGNPASRSHRFGWQAEEAVDIARNQIADLVGADPREIVFTSGATESDNLAIKGAANFYQKKGKHIITSKTEHKAVLDTCRQLEREGFEVTYLAPQRNGIIDLKELEAAMRDDTILVSIMHVNNEIGVVQDIAAIGEMCRARGIIYHVDATQSVGKLPIDLSQLKVDLMSFSGHKIYGPKGIGALYVRRKPRVRIEAQMHGGGHERGMRSGTLPVHQIVGMGEAYRIAKEEMATEMERLRGLRNRLWNGIKDIEEVYLNGDLEHGAPNILNVSFNYVEGESLIMALKDLAVSSGSACTSASLEPSYVLRALGLNDELAHSSIRFSLGRFTTEEEIDYTIELVRKSIGRLRDLSPLWEMYKQGVDLNSIEWAHH",
             "type": {
-                "id": "MI:0326", 
+                "id": "MI:0326",
                 "name": "protein"
             }
-        }, 
+        },
         {
-            "id": "uniprotkb_P0A890", 
+            "id": "uniprotkb_P0A890",
             "identifier": {
-                "db": "uniprotkb", 
+                "db": "uniprotkb",
                 "id": "P0A890"
-            }, 
-            "label": "tusa_ecoli", 
-            "object": "interactor", 
+            },
+            "label": "TusA",
+            "object": "interactor",
             "organism": {
-                "common": "ecoli", 
-                "scientific": "Escherichia coli (strain K12)", 
+                "common": "ecoli",
+                "scientific": "Escherichia coli (strain K12)",
                 "taxid": "83333"
-            }, 
-            "sequence": "MTDLFSSPDHTLDALGLRCPEPVMMVRKTVRNMQPGETLLIIADDPATTRDIPGFCTFMEHELVAKETDGLPYRYLIRKGG", 
+            },
+            "sequence": "MTDLFSSPDHTLDALGLRCPEPVMMVRKTVRNMQPGETLLIIADDPATTRDIPGFCTFMEHELVAKETDGLPYRYLIRKGG",
             "type": {
-                "id": "MI:0326", 
+                "id": "MI:0326",
                 "name": "protein"
             }
-        }, 
+        },
         {
             "complexType": {
-                "id": "MI:1302", 
+                "id": "MI:1302",
                 "name": "stable complex"
-            }, 
+            },
             "evidenceType": {
-                "id": "ECO:0000353", 
+                "id": "ECO:0000353",
                 "name": "physical interaction evidence used in manual assertion"
-            }, 
-            "id": "wwpdb_3lvj", 
+            },
+            "id": "wwpdb_3lvk",
             "identifiers": [
                 {
-                    "db": "wwpdb", 
-                    "id": "3lvj"
-                }, 
-                {
-                    "db": "wwpdb", 
+                    "db": "wwpdb",
                     "id": "3lvk"
-                }, 
+                },
                 {
-                    "db": "intenz", 
-                    "id": "EC 2.8.1.7"
-                }, 
+                    "db": "wwpdb",
+                    "id": "3lvj"
+                },
                 {
-                    "db": "intact", 
+                    "db": "intenz",
+                    "id": "2.8.1.7"
+                },
+                {
+                    "db": "intact",
                     "id": "EBI-8869931"
                 }
-            ], 
+            ],
             "interactionType": {
-                "id": "MI:0407", 
+                "id": "MI:0407",
                 "name": "direct interaction"
-            }, 
-            "object": "interaction", 
+            },
+            "object": "interaction",
             "organism": {
-                "common": "ecoli", 
-                "scientific": "Escherichia coli (strain K12)", 
+                "common": "ecoli",
+                "scientific": "Escherichia coli (strain K12)",
                 "taxid": "83333"
-            }, 
+            },
             "participants": [
                 {
                     "bioRole": {
-                        "id": "MI:0501", 
+                        "id": "MI:0501",
                         "name": "enzyme"
-                    }, 
+                    },
                     "features": [
                         {
-                            "category": "ptms", 
-                            "id": "2", 
+                            "category": "ptms",
+                            "id": "2",
                             "linkedFeatures": [
                                 "3"
-                            ], 
-                            "name": "tusa binding region", 
+                            ],
+                            "name": "tusa binding region",
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_P0A6B7", 
-                                    "participantRef": "1", 
+                                    "interactorRef": "uniprotkb_P0A6B7",
+                                    "participantRef": "1",
                                     "pos": "328-328"
                                 }
-                            ], 
+                            ],
                             "type": {
-                                "id": "MOD:00274", 
+                                "id": "MOD:00274",
                                 "name": "L-cysteine persulfide"
                             }
-                        }, 
+                        },
                         {
-                            "category": "bindingSites", 
-                            "id": "4", 
+                            "category": "bindingSites",
+                            "id": "4",
                             "linkedFeatures": [
                                 "5"
-                            ], 
-                            "name": "dimerisation region", 
+                            ],
+                            "name": "dimerisation region",
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_P0A6B7", 
-                                    "participantRef": "1", 
+                                    "interactorRef": "uniprotkb_P0A6B7",
+                                    "participantRef": "1",
                                     "pos": "?-?"
                                 }
-                            ], 
+                            ],
                             "type": {
-                                "id": "MI:0117", 
+                                "id": "MI:0117",
                                 "name": "binding-associated region"
                             }
                         }
-                    ], 
-                    "id": "1", 
-                    "interactorRef": "uniprotkb_P0A6B7", 
+                    ],
+                    "id": "1",
+                    "interactorRef": "uniprotkb_P0A6B7",
                     "stoichiometry": "1"
-                }, 
+                },
                 {
                     "bioRole": {
-                        "id": "MI:0501", 
+                        "id": "MI:0501",
                         "name": "enzyme"
-                    }, 
+                    },
                     "features": [
                         {
-                            "category": "ptms", 
-                            "id": "3", 
+                            "category": "ptms",
+                            "id": "3",
                             "linkedFeatures": [
                                 "2"
-                            ], 
-                            "name": "iscs binding region", 
+                            ],
+                            "name": "iscs binding region",
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_P0A890", 
-                                    "participantRef": "6", 
+                                    "interactorRef": "uniprotkb_P0A890",
+                                    "participantRef": "6",
                                     "pos": "19-19"
                                 }
-                            ], 
+                            ],
                             "type": {
-                                "id": "MOD:00274", 
+                                "id": "MOD:00274",
                                 "name": "L-cysteine persulfide"
                             }
                         }
-                    ], 
-                    "id": "6", 
-                    "interactorRef": "uniprotkb_P0A890", 
+                    ],
+                    "id": "6",
+                    "interactorRef": "uniprotkb_P0A890",
                     "stoichiometry": "1"
-                }, 
+                },
                 {
                     "bioRole": {
-                        "id": "MI:0501", 
+                        "id": "MI:0501",
                         "name": "enzyme"
-                    }, 
+                    },
                     "features": [
                         {
-                            "category": "ptms", 
-                            "id": "8", 
+                            "category": "ptms",
+                            "id": "8",
                             "linkedFeatures": [
                                 "9"
-                            ], 
-                            "name": "iscs binding region", 
+                            ],
+                            "name": "iscs binding region",
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_P0A890", 
-                                    "participantRef": "7", 
+                                    "interactorRef": "uniprotkb_P0A890",
+                                    "participantRef": "7",
                                     "pos": "19-19"
                                 }
-                            ], 
+                            ],
                             "type": {
-                                "id": "MOD:00274", 
+                                "id": "MOD:00274",
                                 "name": "L-cysteine persulfide"
                             }
                         }
-                    ], 
-                    "id": "7", 
-                    "interactorRef": "uniprotkb_P0A890", 
+                    ],
+                    "id": "7",
+                    "interactorRef": "uniprotkb_P0A890",
                     "stoichiometry": "1"
-                }, 
+                },
                 {
                     "bioRole": {
-                        "id": "MI:0501", 
+                        "id": "MI:0501",
                         "name": "enzyme"
-                    }, 
+                    },
                     "features": [
                         {
-                            "category": "bindingSites", 
-                            "id": "5", 
-                            "linkedFeatures": [
-                                "4"
-                            ], 
-                            "name": "dimerisation region", 
-                            "sequenceData": [
-                                {
-                                    "interactorRef": "uniprotkb_P0A6B7", 
-                                    "participantRef": "10", 
-                                    "pos": "?-?"
-                                }
-                            ], 
-                            "type": {
-                                "id": "MI:0117", 
-                                "name": "binding-associated region"
-                            }
-                        }, 
-                        {
-                            "category": "ptms", 
-                            "id": "9", 
+                            "category": "ptms",
+                            "id": "9",
                             "linkedFeatures": [
                                 "8"
-                            ], 
-                            "name": "tusa binding region", 
+                            ],
+                            "name": "tusa binding region",
                             "sequenceData": [
                                 {
-                                    "interactorRef": "uniprotkb_P0A6B7", 
-                                    "participantRef": "10", 
+                                    "interactorRef": "uniprotkb_P0A6B7",
+                                    "participantRef": "10",
                                     "pos": "328-328"
                                 }
-                            ], 
+                            ],
                             "type": {
-                                "id": "MOD:00274", 
+                                "id": "MOD:00274",
                                 "name": "L-cysteine persulfide"
                             }
+                        },
+                        {
+                            "category": "bindingSites",
+                            "id": "5",
+                            "linkedFeatures": [
+                                "4"
+                            ],
+                            "name": "dimerisation region",
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P0A6B7",
+                                    "participantRef": "10",
+                                    "pos": "?-?"
+                                }
+                            ],
+                            "type": {
+                                "id": "MI:0117",
+                                "name": "binding-associated region"
+                            }
                         }
-                    ], 
-                    "id": "10", 
-                    "interactorRef": "uniprotkb_P0A6B7", 
+                    ],
+                    "id": "10",
+                    "interactorRef": "uniprotkb_P0A6B7",
                     "stoichiometry": "1"
                 }
             ]

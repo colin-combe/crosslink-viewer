@@ -1,12 +1,12 @@
-//    	xiNET Interaction Viewer
-//    	Copyright 2013 Rappsilber Laboratory
+//      xiNET Interaction Viewer
+//      Copyright 2013 Rappsilber Laboratory
 //
-//    	This product includes software developed at
-//    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
+//      This product includes software developed at
+//      the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//		Molecule.js
+//      Molecule.js
 //
-//		authors: Colin Combe
+//      authors: Colin Combe
 
 "use strict";
 
@@ -20,9 +20,9 @@ Molecule.labelY = -5; //label Y offset, better if calc'd half height of label on
 function Molecule() {}
 
 Molecule.prototype.addStoichiometryLabel = function(stoich) {
-	if (this.labelSVG) {//complexes don't have labels (yet?)
-		this.labelSVG.innerHTML =  this.labelSVG.innerHTML + ' ['+stoich+']';
-	}
+    if (this.labelSVG) {//complexes don't have labels (yet?)
+        this.labelSVG.childNodes[0].data =  this.labelSVG.childNodes[0].data + ' ['+stoich+']';
+    }
 }
 
 Molecule.prototype.mouseDown = function(evt) {
@@ -62,7 +62,7 @@ Molecule.prototype.touchStart = function(evt) {
         //store start location
         var p = this.controller.getTouchEventPoint(evt);
         this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        this.showData();
+//        this.showData();
         return false;
 };
 
@@ -86,13 +86,13 @@ Molecule.prototype.getBlobRadius = function() {
 
 
 Molecule.prototype.showHighlight = function(show) {
-	// default do nothing 
-	/*
+    // default do nothing
+    /*
     if (show === true) {
         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
         this.highlight.setAttribute("stroke-opacity", "1");
     } else {
-		//~ if (this.isSelected == false) {
+        //~ if (this.isSelected == false) {
                 this.highlight.setAttribute("stroke-opacity", "0");
         //~ }
         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
@@ -106,19 +106,19 @@ Molecule.prototype.setSelected = function(select) {
     if (select && this.isSelected === false) {
         this.controller.selected.set(this.id, this);
         this.isSelected = true;
-		this.highlight.setAttribute("stroke", Config.selectedColour);
-		this.highlight.setAttribute("stroke-opacity", "1");
+        this.highlight.setAttribute("stroke", Config.selectedColour);
+        this.highlight.setAttribute("stroke-opacity", "1");
     }
     else if (select === false && this.isSelected === true) {
         this.controller.selected.remove(this.id);
         this.isSelected = false;
-		this.highlight.setAttribute("stroke-opacity", "0");
-		this.highlight.setAttribute("stroke", Config.highlightColour);
+        this.highlight.setAttribute("stroke-opacity", "0");
+        this.highlight.setAttribute("stroke", Config.highlightColour);
     }*/
 };
 
 Molecule.prototype.getPosition = function(){
-	return [this.x, this.y];
+    return [this.x, this.y];
 }
 
 // more accurately described as setting transform for top svg elements (sets scale also)
@@ -126,49 +126,49 @@ Molecule.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
     if (this.form === 1){
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
-				+ " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-	}
+        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
+                + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+    }
     else {
-		this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
-				+ " scale(" + (this.controller.z) + ") ");
-	}
+        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
+                + " scale(" + (this.controller.z) + ") ");
+    }
 };
 
 Molecule.prototype.getAggregateSelfLinkPath = function() {
-	var intraR = this.getBlobRadius() + 7;
-	var sectorSize = 45;
-	var arcStart = Molecule.trig(intraR, 25 + sectorSize);
-	var arcEnd = Molecule.trig(intraR, -25 + sectorSize);
-	var cp1 = Molecule.trig(intraR, 40 + sectorSize);
-	var cp2 = Molecule.trig(intraR, -40 + sectorSize);
-	return 'M 0,0 '
-		+ 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
-		+ ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
-		+ ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
+    var intraR = this.getBlobRadius() + 7;
+    var sectorSize = 45;
+    var arcStart = Molecule.trig(intraR, 25 + sectorSize);
+    var arcEnd = Molecule.trig(intraR, -25 + sectorSize);
+    var cp1 = Molecule.trig(intraR, 40 + sectorSize);
+    var cp2 = Molecule.trig(intraR, -40 + sectorSize);
+    return 'M 0,0 '
+        + 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
+        + ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
+        + ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
 Molecule.rotatePointAboutPoint = function(p, o, theta) {
-	theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
-	var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
-	var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
-	return [rx, ry];
+    theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
+    var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
+    var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
+    return [rx, ry];
 }
 
 Molecule.prototype.checkLinks = function() {
     function checkAll(linkMap){
-		var links = linkMap.values();
-		var c = links.length;
-		for (var l = 0; l < c; l++) {
-			links[l].check();
-		}
-	}
+        var links = linkMap.values();
+        var c = links.length;
+        for (var l = 0; l < c; l++) {
+            links[l].check();
+        }
+    }
     checkAll(this.naryLinks);
     checkAll(this.binaryLinks);
     checkAll(this.sequenceLinks);
     if (this.selfLink !== null) {
-		this.selfLink.check();
-	}
+        this.selfLink.check();
+    }
 }
 
 // update all lines (e.g after a move)
@@ -176,7 +176,7 @@ Molecule.prototype.setAllLinkCoordinates = function() {
     var links = this.naryLinks.values();
     var c = links.length;
     for (var l = 0; l < c; l++) {
-		links[l].setLinkCoordinates();
+        links[l].setLinkCoordinates();
     }
     links = this.binaryLinks.values();
     c = links.length;
@@ -185,13 +185,13 @@ Molecule.prototype.setAllLinkCoordinates = function() {
         link.setLinkCoordinates();
     }
     if (this.selfLink) {
-		this.selfLink.setLinkCoordinates();
-	}
-	links = this.sequenceLinks.values();
-	c = links.length;
-	for (var l = 0; l < c; l++) {
-		links[l].setLinkCoordinates();
-	}
+        this.selfLink.setLinkCoordinates();
+    }
+    links = this.sequenceLinks.values();
+    c = links.length;
+    for (var l = 0; l < c; l++) {
+        links[l].setLinkCoordinates();
+    }
 };
 
 //todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
@@ -226,14 +226,14 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             var xlv = this.controller;
             var self = this;
             anno.pieSlice.onmouseover = function(evt) {
-				var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
+                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
                 xlv.preventDefaultsAndStopPropagation(evt);
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
              if (this.annotationsSvgGroup) { //hack
-				 this.annotationsSvgGroup.appendChild(anno.pieSlice);
-			 }
+                 this.annotationsSvgGroup.appendChild(anno.pieSlice);
+             }
         }
     }
 };
@@ -249,7 +249,7 @@ Molecule.trig = function(radius, angleDegrees) {
 };
 
 Molecule.prototype.showData = function(evt) {
-	//~ alert ("molecule!");
+    //~ alert ("molecule!");
 }
 
 Molecule.prototype.setForm = function(form, svgP) {

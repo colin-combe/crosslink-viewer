@@ -28,15 +28,15 @@
                 "id": "ECO:0000353", 
                 "name": "physical interaction evidence used in manual assertion"
             }, 
-            "id": "reactome_REACT_2542", 
+            "id": "protein ontology_PR:000026440", 
             "identifiers": [
-                {
-                    "db": "reactome", 
-                    "id": "REACT_2542"
-                }, 
                 {
                     "db": "protein ontology", 
                     "id": "PR:000026440"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "R-HSA-68440"
                 }, 
                 {
                     "db": "intact", 

@@ -3,7 +3,7 @@ xiNET interaction viewer
 
 v1.0 of the interaction viewer is deployed in EBI's Complex Portal, e.g. http://www.ebi.ac.uk/intact/complex/details/EBI-706830
 
-We are working towards a general purpose web component for visualising interactions between biomolecules. 
+We are working towards a general purpose web component for visualising interactions between biomolecules.
 The aim is to represent the data present in the PSI-MI standards.
 
 Join us!
@@ -16,16 +16,13 @@ See: https://github.com/MICommunity/psimi
 JAMI is capable of converting between various MI data formats, it can convert the PSI-MI XML standard into the MI-JSON format.
 
 JAMI was originally developed by Marine Dumousseau, who also largely determined the structure of the MI-JSON format the viewer reads.
- 
-##Build Process
 
-Bower must installed globally: $ npm install -g bower
+##Build Process
 
 1. Clone the repository.
 2. $ cd /interaction-viewer
 3. $ npm install
-4. $ bower install
-5. $ npm start
+4. $ npm start
 
 This starts a grunt task to watch the /src folder for changes. When a file changes (is saved), grunt will browserify the folder and save the compiled version in /build.
 

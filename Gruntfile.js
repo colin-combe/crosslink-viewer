@@ -16,7 +16,7 @@ module.exports = taskManager = function(grunt) {
             standalone: 'xiNET',
             debug: true
           },
-          transform: ['browserify-shim', 'debowerify', 'deamdify']
+          transform: ['browserify-shim', 'deamdify']
         }
       }
     },

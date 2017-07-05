@@ -1,0 +1,440 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9Y3E7", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9Y3E7"
+            }, 
+            "label": "chmp3_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGLFGKTQEKPPKELVNEWSLKIRKEMRVVDRQIRDIQREEEKVKRSVKDAAKKGQKDVCIVLAKEMIRSRKAVSKLYASKAHMNSVLMGMKNQLAVLRVAGSLQKSTEVMKAMQSLVKIPEIQATMRELSKEMMKAGIIEEMLEDTFESMDDQEEMEEEAEMEIDRILFEITAGALGKAPSKVTDALPEPEPPGAMAASEDEEEEEEALEAMQSRLATLRS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q7LBR1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q7LBR1"
+            }, 
+            "label": "chm1b_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSNMEKHLFNLKFAAKELSRSAKKCDKEEKAEKAKIKKAIQKGNMEVARIHAENAIRQKNQAVNFLRMSARVDAVAARVQTAVTMGKVTKSMAGVVKSMDATLKTMNLEKISALMDKFEHQFETLDVQTQQMEDTMSSTTTLTTPQNQVDMLLQEMADEAGLDLNMELPQGQTGSVGTSVASAEQDELSQRLARLRDQV", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q96FZ7", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q96FZ7"
+            }, 
+            "label": "chmp6_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGNLFGRKKQSRVTEQDKAILQLKQQRDKLRQYQKRIAQQLERERALARQLLRDGRKERAKLLLKKKRYQEQLLDRTENQISSLEAMVQSIEFTQIEMKVMEGLQFGNECLNKMHQVMSIEEVERILDETQEAVEYQRQIDELLAGSFTQEDEDAILEELSAITQEQIELPEVPSEPLPEKIPENVPVKARPRQAELVAAS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9NZZ3", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NZZ3"
+            }, 
+            "label": "chmp5_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MNRLFGKAKPKAPPPSLTDCIGTVDSRAESIDKKISRLDAELVKYKDQIKKMREGPAKNMVKQKALRVLKQKRMYEQQRDNLAQQSFNMEQANYTIQSLKDTKTTVDAMKLGVKEMKKAYKQVKIDQIEDLQDQLEDMMEDANEIQEALSRSYGTPELDEDDLEAELDALGDELLADEDSSYLDEAASAPAIPEGVPTDTKNKDGVLVDEFGLPQIPAS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q96CF2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q96CF2"
+            }, 
+            "label": "chm4c_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSKLGKFFKGGGSSKSRAAPSPQEALVRLRETEEMLGKKQEYLENRIQREIALAKKHGTQNKRAALQALKRKKRFEKQLTQIDGTLSTIEFQREALENSHTNTEVLRNMGFAAKAMKSVHENMDLNKIDDLMQEITEQQDIAQEISEAFSQRVGFGDDFDEDELMAELEELEQEELNKKMTNIRLPNVPSSSLPAQPNRKPGMSSTARRSRAASSQRAEEEDDDIKQLAAWAT", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9BY43", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9BY43"
+            }, 
+            "label": "chm4a_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSGLGRLFGKGKKEKGPTPEEAIQKLKETEKILIKKQEFLEQKIQQELQTAKKYGTKNKRAALQALRRKKRFEQQLAQTDGTLSTLEFQREAIENATTNAEVLRTMELAAQSMKKAYQDMDIDKVDELMTDITEQQEVAQQISDAISRPMGFGDDVDEDELLEELEELEQEELAQELLNVGDKEEEPSVKLPSVPSTHLPAGPAPKVDEDEEALKQLAEWVS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O43633", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O43633"
+            }, 
+            "label": "chm2a_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDLLFGRRKTPEELLRQNQRALNRAMRELDRERQKLETQEKKIIADIKKMAKQGQMDAVRIMAKDLVRTRRYVRKFVLMRANIQAVSLKIQTLKSNNSMAQAMKGVTKAMGTMNRQLKLPQIQKIMMEFERQAEIMDMKEEMMNDAIDDAMGDEEDEEESDAVVSQVLDELGLSLTDELSNLPSTGGSLSVAAGGKKAEAAASALADADADLEERLKNLRRD", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9HD42", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9HD42"
+            }, 
+            "label": "chm1a_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDDTLFQLKFTAKQLEKLAKKAEKDSKAEQAKVKKALLQKNVECARVYAENAIRKKNEGVNWLRMASRVDAVASKVQTAVTMKGVTKNMAQVTKALDKALSTMDLQKVSSVMDRFEQQVQNLDVHTSVMEDSMSSATTLTTPQEQVDSLIMQIAEENGLEVLDQLSQLPEGASAVGESSVRSQEDQLSRRLAALRN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9H444", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9H444"
+            }, 
+            "label": "chm4b_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSVFGKLFGAGGGKAGKGGPTPQEAIQRLRDTEEMLSKKQEFLEKKIEQELTAAKKHGTKNKRAALQALKRKKRYEKQLAQIDGTLSTIEFQREALENANTNTEVLKNMGYAAKAMKAAHDNMDIDKVDELMQDIADQQELAEEISTAISKPVGFGEEFDEDELMAELEELEQEELDKNLLEISGPETVPLPNVPSIALPSKPAKKKEEEDDDMKELENWAGSM", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "reactome_R-HSA-917723", 
+            "identifiers": [
+                {
+                    "db": "reactome", 
+                    "id": "R-HSA-917723"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-11509704"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "parameters": [
+                {
+                    "type": "kd", 
+                    "unit": "molar", 
+                    "value": "2.430000000000000159872115546022541821002960205078125x10^(-6)"
+                }
+            ], 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q9Y3E7"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "4", 
+                                "5", 
+                                "6"
+                            ], 
+                            "name": "feature3", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q7LBR1", 
+                                    "participantRef": "2", 
+                                    "pos": "100-110"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "2", 
+                    "interactorRef": "uniprotkb_Q7LBR1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "7", 
+                    "interactorRef": "uniprotkb_Q96FZ7"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_Q9NZZ3"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "9", 
+                    "interactorRef": "uniprotkb_Q96CF2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "10", 
+                    "interactorRef": "uniprotkb_Q9BY43"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "12", 
+                            "name": "feature12", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "11", 
+                                    "pos": "1-1"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "11", 
+                                    "pos": "10-10"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "11", 
+                                    "pos": "20-50"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "11", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "11", 
+                    "interactorRef": "uniprotkb_O43633"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4", 
+                                "14", 
+                                "6", 
+                                "3"
+                            ], 
+                            "name": "feature5", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9HD42", 
+                                    "participantRef": "13", 
+                                    "pos": "50-60"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "13", 
+                    "interactorRef": "uniprotkb_Q9HD42"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "6", 
+                                "5", 
+                                "3"
+                            ], 
+                            "name": "feature4", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43633", 
+                                    "participantRef": "15", 
+                                    "pos": "1-10"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "15", 
+                    "interactorRef": "uniprotkb_O43633"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "4", 
+                                "5", 
+                                "3"
+                            ], 
+                            "name": "feature6", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "16", 
+                                    "pos": "20-30"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "14", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "feature14", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H444", 
+                                    "participantRef": "16", 
+                                    "pos": "100-150"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "16", 
+                    "interactorRef": "uniprotkb_Q9H444"
+                }
+            ]
+        }
+    ]
+}
