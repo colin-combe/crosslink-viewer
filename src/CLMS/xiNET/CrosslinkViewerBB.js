@@ -31,8 +31,21 @@
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
-
-            d3.select(this.el).html(
+            //hack to take out pan/select option in firefox
+			if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+			// Do Firefox-related activities
+				d3.select(this.el).html(
+                "<div class='xinetControls'>" +
+                    "<div class='xinetButtonBar'>" +
+                        "<label style='display:none'><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                        "<label style='display:none'><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+                        "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
+                        "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
+                        "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
+                    "</div>" +
+                "</div>");
+   			} else {
+				d3.select(this.el).html(
                 "<div class='xinetControls'>" +
                     "<div class='xinetButtonBar'>" +
                         "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
@@ -42,7 +55,7 @@
                         "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
                     "</div>" +
                 "</div>");
-
+			}
 
             //create SVG elemnent
             this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
