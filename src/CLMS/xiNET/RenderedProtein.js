@@ -560,21 +560,27 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 			for (var a = 0; a < annotationCount; a++){
 				var anno = annotArr[a], feature = anno.feature, 
 					pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
-				
-				d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(feature))
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
-						function () {
-							for (var b = 0; b < annotationCount; b++) {
-								var annoB = annotArr[b];
-								if (this === annoB.pieSlice){
-									d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.feature));
+				if (feature.type != "DISULFID") {
+					d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(feature))
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
+							function () {
+								for (var b = 0; b < annotationCount; b++) {
+									var annoB = annotArr[b];
+									if (this === annoB.pieSlice){
+										d3.select(this).attr("d", self.getAnnotationPieSliceArcPath(annoB.feature));
+									}
 								}
 							}
-						}
-					);
-					
-				d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(feature))
-					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+						);
+						
+					d3.select(rectDomain).transition().attr("d", self.getAnnotationPieSliceApproximatePath(feature))
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+				} else {
+					d3.select(pieSlice).transition().attr("d", this.getDisulfidAnnotationCircPath(feature))
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+					d3.select(rectDomain).transition().attr("d", self.getDisulfidAnnotationRectPath(feature))
+						.duration(CLMS.xiNET.RenderedProtein.transitionTime);					
+				}
 			}
 		}
 
@@ -708,17 +714,26 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     }
 
     if (this.annotations) {
-		var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+		//var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
 		var annotArr = CLMS.arrayFromMapValues(this.annotations);
 		var annotationCount = annotArr.length;
 		for (var a = 0; a < annotationCount; a++){
 			var anno = annotArr[a], feature = anno.feature, 
 				pieSlice = anno.pieSlice, rectDomain = anno.colouredRect;
-			pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
-			d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(feature))
-				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
-			d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(feature))
-				.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+				
+			if (feature.type != "DISULFID") {
+				pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
+				d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(feature))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+				d3.select(rectDomain).transition().attr("d", this.getAnnotationRectPath(feature))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime);			}
+			else {
+				d3.select(pieSlice).transition().attr("d", this.getDisulfidAnnotationRectPath(feature))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+				d3.select(rectDomain).transition().attr("d", this.getDisulfidAnnotationRectPath(feature))
+					.duration(CLMS.xiNET.RenderedProtein.transitionTime);
+				
+			}
 		}
 	}
 
@@ -1011,7 +1026,8 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 		//~ console.log("alignment>", alignedRegions);
 		featuresShown = featuresShown.concat(features);
 	}
-
+	
+	var disulfidBonds = [];
 	//add uniprot features
 	if (this.participant.uniprot) {
 		var features = this.participant.uniprot.features;
@@ -1022,16 +1038,26 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var filtered = annotationTypes.filter({id:annotationTypeId})
 			var annotationType = filtered[0];
 			if (annotationType.get("shown") === true) {
-				featuresShown.push(feature);
+				if (annotationType != "DISULFID") {
+					featuresShown.push(feature);
+				} else {
+					disulfidBonds.push(feature);
+				}
 			}
 		}
 	}
 	
-	if (featuresShown) {                    
+	if (featuresShown || disulfidBonds) {                    
         //draw longest regions first
         featuresShown.sort(function(a, b) {
-            return (b.end - b.begin) - (a.end - a.begin);
-        });
+        	return (b.end - b.begin) - (a.end - a.begin);
+		});
+		
+        //~ disulfidBonds.sort(function(a, b) {
+            //~ return b.begin - a.begin;
+        //~ });
+        
+        featuresShown = featuresShown.concat(disulfidBonds);
         
         var fsLen = featuresShown.length;
         for (var f = 0; f < fsLen;f++) {
@@ -1061,23 +1087,44 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             
 			var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
             var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
-            if (this.form === 0) {
-                pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-            } else {
-                pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
-            }
-            pieSlice.setAttribute("stroke-width", 1);
-            pieSlice.setAttribute("fill-opacity", "0.5");
-            colouredRect.setAttribute("stroke-width", 1);
-            colouredRect.setAttribute("fill-opacity", "0.5");
-	
-			var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
-			pieSlice.setAttribute("fill", c);
-			pieSlice.setAttribute("stroke", c);
-			colouredRect.setAttribute("fill", c);
-			colouredRect.setAttribute("stroke", c);
+            
+            if (anno.type != "DISULFID") {
+				if (this.form === 0) {
+					pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+					colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+				} else {
+					pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+					colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+				}
+				pieSlice.setAttribute("stroke-width", 1);
+				pieSlice.setAttribute("fill-opacity", "0.5");
+				colouredRect.setAttribute("stroke-width", 1);
+				colouredRect.setAttribute("fill-opacity", "0.5");
+		
+				var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+				pieSlice.setAttribute("fill", c);
+				pieSlice.setAttribute("stroke", c);
+				colouredRect.setAttribute("fill", c);
+				colouredRect.setAttribute("stroke", c);
+			}
+			else {
+
+				if (this.form === 0) {
+					pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
+					colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
+				} else {
+					pieSlice.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
+					colouredRect.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
+				}
+				pieSlice.setAttribute("stroke-width", 1);
+				colouredRect.setAttribute("stroke-width", 1);
+		
+				var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+				pieSlice.setAttribute("fill", "none");
+				pieSlice.setAttribute("stroke", c);
+				colouredRect.setAttribute("fill", "none");
+				colouredRect.setAttribute("stroke", c);				
+			}
             
             pieSlice.setAttribute("data-feature", fid);
             
@@ -1159,6 +1206,31 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation
     rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom
         + " Z";
     return rectPath;
+};
+
+CLMS.xiNET.RenderedProtein.prototype.getDisulfidAnnotationRectPath = function(annotation, index) {
+	var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = 1.5 * bottom;
+	bottom = bottom - 5;
+	
+	//~ var level = index % 3;
+	
+	var annotX = this.getResXwithStickZoom(annotation.fstart - 0.5);
+	var annotSize = (1 + (annotation.fend - annotation.fstart));
+	
+	var level = annotSize / 20;
+	top += annotSize * bottom / 30;
+	
+	
+	var annotLength = annotSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+	var rectPath = "M " + annotX + "," + bottom;
+	rectPath +=  " L " + annotX + "," + top;
+	rectPath +=  " L " + (annotX  + annotLength)+ "," + top;
+	rectPath +=  " L " + (annotX  + annotLength)+ "," + bottom;
+	return rectPath;
+};
+
+CLMS.xiNET.RenderedProtein.prototype.getDisulfidAnnotationCircPath = function(annotation) {
+	return "M 0,0 L 0,0 L 0,0 L 0,0 ";
 };
 
 //TODO: should be some sort of config options
