@@ -1068,7 +1068,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 			var convEnd = anno.end;
 			var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
 			if (anno.category != "Digestible residue" // this handles not aligning certain features, todo; check for tidier way 
-				&& anno.category != "Crosslinkable residue" 
+				&& anno.category != "Cross-linkable residue" 
 				&& alignModel) {
 				var alignmentID = anno.alignmentID || "Canonical";
 				convStart = alignModel.mapToSearch (alignmentID, anno.begin);
