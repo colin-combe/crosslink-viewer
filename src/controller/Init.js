@@ -1,10 +1,10 @@
-//	  xiNET Cross-link Viewer
-//	  Copyright 2013 Rappsilber Laboratory, University of Edinburgh
+//    xiNET Cross-link Viewer
+//    Copyright 2013 Rappsilber Laboratory, University of Edinburgh
 //
 //    This product includes software developed at
 //    the Rappsilber Laboratory (http://www.rappsilberlab.org/).
 //
-//	  author: Colin Combe
+//    author: Colin Combe
 //
 //    Init.js
 
@@ -24,11 +24,11 @@ xiNET.defaultInterLinkColour = new RGBColor("#35978f");
 xiNET.homodimerLinkColour = new RGBColor("#a50f15");
 
 xiNET.Controller = function(targetDiv) {
-	// targetDiv could be div itself or id of div - lets deal with that
-	if (typeof targetDiv === "string"){
-		targetDiv = document.getElementById(targetDiv);
-	}
-	this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+    // targetDiv could be div itself or id of div - lets deal with that
+    if (typeof targetDiv === "string"){
+        targetDiv = document.getElementById(targetDiv);
+    }
+    this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(xiNET.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
@@ -54,15 +54,15 @@ xiNET.Controller = function(targetDiv) {
     // http://stackoverflow.com/questions/4258615/what-is-the-difference-between-jquerys-mouseout-and-mouseleave
     this.svgElement.onmouseout = function(evt) {
         self.hideTooltip(evt);
-    };    
+    };
     var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-    if (document.attachEvent){ //if IE (and Opera depending on user setting) 
+    if (document.attachEvent){ //if IE (and Opera depending on user setting)
         this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
     }
     else if (document.addEventListener) { //WC3 browsers
         this.svgElement.addEventListener(mousewheelevt, function(evt) {self.mouseWheel(evt);}, false);
-    }  
-    this.lastMouseUp = new Date().getTime();   
+    }
+    this.lastMouseUp = new Date().getTime();
      //touchstart
     this.svgElement.ontouchstart = function(evt) {
         self.touchStart(evt);
@@ -76,13 +76,13 @@ xiNET.Controller = function(targetDiv) {
         self.message("touch end");
         self.touchEnd(evt);
     };
-    
+
     targetDiv.appendChild(this.svgElement);
-    
-	//these attributes are used by checkboxes to hide self links or ambiguous links
-	this.selfLinksShown = true;//TODO - fix confusing double negative
-	this.ambigShown = true;	
-       
+
+    //these attributes are used by checkboxes to hide self links or ambiguous links
+    this.selfLinksShown = true;//TODO - fix confusing double negative
+    this.ambigShown = true;
+
     // filled background needed, else cannot click/drag background
     // size is that of large monitor, potentially needs to be bigger coz browser can be zoomed
     // TODO: dynamically resize background to match screen bounding box
@@ -95,14 +95,14 @@ xiNET.Controller = function(targetDiv) {
     background.setAttribute("fill-opacity", "1");
     background.setAttribute("fill", "#FFFFFF");
     this.svgElement.appendChild(background);
-	// various groups needed
+    // various groups needed
     this.container = document.createElementNS(xiNET.svgns, "g");
     this.container.setAttribute("id", "container");
 
     this.p_pLinksWide = document.createElementNS(xiNET.svgns, "g");
     this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
     this.container.appendChild(this.p_pLinksWide);
- 
+
     this.proteinLower = document.createElementNS(xiNET.svgns, "g");
     this.proteinLower.setAttribute("id", "proteinLower");
     this.container.appendChild(this.proteinLower);
@@ -127,14 +127,14 @@ xiNET.Controller = function(targetDiv) {
     //showing title as tooltips is NOT part of svg spec (even though browsers do this)
     //also more repsonsive / more control if we do out own
     this.tooltip = document.createElementNS(xiNET.svgns, "text");
-	this.tooltip.setAttribute('x', 0);
+    this.tooltip.setAttribute('x', 0);
     this.tooltip.setAttribute('y', 0);
     var tooltipTextNode = document.createTextNode('tooltip');
     this.tooltip.appendChild(tooltipTextNode);
 
     this.tooltip_bg = document.createElementNS(xiNET.svgns, "rect");
     this.tooltip_bg.setAttribute('class', 'tooltip_bg');
-    
+
     this.tooltip_bg.setAttribute('fill-opacity', 0.75);
     this.tooltip_bg.setAttribute('stroke-opacity', 1);
     this.tooltip_bg.setAttribute('stroke-width', 1);
@@ -163,17 +163,17 @@ xiNET.setCTM = function(element, matrix) {
 
 xiNET.Controller.prototype.clear = function() {
     this.sequenceInitComplete = false;
- 	if (this.force) {
-		this.force.stop();
-	}
- 	this.force = null;
+    if (this.force) {
+        this.force.stop();
+    }
+    this.force = null;
     this.emptyElement(this.p_pLinksWide);
     this.emptyElement(this.highlights);
     this.emptyElement(this.p_pLinks);
     this.emptyElement(this.res_resLinks);
     this.emptyElement(this.proteinLower);
     this.emptyElement(this.proteinUpper);
- 
+
      //are we panning?
     this.panning = false;
     // if we are dragging something at the moment - this will be the element that is draged
@@ -184,7 +184,7 @@ xiNET.Controller.prototype.clear = function() {
     this.dragStart = {};
     // are we rotating at the moment
     this.rotating = false;
-    
+
     this.proteins = d3.map();
     this.proteinLinks = d3.map();
     this.matches = d3.map();
@@ -214,47 +214,47 @@ xiNET.Controller.prototype.emptyElement = function(element) {
 };
 
 xiNET.Controller.prototype.setAnnotations = function(annotationType) {
-	this.annotationSet = annotationType;
-	if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
-		var mols = this.proteins.values(); 
-		var molCount = mols.length;
-		var self = this;
-		for (var m = 0; m < molCount; m++) {
-			var mol = mols[m];
-			if (annotationType.toUpperCase() === "CUSTOM") {
-				mol.setPositionalFeatures(mol.customAnnotations);
-			}
-			else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
-				xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
-					var m = self.proteins.get(id);
-					m.setPositionalFeatures(fts);
-				});
-			}  
-			else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
-				xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
-					var m = self.proteins.get(id);
-					m.setPositionalFeatures(fts);
-				});	
-			}
-			else if (annotationType.toUpperCase() === "LYSINES") {
-				var seq = mol.sequence;
-				var annots = new Array();
-				for (var i =0; i < mol.size; i++){
-					var aa = seq[i];
-					if (aa === 'K'){
-						annots.push(new Annotation ("Lysine", i+1, i+1));
-					}
-				
-				}
-				mol.setPositionalFeatures(annots);
-			}
-			else {
-				mol.setPositionalFeatures([])
-			}
-		}
-		return true;
-	}
-	else return false;
+    this.annotationSet = annotationType;
+    if (this.sequenceInitComplete) { //dont want to be changing annotations while still waiting on sequence
+        var mols = this.proteins.values();
+        var molCount = mols.length;
+        var self = this;
+        for (var m = 0; m < molCount; m++) {
+            var mol = mols[m];
+            if (annotationType.toUpperCase() === "CUSTOM") {
+                mol.setPositionalFeatures(mol.customAnnotations);
+            }
+            else if (annotationType.toUpperCase() === "SUPERFAM" || annotationType.toUpperCase() === "SUPERFAMILY"){
+                xiNET_Storage.getSuperFamFeatures(mol.id, function (id, fts){
+                    var m = self.proteins.get(id);
+                    m.setPositionalFeatures(fts);
+                });
+            }
+            else if (annotationType.toUpperCase() === "UNIPROT" || annotationType.toUpperCase() === "UNIPROTKB") {
+                xiNET_Storage.getUniProtFeatures(mol.id, function (id, fts){
+                    var m = self.proteins.get(id);
+                    m.setPositionalFeatures(fts);
+                });
+            }
+            else if (annotationType.toUpperCase() === "LYSINES") {
+                var seq = mol.sequence;
+                var annots = new Array();
+                for (var i =0; i < mol.size; i++){
+                    var aa = seq[i];
+                    if (aa === 'K'){
+                        annots.push(new Annotation ("Lysine", i+1, i+1));
+                    }
+
+                }
+                mol.setPositionalFeatures(annots);
+            }
+            else {
+                mol.setPositionalFeatures([])
+            }
+        }
+        return true;
+    }
+    else return false;
 };
 
 //this can be done before all proteins have their sequences
@@ -275,47 +275,47 @@ xiNET.Controller.prototype.initLayout = function() {
 
 //requires all proteins have had sequence set
 xiNET.Controller.prototype.initProteins = function() {
-	var prots = this.proteins.values();
-	var protCount = prots.length;
-	Protein.MAXSIZE = 0;
-	for (var i = 0; i < protCount; i++){
-		var protSize = prots[i].size;
-		if (protSize > Protein.MAXSIZE){
-			Protein.MAXSIZE = protSize;
-		}
-	}
-	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
-	//this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / 10 * Math.PI); //DKS change max blob size to reduce grid sizes
+    var prots = this.proteins.values();
+    var protCount = prots.length;
+    Protein.MAXSIZE = 0;
+    for (var i = 0; i < protCount; i++){
+        var protSize = prots[i].size;
+        if (protSize > Protein.MAXSIZE){
+            Protein.MAXSIZE = protSize;
+        }
+    }
+    //this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / Math.PI);
+    //this.maxBlobRadius = Math.sqrt(Protein.MAXSIZE / 10 * Math.PI); //DKS change max blob size to reduce grid sizes
     this.maxBlobRadius = 10 // DKS maxBlobradius determines gridding, and display more than anything else
-	var width = this.svgElement.parentNode.clientWidth;
-	Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
-	for (var i = 0; i < protCount; i++){
-		prots[i].init();
-	}
-	this.sequenceInitComplete = true;
-	//~ if (protCount < 3) {
-		//~ for (var j =0; j < protCount; j++){
-			//~ prots[j].busy = false;
-			//~ prots[j].setForm(1);
-		//~ }
-	//~ }
-	if (this.annotationSet){
-		xlv.setAnnotations(this.annotationSet);
-	}
-	else {
-		this.setAnnotations('CUSTOM');
-	}
+    var width = this.svgElement.parentNode.clientWidth;
+    Protein.UNITS_PER_RESIDUE = (((width / 2)) - Protein.LABELMAXLENGTH) / Protein.MAXSIZE;
+    for (var i = 0; i < protCount; i++){
+        prots[i].init();
+    }
+    this.sequenceInitComplete = true;
+    //~ if (protCount < 3) {
+        //~ for (var j =0; j < protCount; j++){
+            //~ prots[j].busy = false;
+            //~ prots[j].setForm(1);
+        //~ }
+    //~ }
+    if (this.annotationSet){
+        xlv.setAnnotations(this.annotationSet);
+    }
+    else {
+        this.setAnnotations('CUSTOM');
+    }
 }
 
 xiNET.Controller.prototype.reset = function() {
-	this.resetZoom();
+    this.resetZoom();
     var proteins = this.proteins.values();
     var proteinCount = proteins.length;
     for (var p = 0; p < proteinCount; p++) {
         var prot = proteins[p];
         if (prot.isParked === false) {
-			prot.setForm(0);
-		}
+            prot.setForm(0);
+        }
     }
     this.autoLayout();
 };
@@ -333,21 +333,21 @@ xiNET.Controller.prototype.resetZoom = function() {
 };
 
 xiNET.Controller.prototype.exportSVG = function() {
-	var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
+    var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
     svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
     if (Blob) {
-		var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-		saveAs(blob, "xiNET_output.svg");
-	} else {	
-		var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-		+ "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-		+ svgXml;
-		var xmlAsUrl;
-		//xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
-		xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
-		xmlAsUrl += encodeURIComponent(xml);
-		var win = window.open(xmlAsUrl, 'xiNET-output.svg');
-	}
+        var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+        saveAs(blob, "xiNET_output.svg");
+    } else {
+        var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+        + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+        + svgXml;
+        var xmlAsUrl;
+        //xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
+        xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+        xmlAsUrl += encodeURIComponent(xml);
+        var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+    }
 };
 
 xiNET.Controller.prototype.message = function(text, preformatted) {
@@ -373,9 +373,9 @@ xiNET.Controller.prototype.addProtein = function(id, label, sequence, descriptio
 //Positions are one based
 xiNET.Controller.prototype.addMatch = function(pep1_protIDs, pep1_positions,
         pep2_protIDs, pep2_positions,
-        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId) { //dataSetId param added for mathieu
+        id, score, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId, manuallyDashed) { //dataSetId param added for mathieu
     var match = new Match(pep1_protIDs, pep1_positions, pep2_protIDs, pep2_positions,
-            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId);
+            id, score, this, linkPos1, linkPos2, pep1_seq, pep2_seq, autovalidated, validated, rejected, dataSetId, manuallyDashed);
     this.matches.set(id, match);
     return match;
 };
@@ -397,35 +397,35 @@ xiNET.Controller.prototype.addAnnotation = function(protId, annotName, startRes,
     protId = protId.toString().trim();
     var protein = this.proteins.get(protId);
     if (protein) {
-		//lets just check a few things here...
-		// we're using human (starts at 1) numbering
-		startRes = parseInt(startRes);
-		endRes = parseInt(endRes);
-		if (isNaN(startRes) && isNaN(endRes)) {
-			startRes = 1;
-			endRes = protein.size;
-		}
-		else if (isNaN(startRes))
-			startRes = endRes;
-		else if (isNaN(endRes))
-			endRes = startRes;
+        //lets just check a few things here...
+        // we're using human (starts at 1) numbering
+        startRes = parseInt(startRes);
+        endRes = parseInt(endRes);
+        if (isNaN(startRes) && isNaN(endRes)) {
+            startRes = 1;
+            endRes = protein.size;
+        }
+        else if (isNaN(startRes))
+            startRes = endRes;
+        else if (isNaN(endRes))
+            endRes = startRes;
 
-		if (startRes > endRes) {
-			var temp = startRes;
-			startRes = endRes;
-			endRes = temp;
-		}
+        if (startRes > endRes) {
+            var temp = startRes;
+            startRes = endRes;
+            endRes = temp;
+        }
 
-		var annotation = new Annotation(annotName, startRes, endRes, colour);
-		if (protein.customAnnotations == null) {
-			protein.customAnnotations = new Array();
-		}
-		protein.customAnnotations.push(annotation);
-	}
+        var annotation = new Annotation(annotName, startRes, endRes, colour);
+        if (protein.customAnnotations == null) {
+            protein.customAnnotations = new Array();
+        }
+        protein.customAnnotations.push(annotation);
+    }
 }
 
 xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, startRes, endRes, colour) {
-    var prots = this.proteins.values(); 
+    var prots = this.proteins.values();
     var protCount = prots.length;
     for (var p = 0; p < protCount; p++) {
         var protein = prots[p];
@@ -437,33 +437,33 @@ xiNET.Controller.prototype.addAnnotationByName = function(protName, annotName, s
 
 // add all matches with single call, arg is an array of arrays
 xiNET.Controller.prototype.addAnnotations = function(annotations) {
-    var rows = d3.csv.parseRows(annotations);   
+    var rows = d3.csv.parseRows(annotations);
     var headers = rows[0];
     for (var h = 0; h < headers.length; h++) {
-		headers[h] = headers[h].trim();	
-	}
+        headers[h] = headers[h].trim();
+    }
     var iProtId = headers.indexOf('ProteinId');
     var iAnnotName = headers.indexOf('AnnotName');
     if (iAnnotName === -1) {
-		iAnnotName = headers.indexOf('Name')
-	}
+        iAnnotName = headers.indexOf('Name')
+    }
     var iStartRes = headers.indexOf('StartRes');
     if (iStartRes === -1) {
-		iStartRes = headers.indexOf('StartResidue')
-	}
+        iStartRes = headers.indexOf('StartResidue')
+    }
     var iEndRes = headers.indexOf('EndRes');
     if (iEndRes === -1) {
-		iEndRes = headers.indexOf('EndResidue')
-	}
-    var iColour = headers.indexOf('Color');    
+        iEndRes = headers.indexOf('EndResidue')
+    }
+    var iColour = headers.indexOf('Color');
     if (iColour === -1) {
-		iColour = headers.indexOf('Colour')
-	}
+        iColour = headers.indexOf('Colour')
+    }
 
     var l = rows.length;
     for (var i = 1; i < l; i++) {
-        this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName], 
-							rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
+        this.addAnnotation(rows[i][iProtId], rows[i][iAnnotName],
+                            rows[i][iStartRes], rows[i][iEndRes], rows[i][iColour]);
     }
 }
 
@@ -492,7 +492,7 @@ xiNET.Controller.prototype.loadLayout = function() {
                     //~ protein.setPositionalFeatures(protein.customAnnotations);
                 //~ }
             //~ }
-            
+
             //~ if (protState["form"] === 1) {
                 if (typeof protState["stickZoom"] !== 'undefined') {
                     protein.stickZoom = protState["stickZoom"];
@@ -500,7 +500,7 @@ xiNET.Controller.prototype.loadLayout = function() {
                 }
                 //~ protein.setRotation(protein.rotation);
             //~ }
-            
+
             if (typeof protState['rot'] !== 'undefined') {
                 protein.rotation = protState["rot"];
             }
@@ -508,8 +508,8 @@ xiNET.Controller.prototype.loadLayout = function() {
             if (typeof protState["form"]) {
                 protein.setForm(protState["form"]);
             }
-            
-			protein.setAllLineCoordinates();// watch out for this
+
+            protein.setAllLineCoordinates();// watch out for this
 
             if (typeof protState["parked"] !== 'undefined') {
                 protein.setParked(protState["parked"]);
