@@ -58,7 +58,8 @@
     "deamdify": "^0.1.1",
     "intersectionjs": "^1.0.1",
     "point2d": "0.0.1",
-    "rgbcolor": "^1.0.0"
+    "rgbcolor": "^1.0.0",
+    "spin.js": "2.3.2"
   },
   "keywords": [
     "biojs",

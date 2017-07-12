@@ -14,6 +14,7 @@ var xiNET = {}; //crosslinkviewer's javascript namespace
 //var RGBColor = require('rgbcolor');
 var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
+var Spinner = require('spin.js');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');
 var Molecule = require('../model/interactor/Molecule');
@@ -44,9 +45,11 @@ MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or
 xiNET.Controller = function(targetDiv) {
     // targetDiv could be div itself or id of div - lets deal with that
     if (typeof targetDiv === "string"){
-        targetDiv = document.getElementById(targetDiv);
+        this.targetDiv = document.getElementById(targetDiv);
+    } else {
+        this.targetDiv = targetDiv;
     }
-    this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
+    this.emptyElement(this.targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
     this.svgElement.setAttribute('id', 'networkSVG');
@@ -65,7 +68,7 @@ xiNET.Controller = function(targetDiv) {
     //legend changed callbacks
     this.legendCallbacks = new Array();
 
-    targetDiv.appendChild(this.svgElement);
+    this.targetDiv.appendChild(this.svgElement);
 
     // various groups needed
     this.container = document.createElementNS(Config.svgns, "g");
@@ -778,9 +781,14 @@ xiNET.Controller.prototype.setAllLinkCoordinates = function() {
 };
 
 xiNET.Controller.prototype.autoLayout = function() {
-    if (typeof this.force !== 'undefined' && this.force != null) {
+    if (this.force) {
         this.force.stop();
     }
+
+    d3.select(this.svgElement).style("visibility","hidden");
+
+    var spinner = new Spinner({scale: 3}).spin(this.targetDiv);
+
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
@@ -856,7 +864,7 @@ xiNET.Controller.prototype.autoLayout = function() {
             .size([width, height]);
             //also .chargeDistance() and .alpha() // not used
 
-    this.force.on("tick", function(e) {
+    this.force.on("end", function(e) {
         var nodes = self.force.nodes();
         // console.log("nodes", nodes);
         for (var n = 0; n < nodeCount; n++) {
@@ -867,8 +875,26 @@ xiNET.Controller.prototype.autoLayout = function() {
             mol.setPosition(nx, ny);
         }
         self.setAllLinkCoordinates();
+        spinner.stop();
+        d3.select(self.svgElement).style('visibility','visible');
+
+        //this could be improved, todo: check all possible over boundary possibilities
+        var bBox = self.container.getBBox();
+        console.log(bBox);
+        //only dealing with the more common 'label over left edge' situation
+        if (bBox.x < 0) {
+            //alert("bodge time");
+            self.setCTM(self.container, self.container.getCTM().translate(- bBox.x, 0));
+        }
+
+
     });
     this.force.start();
+};
+
+xiNET.Controller.prototype.setCTM = function(element, matrix) {
+    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
+    element.setAttribute("transform", s);
 };
 
 xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {

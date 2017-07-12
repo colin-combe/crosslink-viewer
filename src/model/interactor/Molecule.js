@@ -209,6 +209,9 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             return (b.end - b.start) - (a.end - a.start);
         });
         this.annotations = posFeats;
+        //~ if (this.annotations.length == 0) {
+            //~ this.annotations.push({start: 1, end: this.size, name: "No annotations"});
+        //~ }
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
             anno.start = anno.start - 0;
