@@ -880,7 +880,7 @@ xiNET.Controller.prototype.autoLayout = function() {
 
         //this could be improved, todo: check all possible over boundary possibilities
         var bBox = self.container.getBBox();
-        console.log(bBox);
+        //~ console.log(bBox);
         //only dealing with the more common 'label over left edge' situation
         if (bBox.x < 0) {
             //alert("bodge time");
@@ -1000,11 +1000,18 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
             else {
                 colourScheme = d3.scale.category20();
             }
+
+            //~ console.log("COLs ", colourScheme);
+
             for (m = 0; m < molCount; m++) {
                 var mol = mols[m];
                 for (a = 0; a < mol.annotations.length; a++) {
                     var anno = mol.annotations[a];
-                    var c = colourScheme(anno.name);
+                    if (anno.name == "No annotations") {
+                        var c = "#cccccc";
+                    } else {
+                        var c = colourScheme(anno.name);
+                    }
                     anno.pieSlice.setAttribute("fill", c);
                     anno.pieSlice.setAttribute("stroke", c);
                 }

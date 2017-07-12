@@ -10,7 +10,7 @@
 
 "use strict";
 
-var colorbrewer = require('colorbrewer');//Josh - should path for this be ../../../vendor...?
+var colorbrewer = require('colorbrewer');
 var Config = require('../../controller/Config');
 
 //josh - should these be moved to Config.js?
@@ -209,9 +209,10 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             return (b.end - b.start) - (a.end - a.start);
         });
         this.annotations = posFeats;
-        //~ if (this.annotations.length == 0) {
-            //~ this.annotations.push({start: 1, end: this.size, name: "No annotations"});
-        //~ }
+        if (this.annotations.length == 0) {
+            //~ alert("no annot");
+            this.annotations.push({start: 1, end: this.size, name: "No annotations"});
+        }
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
             anno.start = anno.start - 0;
