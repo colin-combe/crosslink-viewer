@@ -58,17 +58,7 @@
                                     </td>
                                     <td>Bioactive Entity</td>
                                   </tr>
-                                 <tr style="border: 1px grey;">
-                                    <td>
-                                        <div style="float:right">
-                                            <img src="./demo/svgForKey/proteinBlob.svg" >
-                                        </div>
-                                        <div style="float:right">
-                                            <img src="./demo/svgForKey/proteinBar.svg">
-                                        </div>
-                                    </td>
-                                    <td>Protein - click to toggle between circle and bar</td>
-                                  </tr>
+
                                   <tr>
                                     <td>
                                         <div style="float:right">
@@ -93,7 +83,24 @@
                                     </td>
                                     <td>RNA</td>
                                  </tr>
-                            </table>
+                                 <tr style="border: 1px grey;">
+                                    <td>
+                                        <div style="float:right">
+                                            <img src="./demo/svgForKey/proteinBlob.svg" >
+                                        </div>
+                                        <div style="float:right">
+                                            <img src="./demo/svgForKey/proteinBar.svg">
+                                        </div>
+                                    </td>
+                                    <td>Protein - click to toggle between circle and bar</td>
+                                  </tr>
+                                </table>
+
+                                <div class="controls" style="height:46px;">Proteins:
+                                    <button class="btn btn-1 btn-1a" onclick="xlv.expandAll();">Expand  </button>
+                                    <button class="btn btn-1 btn-1a" onclick="xlv.collapseAll();">Collapse</button>
+                                </div>
+
 
                        <div id="colours"></div>
                 </div><!-- legend -->
@@ -115,9 +122,9 @@
                     <label>&nbsp;&nbsp;Expand Stoich.
                     <input checked onclick="loadData()" id="chkexpansion" value="expansion" type="checkbox">
                     </label>
-                    &nbsp;&nbsp;<button class="btn btn-1 btn-1a" onclick="xlv.expandAll();">Expand Proteins</button>
-                    <button class="btn btn-1 btn-1a" onclick="xlv.reset();">Reset</button>
-                    <button class="btn btn-1 btn-1a" onclick="exportSVG();">Export Graphic</button>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-1 btn-1a" onclick="xlv.reset();" style="display:inline">Reset Layout</button>
+                    <button class="btn btn-1 btn-1a" onclick="exportSVG();" style="display:inline">Export Graphic</button>
                 </div>
 
 
