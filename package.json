@@ -1,6 +1,6 @@
 {
   "name": "complexviewer",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A network visualisation that displays molecular interaction data, including detailed residue-level information such as binding sites. v1 is used in EBI's Complex Portal. The aim for v2 is a general purpose viewer for PSI-MI XML data",
   "author": {
     "name": "Colin Combe",
@@ -58,7 +58,8 @@
     "deamdify": "^0.1.1",
     "intersectionjs": "^1.0.1",
     "point2d": "0.0.1",
-    "rgbcolor": "^1.0.0"
+    "rgbcolor": "^1.0.0",
+    "spin.js": "2.3.2"
   },
   "keywords": [
     "biojs",

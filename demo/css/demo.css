@@ -21,25 +21,25 @@ h1 {
 }
 
 div#centre {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	flex-direction: row;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
     width: 100%;
     min-height: 0;           /* NEW */
     min-width: 0;            /* NEW */
-    
+
 }
 
 div#detailsDiv{
     display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
     flex-grow: 1;
     flex-direction: column;
     min-height: 0;           /* NEW */
@@ -53,15 +53,15 @@ div#detailsDiv{
 }
 
 select, button {
-	font-size:1em;
+    font-size:1em;
 }
 
 #complexDetails {
     display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;flex-direction: column;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;flex-direction: column;
     flex-grow: 1;
     min-height: 0;           /* NEW */
     min-width: 0;            /* NEW */
@@ -69,11 +69,11 @@ select, button {
 
 .detailsInner {
     display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	flex-direction: column;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     overflow: auto;
     min-height: 0;           /* NEW */
@@ -81,39 +81,39 @@ select, button {
 }
 
 b {
-	font-weight:bold;
+    font-weight:bold;
 }
 
 div#middleDiv, div#networkDiv {
       display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-	  display: flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      display: flex;
       flex-direction:column;
       flex-grow:1;
 }
 div#innerMiddleDiv {
       display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-	  flex-direction:row;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction:row;
       flex-grow:1;
     min-height: 0;           /* NEW */
     min-width: 0;            /* NEW */
-      
+
 }
 
 div#legend {
       display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-	  flex-grow:1;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-grow:1;
     flex-direction: column;
     width: 300px;
     max-width:300px;
@@ -139,14 +139,14 @@ div#legendInner {
     background-color: #091D42;
     color: #fff;
     margin-left: 0px;
-    
+
 /*
     display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	flex-direction: row;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
     flex-grow: 1;
     flex-shrink: 0;
 */
@@ -154,14 +154,14 @@ div#legendInner {
 
 .logoBar {
       display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-	  flex-direction: row;   
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: row;
     flex-shrink: 0;
     flex-wrap: wrap;
-    
+    height: 70px;
 }
 
 .noShrink {
@@ -176,19 +176,19 @@ div.logos {
     border-radius:10px;
     border: 1px solid grey;
       display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-	  flex-direction: row;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: row;
     flex-shrink: 0;
     text-align:center;
 }
 
 .logo{
-	margin: auto;
+    margin: auto;
 }
 
 img {
-	vertical-align: middle;
+    vertical-align: middle;
 }

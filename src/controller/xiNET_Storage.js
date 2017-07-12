@@ -57,7 +57,7 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
         //~ // Retrieve
         //~ var stored = localStorage.getItem(xiNET_Storage.ns + "UniProtKB." + accession);
         //~ if (stored){
-            console.log(accession + " UniProt from local storage.");
+            // console.log(accession + " UniProt from local storage.");
             //~ callback(id, stored);
         //~ }
         //~ else {
