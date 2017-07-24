@@ -14,7 +14,7 @@ function Annotation(annotName, startRes, endRes, colour, notes) {
     this.start = startRes;
     this.end = endRes;
     if (colour !== undefined && colour !== null) {
-        this.colour = new RGBColor(colour);
+        this.colour = new RGBColor(colour.trim());
     }
     this.notes = notes;
 }

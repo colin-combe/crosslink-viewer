@@ -440,24 +440,24 @@ xiNET.Controller.prototype.addAnnotations = function(annotations) {
     var rows = d3.csv.parseRows(annotations);
     var headers = rows[0];
     for (var h = 0; h < headers.length; h++) {
-        headers[h] = headers[h].trim();
+        headers[h] = headers[h].trim().toUpperCase();
     }
-    var iProtId = headers.indexOf('ProteinId');
-    var iAnnotName = headers.indexOf('AnnotName');
+    var iProtId = headers.indexOf('ProteinId'.toUpperCase());
+    var iAnnotName = headers.indexOf('AnnotName'.toUpperCase());
     if (iAnnotName === -1) {
-        iAnnotName = headers.indexOf('Name')
+        iAnnotName = headers.indexOf('Name'.toUpperCase())
     }
-    var iStartRes = headers.indexOf('StartRes');
+    var iStartRes = headers.indexOf('StartRes'.toUpperCase());
     if (iStartRes === -1) {
-        iStartRes = headers.indexOf('StartResidue')
+        iStartRes = headers.indexOf('StartResidue'.toUpperCase())
     }
-    var iEndRes = headers.indexOf('EndRes');
+    var iEndRes = headers.indexOf('EndRes'.toUpperCase());
     if (iEndRes === -1) {
-        iEndRes = headers.indexOf('EndResidue')
+        iEndRes = headers.indexOf('EndResidue'.toUpperCase())
     }
-    var iColour = headers.indexOf('Color');
+    var iColour = headers.indexOf('Color'.toUpperCase());
     if (iColour === -1) {
-        iColour = headers.indexOf('Colour')
+        iColour = headers.indexOf('Colour'.toUpperCase())
     }
 
     var l = rows.length;
