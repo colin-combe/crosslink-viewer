@@ -1122,7 +1122,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 				pieSlice.setAttribute("stroke-width", 1);
 				colouredRect.setAttribute("stroke-width", 1);
 		
-				var c = CLMSUI.domainColours(anno.category + "-" + anno.type);
+				var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
 				pieSlice.setAttribute("fill", "none");
 				pieSlice.setAttribute("stroke", c);
 				colouredRect.setAttribute("fill", "none");
