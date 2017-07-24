@@ -1309,15 +1309,41 @@ Protein.stepsInArc = 5;
 Protein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 	var startAngle = ((annotation.start - 1) / this.size) * 360;
 	var endAngle = ((annotation.end) / this.size) * 360;
-	var radius = this.getBlobRadius() - 2;
+	
+	/*var radius = this.getBlobRadius() - 2;
 	var arcStart = Protein.trig(radius, startAngle - 90);
 	var arcEnd = Protein.trig(radius, endAngle - 90);
 	var largeArch = 0;
     if ((endAngle - startAngle) > 180 || (endAngle == startAngle)) {
 		largeArch = 1;
 	}
+	//hacky
+	if (annotation.start == 1 && annotation.end == this.participant.size) {
+        startAngle  = 0.5;
+        endAngle = 359.5;
+        sweepFlag = 1;
+    }	
 	return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," 
 		+ radius + " 0 " + largeArch + " 1 " + arcEnd.x + "," + arcEnd.y + " Z";
+	*/	
+		
+	var largeArcFlag = 0, sweepFlag = 1;
+    if ((endAngle - startAngle) > 180) {
+        largeArcFlag = 1;
+        sweepFlag = 1;
+    }
+	//hacky
+	if (annotation.start == 1 && annotation.end == this.size) {
+        startAngle  = 0.5;
+        endAngle = 359.5;
+        sweepFlag = 1;
+    }
+    
+    var radius = this.getBlobRadius() - 2;
+    var arcStart = Protein.trig(radius, startAngle - 90);
+    var arcEnd = Protein.trig(radius, endAngle - 90);
+    return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + ","
+        + radius + " 0 " + largeArcFlag + " " + sweepFlag + " " + arcEnd.x + "," + arcEnd.y + " Z";	
 };
 
 Protein.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
