@@ -176,7 +176,7 @@ Protein.prototype.setSequence = function(sequence){
 
 //by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
 Protein.prototype.init = function() {
-    this.setForm(this.form);
+    //this.setForm(this.form);
     if (this.selfLink) this.selfLink.initSelfLinkSVG();
     this.setAllLineCoordinates();	
 }

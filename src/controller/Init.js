@@ -268,6 +268,7 @@ xiNET.Controller.prototype.initLayout = function() {
             var prot = proteins[p];
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
+            prot.setForm(0);
         }
         this.autoLayout();
     }
@@ -505,10 +506,11 @@ xiNET.Controller.prototype.loadLayout = function() {
                 protein.rotation = protState["rot"];
             }
 
-            if (typeof protState["form"]) {
-                protein.setForm(protState["form"]);
+            if (typeof protState["form"] !== 'undefined') {
+				protein.setForm(protState["form"]);
             }
 
+            protein.checkLinks();
             protein.setAllLineCoordinates();// watch out for this
 
             if (typeof protState["parked"] !== 'undefined') {
@@ -517,9 +519,6 @@ xiNET.Controller.prototype.loadLayout = function() {
             if (protState["flipped"]) { //TODO: fix this
                 protein.toggleFlipped(); // change to setFlipped(protState["flipped"])
             }
-            //~ if (protState["processedDAS"]) {
-                //~ protein.processedDAS = d3.map(protState["processedDAS"]);
-            //~ }
             this.proteinLower.appendChild(protein.lowerGroup);
             this.proteinUpper.appendChild(protein.upperGroup);
         }
@@ -531,11 +530,12 @@ xiNET.Controller.prototype.loadLayout = function() {
     for (var p = 0; p < proteinCount; p++) {
         prot = proteins[p];
         if (prot.x == null) {
-            //~ prot.initStick();
-            prot.toBlob();
+            // prot.initStick();
+            //~prot.toBlob();
             prot.setPosition(20, 20);
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
+            prot.setForm(0);
         }
     }
 

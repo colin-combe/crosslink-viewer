@@ -167,7 +167,8 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
 
     function addProteins(columnIndex) {
         for (var row = 1; row < countRows; row++) {
-            var prots = rows[row][columnIndex].replace(/(['"])/g, '');
+			var temp = rows[row];
+            var prots = temp[columnIndex].replace(/(['"])/g, '');
             var accArray = prots.split(/[;,]/);
             for (var i = 0; i < accArray.length; i++) {
                 var id = accArray[i].trim();
