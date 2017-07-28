@@ -327,11 +327,11 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
         // add features to interactors/participants/nodes
         var annotName = "";
         if (typeof feature.name !== 'undefined') {
-            annotName += feature.name + ', ';
+            annotName += feature.name + ' ';
         }
-        if (typeof feature.type !== 'undefined') {
-            annotName += feature.type.name;
-        }
+        //~ if (typeof feature.type !== 'undefined') {
+            //~ annotName += feature.type.name;
+        //~ }
         if (typeof feature.detmethod !== 'undefined') {
             annotName += ', ' + feature.detmethod.name;
         }
@@ -986,12 +986,14 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
             }
         }
         var catCount = categories.values().length;
+                
         var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
         if (catCount < 21) {
-            if (catCount < 9) {
-                var reversed = colorbrewer.Accent[catCount].slice().reverse();
-                colourScheme = d3.scale.ordinal().range(reversed);
+            if (catCount < 6) {
+				//~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
+                //~ colourScheme = d3.scale.ordinal().range(reversed);
+                colourScheme = d3.scale.ordinal().range(colorbrewer.Set1[4]);
             }
             else if (catCount < 13) {
                 var reversed = colorbrewer.Set3[catCount].slice().reverse();
