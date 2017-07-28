@@ -122,10 +122,10 @@ xiNET_Storage.getSuperFamFeatures = function (id, callback){
         d3.xml(url, function (xml){
             xml = new XMLSerializer().serializeToString(xml);
             //~ console.log(accession + " SuperFamDAS  retrieved.");
-            if(typeof(Storage) !== "undefined") {
-                localStorage.setItem(xiNET_Storage.ns  + "SuperFamDAS." + accession, xml);
-                //~ console.log(accession + " SuperFamDAS added to local storage.");
-            }
+            //~ if(typeof(Storage) !== "undefined") {
+                //~ localStorage.setItem(xiNET_Storage.ns  + "SuperFamDAS." + accession, xml);
+                //~ // console.log(accession + " SuperFamDAS added to local storage.");
+            //~ }
             parseSuperFamDAS(xml);
         });
     }
