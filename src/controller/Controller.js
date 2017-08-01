@@ -52,7 +52,7 @@ xiNET.Controller = function(targetDiv) {
     this.emptyElement(this.targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
-    this.svgElement.setAttribute('id', 'networkSVG');
+    this.svgElement.setAttribute('id', 'complexViewerSVG');
 
     //add listeners
     var self = this;
