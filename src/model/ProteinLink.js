@@ -306,7 +306,6 @@ ProteinLink.prototype.showID = function() {
     }
 };
 
-//its an array of match id's its going to return
 ProteinLink.prototype.getFilteredMatches = function() {
     var resLinks = this.residueLinks.values();
     var resLinkCount = resLinks.length;
@@ -316,12 +315,12 @@ ProteinLink.prototype.getFilteredMatches = function() {
         var mCount = resLink.matches.length;
         for (var m = 0; m < mCount; m++) {
             var match = resLink.matches[m];
-            if (match.meetsFilterCriteria()) {
-                filteredMatches.set(match.id);
+            if (match[0].meetsFilterCriteria()) {
+                filteredMatches.set(match.id, match);
             }
         }
     }
-    return filteredMatches.keys();
+    return filteredMatches.values();
 };
 
 ProteinLink.prototype.check = function() {

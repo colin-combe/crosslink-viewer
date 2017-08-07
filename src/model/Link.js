@@ -34,7 +34,12 @@ xiNET.Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
-    this.controller.setTooltip(this.tooltip);
+    var filteredMatches = this.getFilteredMatches();
+    //~ console.log("fm:", filteredMatches);
+	var scores = filteredMatches.map(function (m) {return +m[0].score;});
+    //~ console.log("Scores:", scores);
+	var highest = Math.max(scores).toFixed(2);
+    this.controller.setTooltip(this.tooltip + ", top score:" + highest);
     return false;
 }
 
