@@ -316,7 +316,7 @@ ProteinLink.prototype.getFilteredMatches = function() {
         for (var m = 0; m < mCount; m++) {
             var match = resLink.matches[m];
             if (match[0].meetsFilterCriteria()) {
-                filteredMatches.set(match.id, match);
+                filteredMatches.set(match[0].id, match);
             }
         }
     }

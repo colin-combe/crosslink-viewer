@@ -37,9 +37,10 @@ xiNET.Link.prototype.mouseOver = function(evt){
     var filteredMatches = this.getFilteredMatches();
     //~ console.log("fm:", filteredMatches);
 	var scores = filteredMatches.map(function (m) {return +m[0].score;});
-    //~ console.log("Scores:", scores);
-	var highest = Math.max(scores).toFixed(2);
-    this.controller.setTooltip(this.tooltip + ", top score:" + highest);
+    console.log("Scores:", scores);
+	var highest = Math.max.apply(Math, scores).toFixed(2);
+	var txt = isNaN(highest)? this.tooltip : this.tooltip  + ", top score:" + highest; 
+    this.controller.setTooltip(txt);
     return false;
 }
 
@@ -51,7 +52,7 @@ xiNET.Link.prototype.mouseOut = function(evt){
     //    } else {
     //        if (this.controller.dragElement != this){// todo: improve, actually needs to know
     //            // if drag element is part of dragging subgraph
-    //            this.showHighlight(false, true);
+    //            this.sh_website/uploaded.php?uid=9082a58637e9e05755e482b8702f6fae1bf62a07owHighlight(false, true);
     //        }
     //    }
     this.controller.hideTooltip();
