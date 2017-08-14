@@ -156,14 +156,14 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
                             self.addAnnotations(annotations);
                         }
                         self.initProteins();
-                    }
+        addCSVLinks();
+    self.initLayout();
+                   }
                 }
             );
         }
-        addCSVLinks();
-    }
+     }
 
-    this.initLayout();
 
     function addProteins(columnIndex) {
         for (var row = 1; row < countRows; row++) {
