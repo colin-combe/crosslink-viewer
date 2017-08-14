@@ -37,7 +37,7 @@ xiNET.Link.prototype.mouseOver = function(evt){
     var filteredMatches = this.getFilteredMatches();
     //~ console.log("fm:", filteredMatches);
 	var scores = filteredMatches.map(function (m) {return +m[0].score;});
-    console.log("Scores:", scores);
+    //console.log("Scores:", scores);
 	var highest = Math.max.apply(Math, scores).toFixed(2);
 	var txt = isNaN(highest)? this.tooltip : this.tooltip  + ", top score:" + highest; 
     this.controller.setTooltip(txt);
