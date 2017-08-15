@@ -121,7 +121,6 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
             this, null, "DECOY_" + name);
         revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
         this.proteins.set("reverse_" + tempIdentifier, revProt);
-		alert("yo");
         self.initProteins();        
         //read links
         addCSVLinks();
