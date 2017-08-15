@@ -172,6 +172,7 @@ Protein.prototype.setSequence = function(sequence){
     //remove modification site info from sequence
     this.sequence = sequence.replace(/[^A-Z]/g, '');
     this.size = this.sequence.length;
+    //~ console.log(">prot.setSeq " + this.name + "\t" + this.size);
 }
 
 //by the we get here all prot's have had their sequence set, so protein.MAXSIZE has correct value;
@@ -179,6 +180,7 @@ Protein.prototype.init = function() {
     //this.setForm(this.form);
     if (this.selfLink) this.selfLink.initSelfLinkSVG();
     this.setAllLineCoordinates();	
+    //~ console.log(">prot.init " + this.name + "\t" + this.size);
 }
 
 Protein.prototype.mouseDown = function(evt) {
@@ -260,7 +262,9 @@ Protein.prototype.mouseOut = function(evt) {
 };
 
 Protein.prototype.getBlobRadius = function() {
-    return Math.sqrt(this.size / Math.PI);
+	var rad = Math.sqrt(this.size / Math.PI); 
+	//console.log(rad);
+    return rad;
 };
 
 Protein.prototype.isDecoy = function() {

@@ -151,13 +151,14 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
             xiNET_Storage.getSequence(id, function(ident, seq){
                     self.proteins.get(ident).setSequence(seq);
                     countSequences++;
+                    console.log("> " + protCount + " " + countSequences);
                     if (countSequences === protCount){
                         if (annotations){
                             self.addAnnotations(annotations);
                         }
                         self.initProteins();
-        addCSVLinks();
-    self.initLayout();
+						addCSVLinks();
+		                self.initLayout();
                    }
                 }
             );
