@@ -121,7 +121,8 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
             this, null, "DECOY_" + name);
         revProt.setSequence(tempSeq.trim().split("").reverse().join(""));
         this.proteins.set("reverse_" + tempIdentifier, revProt);
-
+		alert("yo");
+        self.initProteins();        
         //read links
         addCSVLinks();
         //take out unlinked
@@ -136,7 +137,7 @@ xiNET.Controller.prototype.readCSV = function(csv, fasta, annotations) {
         if (annotations){
             self.addAnnotations(annotations);
         }
-        self.initProteins();
+		self.initLayout();
     }
     else { // no FASTA file
         //we may encounter proteins with
