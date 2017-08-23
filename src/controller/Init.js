@@ -77,6 +77,34 @@ xiNET.Controller = function(targetDiv) {
         self.touchEnd(evt);
     };
 
+	//key press
+	document.onkeypress = function (evt) {
+		if (evt.key == "a") {
+			
+			var out = "ProteinId,AnnotName,StartRes,EndRes,Color\n";
+			
+			var proteins = self.proteins.values();
+			var proteinCount = proteins.length;
+			for (var p = 0; p < proteinCount; p++) {
+				var prot = proteins[p];
+				var annots = prot.annotations;
+				var annotCount = annots.length;
+				for (var a = 0; a < annotCount; a++) {
+					var annot = annots[a];
+					out += prot.id + "," 
+						+ annot.name + ","
+						+ annot.start + ","  
+						+ annot.end + ","  
+						+ annot.colour.toHex() + "\n"  
+				}
+			}
+			
+			var asURL = 'data:application/txt;filename=annotations.csv,' + encodeURIComponent(out);
+			window.open(asURL, 'annotations.csv');
+			
+		}
+	}
+
     targetDiv.appendChild(this.svgElement);
 
     //these attributes are used by checkboxes to hide self links or ambiguous links

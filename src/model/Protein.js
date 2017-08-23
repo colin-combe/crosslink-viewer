@@ -1263,6 +1263,7 @@ Protein.prototype.setPositionalFeatures = function(posFeats) {
                 else {
                     c = new RGBColor(Protein.domainColours(anno.name));
                 }
+                anno.colour = c;
             }
             else {
                 c = anno.colour;
