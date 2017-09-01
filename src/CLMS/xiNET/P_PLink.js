@@ -151,9 +151,9 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
         } else {
             selection = selection.concat(this.crossLinks);
         }
-        this.crosslinkViewer.model.set("selection",selection);
+        this.crosslinkViewer.model.setMarkedCrossLinks ("selection",selection);
     } else {
-        this.crosslinkViewer.model.set("selection", _.clone(this.crossLinks));
+        this.crosslinkViewer.model.setMarkedCrossLinks ("selection", _.clone(this.crossLinks));
     }
     //store start location
     //var p = this.crosslinkViewer.getEventPoint(evt);
@@ -166,7 +166,7 @@ CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
         this.crosslinkViewer.force.stop();
     }
     this.crosslinkViewer.dragElement = this;
-    this.crosslinkViewer.model.set("selection", this.crossLinks);
+    this.crosslinkViewer.model.setMarkedCrossLinks("selection", this.crossLinks);
     //store start location
     //var p = this.crosslinkViewer.getTouchEventPoint(evt);// oh dear, now broken
     this.crosslinkViewer.dragStart = evt;
