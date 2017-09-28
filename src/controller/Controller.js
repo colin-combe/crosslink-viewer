@@ -787,7 +787,7 @@ xiNET.Controller.prototype.autoLayout = function() {
 
     d3.select(this.svgElement).style("visibility","hidden");
 
-    var spinner = new Spinner({scale: 3}).spin(this.targetDiv);
+    var spinner = new Spinner({scale: 3});//.spin(this.targetDiv);
 
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
