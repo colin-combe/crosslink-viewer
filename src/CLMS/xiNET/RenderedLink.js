@@ -13,7 +13,8 @@ CLMS.xiNET.RenderedLink = function (){};
 
 CLMS.xiNET.RenderedLink.prototype.mouseOut = function(evt){
     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    this.crosslinkViewer.model.set("highlights",[]);
+    //this.crosslinkViewer.model.set("highlights",[]);
+    this.crosslinkViewer.model.setMarkedCrossLinks ("highlights",[]);   // which pokes highlighted matches into changing too
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 }
 
