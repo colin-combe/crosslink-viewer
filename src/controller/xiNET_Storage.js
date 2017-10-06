@@ -118,7 +118,7 @@ xiNET_Storage.getUniProtFeatures = function (id, callback){
 xiNET_Storage.getSuperFamFeatures = function (id, callback){
     var accession = xiNET_Storage.accessionFromId(id);
     function superFamDAS(){
-        var url = "http://supfam.org/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
+        var url = "https://supfam.mrc-lmb.cam.ac.uk/SUPERFAMILY/cgi-bin/das/up/features?segment=" + accession;
         d3.xml(url, function (xml){
             xml = new XMLSerializer().serializeToString(xml);
             //~ console.log(accession + " SuperFamDAS  retrieved.");
