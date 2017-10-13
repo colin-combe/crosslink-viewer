@@ -558,7 +558,8 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
 Polymer.stepsInArc = 5;
 
 Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
+	console.log(">>" + annotation.begin);
+    var startAngle = ((annotation.begin - 1) / this.size) * 360;
     var endAngle = ((annotation.end - 1) / this.size) * 360;
     var radius = this.getBlobRadius() - 2;
     var arcStart = Molecule.trig(radius, startAngle - 90);
@@ -573,7 +574,7 @@ Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
 
 Polymer.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
     //approximate pie slice
-    var startAngle = ((annotation.start - 1) / this.size) * 360;
+    var startAngle = ((annotation.begin - 1) / this.size) * 360;
     var endAngle = ((annotation.end) / this.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
     var arcStart = Molecule.trig(pieRadius, startAngle - 90);
@@ -593,8 +594,8 @@ Polymer.prototype.getAnnotationPieSliceApproximatePath = function(annotation) {
 Polymer.prototype.getAnnotationRectPath = function(annotation) {
     //domain as rectangle path
     var bottom = Polymer.STICKHEIGHT / 2, top = -Polymer.STICKHEIGHT / 2;
-    var annotX = this.getResXwithStickZoom(annotation.start - 0.5);
-    var annotSize = (1 + (annotation.end - annotation.start));
+    var annotX = this.getResXwithStickZoom(annotation.begin - 0.5);
+    var annotSize = (1 + (annotation.end - annotation.begin));
     var annotLength = annotSize * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     for (var sia = 0; sia <= Polymer.stepsInArc; sia++) {

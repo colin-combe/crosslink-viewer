@@ -206,16 +206,16 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
         var y = -Molecule.STICKHEIGHT / 2;
         //draw longest regions first
         posFeats.sort(function(a, b) {
-            return (b.end - b.start) - (a.end - a.start);
+            return (b.end - b.begin) - (a.end - a.begin);
         });
         this.annotations = posFeats;
         if (this.annotations.length == 0) {
             //~ alert("no annot");
-            this.annotations.push({start: 1, end: this.size, name: "No annotations"});
+            this.annotations.push({begin: 1, end: this.size, description: "No annotations"});
         }
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
-            anno.start = anno.start - 0;
+            anno.begin = anno.begin - 0;
             anno.end = anno.end - 0;
             anno.pieSlice = document.createElementNS(Config.svgns, "path");
             if (this.form === 0) {
@@ -225,7 +225,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             }
             anno.pieSlice.setAttribute("stroke-width", 1);
             anno.pieSlice.setAttribute("fill-opacity", "0.6");
-            var text = anno.name + " [" + anno.start + " - " + anno.end + "]";
+            var text = anno.description + " [" + anno.begin + " - " + anno.end + "]";
             anno.pieSlice.name = text;
             var xlv = this.controller;
             var self = this;

@@ -992,7 +992,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
                 
         var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
-        if (catCount < 21) {
+        //~ if (catCount < 21) {
             if (catCount < 6) {
 				//~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
                 //~ colourScheme = d3.scale.ordinal().range(reversed);
@@ -1012,16 +1012,17 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
                 var mol = mols[m];
                 for (a = 0; a < mol.annotations.length; a++) {
                     var anno = mol.annotations[a];
-                    if (anno.name == "No annotations") {
+                    if (anno.description == "No annotations") {
                         var c = "#cccccc";
                     } else {
-                        var c = colourScheme(anno.name);
+						console.log(">" + anno.description);
+                        var c = colourScheme(anno.description);
                     }
                     anno.pieSlice.setAttribute("fill", c);
                     anno.pieSlice.setAttribute("stroke", c);
                 }
             }
-        }
+        //~ }
         self.legendChanged(colourScheme);
     }
 };
