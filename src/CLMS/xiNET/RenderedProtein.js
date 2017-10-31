@@ -1171,7 +1171,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
 	//actually its not clear there is better solution - 
 	// https://stackoverflow.com/questions/5737975/circle-drawing-with-svgs-arc-path
 	if (annotation.fstart == 1 && annotation.fend == this.participant.size) {
-        startAngle  = 0.5;
+        startAngle  = 0.1;
         endAngle = 359.9;
         sweepFlag = 1;
     }
