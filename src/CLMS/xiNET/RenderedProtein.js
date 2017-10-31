@@ -1157,19 +1157,25 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(annotation) {
     var startAngle = ((annotation.fstart - 1) / this.participant.size) * 360;
     var endAngle = (annotation.fend / this.participant.size) * 360;
-	var largeArcFlag = 0, sweepFlag = 0;
-    if ((endAngle - startAngle) > 180) {
+    //just in case
+    if (startAngle > endAngle) {
+		var temp = startAngle;
+		startAngle = endAngle;
+		endAngle = temp;
+	}
+	var largeArcFlag = 0, sweepFlag = 1;
+    if ((endAngle - startAngle) > 180 ){ //|| (endAngle - startAngle) == 0) {
         largeArcFlag = 1;
-        sweepFlag = 1;
     }
 	//hacky
+	//actually its not clear there is better solution - 
+	// https://stackoverflow.com/questions/5737975/circle-drawing-with-svgs-arc-path
 	if (annotation.fstart == 1 && annotation.fend == this.participant.size) {
         startAngle  = 0.5;
-        endAngle = 359.5;
+        endAngle = 359.9;
         sweepFlag = 1;
     }
     
-
     var radius = this.getBlobRadius() - 2;
     var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
     var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
