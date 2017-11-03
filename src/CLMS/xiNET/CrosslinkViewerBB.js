@@ -795,7 +795,14 @@
         },
 
         downloadSVG: function () {
-            var svg = CLMSUI.utils.getSVG(d3.select(this.el).select("svg"));
+            var svg = d3.select(this.el).select("svg").node().outerHTML;
+            
+            var bBox = this.svgElement.getBoundingClientRect();
+			var width = Math.round(bBox.width);
+            var height = Math.round(bBox.height);
+           
+            svg = svg.replace('width="100%"','width="'+width+'px"');
+            svg = svg.replace('height="100%"','height="'+height+'px"');
             download(svg, 'application/svg', 'xiNET-output.svg');
         },
 
