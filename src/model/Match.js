@@ -418,7 +418,7 @@ Match.prototype.associateWithLink = function (p1ID, p2ID, res1, res2, //followin
     if (link === undefined) {
         if (fromProt === undefined || toProt === undefined) {
             alert("Something has gone wrong; a link has been added before a protein it links to. " +
-                    p1ID + "-" + p2ID);
+                    p1ID + "-" + p2ID + " Are both of these IDs in your FASTA file?");
         }
         link = new ProteinLink(proteinLinkID, fromProt, toProt, this.controller);
         this.controller.proteinLinks.set(proteinLinkID, link);
