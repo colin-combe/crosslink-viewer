@@ -1,7 +1,7 @@
 xiNET cross-link viewer
 ================
 
-A web based visualisation of cross-link / mass spectrometry data developed by the Rappsilber Laboratory.
+A web based visualisation of cross-link / mass spectrometry data developed by the Rappsilber Laboratory. It can be used at [http://crosslinkviewer.org](http://crosslinkviewer.org).
 
 If you use xiNET in your work please cite:
 
