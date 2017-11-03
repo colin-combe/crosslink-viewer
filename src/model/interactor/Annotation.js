@@ -10,13 +10,13 @@
 
 //constructor for annotations
 function Annotation(annotName, startRes, endRes, colour, notes) {
-    this.name = annotName;
-    this.start = startRes;
+    this.description = annotName;
+    this.begin = startRes;
     this.end = endRes;
     if (colour !== undefined && colour !== null) {
         this.colour = colour;
     }
-    this.notes = notes;
+    //~ this.description = notes;
 }
 
 module.exports = Annotation;

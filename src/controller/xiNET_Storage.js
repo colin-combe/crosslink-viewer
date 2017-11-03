@@ -40,8 +40,8 @@ xiNET_Storage.accessionFromId = function (id){
 xiNET_Storage.getUniProtTxt = function (id, callback){
     var accession = xiNET_Storage.accessionFromId(id);
     function uniprotWebService(){
-        var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
-        d3.text(url, function (txt){
+        var url = "https://www.ebi.ac.uk/proteins/api/proteins/" + accession;
+        d3.json(url, function (txt){
             //~ // console.log(accession + " retrieved from UniProt.");
             //~ if(typeof(Storage) !== "undefined") {
                 //~ localStorage.setItem(xiNET_Storage.ns  + "UniProtKB."+ accession, txt);
@@ -73,45 +73,47 @@ xiNET_Storage.getUniProtTxt = function (id, callback){
 
 xiNET_Storage.getSequence = function (id, callback){
     //~ var accession = xiNET_Storage.accessionFromId(id);
-    xiNET_Storage.getUniProtTxt(id, function(noNeed, txt){
-            var sequence = "";
-            var lines = txt.split('\n');
-            var lineCount = lines.length;
-            for (var l = 0; l < lineCount; l++){
-                var line = lines[l];
-                if (line.indexOf("SQ") === 0){
-                    //sequence = line;
-                    l++;
-                    for (l; l < lineCount; l++){
-                        line = lines[l];
-                        sequence += line;
-                    }
-                }
-            }
-            callback(id, sequence.replace(/[^A-Z]/g, ''));
+    xiNET_Storage.getUniProtTxt(id, function(noNeed, json){
+            //~ var sequence = "";
+            //~ var lines = txt.split('\n');
+            //~ var lineCount = lines.length;
+            //~ for (var l = 0; l < lineCount; l++){
+                //~ var line = lines[l];
+                //~ if (line.indexOf("SQ") === 0){
+                    //~ //sequence = line;
+                    //~ l++;
+                    //~ for (l; l < lineCount; l++){
+                        //~ line = lines[l];
+                        //~ sequence += line;
+                    //~ }
+                //~ }
+            //~ }
+            callback(id, json.sequence.replace(/[^A-Z]/g, ''));
         }
     );
 }
 
 xiNET_Storage.getUniProtFeatures = function (id, callback){
     var accession = xiNET_Storage.accessionFromId(id);
-        xiNET_Storage.getUniProtTxt(id, function(id, txt){
-            var features = new Array();
-            var lines = txt.split('\n');
-            var lineCount = lines.length;
-            for (var l = 0; l < lineCount; l++){
-                var line = lines[l];
-                if (line.indexOf("FT") === 0){
-                    var fields = line.split(/\s{2,}/g);
-                    if (fields.length > 4 && fields[1] === 'DOMAIN') {
-                        //console.log(fields[1]);fields[4].substring(0, fields[4].indexOf("."))
-                        var name = fields[4].substring(0, fields[4].indexOf("."));
-                        features.push(new Annotation (name, fields[2], fields[3], null, fields[4]));
-                    }
-                }
-            }
-            callback(id, features);
-        }
+	xiNET_Storage.getUniProtTxt(id, function(id, json){
+		//~ var features = new Array();
+		//~ var lines = txt.split('\n');
+		//~ var lineCount = lines.length;
+		//~ for (var l = 0; l < lineCount; l++){
+			//~ var line = lines[l];
+			//~ if (line.indexOf("FT") === 0){
+				//~ var fields = line.split(/\s{2,}/g);
+				//~ if (fields.length > 4 && fields[1] === 'DOMAIN') {
+					//~ //console.log(fields[1]);fields[4].substring(0, fields[4].indexOf("."))
+					//~ var name = fields[4].substring(0, fields[4].indexOf("."));
+					//~ features.push(new Annotation (name, fields[2], fields[3], null, fields[4]));
+				//~ }
+			//~ }
+		//~ }
+		callback(id, json.features.filter(function(ft){ 
+		  return ft.type == "DOMAIN";
+		}));
+	}
     );
 }
 

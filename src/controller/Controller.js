@@ -788,7 +788,9 @@ xiNET.Controller.prototype.autoLayout = function() {
     d3.select(this.svgElement).style("visibility","hidden");
 
     var spinner = new Spinner({scale: 3}).spin(this.targetDiv);
-
+    var showIt = false;
+	setTimeout(function(){spinner.spin(false);showIt = true}, 2000);
+	
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
@@ -864,28 +866,29 @@ xiNET.Controller.prototype.autoLayout = function() {
             .size([width, height]);
             //also .chargeDistance() and .alpha() // not used
 
-    this.force.on("end", function(e) {
-        var nodes = self.force.nodes();
-        // console.log("nodes", nodes);
-        for (var n = 0; n < nodeCount; n++) {
-            var node = nodes[n];
-            var mol = self.molecules.get(node.id);
-            var nx = node.x;
-            var ny = node.y;
-            mol.setPosition(nx, ny);
-        }
-        self.setAllLinkCoordinates();
-        spinner.stop();
-        d3.select(self.svgElement).style('visibility','visible');
-
+    this.force.on("tick", function(e) {
+		if (showIt) {
+				var nodes = self.force.nodes();
+				// console.log("nodes", nodes);
+				for (var n = 0; n < nodeCount; n++) {
+					var node = nodes[n];
+					var mol = self.molecules.get(node.id);
+					var nx = node.x;
+					var ny = node.y;
+					mol.setPosition(nx, ny);
+				}
+				self.setAllLinkCoordinates();
+				//spinner.stop();
+				d3.select(self.svgElement).style('visibility','visible');
+		}
         //this could be improved, todo: check all possible over boundary possibilities
-        var bBox = self.container.getBBox();
-        //~ console.log(bBox);
-        //only dealing with the more common 'label over left edge' situation
-        if (bBox.x < 0) {
-            //alert("bodge time");
-            self.setCTM(self.container, self.container.getCTM().translate(- bBox.x, 0));
-        }
+        //~ var bBox = self.container.getBBox();
+        //console.log(bBox);
+        //~ //only dealing with the more common 'label over left edge' situation
+        //~ if (bBox.x < 0) {
+            //~ //alert("bodge time");
+            //~ self.setCTM(self.container, self.container.getCTM().translate(- bBox.x, 0));
+        //~ }
 
 
     });
@@ -989,7 +992,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
                 
         var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
-        if (catCount < 21) {
+        //~ if (catCount < 21) {
             if (catCount < 6) {
 				//~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
                 //~ colourScheme = d3.scale.ordinal().range(reversed);
@@ -1009,16 +1012,17 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
                 var mol = mols[m];
                 for (a = 0; a < mol.annotations.length; a++) {
                     var anno = mol.annotations[a];
-                    if (anno.name == "No annotations") {
+                    if (anno.description == "No annotations") {
                         var c = "#cccccc";
                     } else {
-                        var c = colourScheme(anno.name);
+						console.log(">" + anno.description);
+                        var c = colourScheme(anno.description);
                     }
                     anno.pieSlice.setAttribute("fill", c);
                     anno.pieSlice.setAttribute("stroke", c);
                 }
             }
-        }
+        //~ }
         self.legendChanged(colourScheme);
     }
 };
