@@ -155,9 +155,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
 				toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
 			}
 			//TODO: make 'shown peptides' attribute of renderedCrossLink - allows improving the highlightsChanged function in CrossLinkViewerBB 
-			this.renderedFromProtein.showPeptides(fromPeptides);
+			this.renderedFromProtein.showPeptides(fromPeptides, "from");
 			if (this.renderedToProtein) {
-				this.renderedToProtein.showPeptides(toPeptides);
+				this.renderedToProtein.showPeptides(toPeptides, "to");
 			}
 		} else {
 			if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
