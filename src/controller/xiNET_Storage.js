@@ -62,7 +62,12 @@ xiNET_Storage.getSequence = function (id, callback){
 
     function uniprotWebServiceFASTA(){
         var url = "http://www.uniprot.org/uniprot/" + accession + ".fasta";
-        d3.text(url, function (txt){
+        d3.text(url, function (error, txt){
+			if (error) {
+				alert("Failed. Cannot fetch sequence data for " + accession + ". Is it a valid UniprotKB accession number?" );
+				return;
+			}
+			
             if (txt) {
                 //~ console.log(txt);
                 //~ console.log(accession + " retrieved from UniProt.");

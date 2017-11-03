@@ -1,6 +1,6 @@
 "Protein1","PepPos1","LinkPos1","PepSeq1","Protein2","PepPos2","LinkPos2","PepSeq2"
 "A",2,3," HIKER"," n/a"," n/a",," "
-"A;A","7,14",2,"SKIER"," n/a"," n/a",,
+"A;A","7;14",2,"SKIER"," n/a"," n/a",,
 "A",,20,," n/a"," n/a",,
 "B1",2,1," KAYAKER","n/a",,5,
 "B1;B2"," 12;15",4," MILKSHAKE","n/a"," ",8," "

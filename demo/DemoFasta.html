@@ -36,7 +36,8 @@
         <script type="text/javascript" src="../src/controller/Rotator.js"></script>
         <script type="text/javascript" src="../src/controller/xiNET_Storage.js"></script>
         <script type="text/javascript" src="../src/controller/ReadCSV.js"></script>
-        <script type="text/javascript" src="../src/controller/Fasta.js"></script>    </head>
+        <script type="text/javascript" src="../src/controller/Fasta.js"></script>    
+    </head>
     <body>
 
 	<!-- Slidey panels -->	
@@ -283,21 +284,10 @@
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
                 xlv.setMessageElement(messageDiv);
+                               
                 
-                /*
-                *
-                *ADDING YOUR OWN DATA FOR LOCAL USE
-                *
-                */
-                
-                var path = "./data/PolII.csv";
-                //change above to load your own data
-                // e.g. if you put your CSV file in './data/MyData.csv'
-                // then change above to path = "./data/MyData.csv";
-                
-                
-               	d3.text('./data/results.fasta', "text/plain", function(fasta) {
-					d3.text('./data/results.csv', "text/csv", function(csv) {
+               	d3.text('./data/test.fasta', "text/plain", function(fasta) {
+					d3.text('./data/test2.csv', "text/csv", function(csv) {
 						xlv.readCSV(csv, fasta);
 					});				
 				});	
