@@ -145,6 +145,9 @@ CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
         }
         this.crosslinkViewer.dragElement = this;
         this.crosslinkViewer.dragStart = evt;
+        
+        d3.select("#container-menu").style("display", "none");
+        
         return false;
 };
 

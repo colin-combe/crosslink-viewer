@@ -31,31 +31,26 @@
 
             //avoids prob with 'save - web page complete'
             d3.select(this.el).selectAll("*").remove();
-            //hack to take out pan/select option in firefox
+   				d3.select(this.el).html(
+                "<div class='xinetControls'>" +
+                    "<div class='xinetButtonBar'>" +
+                        "<label class='panOrSelect'><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                        "<label class='panOrSelect'><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+                        "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
+                        "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
+                        "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
+                    "</div>" +
+                "</div>" +
+                "<ul class='custom-menu' id='container-menu'>" +
+				  "<li data-action='invertSelection'>Invert Selection</li>" +
+				  "<li data-action='hideSelection'>Hide Selection</li>" +
+				"</ul>");
+				         
+			//hack to take out pan/select option in firefox
 			if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-			// Do Firefox-related activities
-				d3.select(this.el).html(
-                "<div class='xinetControls'>" +
-                    "<div class='xinetButtonBar'>" +
-                        "<label style='display:none'><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                        "<label style='display:none'><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                        "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
-                        "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
-                        "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
-                    "</div>" +
-                "</div>");
-   			} else {
-				d3.select(this.el).html(
-                "<div class='xinetControls'>" +
-                    "<div class='xinetButtonBar'>" +
-                        "<label><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                        "<label><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                        "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
-                        "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
-                        "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
-                    "</div>" +
-                "</div>");
-			}
+				// Do Firefox-related activities
+				d3.selectAll("#panOrSelect").style("display", "none");
+   			};
 
             //create SVG elemnent
             this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
@@ -146,6 +141,25 @@
             this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
             this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
             this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
+            
+            var self = this;
+            d3.selectAll("#container-menu li").on("click", function() {
+				switch(d3.select(this).attr("data-action")){
+				  
+				  case "invertSelection" :
+					self.model.invertSelectedProteins();
+				  
+				  break;
+				  case "hideSelection" :
+					self.model.hideSelectedProteins();
+					
+				  break;
+				  //~ alert(d3.select(this).attr("data-action"));
+				}
+				d3.select("#container-menu").style("display", "none");
+				 
+			});
+            
             return this;
         },
 
@@ -423,7 +437,9 @@
             this.mouseMoved = false;
             
             //var toHighlight = [] // todo we dont have synched participant highlighting
-            this.idsToSelect = [];                 
+            this.idsToSelect = [];               
+            
+			d3.select("#container-menu").style("display", "none");
         },
 
         // dragging/rotation/SELECT_PAN/selecting
@@ -590,10 +606,17 @@
 									if (evt.ctrlKey || evt.shiftKey) {
 										this.dragElement.switchStickScale(c);
 									}else {
-										if (this.dragElement.form === 1) {
-											this.dragElement.setForm(0, c);
+										if (this.dragElement.isSelected) {
+											this.model.get("tooltipModel").set("contents", null);
+											var menu = d3.select("#container-menu")
+											//console.log(menu);
+											menu.style("top", evt.pageY + "px").style("left", event.pageX + "px").style("display", "block");
 										} else {
-											this.dragElement.setForm(1, c);
+											if (this.dragElement.form === 1) {
+												this.dragElement.setForm(0, c);
+											} else {
+												this.dragElement.setForm(1, c);
+											}
 										}
 									}
 								} else  {

@@ -162,6 +162,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //store start location
     //var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    
+    d3.select("#container-menu").style("display", "none");
 };
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {

@@ -119,6 +119,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 	}
     //store start location
     this.crosslinkViewer.dragStart = evt;
+    
+    d3.select("#container-menu").style("display", "none");
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
