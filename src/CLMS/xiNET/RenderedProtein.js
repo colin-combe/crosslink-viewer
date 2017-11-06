@@ -459,6 +459,7 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
+    /*
 	if (bool) {
 		CLMS.removeDomElement(this.upperGroup);
 		CLMS.removeDomElement(this.lowerGroup);
@@ -466,6 +467,10 @@ CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
 		this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
 		this.crosslinkViewer.proteinLower.appendChild(this.lowerGroup);
 	}
+    */
+    // MJG
+    d3.select(this.upperGroup).style ("display", bool ? "none" : null);
+    d3.select(this.lowerGroup).style ("display", bool ? "none" : null);
     this.hidden = bool; 
 };
 
@@ -876,15 +881,50 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
 }
 
 //TODO: this should be with the links not with the rendered proteins
-CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
+CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass) {
     if (this.form=== 1){
         var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
 
         var count = pepBounds.length;
         var yIncrement = CLMS.xiNET.RenderedProtein.STICKHEIGHT / count;
+        
+        // NEW - MJG
+        /*
+        var self = this;
+        
+        var pt = d3.select(this.peptides).selectAll("g.protein."+pepClass).data(pepBounds);
+        
+        pt.exit().remove();
+        
+        var newpp = pt.enter().append("g")
+            .attr("class", "protein")
+        ;  
+        newpp.append("rect").attr("class", "protein pt1 "+pepClass);
+        newpp.append("rect").attr("class", "protein pt2 "+pepClass);
+        
+        pt.select("rect.pt1")
+            .attr ("x", function(d) { return ((d[0] + 0.5) - (self.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("y", function(d,i) { return y + (yIncrement * i); })
+            .attr ("width", function (d) { return d[1] * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("height", yIncrement)
+            .attr ("fill", CLMS.xiNET.highlightColour.toRGB())
+        ;
+        
+        pt.select("rect.pt2")
+            .attr ("x", function(d) { return (((d[2] || 0) + 0.5) - (self.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("y", function(d,i) { return y + (yIncrement * i); })
+            .attr ("width", function (d) { return ((d[3] - d[2]) || 0) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("height", yIncrement)
+            .attr ("fill", CLMS.xiNET.highlightColour.toRGB())
+            .attr ("fill-opacity", 0.5)
+            .style ("display", function(d) { return d[2] ? "none" : null; })
+        ; 
+        */
+        // OLD
+        
         for (var i = 0; i < count; i++) {
             var pep = pepBounds[i];
-
+            //console.log ("PEP", pep);
             var annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
 
@@ -922,6 +962,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds) {
             }
             y += yIncrement;
         }
+        
    }
 }
 

@@ -795,15 +795,19 @@
         },
 
         downloadSVG: function () {
-            var svg = d3.select(this.el).select("svg").node().outerHTML;
-            
+            var svgArr = [this.svgElement];
+            var svgStrings = CLMSUI.svgUtils.capture (svgArr);
+            var svgXML = CLMSUI.svgUtils.makeXMLStr (new XMLSerializer(), svgStrings[0]);
+            //bit of a hack
             var bBox = this.svgElement.getBoundingClientRect();
 			var width = Math.round(bBox.width);
             var height = Math.round(bBox.height);
-           
-            svg = svg.replace('width="100%"','width="'+width+'px"');
-            svg = svg.replace('height="100%"','height="'+height+'px"');
-            download(svg, 'application/svg', 'xiNET-output.svg');
+            svgXML = svgXML.replace('width="100%"','width="'+width+'px"');
+            svgXML = svgXML.replace('height="100%"','height="'+height+'px"');
+            //console.log ("xml", svgXML);
+            
+            var fileName = CLMSUI.utils.makeLegalFileName (CLMSUI.utils.searchesToString()+"--xiNET--"+CLMSUI.utils.filterStateToString());
+            download (svgXML, 'application/svg', fileName+".svg");
         },
 
 		highlightsChanged: function () {
