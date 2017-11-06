@@ -30,11 +30,16 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 		this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
 		this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
 		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "path");
+        this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
+        this.renderedFromProtein.selfLinks.appendChild(this.line);
+
 	} else {
 		this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
 		this.line.setAttribute("stroke-linecap", "round");
 		this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
 		this.highlightLine.setAttribute("stroke-linecap", "round");
+		this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+        this.crosslinkViewer.res_resLinks.appendChild(this.line);
 	}
 	this.line.setAttribute("class", "link");
 	this.line.setAttribute("fill", "none");
@@ -230,8 +235,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             }
             this.line.setAttribute("d", path);
             this.highlightLine.setAttribute("d", path);
-            this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
-            this.renderedFromProtein.selfLinks.appendChild(this.line);
+            //~ this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
+            //~ this.renderedFromProtein.selfLinks.appendChild(this.line);
 
         }
         else {
@@ -239,9 +244,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);
-            this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-            this.crosslinkViewer.res_resLinks.appendChild(this.line);
+            //~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+            //~ this.crosslinkViewer.res_resLinks.appendChild(this.line);
         }
+        d3.select(this.highlightLine).style ("display", null);
+		d3.select(this.line).style ("display", null);
     }
     this.dashedLine(this.crossLink.ambiguous);
 	
@@ -254,8 +261,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
 CLMS.xiNET.RenderedCrossLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-		CLMS.removeDomElement(this.highlightLine);
-		CLMS.removeDomElement(this.line);
+		//~ CLMS.removeDomElement(this.highlightLine);
+		//~ CLMS.removeDomElement(this.line);
+		d3.select(this.highlightLine).style ("display", "none");
+		d3.select(this.line).style ("display", "none");
     }
 };
 

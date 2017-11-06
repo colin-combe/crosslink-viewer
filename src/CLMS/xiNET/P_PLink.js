@@ -68,6 +68,10 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.thickLine.setAttribute("stroke", "lightgray");
     this.thickLine.setAttribute("stroke-linecap", "round");
     this.thickLine.setAttribute("stroke-linejoin", "round");
+    
+	this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+	this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+	this.crosslinkViewer.p_pLinks.appendChild(this.line);
 
     //set the events for it
     var self = this;
@@ -283,25 +287,29 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
             this.thickLine.setAttribute("transform", "translate(" +
                 this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")"  // possibly not neccessary
                 + " scale(" + (this.crosslinkViewer.z) + ")");
-            this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+            //~ this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
             this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
                     + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
             this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
                     + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
-            this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-            this.crosslinkViewer.p_pLinks.appendChild(this.line);
+            //~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+            //~ this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
         else {
             this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);
-            this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
-            this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-            this.crosslinkViewer.p_pLinks.appendChild(this.line);
+            //~ this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+            //~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+            //~ this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
+        d3.select(this.thickLine).style ("display", null);
+		d3.select(this.highlightLine).style ("display", null);
+		d3.select(this.line).style ("display", null);
     }
+
     if (this.filteredCrossLinkCount < 2) {
         this.thickLine.setAttribute("stroke-width", 0);
     } else {
@@ -327,15 +335,20 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 CLMS.xiNET.P_PLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        if (this.renderedFromProtein === this.renderedToProtein) {
-            this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-            this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            this.crosslinkViewer.p_pLinks.removeChild(this.line);
-        } else {
-            this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-            this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            this.crosslinkViewer.p_pLinks.removeChild(this.line);
-        }
+        //~ if (this.renderedFromProtein === this.renderedToProtein) {
+            //~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
+            //~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+            //~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
+        //~ } else {
+            //~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
+            //~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
+            //~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
+        //~ }
+
+    d3.select(this.thickLine).style ("display", "none");
+    d3.select(this.highlightLine).style ("display", "none");
+	d3.select(this.line).style ("display", "none");
+
     }
 };
 
