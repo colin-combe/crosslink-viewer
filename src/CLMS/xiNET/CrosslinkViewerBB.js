@@ -617,7 +617,7 @@
 											this.model.get("tooltipModel").set("contents", null);
 											var menu = d3.select("#container-menu")
 											//console.log(menu);
-											menu.style("top", evt.pageY + "px").style("left", event.pageX + "px").style("display", "block");
+											menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
 										} else {
 											if (this.dragElement.form === 1) {
 												this.dragElement.setForm(0, c);
