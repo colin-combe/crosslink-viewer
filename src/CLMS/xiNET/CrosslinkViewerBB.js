@@ -910,13 +910,17 @@
 			var rpCount = renderedParticipantArr.length;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var renderedParticipant = renderedParticipantArr[rp];
-			    renderedParticipant.setSelected(false);
+			    //~ if (renderedParticipant.participant.is_decoy != true) {
+					renderedParticipant.setSelected(false);
+				//~ }
             }
             var selectedParticipantsArr = CLMS.arrayFromMapValues(this.model.get("selectedProtein"));
             var spCount = selectedParticipantsArr.length
             for (var sp =0; sp < spCount; sp++ ) {
-                var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
-                renderedParticipant.setSelected(true);
+                if (selectedParticipantsArr[sp].is_decoy != true) {
+					var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
+                	renderedParticipant.setSelected(true);
+				}
             }
             return this;
         },
