@@ -14,7 +14,8 @@
             "change .clickToPan": "setClickModePan",
             "click .saveLayout": "saveLayout",
             "click .resetLayout": "reset",
-            "click .downloadButton": "downloadSVG"
+            "click .downloadButton": "downloadSVG",
+			"click .showHidden": "showHidden",
         },
 
         setClickModeSelect: function (){
@@ -24,6 +25,10 @@
         setClickModePan: function (){
             this.clickModeIsSelect = false;
         },
+        
+        showHidden: function (){
+			this.model.showHiddenProteins();
+		},
 
         initialize: function () {
 
@@ -44,7 +49,8 @@
                 "<ul class='custom-menu' id='container-menu'>" +
 				  "<li data-action='invertSelection'>Invert Selection</li>" +
 				  "<li data-action='hideSelection'>Hide Selection</li>" +
-				"</ul>");
+				"</ul>" +
+				"<div id='hiddenProteinsMessage'><p id='hiddenProteinsText'>Maunally Hidden Message</p><button class='btn btn-1 btn-1a showHidden' >Show</button></div>");
 				         
 			//hack to take out pan/select option in firefox
 			if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
@@ -143,6 +149,8 @@
             this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
             
             var self = this;
+            
+            //no, use backbone events binding. todo: change
             d3.selectAll("#container-menu li").on("click", function() {
 				switch(d3.select(this).attr("data-action")){
 				  
@@ -408,7 +416,6 @@
         },
 
         setAnnotations: function () {
-			var annotationTypes = this.model.get("annotationTypes");
 			var renderedParticipants = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpLen = renderedParticipants.length;
 			for (var p = 0; p < rpLen; p++ ) {
@@ -637,9 +644,7 @@
 					if (!this.clickModeIsSelect) {
 						this.model.setSelectedProteins([]);
 					}
-                }
-                
-				if (this.clickModeIsSelect) {
+                } else if (this.clickModeIsSelect) {
 					var add = evt.ctrlKey || evt.shiftKey;
 					this.model.setSelectedProteins(this.idsToSelect, add);
 				}
@@ -914,10 +919,27 @@
         hiddenParticipantsChanged: function () {
             var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
 			var rpCount = renderedParticipantArr.length;
+			var manuallyHidden = 0;
 			for (var rp = 0 ; rp < rpCount; rp++) {
 				var renderedParticipant = renderedParticipantArr[rp];
 			    renderedParticipant.setHidden(renderedParticipant.participant.hidden);
+			    if (renderedParticipant.participant.manuallyHidden == true) {
+					manuallyHidden++;
+				}
             }
+            
+            if (manuallyHidden == 0) {
+				d3.select("#hiddenProteinsMessage").style("display", "none");
+			} else {
+					var pSel = d3.select("#hiddenProteinsText");
+					//~ console.log(">>" + pSel);
+					pSel.text((manuallyHidden > 1) ? (manuallyHidden + " Hidden Proteins") : (manuallyHidden + " Hidden Protein"));
+					//~ pSel.style("background", "green");
+					var messgeSel = d3.select("#hiddenProteinsMessage");
+					//~ console.log(">>" + messgeSel);
+					messgeSel.style("display", "block");
+			}
+            
             return this;
         },
         
