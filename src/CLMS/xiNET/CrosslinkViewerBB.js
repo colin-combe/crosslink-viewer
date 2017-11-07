@@ -55,7 +55,7 @@
 			//hack to take out pan/select option in firefox
 			if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
 				// Do Firefox-related activities
-				d3.selectAll("#panOrSelect").style("display", "none");
+				d3.selectAll(".panOrSelect").style("display", "none");
    			};
 
             //create SVG elemnent
