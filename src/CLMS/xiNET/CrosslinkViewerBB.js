@@ -49,6 +49,7 @@
                 "<ul class='custom-menu' id='container-menu'>" +
 				  "<li data-action='invertSelection'>Invert Selection</li>" +
 				  "<li data-action='hideSelection'>Hide Selection</li>" +
+				  "<li data-action='stepOutSelection'>Step-out Selection</li>" +
 				"</ul>" +
 				"<div id='hiddenProteinsMessage'><p id='hiddenProteinsText'>Maunally Hidden Message</p><button class='btn btn-1 btn-1a showHidden' >Show</button></div>");
 				         
@@ -160,6 +161,10 @@
 				  break;
 				  case "hideSelection" :
 					self.model.hideSelectedProteins();
+			
+				  break;
+				  case "stepOutSelection" :
+					self.model.stepOutSelectedProteins();
 					
 				  break;
 				  //~ alert(d3.select(this).attr("data-action"));
