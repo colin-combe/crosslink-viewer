@@ -808,9 +808,9 @@
             //TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protein)
             var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
             var rclCount = renderedCrossLinksArr.length;
-            for (var rcl =0; rcl < rclCount; rcl++) {
-                renderedCrossLinksArr[rcl].showHighlight(false);
-            }
+            //~ for (var rcl =0; rcl < rclCount; rcl++) {
+                //~ renderedCrossLinksArr[rcl].showHighlight(false);
+            //~ }
 
             var highlightedCrossLinks = this.model.get("highlights");
 
@@ -829,9 +829,9 @@
                 }
                 // can't have this here, it calls remove Peptides which removes ALL highlighted pep's from protein
                 // so need peptide removing loop before
-                //~ else {
-                    //~ renderedCrossLink.showHighlight(false);
-                //~ }
+                else {
+                    renderedCrossLink.showHighlight(false);
+                }
             }
             return this;
         },

@@ -161,23 +161,182 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
             }
             //TODO: make 'shown peptides' attribute of renderedCrossLink - allows improving the highlightsChanged function in CrossLinkViewerBB
-            this.renderedFromProtein.showPeptides(fromPeptides, "from");
+           /* this.renderedFromProtein.showPeptides(fromPeptides, "from");
             if (this.renderedToProtein) {
                 this.renderedToProtein.showPeptides(toPeptides, "to");
+            }*/
+            this.fromPeptidesSVGArr = showPeptides(fromPeptides, this.renderedFromProtein);
+            if (this.renderedToProtein) {
+                this.toPeptidesSVGArr = showPeptides(toPeptides, this.renderedToProtein);
             }
         } else {
             if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
             if (this.isSelected == false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
-
-            this.renderedFromProtein.removePeptides();
+            removePeptides(this.renderedFromProtein, this.fromPeptidesSVGArr);
+            this.fromPeptidesSVGArr = null;
             if (this.renderedToProtein) {
-                    this.renderedToProtein.removePeptides();
+                removePeptides(this.renderedToProtein, this.toPeptidesSVGArr);
+                this.toPeptidesSVGArr = null;
             }
         }
     }
+    
+    function showPeptides (pepBounds, renderedProtein) {
+        var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+        var count = pepBounds.length;
+        var yIncrement = CLMS.xiNET.RenderedProtein.STICKHEIGHT / count;
+        var svgArr = []
+        for (var i = 0; i < count; i++) {
+            var pep = pepBounds[i];
+            var annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+            annotColouredRect.setAttribute("class", "protein");
+
+            //make domain rect's
+            var annoSize = pep[1];
+            if (annoSize > 0){
+                var annotX = ((pep[0] + 0.5) - (renderedProtein.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+                annotColouredRect.setAttribute("x", annotX);
+                annotColouredRect.setAttribute("y", y);
+                annotColouredRect.setAttribute("width", annoLength);
+                annotColouredRect.setAttribute("height", yIncrement);
+                //style 'em
+                annotColouredRect.setAttribute("fill", CLMS.xiNET.highlightColour.toRGB());
+                //annotColouredRect.setAttribute("fill-opacity", "0.7");
+                renderedProtein.peptides.appendChild(annotColouredRect);
+                svgArr.push(annotColouredRect);
+            }
+
+            if (pep[2]){//homodimer like
+                annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+                annotColouredRect.setAttribute("class", "protein");
+                var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+                annotColouredRect.setAttribute("x", annotX);
+                annotColouredRect.setAttribute("y", y);
+                annotColouredRect.setAttribute("width", annoLength);
+                annotColouredRect.setAttribute("height", yIncrement);
+
+                //style 'em
+                annotColouredRect.setAttribute("fill", CLMS.xiNET.homodimerLinkColour.toRGB());
+                annotColouredRect.setAttribute("fill-opacity", "0.5");
+
+                renderedProtein.peptides.appendChild(annotColouredRect);
+                svgArr.push(annotColouredRect);
+            }
+            y += yIncrement;
+        }
+        return svgArr;
+    };
+    
+    function removePeptides (renderedParticipant, svgArr) {
+        if (svgArr) {
+            var svgArrCount = svgArr.length;
+            for (var p = 0; p < svgArrCount; p++){
+                renderedParticipant.peptides.remove(svgArr[p]); 
+            }
+        }
+    };
 };
+
+
+
+//TODO: this should be with the links not with the rendered proteins 
+/*
+CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass) {
+    if (this.form=== 1){
+        var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+
+        var count = pepBounds.length;
+        var yIncrement = CLMS.xiNET.RenderedProtein.STICKHEIGHT / count;
+
+        // NEW - MJG
+        /*
+        var self = this;
+
+        var pt = d3.select(this.peptides).selectAll("g.protein."+pepClass).data(pepBounds);
+
+        pt.exit().remove();
+
+        var newpp = pt.enter().append("g")
+            .attr("class", "protein")
+        ;
+        newpp.append("rect").attr("class", "protein pt1 "+pepClass);
+        newpp.append("rect").attr("class", "protein pt2 "+pepClass);
+
+        pt.select("rect.pt1")
+            .attr ("x", function(d) { return ((d[0] + 0.5) - (self.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("y", function(d,i) { return y + (yIncrement * i); })
+            .attr ("width", function (d) { return d[1] * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("height", yIncrement)
+            .attr ("fill", CLMS.xiNET.highlightColour.toRGB())
+        ;
+
+        pt.select("rect.pt2")
+            .attr ("x", function(d) { return (((d[2] || 0) + 0.5) - (self.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("y", function(d,i) { return y + (yIncrement * i); })
+            .attr ("width", function (d) { return ((d[3] - d[2]) || 0) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE; })
+            .attr ("height", yIncrement)
+            .attr ("fill", CLMS.xiNET.highlightColour.toRGB())
+            .attr ("fill-opacity", 0.5)
+            .style ("display", function(d) { return d[2] ? "none" : null; })
+        ;
+        */
+        // OLD
+/*
+        for (var i = 0; i < count; i++) {
+            var pep = pepBounds[i];
+            //console.log ("PEP", pep);
+            var annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+            annotColouredRect.setAttribute("class", "protein");
+
+            //make domain rect's
+            var annoSize = pep[1];
+            if (annoSize > 0){
+                var annotX = ((pep[0] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+                annotColouredRect.setAttribute("x", annotX);
+                annotColouredRect.setAttribute("y", y);
+                annotColouredRect.setAttribute("width", annoLength);
+                annotColouredRect.setAttribute("height", yIncrement);
+                //style 'em
+                annotColouredRect.setAttribute("fill", CLMS.xiNET.highlightColour.toRGB());
+                //annotColouredRect.setAttribute("fill-opacity", "0.7");
+                this.peptides.appendChild(annotColouredRect);
+            }
+
+            if (pep[2]){//homodimer like
+                //TODO: eliminate duplication
+                annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+                annotColouredRect.setAttribute("class", "protein");
+                var annotX = ((pep[2] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
+                var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+                annotColouredRect.setAttribute("x", annotX);
+                annotColouredRect.setAttribute("y", y);
+                annotColouredRect.setAttribute("width", annoLength);
+                annotColouredRect.setAttribute("height", yIncrement);
+
+                //style 'em
+                annotColouredRect.setAttribute("fill", CLMS.xiNET.homodimerLinkColour.toRGB());
+                annotColouredRect.setAttribute("fill-opacity", "0.5");
+
+                this.peptides.appendChild(annotColouredRect);
+            }
+            y += yIncrement;
+        }
+
+   }
+}
+
+CLMS.xiNET.RenderedProtein.prototype.removePeptides = function() {
+    d3.select(this.peptides).selectAll("*").remove();
+}
+*/
+
+
+
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
     this.isSelected = select;

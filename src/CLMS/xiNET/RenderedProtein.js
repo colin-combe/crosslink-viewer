@@ -868,7 +868,8 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
     //~ }
 }
 
-//TODO: this should be with the links not with the rendered proteins
+//TODO: this should be with the links not with the rendered proteins 
+/*
 CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass) {
     if (this.form=== 1){
         var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
@@ -909,7 +910,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass
         ;
         */
         // OLD
-
+/*
         for (var i = 0; i < count; i++) {
             var pep = pepBounds[i];
             //console.log ("PEP", pep);
@@ -957,7 +958,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass
 CLMS.xiNET.RenderedProtein.prototype.removePeptides = function() {
     d3.select(this.peptides).selectAll("*").remove();
 }
-
+*/
 CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
     return (r - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
  };
