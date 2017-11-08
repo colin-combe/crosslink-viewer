@@ -676,10 +676,7 @@
 
         saveLayout: function () {
             var myJSONText = JSON.stringify(CLMS.arrayFromMapValues(this.renderedProteins), null, '\t');
-            var viewportJSON = "";//ProtNet.svgElement.getAttribute("viewBox");
             var layout = myJSONText.replace(/\\u0000/gi, '');
-            //+ "\n{co:" + this.cutOff +"}";
-
             var xmlhttp = new XMLHttpRequest();
             var url = "./php/saveLayout.php";
             var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
@@ -705,13 +702,13 @@
                     if (typeof protLayout['rot'] !== 'undefined') {
                         protein.rotation = protLayout["rot"] - 0;
                     }
-                        protein.x = protLayout["x"];
-                        protein.y =  protLayout["y"];
-                        protein.form = protLayout["form"] - 0;
-                        protein.stickZoom = protLayout["stickZoom"];
-                        protein.rotation = protLayout["rot"] - 0;
-                        protein.flipped = protLayout["flipped"]
-                        protein.manuallyHidden = protLayout["manuallyHidden"]
+                    protein.x = protLayout["x"];
+                    protein.y =  protLayout["y"];
+                    protein.form = protLayout["form"] - 0;
+                    protein.stickZoom = protLayout["stickZoom"];
+                    protein.rotation = protLayout["rot"] - 0;
+                    protein.flipped = protLayout["flipped"];
+                    protein.manuallyHidden = protLayout["manuallyHidden"];
                 }
                 else {console.log("! protein in layout but not search:" + protLayout.id);}
             }

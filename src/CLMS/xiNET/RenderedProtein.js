@@ -190,7 +190,8 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
         rot: this.rotation,
         form: this.form,
         stickZoom: this.stickZoom,
-        flipped: this.isFlipped
+        flipped: this.isFlipped,
+        manuallyHidden: this.manuallyHidden,
     };
 };
 
