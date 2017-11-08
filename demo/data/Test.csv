@@ -1,9 +1,0 @@
-Protein1,Protein2,Residue1,Residue2, Note, Color
-sp|Q9Y3A3|MOBL3,sp|Q9NRL3|STRN4,25,25, An unambiguous inter protein cross-link,
-sp|Q9Y3A3|MOBL3,sp|Q9Y3A3|MOBL3,50,100, An unambiguous self cross-link,
-sp|Q9Y3A3|MOBL3,-,110,120, An unambiguous internally linked peptide,
-sp|Q9Y3A3|MOBL3,-, 130, n/a, An unambiguous linker modified peptide,
-sp|Q9Y3A3|MOBL3,sp|Q9Y3A3|MOBL3,150,150, homodimeric self cross-link,
-sp|Q96C01|F136A,sp|Q9NRL3|STRN4;sp|O43815|STRN;sp|Q13033|STRN3,33,50;60;70, An ambiguous cross-link. One end is unambiguous and the other has three possible lnkage sites - it results in three possible links., 
-sp|O43815|STRN; sp|Q13033|STRN3,sp|O43815|STRN; sp|Q13033|STRN3,150;200,175;225, An ambiguous cross-link. Each end has two alternatives resulting in a total of four possible linkage site pairs.,
-sp|O43815|STRN; sp|Q13033|STRN3, -,250;260,275;285, An ambiguous loop-link. Each end has two possible alternatives but being a loop-link both ends must be within the same protein and so there are only two possible linakge site pairs. 
