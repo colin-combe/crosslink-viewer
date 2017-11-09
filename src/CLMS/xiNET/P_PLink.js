@@ -25,9 +25,10 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //layout stuff
-    this.hidden = false;
+    //~ this.hidden = false;
 
-    this.isSelected = false;
+    //~ this.isSelected = false;
+    //~ this.isHighlighted = false;
     this.colours = new Set();
 };
 
@@ -38,15 +39,15 @@ CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     if (this.crossLinks[0].isSelfLink() === false) {
-        this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
-        this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
-        this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
+        this.line = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.thickLine = document.createElementNS(this.crosslinkViewer.svgns, "line");
     } else {
         this.renderedFromProtein.selfLink = this;
 
-        this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
-        this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
-        this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+        this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
+        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, 'path');
+        this.thickLine = document.createElementNS(this.crosslinkViewer.svgns, 'path');
 
         this.initSelfLinkSVG();
     }
@@ -203,21 +204,21 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
 };
 
 CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
-    this.isSelected = select;
-    if (select === true) {
-        if (this.shown) {
-            d3.select(this.highlightLine).classed("selectedLink", true);
-            d3.select(this.highlightLine).classed("highlightedLink", false);
-            this.highlightLine.setAttribute("stroke-opacity", "1");
+    if (this.shown) {
+        if (select == true) {
+                d3.select(this.highlightLine).classed("selectedLink", true);
+                d3.select(this.highlightLine).classed("highlightedLink", false);
+                this.highlightLine.setAttribute("stroke-opacity", "1");
+       }
+        else {
+             if (this.shown) {
+                this.highlightLine.setAttribute("stroke-opacity", "0");
+                d3.select(this.highlightLine).classed("selectedLink", false);
+                d3.select(this.highlightLine).classed("highlightedLink", true);
+             }
         }
-   }
-    else {
-         if (this.shown) {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
-            d3.select(this.highlightLine).classed("selectedLink", false);
-            d3.select(this.highlightLine).classed("highlightedLink", true);
-         }
     }
+    this.isSelected = select;
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {

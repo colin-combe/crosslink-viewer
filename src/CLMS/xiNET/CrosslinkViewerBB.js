@@ -23,6 +23,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         "click .collapse": "collapseProteins",
     },
 
+	svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
+	linkWidth: 1.1,// default line width
+	//static var's signifying Controller's status
+	STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
+			/*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
+	//~ this.STATES.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+	//~ this.STATES.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+	//~ this.STATES.DRAGGING = 2;//set by mouse down on Protein or Link
+	//~ this.STATES.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
+	//~ this.STATES.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
+	//~ this.STATES.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
+	//~ this.STATES.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+
     setClickModeSelect: function (){
         this.clickModeIsSelect = true;
     },
@@ -101,7 +114,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         };
 
         //create SVG elemnent
-        this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(CLMS.xiNET.svgns, "svg");
+        this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(this.svgns, "svg");
         this.svgElement.setAttribute("width", "100%");
         this.svgElement.setAttribute("height", "100%");
         this.svgElement.setAttribute("style", "pointer-events:visible");
@@ -129,34 +142,34 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.ontouchend = function(evt) { self.touchEnd(evt); };
 
         // various SVG groups needed
-        this.wrapper = document.createElementNS(CLMS.xiNET.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
+        this.wrapper = document.createElementNS(this.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
         var identM = this.svgElement.createSVGMatrix()
         var s = "matrix(" + identM.a + "," + identM.b + "," + identM.c + "," + identM.d + "," + identM.e + "," + identM.f + ")";
         this.wrapper.setAttribute("transform", s);
-        this.container = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.container = document.createElementNS(this.svgns, "g");
         this.container.setAttribute("id", "container");
         this.wrapper.appendChild(this.container);
-        this.p_pLinksWide = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.p_pLinksWide = document.createElementNS(this.svgns, "g");
         this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
         this.container.appendChild(this.p_pLinksWide);
 
-        this.proteinLower = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.proteinLower = document.createElementNS(this.svgns, "g");
         this.proteinLower.setAttribute("id", "proteinLower");
         this.container.appendChild(this.proteinLower);
 
-        this.highlights = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.highlights = document.createElementNS(this.svgns, "g");
         this.highlights.setAttribute("class", "highlights");//proteins also contain highlight groups
         this.container.appendChild(this.highlights);
 
-        this.res_resLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.res_resLinks = document.createElementNS(this.svgns, "g");
         this.res_resLinks.setAttribute("id", "res_resLinks");
         this.container.appendChild(this.res_resLinks);
 
-        this.p_pLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.p_pLinks = document.createElementNS(this.svgns, "g");
         this.p_pLinks.setAttribute("id", "p_pLinks");
         this.container.appendChild(this.p_pLinks);
 
-        this.proteinUpper = document.createElementNS(CLMS.xiNET.svgns, "g");
+        this.proteinUpper = document.createElementNS(this.svgns, "g");
         this.proteinUpper.setAttribute("id", "proteinUpper");
         this.container.appendChild(this.proteinUpper);
 
@@ -217,7 +230,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.z = 1;
 
         this.resetZoom();
-        this.state = CLMS.xiNET.Controller.MOUSE_UP;
+        this.state = this.STATES.MOUSE_UP;
 
     },
 
@@ -360,13 +373,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rcl = 0 ; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-                if (renderedCrossLink.line) {//TODO: er, whys this here? looks like a hack filtering out never rendered crossLinks that somehow have shown = true?
+                //~ if (renderedCrossLink.line) {//TODO: er, whys this here? looks like a hack filtering out never rendered crossLinks that somehow have shown = true?
                     renderedCrossLink.line.setAttribute("stroke-width", this.z * CLMS.xiNET.linkWidth);
                     renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                     if (renderedCrossLink.crossLink.ambiguous === true) {
                         renderedCrossLink.dashedLine(true); //rescale spacing of dashes
                     }
-                }
+                //~ }
             }
         }
 
@@ -413,7 +426,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         this.dragStart = evt;
-        this.state = CLMS.xiNET.Controller.SELECT_PAN;
+        this.state = this.STATES.SELECT_PAN;
         this.mouseMoved = false;
 
         //var toHighlight = [] // todo we dont have synched participant highlighting
@@ -433,7 +446,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.mouseMoved = true;
         }
         if (this.dragElement != null) { //dragging or rotating
-            if (this.state === CLMS.xiNET.Controller.DRAGGING) {
+            if (this.state === this.STATES.DRAGGING) {
                 // we are currently dragging things around
                 var ox, oy, nx, ny;
                 if (this.dragElement.participant) {
@@ -459,7 +472,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 this.dragStart = evt;
             }
 
-            else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+            else if (this.state === this.STATES.ROTATING) {
                 // Distance from mouse x and center of stick.
                 var _dx = c.x - this.dragElement.x
                 // Distance from mouse y and center of stick.
@@ -476,12 +489,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             else { //not dragging or rotating yet, maybe we should start
                 // don't start dragging just on a click - we need to move the mouse a bit first
                 if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = CLMS.xiNET.Controller.DRAGGING;
+                    this.state = this.STATES.DRAGGING;
 
                 }
             }
         }
-        else if (this.state === CLMS.xiNET.Controller.SELECT_PAN) {
+        else if (this.state === this.STATES.SELECT_PAN) {
             if (this.clickModeIsSelect) {
                 //SELECT
                 var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
@@ -570,7 +583,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var c = p.matrixTransform(this.container.getCTM().inverse());
 
             if (this.dragElement != null) {
-                if (!(this.state === CLMS.xiNET.Controller.DRAGGING || this.state === CLMS.xiNET.Controller.ROTATING)) { //not dragging or rotating
+                if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
                         if (this.dragElement.x) { //if protein
                             if (rightclick) {
                                 if (evt.ctrlKey || evt.shiftKey) {
@@ -594,7 +607,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             }
                         } // else flip selflink
                 }
-                else if (this.state === CLMS.xiNET.Controller.ROTATING) {
+                else if (this.state === this.STATES.ROTATING) {
                     //round protein rotation to nearest 5 degrees (looks neater)
                     this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
                 }
@@ -613,7 +626,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             this.dragElement = null;
             this.whichRotator = -1;
-            this.state = CLMS.xiNET.Controller.MOUSE_UP;
+            this.state = this.STATES.MOUSE_UP;
 
         }
 
@@ -807,22 +820,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             pLinksArr[pl].showHighlight(false);
         }
 
-        //TODO - structure could be improved here (if removePeptides didn't remove all hightlighted pepides from protein)
+        var highlightedCrossLinks = this.model.getMarkedCrossLinks("highlights");
         var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
         var rclCount = renderedCrossLinksArr.length;
-        //~ for (var rcl =0; rcl < rclCount; rcl++) {
-            //~ renderedCrossLinksArr[rcl].showHighlight(false);
-        //~ }
-
-        var highlightedCrossLinks = this.model.getMarkedCrossLinks("highlights");
-
         for (var rcl =0; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
-
                 if (renderedCrossLink.renderedFromProtein.form == 1
                     || renderedCrossLink.renderedToProtein.form == 1) {
-                    renderedCrossLink.showHighlight(true, true);
+                    renderedCrossLink.showHighlight(true);
                 } else {
                     var p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
@@ -912,16 +918,3 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
 });
-
-//TODO: get rid of all this
-CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
-CLMS.xiNET.linkWidth = 1.1;// default line width
-//static var's signifying Controller's status - bad
-CLMS.xiNET.Controller = {};
-CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-CLMS.xiNET.Controller.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-CLMS.xiNET.Controller.DRAGGING = 2;//set by mouse down on Protein or Link
-CLMS.xiNET.Controller.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
-CLMS.xiNET.Controller.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
-CLMS.xiNET.Controller.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
-CLMS.xiNET.Controller.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag

@@ -27,11 +27,11 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
      * Lower group
      * svg group for elements that appear underneath links
      */
-    this.lowerGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.lowerGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.lowerGroup.setAttribute("class", "protein lowerGroup");
 
     //make highlight
-    this.highlight = document.createElementNS(CLMS.xiNET.svgns, "rect");
+    this.highlight = document.createElementNS(this.crosslinkViewer.svgns, "rect");
     //~ if (CLMS.xiNET.highlightColour !== undefined) {
         this.highlight.setAttribute("class", "highlightedProtein");
     //~ }
@@ -40,11 +40,11 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.lowerGroup.appendChild(this.highlight);
 
     //domains in rectangle form (shown underneath links)
-    this.rectDomains = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.rectDomains = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.rectDomains.setAttribute("opacity", "0");
     this.lowerGroup.appendChild(this.rectDomains);
 
-    this.peptides = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.peptides = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.lowerGroup.appendChild(this.peptides);
 
     /*
@@ -52,17 +52,17 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
      * svg group for elements that appear above links
      */
 
-    this.upperGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.upperGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
 
     //svg groups for self links
-    this.selfLinksHighlights = document.createElementNS(CLMS.xiNET.svgns, "g");
-    this.selfLinks = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.selfLinksHighlights = document.createElementNS(this.crosslinkViewer.svgns, "g");
+    this.selfLinks = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.upperGroup.appendChild(this.selfLinksHighlights);
     this.upperGroup.appendChild(this.selfLinks);
 
     //create label - we will move this svg element around when protein form changes
-    this.labelSVG = document.createElementNS(CLMS.xiNET.svgns, "text");
+    this.labelSVG = document.createElementNS(this.crosslinkViewer.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", this.participant.is_decoy? "#FB8072":"black")
     this.labelSVG.setAttribute("x", 0);
@@ -80,18 +80,18 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.upperGroup.appendChild(this.labelSVG);
 
     //ticks (and animo acid letters)
-    this.ticks = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.ticks = document.createElementNS(this.crosslinkViewer.svgns, "g");
 
     //make outline
     //http://stackoverflow.com/questions/17437408/how-do-i-change-a-circle-to-a-square-using-d3
-    this.outline = document.createElementNS(CLMS.xiNET.svgns, "rect");
+    this.outline = document.createElementNS(this.crosslinkViewer.svgns, "rect");
     this.outline.setAttribute("stroke", "black");
     this.outline.setAttribute("stroke-width", "1");
     this.outline.setAttribute("fill", "#EEEEEE");
     this.upperGroup.appendChild(this.outline);
     this.upperGroup.appendChild(this.ticks);
     //domains as pie slices - shown on top of everything
-    this.circDomains = document.createElementNS(CLMS.xiNET.svgns, "g");
+    this.circDomains = document.createElementNS(this.crosslinkViewer.svgns, "g");
     this.circDomains.setAttribute("opacity", 1);
     this.upperGroup.appendChild(this.circDomains);
 
@@ -406,9 +406,9 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
             }
         }
         if (pixPerRes >= 8 && this.participant.sequence) {
-            var seqLabelGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
+            var seqLabelGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
             seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
-            var seqLabel = document.createElementNS(CLMS.xiNET.svgns, "text");
+            var seqLabel = document.createElementNS(this.crosslinkViewer.svgns, "text");
             seqLabel.setAttribute('font-family', "'Courier New', monospace");
             seqLabel.setAttribute('font-size', '10px');
             seqLabel.setAttribute("text-anchor", "middle");
@@ -426,9 +426,9 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     }
 
     function scaleLabelAt(self, text, tickX) {
-        var scaleLabelGroup = document.createElementNS(CLMS.xiNET.svgns, "g");
+        var scaleLabelGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
         scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-        var scaleLabel = document.createElementNS(CLMS.xiNET.svgns, "text");
+        var scaleLabel = document.createElementNS(this.crosslinkViewer.svgns, "text");
         scaleLabel.setAttribute("class", "xinetAxisLabel");
         scaleLabel.setAttribute('font-family', "'Courier New', monospace");
         scaleLabel.setAttribute('font-size', '14');
@@ -442,7 +442,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     }
 
     function tickAt(self, tickX) {
-        var tick = document.createElementNS(CLMS.xiNET.svgns, "line");
+        var tick = document.createElementNS(this.crosslinkViewer.svgns, "line");
         tick.setAttribute("x1", tickX);
         tick.setAttribute("y1", 5);
         tick.setAttribute("x2", tickX);
@@ -923,7 +923,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass
         for (var i = 0; i < count; i++) {
             var pep = pepBounds[i];
             //console.log ("PEP", pep);
-            var annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+            var annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
 
             //make domain rect's
@@ -943,7 +943,7 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass
 
             if (pep[2]){//homodimer like
                 //TODO: eliminate duplication
-                annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
+                annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
                 annotColouredRect.setAttribute("class", "protein");
                 var annotX = ((pep[2] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
                 var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
@@ -1125,8 +1125,8 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 
             var fid = anno.category + "-" + anno.type + "-" + anno.alignmentID + "[" + convStart + " - " + convEnd + "]";
 
-            var pieSlice = document.createElementNS(CLMS.xiNET.svgns, "path");
-            var colouredRect = document.createElementNS(CLMS.xiNET.svgns, "path");
+            var pieSlice = document.createElementNS(this.crosslinkViewer.svgns, "path");
+            var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
 
             if (anno.type != "DISULFID") {
                 if (this.form === 0) {
