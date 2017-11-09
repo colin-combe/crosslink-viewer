@@ -43,9 +43,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     }
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("class", "link");
+    this.highlightLine.setAttribute("class", "link highlightedLink");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+    //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-opacity", "0")
     //set the events for it
@@ -83,7 +83,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt){
 
     var toHighlight = [this.crossLink];
 
-    this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
+    this.crosslinkViewer.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
     this.crosslinkViewer.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.link())
@@ -115,7 +115,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 
     } else {
         var add = evt.shiftKey || evt.ctrlKey;
-        this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
+        this.crosslinkViewer.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
     }
     //store start location
     this.crosslinkViewer.dragStart = evt;
@@ -130,7 +130,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
     }
     this.crosslinkViewer.dragElement = this;
     var add = evt.shiftKey || evt.ctrlKey;
-    this.crosslinkViewer.model.calcMatchingCrosslinks ("selection", [this.crossLink], false, add);
+    this.crosslinkViewer.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
     //store start location
     //var p = this.crosslinkViewer.getTouchEventPoint(evt);// broke
     this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
@@ -138,11 +138,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 
 // andAlternatives means highlight alternative links in case of site ambiguity,
 // need to be able to switch this on and off to avoid inifite loop
-CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlternatives) {
+CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
     if (this.shown) {
         if (show) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+            //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
             this.highlightLine.setAttribute("stroke-opacity", "0.7");
             var fromPeptides = [], toPeptides = [];
             //this is where we need the peptide positions
@@ -160,17 +162,16 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
                 toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
             }
-            //TODO: make 'shown peptides' attribute of renderedCrossLink - allows improving the highlightsChanged function in CrossLinkViewerBB
-           /* this.renderedFromProtein.showPeptides(fromPeptides, "from");
-            if (this.renderedToProtein) {
-                this.renderedToProtein.showPeptides(toPeptides, "to");
-            }*/
-            this.fromPeptidesSVGArr = showPeptides(fromPeptides, this.renderedFromProtein);
-            if (this.renderedToProtein) {
+            if (this.renderedFromProtein.form == 1) {
+                this.fromPeptidesSVGArr = showPeptides(fromPeptides, this.renderedFromProtein);
+            }
+            if (this.renderedToProtein && this.renderedToProtein.form == 1) {
                 this.toPeptidesSVGArr = showPeptides(toPeptides, this.renderedToProtein);
             }
         } else {
-            if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            //if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
             if (this.isSelected == false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
@@ -203,7 +204,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 annotColouredRect.setAttribute("width", annoLength);
                 annotColouredRect.setAttribute("height", yIncrement);
                 //style 'em
-                annotColouredRect.setAttribute("fill", CLMS.xiNET.highlightColour.toRGB());
+                d3.select(annotColouredRect).classed("highlightedPeptide", true);
                 //annotColouredRect.setAttribute("fill-opacity", "0.7");
                 renderedProtein.peptides.appendChild(annotColouredRect);
                 svgArr.push(annotColouredRect);
@@ -220,7 +221,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
                 annotColouredRect.setAttribute("height", yIncrement);
 
                 //style 'em
-                annotColouredRect.setAttribute("fill", CLMS.xiNET.homodimerLinkColour.toRGB());
+                d3.select(annotColouredRect).classed("peptideOverlap", true);
                 annotColouredRect.setAttribute("fill-opacity", "0.5");
 
                 renderedProtein.peptides.appendChild(annotColouredRect);
@@ -235,7 +236,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show, andAlterna
         if (svgArr) {
             var svgArrCount = svgArr.length;
             for (var p = 0; p < svgArrCount; p++){
-                renderedParticipant.peptides.remove(svgArr[p]); 
+                svgArr[p].remove(); 
             }
         }
     };
@@ -284,72 +285,21 @@ CLMS.xiNET.RenderedProtein.prototype.showPeptides = function(pepBounds, pepClass
             .style ("display", function(d) { return d[2] ? "none" : null; })
         ;
         */
-        // OLD
-/*
-        for (var i = 0; i < count; i++) {
-            var pep = pepBounds[i];
-            //console.log ("PEP", pep);
-            var annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
-            annotColouredRect.setAttribute("class", "protein");
-
-            //make domain rect's
-            var annoSize = pep[1];
-            if (annoSize > 0){
-                var annotX = ((pep[0] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
-                var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
-                annotColouredRect.setAttribute("x", annotX);
-                annotColouredRect.setAttribute("y", y);
-                annotColouredRect.setAttribute("width", annoLength);
-                annotColouredRect.setAttribute("height", yIncrement);
-                //style 'em
-                annotColouredRect.setAttribute("fill", CLMS.xiNET.highlightColour.toRGB());
-                //annotColouredRect.setAttribute("fill-opacity", "0.7");
-                this.peptides.appendChild(annotColouredRect);
-            }
-
-            if (pep[2]){//homodimer like
-                //TODO: eliminate duplication
-                annotColouredRect = document.createElementNS(CLMS.xiNET.svgns, "rect");
-                annotColouredRect.setAttribute("class", "protein");
-                var annotX = ((pep[2] + 0.5) - (this.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;//this.getResXUnzoomed(pep[0] + 0.5);
-                var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
-                annotColouredRect.setAttribute("x", annotX);
-                annotColouredRect.setAttribute("y", y);
-                annotColouredRect.setAttribute("width", annoLength);
-                annotColouredRect.setAttribute("height", yIncrement);
-
-                //style 'em
-                annotColouredRect.setAttribute("fill", CLMS.xiNET.homodimerLinkColour.toRGB());
-                annotColouredRect.setAttribute("fill-opacity", "0.5");
-
-                this.peptides.appendChild(annotColouredRect);
-            }
-            y += yIncrement;
-        }
-
-   }
-}
-
-CLMS.xiNET.RenderedProtein.prototype.removePeptides = function() {
-    d3.select(this.peptides).selectAll("*").remove();
-}
-*/
-
-
-
 
 CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
     this.isSelected = select;
     if (select === true) {
         if (this.shown) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
             this.highlightLine.setAttribute("stroke-opacity", "0.7");
         }
     }
     else {
         if (this.shown) {
             this.highlightLine.setAttribute("stroke-opacity", "0");
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
         }
     }
 };

@@ -32,9 +32,9 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
 
     //make highlight
     this.highlight = document.createElementNS(CLMS.xiNET.svgns, "rect");
-    if (CLMS.xiNET.highlightColour !== undefined) {
-        this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-    }
+    //~ if (CLMS.xiNET.highlightColour !== undefined) {
+        this.highlight.setAttribute("class", "highlightedProtein");
+    //~ }
     this.highlight.setAttribute("stroke-width", "5");
     this.highlight.setAttribute("fill", "none");
     this.lowerGroup.appendChild(this.highlight);
@@ -197,26 +197,35 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
     if (show === true) {
-        this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        d3.select(this.highlight).classed("selectedProtein", false);
+        d3.select(this.highlight).classed("highlightedProtein", true);
         this.highlight.setAttribute("stroke-opacity", "1");
     } else {
         if (this.isSelected == false) {
                 this.highlight.setAttribute("stroke-opacity", "0");
         }
-        this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+        d3.select(this.highlight).classed("selectedProtein", true);
+        d3.select(this.highlight).classed("highlightedProtein", false);
     }
+    
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
     if (select){
         this.isSelected = true;
-        this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+        d3.select(this.highlight).classed("selectedProtein", true);
+        d3.select(this.highlight).classed("highlightedProtein", false);
         this.highlight.setAttribute("stroke-opacity", "1");
     }
     else {
         this.isSelected = false;
         this.highlight.setAttribute("stroke-opacity", "0");
-        this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        d3.select(this.highlight).classed("selectedProtein", false);
+        d3.select(this.highlight).classed("highlightedProtein", true);
     }
 };
 
@@ -497,7 +506,7 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
 CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //~ if (!this.participant.hidden){
         this.busy = true;
-        this.removePeptides();
+        //this.removePeptides();
         CLMS.removeDomElement(this.lowerRotator.svg);
         CLMS.removeDomElement(this.upperRotator.svg);
 
@@ -634,7 +643,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
                 }
                 self.stickZoom = originalStickZoom;
                 self.rotation = originalRotation;
-                self.removePeptides();
+                //self.removePeptides();
                 self.busy = false;
                 return true;
             } else if (interp > 1){

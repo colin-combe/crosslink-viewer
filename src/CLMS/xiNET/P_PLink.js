@@ -56,9 +56,9 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
 
-    this.highlightLine.setAttribute("class", "link");
+    this.highlightLine.setAttribute("class", "link highlightedLink");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+    //~ this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -123,7 +123,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 
     var toHighlight = this.crossLinks.slice(0);
 
-    this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
+    this.crosslinkViewer.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
     this.crosslinkViewer.model.get("tooltipModel")
                         //TODO - reuse other multiLink tooltips in CLM-UI?
@@ -189,10 +189,12 @@ CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
 CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
             if (this.isSelected == false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
@@ -204,15 +206,17 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
     this.isSelected = select;
     if (select === true) {
         if (this.shown) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
             this.highlightLine.setAttribute("stroke-opacity", "1");
         }
    }
     else {
-        if (this.shown) {
+         if (this.shown) {
             this.highlightLine.setAttribute("stroke-opacity", "0");
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-        }
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
+         }
     }
 };
 

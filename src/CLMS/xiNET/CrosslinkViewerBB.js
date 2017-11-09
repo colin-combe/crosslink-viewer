@@ -602,7 +602,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 } //end of protein drag; do nothing
             }
             else if (!this.mouseMoved) { //unselct crosslinks
-                this.model.calcMatchingCrosslinks ("selection", [], false, add);
+                this.model.setMarkedCrossLinks("selection", [], false, add);
                 if (!this.clickModeIsSelect) {
                     this.model.setSelectedProteins([]);
                 }
@@ -814,7 +814,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //~ renderedCrossLinksArr[rcl].showHighlight(false);
         //~ }
 
-        var highlightedCrossLinks = this.model.get("highlights");
+        var highlightedCrossLinks = this.model.getMarkedCrossLinks("highlights");
 
         for (var rcl =0; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
@@ -826,11 +826,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 } else {
                     var p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                    p_pLink.showHighlight(true, true);
+                    p_pLink.showHighlight(true);
                 }
             }
-            // can't have this here, it calls remove Peptides which removes ALL highlighted pep's from protein
-            // so need peptide removing loop before
             else {
                 renderedCrossLink.showHighlight(false);
             }
@@ -845,7 +843,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             pLinksArr[pl].setSelected(false);
         }
 
-        var selectedCrossLinks = this.model.get("selection");
+        var selectedCrossLinks = this.model.getMarkedCrossLinks("selection");
         var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
         var rclCount = renderedCrossLinksArr.length;
         for (var rcl =0; rcl < rclCount; rcl++) {
@@ -864,17 +862,24 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     selectedParticipantsChanged: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var selectedParticipants = this.model.get("selectedProtein");
+        
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0 ; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
-            renderedParticipant.setSelected(false);
+            if (selectedParticipants.has(renderedParticipant.participant.id) == false && renderedParticipant.isSelected == true) {
+                renderedParticipant.setSelected(false);
+            }
         }
-        var selectedParticipantsArr = CLMS.arrayFromMapValues(this.model.get("selectedProtein"));
+        
+        var selectedParticipantsArr = CLMS.arrayFromMapValues(selectedParticipants)
         var spCount = selectedParticipantsArr.length
         for (var sp =0; sp < spCount; sp++ ) {
             if (selectedParticipantsArr[sp].is_decoy != true) {
                 var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
-                renderedParticipant.setSelected(true);
+                if (renderedParticipant.isSelected == false) {
+                    renderedParticipant.setSelected(true);
+                }
             }
         }
         return this;
@@ -911,12 +916,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 //TODO: get rid of all this
 CLMS.xiNET.svgns = "http://www.w3.org/2000/svg";// namespace for svg elements
 CLMS.xiNET.linkWidth = 1.1;// default line width
-CLMS.xiNET.highlightColour = new RGBColor("#fdc086");
-CLMS.xiNET.selectedColour = new RGBColor("#ffff99");
-CLMS.xiNET.defaultSelfLinkColour = new RGBColor("#9970ab");
-CLMS.xiNET.defaultInterLinkColour = new RGBColor("#35978f");
-CLMS.xiNET.homodimerLinkColour = new RGBColor("#a50f15");
-//static var's signifying Controller's status
+//static var's signifying Controller's status - bad
 CLMS.xiNET.Controller = {};
 CLMS.xiNET.Controller.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
 CLMS.xiNET.Controller.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
