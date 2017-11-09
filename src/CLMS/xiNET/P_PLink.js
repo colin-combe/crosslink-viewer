@@ -25,9 +25,10 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //layout stuff
-    this.hidden = false;
+    //~ this.hidden = false;
 
-    this.isSelected = false;
+    //~ this.isSelected = false;
+    //~ this.isHighlighted = false;
     this.colours = new Set();
 };
 
@@ -38,15 +39,15 @@ CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     if (this.crossLinks[0].isSelfLink() === false) {
-        this.line = document.createElementNS(CLMS.xiNET.svgns, "line");
-        this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, "line");
-        this.thickLine = document.createElementNS(CLMS.xiNET.svgns, "line");
+        this.line = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.thickLine = document.createElementNS(this.crosslinkViewer.svgns, "line");
     } else {
         this.renderedFromProtein.selfLink = this;
 
-        this.line = document.createElementNS(CLMS.xiNET.svgns, "path");
-        this.highlightLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
-        this.thickLine = document.createElementNS(CLMS.xiNET.svgns, 'path');
+        this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
+        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, 'path');
+        this.thickLine = document.createElementNS(this.crosslinkViewer.svgns, 'path');
 
         this.initSelfLinkSVG();
     }
@@ -56,9 +57,9 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
 
-    this.highlightLine.setAttribute("class", "link");
+    this.highlightLine.setAttribute("class", "link highlightedLink");
     this.highlightLine.setAttribute("fill", "none");
-    this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+    //~ this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
     this.highlightLine.setAttribute("stroke-width", "10");
     this.highlightLine.setAttribute("stroke-linecap", "round");
     this.highlightLine.setAttribute("stroke-opacity", "0");
@@ -68,10 +69,10 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.thickLine.setAttribute("stroke", "lightgray");
     this.thickLine.setAttribute("stroke-linecap", "round");
     this.thickLine.setAttribute("stroke-linejoin", "round");
-    
-	this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
-	this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-	this.crosslinkViewer.p_pLinks.appendChild(this.line);
+
+    this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
+    this.crosslinkViewer.highlights.appendChild(this.highlightLine);
+    this.crosslinkViewer.p_pLinks.appendChild(this.line);
 
     //set the events for it
     var self = this;
@@ -123,7 +124,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 
     var toHighlight = this.crossLinks.slice(0);
 
-    this.crosslinkViewer.model.calcMatchingCrosslinks ("highlights", toHighlight, true, false);
+    this.crosslinkViewer.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
     this.crosslinkViewer.model.get("tooltipModel")
                         //TODO - reuse other multiLink tooltips in CLM-UI?
@@ -140,10 +141,11 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
 
 // event handler for starting dragging or rotation (or flipping internal links)
 CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
-    //if a force layout exists then stop it
-    if (this.crosslinkViewer.force){
-        this.crosslinkViewer.force.stop();
+    //stop layout
+    if (this.cola) {
+        this.cola.stop();
     }
+
     this.crosslinkViewer.dragElement = this;
     if (evt.shiftKey || evt.ctrlKey) {
         var selection = this.crosslinkViewer.model.get("selection");
@@ -159,17 +161,17 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     } else {
         this.crosslinkViewer.model.setMarkedCrossLinks ("selection", _.clone(this.crossLinks));
     }
-    //store start location
-    //var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.dragStart = evt;//this.crosslinkViewer.mouseToSVG(p.x, p.y);
     
+    //store start location
+    this.crosslinkViewer.dragStart = evt;
+
     d3.select("#container-menu").style("display", "none");
 };
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
-    //if a force layout exists then stop it
-    if (this.crosslinkViewer.force !== undefined){
-        this.crosslinkViewer.force.stop();
+    //stop layout
+    if (this.crosslinkViewer.cola) {
+        this.crosslinkViewer.cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.setMarkedCrossLinks("selection", this.crossLinks);
@@ -188,10 +190,12 @@ CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
 CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
             this.highlightLine.setAttribute("stroke-opacity", "1");
         } else {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
             if (this.isSelected == false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
@@ -200,19 +204,21 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
 };
 
 CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
-    this.isSelected = select;
-    if (select === true) {
-        if (this.shown) {
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-            this.highlightLine.setAttribute("stroke-opacity", "1");
-        }
-   }
-    else {
-        if (this.shown) {
-            this.highlightLine.setAttribute("stroke-opacity", "0");
-            this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+    if (this.shown) {
+        if (select == true) {
+                d3.select(this.highlightLine).classed("selectedLink", true);
+                d3.select(this.highlightLine).classed("highlightedLink", false);
+                this.highlightLine.setAttribute("stroke-opacity", "1");
+       }
+        else {
+             if (this.shown) {
+                this.highlightLine.setAttribute("stroke-opacity", "0");
+                d3.select(this.highlightLine).classed("selectedLink", false);
+                d3.select(this.highlightLine).classed("highlightedLink", true);
+             }
         }
     }
+    this.isSelected = select;
 };
 
 CLMS.xiNET.P_PLink.prototype.check = function() {
@@ -289,27 +295,21 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
             this.thickLine.setAttribute("transform", "translate(" +
                 this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")"  // possibly not neccessary
                 + " scale(" + (this.crosslinkViewer.z) + ")");
-            //~ this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
             this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
                     + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
             this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
                     + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
-            //~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-            //~ this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
         else {
             this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);
-            //~ this.crosslinkViewer.p_pLinksWide.appendChild(this.thickLine);
-            //~ this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-            //~ this.crosslinkViewer.p_pLinks.appendChild(this.line);
         }
         d3.select(this.thickLine).style ("display", null);
-		d3.select(this.highlightLine).style ("display", null);
-		d3.select(this.line).style ("display", null);
+        d3.select(this.highlightLine).style ("display", null);
+        d3.select(this.line).style ("display", null);
     }
 
     if (this.filteredCrossLinkCount < 2) {
@@ -337,20 +337,9 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 CLMS.xiNET.P_PLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        //~ if (this.renderedFromProtein === this.renderedToProtein) {
-            //~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-            //~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            //~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
-        //~ } else {
-            //~ this.crosslinkViewer.p_pLinksWide.removeChild(this.thickLine);
-            //~ this.crosslinkViewer.highlights.removeChild(this.highlightLine);
-            //~ this.crosslinkViewer.p_pLinks.removeChild(this.line);
-        //~ }
-
-    d3.select(this.thickLine).style ("display", "none");
-    d3.select(this.highlightLine).style ("display", "none");
-	d3.select(this.line).style ("display", "none");
-
+        d3.select(this.thickLine).style ("display", "none");
+        d3.select(this.highlightLine).style ("display", "none");
+        d3.select(this.line).style ("display", "none");
     }
 };
 
