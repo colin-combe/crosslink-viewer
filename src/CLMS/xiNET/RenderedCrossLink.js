@@ -299,6 +299,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             else {
                 path =  this.renderedFromProtein.getAggregateSelfLinkPath();
             }
+            this.highlightLine.setAttribute("d", path);
             this.line.setAttribute("d", path);
         }
         else {
