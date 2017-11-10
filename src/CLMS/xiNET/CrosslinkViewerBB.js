@@ -390,7 +390,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein)
                 && p_pLink.renderedFromProtein.form === 0 && p_pLink.renderedToProtein.form === 0) {
                 if (p_pLink.line) {
-                    p_pLink.line.setAttribute("stroke-width", this.z * this.crosslinkViewer.linkWidth);
+                    p_pLink.line.setAttribute("stroke-width", this.z * this.linkWidth);
                     p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                     p_pLink.thickLine.setAttribute("stroke-width", this.z * p_pLink.w);
                     if (p_pLink.ambiguous) {
