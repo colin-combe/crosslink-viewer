@@ -27,7 +27,7 @@ CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     //layout stuff
     //~ this.hidden = false;
 
-    //~ this.isSelected = false;
+    this.isSelected = false;
     //~ this.isHighlighted = false;
     this.colours = new Set();
 };
@@ -209,13 +209,11 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
                 d3.select(this.highlightLine).classed("selectedLink", true);
                 d3.select(this.highlightLine).classed("highlightedLink", false);
                 this.highlightLine.setAttribute("stroke-opacity", "1");
-       }
+        }
         else {
-             if (this.shown) {
-                this.highlightLine.setAttribute("stroke-opacity", "0");
-                d3.select(this.highlightLine).classed("selectedLink", false);
-                d3.select(this.highlightLine).classed("highlightedLink", true);
-             }
+             this.highlightLine.setAttribute("stroke-opacity", "0");
+             d3.select(this.highlightLine).classed("selectedLink", false);
+             d3.select(this.highlightLine).classed("highlightedLink", true);
         }
     }
     this.isSelected = select;

@@ -141,6 +141,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 // need to be able to switch this on and off to avoid inifite loop
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
+    var self = this;
     if (this.shown) {
         if (show) {
             //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -192,7 +193,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
         var svgArr = []
         for (var i = 0; i < count; i++) {
             var pep = pepBounds[i];
-            var annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
+            var annotColouredRect = document.createElementNS(self.crosslinkViewer.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
 
             //make domain rect's
