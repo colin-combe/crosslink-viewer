@@ -312,7 +312,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         //may need to comment out following if probs
-        if (pCount < 3) {
+        /*if (pCount < 3) {
             var renderedParticipantsArr = Array.from(this.renderedProteins.values());
             var rpCount =  renderedParticipantsArr.length;
             for (var rp = 0; rp < rpCount; rp++ ) {
@@ -322,7 +322,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     renderedParticipant.setForm(1);
                 //~ }
             }
-        }
+        }*/
 
         var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
         var clCount = crossLinksArr.length;
