@@ -54,7 +54,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
 
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
-    this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
+    this.line.setAttribute("stroke-width", this.crosslinkViewer.linkWidth);
     this.line.setAttribute("stroke-linecap", "round");
 
     this.highlightLine.setAttribute("class", "link highlightedLink");
@@ -302,7 +302,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 
         }
         else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
+            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);
