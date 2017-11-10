@@ -29,7 +29,7 @@ CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
         this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
-        this.line.setAttribute("stroke-width", CLMS.xiNET.linkWidth);
+        this.line.setAttribute("stroke-width", this.crosslinkViewer.linkWidth);
         this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "path");
         this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
         this.renderedFromProtein.selfLinks.appendChild(this.line);
@@ -301,7 +301,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.line.setAttribute("d", path);
         }
         else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * CLMS.xiNET.linkWidth);
+            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
             this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
             this.setLineCoordinates(this.renderedFromProtein);
             this.setLineCoordinates(this.renderedToProtein);
