@@ -426,9 +426,9 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     }
 
     function scaleLabelAt(self, text, tickX) {
-        var scaleLabelGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
+        var scaleLabelGroup = document.createElementNS(self.crosslinkViewer.svgns, "g");
         scaleLabelGroup.setAttribute("transform", "translate(" + tickX + " " + 0 + ")");
-        var scaleLabel = document.createElementNS(this.crosslinkViewer.svgns, "text");
+        var scaleLabel = document.createElementNS(self.crosslinkViewer.svgns, "text");
         scaleLabel.setAttribute("class", "xinetAxisLabel");
         scaleLabel.setAttribute('font-family', "'Courier New', monospace");
         scaleLabel.setAttribute('font-size', '14');
@@ -442,7 +442,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     }
 
     function tickAt(self, tickX) {
-        var tick = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        var tick = document.createElementNS(self.crosslinkViewer.svgns, "line");
         tick.setAttribute("x1", tickX);
         tick.setAttribute("y1", 5);
         tick.setAttribute("x2", tickX);
@@ -472,7 +472,7 @@ CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
-
+    
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 
     if (this.busy !== true) {
