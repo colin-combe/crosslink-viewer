@@ -15,6 +15,11 @@
     width:100%;
 }
 
+.page-header h1{
+    color: white;
+    text-decoration: underline;
+}
+
 h1 {
     font-size:1.6em;
     display:inline;
