@@ -985,7 +985,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
         for (m = 0; m < molCount; m++) {
             var mol = mols[m];
             for (var a = 0; a < mol.annotations.length; a++){
-                categories.add(mol.annotations[a].name);
+                categories.add(mol.annotations[a].description);
             }
         }
         var catCount = categories.values().length;
@@ -993,7 +993,7 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
         var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
         //~ if (catCount < 21) {
-            if (catCount < 6) {
+            if (catCount < 5) {
 				//~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
                 //~ colourScheme = d3.scale.ordinal().range(reversed);
                 colourScheme = d3.scale.ordinal().range(colorbrewer.Set1[4]);
