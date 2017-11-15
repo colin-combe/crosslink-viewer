@@ -1,7 +1,12 @@
-xiNET interaction viewer
-========================
+Complex Viewer
+==============
 
-v1.0 of the interaction viewer is deployed in EBI's Complex Portal, e.g. http://www.ebi.ac.uk/intact/complex/details/EBI-706830
+
+###Citation:
+
+[Colin W Combe, Marine (Dumousseau) Sivade, Henning Hermjakob, Joshua Heimbach, Birgit H M Meldal, Gos Micklem, Sandra Orchard, Juri Rappsilber; ComplexViewer: visualization of curated macromolecular complexes, _Bioinformatics_, Volume 33, Issue 22, 15 November 2017, Pages 3673–3675, https://doi.org/10.1093/bioinformatics/btx497](https://doi.org/10.1093/bioinformatics/btx497)
+
+v1 of the interaction viewer is deployed in EBI's Complex Portal, e.g. http://www.ebi.ac.uk/intact/complex/details/EBI-706830
 
 We are working towards a general purpose web component for visualising interactions between biomolecules.
 The aim is to represent the data present in the PSI-MI standards.
@@ -19,6 +24,7 @@ JAMI was originally developed by Marine Dumousseau, who also largely determined 
 
 ##Build Process
 
+(0. install nodejs, npm)
 1. Clone the repository.
 2. $ cd /interaction-viewer
 3. $ npm install
