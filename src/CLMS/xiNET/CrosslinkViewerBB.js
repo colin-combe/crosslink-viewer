@@ -16,25 +16,18 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         "click .resetLayout": "reset",
         "click .downloadButton": "downloadSVG",
         "click .showHidden": "showHidden",
-        "click .invertSelection": "invertSelection",
-        "click .hideSelection": "hideSelection",
-        "click .stepOutSelection": "stepOutSelection",
-        "click .expand": "expandProteins",
-        "click .collapse": "collapseProteins",
+        //~ "click .invertSelection": "invertSelection",
+        //~ "click .hideSelection": "hideSelection",
+        //~ "click .stepOutSelection": "stepOutSelection",
+        //~ "click .expand": "expandProteins",
+        //~ "click .collapse": "collapseProteins",
     },
 
-	svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
-	linkWidth: 1.1,// default line width
-	//static var's signifying Controller's status
-	STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
-			/*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
-	//~ this.STATES.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-	//~ this.STATES.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-	//~ this.STATES.DRAGGING = 2;//set by mouse down on Protein or Link
-	//~ this.STATES.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+    svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
+    linkWidth: 1.1,// default line width
+    //static var's signifying Controller's status
+    STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
+            /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
 
     setClickModeSelect: function (){
         this.clickModeIsSelect = true;
@@ -91,20 +84,21 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         d3.select(this.el).html(
             "<div class='xinetControls'>" +
                 "<div class='xinetButtonBar'>" +
-                    "<label class='panOrSelect'><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                    "<label class='panOrSelect'><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+					"<div id='xiNETSelectionDropdownPlaceholder' style='display:inline-block'></div>" + 
+                    "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                    "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
                     "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
                     "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
                     "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
                 "</div>" +
             "</div>" +
-            "<ul class='custom-menu' id='container-menu'>" +
-              "<li class='invertSelection'>Invert Selection</li>" +
-              "<li class='hideSelection'>Hide Selection</li>" +
-              "<li class='stepOutSelection'>Step-out Selection</li>" +
-              "<li class='expand'>Expand</li>" +
-              "<li class='collapse'>Collapse</li>" +
-            "</ul>" +
+            //~ "<ul class='custom-menu' id='container-menu'>" +
+              //~ "<li class='invertSelection'>Invert Selection</li>" +
+              //~ "<li class='hideSelection'>Hide Selection</li>" +
+              //~ "<li class='stepOutSelection'>Step-out Selection</li>" +
+              //~ "<li class='expand'>Expand</li>" +
+              //~ "<li class='collapse'>Collapse</li>" +
+            //~ "</ul>" +
             "<div id='hiddenProteinsMessage'><p id='hiddenProteinsText'>Maunally Hidden Message</p><button class='btn btn-1 btn-1a showHidden' >Show</button></div>");
 
         //hack to take out pan/select option in firefox
@@ -124,10 +118,28 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
         this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
         //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
+        
         //going to use right click ourselves
-        this.svgElement.oncontextmenu = function() {
-            return false;
+        var userAgent = navigator.userAgent;
+        
+        if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
+            document.oncontextmenu = function(evt) {
+                if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }
+        } else {
+                this.svgElement.oncontextmenu = function(evt) {
+                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }         
         };
+        
         //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent){ //if IE (and Opera depending on user setting)
@@ -188,6 +200,22 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 .attr("fill", "none")
                 .attr("display", "none")
                 ;
+
+		var self = this;
+        // Generate data export drop down
+        new CLMSUI.DropDownMenuViewBB ({
+            el: "#xiNETSelectionDropdownPlaceholder",
+            model: CLMSUI.compositeModelInst.get("clmsModel"),
+            myOptions: {
+                title: "Protein Selection",
+                menu: [
+                    {name: "Invert", func: self.invertSelection}, 
+                    {name: "Hide", func: self.hideSelection},
+                    {name: "+Neighbours", func: self.stepOutSelection}
+                ]
+            }
+        });
+
 
         this.clear();
 
