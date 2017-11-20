@@ -209,9 +209,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             myOptions: {
                 title: "Protein Selection",
                 menu: [
-                    {name: "Invert", func: self.invertSelection}, 
-                    {name: "Hide", func: self.hideSelection},
-                    {name: "+Neighbours", func: self.stepOutSelection}
+                    {name: "Invert", func: self.invertSelection, context: self}, 
+                    {name: "Hide", func: self.hideSelection, context: self},
+                    {name: "+Neighbours", func: self.stepOutSelection, context: self}
                 ]
             }
         });
