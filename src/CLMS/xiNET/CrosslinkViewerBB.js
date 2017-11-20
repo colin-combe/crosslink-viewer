@@ -23,18 +23,18 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         "click .collapse": "collapseProteins",
     },
 
-	svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
-	linkWidth: 1.1,// default line width
-	//static var's signifying Controller's status
-	STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
-			/*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
-	//~ this.STATES.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-	//~ this.STATES.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-	//~ this.STATES.DRAGGING = 2;//set by mouse down on Protein or Link
-	//~ this.STATES.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
-	//~ this.STATES.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
+    svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
+    linkWidth: 1.1,// default line width
+    //static var's signifying Controller's status
+    STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
+            /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
+    //~ this.STATES.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
+    //~ this.STATES.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
+    //~ this.STATES.DRAGGING = 2;//set by mouse down on Protein or Link
+    //~ this.STATES.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
+    //~ this.STATES.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
+    //~ this.STATES.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
+    //~ this.STATES.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
     setClickModeSelect: function (){
         this.clickModeIsSelect = true;
@@ -124,10 +124,28 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
         this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
         //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
+        
         //going to use right click ourselves
-        this.svgElement.oncontextmenu = function() {
-            return false;
+        var userAgent = navigator.userAgent;
+        
+        if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
+            document.oncontextmenu = function(evt) {
+                if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }
+        } else {
+                this.svgElement.oncontextmenu = function(evt) {
+                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }         
         };
+        
         //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent){ //if IE (and Opera depending on user setting)
