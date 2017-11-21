@@ -445,14 +445,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     //its a protein - drag it, or drag all selcted if it is selected
                     var toDrag;
                     if (this.dragElement.isSelected === false) {
-                        toDrag = [this.dragElement.participant.id];
+                        toDrag = [this.dragElement.participant];
                     }
                     else {
                         toDrag = this.model.get("selectedProteins");
                     }
 
                     for (var d = 0; d < toDrag.length; d++) {
-                        var renderedProtein = this.renderedProteins.get(toDrag[d]);
+                        var renderedProtein = this.renderedProteins.get(toDrag[d].id);
                         ox = renderedProtein.x;
                         oy = renderedProtein.y;
                         nx = ox - dx;
