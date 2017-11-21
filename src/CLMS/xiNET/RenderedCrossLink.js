@@ -66,6 +66,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     this.line.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
+    //todo: following may not work in IE
+    this.line.oncontextmenu = function() {
+        return false;
+    };
 
     this.highlightLine.onmousedown = function(evt) {
         self.mouseDown(evt);
@@ -78,6 +82,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     };
     this.highlightLine.ontouchstart = function(evt) {
         self.touchStart(evt);
+    };
+    //todo: following may not work in IE
+    this.highlightLine.oncontextmenu = function() {
+        return false;
     };
 };
 
