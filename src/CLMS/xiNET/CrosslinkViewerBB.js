@@ -60,7 +60,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
                     "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
                     "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" + 
-                    "<button class='btn btn-1 btn-1a downloadButton'>Download image as SVG</button>" +
+                    "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
                 "</div>" +
             "</div>");
 
@@ -81,9 +81,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.onmousemove = function(evt) { self.mouseMove(evt); };
         this.svgElement.onmouseup = function(evt) { self.mouseUp(evt); };
         //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
-        
+
+
         //going to use right click ourselves
-        /*var userAgent = navigator.userAgent;
+        var userAgent = navigator.userAgent;
         
         if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
             document.oncontextmenu = function(evt) {
@@ -95,15 +96,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         } else {
                 this.svgElement.oncontextmenu = function(evt) {
-                //~ if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
-                    //~ evt.preventDefault();
-                //~ }
-                //~ evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
                 return false;           // works with traditional, not with attachEvent or addEventListener
             }         
-        };*/
-        
-        //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
+        };
+
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent){ //if IE (and Opera depending on user setting)
             this.svgElement.attachEvent("on"+mousewheelevt, function(evt) {self.mouseWheel(evt);});
@@ -365,13 +365,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rcl = 0 ; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-                //~ if (renderedCrossLink.line) {//TODO: er, whys this here? looks like a hack filtering out never rendered crossLinks that somehow have shown = true?
-                    renderedCrossLink.line.setAttribute("stroke-width", this.z * this.crosslinkViewer.linkWidth);
-                    renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
-                    if (renderedCrossLink.crossLink.ambiguous === true) {
-                        renderedCrossLink.dashedLine(true); //rescale spacing of dashes
-                    }
-                //~ }
+                renderedCrossLink.line.setAttribute("stroke-width", this.z * this.crosslinkViewer.linkWidth);
+                renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
+                if (renderedCrossLink.crossLink.ambiguous === true) {
+                    renderedCrossLink.dashedLine(true); //rescale spacing of dashes
+                }
             }
         }
 
