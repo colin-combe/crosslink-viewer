@@ -12,15 +12,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     events: {
         "change .clickToSelect": "setClickModeSelect",
         "change .clickToPan": "setClickModePan",
-        "click .saveLayout": "saveLayout",
-        "click .resetLayout": "reset",
         "click .downloadButton": "downloadSVG",
-        "click .showHidden": "showHidden",
-        "click .invertSelection": "invertSelection",
-        "click .hideSelection": "hideSelection",
-        "click .stepOutSelection": "stepOutSelection",
-        "click .expand": "expandProteins",
-        "click .collapse": "collapseProteins",
     },
 
     svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
@@ -28,13 +20,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     //static var's signifying Controller's status
     STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
             /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
-    //~ this.STATES.MOUSE_UP = 0;//start state, also set when mouse up on svgElement
-    //~ this.STATES.SELECT_PAN = 1;//set by mouse down on svgElement - left button, no shift or ctrl
-    //~ this.STATES.DRAGGING = 2;//set by mouse down on Protein or Link
-    //~ this.STATES.ROTATING = 3;//set by mouse down on CLMS.xiNET.Rotator, drag?
-    //~ this.STATES.SCALING_PROTEIN = 4;//set by mouse down on CLMS.xiNET.Rotator, drag?
-    //~ this.STATES.SCALING_ALL_PROTEINS = 5;//set by mouse down on CLMS.xiNET.Rotator, drag?
-    //~ this.STATES.SELECTING = 6;//set by mouse down on svgElement- right button or left button shift or ctrl, drag
 
     setClickModeSelect: function (){
         this.clickModeIsSelect = true;
@@ -44,27 +29,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.clickModeIsSelect = false;
     },
 
-    showHidden: function (){
-        this.model.showHiddenProteins();
-    },
-
-    invertSelection: function (){
-        this.model.invertSelectedProteins();
-        d3.select("#container-menu").style("display", "none");
-    },
-
-    hideSelection: function (){
-        this.model.hideSelectedProteins();
-        d3.select("#container-menu").style("display", "none");
-    },
-
-    stepOutSelection: function (){
-        this.model.stepOutSelectedProteins();
-        d3.select("#container-menu").style("display", "none");
-    },
-
-    expandProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProtein"));
+    /*expandProteins: function (){
+        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
         var selectedCount = selectedArr.length;
         for (var s = 0; s < selectedCount; s++) {
             this.renderedProteins.get(selectedArr[s].id).setForm(1);
@@ -73,13 +39,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     collapseProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProtein"));
+        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
         var selectedCount = selectedArr.length;
         for (var s = 0; s < selectedCount; s++) {
             this.renderedProteins.get(selectedArr[s].id).setForm(0);
         }
         d3.select("#container-menu").style("display", "none");
-    },
+    },*/
 
     initialize: function () {
 
@@ -90,22 +56,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         d3.select(this.el).html(
             "<div class='xinetControls'>" +
-                "<div class='xinetButtonBar'>" +
-                    "<label class='panOrSelect'><span>PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                    "<label class='panOrSelect'><span>SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                    "<button class='btn btn-1 btn-1a resetLayout' >Auto Layout</button>" +
-                    "<button class='btn btn-1 btn-1a saveLayout'>Save Layout</button>" +
-                    "<button class='btn btn-1 btn-1a downloadButton'>Export Graphic</button>" +
+                "<div class='xinetButtonBar'>" +                   
+                    "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                    "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+                    "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" + 
+                    "<button class='btn btn-1 btn-1a downloadButton'>Download image as SVG</button>" +
                 "</div>" +
-            "</div>" +
-            "<ul class='custom-menu' id='container-menu'>" +
-              "<li class='invertSelection'>Invert Selection</li>" +
-              "<li class='hideSelection'>Hide Selection</li>" +
-              "<li class='stepOutSelection'>Step-out Selection</li>" +
-              "<li class='expand'>Expand</li>" +
-              "<li class='collapse'>Collapse</li>" +
-            "</ul>" +
-            "<div id='hiddenProteinsMessage'><p id='hiddenProteinsText'>Maunally Hidden Message</p><button class='btn btn-1 btn-1a showHidden' >Show</button></div>");
+            "</div>");
 
         //hack to take out pan/select option in firefox
         if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
@@ -126,7 +83,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
         
         //going to use right click ourselves
-        var userAgent = navigator.userAgent;
+        /*var userAgent = navigator.userAgent;
         
         if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
             document.oncontextmenu = function(evt) {
@@ -138,13 +95,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         } else {
                 this.svgElement.oncontextmenu = function(evt) {
-                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
-                    evt.preventDefault();
-                }
-                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                //~ if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+                    //~ evt.preventDefault();
+                //~ }
+                //~ evt.returnValue = false;    // necessary for attachEvent, works with traditional
                 return false;           // works with traditional, not with attachEvent or addEventListener
             }         
-        };
+        };*/
         
         //this.svgElement.onmouseout = function(evt) { } //self.hideTooltip(evt); };
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
@@ -207,6 +164,23 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 .attr("display", "none")
                 ;
 
+		// Generate layout drop down
+		var self = this;
+		new CLMSUI.DropDownMenuViewBB ({
+			el: "#xiNETLayoutDropdownPlaceholder",
+			model: CLMSUI.compositeModelInst.get("clmsModel"),
+			myOptions: {
+				title: "Layout",
+				menu: [
+					{name: "Auto", func: self.autoLayout, context: self}, 
+					{name: "Save", func: self.saveLayout, context: self},
+					//~ {name: "Expand All", func: self.autoLayout, context: self}, 
+					//~ {name: "Collapse All", func: self.saveLayout, context: self},
+				]
+			}
+		});
+
+
         this.clear();
 
         this.update();
@@ -219,7 +193,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo (this.model, "currentColourModelChanged", this.render); // mjg - when current colour scale changes its internal values
         this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
         this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
-        this.listenTo (this.model, "change:selectedProtein", this.selectedParticipantsChanged);
+        this.listenTo (this.model, "change:selectedProteins", this.selectedParticipantsChanged);
         this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
         return this;
     },
@@ -448,7 +422,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.mouseMoved = false;
 
         //var toHighlight = [] // todo we dont have synched participant highlighting
-        this.idsToSelect = [];
+        this.toSelect = [];
 
         d3.select("#container-menu").style("display", "none");
     },
@@ -474,7 +448,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                         toDrag = [this.dragElement.participant.id];
                     }
                     else {
-                        toDrag = Array.from(this.model.get("selectedProtein").keys());
+                        toDrag = this.model.get("selectedProteins");
                     }
 
                     for (var d = 0; d < toDrag.length; d++) {
@@ -551,7 +525,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                         var intersects = this.svgElement.getIntersectionList(svgRect, renderedParticipant.upperGroup );
                         if (intersects.length > 0) {
                             renderedParticipant.showHighlight(true);
-                            this.idsToSelect.push(renderedParticipant.participant.id);
+                            this.toSelect.push(renderedParticipant.participant);
                         } else {
                             renderedParticipant.showHighlight(false);
                         }
@@ -600,28 +574,28 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var p = this.getEventPoint(evt);
             var c = p.matrixTransform(this.container.getCTM().inverse());
 
-            if (this.dragElement != null) {
+            if (this.dragElement != null) { // a thing has been clicked
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                        if (this.dragElement.x) { //if protein
+                        if (this.dragElement.x) { //if the thing is a protein
                             if (rightclick) {
                                 if (evt.ctrlKey || evt.shiftKey) {
                                     this.dragElement.switchStickScale(c);
                                 }else {
-                                    if (this.dragElement.isSelected) {
-                                        this.model.get("tooltipModel").set("contents", null);
-                                        var menu = d3.select("#container-menu")
-                                        menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
-                                    } else {
+                                    //~ if (this.dragElement.isSelected) {
+                                        //~ this.model.get("tooltipModel").set("contents", null);
+                                        //~ var menu = d3.select("#container-menu")
+                                        //~ menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
+                                    //~ } else {
                                         if (this.dragElement.form === 1) {
                                             this.dragElement.setForm(0, c);
                                         } else {
                                             this.dragElement.setForm(1, c);
                                         }
-                                    }
+                                    //~ }
                                 }
                             } else  {
                                 var add = evt.ctrlKey || evt.shiftKey;
-                                this.model.setSelectedProteins([this.dragElement.participant.id], add);
+                                this.model.setSelectedProteins([this.dragElement.participant], add);
                             }
                         } // else flip selflink
                 }
@@ -632,14 +606,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 else {
                 } //end of protein drag; do nothing
             }
-            else if (!this.mouseMoved) { //unselct crosslinks
+            else if (!this.mouseMoved) { //unselect crosslinks
                 this.model.setMarkedCrossLinks("selection", [], false, add);
-                if (!this.clickModeIsSelect) {
+                //~ if (!this.clickModeIsSelect) {
                     this.model.setSelectedProteins([]);
-                }
+                //~ }
             } else if (this.clickModeIsSelect) {
                 var add = evt.ctrlKey || evt.shiftKey;
-                this.model.setSelectedProteins(this.idsToSelect, add);
+                this.model.setSelectedProteins(this.toSelect, add);
             }
 
             this.dragElement = null;
@@ -886,21 +860,21 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     selectedParticipantsChanged: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        var selectedParticipants = this.model.get("selectedProtein");
+        var selectedParticipants = this.model.get("selectedProteins");
         
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0 ; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
-            if (selectedParticipants.has(renderedParticipant.participant.id) == false && renderedParticipant.isSelected == true) {
+            if (selectedParticipants.indexOf(renderedParticipant.participant) == -1 && renderedParticipant.isSelected == true) {
                 renderedParticipant.setSelected(false);
             }
         }
         
-        var selectedParticipantsArr = CLMS.arrayFromMapValues(selectedParticipants)
-        var spCount = selectedParticipantsArr.length
+        //~ var selectedParticipantsArr = CLMS.arrayFromMapValues(selectedParticipants)
+        var spCount = selectedParticipants.length
         for (var sp =0; sp < spCount; sp++ ) {
-            if (selectedParticipantsArr[sp].is_decoy != true) {
-                var renderedParticipant = this.renderedProteins.get(selectedParticipantsArr[sp].id);
+            if (selectedParticipants[sp].is_decoy != true) {
+                var renderedParticipant = this.renderedProteins.get(selectedParticipants[sp].id);
                 if (renderedParticipant.isSelected == false) {
                     renderedParticipant.setSelected(true);
                 }
