@@ -215,7 +215,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
             renderedProtein.peptides.appendChild(annotColouredRect);
             self.pepSvgArr.push(annotColouredRect);
             
-            if (pep[2]){//homodimer like
+            if (typeof pep[2] != "undefined"){//homodimer like
                 annotColouredRect = document.createElementNS(self.crosslinkViewer.svgns, "rect");
                 annotColouredRect.setAttribute("class", "protein");
                 var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
