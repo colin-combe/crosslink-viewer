@@ -18,8 +18,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
     linkWidth: 1.1,// default line width
     //static var's signifying Controller's status
-    STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6}, 
-            /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/ 
+    STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6},
+            /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
 
     setClickModeSelect: function (){
         this.clickModeIsSelect = true;
@@ -56,10 +56,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         d3.select(this.el).html(
             "<div class='xinetControls'>" +
-                "<div class='xinetButtonBar'>" +                   
+                "<div class='xinetButtonBar'>" +
                     "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
                     "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                    "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" + 
+                    "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" +
                     "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
                 "</div>" +
             "</div>");
@@ -85,7 +85,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         //going to use right click ourselves
         var userAgent = navigator.userAgent;
-        
+
         if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
             document.oncontextmenu = function(evt) {
                 if (evt.preventDefault) { // necessary for addEventListener, works with traditional
@@ -101,7 +101,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 }
                 evt.returnValue = false;    // necessary for attachEvent, works with traditional
                 return false;           // works with traditional, not with attachEvent or addEventListener
-            }         
+            }
         };
 
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
@@ -172,9 +172,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 			myOptions: {
 				title: "Layout",
 				menu: [
-					{name: "Auto", func: self.autoLayout, context: self}, 
+					{name: "Auto", func: self.autoLayout, context: self},
 					{name: "Save", func: self.saveLayout, context: self},
-					//~ {name: "Expand All", func: self.autoLayout, context: self}, 
+					//~ {name: "Expand All", func: self.autoLayout, context: self},
 					//~ {name: "Collapse All", func: self.saveLayout, context: self},
 				]
 			}
@@ -195,6 +195,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
         this.listenTo (this.model, "change:selectedProteins", this.selectedParticipantsChanged);
         this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
+
+        this.listenTo (CLMSUI.vent, "proteinMetadataUpdated", this.updateProteinNames);
+
         return this;
     },
 
@@ -791,14 +794,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var svgArr = [this.svgElement];
         var svgStrings = CLMSUI.svgUtils.capture (svgArr);
         var svgXML = CLMSUI.svgUtils.makeXMLStr (new XMLSerializer(), svgStrings[0]);
-        
+
         //bit of a hack
         var bBox = this.svgElement.getBoundingClientRect();
         var width = Math.round(bBox.width);
         var height = Math.round(bBox.height);
         svgXML = svgXML.replace('width="100%"','width="'+width+'px"');
         svgXML = svgXML.replace('height="100%"','height="'+height+'px"');
-        
+
         var fileName = CLMSUI.utils.makeLegalFileName (CLMSUI.utils.searchesToString()+"--xiNET--"+CLMSUI.utils.filterStateToString());
         download (svgXML, 'application/svg', fileName+".svg");
     },
@@ -859,7 +862,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     selectedParticipantsChanged: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var selectedParticipants = this.model.get("selectedProteins");
-        
+
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0 ; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
@@ -867,7 +870,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 renderedParticipant.setSelected(false);
             }
         }
-        
+
         //~ var selectedParticipantsArr = CLMS.arrayFromMapValues(selectedParticipants)
         var spCount = selectedParticipants.length
         for (var sp =0; sp < spCount; sp++ ) {
@@ -902,6 +905,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 pSel.text((manuallyHidden > 1) ? (manuallyHidden + " Hidden Proteins") : (manuallyHidden + " Hidden Protein"));
                 var messgeSel = d3.select("#hiddenProteinsMessage");
                 messgeSel.style("display", "block");
+        }
+
+        return this;
+    },
+
+    updateProteinNames: function () {
+        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var rpCount = renderedParticipantArr.length;
+        for (var rp = 0 ; rp < rpCount; rp++) {
+            renderedParticipantArr[rp].updateName();
         }
 
         return this;
