@@ -57,10 +57,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         d3.select(this.el).html(
             "<div class='xinetControls'>" +
                 "<div class='xinetButtonBar'>" +
-                    "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                    "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                    "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" +
-                    "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
+                    // "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
+                    // "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
+                    "<div id='xiNETControlsDropdownPlaceholder' style='display:inline-block'></div>" +
+                    // + "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
                 "</div>" +
             "</div>");
 
@@ -163,23 +163,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 .attr("fill", "none")
                 .attr("display", "none")
                 ;
-
-		// Generate layout drop down
-		var self = this;
-		new CLMSUI.DropDownMenuViewBB ({
-			el: "#xiNETLayoutDropdownPlaceholder",
-			model: CLMSUI.compositeModelInst.get("clmsModel"),
-			myOptions: {
-				title: "Layout",
-				menu: [
-					{name: "Auto", func: self.autoLayout, context: self},
-					{name: "Save", func: self.saveLayout, context: self},
-					//~ {name: "Expand All", func: self.autoLayout, context: self},
-					//~ {name: "Collapse All", func: self.saveLayout, context: self},
-				]
-			}
-		});
-
 
         this.clear();
 
