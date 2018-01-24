@@ -307,7 +307,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rcl = 0 ; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
-                renderedCrossLink.line.setAttribute("stroke-width", this.z * this.crosslinkViewer.linkWidth);
+                renderedCrossLink.line.setAttribute("stroke-width", this.z * this.linkWidth);
                 renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                 if (renderedCrossLink.crossLink.ambiguous === true) {
                     renderedCrossLink.dashedLine(true); //rescale spacing of dashes
