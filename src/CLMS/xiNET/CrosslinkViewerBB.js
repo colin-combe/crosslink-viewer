@@ -137,6 +137,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo (CLMSUI.vent, "xiNetDragToSelect", function (){self.clickModeIsSelect = true;});
         this.listenTo (CLMSUI.vent, "xiNetDragToPan", function (){self.clickModeIsSelect = false;});
         this.listenTo (CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
+        this.listenTo (CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
         return this;
     },
 
@@ -619,23 +620,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         // evt.returnValue = false;
     },
 
-    saveLayout: function () {
+    saveLayout: function (callback) {
         var myJSONText = JSON.stringify(CLMS.arrayFromMapValues(this.renderedProteins), null, '\t');
         var layout = myJSONText.replace(/\\u0000/gi, '');
-        var xmlhttp = new XMLHttpRequest();
-        var url = "./php/saveLayout.php";
-        var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
-        var params =  "sid=" + sid + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
-        xmlhttp.open("POST", url, true);
-        //Send the proper header information along with the request
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                console.log("Saved layout " + xmlhttp.responseText, true);
-                alert("Layout Saved");
-            }
-        };
-        xmlhttp.send(params);
+        callback(layout);
     },
 
     loadLayout: function(layout) {
