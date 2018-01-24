@@ -9,11 +9,6 @@ var CLMS = CLMS || {};
 CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
 CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
-    events: {
-        "change .clickToSelect": "setClickModeSelect",
-        "change .clickToPan": "setClickModePan",
-        "click .downloadButton": "downloadSVG",
-    },
 
     svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
     linkWidth: 1.1,// default line width
@@ -21,54 +16,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6},
             /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
 
-    setClickModeSelect: function (){
-        this.clickModeIsSelect = true;
-    },
-
-    setClickModePan: function (){
-        this.clickModeIsSelect = false;
-    },
-
-    /*expandProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
-        var selectedCount = selectedArr.length;
-        for (var s = 0; s < selectedCount; s++) {
-            this.renderedProteins.get(selectedArr[s].id).setForm(1);
-        }
-        d3.select("#container-menu").style("display", "none");
-    },
-
-    collapseProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
-        var selectedCount = selectedArr.length;
-        for (var s = 0; s < selectedCount; s++) {
-            this.renderedProteins.get(selectedArr[s].id).setForm(0);
-        }
-        d3.select("#container-menu").style("display", "none");
-    },*/
-
     initialize: function () {
 
         this.clickModeIsSelect = false;
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
-
-        d3.select(this.el).html(
-            "<div class='xinetControls'>" +
-                "<div class='xinetButtonBar'>" +
-                    // "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                    // "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                    "<div id='xiNETControlsDropdownPlaceholder' style='display:inline-block'></div>" +
-                    // + "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
-                "</div>" +
-            "</div>");
-
-        //hack to take out pan/select option in firefox
-        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-            // Do Firefox-related activities
-            d3.selectAll(".panOrSelect").style("display", "none");
-        };
 
         //create SVG elemnent
         this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(this.svgns, "svg");
@@ -181,6 +134,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.listenTo (CLMSUI.vent, "proteinMetadataUpdated", this.updateProteinNames);
 
+        this.listenTo (CLMSUI.vent, "xiNetDragToSelect", function (){self.clickModeIsSelect = true;});
+        this.listenTo (CLMSUI.vent, "xiNetDragToPan", function (){self.clickModeIsSelect = false;});
+        this.listenTo (CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
         return this;
     },
 
