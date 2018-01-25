@@ -138,6 +138,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo (CLMSUI.vent, "xiNetDragToPan", function (){self.clickModeIsSelect = false;});
         this.listenTo (CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
         this.listenTo (CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
+        this.listenTo (CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
+        this.listenTo (CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
         return this;
     },
 
