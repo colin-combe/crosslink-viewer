@@ -9,11 +9,6 @@ var CLMS = CLMS || {};
 CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
 CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
-    events: {
-        "change .clickToSelect": "setClickModeSelect",
-        "change .clickToPan": "setClickModePan",
-        "click .downloadButton": "downloadSVG",
-    },
 
     svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
     linkWidth: 1.1,// default line width
@@ -21,54 +16,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6},
             /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
 
-    setClickModeSelect: function (){
-        this.clickModeIsSelect = true;
-    },
-
-    setClickModePan: function (){
-        this.clickModeIsSelect = false;
-    },
-
-    /*expandProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
-        var selectedCount = selectedArr.length;
-        for (var s = 0; s < selectedCount; s++) {
-            this.renderedProteins.get(selectedArr[s].id).setForm(1);
-        }
-        d3.select("#container-menu").style("display", "none");
-    },
-
-    collapseProteins: function (){
-        var selectedArr = CLMS.arrayFromMapValues(this.model.get("selectedProteins"));
-        var selectedCount = selectedArr.length;
-        for (var s = 0; s < selectedCount; s++) {
-            this.renderedProteins.get(selectedArr[s].id).setForm(0);
-        }
-        d3.select("#container-menu").style("display", "none");
-    },*/
-
     initialize: function () {
 
         this.clickModeIsSelect = false;
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
-
-        d3.select(this.el).html(
-            "<div class='xinetControls'>" +
-                "<div class='xinetButtonBar'>" +
-                    "<label class='panOrSelect'><span>DRAG TO PAN</span><input type='radio' name='clickMode' class='clickToPan' checked></label>" +
-                    "<label class='panOrSelect'><span>DRAG TO SELECT</span><input type='radio' name='clickMode' class='clickToSelect'></label>" +
-                    "<div id='xiNETLayoutDropdownPlaceholder' style='display:inline-block'></div>" +
-                    "<button class='btn btn-1 btn-1a downloadButton'>"+CLMSUI.utils.commonLabels.downloadImg+"SVG</button>" +
-                "</div>" +
-            "</div>");
-
-        //hack to take out pan/select option in firefox
-        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-            // Do Firefox-related activities
-            d3.selectAll(".panOrSelect").style("display", "none");
-        };
 
         //create SVG elemnent
         this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(this.svgns, "svg");
@@ -164,23 +117,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 .attr("display", "none")
                 ;
 
-		// Generate layout drop down
-		var self = this;
-		new CLMSUI.DropDownMenuViewBB ({
-			el: "#xiNETLayoutDropdownPlaceholder",
-			model: CLMSUI.compositeModelInst.get("clmsModel"),
-			myOptions: {
-				title: "Layout",
-				menu: [
-					{name: "Auto", func: self.autoLayout, context: self},
-					{name: "Save", func: self.saveLayout, context: self},
-					//~ {name: "Expand All", func: self.autoLayout, context: self},
-					//~ {name: "Collapse All", func: self.saveLayout, context: self},
-				]
-			}
-		});
-
-
         this.clear();
 
         this.update();
@@ -198,6 +134,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.listenTo (CLMSUI.vent, "proteinMetadataUpdated", this.updateProteinNames);
 
+        this.listenTo (CLMSUI.vent, "xiNetDragToSelect", function (){self.clickModeIsSelect = true;});
+        this.listenTo (CLMSUI.vent, "xiNetDragToPan", function (){self.clickModeIsSelect = false;});
+        this.listenTo (CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
+        this.listenTo (CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
+        this.listenTo (CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
+        this.listenTo (CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
+        this.listenTo (CLMSUI.vent, "xiNetShowLabels", this.showLabels);
         return this;
     },
 
@@ -680,23 +623,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         // evt.returnValue = false;
     },
 
-    saveLayout: function () {
+    saveLayout: function (callback) {
         var myJSONText = JSON.stringify(CLMS.arrayFromMapValues(this.renderedProteins), null, '\t');
         var layout = myJSONText.replace(/\\u0000/gi, '');
-        var xmlhttp = new XMLHttpRequest();
-        var url = "./php/saveLayout.php";
-        var sid = CLMSUI.compositeModelInst.get("clmsModel").get("sid");
-        var params =  "sid=" + sid + "&layout="+encodeURIComponent(layout.replace(/[\t\r\n']+/g,""));
-        xmlhttp.open("POST", url, true);
-        //Send the proper header information along with the request
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.onreadystatechange = function() {//Call a function when the state changes.
-            if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                console.log("Saved layout " + xmlhttp.responseText, true);
-                alert("Layout Saved");
-            }
-        };
-        xmlhttp.send(params);
+        callback(layout);
     },
 
     loadLayout: function(layout) {
@@ -909,7 +839,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         return this;
     },
-
+    
     updateProteinNames: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
@@ -917,6 +847,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             renderedParticipantArr[rp].updateName();
         }
 
+        return this;
+    },
+        
+    showLabels: function (show) {
+        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var rpCount = renderedParticipantArr.length;
+        for (var rp = 0 ; rp < rpCount; rp++) {
+            renderedParticipantArr[rp].showLabel(show);
+        }
         return this;
     },
 

@@ -1188,7 +1188,11 @@ CLMS.xiNET.RenderedProtein.prototype.getDisulfidAnnotationCircPath = function(an
 };
 
 CLMS.xiNET.RenderedProtein.prototype.updateName = function(annotation) {
-    this.labelSVG.textContent = this.participant.name;
+    this.labelTextNode.textContent = this.participant.name;
+};
+
+CLMS.xiNET.RenderedProtein.prototype.showLabel = function(show) {
+    d3.select(this.labelSVG).attr("display", show? null : "none");
 };
 
 //TODO: should be some sort of config options
