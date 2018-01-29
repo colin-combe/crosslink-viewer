@@ -1191,6 +1191,10 @@ CLMS.xiNET.RenderedProtein.prototype.updateName = function(annotation) {
     this.labelTextNode.textContent = this.participant.name;
 };
 
+CLMS.xiNET.RenderedProtein.prototype.showLabel = function(show) {
+    d3.select(this.labelSVG).attr("display", show? null : "none");
+};
+
 //TODO: should be some sort of config options
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20;        // height of stick in pixels
 CLMS.xiNET.RenderedProtein.MAXSIZE = 100;           // residue count of longest sequence
