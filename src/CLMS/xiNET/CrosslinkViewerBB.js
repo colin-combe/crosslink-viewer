@@ -609,10 +609,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             left += element.offsetLeft || 0;
             element = element.offsetParent;
        } while(element);
-        var temp = evt.clientX - left;
-        if (isNaN(temp)){
-            console.log("problem!");
-        }
         p.x = evt.clientX - left;//CLMSUI.utils.crossBrowserElementX(evt);//, this.svgElement);
         p.y = evt.clientY - top;//CLMSUI.utils.crossBrowserElementY(evt);//, this.svgElement);
         return p;
