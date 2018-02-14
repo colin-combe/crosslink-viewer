@@ -158,7 +158,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         d3.select(this.proteinUpper).selectAll("*").remove();
 
         this.dragElement = null;
-        this.dragStart = {};
+        this.dragStart = null;
 
         this.renderedProteins = new Map();
         this.renderedCrossLinks = new Map();
@@ -373,122 +373,124 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     // dragging/rotation/SELECT_PAN/selecting
     mouseMove: function(evt) {
-        var p = this.getEventPoint(evt);// seems to be correct, see below
-        var c = p.matrixTransform(this.container.getCTM().inverse());
-        var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
-        var dx = ds.x - c.x;
-        var dy = ds.y - c.y;
-        if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-            this.mouseMoved = true;
-        }
-        if (this.dragElement != null) { //dragging or rotating
-            if (this.state === this.STATES.DRAGGING) {
-                // we are currently dragging things around
-                var ox, oy, nx, ny;
-                if (this.dragElement.participant) {
-                    //its a protein - drag it, or drag all selcted if it is selected
-                    var toDrag;
-                    if (this.dragElement.isSelected === false) {
-                        toDrag = [this.dragElement.participant];
-                    }
-                    else {
-                        toDrag = this.model.get("selectedProteins");
-                    }
-
-                    for (var d = 0; d < toDrag.length; d++) {
-                        var renderedProtein = this.renderedProteins.get(toDrag[d].id);
-                        ox = renderedProtein.x;
-                        oy = renderedProtein.y;
-                        nx = ox - dx;
-                        ny = oy - dy;
-                        renderedProtein.setPosition(nx, ny);
-                        renderedProtein.setAllLineCoordinates();
-                    }
-                }
-                this.dragStart = evt;
+        if (this.dragStart) {
+            var p = this.getEventPoint(evt);// seems to be correct, see below
+            var c = p.matrixTransform(this.container.getCTM().inverse());
+            var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+            var dx = ds.x - c.x;
+            var dy = ds.y - c.y;
+            if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+                this.mouseMoved = true;
             }
+            if (this.dragElement != null) { //dragging or rotating
+                if (this.state === this.STATES.DRAGGING) {
+                    // we are currently dragging things around
+                    var ox, oy, nx, ny;
+                    if (this.dragElement.participant) {
+                        //its a protein - drag it, or drag all selcted if it is selected
+                        var toDrag;
+                        if (this.dragElement.isSelected === false) {
+                            toDrag = [this.dragElement.participant];
+                        }
+                        else {
+                            toDrag = this.model.get("selectedProteins");
+                        }
 
-            else if (this.state === this.STATES.ROTATING) {
-                // Distance from mouse x and center of stick.
-                var _dx = c.x - this.dragElement.x
-                // Distance from mouse y and center of stick.
-                var _dy = c.y - this.dragElement.y;
-                //see http://en.wikipedia.org/wiki/Atan2#Motivation
-                var centreToMouseAngleRads = Math.atan2(_dy, _dx);
-                if (this.whichRotator === 0) {
-                    centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
-                }
-                var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
-                this.dragElement.setRotation(centreToMouseAngleDegrees);
-                this.dragElement.setAllLineCoordinates();
-            }
-            else { //not dragging or rotating yet, maybe we should start
-                // don't start dragging just on a click - we need to move the mouse a bit first
-                if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
-                    this.state = this.STATES.DRAGGING;
-
-                }
-            }
-        }
-        else if (this.state === this.STATES.SELECT_PAN) {
-            if (this.clickModeIsSelect) {
-                //SELECT
-                var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
-                var dx = c.x - ds.x;
-                var dy = c.y - ds.y;
-
-                var sx = p.x - ds.x;
-                var sy = p.y - ds.y;
-
-                var rectX = ds.x;
-                if (sx < 0) {
-                    rectX += sx;
-                }
-                var rectY = ds.y;
-                if (sy < 0) {
-                    rectY += sy;
-                }
-
-                this.selectionRectSel.attr("display", "inline")
-                    .attr("x", rectX)
-                    .attr("y", rectY)
-                    .attr("width", Math.abs(sx))
-                    .attr("height", Math.abs(sy));
-                ;
-
-                var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-                var rpCount = renderedParticipantArr.length;
-                for (var rp = 0 ; rp < rpCount; rp++) {
-                    var renderedParticipant = renderedParticipantArr[rp];
-                    if (renderedParticipant.participant.hidden !== true) {
-                        var svgRect = this.svgElement.createSVGRect();
-                        svgRect.x = rectX;
-                        svgRect.y = rectY;
-                        svgRect.width = Math.abs(sx);
-                        svgRect.height = Math.abs(sy);
-                        var intersects = this.svgElement.getIntersectionList(svgRect, renderedParticipant.upperGroup );
-                        if (intersects.length > 0) {
-                            renderedParticipant.showHighlight(true);
-                            this.toSelect.push(renderedParticipant.participant);
-                        } else {
-                            renderedParticipant.showHighlight(false);
+                        for (var d = 0; d < toDrag.length; d++) {
+                            var renderedProtein = this.renderedProteins.get(toDrag[d].id);
+                            ox = renderedProtein.x;
+                            oy = renderedProtein.y;
+                            nx = ox - dx;
+                            ny = oy - dy;
+                            renderedProtein.setPosition(nx, ny);
+                            renderedProtein.setAllLineCoordinates();
                         }
                     }
-
+                    this.dragStart = evt;
                 }
 
+                else if (this.state === this.STATES.ROTATING) {
+                    // Distance from mouse x and center of stick.
+                    var _dx = c.x - this.dragElement.x
+                    // Distance from mouse y and center of stick.
+                    var _dy = c.y - this.dragElement.y;
+                    //see http://en.wikipedia.org/wiki/Atan2#Motivation
+                    var centreToMouseAngleRads = Math.atan2(_dy, _dx);
+                    if (this.whichRotator === 0) {
+                        centreToMouseAngleRads = centreToMouseAngleRads + Math.PI;
+                    }
+                    var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
+                    this.dragElement.setRotation(centreToMouseAngleDegrees);
+                    this.dragElement.setAllLineCoordinates();
+                }
+                else { //not dragging or rotating yet, maybe we should start
+                    // don't start dragging just on a click - we need to move the mouse a bit first
+                    if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
+                        this.state = this.STATES.DRAGGING;
 
-            } else {
-                //PAN
-                var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
-                var dx = c.x - ds.x;
-                var dy = c.y - ds.y;
+                    }
+                }
+            }
+            else if (this.state === this.STATES.SELECT_PAN) {
+                if (this.clickModeIsSelect) {
+                    //SELECT
+                    var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
+                    var dx = c.x - ds.x;
+                    var dy = c.y - ds.y;
 
-                this.setCTM(this.container,
-                            this.container.getCTM()
-                            .translate(dx, dy)
-                            );
-                this.dragStart = evt;
+                    var sx = p.x - ds.x;
+                    var sy = p.y - ds.y;
+
+                    var rectX = ds.x;
+                    if (sx < 0) {
+                        rectX += sx;
+                    }
+                    var rectY = ds.y;
+                    if (sy < 0) {
+                        rectY += sy;
+                    }
+
+                    this.selectionRectSel.attr("display", "inline")
+                        .attr("x", rectX)
+                        .attr("y", rectY)
+                        .attr("width", Math.abs(sx))
+                        .attr("height", Math.abs(sy));
+                    ;
+
+                    var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+                    var rpCount = renderedParticipantArr.length;
+                    for (var rp = 0 ; rp < rpCount; rp++) {
+                        var renderedParticipant = renderedParticipantArr[rp];
+                        if (renderedParticipant.participant.hidden !== true) {
+                            var svgRect = this.svgElement.createSVGRect();
+                            svgRect.x = rectX;
+                            svgRect.y = rectY;
+                            svgRect.width = Math.abs(sx);
+                            svgRect.height = Math.abs(sy);
+                            var intersects = this.svgElement.getIntersectionList(svgRect, renderedParticipant.upperGroup );
+                            if (intersects.length > 0) {
+                                renderedParticipant.showHighlight(true);
+                                this.toSelect.push(renderedParticipant.participant);
+                            } else {
+                                renderedParticipant.showHighlight(false);
+                            }
+                        }
+
+                    }
+
+
+                } else {
+                    //PAN
+                    var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+                    var dx = c.x - ds.x;
+                    var dy = c.y - ds.y;
+
+                    this.setCTM(this.container,
+                                this.container.getCTM()
+                                .translate(dx, dy)
+                                );
+                    this.dragStart = evt;
+                }
             }
         }
     },
