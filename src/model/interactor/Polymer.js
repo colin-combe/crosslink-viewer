@@ -558,7 +558,7 @@ Polymer.prototype.getResidueCoordinates = function(r, yOff) {
 Polymer.stepsInArc = 5;
 
 Polymer.prototype.getAnnotationPieSliceArcPath = function(annotation) {
-	console.log(">>" + annotation.begin);
+	//console.log(">>" + annotation.begin);
     var startAngle = ((annotation.begin - 1) / this.size) * 360;
     var endAngle = ((annotation.end - 1) / this.size) * 360;
     var radius = this.getBlobRadius() - 2;
