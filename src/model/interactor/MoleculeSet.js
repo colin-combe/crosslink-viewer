@@ -15,7 +15,7 @@ var Config = require('../../controller/Config');
 
 MoleculeSet.prototype = new Molecule();
 
-function MoleculeSet(id, xlvController, json) {
+function MoleculeSet(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
     this.json = json;  
@@ -25,7 +25,7 @@ function MoleculeSet(id, xlvController, json) {
     this.selfLink = null;
     this.sequenceLinks = d3.map();
 	
-	this.name = "INTERACTOR SET";
+	this.name = name;
     this.size = 10;//HACK
 	
     this.tooltip = this.id;
@@ -70,7 +70,7 @@ function MoleculeSet(id, xlvController, json) {
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
-    this.labelSVG.setAttribute("fill", "red")
+    this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
     this.labelSVG.setAttribute("y", 10);
     this.labelSVG.setAttribute("class", "xlv_text proteinLabel");

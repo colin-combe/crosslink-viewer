@@ -276,5 +276,11 @@ var exampleIndex = [
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997",
         "viewerNotes":"Includes composite binding site (i.e. binding site that consists of non-contiguous regions).",
     },
+    {
+        "ac": "CPX-1599",
+        "complexAssemblies": [],
+        "url": "https://www.ebi.ac.uk/complexportal/complex/CPX-1599",
+        "viewerNotes":"Includes molecule set.",
+    },
 
 ];

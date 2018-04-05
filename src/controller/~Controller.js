@@ -11,10 +11,8 @@
 "use strict";
 
 var xiNET = {}; //crosslinkviewer's javascript namespace
-//var RGBColor = require('rgbcolor');
 var d3 = require('d3');
 var colorbrewer = require('colorbrewer');
-var Spinner = require('spin.js');
 var xiNET_Storage = require('./xiNET_Storage');
 var Annotation = require('../model/interactor/Annotation');
 var Molecule = require('../model/interactor/Molecule');
@@ -24,7 +22,7 @@ var BioactiveEntity = require('../model/interactor/BioactiveEntity');
 var Gene = require('../model/interactor/Gene');
 var DNA = require('../model/interactor/DNA');
 var RNA = require('../model/interactor/RNA');
-var Complex = require('../model/interactor/Complex');
+var Complex = require('../model/interactor/Complex_symbol');
 var MoleculeSet = require('../model/interactor/MoleculeSet');
 var Link = require('../model/link/Link');
 var NaryLink = require('../model/link/NaryLink');
@@ -45,15 +43,15 @@ MouseEventCodes.SELECTING = 4;//set by mouse down on svgElement- right button or
 xiNET.Controller = function(targetDiv) {
     // targetDiv could be div itself or id of div - lets deal with that
     if (typeof targetDiv === "string"){
-        this.targetDiv = document.getElementById(targetDiv);
-    } else {
-        this.targetDiv = targetDiv;
+        targetDiv = document.getElementById(targetDiv);
     }
-    this.emptyElement(this.targetDiv); //avoids prob with 'save - web page complete'
+    this.emptyElement(targetDiv); //avoids prob with 'save - web page complete'
     //create SVG elemnent
     this.svgElement = document.createElementNS(Config.svgns, "svg");
-    this.svgElement.setAttribute('id', 'complexViewerSVG');
-
+    this.svgElement.setAttribute('id', 'networkSVG');
+    this.svgElement.setAttribute("width", "100%");
+    this.svgElement.setAttribute("height", "100%");
+    this.svgElement.setAttribute("style", "display:block;");
     //add listeners
     var self = this;
     this.svgElement.onmousedown = function(evt) {self.mouseDown(evt);};
@@ -68,7 +66,7 @@ xiNET.Controller = function(targetDiv) {
     //legend changed callbacks
     this.legendCallbacks = new Array();
 
-    this.targetDiv.appendChild(this.svgElement);
+    targetDiv.appendChild(this.svgElement);
 
     // various groups needed
     this.container = document.createElementNS(Config.svgns, "g");
@@ -205,22 +203,8 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
     var self = this;
     self.features = d3.map();
 
-    var complexes = d3.map();
+    //var complexes = d3.map();
     var needsSequence = d3.set();//things that need seq looked up
-
-    //get interactors
-    self.proteinCount = 0;
-    self.interactors = d3.map();
-    for (var n = 0; n < dataElementCount; n++) {
-        if (data[n].object === 'interactor') {
-            var interactor = data[n];
-            self.interactors.set(interactor.id, interactor);
-            if (interactor.id.indexOf('uniprotkb_') === 0) {
-                self.proteinCount++;
-            }
-        }
-    }
-
     expand? readStoichExpanded() : readStoichUnexpanded();
 
     // loop through particpants and features
@@ -274,17 +258,19 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                                 toSequenceData = toSequenceData_indexedByNodeId.values()[n];
                                 var fromMolecule = getNode(fromSequenceData[0]);
                                 var toMolecule = getNode(toSequenceData[0]);
-                                var link;
-                                if (fromMolecule === toMolecule){
-                                    link = getUnaryLink(fromMolecule, interaction);
+                                if (fromMolecule && toMolecule) {
+                                    var link;
+                                    if (fromMolecule === toMolecule){
+                                        link = getUnaryLink(fromMolecule, interaction);
+                                    }
+                                    else {
+                                        link = getBinaryLink(fromMolecule, toMolecule, interaction);
+                                    }
+                                    var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
+                                    fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+                                    toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
+                                    link.sequenceLinks.set(sequenceLink.id, sequenceLink);
                                 }
-                                else {
-                                    link = getBinaryLink(fromMolecule, toMolecule, interaction);
-                                }
-                                var sequenceLink = getFeatureLink(fromSequenceData, toSequenceData, interaction);
-                                fromMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
-                                toMolecule.sequenceLinks.set(sequenceLink.id, sequenceLink);
-                                link.sequenceLinks.set(sequenceLink.id, sequenceLink);
                             }
 
                         }// end for each linked feature
@@ -296,7 +282,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
     }
 
     //init complexes
-    var complexes = complexes.values()
+    /*var complexes = complexes.values()
     for (var c = 0; c < complexes.length; c++) {
         var interactionId;
         if (expand) {
@@ -315,7 +301,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
         }
         complexes[c].initMolecule(naryLink);
         naryLink.complex = complexes[c];
-    }
+    }*/
     self.checkLinks();
     self.initLayout();
 
@@ -327,11 +313,11 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
         // add features to interactors/participants/nodes
         var annotName = "";
         if (typeof feature.name !== 'undefined') {
-            annotName += feature.name + ' ';
+            annotName += feature.name + ', ';
         }
-        //~ if (typeof feature.type !== 'undefined') {
-            //~ annotName += feature.type.name;
-        //~ }
+        if (typeof feature.type !== 'undefined') {
+            annotName += feature.type.name;
+        }
         if (typeof feature.detmethod !== 'undefined') {
             annotName += ', ' + feature.detmethod.name;
         }
@@ -344,21 +330,23 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
             for (var sdi = 0; sdi < seqDataCount; sdi++) {
                 var seqDatum = seqData[sdi];
                 var mID = seqDatum.interactorRef;
-                if (expand) {
-                    mID = mID   + "(" + seqDatum.participantRef + ")";
-                }
-                var molecule = self.molecules.get(mID);
-                var sequenceRegex = /(.+)-(.+)/;
-                var match = sequenceRegex.exec(seqDatum.pos);
-                var startRes = match[1] * 1;
-                var endRes = match[2] * 1;
-                if (isNaN(startRes) === false && isNaN(endRes) === false) {
-                    var annotation = new Annotation(annotName, startRes, endRes);
-                    if (molecule.miFeatures == null) {
-                        molecule.miFeatures = new Array();
+                if (mID) {
+                    if (expand) {
+                        mID = mID   + "(" + seqDatum.participantRef + ")";
                     }
-                    molecule.miFeatures.push(annotation);
-    //              console.log(molecule.id);
+                    var molecule = self.molecules.get(mID);
+                    var sequenceRegex = /(.+)-(.+)/;
+                    var match = sequenceRegex.exec(seqDatum.pos);
+                    var startRes = match[1] * 1;
+                    var endRes = match[2] * 1;
+                    if (isNaN(startRes) === false && isNaN(endRes) === false) {
+                        var annotation = new Annotation(annotName, startRes, endRes);
+                        if (molecule.miFeatures == null) {
+                            molecule.miFeatures = new Array();
+                        }
+                        molecule.miFeatures.push(annotation);
+        //              console.log(molecule.id);
+                    }
                 }
             }
         }
@@ -385,6 +373,15 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
     }
 
     function readStoichExpanded(){
+        //get interactors
+        var interactors = d3.map();
+        for (var n = 0; n < dataElementCount; n++) {
+            if (data[n].object === 'interactor') {
+                var interactor = data[n];
+                interactors.set(interactor.id, interactor);
+            }
+        }
+
         //get maximum stoichiometry
         var maxStoich = 0;
         for (var l = 0; l < dataElementCount; l++) {
@@ -434,8 +431,8 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                     var participantId =  intRef + "(" + partRef + ")";
                     var participant = self.molecules.get(participantId);
                     if (typeof participant === 'undefined'){
-                        var interactor = self.interactors.get(intRef);
-                        participant = newMolecule(interactor, participantId);
+                        var interactor = interactors.get(intRef);
+                        participant = newMolecule(interactor, participantId, intRef);
                         self.molecules.set(participantId, participant);
                     }
 
@@ -454,13 +451,13 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
         }
     };
 
-    function newMolecule(interactor, participantId){
+    function newMolecule(interactor, participantId, interactorRef){
         var participant;
         if (typeof interactor === 'undefined') {
             //must be a previously unencountered complex -
             // MI:0314 - interaction?, MI:0317 - complex? and its many subclasses
-            participant = new Complex(participantId, self);
-            complexes.set(participantId, participant);
+            participant = new Complex(participantId, self, interactorRef);
+            //complexes.set(participantId, participant);
         }
         //molecule sets
         else if (interactor.type.id === 'MI:1304' //molecule set
@@ -468,7 +465,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                 || interactor.type.id === 'MI:1307' //molecule set - defined set
                 || interactor.type.id === 'MI:1306' //molecule set - open set
             ) {
-            participant = new MoleculeSet(participantId, self, interactor, interactor.label);
+            participant = new MoleculeSet(participantId, self, interactor); //doesn't really work yet
         }
         //bioactive entities
         else if (interactor.type.id === 'MI:1100' // bioactive entity
@@ -551,14 +548,14 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
 
     function readStoichUnexpanded(){
         //get interactors
-        var interactors = self.interactors.values();
-        var interactorCount = interactors.length;
-        for (var i = 0; i < interactorCount; i++) {
-            var interactor = interactors[i];
-            var participant;
-            var participantId = interactor.id;
-            participant = newMolecule (interactor, participantId);
-            self.molecules.set(participantId, participant);
+        for (var n = 0; n < dataElementCount; n++) {
+            if (data[n].object === 'interactor') {
+                var interactor = data[n];
+                var participant;
+                var participantId = interactor.id;
+                participant = newMolecule (interactor, participantId);
+                self.molecules.set(participantId, participant);
+            }
         }
 
         indexFeatures();
@@ -590,7 +587,7 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                     if (typeof participant === 'undefined'){
                         //must be a previously unencountered complex
                         participant = new Complex(participantId, self);
-                        complexes.set(participantId, participant);
+                        //complexes.set(participantId, participant);
                         self.molecules.set(participantId, participant);
                     }
 
@@ -600,24 +597,11 @@ xiNET.Controller.prototype.readMIJSON = function(miJson, expand) {
                     if (nLink.interactors.indexOf(participant) === -1){
                         nLink.interactors.push(participant);
                     }
-                    //temp - to give sensible info when stoich collapsed
-                    var interactor = self.molecules.get(participantId);
-                    interactor.stoich = interactor.stoich? interactor.stoich : 0;
-                    if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
-                        interactor.stoich = interactor.stoich + +jsonParticipant.stoichiometry;
-                    }
-                    else {
-                        interactor.stoich = interactor.stoich + 1;
-                    }
+                    //~ if (jsonParticipant.stoichiometry && jsonParticipant.stoichiometry !== null){
+                        //~ var interactor = self.molecules.get(participantId);
+                        //~ interactor.addStoichiometryLabel(jsonParticipant.stoichiometry);
+                    //~ }
                 }
-
-                var interactorArr = self.molecules.values();
-                var iCount = interactorArr.length
-                for (var ii = 0; ii < iCount; ii++){
-                    var int = interactorArr[ii];
-                    int.addStoichiometryLabel(int.stoich);
-                }
-
             }
         }
 
@@ -781,16 +765,9 @@ xiNET.Controller.prototype.setAllLinkCoordinates = function() {
 };
 
 xiNET.Controller.prototype.autoLayout = function() {
-    if (this.force) {
+    if (typeof this.force !== 'undefined' && this.force != null) {
         this.force.stop();
     }
-
-    d3.select(this.svgElement).style("visibility","hidden");
-
-    var spinner = new Spinner({scale: 3}).spin(this.targetDiv);
-    var showIt = false;
-	setTimeout(function(){spinner.spin(false);showIt = true}, 2000);
-	
     var width = this.svgElement.parentNode.clientWidth;
     var height = this.svgElement.parentNode.clientHeight;
 
@@ -867,37 +844,18 @@ xiNET.Controller.prototype.autoLayout = function() {
             //also .chargeDistance() and .alpha() // not used
 
     this.force.on("tick", function(e) {
-		if (showIt) {
-				var nodes = self.force.nodes();
-				// console.log("nodes", nodes);
-				for (var n = 0; n < nodeCount; n++) {
-					var node = nodes[n];
-					var mol = self.molecules.get(node.id);
-					var nx = node.x;
-					var ny = node.y;
-					mol.setPosition(nx, ny);
-				}
-				self.setAllLinkCoordinates();
-				//spinner.stop();
-				d3.select(self.svgElement).style('visibility','visible');
-		}
-        //this could be improved, todo: check all possible over boundary possibilities
-        //~ var bBox = self.container.getBBox();
-        //console.log(bBox);
-        //~ //only dealing with the more common 'label over left edge' situation
-        //~ if (bBox.x < 0) {
-            //~ //alert("bodge time");
-            //~ self.setCTM(self.container, self.container.getCTM().translate(- bBox.x, 0));
-        //~ }
-
-
+        var nodes = self.force.nodes();
+        // console.log("nodes", nodes);
+        for (var n = 0; n < nodeCount; n++) {
+            var node = nodes[n];
+            var mol = self.molecules.get(node.id);
+            var nx = node.x;
+            var ny = node.y;
+            mol.setPosition(nx, ny);
+        }
+        self.setAllLinkCoordinates();
     });
     this.force.start();
-};
-
-xiNET.Controller.prototype.setCTM = function(element, matrix) {
-    var s = "matrix(" + matrix.a + "," + matrix.b + "," + matrix.c + "," + matrix.d + "," + matrix.e + "," + matrix.f + ")";
-    element.setAttribute("transform", s);
 };
 
 xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
@@ -921,18 +879,14 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
             chooseColours();
         }
         else if (annotationChoice.toUpperCase() === "INTERACTOR") {
-            if (self.proteinCount < 21) {
-                for (m = 0; m < molCount; m++) {
-                    var mol = mols[m];
-                    if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
-                        var annotation = new Annotation (mol.json.label, 1, mol.size);
-                        mol.setPositionalFeatures([annotation]);
-                    }
+            for (m = 0; m < molCount; m++) {
+                var mol = mols[m];
+                if (mol.id.indexOf('uniprotkb_') === 0) {//LIMIT IT TO PROTEINS //todo:fix
+                    var annotation = new Annotation (mol.json.label, 1, mol.size);
+                    mol.setPositionalFeatures([annotation]);
                 }
-                chooseColours();
-            } else {
-                alert("Too many types of protein (> 20) - can't colour by interactor.");
             }
+            chooseColours();
         }
         else if (annotationChoice.toUpperCase() === "SUPERFAM" || annotationChoice.toUpperCase() === "SUPERFAMILY"){
             var molsAnnotated = 0;
@@ -985,18 +939,16 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
         for (m = 0; m < molCount; m++) {
             var mol = mols[m];
             for (var a = 0; a < mol.annotations.length; a++){
-                categories.add(mol.annotations[a].description);
+                categories.add(mol.annotations[a].name);
             }
         }
         var catCount = categories.values().length;
-                
         var colourScheme;// = null;
         if (catCount < 3){catCount = 3;}
-        //~ if (catCount < 21) {
-            if (catCount < 5) {
-				//~ var reversed = colorbrewer.Accent[catCount].slice().reverse();
-                //~ colourScheme = d3.scale.ordinal().range(reversed);
-                colourScheme = d3.scale.ordinal().range(colorbrewer.Set1[4]);
+        if (catCount < 21) {
+            if (catCount < 9) {
+                var reversed = colorbrewer.Accent[catCount].slice().reverse();
+                colourScheme = d3.scale.ordinal().range(reversed);
             }
             else if (catCount < 13) {
                 var reversed = colorbrewer.Set3[catCount].slice().reverse();
@@ -1005,24 +957,16 @@ xiNET.Controller.prototype.setAnnotations = function(annotationChoice) {
             else {
                 colourScheme = d3.scale.category20();
             }
-
-            //~ console.log("COLs ", colourScheme);
-
             for (m = 0; m < molCount; m++) {
                 var mol = mols[m];
                 for (a = 0; a < mol.annotations.length; a++) {
                     var anno = mol.annotations[a];
-                    if (anno.description == "No annotations") {
-                        var c = "#cccccc";
-                    } else {
-						console.log(">" + anno.description);
-                        var c = colourScheme(anno.description);
-                    }
+                    var c = colourScheme(anno.name);
                     anno.pieSlice.setAttribute("fill", c);
                     anno.pieSlice.setAttribute("stroke", c);
                 }
             }
-        //~ }
+        }
         self.legendChanged(colourScheme);
     }
 };
@@ -1253,7 +1197,8 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
         var c = this.mouseToSVG(p.x, p.y);
 
         if (this.dragElement != null) {
-            if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) { //not dragging or rotating
+            if (!(this.state === MouseEventCodes.DRAGGING || this.state === MouseEventCodes.ROTATING)) {
+                //not dragging or rotating
                 if (rightclick) {
                     // RIGHT click
                 }
@@ -1266,7 +1211,10 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                     } else if (evt.shiftKey) { //if shift key
                         this.dragElement.switchStickScale(c);
                     } else {
-                        if (this.sequenceInitComplete === true){
+                        if (this.dragElement.isComplexSymbol) {
+                            this.dragElement.showData();
+                        }
+                        else if (this.sequenceInitComplete === true){
                                if (this.dragElement.form === 0) {
                                 this.dragElement.setForm(1, c);
                             } else {
@@ -1359,7 +1307,7 @@ xiNET.Controller.prototype.preventDefaultsAndStopPropagation = function(evt) {
  */
 xiNET.Controller.prototype.touchStart = function(evt) {
     //prevent default, but allow propogation
-    //~ evt.preventDefault();
+    evt.preventDefault();
     //~ //evt.returnValue = false;
     //~ this.preventDefaultsAndStopPropagation(evt);
 
