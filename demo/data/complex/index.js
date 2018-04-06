@@ -276,5 +276,19 @@ var exampleIndex = [
         "url": "http://www.ebi.ac.uk/intact/complex/details/EBI-10828997",
         "viewerNotes":"Includes composite binding site (i.e. binding site that consists of non-contiguous regions).",
     },
+    {
+        "ac": "CPX-1599",
+        "name": "40S cytosolic small ribosomal subunit",
+        "complexAssemblies": [],
+        "url": "https://www.ebi.ac.uk/complexportal/complex/CPX-1599",
+        "viewerNotes":"Includes molecule set.",
+    },
+    {
+        "ac": "CPX-1556",
+        "name": "CMG-Pol epsilon complex",
+        "complexAssemblies": [],
+        "url": "https://www.ebi.ac.uk/complexportal/complex/CPX-1556",
+        "viewerNotes":"Includes molecule set.",
+    },
 
 ];
