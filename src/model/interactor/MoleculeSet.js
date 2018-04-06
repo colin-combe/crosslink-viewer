@@ -3,8 +3,8 @@
 //
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-//		
-//		MoleculeSet.js		
+//
+//		MoleculeSet.js
 //
 //		authors: Colin Combe
 
@@ -18,18 +18,18 @@ MoleculeSet.prototype = new Molecule();
 function MoleculeSet(id, xlvController, json, name) {
     this.id = id; // id may not be accession (multiple Segments with same accesssion)
     this.controller = xlvController;
-    this.json = json;  
+    this.json = json;
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-	
+
 	this.name = name;
     this.size = 10;//HACK
-	
+
     this.tooltip = this.id;
-    
+
     // layout info
     this.x = 40;
     this.y = 40;
@@ -39,14 +39,14 @@ function MoleculeSet(id, xlvController, json, name) {
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isParked = false;
     this.isSelected = false;
-    
+
     this.size = 10;//hack, layout is using this
-       
+
      /*
      * Upper group
      * svg group for elements that appear above links
 	 */
-     
+
     this.upperGroup = document.createElementNS(Config.svgns, "g");
     this.upperGroup.setAttribute("class", "upperGroup");
  	var points = "0, -10  8.66,5 -8.66,5";
@@ -54,19 +54,19 @@ function MoleculeSet(id, xlvController, json, name) {
     this.highlight = document.createElementNS(Config.svgns, "polygon");
     this.highlight.setAttribute("points", points);
     this.highlight.setAttribute("stroke", Config.highlightColour);
-	this.highlight.setAttribute("stroke-width", "5");   
-    this.highlight.setAttribute("fill", "none");   
-    //this.highlight.setAttribute("fill-opacity", 1);   
+	this.highlight.setAttribute("stroke-width", "5");
+    this.highlight.setAttribute("fill", "none");
+    //this.highlight.setAttribute("fill-opacity", 1);
     //attributes that may change
     d3.select(this.highlight).attr("stroke-opacity", 0);
-	this.upperGroup.appendChild(this.highlight);   
+	this.upperGroup.appendChild(this.highlight);
 
     //svg groups for self links
     this.intraLinksHighlights = document.createElementNS(Config.svgns, "g");
     this.intraLinks = document.createElementNS(Config.svgns, "g");
     this.upperGroup.appendChild(this.intraLinksHighlights);
-	this.upperGroup.appendChild(this.intraLinks);    
-    
+	this.upperGroup.appendChild(this.intraLinks);
+
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(Config.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
@@ -76,24 +76,43 @@ function MoleculeSet(id, xlvController, json, name) {
     this.labelSVG.setAttribute("class", "xlv_text proteinLabel");
     this.labelSVG.setAttribute('font-family', 'Arial');
     this.labelSVG.setAttribute('font-size', '16');
-    
+
     this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
-    d3.select(this.labelSVG).attr("transform", 
-		"translate( -" + (15) + " " + Molecule.labelY + ")");
+    d3.select(this.labelSVG).attr("transform",
+		"translate( -" + (10) + " " + Molecule.labelY + ")");
     this.upperGroup.appendChild(this.labelSVG);
-   	 
-	//make blob
-	this.outline = document.createElementNS(Config.svgns, "polygon");
-	this.outline.setAttribute("points", points);
-   
-    this.outline.setAttribute("stroke", "black");
-    this.outline.setAttribute("stroke-width", "1");
-    d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 1)
-			.attr("fill", "#ffffff");
+
+	//make symbol
+	this.outline = document.createElementNS(Config.svgns, "rect");
+	d3.select(this.outline).attr("height", 20)
+                            .attr("width", 40)
+                            .attr("y", -10)
+                            .attr("rx", 5)
+                            .attr("ry", 5)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "4")
+                            .attr("stroke-opacity", 1)
+                            .attr("fill-opacity", 1)
+                            .attr("fill", "#ffffff")
+                            ;
     //append outline
     this.upperGroup.appendChild(this.outline);
+
+    this.upperLine = document.createElementNS(Config.svgns, "rect");
+    d3.select(this.upperLine).attr("height", 20)
+                            .attr("width", 40)
+                            .attr("y", -10)
+                            .attr("rx", 5)
+                            .attr("ry", 5)
+                            .attr("stroke", "white")
+                            .attr("stroke-width", "2")
+                            .attr("stroke-opacity", 1)
+                            .attr("fill-opacity", 0)
+                            ;
+    //append outline
+    this.upperGroup.appendChild(this.upperLine);
 
     // events
     var self = this;
@@ -107,7 +126,7 @@ function MoleculeSet(id, xlvController, json, name) {
     this.upperGroup.onmouseout = function(evt) {
 		self.mouseOut(evt);
     };
-     
+
     this.upperGroup.ontouchstart = function(evt) {
 		self.touchStart(evt);
     };
@@ -132,7 +151,7 @@ function MoleculeSet(id, xlvController, json, name) {
 };
 
 MoleculeSet.prototype.getBlobRadius = function() {
-    return 10;
+    return 20;
 };
 
 MoleculeSet.prototype.setForm = function(form, svgP) {
