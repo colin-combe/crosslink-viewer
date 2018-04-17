@@ -130,6 +130,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo (this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
         this.listenTo (this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
         this.listenTo (this.model, "change:selectedProteins", this.selectedParticipantsChanged);
+		this.listenTo (this.model, "change:highlightedProteins", this.highlightedParticipantsChanged);	// mjg apr 18
         this.listenTo (this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo (CLMSUI.vent, "proteinMetadataUpdated", this.updateProteinNames);
@@ -810,6 +811,33 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var renderedParticipant = this.renderedProteins.get(selectedParticipants[sp].id);
                 if (renderedParticipant.isSelected == false) {
                     renderedParticipant.setSelected(true);
+                }
+            }
+        }
+        return this;
+    },
+	
+	// mjg april 18
+	highlightedParticipantsChanged: function () {
+        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var highlightedParticipants = this.model.get("highlightedProteins");
+
+        var rpCount = renderedParticipantArr.length;
+        for (var rp = 0 ; rp < rpCount; rp++) {
+            var renderedParticipant = renderedParticipantArr[rp];
+            if (highlightedParticipants.indexOf(renderedParticipant.participant) == -1 && renderedParticipant.isHighlighted == true) {
+                renderedParticipant.showHighlight(false);
+				renderedParticipant.isHighlighted = false;
+            }
+        }
+
+        //~ var selectedParticipantsArr = CLMS.arrayFromMapValues(selectedParticipants)
+        var spCount = highlightedParticipants.length
+        for (var sp =0; sp < spCount; sp++ ) {
+            if (highlightedParticipants[sp].is_decoy != true) {
+                var renderedParticipant = this.renderedProteins.get(highlightedParticipants[sp].id);
+                if (renderedParticipant.isHighlighted == false) {
+                    renderedParticipant.showHighlight(true);
                 }
             }
         }
