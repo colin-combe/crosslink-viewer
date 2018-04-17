@@ -19,6 +19,7 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.form = 0;//null; // 0 = blob, 1 = stick
     this.isFlipped = false;
     this.isSelected = false;
+	this.isHighlighted = false;	// mjg apr 18
     //rotators
     this.lowerRotator = new CLMS.xiNET.Rotator(this, 0, this.crosslinkViewer);
     this.upperRotator = new CLMS.xiNET.Rotator(this, 1, this.crosslinkViewer);
@@ -161,7 +162,9 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    this.showHighlight(true);
+    //this.showHighlight(true);	// mjg apr 18
+
+	this.crosslinkViewer.model.setHighlightedProteins ([this.participant]);	// mjg apr 18
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor (this.participant))
@@ -172,7 +175,8 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    this.showHighlight(false);
+    //this.showHighlight(false);	// mjg apr 18
+	this.crosslinkViewer.model.setHighlightedProteins ([]);	// mjg apr 18
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 };
 
@@ -196,20 +200,25 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
+	var d3HighSel = d3.select(this.highlight);
+	this.isHighlighted = show ? true : false;	// mjg apr 18
     if (show === true) {
         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-        d3.select(this.highlight).classed("selectedProtein", false);
-        d3.select(this.highlight).classed("highlightedProtein", true);
-        this.highlight.setAttribute("stroke-opacity", "1");
+        d3HighSel
+			.classed("selectedProtein", false)
+			.classed("highlightedProtein", true)
+			.attr("stroke-opacity", "1")
+		;
     } else {
         if (this.isSelected == false) {
-                this.highlight.setAttribute("stroke-opacity", "0");
+        	d3HighSel.attr("stroke-opacity", "0");
         }
         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-        d3.select(this.highlight).classed("selectedProtein", true);
-        d3.select(this.highlight).classed("highlightedProtein", false);
+        d3HighSel
+			.classed("selectedProtein", true)
+			.classed("highlightedProtein", false)
+		;
     }
-
 };
 
 CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
