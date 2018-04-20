@@ -1,0 +1,135 @@
+{
+  data: [
+    {
+      object: "interactor",
+      id: "complex portal_CPX-2110",
+      type: {
+        id: "MI:1302",
+        name: "stable complex"
+      },
+      organism: {
+        taxid: "559292",
+        common: "yeast",
+        scientific: "Saccharomyces cerevisiae"
+      },
+      identifier: {
+        db: "complex portal",
+        id: "CPX-2110"
+      },
+      label: "dpol-epsilon_yeast"
+    },
+    {
+      object: "interactor",
+      id: "complex portal_CPX-297",
+      type: {
+        id: "MI:1302",
+        name: "stable complex"
+      },
+      organism: {
+        taxid: "559292",
+        common: "yeast",
+        scientific: "Saccharomyces cerevisiae"
+      },
+      identifier: {
+        db: "complex portal",
+        id: "CPX-297"
+      },
+      label: "cmg_yeast"
+    },
+    {
+      object: "interaction",
+      id: "complex portal_CPX-1556",
+      interactionType: {
+        id: "MI:0915",
+        name: "physical association"
+      },
+      complexType: {
+        id: "MI:1302",
+        name: "stable complex"
+      },
+      evidenceType: {
+        id: "ECO:0000353",
+        name: "physical interaction evidence used in manual assertion"
+      },
+      organism: {
+        taxid: "559292",
+        common: "yeast",
+        scientific: "Saccharomyces cerevisiae"
+      },
+      identifiers: [
+        {
+          db: "intenz",
+          id: "2.7.7.7"
+        },
+        {
+          db: "intenz",
+          id: "3.6.4.12"
+        },
+        {
+          db: "complex portal",
+          id: "CPX-1556"
+        },
+        {
+          db: "intact",
+          id: "EBI-16706245"
+        }
+      ],
+      participants: [
+        {
+          id: "1",
+          interactorRef: "complex portal_CPX-2110",
+          bioRole: {
+            id: "MI:0501",
+            name: "enzyme"
+          },
+          features: [
+            {
+              id: "2",
+              name: "cmg helicase binding region",
+              category: "bindingSites",
+              type: {
+                id: "MI:0117",
+                name: "binding-associated region"
+              },
+              sequenceData: [
+                {
+                  pos: "?-?"
+                }
+              ],
+              linkedFeatures: [
+                "3"
+              ]
+            }
+          ]
+        },
+        {
+          id: "4",
+          interactorRef: "complex portal_CPX-297",
+          bioRole: {
+            id: "MI:0501",
+            name: "enzyme"
+          },
+          features: [
+            {
+              id: "3",
+              name: "dpol-epsilon binding region",
+              category: "bindingSites",
+              type: {
+                id: "MI:0117",
+                name: "binding-associated region"
+              },
+              sequenceData: [
+                {
+                  pos: "?-?"
+                }
+              ],
+              linkedFeatures: [
+                "2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
