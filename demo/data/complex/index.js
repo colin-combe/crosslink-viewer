@@ -292,7 +292,7 @@ var exampleIndex = [
     },
     {
         "ac": "CPX-1556-B",
-        "name": "CMG-Pol epsilon complex",
+        "name": "CMG-Pol epsilon complex B",
         "complexAssemblies": [],
         "url": "https://www.ebi.ac.uk/complexportal/complex/CPX-1556",
         "viewerNotes":"Includes molecule set.",
