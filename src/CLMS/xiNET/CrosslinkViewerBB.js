@@ -554,6 +554,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 } //end of protein drag; do nothing
             }
             else if (!this.mouseMoved) { //unselect crosslinks
+                var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setMarkedCrossLinks("selection", [], false, add);
                 //~ if (!this.clickModeIsSelect) {
                     this.model.setSelectedProteins([]);
