@@ -202,8 +202,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
             annotColouredRect.setAttribute("class", "protein");
 
             //make domain rect's
-            var annoSize = pep[1];
-            var annotX = ((pep[0] + 0.5) - (renderedProtein.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+            var annoSize = pep[1] - 0.2;
+            var annotX = ((pep[0] + 0.6) - (renderedProtein.participant.size/2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
             var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
             annotColouredRect.setAttribute("x", annotX);
             annotColouredRect.setAttribute("y", y);
