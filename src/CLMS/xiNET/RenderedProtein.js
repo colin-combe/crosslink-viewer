@@ -1026,85 +1026,88 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             var convStart = anno.begin;
             var convEnd = anno.end;
             var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
+			var withinAlignedRange = true;
             if (anno.category != "AA" // this handles not aligning certain features, todo; check for tidier way
                 && alignModel) {
                 var alignmentID = anno.alignmentID || "Canonical";
-                convStart = alignModel.mapToSearch (alignmentID, anno.begin);
-                convEnd = alignModel.mapToSearch (alignmentID, anno.end);
-                if (convStart <= 0) { convStart = -convStart; }   // <= 0 indicates no equal index match, do the - to find nearest index
-                if (convEnd <= 0) { convEnd = -convEnd; }         // <= 0 indicates no equal index match, do the - to find nearest index
-                //TODO: tooltip requring these to be written into feature object, seems wrong?
-                anno.fstart = convStart;
-                anno.fend = convEnd;
-            } else {
-                anno.fstart = convStart;
-                anno.fend = convEnd;
+				var conv = alignModel.rangeToSearch (alignmentID, anno.begin, anno.end);
+				if (conv) {
+					convStart = conv[0];
+					convEnd = conv[1];
+				} else {
+					withinAlignedRange = false;	// when conv returns null
+				}
             }
+			//TODO: tooltip requring these to be written into feature object, seems wrong?
+			anno.fstart = convStart;
+            anno.fend = convEnd;
 
             var fid = anno.category + "-" + anno.type + "-" + anno.alignmentID + "[" + convStart + " - " + convEnd + "]";
 
-            var pieSlice = document.createElementNS(this.crosslinkViewer.svgns, "path");
-            var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
+			if (withinAlignedRange) {
+				var pieSlice = document.createElementNS(this.crosslinkViewer.svgns, "path");
+				var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
 
-            if (anno.type != "DISULFID") {
-                if (this.form === 0) {
-                    pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-                    colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
-                } else {
-                    pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-                    colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
-                }
-                pieSlice.setAttribute("stroke-width", 1);
-                pieSlice.setAttribute("fill-opacity", "0.5");
-                colouredRect.setAttribute("stroke-width", 1);
-                colouredRect.setAttribute("fill-opacity", "0.5");
+				if (anno.type != "DISULFID") {
+					if (this.form === 0) {
+						pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
+						colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
+					} else {
+						pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
+						colouredRect.setAttribute("d", this.getAnnotationRectPath(anno));
+					}
+					pieSlice.setAttribute("stroke-width", 1);
+					pieSlice.setAttribute("fill-opacity", "0.5");
+					colouredRect.setAttribute("stroke-width", 1);
+					colouredRect.setAttribute("fill-opacity", "0.5");
 
-                var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
-                pieSlice.setAttribute("fill", c);
-                pieSlice.setAttribute("stroke", c);
-                colouredRect.setAttribute("fill", c);
-                colouredRect.setAttribute("stroke", c);
-            }
-            else {
+					var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					pieSlice.setAttribute("fill", c);
+					pieSlice.setAttribute("stroke", c);
+					colouredRect.setAttribute("fill", c);
+					colouredRect.setAttribute("stroke", c);
+				}
+				else {
 
-                if (this.form === 0) {
-                    pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
-                    colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
-                } else {
-                    pieSlice.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
-                    colouredRect.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
-                }
-                pieSlice.setAttribute("stroke-width", 1);
-                colouredRect.setAttribute("stroke-width", 1);
+					if (this.form === 0) {
+						pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
+						colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
+					} else {
+						pieSlice.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
+						colouredRect.setAttribute("d", this.getDisulfidAnnotationRectPath(anno, f));
+					}
+					pieSlice.setAttribute("stroke-width", 1);
+					colouredRect.setAttribute("stroke-width", 1);
 
-                var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
-                pieSlice.setAttribute("fill", "none");
-                pieSlice.setAttribute("stroke", c);
-                colouredRect.setAttribute("fill", "none");
-                colouredRect.setAttribute("stroke", c);
-            }
+					var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					pieSlice.setAttribute("fill", "none");
+					pieSlice.setAttribute("stroke", c);
+					colouredRect.setAttribute("fill", "none");
+					colouredRect.setAttribute("stroke", c);
+				}
 
-            pieSlice.setAttribute("data-feature", fid);
+				pieSlice.setAttribute("data-feature", fid);
 
-            var self = this;
+				var self = this;
 
-            //only needs tooltip on pie slice, its always on top even if transparent
-            pieSlice.onmouseover = function (evt) {
-                self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-                var feature = self.annotations.get(evt.target.getAttribute("data-feature")).feature;
-                self.crosslinkViewer.model.get("tooltipModel")
-                    //.set("header", d.id.replace("_", " "))
-                    .set("header", CLMSUI.modelUtils.makeTooltipTitle.feature())
-                    .set("contents",
-                        CLMSUI.modelUtils.makeTooltipContents.feature(feature)
-                    )
-                    .set("location", {pageX: evt.pageX, pageY: evt.pageY})
-                ;
-            } ;
+				//only needs tooltip on pie slice, its always on top even if transparent
+				pieSlice.onmouseover = function (evt) {
+					self.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+					var feature = self.annotations.get(evt.target.getAttribute("data-feature")).feature;
+					self.crosslinkViewer.model.get("tooltipModel")
+						//.set("header", d.id.replace("_", " "))
+						.set("header", CLMSUI.modelUtils.makeTooltipTitle.feature())
+						.set("contents",
+							CLMSUI.modelUtils.makeTooltipContents.feature(feature)
+						)
+						.set("location", {pageX: evt.pageX, pageY: evt.pageY})
+					;
+				} ;
 
-            this.annotations.set(fid, {feature: anno, pieSlice:pieSlice, colouredRect: colouredRect});
-            this.circDomains.appendChild(pieSlice);
-            this.rectDomains.appendChild(colouredRect);
+				this.annotations.set(fid, {feature: anno, pieSlice:pieSlice, colouredRect: colouredRect});
+				this.circDomains.appendChild(pieSlice);
+				this.rectDomains.appendChild(colouredRect);
+			}
         }
     }
 };
