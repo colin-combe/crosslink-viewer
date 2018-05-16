@@ -1061,7 +1061,8 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 					colouredRect.setAttribute("stroke-width", 1);
 					colouredRect.setAttribute("fill-opacity", "0.5");
 
-					var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					//var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					var c = CLMSUI.domainColours (anno.category, anno.type);
 					pieSlice.setAttribute("fill", c);
 					pieSlice.setAttribute("stroke", c);
 					colouredRect.setAttribute("fill", c);
@@ -1079,7 +1080,8 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
 					pieSlice.setAttribute("stroke-width", 1);
 					colouredRect.setAttribute("stroke-width", 1);
 
-					var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					//var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
+					var c = CLMSUI.domainColours (anno.category, anno.type);
 					pieSlice.setAttribute("fill", "none");
 					pieSlice.setAttribute("stroke", c);
 					colouredRect.setAttribute("fill", "none");
