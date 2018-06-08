@@ -296,7 +296,7 @@ CLMS.xiNET.P_PLink.prototype.update = function() {
 }
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
-    if (!this.shown) {
+    //if (!this.shown) { - causing problems with load layout, TODO - look at again
         if (typeof this.line === 'undefined') {
             this.initSVG();
         }
@@ -320,7 +320,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
         d3.select(this.thickLine).style ("display", null);
         d3.select(this.highlightLine).style ("display", null);
         d3.select(this.line).style ("display", null);
-    }
+    //}
 
     if (this.filteredCrossLinkCount < 2) {
         this.thickLine.setAttribute("stroke-width", 0);
