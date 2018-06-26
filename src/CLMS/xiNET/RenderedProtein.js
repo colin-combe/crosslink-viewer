@@ -309,6 +309,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
 
 CLMS.xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
 CLMS.xiNET.RenderedProtein.minXDist = 30;
+/*
 CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
     if (this.form === 0) {
         this.toStick();
@@ -335,8 +336,50 @@ CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
     this.scale();
     this.setAllLineCoordinates();
 };
+*/
+
+CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
+    if (scale == "x1") {this.stickZoom = 1;}
+    if (scale == "x2") {this.stickZoom = 2;}
+    if (scale == "x4") {this.stickZoom = 4;}
+    if (scale == "residues") {
+        this.stickZoom = 9 / CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+    }
+    if (this.form === 0) {
+        this.scale();
+        this.setAllLineCoordinates();   
+        this.toStick();
+    } else {
+        this.scale();
+        this.setAllLineCoordinates();    
+    }
+    /*else {
+        var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
+        if (pixPerRes > 8) {
+            this.stickZoom = 0.5;//this looks like a hack
+            this.setPosition(svgP.x, svgP.y);
+        }
+        else {
+            this.stickZoom = this.stickZoom * 3;
+            //move stick so same residue is under mouse
+            var dx = this.x - (svgP.x);
+            var dy = this.y - (svgP.y);
+            if (this.rotation === 0 || this.rotation === 180) {
+                dy = 0;
+            }
+            this.setPosition(this.x + (dx * 2), this.y + (dy * 2));
+        }
+    }
+    // when setting the form of prot's,
+    // remember following doesn't happen when you just call toStick();
+    this.scale();
+    this.setAllLineCoordinates();*/
+};
+
 
 CLMS.xiNET.RenderedProtein.prototype.scale = function() {
+    // alert(this.stickZoom);
+    d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
     var protLength = (this.participant.size) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
     if (this.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
@@ -353,9 +396,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
                 anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(feature));
             }
         }
-
-        d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
-
+        
         d3.select(this.outline)
             .attr("width", protLength)
             .attr("x", this.getResXwithStickZoom(0.5));
