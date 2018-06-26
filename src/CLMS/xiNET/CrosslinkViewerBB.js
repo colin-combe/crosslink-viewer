@@ -9,12 +9,54 @@ var CLMS = CLMS || {};
 CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
 CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
+    events: {
+        "click .expand_collapse": "expandOrCollapseProtein",
+        "click .expand_x1": "expandProtein_x1",
+        "click .expand_x2": "expandProtein_x2",
+        "click .expand_x4": "expandProtein_x4",
+        "click .expand_residuesShown": "expandProtein_residuesShown",
+    },
 
     svgns: "http://www.w3.org/2000/svg",// namespace for svg elements
     linkWidth: 1.1,// default line width
     //static var's signifying Controller's status
     STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6},
             /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
+    
+    expandOrCollapseProtein: function (){
+        d3.select("#container-menu").style("display", "none");
+        if (this.contextMenuProt.form == 1) {
+            this.contextMenuProt.setForm(0);
+        }
+        else {
+            this.contextMenuProt.setForm(1);
+        }
+        this.contextMenuProt == null;
+    },
+
+    expandProtein_x1: function (){
+        d3.select("#container-menu").style("display", "none");
+        this.contextMenuProt.stickScale("x1");
+        this.contextMenuProt == null;
+    },
+
+    expandProtein_x2: function (){
+        d3.select("#container-menu").style("display", "none");
+        this.contextMenuProt.stickScale("x2");
+        this.contextMenuProt == null;
+    },
+
+    expandProtein_x4: function (){
+        d3.select("#container-menu").style("display", "none");
+        this.contextMenuProt.stickScale("x4");
+        this.contextMenuProt == null;
+    },
+
+    expandProtein_residuesShown: function (renderedProtein){
+        d3.select("#container-menu").style("display", "none");
+        this.contextMenuProt.stickScale("residues");
+        this.contextMenuProt == null;
+    },
 
     initialize: function () {
 
@@ -22,6 +64,21 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
+
+        d3.select(this.el).html(
+            "<ul class='custom-menu' id='container-menu'>" +
+              "<li class='expand_collapse'>Expand / Collapse</li>" +
+              "<li class='expand_x1'>Expand (scale x 1)</li>" +
+              "<li class='expand_x2'>Expand (scale x 2)</li>" +
+              "<li class='expand_x4'>Expand (scale x 4)</li>" +
+              "<li class='expand_residuesShown'>Expand (residues shown)</li>" +
+            "</ul>");
+
+        //hack to take out pan/select option in firefox
+        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+            // Do Firefox-related activities
+            d3.selectAll(".panOrSelect").style("display", "none");
+        };
 
         //create SVG elemnent
         this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(this.svgns, "svg");
@@ -525,21 +582,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
                         if (this.dragElement.x) { //if the thing is a protein
                             if (rightclick) {
-                                if (evt.ctrlKey || evt.shiftKey) {
-                                    this.dragElement.switchStickScale(c);
-                                }else {
-                                    //~ if (this.dragElement.isSelected) {
-                                        //~ this.model.get("tooltipModel").set("contents", null);
-                                        //~ var menu = d3.select("#container-menu")
-                                        //~ menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
-                                    //~ } else {
-                                        if (this.dragElement.form === 1) {
-                                            this.dragElement.setForm(0, c);
-                                        } else {
-                                            this.dragElement.setForm(1, c);
-                                        }
-                                    //~ }
-                                }
+                                //if (evt.ctrlKey || evt.shiftKey) {
+                                    //this.dragElement.switchStickScale(c);
+                                    this.model.get("tooltipModel").set("contents", null);
+                                    this.contextMenuProt = this.dragElement;
+                                    var menu = d3.select("#container-menu")
+                                    menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
+                                // }else {
+                                //     if (this.dragElement.form === 1) {
+                                //         this.dragElement.setForm(0, c);
+                                //     } else {
+                                //         this.dragElement.setForm(1, c);
+                                //     }
+                                // }
                             } else  {
                                 var add = evt.ctrlKey || evt.shiftKey;
                                 this.model.setSelectedProteins([this.dragElement.participant], add);
