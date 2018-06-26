@@ -67,7 +67,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         d3.select(this.el).html(
             "<ul class='custom-menu' id='container-menu'>" +
-              "<li class='expand_collapse'>Expand / Collapse</li>" +
+              "<li class='expand_collapse'>Expand or Collapse</li>" +
               "<li class='expand_x1'>Expand (scale x 1)</li>" +
               "<li class='expand_x2'>Expand (scale x 2)</li>" +
               "<li class='expand_x4'>Expand (scale x 4)</li>" +
