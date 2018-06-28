@@ -22,7 +22,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     //static var's signifying Controller's status
     STATES: {MOUSE_UP:0, SELECT_PAN:1, DRAGGING:2, ROTATING:3, SELECTING: 6},
             /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
-    
+
     expandOrCollapseProtein: function (){
         d3.select("#container-menu").style("display", "none");
         if (this.contextMenuProt.form == 1) {
@@ -67,7 +67,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         d3.select(this.el).html(
             "<ul class='custom-menu' id='container-menu'>" +
-              "<li class='expand_collapse'>Expand or Collapse</li>" +
+              "<li class='expand_collapse'>Collapse</li>" +
               "<li class='expand_x1'>Expand (scale x 1)</li>" +
               "<li class='expand_x2'>Expand (scale x 2)</li>" +
               "<li class='expand_x4'>Expand (scale x 4)</li>" +
@@ -582,19 +582,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
                         if (this.dragElement.x) { //if the thing is a protein
                             if (rightclick) {
-                                //if (evt.ctrlKey || evt.shiftKey) {
-                                    //this.dragElement.switchStickScale(c);
+                                if (this.dragElement.form === 0) {
+                                    this.dragElement.setForm(1, c);
+                                } else {
                                     this.model.get("tooltipModel").set("contents", null);
                                     this.contextMenuProt = this.dragElement;
                                     var menu = d3.select("#container-menu")
                                     menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
-                                // }else {
-                                //     if (this.dragElement.form === 1) {
-                                //         this.dragElement.setForm(0, c);
-                                //     } else {
-                                //         this.dragElement.setForm(1, c);
-                                //     }
-                                // }
+                                }
                             } else  {
                                 var add = evt.ctrlKey || evt.shiftKey;
                                 this.model.setSelectedProteins([this.dragElement.participant], add);
@@ -872,7 +867,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
         return this;
     },
-	
+
 	// mjg april 18
 	highlightedParticipantsChanged: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
@@ -925,7 +920,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         return this;
     },
-    
+
     updateProteinNames: function () {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
@@ -935,7 +930,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         return this;
     },
-        
+
     showLabels: function (show) {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
