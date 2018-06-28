@@ -74,6 +74,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
               "<li class='expand_residuesShown'>Expand (residues shown)</li>" +
             "</ul>");
 
+        var contextMenu = d3.select(".custom-menu").node();
+        contextMenu.onmouseout =  function(evt) {
+            var e = event.toElement || event.relatedTarget;
+            if (e.parentNode == this || e == this) {
+               return;
+            }
+            d3.select(this).style("display", "none");
+        };
+
         //hack to take out pan/select option in firefox
         if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
             // Do Firefox-related activities
@@ -97,13 +106,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var userAgent = navigator.userAgent;
 
         // if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
-            document.oncontextmenu = function(evt) {
-                if (evt.preventDefault) { // necessary for addEventListener, works with traditional
-                    evt.preventDefault();
-                }
-                evt.returnValue = false;    // necessary for attachEvent, works with traditional
-                return false;           // works with traditional, not with attachEvent or addEventListener
-            }
+            // document.oncontextmenu = function(evt) {
+            //     if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+            //         evt.preventDefault();
+            //     }
+            //     evt.returnValue = false;    // necessary for attachEvent, works with traditional
+            //     return false;           // works with traditional, not with attachEvent or addEventListener
+            // }
         // } else {
         //         this.svgElement.oncontextmenu = function(evt) {
         //         if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
