@@ -106,8 +106,13 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
     //going to use right click ourselves
     this.upperGroup.oncontextmenu = function(evt) {
-        event.preventDefault();
-        event.stopPropagation();
+        if (evt.preventDefault) {
+            event.preventDefault();
+        }
+        if (evt.stopPropogation) {
+            event.stopPropagation();
+        }
+        evt.returnValue = false;
         return false;
     };
 
