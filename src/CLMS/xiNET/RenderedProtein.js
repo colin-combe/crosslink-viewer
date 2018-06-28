@@ -105,8 +105,12 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.upperGroup.onmouseout = function(evt) {self.mouseOut(evt);};
     this.upperGroup.ontouchstart = function(evt) {self.touchStart(evt);};
     //going to use right click ourselves
-    this.upperGroup.oncontextmenu = function() {
-        return false;
+    this.upperGroup.oncontextmenu = function(evt) {
+        if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+            evt.preventDefault();
+        }
+        evt.returnValue = false;    // necessary for attachEvent, works with traditional
+        return false;           // works with traditional, not with attachEvent or addEventListener
     };
 
     this.busy = false;
@@ -347,11 +351,11 @@ CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
     }
     if (this.form === 0) {
         this.scale();
-        this.setAllLineCoordinates();   
+        this.setAllLineCoordinates();
         this.toStick();
     } else {
         this.scale();
-        this.setAllLineCoordinates();    
+        this.setAllLineCoordinates();
     }
     /*else {
         var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
@@ -396,7 +400,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
                 anno.colouredRect.setAttribute("d", this.getAnnotationRectPath(feature));
             }
         }
-        
+
         d3.select(this.outline)
             .attr("width", protLength)
             .attr("x", this.getResXwithStickZoom(0.5));
