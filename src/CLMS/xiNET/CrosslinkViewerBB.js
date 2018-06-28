@@ -83,12 +83,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             d3.select(this).style("display", "none");
         };
 
-        //hack to take out pan/select option in firefox
-        if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-            // Do Firefox-related activities
-            d3.selectAll(".panOrSelect").style("display", "none");
-        };
-
         //create SVG elemnent
         this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node();//document.createElementNS(this.svgns, "svg");
         this.svgElement.setAttribute("width", "100%");
@@ -105,23 +99,29 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //going to use right click ourselves
         var userAgent = navigator.userAgent;
 
-        // if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
-            // document.oncontextmenu = function(evt) {
-            //     if (evt.preventDefault) { // necessary for addEventListener, works with traditional
-            //         evt.preventDefault();
-            //     }
-            //     evt.returnValue = false;    // necessary for attachEvent, works with traditional
-            //     return false;           // works with traditional, not with attachEvent or addEventListener
-            // }
-        // } else {
-        //         this.svgElement.oncontextmenu = function(evt) {
-        //         if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
-        //             evt.preventDefault();
-        //         }
-        //         evt.returnValue = false;    // necessary for attachEvent, works with traditional
-        //         return false;           // works with traditional, not with attachEvent or addEventListener
-        //     }
-        // };
+        if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
+            document.oncontextmenu = function(evt) {
+                if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                if (evt.stopPropogation) {
+                    evt.stopPropagation();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }
+        } else {
+                this.svgElement.oncontextmenu = function(evt) {
+                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
+                    evt.preventDefault();
+                }
+                if (evt.stopPropogation) {
+                    evt.stopPropagation();
+                }
+                evt.returnValue = false;    // necessary for attachEvent, works with traditional
+                return false;           // works with traditional, not with attachEvent or addEventListener
+            }
+        };
 
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent){ //if IE (and Opera depending on user setting)
