@@ -107,10 +107,10 @@ CLMS.xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     //going to use right click ourselves
     this.upperGroup.oncontextmenu = function(evt) {
         if (evt.preventDefault) {
-            event.preventDefault();
+            evt.preventDefault();
         }
         if (evt.stopPropogation) {
-            event.stopPropagation();
+            evt.stopPropagation();
         }
         evt.returnValue = false;
         return false;
