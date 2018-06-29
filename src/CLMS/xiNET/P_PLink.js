@@ -6,18 +6,18 @@
 //  CLMS.xiNET.P_PLink.js
 //  the class representing a protein-protein link
 
-CLMS.xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
+CLMS.xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
     this.id = p_pId;
     this.crosslinkViewer = crosslinkViewer;
     this.crossLinks = [];
 
     this.renderedFromProtein =
-                    this.crosslinkViewer.renderedProteins.get(crossLink.fromProtein.id);
+        this.crosslinkViewer.renderedProteins.get(crossLink.fromProtein.id);
     this.renderedFromProtein.renderedP_PLinks.push(this);
 
     if (crossLink.toProtein) {
         this.renderedToProtein =
-                    this.crosslinkViewer.renderedProteins.get(crossLink.toProtein.id);
+            this.crosslinkViewer.renderedProteins.get(crossLink.toProtein.id);
         this.renderedToProtein.renderedP_PLinks.push(this);
     }
 
@@ -131,7 +131,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     };
 }
 
-CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
+CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
     var p = this.crosslinkViewer.getEventPoint(evt);
 
     var toHighlight = this.crossLinks.slice(0);
@@ -139,16 +139,18 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt){
     this.crosslinkViewer.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
     this.crosslinkViewer.model.get("tooltipModel")
-                        //TODO - reuse other multiLink tooltips in CLM-UI?
-                        .set("header", "Linked Protein Pair")
-                        .set("contents", [
-                            ["From", this.renderedFromProtein.participant.name],
-                            ["To", this.renderedToProtein.participant.name],
-                            ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
-                            ["Matches", this.filteredMatches? this.filteredMatches.size : "filter not yet applied"]
-                        ])
-                        .set("location", {pageX: p.x, pageY: p.y})
-                    ;
+        //TODO - reuse other multiLink tooltips in CLM-UI?
+        .set("header", "Linked Protein Pair")
+        .set("contents", [
+            ["From", this.renderedFromProtein.participant.name],
+            ["To", this.renderedToProtein.participant.name],
+            ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
+            ["Matches", this.filteredMatches ? this.filteredMatches.size : "filter not yet applied"]
+        ])
+        .set("location", {
+            pageX: p.x,
+            pageY: p.y
+        });
 };
 
 // event handler for starting dragging or rotation (or flipping internal links)
@@ -161,19 +163,19 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     this.crosslinkViewer.dragElement = this;
     if (evt.shiftKey || evt.ctrlKey) {
         var selection = this.crosslinkViewer.model.get("selection");
-        if (this.isSelected){
-            var self =this;
-            selection = selection.filter(function (d) {
-                    return self.crossLinks.indexOf(d) == -1;
+        if (this.isSelected) {
+            var self = this;
+            selection = selection.filter(function(d) {
+                return self.crossLinks.indexOf(d) == -1;
             });
         } else {
             selection = selection.concat(this.crossLinks);
         }
-        this.crosslinkViewer.model.setMarkedCrossLinks ("selection",selection);
+        this.crosslinkViewer.model.setMarkedCrossLinks("selection", selection);
     } else {
-        this.crosslinkViewer.model.setMarkedCrossLinks ("selection", _.clone(this.crossLinks));
+        this.crosslinkViewer.model.setMarkedCrossLinks("selection", _.clone(this.crossLinks));
     }
-    
+
     //store start location
     this.crosslinkViewer.dragStart = evt;
 
@@ -218,14 +220,13 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
 CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
     if (this.shown) {
         if (select == true) {
-                d3.select(this.highlightLine).classed("selectedLink", true);
-                d3.select(this.highlightLine).classed("highlightedLink", false);
-                this.highlightLine.setAttribute("stroke-opacity", "1");
-        }
-        else {
-             this.highlightLine.setAttribute("stroke-opacity", "0");
-             d3.select(this.highlightLine).classed("selectedLink", false);
-             d3.select(this.highlightLine).classed("highlightedLink", true);
+            d3.select(this.highlightLine).classed("selectedLink", true);
+            d3.select(this.highlightLine).classed("highlightedLink", false);
+            this.highlightLine.setAttribute("stroke-opacity", "1");
+        } else {
+            this.highlightLine.setAttribute("stroke-opacity", "0");
+            d3.select(this.highlightLine).classed("selectedLink", false);
+            d3.select(this.highlightLine).classed("highlightedLink", true);
         }
     }
     this.isSelected = select;
@@ -236,7 +237,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     this.hd = false;
 
     var filteredCrossLinks = new Set();
-    this.filteredMatches = new Map ();
+    this.filteredMatches = new Map();
     var altP_PLinks = new Map();
 
     var crossLinks = this.crossLinks;
@@ -252,7 +253,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
             filteredCrossLinks.add(crossLink);
             this.colours.add(CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(crossLink));
         }
-        var filteredMatchesAndPepPos =  crossLink.filteredMatches_pp;
+        var filteredMatchesAndPepPos = crossLink.filteredMatches_pp;
         var fm_ppCount = filteredMatchesAndPepPos.length;
         for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
             var match = filteredMatchesAndPepPos[fm_pp].match;
@@ -285,41 +286,40 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden
-            || this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1
-            || this.filteredCrossLinkCount === 0) {
+    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden ||
+        this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1 ||
+        this.filteredCrossLinkCount === 0) {
         this.hide();
-    }
-    else {
+    } else {
         this.show();
     }
 }
 
 CLMS.xiNET.P_PLink.prototype.show = function() {
     //if (!this.shown) { - causing problems with load layout, TODO - look at again
-        if (typeof this.line === 'undefined') {
-            this.initSVG();
-        }
-        this.shown = true;
-        if (this.renderedFromProtein === this.renderedToProtein) {
-            this.thickLine.setAttribute("transform", "translate(" +
-                this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")"  // possibly not neccessary
-                + " scale(" + (this.crosslinkViewer.z) + ")");
-            this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-                    + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-            this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x
-                    + " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+    if (typeof this.line === 'undefined') {
+        this.initSVG();
+    }
+    this.shown = true;
+    if (this.renderedFromProtein === this.renderedToProtein) {
+        this.thickLine.setAttribute("transform", "translate(" +
+            this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")" // possibly not neccessary
+            +
+            " scale(" + (this.crosslinkViewer.z) + ")");
+        this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x +
+            " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+        this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x +
+            " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
-        }
-        else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
-            this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
-            this.setLineCoordinates(this.renderedFromProtein);
-            this.setLineCoordinates(this.renderedToProtein);
-        }
-        d3.select(this.thickLine).style ("display", null);
-        d3.select(this.highlightLine).style ("display", null);
-        d3.select(this.line).style ("display", null);
+    } else {
+        this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
+        this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+        this.setLineCoordinates(this.renderedFromProtein);
+        this.setLineCoordinates(this.renderedToProtein);
+    }
+    d3.select(this.thickLine).style("display", null);
+    d3.select(this.highlightLine).style("display", null);
+    d3.select(this.line).style("display", null);
     //}
 
     if (this.filteredCrossLinkCount < 2) {
@@ -336,8 +336,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 
     if (this.colours.size == 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") != "Default") {
         this.line.setAttribute("stroke", Array.from(this.colours)[0]);
-    }
-    else {
+    } else {
         this.line.setAttribute("stroke", "black");
     }
 
@@ -347,30 +346,29 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 CLMS.xiNET.P_PLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
-        d3.select(this.thickLine).style ("display", "none");
-        d3.select(this.highlightLine).style ("display", "none");
-        d3.select(this.line).style ("display", "none");
+        d3.select(this.thickLine).style("display", "none");
+        d3.select(this.highlightLine).style("display", "none");
+        d3.select(this.line).style("display", "none");
     }
 };
 
 CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
-    if (this.renderedFromProtein != this.renderedToProtein){
+    if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
             if (this.renderedFromProtein === interactor) {
-                        this.line.setAttribute("x1", interactor.x);
-                        this.line.setAttribute("y1", interactor.y);
-                        this.highlightLine.setAttribute("x1", interactor.x);
-                        this.highlightLine.setAttribute("y1", interactor.y);
-                        this.thickLine.setAttribute("x1", interactor.x);
-                        this.thickLine.setAttribute("y1", interactor.y);
-            }
-            else if (this.renderedToProtein === interactor) {
-                        this.line.setAttribute("x2", interactor.x);
-                        this.line.setAttribute("y2", interactor.y);
-                        this.highlightLine.setAttribute("x2", interactor.x);
-                        this.highlightLine.setAttribute("y2", interactor.y);
-                        this.thickLine.setAttribute("x2", interactor.x);
-                        this.thickLine.setAttribute("y2", interactor.y);
+                this.line.setAttribute("x1", interactor.x);
+                this.line.setAttribute("y1", interactor.y);
+                this.highlightLine.setAttribute("x1", interactor.x);
+                this.highlightLine.setAttribute("y1", interactor.y);
+                this.thickLine.setAttribute("x1", interactor.x);
+                this.thickLine.setAttribute("y1", interactor.y);
+            } else if (this.renderedToProtein === interactor) {
+                this.line.setAttribute("x2", interactor.x);
+                this.line.setAttribute("y2", interactor.y);
+                this.highlightLine.setAttribute("x2", interactor.x);
+                this.highlightLine.setAttribute("y2", interactor.y);
+                this.thickLine.setAttribute("x2", interactor.x);
+                this.thickLine.setAttribute("y2", interactor.y);
             }
         }
     }
@@ -379,8 +377,7 @@ CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
 CLMS.xiNET.P_PLink.prototype.getOtherEnd = function(protein) {
     if (this.fromProtein === protein) {
         return this.toProtein;
-    }
-    else {
+    } else {
         return this.fromProtein;
     }
 };

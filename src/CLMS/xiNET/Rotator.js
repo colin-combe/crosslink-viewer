@@ -8,14 +8,14 @@
 //
 //    CLMS.xiNET.Rotator.js
 
-CLMS.xiNET.Rotator = function (proteinRegion, upperOrLower, xlvController) {
+CLMS.xiNET.Rotator = function(proteinRegion, upperOrLower, xlvController) {
     var self = this;
     this.ctrl = xlvController;
     this.proteinOrPartThereof = proteinRegion;
     this.upperOrLower = upperOrLower;
 
     var RADIUS = 14;
-    var SYMBOL_RADIUS = 20;// not really, gets scaled down
+    var SYMBOL_RADIUS = 20; // not really, gets scaled down
 
     this.svg = document.createElementNS(this.ctrl.svgns, "g");
     this.rotatorSymbol = document.createElementNS(this.ctrl.svgns, "g");
@@ -53,11 +53,11 @@ CLMS.xiNET.Rotator = function (proteinRegion, upperOrLower, xlvController) {
     this.rotatorSymbol.setAttribute("display", "none");
 
     this.inner = document.createElementNS(this.ctrl.svgns, "g");
-    this.inner.setAttribute("class","PV_rotator");
+    this.inner.setAttribute("class", "PV_rotator");
     this.inner.appendChild(this.rotatorSymbol);
 
     this.svg.appendChild(this.inner);
-    
+
     this.svg.onmouseover = function(evt) {
         self.rotatorMouseOver(evt);
     };
@@ -69,20 +69,20 @@ CLMS.xiNET.Rotator = function (proteinRegion, upperOrLower, xlvController) {
     };
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseOver = function (evt) {
+CLMS.xiNET.Rotator.prototype.rotatorMouseOver = function(evt) {
     if (!this.ctrl.rotating) {
         this.rotatorSymbol.setAttribute("display", "block");
     }
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseOut = function (evt) {
+CLMS.xiNET.Rotator.prototype.rotatorMouseOut = function(evt) {
     this.rotatorSymbol.setAttribute("display", "none");
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseDown = function (evt) {
+CLMS.xiNET.Rotator.prototype.rotatorMouseDown = function(evt) {
     this.ctrl.state = this.ctrl.STATES.ROTATING;
     this.ctrl.dragElement = this.proteinOrPartThereof;
-    var p = this.ctrl.getEventPoint(evt);// seems to be correct, see above
+    var p = this.ctrl.getEventPoint(evt); // seems to be correct, see above
     var c = p.matrixTransform(this.ctrl.container.getCTM().inverse());
     this.ctrl.whichRotator = this.upperOrLower;
     return false;
