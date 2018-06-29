@@ -100,8 +100,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var userAgent = navigator.userAgent;
 
         // if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
-            document.oncontextmenu = function(evt) {
-                if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+            // document.oncontextmenu = function(evt) {
+            //     if (evt.preventDefault) { // necessary for addEventListener, works with traditional
+            //         evt.preventDefault();
+            //     }
+            //     if (evt.stopPropogation) {
+            //         evt.stopPropagation();
+            //     }
+            //     evt.returnValue = false;    // necessary for attachEvent, works with traditional
+            //     return false;           // works with traditional, not with attachEvent or addEventListener
+            // }
+        // } else {
+            this.el.oncontextmenu = function(evt) {
+                if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
                     evt.preventDefault();
                 }
                 if (evt.stopPropogation) {
@@ -110,17 +121,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 evt.returnValue = false;    // necessary for attachEvent, works with traditional
                 return false;           // works with traditional, not with attachEvent or addEventListener
             }
-        // } else {
-        //         this.svgElement.oncontextmenu = function(evt) {
-        //         if (evt.preventDefault) {     // necessary for addEventListener, works with traditional
-        //             evt.preventDefault();
-        //         }
-        //         if (evt.stopPropogation) {
-        //             evt.stopPropagation();
-        //         }
-        //         evt.returnValue = false;    // necessary for attachEvent, works with traditional
-        //         return false;           // works with traditional, not with attachEvent or addEventListener
-        //     }
         // };
 
         var mousewheelevt= (/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
