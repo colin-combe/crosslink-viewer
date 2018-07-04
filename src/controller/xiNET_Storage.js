@@ -26,7 +26,7 @@ xiNET_Storage.accessionFromId = function (id){
 xiNET_Storage.getUniProtTxt = function (id, callback){
     var accession = xiNET_Storage.accessionFromId(id);
     function uniprotWebService(){
-        var url = "http://www.uniprot.org/uniprot/" + accession + ".txt";
+        var url = "https://www.uniprot.org/uniprot/" + accession + ".txt";
         d3.text(url, function (txt){
             //~ console.log(accession + " retrieved from UniProt.");
             if(typeof(Storage) !== "undefined") {
@@ -61,7 +61,7 @@ xiNET_Storage.getSequence = function (id, callback){
     var accession = xiNET_Storage.accessionFromId(id);
 
     function uniprotWebServiceFASTA(){
-        var url = "http://www.uniprot.org/uniprot/" + accession + ".fasta";
+        var url = "https://www.uniprot.org/uniprot/" + accession + ".fasta";
         d3.text(url, function (error, txt){
 			if (error) {
 				alert("Failed. Cannot fetch sequence data for " + accession + ". Is it a valid UniprotKB accession number?" );
