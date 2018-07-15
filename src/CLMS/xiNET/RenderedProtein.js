@@ -327,8 +327,7 @@ CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
         this.toStick();
     }
     else {
-        var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
-        if (pixPerRes > 8) {
+        if (this.stickZoom > 8) {
             this.stickZoom = 0.5;//this looks like a hack
             this.setPosition(svgP.x, svgP.y);
         }
@@ -361,7 +360,7 @@ CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
         this.stickZoom = 4;
     }
     if (scale == "residues") {
-        this.stickZoom = 9 / CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+        this.stickZoom = 8;
     }
     if (this.form === 0) {
         this.scale();
@@ -371,38 +370,17 @@ CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
         this.scale();
         this.setAllLineCoordinates();
     }
-    /*else {
-        var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
-        if (pixPerRes > 8) {
-            this.stickZoom = 0.5;//this looks like a hack
-            this.setPosition(svgP.x, svgP.y);
-        }
-        else {
-            this.stickZoom = this.stickZoom * 3;
-            //move stick so same residue is under mouse
-            var dx = this.x - (svgP.x);
-            var dy = this.y - (svgP.y);
-            if (this.rotation === 0 || this.rotation === 180) {
-                dy = 0;
-            }
-            this.setPosition(this.x + (dx * 2), this.y + (dy * 2));
-        }
-    }
-    // when setting the form of prot's,
-    // remember following doesn't happen when you just call toStick();
-    this.scale();
-    this.setAllLineCoordinates();*/
 };
 
 
 CLMS.xiNET.RenderedProtein.prototype.scale = function() {
     // alert(this.stickZoom);
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
-    var protLength = (this.participant.size) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = (this.participant.size) * this.stickZoom;
     if (this.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-            .translate((-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.x, -c.y);
+            .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.x, -c.y);
         this.labelSVG.transform.baseVal.initialize(this.crosslinkViewer.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations) {
@@ -453,17 +431,16 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
     this.scaleLabels = [];
     var ScaleMajTick = 100;
     var ScaleTicksPerLabel = 2; // varies with scale?
-    var pixPerRes = CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom; // / this.crosslinkViewer.z;
     var tick = -1;
     var lastTickX = this.getResXwithStickZoom(this.participant.size);
 
     for (var res = 1; res <= this.participant.size; res++) {
         if (res === 1 ||
-            ((res % 100 === 0) && (200 * pixPerRes > CLMS.xiNET.RenderedProtein.minXDist)) ||
-            ((res % 10 === 0) && (20 * pixPerRes > CLMS.xiNET.RenderedProtein.minXDist))
+            ((res % 100 === 0) && (200 * this.stickZoom > CLMS.xiNET.RenderedProtein.minXDist)) ||
+            ((res % 10 === 0) && (20 * this.stickZoom > CLMS.xiNET.RenderedProtein.minXDist))
         ) {
             var tx = this.getResXwithStickZoom(res);
-            if (pixPerRes >= 8 || res !== 1) {
+            if (this.stickZoom >= 8 || res !== 1) {
                 tickAt(this, tx);
             }
             tick = (tick + 1) % ScaleTicksPerLabel;
@@ -474,7 +451,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
                 }
             }
         }
-        if (pixPerRes >= 8 && this.participant.sequence) {
+        if (this.stickZoom >= 8 && this.participant.sequence) {
             var seqLabelGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
             seqLabelGroup.setAttribute("transform", "translate(" + this.getResXwithStickZoom(res) + " " + 0 + ")");
             var seqLabel = document.createElementNS(this.crosslinkViewer.svgns, "text");
@@ -490,7 +467,7 @@ CLMS.xiNET.RenderedProtein.prototype.setScaleGroup = function() {
         }
     }
     scaleLabelAt(this, this.participant.size, lastTickX);
-    if (pixPerRes > 8) {
+    if (this.stickZoom >= 8) {
         tickAt(this, lastTickX);
     }
 
@@ -577,14 +554,14 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     CLMS.removeDomElement(this.lowerRotator.svg);
     CLMS.removeDomElement(this.upperRotator.svg);
 
-    var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = this.participant.size * this.stickZoom;
     var r = this.getBlobRadius();
 
     var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
     var rotationInterpol = d3.interpolate((this.rotation > 180) ? this.rotation - 360 : this.rotation, 0);
     //todo: should take current tranform of label as start
     var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
-    var labelStartPoint = labelTransform.translate[0]; //-(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10);
+    var labelStartPoint = labelTransform.translate[0]; //-(((this.participant.size / 2) * this.stickZoom) + 10);
     var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
 
     var xInterpol = null,
@@ -745,13 +722,13 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     this.upperRotator.svg.setAttribute("transform",
         "translate(" + (this.getResXwithStickZoom(this.participant.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
-    var protLength = this.participant.size * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var protLength = this.participant.size * this.stickZoom;
     var r = this.getBlobRadius();
 
     var lengthInterpol = d3.interpolate((2 * r), protLength);
     var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
     var rotationInterpol = d3.interpolate(0, (this.rotation > 180) ? this.rotation - 360 : this.rotation);
-    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom) + 10));
+    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * this.stickZoom) + 10));
 
     var origStickZoom = this.stickZoom;
     this.stickZoom = 0;
@@ -836,7 +813,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         self.setRotation(rot);
 
         var currentLength = lengthInterpol(cubicInOut(interp));
-        d3.select(self.outline).attr("width", currentLength).attr("x", -(currentLength / 2) + (0.5 * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * self.stickZoom));
+        d3.select(self.outline).attr("width", currentLength).attr("x", -(currentLength / 2) + (0.5 * self.stickZoom));
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
         //self.setAllLineCoordinates();
 
@@ -878,7 +855,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAggregateSelfLinkPath = function() {
 CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLink) {
     var x1 = this.getResXwithStickZoom(renderedCrossLink.crossLink.fromResidue);
     var baseLine = 0;
-    if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom >= 8) {
+    if (this.stickZoom >= 8) {
         baseLine = -5;
     }
 
@@ -953,7 +930,7 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
 }
 
 CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
-    return (r - (this.participant.size / 2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    return (r - (this.participant.size / 2)) * this.stickZoom;
 };
 
 CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
@@ -1249,7 +1226,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationRectPath = function(annotation
         top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
     var annotX = this.getResXwithStickZoom(annotation.fstart - 0.5);
     var annotSize = (1 + (annotation.fend - annotation.fstart));
-    var annotLength = annotSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var annotLength = annotSize * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     for (var sia = 0; sia <= CLMS.xiNET.RenderedProtein.stepsInArc; sia++) {
         var step = annotX + (annotLength * (sia / CLMS.xiNET.RenderedProtein.stepsInArc));
@@ -1272,7 +1249,7 @@ CLMS.xiNET.RenderedProtein.prototype.getDisulfidAnnotationRectPath = function(an
     top += annotSize * bottom / 30;
 
 
-    var annotLength = annotSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * this.stickZoom;
+    var annotLength = annotSize * this.stickZoom;
     var rectPath = "M " + annotX + "," + bottom;
     rectPath += " L " + annotX + "," + top;
     rectPath += " L " + (annotX + annotLength) + "," + top;
@@ -1292,10 +1269,7 @@ CLMS.xiNET.RenderedProtein.prototype.showLabel = function(show) {
     d3.select(this.labelSVG).attr("display", show ? null : "none");
 };
 
-//TODO: should be some sort of config options
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20; // height of stick in pixels
-CLMS.xiNET.RenderedProtein.MAXSIZE = 100; // residue count of longest sequence
-CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = 1; // this value is changed during init (calculated on basis of MAXSIZE)
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
 CLMS.xiNET.RenderedProtein.labelY = -5; // label Y offset, better if calc'd half height of label once rendered
 CLMS.xiNET.RenderedProtein.transitionTime = 650;

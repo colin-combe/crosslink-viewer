@@ -209,8 +209,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.showPeptides = function(pepBounds, render
 
         //make domain rect's
         var annoSize = pep[1] - 0.2;
-        var annotX = ((pep[0] + 0.6) - (renderedProtein.participant.size / 2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
-        var annoLength = annoSize * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+        var annotX = ((pep[0] + 0.6) - (renderedProtein.participant.size / 2));
+        var annoLength = annoSize;
         annotColouredRect.setAttribute("x", annotX);
         annotColouredRect.setAttribute("y", y);
         annotColouredRect.setAttribute("width", annoLength);
@@ -224,8 +224,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.showPeptides = function(pepBounds, render
         if (typeof pep[2] != "undefined") { //homodimer like
             annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
-            var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size / 2)) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
-            var annoLength = (pep[3] - pep[2]) * CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE;
+            var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size / 2));
+            var annoLength = (pep[3] - pep[2]);
             annotColouredRect.setAttribute("x", annotX);
             annotColouredRect.setAttribute("y", y);
             annotColouredRect.setAttribute("width", annoLength);
@@ -375,7 +375,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
 CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, renderedInteractor) {
     var x = renderedInteractor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
     var y = 0;
-    if (CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE * renderedInteractor.stickZoom > 8) { //if sequence shown
+    if (renderedInteractor.stickZoom > 8) { //if sequence shown
         var from = this.renderedFromProtein,
             to = this.renderedToProtein;
         var deltaX = from.x - to.x;

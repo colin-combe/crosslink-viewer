@@ -106,22 +106,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         };
         //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
 
-
-        //going to use right click ourselves
-        var userAgent = navigator.userAgent;
-
-        // if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1  || userAgent.indexOf("Edge") > -1) {
-        // document.oncontextmenu = function(evt) {
-        //     if (evt.preventDefault) { // necessary for addEventListener, works with traditional
-        //         evt.preventDefault();
-        //     }
-        //     if (evt.stopPropogation) {
-        //         evt.stopPropagation();
-        //     }
-        //     evt.returnValue = false;    // necessary for attachEvent, works with traditional
-        //     return false;           // works with traditional, not with attachEvent or addEventListener
-        // }
-        // } else {
         this.el.oncontextmenu = function(evt) {
             if (evt.preventDefault) { // necessary for addEventListener, works with traditional
                 evt.preventDefault();
@@ -131,8 +115,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
             evt.returnValue = false; // necessary for attachEvent, works with traditional
             return false; // works with traditional, not with attachEvent or addEventListener
-        }
-        // };
+        };
 
         var mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent) { //if IE (and Opera depending on user setting)
@@ -317,19 +300,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
                 this.renderedProteins.set(participant.id, newProt);
 
-                var protSize = participant.size;
-                if (protSize > CLMS.xiNET.RenderedProtein.MAXSIZE) {
-                    CLMS.xiNET.RenderedProtein.MAXSIZE = protSize;
-                }
                 if (this.wasEmpty == false) {
                     newProt.init();
                 }
             }
         }
-        var width = this.svgElement.parentNode.clientWidth;
-        CLMS.xiNET.RenderedProtein.UNITS_PER_RESIDUE = ((width / 2) -
-            CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / CLMS.xiNET.RenderedProtein.MAXSIZE;
-
 
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
