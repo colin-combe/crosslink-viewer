@@ -15,7 +15,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
-    this.stickZoom = 1;
+    this.stickZoom = 0.5;
     this.form = 0; //null; // 0 = blob, 1 = stick
     this.isFlipped = false;
     this.isSelected = false;
@@ -351,13 +351,13 @@ CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
 
 CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
     if (scale == "x1") {
-        this.stickZoom = 1;
+        this.stickZoom = 0.5;
     }
     if (scale == "x2") {
-        this.stickZoom = 2;
+        this.stickZoom = 1;
     }
     if (scale == "x4") {
-        this.stickZoom = 4;
+        this.stickZoom = 2;
     }
     if (scale == "residues") {
         this.stickZoom = 8;
