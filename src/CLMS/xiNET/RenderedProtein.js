@@ -1026,12 +1026,20 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     }
 
     //add the crosslinkable residues, if they're selected
-    var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
-        id: "AA-Cross-linkable"
+    filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
+        id: "AA-Cross-linkable-1"
     })
-    var alignmentAnnotationType = filtered[0];
+    alignmentAnnotationType = filtered[0];
     if (alignmentAnnotationType.get("shown") === true) {
-        var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant);
+        var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant, 1);
+        featuresShown = featuresShown.concat(features);
+    }
+    filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
+        id: "AA-Cross-linkable-2"
+    })
+    alignmentAnnotationType = filtered[0];
+    if (alignmentAnnotationType.get("shown") === true) {
+        var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant, 2);
         featuresShown = featuresShown.concat(features);
     }
 
