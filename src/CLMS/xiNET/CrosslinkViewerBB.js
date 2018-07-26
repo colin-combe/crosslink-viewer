@@ -750,6 +750,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.cola.stop();
         }
 
+        this.resetZoom();
+
         var nodes = []; // not hidden nodes
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
