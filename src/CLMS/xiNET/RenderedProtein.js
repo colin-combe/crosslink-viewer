@@ -143,6 +143,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
 //when we get here all prot's should have had their sequence set, so protein.MAXSIZE has correct value;
 // - could remove this as part of tidying up overall initialisation?
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
+    this.stickZoom = this.crosslinkViewer.defaultBarScale;
     this.setPosition(this.x, this.y);
     this.setForm(this.form);
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
@@ -349,27 +350,31 @@ CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
 };
 */
 
-CLMS.xiNET.RenderedProtein.prototype.stickScale = function(scale, svgP) {
-    if (scale == "x1") {
-        this.stickZoom = 0.5;
-    }
-    if (scale == "x2") {
-        this.stickZoom = 1;
-    }
-    if (scale == "x4") {
-        this.stickZoom = 2;
-    }
-    if (scale == "residues") {
-        this.stickZoom = 8;
-    }
-    if (this.form === 0) {
-        this.scale();
-        this.setAllLineCoordinates();
-        this.toStick();
-    } else {
-        this.scale();
-        this.setAllLineCoordinates();
-    }
+CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
+    // if (scale == "1") {
+    //     this.stickZoom = 0.5;
+    // }
+    // if (scale == "x2") {
+    //     this.stickZoom = 1;
+    // }
+    // if (scale == "x4") {
+    //     this.stickZoom = 2;
+    // }
+    // if (scale == "residues") {
+    //     this.stickZoom = 8;
+    // }
+
+    // if (this.form === 0) {
+    //     this.scale();
+    //     this.setAllLineCoordinates();
+    //     this.toStick();
+    // } else {
+
+    this.stickZoom = scale;
+    this.scale();
+    this.setAllLineCoordinates();
+
+    // }
 };
 
 
