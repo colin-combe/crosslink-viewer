@@ -27,39 +27,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         ROTATING: 3,
         SELECTING: 6
     },
-    /*SCALING_PROTEIN: 4, SCALING_ALL_PROTEINS: 5,*/
+
+    barScales: [0.01, 0.2, 1, 2, 4, 8],
 
     expandOrCollapseProtein: function() {
-        d3.select("#container-menu").style("display", "none");
+        d3.select(".custom-menu-margin").style("display", "none");
         if (this.contextMenuProt.form == 1) {
             this.contextMenuProt.setForm(0);
         } else {
             this.contextMenuProt.setForm(1);
         }
-        this.contextMenuProt == null;
-    },
-
-    expandProtein_x1: function() {
-        d3.select("#container-menu").style("display", "none");
-        this.contextMenuProt.stickScale("x1");
-        this.contextMenuProt == null;
-    },
-
-    expandProtein_x2: function() {
-        d3.select("#container-menu").style("display", "none");
-        this.contextMenuProt.stickScale("x2");
-        this.contextMenuProt == null;
-    },
-
-    expandProtein_x4: function() {
-        d3.select("#container-menu").style("display", "none");
-        this.contextMenuProt.stickScale("x4");
-        this.contextMenuProt == null;
-    },
-
-    expandProtein_residuesShown: function(renderedProtein) {
-        d3.select("#container-menu").style("display", "none");
-        this.contextMenuProt.stickScale("residues");
         this.contextMenuProt == null;
     },
 
@@ -70,21 +47,44 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
 
-        d3.select(this.el).html(
-            "<ul class='custom-menu' id='container-menu'>" +
-            "<li class='expand_collapse'>Collapse</li>" +
-            "<li class='expand_x1'>Expand (scale x 1)</li>" +
-            "<li class='expand_x2'>Expand (scale x 2)</li>" +
-            "<li class='expand_x4'>Expand (scale x 4)</li>" +
-            "<li class='expand_residuesShown'>Expand (residues shown)</li>" +
-            "</ul>");
+        var customMenuSel = d3.select(this.el)
+                                .append("div").classed("custom-menu-margin", true)
+                                .append("div").classed("custom-menu", true)
+                                .append("ul");
 
-        var contextMenu = d3.select(".custom-menu").node();
+        customMenuSel.append("li").classed("expand_collapse", true).text("Collapse");
+		var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
+		// var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
+        var scaleButtons = scaleButtonsListItemSel.selectAll("ul.custom-menu")
+            .data(this.barScales)
+            .enter()
+            .append ("div")
+            .attr ("class", "barScale")
+            .append ("label")
+        //     // .attr("id", function(d) { return "toggles_" + d.id; })
+        //     // .attr ("title", function(d) { return d.tooltip ? d.tooltip : undefined; })
+        ;
+        var self = this;
+        scaleButtons.append ("span")
+            .text (function(d) { if (d == 8) return "AA"; else return d; })
+        ;
+        scaleButtons.append ("input")
+            // .attr ("id", function(d) { return d*100; })
+            .attr ("class", function(d) { return "scaleButton scaleButton_" + (d*100); })
+            .attr ("name", "scaleButtons")
+            .attr ("type", "radio")
+            .on("change", function (d) {
+                self.contextMenuProt.setStickScale(d);})
+        ;
+
+        var contextMenu = d3.select(".custom-menu-margin").node();
         contextMenu.onmouseout = function(evt) {
             var e = event.toElement || event.relatedTarget;
-            if (e.parentNode == this || e == this) {
-                return;
-            }
+            do {
+                if (e == this) return;
+                e = e.parentNode;
+            } while (e);
+            self.contextMenuProt = null;
             d3.select(this).style("display", "none");
         };
 
@@ -294,17 +294,52 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.wasEmpty = (this.renderedProteins.size == 0);
 
+        var maxSeqLength = 0;
         for (var p = 0; p < pCount; p++) {
             var participant = participantsArr[p];
             if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
                 var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
                 this.renderedProteins.set(participant.id, newProt);
 
+                var protSize = participant.size;
+                if (protSize > maxSeqLength) {
+                    maxSeqLength = protSize;
+                }
                 if (this.wasEmpty == false) {
                     newProt.init();
                 }
             }
         }
+        var width = this.svgElement.parentNode.clientWidth;
+        var defaultPixPerRes = ((width * 0.8) -
+            CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / maxSeqLength;
+
+            console.log("defautPixPerRes:"+defaultPixPerRes);
+
+        // https://stackoverflow.com/questions/12141150/from-list-of-integers-get-number-closest-to-a-given-value/12141511#12141511
+        function takeClosest(myList, myNumber){
+            // Assumes myList is sorted. Returns closest value to myNumber.
+            // If two numbers are equally close, return the smallest number.
+            var bisect = d3.bisector(function(d){return d;}).left;
+            var pos = bisect(myList, myNumber);
+            if (pos == 0 || pos == 1){
+                 return myList[1]; // don't return smallest scale as default
+            }
+            if (pos == myList.length){
+                 return myList[-1]
+             }
+            var before = myList[pos - 1]
+            // var after = myList[pos]
+            // if (after - myNumber < myNumber - before){
+            //    return after;
+            // }
+            // else {
+               return before;
+            // }
+        }
+
+        this.defaultBarScale =  takeClosest(this.barScales, defaultPixPerRes);
+        console.log("default bar scale: " + this.defaultBarScale)
 
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
@@ -588,8 +623,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             } else {
                                 this.model.get("tooltipModel").set("contents", null);
                                 this.contextMenuProt = this.dragElement;
-                                var menu = d3.select("#container-menu")
-                                menu.style("top", evt.pageY + "px").style("left", evt.pageX + "px").style("display", "block");
+                                var menu = d3.select(".custom-menu-margin")
+                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                d3.select(".scaleButton_"+(this.dragElement.stickZoom*100)).property ("checked", true)
                             }
                         } else {
                             var add = evt.ctrlKey || evt.shiftKey;
