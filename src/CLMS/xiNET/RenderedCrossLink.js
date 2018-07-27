@@ -294,7 +294,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
         if (typeof this.line === 'undefined') {
             this.initSVG();
         }
-        if (this.crossLink.isSelfLink() || !this.renderedToProtein) {
+        if (!this.renderedToProtein) {
             var path;
             if (this.renderedFromProtein.form === 1) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
@@ -312,6 +312,21 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
         d3.select(this.highlightLine).style("display", null);
         d3.select(this.line).style("display", null);
     }
+
+    if (this.crossLink.isSelfLink() && this.renderedToProtein) {
+        if (this.homomultimer != this.crossLink.confirmedHomomultimer) {
+            var path;
+            if (this.renderedFromProtein.form === 1) {
+                path = this.renderedFromProtein.getCrossLinkPath(this);
+            } else {
+                path = this.renderedFromProtein.getAggregateSelfLinkPath();
+            }
+            this.highlightLine.setAttribute("d", path);
+            this.line.setAttribute("d", path);
+            this.homomultimer = this.crossLink.confirmedHomomultimer;
+        }
+    }
+
     this.dashedLine(this.crossLink.ambiguous);
 
     this.line.setAttribute("stroke",
