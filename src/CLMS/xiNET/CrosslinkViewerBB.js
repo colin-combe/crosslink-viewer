@@ -10,7 +10,7 @@ CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
 CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     events: {
-        "click .expand_collapse": "expandOrCollapseProtein"
+        "click .collapse": "collapseProtein"
     },
 
     svgns: "http://www.w3.org/2000/svg", // namespace for svg elements
@@ -26,13 +26,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     barScales: [0.01, 0.2, 1, 2, 4, 8],
 
-    expandOrCollapseProtein: function() {
+    collapseProtein: function(evt) {
+        var p = this.getEventPoint(evt); // seems to be correct, see below
+        var c = p.matrixTransform(this.container.getCTM().inverse());
+
         d3.select(".custom-menu-margin").style("display", "none");
-        if (this.contextMenuProt.form == 1) {
-            this.contextMenuProt.setForm(0);
-        } else {
-            this.contextMenuProt.setForm(1);
-        }
+        this.contextMenuProt.setForm(0, c);
         this.contextMenuProt == null;
     },
 
@@ -48,7 +47,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                                 .append("div").classed("custom-menu", true)
                                 .append("ul");
 
-        customMenuSel.append("li").classed("expand_collapse", true).text("Collapse");
+        customMenuSel.append("li").classed("collapse", true).text("Collapse");
 		var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
 		// var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
         var scaleButtons = scaleButtonsListItemSel.selectAll("ul.custom-menu")
@@ -68,7 +67,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .attr ("name", "scaleButtons")
             .attr ("type", "radio")
             .on("change", function (d) {
-                self.contextMenuProt.setStickScale(d);})
+                self.contextMenuProt.setStickScale(d, self.contextMenuPoint);})
         ;
 
         var contextMenu = d3.select(".custom-menu-margin").node();
@@ -613,10 +612,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     if (this.dragElement.x) { //if the thing is a protein
                         if (rightclick) {
                             if (this.dragElement.form === 0) {
-                                this.dragElement.setForm(1, c);
+                                this.dragElement.setForm(1);
                             } else {
                                 this.model.get("tooltipModel").set("contents", null);
                                 this.contextMenuProt = this.dragElement;
+                                this.contextMenuPoint = c;
                                 var menu = d3.select(".custom-menu-margin")
                                 menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
                                 d3.select(".scaleButton_"+(this.dragElement.stickZoom*100)).property ("checked", true)

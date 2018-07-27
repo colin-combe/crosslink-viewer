@@ -324,8 +324,32 @@ CLMS.xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
 CLMS.xiNET.RenderedProtein.minXDist = 30;
 
 CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
+    var oldScale = this.stickZoom;
+
+    //dist from centre
+    var dx = (this.x - svgP.x);
+    var dy = (this.y - svgP.y);
+
+    // new dist from centre
+    var nx = dx * scale  / oldScale;
+    var ny = dy * scale / oldScale;
+
+    //required change
+    var rx = nx - dx;
+    var ry = ny - dy;
+
+    if (this.rotation === 0 || this.rotation === 180) {
+        ry = 0;
+    }
+
+    //new pos
+    var x = this.x + rx;
+    var y = this.y + ry;
+
+
     this.stickZoom = scale;
     this.scale();
+    this.setPosition(x, y)
     this.setAllLineCoordinates();
 };
 
