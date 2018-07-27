@@ -322,59 +322,11 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
 
 CLMS.xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
 CLMS.xiNET.RenderedProtein.minXDist = 30;
-/*
-CLMS.xiNET.RenderedProtein.prototype.switchStickScale = function(svgP) {
-    if (this.form === 0) {
-        this.toStick();
-    }
-    else {
-        if (this.stickZoom > 8) {
-            this.stickZoom = 0.5;//this looks like a hack
-            this.setPosition(svgP.x, svgP.y);
-        }
-        else {
-            this.stickZoom = this.stickZoom * 3;
-            //move stick so same residue is under mouse
-            var dx = this.x - (svgP.x);
-            var dy = this.y - (svgP.y);
-            if (this.rotation === 0 || this.rotation === 180) {
-                dy = 0;
-            }
-            this.setPosition(this.x + (dx * 2), this.y + (dy * 2));
-        }
-    }
-    // when setting the form of prot's,
-    // remember following doesn't happen when you just call toStick();
-    this.scale();
-    this.setAllLineCoordinates();
-};
-*/
 
 CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
-    // if (scale == "1") {
-    //     this.stickZoom = 0.5;
-    // }
-    // if (scale == "x2") {
-    //     this.stickZoom = 1;
-    // }
-    // if (scale == "x4") {
-    //     this.stickZoom = 2;
-    // }
-    // if (scale == "residues") {
-    //     this.stickZoom = 8;
-    // }
-
-    // if (this.form === 0) {
-    //     this.scale();
-    //     this.setAllLineCoordinates();
-    //     this.toStick();
-    // } else {
-
     this.stickZoom = scale;
     this.scale();
     this.setAllLineCoordinates();
-
-    // }
 };
 
 

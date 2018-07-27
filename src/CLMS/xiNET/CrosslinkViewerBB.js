@@ -10,11 +10,7 @@ CLMS.xiNET = {}; //TODO? change to CLMS.view.xiNET
 
 CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     events: {
-        "click .expand_collapse": "expandOrCollapseProtein",
-        "click .expand_x1": "expandProtein_x1",
-        "click .expand_x2": "expandProtein_x2",
-        "click .expand_x4": "expandProtein_x4",
-        "click .expand_residuesShown": "expandProtein_residuesShown",
+        "click .expand_collapse": "expandOrCollapseProtein"
     },
 
     svgns: "http://www.w3.org/2000/svg", // namespace for svg elements
@@ -61,8 +57,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .append ("div")
             .attr ("class", "barScale")
             .append ("label")
-        //     // .attr("id", function(d) { return "toggles_" + d.id; })
-        //     // .attr ("title", function(d) { return d.tooltip ? d.tooltip : undefined; })
         ;
         var self = this;
         scaleButtons.append ("span")
