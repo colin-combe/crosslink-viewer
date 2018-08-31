@@ -311,24 +311,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         // https://stackoverflow.com/questions/12141150/from-list-of-integers-get-number-closest-to-a-given-value/12141511#12141511
         function takeClosest(myList, myNumber){
-            // Assumes myList is sorted. Returns closest value to myNumber.
-            // If two numbers are equally close, return the smallest number.
             var bisect = d3.bisector(function(d){return d;}).left;
             var pos = bisect(myList, myNumber);
             if (pos == 0 || pos == 1){
                  return myList[1]; // don't return smallest scale as default
             }
             if (pos == myList.length){
-                 return myList[-1]
+                 return myList[myList.length - 1]
              }
             var before = myList[pos - 1]
-            // var after = myList[pos]
-            // if (after - myNumber < myNumber - before){
-            //    return after;
-            // }
-            // else {
-               return before;
-            // }
+            return before;
         }
 
         this.defaultBarScale =  takeClosest(this.barScales, defaultPixPerRes);
