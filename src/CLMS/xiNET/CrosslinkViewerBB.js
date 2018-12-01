@@ -43,32 +43,35 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         d3.select(this.el).selectAll("*").remove();
 
         var customMenuSel = d3.select(this.el)
-                                .append("div").classed("custom-menu-margin", true)
-                                .append("div").classed("custom-menu", true)
-                                .append("ul");
+            .append("div").classed("custom-menu-margin", true)
+            .append("div").classed("custom-menu", true)
+            .append("ul");
 
         customMenuSel.append("li").classed("collapse", true).text("Collapse");
-		var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
-		// var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
+        var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
+        // var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
         var scaleButtons = scaleButtonsListItemSel.selectAll("ul.custom-menu")
             .data(this.barScales)
             .enter()
-            .append ("div")
-            .attr ("class", "barScale")
-            .append ("label")
-        ;
+            .append("div")
+            .attr("class", "barScale")
+            .append("label");
         var self = this;
-        scaleButtons.append ("span")
-            .text (function(d) { if (d == 8) return "AA"; else return d; })
-        ;
-        scaleButtons.append ("input")
+        scaleButtons.append("span")
+            .text(function(d) {
+                if (d == 8) return "AA";
+                else return d;
+            });
+        scaleButtons.append("input")
             // .attr ("id", function(d) { return d*100; })
-            .attr ("class", function(d) { return "scaleButton scaleButton_" + (d*100); })
-            .attr ("name", "scaleButtons")
-            .attr ("type", "radio")
-            .on("change", function (d) {
-                self.contextMenuProt.setStickScale(d, self.contextMenuPoint);})
-        ;
+            .attr("class", function(d) {
+                return "scaleButton scaleButton_" + (d * 100);
+            })
+            .attr("name", "scaleButtons")
+            .attr("type", "radio")
+            .on("change", function(d) {
+                self.contextMenuProt.setStickScale(d, self.contextMenuPoint);
+            });
 
         var contextMenu = d3.select(".custom-menu-margin").node();
         contextMenu.onmouseout = function(evt) {
@@ -307,23 +310,25 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var defaultPixPerRes = ((width * 0.8) -
             CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / maxSeqLength;
 
-            console.log("defautPixPerRes:"+defaultPixPerRes);
+        console.log("defautPixPerRes:" + defaultPixPerRes);
 
         // https://stackoverflow.com/questions/12141150/from-list-of-integers-get-number-closest-to-a-given-value/12141511#12141511
-        function takeClosest(myList, myNumber){
-            var bisect = d3.bisector(function(d){return d;}).left;
+        function takeClosest(myList, myNumber) {
+            var bisect = d3.bisector(function(d) {
+                return d;
+            }).left;
             var pos = bisect(myList, myNumber);
-            if (pos == 0 || pos == 1){
-                 return myList[1]; // don't return smallest scale as default
+            if (pos == 0 || pos == 1) {
+                return myList[1]; // don't return smallest scale as default
             }
-            if (pos == myList.length){
-                 return myList[myList.length - 1]
-             }
+            if (pos == myList.length) {
+                return myList[myList.length - 1]
+            }
             var before = myList[pos - 1]
             return before;
         }
 
-        this.defaultBarScale =  takeClosest(this.barScales, defaultPixPerRes);
+        this.defaultBarScale = takeClosest(this.barScales, defaultPixPerRes);
         console.log("default bar scale: " + this.defaultBarScale)
 
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
@@ -611,7 +616,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                                 this.contextMenuPoint = c;
                                 var menu = d3.select(".custom-menu-margin")
                                 menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                d3.select(".scaleButton_"+(this.dragElement.stickZoom*100)).property ("checked", true)
+                                d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
                             }
                         } else {
                             var add = evt.ctrlKey || evt.shiftKey;
@@ -738,6 +743,22 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.resetZoom();
 
+        // var groupMap = {};
+        // graph.nodes.forEach(function (v, i) {
+        //     var g = v.group;
+        //     if (typeof groupMap[g] == 'undefined') {
+        //         groupMap[g] = [];
+        //     }
+        //     groupMap[g].push(i);
+        //
+        //     v.width = v.height = 10;
+        // });
+        //
+        // var groups = [];
+        // for (var g in groupMap) {
+        //     groups.push({ id: g, leaves: groupMap[g] });
+        // }
+
         var nodes = []; // not hidden nodes
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
@@ -748,7 +769,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
+        var groups = [{
+            leaves: nodes.slice(5, 7)
+        }];
+
+        this.cola = cola.d3adaptor().nodes(nodes).avoidOverlaps(true);
 
         var links = new Map();
 
@@ -792,6 +817,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, offsetY);
                 node.setAllLineCoordinates();
             }
+            var groupsArr = self.cola.groups();
+            console.log("groups", groupsArr);
         });
         this.cola.start(10, 15, 20);
     },

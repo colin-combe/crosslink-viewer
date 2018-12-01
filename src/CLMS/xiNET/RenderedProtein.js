@@ -331,7 +331,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
     var dy = (this.y - svgP.y);
 
     // new dist from centre
-    var nx = dx * scale  / oldScale;
+    var nx = dx * scale / oldScale;
     var ny = dy * scale / oldScale;
 
     //required change
