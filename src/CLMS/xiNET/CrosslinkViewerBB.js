@@ -194,7 +194,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model, "change:highlightedProteins", this.highlightedParticipantsChanged); // mjg apr 18
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
-        this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.updateProteinNames);
+        this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
 
         this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
             self.clickModeIsSelect = true;
@@ -748,7 +748,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
+<<<<<<< Updated upstream
         this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
+=======
+        var groups = [{
+            leaves: nodes.slice(5, 7)
+        }];
+
+        this.cola = cola.d3adaptor().nodes(nodes)/*.groups(groups)*/.avoidOverlaps(true);
+>>>>>>> Stashed changes
 
         var links = new Map();
 
@@ -942,11 +950,23 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    updateProteinNames: function() {
+    proteinMetadataUpdated: function(meta) {
+        // update names
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             renderedParticipantArr[rp].updateName();
+        }
+        // update groups
+        this.groups = [];
+        var participantsArr = CLMS.arrayFromMapValues(meta.items);
+        var pCount = participantsArr.length;
+        for (var p = 0; p < pCount; p++) {
+            var participant = participantsArr[p];
+            if (participant.meta && participant.meta.group) {
+                group = participant.meta.group;
+                console.log("yo", group);
+            }
         }
 
         return this;
