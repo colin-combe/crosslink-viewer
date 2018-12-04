@@ -748,15 +748,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-<<<<<<< Updated upstream
-        this.cola = cola.d3adaptor().avoidOverlaps(true).nodes(nodes);
-=======
         var groups = [{
             leaves: nodes.slice(5, 7)
         }];
 
         this.cola = cola.d3adaptor().nodes(nodes)/*.groups(groups)*/.avoidOverlaps(true);
->>>>>>> Stashed changes
 
         var links = new Map();
 
