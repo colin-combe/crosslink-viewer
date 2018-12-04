@@ -30,7 +30,7 @@ function NaryLink(id, xlvController) {
 }
 
 NaryLink.prototype.initSVG = function() {
-    this.path = document.createElementNS(Config.svgns, "path");
+    this.path = document.createElementNS(this.controller.svgns, "path");
     //~ if (this.controller.expand === false){
 		//~ this.path.setAttribute('fill', NaryLink.naryColours(this.id));
 	//~ }
@@ -66,9 +66,9 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-	this.path.setAttribute("stroke-width", this.controller.z * 1);
+	//this.path.setAttribute("stroke-width", this.controller.z * 1);
 	this.setLinkCoordinates();
-	this.controller.naryLinks.appendChild(this.path);
+	this.controller.groupsSVG.appendChild(this.path);
 };
 
 NaryLink.prototype.hide = function() {};
@@ -84,7 +84,7 @@ NaryLink.prototype.setLinkCoordinates = function() {
 	var mapped = this.orbitNodes(this.getMappedCoordinates());
 	var hullValues = calculateHullPath(mapped);
 	if (hullValues) {
-		this.path.setAttribute('d', hullValues);
+		this.path.setAttribute('d', "M20,20 L200,200 L100,20 Z");//hullValues);
 	}
     if (this.complex){
 		this.complex.setAllLinkCoordinates();

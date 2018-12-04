@@ -10,6 +10,9 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.crosslinkViewer = crosslinkViewer;
     this.renderedP_PLinks = [];
     this.renderedCrossLinks = [];
+
+    this.naryLinks = d3.map();
+
     // layout info
     this.x = 100;
     this.y = 40;
@@ -1257,6 +1260,10 @@ CLMS.xiNET.RenderedProtein.prototype.updateName = function(annotation) {
 CLMS.xiNET.RenderedProtein.prototype.showLabel = function(show) {
     d3.select(this.labelSVG).attr("display", show ? null : "none");
 };
+
+CLMS.xiNET.RenderedProtein.prototype.getPosition = function(){
+    return [this.x, this.y];
+}
 
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20; // height of stick in pixels
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels

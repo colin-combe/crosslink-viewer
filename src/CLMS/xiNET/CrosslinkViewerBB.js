@@ -139,6 +139,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.container = document.createElementNS(this.svgns, "g");
         this.container.setAttribute("id", "container");
         this.wrapper.appendChild(this.container);
+
+        this.groupsSVG = document.createElementNS(this.svgns, "g");
+        this.groupsSVG.setAttribute("id", "groupsSVG");
+        this.container.appendChild(this.groupsSVG);
+
         this.p_pLinksWide = document.createElementNS(this.svgns, "g");
         this.p_pLinksWide.setAttribute("id", "p_pLinksWide");
         this.container.appendChild(this.p_pLinksWide);
@@ -216,6 +221,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.cola.stop();
         }
         this.cola = null;
+        d3.select(this.groups).selectAll("*").remove();
         d3.select(this.p_pLinksWide).selectAll("*").remove();
         d3.select(this.highlights).selectAll("*").remove();
         d3.select(this.p_pLinks).selectAll("*").remove();
@@ -954,16 +960,53 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             renderedParticipantArr[rp].updateName();
         }
         // update groups
-        this.groups = [];
-        var participantsArr = CLMS.arrayFromMapValues(meta.items);
+        //this.groups = [];
+        var groupMap = new d3.map();
+        var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
         var pCount = participantsArr.length;
         for (var p = 0; p < pCount; p++) {
             var participant = participantsArr[p];
             if (participant.meta && participant.meta.group) {
                 group = participant.meta.group;
-                console.log("yo", group);
+                if (groupMap.get(group)){
+                    groupMap.get(group).add(participant.accession);
+                } else {
+                    var groupParticipants = new d3.set();
+                    groupParticipants.add(participant.accession);
+                    groupMap.set(group, groupParticipants)
+                }
             }
         }
+
+        // init n-ary link
+        var groupsArr = groupMap.entries();
+        var gCount = groupMap.size();
+        for (var g = 0; g < gCount; g++) {
+            var groupName = groupsArr[g].key;
+            var participantSet = groupsArr[g].value;
+            var nLinkId = participantSet.values().sort().join('-')
+            // //doesn't already exist, make new nLink
+            nLink = new NaryLink(nLinkId, self);
+
+            var pArr = participantSet.values();
+            var pc = pArr.length;
+            for (var pi = 0; pi < pc; pi++){
+                var pid = pArr[pi];
+                var renderedProtein = this.renderedProteins.get(pid);
+                renderedProtein .naryLinks.set(nLinkId, nLink);
+                //TODO: tidy up whats happening in NaryLink re interactor/participant terminology
+                if (nLink.interactors.indexOf(renderedProtein) === -1){
+                    nLink.interactors.push(renderedProtein);
+                }
+            }
+
+            nLink.show();
+
+            //self.allNaryLinks.set(nLinkId, nLink);
+            //alot of time is being spent on creating these IDs, stash them in the interaction object?
+            //interaction.naryId =  nLinkId;
+        }
+
 
         return this;
     },
