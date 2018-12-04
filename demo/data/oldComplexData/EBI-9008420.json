@@ -1,0 +1,549 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_P68871", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P68871"
+            }, 
+            "label": "hbb_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_P69905", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P69905"
+            }, 
+            "label": "hba_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "chebi_CHEBI:30413", 
+            "identifier": {
+                "db": "chebi", 
+                "id": "CHEBI:30413"
+            }, 
+            "label": "heme", 
+            "object": "interactor", 
+            "organism": {
+                "common": "chemical synthesis", 
+                "scientific": "Chemical synthesis (Chemical synthesis)", 
+                "taxid": "-2"
+            }, 
+            "type": {
+                "id": "MI:0328", 
+                "name": "small molecule"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "omim_604131", 
+            "identifiers": [
+                {
+                    "db": "omim", 
+                    "id": "604131"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "613978"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "611162"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "613985"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "603902"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "603903"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "140700"
+                }, 
+                {
+                    "db": "omim", 
+                    "id": "141749"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn3"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn2"
+                }, 
+                {
+                    "db": "wwpdb", 
+                    "id": "2dn1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_161051.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_123853.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_125222.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_160621.1"
+                }, 
+                {
+                    "db": "reactome", 
+                    "id": "REACT_125469.1"
+                }, 
+                {
+                    "db": "chembl target", 
+                    "id": "CHEMBL2095168"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9008420"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_P68871", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "11", 
+                            "linkedFeatures": [
+                                "12"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_P69905", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "13", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "13", 
+                    "interactorRef": "chebi_CHEBI:30413", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "15", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "14", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "14", 
+                    "interactorRef": "chebi_CHEBI:30413", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "12", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "17", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "17", 
+                    "interactorRef": "chebi_CHEBI:30413", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "19", 
+                            "linkedFeatures": [
+                                "20"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "21", 
+                            "linkedFeatures": [
+                                "22"
+                            ], 
+                            "name": "hbb binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P69905", 
+                                    "participantRef": "18", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "18", 
+                    "interactorRef": "uniprotkb_P69905", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "23", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "16", 
+                            "linkedFeatures": [
+                                "15"
+                            ], 
+                            "name": "heme binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "23", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "22", 
+                            "linkedFeatures": [
+                                "21"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P68871", 
+                                    "participantRef": "23", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "23", 
+                    "interactorRef": "uniprotkb_P68871", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0682", 
+                        "name": "cofactor"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "20", 
+                            "linkedFeatures": [
+                                "19"
+                            ], 
+                            "name": "hba binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "chebi_CHEBI:30413", 
+                                    "participantRef": "24", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "24", 
+                    "interactorRef": "chebi_CHEBI:30413", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}
