@@ -12,9 +12,6 @@
 //      E.g. psi-mi may conatins multiple experiments giving evidence for same interaction
 //      - using one glyph to represent them all prevents uppermost graphic from occluding those lower down
 
-"use strict";
-
-var Config = require('../../controller/Config');
 
 var Link = function (){};
 Link.maxNoEvidences = 0;
@@ -147,5 +144,3 @@ Link.prototype.hide = function() {
         this.controller.p_pLinks.removeChild(this.line);
     }
 };
-
-module.exports = Link;

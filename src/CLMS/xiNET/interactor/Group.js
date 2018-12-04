@@ -3,20 +3,16 @@
 //
 //    	This product includes software developed at
 //    	the Rappsilber Laboratory (http://www.rappsilberlab.org/).
-//		
-//		Complex.js		
+//
+//		Complex.js
 //
 //		authors: Colin Combe
 
-"use strict";
 
-var Molecule = require('./Molecule');
-var Config = require('../../controller/Config');
+Group.prototype = new Molecule();
 
-Complex.prototype = new Molecule();
-
-function Complex(id, xlvController) {
-    this.id = id; 
+function Group(id, xlvController) {
+    this.id = id;
     this.ctrl = xlvController;
     //links
     this.naryLinks = d3.map();
@@ -27,7 +23,7 @@ function Complex(id, xlvController) {
     this.type = 'complex';
 }
 
-Complex.prototype.initMolecule = function(naryLink)
+Group.prototype.initMolecule = function(naryLink)
 {
     this.naryLink = naryLink;
 	naryLink.path.setAttribute('stroke', 'black');
@@ -35,7 +31,7 @@ Complex.prototype.initMolecule = function(naryLink)
     naryLink.path.setAttribute('stroke-width', 8);
 };
 
-Complex.prototype.getPosition = function(){
+Group.prototype.getPosition = function(){
 	var mapped = this.naryLink.getMappedCoordinates();
 	var mc = mapped.length;
 	var xSum = 0, ySum = 0;
@@ -46,8 +42,6 @@ Complex.prototype.getPosition = function(){
 	return [xSum / mc, ySum / mc];
 };
 
-Complex.prototype.setPosition = function(x, y) {};
-Complex.prototype.getResidueCoordinates = function(x, y) {return this.getPosition()};
-Complex.prototype.showHighlight = function() {};
-
-module.exports = Complex;
+Group.prototype.setPosition = function(x, y) {};
+Group.prototype.getResidueCoordinates = function(x, y) {return this.getPosition()};
+Group.prototype.showHighlight = function() {};

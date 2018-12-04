@@ -8,11 +8,6 @@
 //
 //      authors: Colin Combe
 
-"use strict";
-
-var colorbrewer = require('colorbrewer');
-var Config = require('../../controller/Config');
-
 //josh - should these be moved to Config.js?
 Molecule.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
 Molecule.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
@@ -258,5 +253,3 @@ Molecule.prototype.showData = function(evt) {
 
 Molecule.prototype.setForm = function(form, svgP) {
 };
-
-module.exports = Molecule;
