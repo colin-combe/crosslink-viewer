@@ -646,12 +646,12 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
         self.stickZoom = stickZoomInterpol(cubicInOut(interp));
         if (self.form == 1) self.setRotation(rot);
 
-        //self.setAllLineCoordinates();
-        var renderedCrossLinks = self.renderedCrossLinks;
-        var rclCount = renderedCrossLinks.length;
-        for (var rcl = 0; rcl < rclCount; rcl++) {
-            renderedCrossLinks[rcl].setLineCoordinates(this);
-        }
+        self.setAllLineCoordinates();
+        // var renderedCrossLinks = self.renderedCrossLinks;
+        // var rclCount = renderedCrossLinks.length;
+        // for (var rcl = 0; rcl < rclCount; rcl++) {
+        //     renderedCrossLinks[rcl].setLineCoordinates(this);
+        // }
 
         if (interp === 1) { // finished - tidy up
             //bring in new
@@ -799,13 +799,13 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         var currentLength = lengthInterpol(cubicInOut(interp));
         d3.select(self.outline).attr("width", currentLength).attr("x", -(currentLength / 2) + (0.5 * self.stickZoom));
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-        //self.setAllLineCoordinates();
+        self.setAllLineCoordinates();
 
-        var renderedCrossLinks = self.renderedCrossLinks;
-        var rclCount = renderedCrossLinks.length;
-        for (var rcl = 0; rcl < rclCount; rcl++) {
-            renderedCrossLinks[rcl].setLineCoordinates(this);
-        }
+        // var renderedCrossLinks = self.renderedCrossLinks;
+        // var rclCount = renderedCrossLinks.length;
+        // for (var rcl = 0; rcl < rclCount; rcl++) {
+        //     renderedCrossLinks[rcl].setLineCoordinates(this);
+        // }
 
         if (interp === 1) { // finished - tidy up
             self.busy = false;
@@ -917,6 +917,33 @@ CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
     return (r - (this.participant.size / 2)) * this.stickZoom;
 };
 
+//calculate the  coordinates of a residue (relative to this.controller.container)
+CLMS.xiNET.RenderedProtein.prototype.getResidueCoordinates = function(r, yOff) {
+    // if (Polymer.UNITS_PER_RESIDUE === undefined)
+    //     alert("Error: Polymer.UNITS_PER_RESIDUE is undefined");
+    // if (r === undefined)
+    //     alert("Error: residue number is undefined");
+    var x = this.getResXwithStickZoom(r * 1) * this.crosslinkViewer.z;
+    var y = 0;
+    if (x !== 0) {
+        var l = Math.abs(x);
+        var a = Math.acos(x / l);
+        var rotRad = (this.rotation / 360) * Math.PI * 2;
+        x = l * Math.cos(rotRad + a);
+        y = l * Math.sin(rotRad + a);
+        if (typeof yOff !== 'undefined') {
+            x += yOff * this.controller.z * Math.cos(rotRad + (Math.PI / 2));
+            y += yOff * this.controller.z * Math.sin(rotRad + (Math.PI / 2));
+        }
+    }
+    else {
+        y = yOff;
+    }
+    x = x + this.x;
+    y = y + this.y;
+    return [x, y];
+};
+
 CLMS.xiNET.RenderedProtein.rotatePointAboutPoint = function(p, o, theta) {
     theta = (theta / 360) * Math.PI * 2; // todo: make everything use radians
     var rx = Math.cos(theta) * (p[0] - o[0]) - Math.sin(theta) * (p[1] - o[1]) + o[0];
@@ -953,6 +980,12 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
+
+    var links = this.naryLinks.values();
+    var c = links.length;
+    for (var l = 0; l < c; l++) {
+        links[l].setLinkCoordinates();
+    }
 
     var pLinks = this.renderedP_PLinks;
     var plCount = pLinks.length;

@@ -32,10 +32,10 @@ function NaryLink(id, xlvController) {
 NaryLink.prototype.initSVG = function() {
     this.path = document.createElementNS(this.controller.svgns, "path");
     //~ if (this.controller.expand === false){
-		//~ this.path.setAttribute('fill', NaryLink.naryColours(this.id));
+		this.path.setAttribute('fill', NaryLink.naryColours(this.id));
 	//~ }
 	//~ else {
-		this.path.setAttribute('fill', '#70BDBD');
+		//this.path.setAttribute('fill', '#70BDBD');
 	//~ }
     this.path.setAttribute('fill-opacity', 0.3);
 
@@ -66,7 +66,7 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-	//this.path.setAttribute("stroke-width", this.controller.z * 1);
+	this.path.setAttribute("stroke-width", this.controller.z * 1);
 	this.setLinkCoordinates();
 	this.controller.groupsSVG.appendChild(this.path);
 };
@@ -77,14 +77,14 @@ NaryLink.prototype.setLinkCoordinates = function() {
     // Uses d3.geom.hull to calculate a bounding path around an array of vertices
     var calculateHullPath = function(values) {
 		var calced = d3.geom.hull(values);
-		self.hull = calced;//hack?
+		// self.hull = calced;//hack?
 		return "M" + calced.join("L") + "Z";
     };
 	var self = this;// TODO: - tidy hack above?
 	var mapped = this.orbitNodes(this.getMappedCoordinates());
 	var hullValues = calculateHullPath(mapped);
 	if (hullValues) {
-		this.path.setAttribute('d', "M20,20 L200,200 L100,20 Z");//hullValues);
+		this.path.setAttribute('d', hullValues);
 	}
     if (this.complex){
 		this.complex.setAllLinkCoordinates();
@@ -102,7 +102,7 @@ NaryLink.prototype.getMappedCoordinates = function() {
 		}
 		else if (interactor.form === 1){
 			var start = interactor.getResidueCoordinates(0);
-			var end = interactor.getResidueCoordinates(interactor.size);
+			var end = interactor.getResidueCoordinates(interactor.participant.size);
 			if (!isNaN(start[0]) && !isNaN(start[1]) &&
 								!isNaN(end[0]) && !isNaN(end[1])){
 				mapped.push(start);

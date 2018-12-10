@@ -986,7 +986,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var participantSet = groupsArr[g].value;
             var nLinkId = participantSet.values().sort().join('-')
             // //doesn't already exist, make new nLink
-            nLink = new NaryLink(nLinkId, self);
+            nLink = new NaryLink(nLinkId, this);
 
             var pArr = participantSet.values();
             var pc = pArr.length;

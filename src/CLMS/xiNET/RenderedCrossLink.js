@@ -304,10 +304,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.highlightLine.setAttribute("d", path);
             this.line.setAttribute("d", path);
         } else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
-            this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
-            this.setLineCoordinates(this.renderedFromProtein);
-            this.setLineCoordinates(this.renderedToProtein);
+            if (!this.crossLink.isSelfLink()){
+                this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
+                this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+                this.setLineCoordinates(this.renderedFromProtein);
+                this.setLineCoordinates(this.renderedToProtein);
+            }
         }
         d3.select(this.highlightLine).style("display", null);
         d3.select(this.line).style("display", null);

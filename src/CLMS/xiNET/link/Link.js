@@ -47,11 +47,11 @@ Link.prototype.mouseDown = function(evt) {
         this.controller.force.stop();
     }
     this.controller.dragElement = this;
-    this.controller.clearSelection();
-    //this.setSelected(true);
+    //this.controller.clearSelection();
+    /* //this.setSelected(true); */
     //store start location
     var p = this.controller.getEventPoint(evt);// seems to be correct, see above
-    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    // this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     //~ this.showData();
     return false;
 }
@@ -61,7 +61,7 @@ Link.prototype.mouseOver = function(evt){
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
     //this.showHighlight(true, true);
-    this.controller.setTooltip(this.getToolTip());
+    //this.controller.setTooltip(this.getToolTip());
     return false;
 }
 
@@ -70,7 +70,7 @@ Link.prototype.getToolTip = function(){}
 Link.prototype.mouseOut = function(evt){
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(false, true);
-    this.controller.hideTooltip();
+    // this.controller.hideTooltip();
     return false;
 }
 
