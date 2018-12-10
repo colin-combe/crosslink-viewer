@@ -242,6 +242,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.resetZoom();
         this.state = this.STATES.MOUSE_UP;
 
+        this.groups = [];
     },
 
     render: function() {
@@ -754,11 +755,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        var groups = [{
-            leaves: nodes.slice(5, 7)
-        }];
+        // this.groups = //[];
+        // [{
+        //     id:0,
+        //     leaves: nodes.slice(5, 7)
+        // }];
 
-        this.cola = cola.d3adaptor().nodes(nodes)/*.groups(groups)*/.avoidOverlaps(true);
+        this.cola = cola.d3adaptor().nodes(nodes).groups(this.groups).avoidOverlaps(true);
 
         var links = new Map();
 
@@ -978,6 +981,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
+        this.groups = [];
         // init n-ary link
         var groupsArr = groupMap.entries();
         var gCount = groupMap.size();
@@ -987,7 +991,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var nLinkId = participantSet.values().sort().join('-')
             // //doesn't already exist, make new nLink
             nLink = new NaryLink(nLinkId, this);
-
+            this.groups.push(nLink);
             var pArr = participantSet.values();
             var pc = pArr.length;
             for (var pi = 0; pi < pc; pi++){

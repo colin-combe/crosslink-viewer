@@ -20,6 +20,7 @@ function NaryLink(id, xlvController) {
     this.id = id;
     this.evidences = d3.map();
     this.interactors = new Array();
+    this.leaves = this.interactors; // temp (?) for cola
     this.sequenceLinks = d3.map();
     this.binaryLinks = d3.map();
     this.unaryLinks = d3.map();
