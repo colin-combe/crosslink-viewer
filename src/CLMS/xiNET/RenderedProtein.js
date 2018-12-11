@@ -531,6 +531,23 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     }
 };
 
+
+CLMS.xiNET.RenderedProtein.prototype.inCollapsedComplex = function() {
+    if (this.complex && this.complex.form == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+CLMS.xiNET.RenderedProtein.prototype.targetNode = function() {
+    if (this.complex && this.complex.form == 0) {
+        return this.complex;
+    } else {
+        return this;
+    }
+}
+
 CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //~ if (!this.participant.hidden){
     this.busy = true;

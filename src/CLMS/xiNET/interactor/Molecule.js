@@ -71,7 +71,7 @@ Molecule.prototype.mouseOver = function(evt) {
 Molecule.prototype.mouseOut = function(evt) {
         this.controller.preventDefaultsAndStopPropagation(evt);
         this.showHighlight(false);
-        this.controller.hideTooltip();
+//        this.controller.hideTooltip();
         return false;
 };
 

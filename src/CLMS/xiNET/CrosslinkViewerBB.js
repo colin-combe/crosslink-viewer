@@ -750,16 +750,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
-            if (renderedParticipant.participant.hidden === false) {
+            if ((renderedParticipant.participant && renderedParticipant.participant.hidden === false)
+                && renderedParticipant.inCollapsedComplex() == false)
+                {
                 nodes.push(renderedParticipant);
             }
         }
-
-        // this.groups = //[];
-        // [{
-        //     id:0,
-        //     leaves: nodes.slice(5, 7)
-        // }];
 
         this.cola = cola.d3adaptor().nodes(nodes).groups(this.groups).avoidOverlaps(true);
 
@@ -776,8 +772,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var linkId = fromId + "-" + toId;
                 if (!links.has(linkId)) {
                     var linkObj = {};
-                    linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id);
-                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id);
+                    linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id).targetNode();
+                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).targetNode();
                     linkObj.id = linkId;
                     links.set(linkId, linkObj);
                 }
@@ -795,16 +791,47 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         var self = this;
 
+        var groupDebug = d3.select(this.svgElement).selectAll('.group')
+            .data(this.groups)
+            .enter().append('rect')
+            .classed('group', true)
+            .attr({ rx: 5, ry: 5 })
+            .style('stroke', "blue")
+            .style('fill', "none");
+        //    .call(cola.drag);
+        var participantDebug = d3.select(this.svgElement).selectAll('.node')
+            .data(nodes)
+            .enter().append('rect')
+            .classed('node', true)
+            .attr({ rx: 5, ry: 5 })
+            .style('stroke', "red")
+            .style('fill', "none");
+
         this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
+            groupDebug.attr({
+                x: function (d) { return d.bounds.x },
+                y: function (d) { return d.bounds.y },
+                width: function (d) { return d.bounds.width() },
+                height: function(d) { return d.bounds.height() }
+            });
+
+            participantDebug.attr({
+                x: function (d) { return d.bounds.x },
+                y: function (d) { return d.bounds.y },
+                width: function (d) { return d.bounds.width() },
+                height: function(d) { return d.bounds.height() }
+            });
+
             var nodesArr = self.cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
-                var offsetX = node.x; // - node.upperGroup.getBBox().x;
+                var offsetX = node.x + node.width / 2;
                 var offsetY = node.y; //- node.upperGroup.getBBox().y;
                 node.setPosition(offsetX, offsetY);
                 node.setAllLineCoordinates();
             }
+
         });
         this.cola.start(10, 15, 20);
     },
@@ -992,12 +1019,17 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             // //doesn't already exist, make new nLink
             nLink = new NaryLink(nLinkId, this);
             this.groups.push(nLink);
+
+            var complex = new Complex(nLinkId, this);
+            complex.initMolecule(nLink);
+
             var pArr = participantSet.values();
             var pc = pArr.length;
             for (var pi = 0; pi < pc; pi++){
                 var pid = pArr[pi];
                 var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein .naryLinks.set(nLinkId, nLink);
+                renderedProtein.naryLinks.set(nLinkId, nLink);
+                renderedProtein.complex = complex;
                 //TODO: tidy up whats happening in NaryLink re interactor/participant terminology
                 if (nLink.interactors.indexOf(renderedProtein) === -1){
                     nLink.interactors.push(renderedProtein);
@@ -1006,6 +1038,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             nLink.show();
 
+            this.proteinUpper.appendChild(complex.upperGroup);
+            //complex.show();
+            // complex.setPosition(complex.getPosition());
+            this.renderedProteins.set(nLinkId, complex);
             //self.allNaryLinks.set(nLinkId, nLink);
             //alot of time is being spent on creating these IDs, stash them in the interaction object?
             //interaction.naryId =  nLinkId;
