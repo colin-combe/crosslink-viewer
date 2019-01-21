@@ -395,7 +395,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var prot = renderedParticipantArr[rp];
             prot.setPosition(prot.x, prot.y); // this rescales the protein
             if (prot.form !== 0)
-                prot.setAllLineCoordinates();
+                prot.setAllLinkCoordinates();
         }
 
         var renderedCrossLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
@@ -494,7 +494,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             nx = ox - dx;
                             ny = oy - dy;
                             renderedProtein.setPosition(nx, ny);
-                            renderedProtein.setAllLineCoordinates();
+                            renderedProtein.setAllLinkCoordinates();
                         }
                     }
                     this.dragStart = evt;
@@ -510,7 +510,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     }
                     var centreToMouseAngleDegrees = centreToMouseAngleRads * (360 / (2 * Math.PI));
                     this.dragElement.setRotation(centreToMouseAngleDegrees);
-                    this.dragElement.setAllLineCoordinates();
+                    this.dragElement.setAllLinkCoordinates();
                 } else { //not dragging or rotating yet, maybe we should start
                     // don't start dragging just on a click - we need to move the mouse a bit first
                     if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
@@ -829,7 +829,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var offsetX = node.x + node.width / 2;
                 var offsetY = node.y; //- node.upperGroup.getBBox().y;
                 node.setPosition(offsetX, offsetY);
-                node.setAllLineCoordinates();
+                node.setAllLinkCoordinates();
             }
 
         });

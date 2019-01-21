@@ -353,7 +353,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
     this.stickZoom = scale;
     this.scale();
     this.setPosition(x, y)
-    this.setAllLineCoordinates();
+    this.setAllLinkCoordinates();
 };
 
 
@@ -663,7 +663,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
         self.stickZoom = stickZoomInterpol(cubicInOut(interp));
         if (self.form == 1) self.setRotation(rot);
 
-        self.setAllLineCoordinates();
+        self.setAllLinkCoordinates();
         // var renderedCrossLinks = self.renderedCrossLinks;
         // var rclCount = renderedCrossLinks.length;
         // for (var rcl = 0; rcl < rclCount; rcl++) {
@@ -816,7 +816,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         var currentLength = lengthInterpol(cubicInOut(interp));
         d3.select(self.outline).attr("width", currentLength).attr("x", -(currentLength / 2) + (0.5 * self.stickZoom));
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
-        self.setAllLineCoordinates();
+        self.setAllLinkCoordinates();
 
         // var renderedCrossLinks = self.renderedCrossLinks;
         // var rclCount = renderedCrossLinks.length;
@@ -996,7 +996,7 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 }
 
 // update all lines (e.g after a move)
-CLMS.xiNET.RenderedProtein.prototype.setAllLineCoordinates = function() {
+CLMS.xiNET.RenderedProtein.prototype.setAllLinkCoordinates = function() {
 
     var links = this.naryLinks.values();
     var c = links.length;
