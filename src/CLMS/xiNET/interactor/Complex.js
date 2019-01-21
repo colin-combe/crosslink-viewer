@@ -91,6 +91,30 @@ function Complex(id, xlvController) {
     };
 
 
+    Object.defineProperty(this, "x", {
+        get: function _x() {
+            var mapped = this.naryLink.getMappedCoordinates();
+            var mc = mapped.length;
+            var xSum = 0;
+            for (var m = 0; m < mc; m++) {
+                xSum += mapped[m][0];
+            }
+            return xSum / mc;
+        }
+    });
+
+    Object.defineProperty(this, "y", {
+        get: function _y() {
+            var mapped = this.naryLink.getMappedCoordinates();
+            var mc = mapped.length;
+            var ySum = 0;
+            for (var m = 0; m < mc; m++) {
+                ySum += mapped[m][1];
+            }
+            return ySum / mc;
+        }
+    });
+
     this.isSelected = false;
 }
 
