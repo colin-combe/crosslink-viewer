@@ -20,8 +20,8 @@
  */
 
 function SequenceDatum(node, sequenceDatumString) {
-	this.node = node;
-	sequenceDatumString = sequenceDatumString.trim();
+    this.node = node;
+    sequenceDatumString = sequenceDatumString.trim();
 
     this.uncertainStart = null;
     this.start = '?';
@@ -34,8 +34,7 @@ function SequenceDatum(node, sequenceDatumString) {
 
     if (firstPart.indexOf('.') === -1) {
         this.start = firstPart;
-    }
-    else {
+    } else {
         var firstDotPosition = firstPart.indexOf('.');
         this.uncertainStart = firstPart.substring(0, firstDotPosition) * 1;
         this.start = firstPart.substring(firstDotPosition + 2) * 1;
@@ -43,21 +42,20 @@ function SequenceDatum(node, sequenceDatumString) {
 
     if (secondPart.indexOf('.') === -1) {
         this.end = secondPart;
-    }
-    else {
+    } else {
         var firstDotPosition = secondPart.indexOf('.');
         this.end = secondPart.substring(0, firstDotPosition) * 1;
         this.uncertainEnd = secondPart.substring(firstDotPosition + 2) * 1;
     }
 }
 
-SequenceDatum.prototype.toString = function(){
-	var string = "";
-	if (this.uncertainStart) string += this.uncertainStart + '..';
-	if (this.start) string += this.start + '-';
-	if (this.end) string += this.end;
-	if (this.uncertainEnd) string += '..' + this.uncertainEnd;
-	return string;
+SequenceDatum.prototype.toString = function() {
+    var string = "";
+    if (this.uncertainStart) string += this.uncertainStart + '..';
+    if (this.start) string += this.start + '-';
+    if (this.end) string += this.end;
+    if (this.uncertainEnd) string += '..' + this.uncertainEnd;
+    return string;
 }
 //On 06/06/13 09:22, marine@ebi.ac.uk wrote:
 //> Concerning the ranges, I think there was a confusion :

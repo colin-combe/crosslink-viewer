@@ -13,7 +13,7 @@
 //      - using one glyph to represent them all prevents uppermost graphic from occluding those lower down
 
 
-var Link = function (){};
+var Link = function() {};
 Link.maxNoEvidences = 0;
 
 Link.prototype.addEvidence = function(interaction) {
@@ -32,7 +32,7 @@ Link.prototype.addEvidence = function(interaction) {
     }
 };
 
-Link.prototype.highlightMolecules = function(show){
+Link.prototype.highlightMolecules = function(show) {
     var interactors = this.interactors;
     for (var i = 0; i < interactors.length; i++) {
         interactors[i].showHighlight(show);
@@ -41,23 +41,23 @@ Link.prototype.highlightMolecules = function(show){
 
 // event handler for starting dragging or rotation (or flipping internal links)
 Link.prototype.mouseDown = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.controller.force){
+    if (this.controller.force) {
         this.controller.force.stop();
     }
     this.controller.dragElement = this;
     //this.controller.clearSelection();
     /* //this.setSelected(true); */
     //store start location
-    var p = this.controller.getEventPoint(evt);// seems to be correct, see above
+    var p = this.controller.getEventPoint(evt); // seems to be correct, see above
     // this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     //~ this.showData();
     return false;
 }
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
-Link.prototype.mouseOver = function(evt){
+Link.prototype.mouseOver = function(evt) {
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
     //this.showHighlight(true, true);
@@ -65,9 +65,9 @@ Link.prototype.mouseOver = function(evt){
     return false;
 }
 
-Link.prototype.getToolTip = function(){}
+Link.prototype.getToolTip = function() {}
 
-Link.prototype.mouseOut = function(evt){
+Link.prototype.mouseOut = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(false, true);
     // this.controller.hideTooltip();
@@ -75,16 +75,16 @@ Link.prototype.mouseOut = function(evt){
 }
 
 Link.prototype.touchStart = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.controller.force !== undefined){
+    if (this.controller.force !== undefined) {
         this.controller.force.stop();
     }
     this.controller.dragElement = this;
-            this.controller.clearSelection();
-        //    this.setSelected(true);
+    this.controller.clearSelection();
+    //    this.setSelected(true);
     //store start location
-    var p = this.controller.getTouchEventPoint(evt);// seems to be correct, see above
+    var p = this.controller.getTouchEventPoint(evt); // seems to be correct, see above
     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
     //~ this.showData();
     return false;
@@ -105,14 +105,14 @@ Link.prototype.filteredEvidence = function() {
     //TODO - filtering
     return this.evidences.values();
     //~ if (typeof interaction.confidences !== 'undefined') {
-        //~ var confidences = interaction.confidences;
-        //~ var confCount = confidences.length;
-        //~ for (var c = 0; c < confCount; c++){
-            //~ var conf = confidences[c];
-            //~ if (conf.type === 'intact-miscore'){
-                //~ interaction.score = conf.value * 1.0;
-            //~ }
-        //~ }
+    //~ var confidences = interaction.confidences;
+    //~ var confCount = confidences.length;
+    //~ for (var c = 0; c < confCount; c++){
+    //~ var conf = confidences[c];
+    //~ if (conf.type === 'intact-miscore'){
+    //~ interaction.score = conf.value * 1.0;
+    //~ }
+    //~ }
     //~ }
 };
 

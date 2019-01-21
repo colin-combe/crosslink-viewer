@@ -15,64 +15,64 @@ Molecule.labelY = -5; //label Y offset, better if calc'd half height of label on
 function Molecule() {}
 
 Molecule.prototype.addStoichiometryLabel = function(stoich) {
-    if (this.labelSVG) {//complexes don't have labels (yet?)
-        this.labelSVG.childNodes[0].data =  this.labelSVG.childNodes[0].data + ' ['+stoich+']';
+    if (this.labelSVG) { //complexes don't have labels (yet?)
+        this.labelSVG.childNodes[0].data = this.labelSVG.childNodes[0].data + ' [' + stoich + ']';
     }
 }
 
 Molecule.prototype.mouseDown = function(evt) {
-        this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-        if (this.controller.force) {
-            this.controller.force.stop();
-        }
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //if a force layout exists then stop it
+    if (this.controller.force) {
+        this.controller.force.stop();
+    }
 
-        this.controller.dragElement = this;
-        //~ if (evt.controllerKey === false) {
-            this.controller.clearSelection();
-            this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        var p = this.controller.getEventPoint(evt);
-        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-        //~ this.showData();
-        return false;
+    this.controller.dragElement = this;
+    //~ if (evt.controllerKey === false) {
+    this.controller.clearSelection();
+    this.setSelected(true);
+    //~ } else {
+    //~ this.setSelected(!this.isSelected);
+    //~ }
+    //store start location
+    var p = this.controller.getEventPoint(evt);
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    //~ this.showData();
+    return false;
 };
 
 Molecule.prototype.touchStart = function(evt) {
-           this.controller.preventDefaultsAndStopPropagation(evt);//see MouseEvents.js
-        //if a force layout exists then stop it
-         if (this.controller.force !== undefined) {
-            this.controller.force.stop();
-        }
-        this.controller.dragElement = this;
-        //~ if (evt.controllerKey === false) {
-            this.controller.clearSelection();
-            this.setSelected(true);
-        //~ } else {
-            //~ this.setSelected(!this.isSelected);
-        //~ }
-        //store start location
-        var p = this.controller.getTouchEventPoint(evt);
-        this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-//        this.showData();
-        return false;
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //if a force layout exists then stop it
+    if (this.controller.force !== undefined) {
+        this.controller.force.stop();
+    }
+    this.controller.dragElement = this;
+    //~ if (evt.controllerKey === false) {
+    this.controller.clearSelection();
+    this.setSelected(true);
+    //~ } else {
+    //~ this.setSelected(!this.isSelected);
+    //~ }
+    //store start location
+    var p = this.controller.getTouchEventPoint(evt);
+    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    //        this.showData();
+    return false;
 };
 
 Molecule.prototype.mouseOver = function(evt) {
-        this.controller.preventDefaultsAndStopPropagation(evt);
-        this.showHighlight(true);
-        //~ this.controller.setTooltip(this.id);
-        return false;
+    this.controller.preventDefaultsAndStopPropagation(evt);
+    this.showHighlight(true);
+    //~ this.controller.setTooltip(this.id);
+    return false;
 };
 
 Molecule.prototype.mouseOut = function(evt) {
-        this.controller.preventDefaultsAndStopPropagation(evt);
-        this.showHighlight(false);
-//        this.controller.hideTooltip();
-        return false;
+    this.controller.preventDefaultsAndStopPropagation(evt);
+    this.showHighlight(false);
+    //        this.controller.hideTooltip();
+    return false;
 };
 
 Molecule.prototype.getBlobRadius = function() {
@@ -96,23 +96,23 @@ Molecule.prototype.showHighlight = function(show) {
 };
 
 Molecule.prototype.setSelected = function(select) {
-   //do nothing
-   /*
-    if (select && this.isSelected === false) {
-        this.controller.selected.set(this.id, this);
-        this.isSelected = true;
-        this.highlight.setAttribute("stroke", Config.selectedColour);
-        this.highlight.setAttribute("stroke-opacity", "1");
-    }
-    else if (select === false && this.isSelected === true) {
-        this.controller.selected.remove(this.id);
-        this.isSelected = false;
-        this.highlight.setAttribute("stroke-opacity", "0");
-        this.highlight.setAttribute("stroke", Config.highlightColour);
-    }*/
+    //do nothing
+    /*
+     if (select && this.isSelected === false) {
+         this.controller.selected.set(this.id, this);
+         this.isSelected = true;
+         this.highlight.setAttribute("stroke", Config.selectedColour);
+         this.highlight.setAttribute("stroke-opacity", "1");
+     }
+     else if (select === false && this.isSelected === true) {
+         this.controller.selected.remove(this.id);
+         this.isSelected = false;
+         this.highlight.setAttribute("stroke-opacity", "0");
+         this.highlight.setAttribute("stroke", Config.highlightColour);
+     }*/
 };
 
-Molecule.prototype.getPosition = function(){
+Molecule.prototype.getPosition = function() {
     return [this.x, this.y];
 }
 
@@ -120,13 +120,12 @@ Molecule.prototype.getPosition = function(){
 Molecule.prototype.setPosition = function(x, y) {
     this.x = x;
     this.y = y;
-    if (this.form === 1){
-        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
-                + " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-    }
-    else {
-        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")"
-                + " scale(" + (this.controller.z) + ") ");
+    if (this.form === 1) {
+        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
+            " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+    } else {
+        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
+            " scale(" + (this.controller.z) + ") ");
     }
 };
 
@@ -137,21 +136,21 @@ Molecule.prototype.getAggregateSelfLinkPath = function() {
     var arcEnd = Molecule.trig(intraR, -25 + sectorSize);
     var cp1 = Molecule.trig(intraR, 40 + sectorSize);
     var cp2 = Molecule.trig(intraR, -40 + sectorSize);
-    return 'M 0,0 '
-        + 'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y
-        + ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y
-        + ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
+    return 'M 0,0 ' +
+        'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y +
+        ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y +
+        ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
 Molecule.rotatePointAboutPoint = function(p, o, theta) {
-    theta = (theta / 360) * Math.PI * 2;//TODO: change theta arg to radians not degrees
-    var rx = Math.cos(theta) * (p[0]-o[0]) - Math.sin(theta) * (p[1]-o[1]) + o[0];
-    var ry = Math.sin(theta) * (p[0]-o[0]) + Math.cos(theta) * (p[1]-o[1]) + o[1];
+    theta = (theta / 360) * Math.PI * 2; //TODO: change theta arg to radians not degrees
+    var rx = Math.cos(theta) * (p[0] - o[0]) - Math.sin(theta) * (p[1] - o[1]) + o[0];
+    var ry = Math.sin(theta) * (p[0] - o[0]) + Math.cos(theta) * (p[1] - o[1]) + o[1];
     return [rx, ry];
 }
 
 Molecule.prototype.checkLinks = function() {
-    function checkAll(linkMap){
+    function checkAll(linkMap) {
         var links = linkMap.values();
         var c = links.length;
         for (var l = 0; l < c; l++) {
@@ -206,7 +205,11 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
         this.annotations = posFeats;
         if (this.annotations.length == 0) {
             //~ alert("no annot");
-            this.annotations.push({begin: 1, end: this.size, description: "No annotations"});
+            this.annotations.push({
+                begin: 1,
+                end: this.size,
+                description: "No annotations"
+            });
         }
         for (var i = 0; i < posFeats.length; i++) {
             var anno = posFeats[i];
@@ -230,26 +233,25 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
                 xlv.setTooltip(el.name, el.getAttribute('fill'));
                 self.showHighlight(true);
             };
-             if (this.annotationsSvgGroup) { //hack
-                 this.annotationsSvgGroup.appendChild(anno.pieSlice);
-             }
+            if (this.annotationsSvgGroup) { //hack
+                this.annotationsSvgGroup.appendChild(anno.pieSlice);
+            }
         }
     }
 };
 
 //TODO: remove this, use rotateAboutPoint instead
 Molecule.trig = function(radius, angleDegrees) {
-        //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-        var radians = (angleDegrees / 360) * Math.PI * 2;
-        return {
-            x: (radius * Math.cos(radians)),
-            y: (radius * Math.sin(radians))
-        };
+    //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
+    var radians = (angleDegrees / 360) * Math.PI * 2;
+    return {
+        x: (radius * Math.cos(radians)),
+        y: (radius * Math.sin(radians))
+    };
 };
 
 Molecule.prototype.showData = function(evt) {
     //~ alert ("molecule!");
 }
 
-Molecule.prototype.setForm = function(form, svgP) {
-};
+Molecule.prototype.setForm = function(form, svgP) {};

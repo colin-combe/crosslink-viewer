@@ -43,32 +43,35 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         d3.select(this.el).selectAll("*").remove();
 
         var customMenuSel = d3.select(this.el)
-                                .append("div").classed("custom-menu-margin", true)
-                                .append("div").classed("custom-menu", true)
-                                .append("ul");
+            .append("div").classed("custom-menu-margin", true)
+            .append("div").classed("custom-menu", true)
+            .append("ul");
 
         customMenuSel.append("li").classed("collapse", true).text("Collapse");
-		var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
-		// var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
+        var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
+        // var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
         var scaleButtons = scaleButtonsListItemSel.selectAll("ul.custom-menu")
             .data(this.barScales)
             .enter()
-            .append ("div")
-            .attr ("class", "barScale")
-            .append ("label")
-        ;
+            .append("div")
+            .attr("class", "barScale")
+            .append("label");
         var self = this;
-        scaleButtons.append ("span")
-            .text (function(d) { if (d == 8) return "AA"; else return d; })
-        ;
-        scaleButtons.append ("input")
+        scaleButtons.append("span")
+            .text(function(d) {
+                if (d == 8) return "AA";
+                else return d;
+            });
+        scaleButtons.append("input")
             // .attr ("id", function(d) { return d*100; })
-            .attr ("class", function(d) { return "scaleButton scaleButton_" + (d*100); })
-            .attr ("name", "scaleButtons")
-            .attr ("type", "radio")
-            .on("change", function (d) {
-                self.contextMenuProt.setStickScale(d, self.contextMenuPoint);})
-        ;
+            .attr("class", function(d) {
+                return "scaleButton scaleButton_" + (d * 100);
+            })
+            .attr("name", "scaleButtons")
+            .attr("type", "radio")
+            .on("change", function(d) {
+                self.contextMenuProt.setStickScale(d, self.contextMenuPoint);
+            });
 
         var contextMenu = d3.select(".custom-menu-margin").node();
         contextMenu.onmouseout = function(evt) {
@@ -314,23 +317,25 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var defaultPixPerRes = ((width * 0.8) -
             CLMS.xiNET.RenderedProtein.LABELMAXLENGTH) / maxSeqLength;
 
-            console.log("defautPixPerRes:"+defaultPixPerRes);
+        console.log("defautPixPerRes:" + defaultPixPerRes);
 
         // https://stackoverflow.com/questions/12141150/from-list-of-integers-get-number-closest-to-a-given-value/12141511#12141511
-        function takeClosest(myList, myNumber){
-            var bisect = d3.bisector(function(d){return d;}).left;
+        function takeClosest(myList, myNumber) {
+            var bisect = d3.bisector(function(d) {
+                return d;
+            }).left;
             var pos = bisect(myList, myNumber);
-            if (pos == 0 || pos == 1){
-                 return myList[1]; // don't return smallest scale as default
+            if (pos == 0 || pos == 1) {
+                return myList[1]; // don't return smallest scale as default
             }
-            if (pos == myList.length){
-                 return myList[myList.length - 1]
-             }
+            if (pos == myList.length) {
+                return myList[myList.length - 1]
+            }
             var before = myList[pos - 1]
             return before;
         }
 
-        this.defaultBarScale =  takeClosest(this.barScales, defaultPixPerRes);
+        this.defaultBarScale = takeClosest(this.barScales, defaultPixPerRes);
         console.log("default bar scale: " + this.defaultBarScale)
 
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
@@ -618,7 +623,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                                 this.contextMenuPoint = c;
                                 var menu = d3.select(".custom-menu-margin")
                                 menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                d3.select(".scaleButton_"+(this.dragElement.stickZoom*100)).property ("checked", true)
+                                d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
                             }
                         } else {
                             var add = evt.ctrlKey || evt.shiftKey;
@@ -750,9 +755,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
-            if ((renderedParticipant.participant && renderedParticipant.participant.hidden === false)
-                && renderedParticipant.inCollapsedComplex() == false)
-                {
+            if ((renderedParticipant.participant && renderedParticipant.participant.hidden === false) &&
+                renderedParticipant.inCollapsedComplex() == false) {
                 nodes.push(renderedParticipant);
             }
         }
@@ -795,7 +799,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .data(this.groups)
             .enter().append('rect')
             .classed('group', true)
-            .attr({ rx: 5, ry: 5 })
+            .attr({
+                rx: 5,
+                ry: 5
+            })
             .style('stroke', "blue")
             .style('fill', "none");
         //    .call(cola.drag);
@@ -803,23 +810,42 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .data(nodes)
             .enter().append('rect')
             .classed('node', true)
-            .attr({ rx: 5, ry: 5 })
+            .attr({
+                rx: 5,
+                ry: 5
+            })
             .style('stroke', "red")
             .style('fill', "none");
 
         this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
             groupDebug.attr({
-                x: function (d) { return d.bounds.x },
-                y: function (d) { return d.bounds.y },
-                width: function (d) { return d.bounds.width() },
-                height: function(d) { return d.bounds.height() }
+                x: function(d) {
+                    return d.bounds.x
+                },
+                y: function(d) {
+                    return d.bounds.y
+                },
+                width: function(d) {
+                    return d.bounds.width()
+                },
+                height: function(d) {
+                    return d.bounds.height()
+                }
             });
 
             participantDebug.attr({
-                x: function (d) { return d.bounds.x },
-                y: function (d) { return d.bounds.y },
-                width: function (d) { return d.bounds.width() },
-                height: function(d) { return d.bounds.height() }
+                x: function(d) {
+                    return d.bounds.x
+                },
+                y: function(d) {
+                    return d.bounds.y
+                },
+                width: function(d) {
+                    return d.bounds.width()
+                },
+                height: function(d) {
+                    return d.bounds.height()
+                }
             });
 
             var nodesArr = self.cola.nodes(); // these nodes are our RenderedProteins
@@ -998,7 +1024,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var participant = participantsArr[p];
             if (participant.meta && participant.meta.group) {
                 group = participant.meta.group;
-                if (groupMap.get(group)){
+                if (groupMap.get(group)) {
                     groupMap.get(group).add(participant.accession);
                 } else {
                     var groupParticipants = new d3.set();
@@ -1025,13 +1051,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             var pArr = participantSet.values();
             var pc = pArr.length;
-            for (var pi = 0; pi < pc; pi++){
+            for (var pi = 0; pi < pc; pi++) {
                 var pid = pArr[pi];
                 var renderedProtein = this.renderedProteins.get(pid);
                 renderedProtein.naryLinks.set(nLinkId, nLink);
                 renderedProtein.complex = complex;
                 //TODO: tidy up whats happening in NaryLink re interactor/participant terminology
-                if (nLink.interactors.indexOf(renderedProtein) === -1){
+                if (nLink.interactors.indexOf(renderedProtein) === -1) {
                     nLink.interactors.push(renderedProtein);
                 }
             }

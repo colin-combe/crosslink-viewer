@@ -334,7 +334,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
     var dy = (this.y - svgP.y);
 
     // new dist from centre
-    var nx = dx * scale  / oldScale;
+    var nx = dx * scale / oldScale;
     var ny = dy * scale / oldScale;
 
     //required change
@@ -952,8 +952,7 @@ CLMS.xiNET.RenderedProtein.prototype.getResidueCoordinates = function(r, yOff) {
             x += yOff * this.controller.z * Math.cos(rotRad + (Math.PI / 2));
             y += yOff * this.controller.z * Math.sin(rotRad + (Math.PI / 2));
         }
-    }
-    else {
+    } else {
         y = yOff;
     }
     x = x + this.x;
@@ -1311,7 +1310,7 @@ CLMS.xiNET.RenderedProtein.prototype.showLabel = function(show) {
     d3.select(this.labelSVG).attr("display", show ? null : "none");
 };
 
-CLMS.xiNET.RenderedProtein.prototype.getPosition = function(){
+CLMS.xiNET.RenderedProtein.prototype.getPosition = function() {
     return [this.x, this.y];
 }
 
