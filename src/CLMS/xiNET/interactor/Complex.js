@@ -8,7 +8,6 @@
 //
 //		authors: Colin Combe
 
-
 Complex.prototype = new Molecule();
 
 function Complex(id, xlvController) {

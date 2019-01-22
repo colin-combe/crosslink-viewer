@@ -142,6 +142,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     });
 };
 
+CLMS.xiNET.RenderedProtein.prototype = new Molecule();
 
 //when we get here all prot's should have had their sequence set, so protein.MAXSIZE has correct value;
 // - could remove this as part of tidying up overall initialisation?
