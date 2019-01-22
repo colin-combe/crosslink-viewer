@@ -141,14 +141,11 @@ Complex.prototype.getPosition = function() {
 Complex.prototype.getResidueCoordinates = function(x, y) {
     return this.getPosition()
 };
+
 Complex.prototype.showHighlight = function() {};
 
-
 Complex.prototype.setForm = function(form, svgP) {
-
     // this.controller.model.get("tooltipModel").set("contents", null);
-
-
 };
 
 Complex.prototype.inCollapsedComplex = function() {

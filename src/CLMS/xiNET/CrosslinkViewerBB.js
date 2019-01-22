@@ -806,47 +806,48 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .style('stroke', "blue")
             .style('fill', "none");
         //    .call(cola.drag);
-        var participantDebug = d3.select(this.svgElement).selectAll('.node')
-            .data(nodes)
-            .enter().append('rect')
-            .classed('node', true)
-            .attr({
-                rx: 5,
-                ry: 5
-            })
-            .style('stroke', "red")
-            .style('fill', "none");
+
+        // var participantDebug = d3.select(this.svgElement).selectAll('.node')
+        //     .data(nodes)
+        //     .enter().append('rect')
+        //     .classed('node', true)
+        //     .attr({
+        //         rx: 5,
+        //         ry: 5
+        //     })
+        //     .style('stroke', "red")
+        //     .style('fill', "none");
 
         this.cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
-            groupDebug.attr({
-                x: function(d) {
-                    return d.bounds.x
-                },
-                y: function(d) {
-                    return d.bounds.y
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            });
-
-            participantDebug.attr({
-                x: function(d) {
-                    return d.bounds.x
-                },
-                y: function(d) {
-                    return d.bounds.y
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            });
+            // groupDebug.attr({
+            //     x: function(d) {
+            //         return d.bounds.x
+            //     },
+            //     y: function(d) {
+            //         return d.bounds.y
+            //     },
+            //     width: function(d) {
+            //         return d.bounds.width()
+            //     },
+            //     height: function(d) {
+            //         return d.bounds.height()
+            //     }
+            // });
+            //
+            // participantDebug.attr({
+            //     x: function(d) {
+            //         return d.bounds.x
+            //     },
+            //     y: function(d) {
+            //         return d.bounds.y
+            //     },
+            //     width: function(d) {
+            //         return d.bounds.width()
+            //     },
+            //     height: function(d) {
+            //         return d.bounds.height()
+            //     }
+            // });
 
             var nodesArr = self.cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
