@@ -20,7 +20,7 @@ function NaryLink(id, xlvController) {
     this.id = id;
     this.evidences = d3.map();
     this.renderedParticipants = new Array();
-    this.leaves = this.participants; // temp (?) for cola
+    this.leaves = this.renderedParticipants; // temp (?) for cola
     this.sequenceLinks = d3.map();
     this.binaryLinks = d3.map();
     this.unaryLinks = d3.map();
@@ -60,7 +60,6 @@ NaryLink.prototype.showHighlight = function(show) {
     this.highlightMolecules(show);
 };
 
-
 NaryLink.prototype.check = function() {
     this.show();
     return true;
@@ -70,7 +69,7 @@ NaryLink.prototype.show = function() {
     this.path.setAttribute("stroke-width", this.controller.z * 1);
     this.setLinkCoordinates();
     this.controller.groupsSVG.appendChild(this.path);
-    d3.select(this.path).style("display", null);    
+    d3.select(this.path).style("display", null);
 };
 
 NaryLink.prototype.hide = function() {
