@@ -41,19 +41,19 @@ NaryLink.prototype.initSVG = function() {
     this.path.setAttribute('fill-opacity', 0.3);
 
     //set the events for it
-    // var self = this;
-    // this.path.onmousedown = function(evt) {
-    //     self.mouseDown(evt);
-    // };
-    // this.path.onmouseover = function(evt) {
-    //     self.mouseOver(evt);
-    // };
-    // this.path.onmouseout = function(evt) {
-    //     self.mouseOut(evt);
-    // };
-    // this.path.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
+    var self = this;
+    this.path.onmousedown = function(evt) {
+        self.mouseDown(evt);
+    };
+    this.path.onmouseover = function(evt) {
+        self.mouseOver(evt);
+    };
+    this.path.onmouseout = function(evt) {
+        self.mouseOut(evt);
+    };
+    this.path.ontouchstart = function(evt) {
+        self.touchStart(evt);
+    };
 };
 
 NaryLink.prototype.showHighlight = function(show) {

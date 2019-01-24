@@ -33,7 +33,7 @@ Link.prototype.addEvidence = function(interaction) {
 };
 
 Link.prototype.highlightMolecules = function(show) {
-    var interactors = this.interactors;
+    var interactors = this.renderedParticipants;
     for (var i = 0; i < interactors.length; i++) {
         interactors[i].showHighlight(show);
     }
@@ -50,8 +50,8 @@ Link.prototype.mouseDown = function(evt) {
     //this.controller.clearSelection();
     /* //this.setSelected(true); */
     //store start location
-    var p = this.controller.getEventPoint(evt); // seems to be correct, see above
-    // this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    //var p = this.controller.getEventPoint(evt); // seems to be correct, see above
+    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
     //~ this.showData();
     return false;
 }
@@ -60,7 +60,7 @@ Link.prototype.mouseDown = function(evt) {
 Link.prototype.mouseOver = function(evt) {
     //console.log("clickable mouse over");
     this.controller.preventDefaultsAndStopPropagation(evt);
-    //this.showHighlight(true, true);
+    this.showHighlight(true, true);
     //this.controller.setTooltip(this.getToolTip());
     return false;
 }

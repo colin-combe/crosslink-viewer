@@ -811,7 +811,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var self = this;
 
         // var groupDebug = d3.select(this.svgElement).selectAll('.group')
-        //     .data(this.groups)
+        //     .data(groupArray)
         //     .enter().append('rect')
         //     .classed('group', true)
         //     .attr({
@@ -820,10 +820,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //     })
         //     .style('stroke', "blue")
         //     .style('fill', "none");
-        //    .call(cola.drag);
-
+        //
         // var participantDebug = d3.select(this.svgElement).selectAll('.node')
-        //     .data(nodes)
+        //     .data(nodeArray)
         //     .enter().append('rect')
         //     .classed('node', true)
         //     .attr({
