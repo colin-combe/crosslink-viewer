@@ -352,19 +352,19 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
-    target = interactor.targetNode();
+CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(participant) {
+    target = participant.getRenderedParticipant();
 
     if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            if (this.renderedFromProtein === interactor) {
+            if (this.renderedFromProtein === participant) {
                 this.line.setAttribute("x1", target.x);
                 this.line.setAttribute("y1", target.y);
                 this.highlightLine.setAttribute("x1", target.x);
                 this.highlightLine.setAttribute("y1", target.y);
                 this.thickLine.setAttribute("x1", target.x);
                 this.thickLine.setAttribute("y1", target.y);
-            } else if (this.renderedToProtein === interactor) {
+            } else if (this.renderedToProtein === participant) {
                 this.line.setAttribute("x2", target.x);
                 this.line.setAttribute("y2", target.y);
                 this.highlightLine.setAttribute("x2", target.x);

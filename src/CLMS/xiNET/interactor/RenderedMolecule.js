@@ -21,78 +21,142 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 }
 
 Molecule.prototype.mouseDown = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-    //if a force layout exists then stop it
-    if (this.controller.force) {
-        this.controller.force.stop();
+    //     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //     //if a force layout exists then stop it
+    //     if (this.controller.force) {
+    //         this.controller.force.stop();
+    //     }
+    //
+    //     this.controller.dragElement = this;
+    //     //~ if (evt.controllerKey === false) {
+    //     this.controller.clearSelection();
+    //     this.setSelected(true);
+    //     //~ } else {
+    //     //~ this.setSelected(!this.isSelected);
+    //     //~ }
+    //     //store start location
+    //     var p = this.controller.getEventPoint(evt);
+    //     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    //     //~ this.showData();
+    //     return false;
+    // };
+    // CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //stop layout
+    if (this.crosslinkViewer.cola) {
+        this.crosslinkViewer.cola.stop();
     }
+    this.crosslinkViewer.dragElement = this;
+    this.crosslinkViewer.dragStart = evt;
 
-    this.controller.dragElement = this;
-    //~ if (evt.controllerKey === false) {
-    this.controller.clearSelection();
-    this.setSelected(true);
-    //~ } else {
-    //~ this.setSelected(!this.isSelected);
-    //~ }
-    //store start location
-    var p = this.controller.getEventPoint(evt);
-    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    //~ this.showData();
+    d3.select("#container-menu").style("display", "none");
+
     return false;
 };
 
 Molecule.prototype.touchStart = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-    //if a force layout exists then stop it
-    if (this.controller.force !== undefined) {
-        this.controller.force.stop();
+    //     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //     //if a force layout exists then stop it
+    //     if (this.controller.force !== undefined) {
+    //         this.controller.force.stop();
+    //     }
+    //     this.controller.dragElement = this;
+    //     //~ if (evt.controllerKey === false) {
+    //     this.controller.clearSelection();
+    //     this.setSelected(true);
+    //     //~ } else {
+    //     //~ this.setSelected(!this.isSelected);
+    //     //~ }
+    //     //store start location
+    //     var p = this.controller.getTouchEventPoint(evt);
+    //     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
+    //     //        this.showData();
+    //     return false;
+    // };
+    // CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //stop layout
+    if (this.crosslinkViewer.cola) {
+        this.crosslinkViewer.cola.stop();
     }
-    this.controller.dragElement = this;
-    //~ if (evt.controllerKey === false) {
-    this.controller.clearSelection();
-    this.setSelected(true);
-    //~ } else {
-    //~ this.setSelected(!this.isSelected);
-    //~ }
+    this.crosslinkViewer.dragElement = this;
     //store start location
-    var p = this.controller.getTouchEventPoint(evt);
-    this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    //        this.showData();
+    //var p = this.crosslinkViewer.getTouchEventPoint(evt); //oh dear - now broken
+    this.crosslinkViewer.dragStart = evt; //this.crosslinkViewer.mouseToSVG(p.x, p.y);
     return false;
 };
 
 Molecule.prototype.mouseOver = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt);
-    this.showHighlight(true);
-    //~ this.controller.setTooltip(this.id);
-    return false;
+    //     this.controller.preventDefaultsAndStopPropagation(evt);
+    //     this.showHighlight(true);
+    //     //~ this.controller.setTooltip(this.id);
+    //     return false;
+    // };
+    //
+    // CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
+    //     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    //     //this.showHighlight(true);	// mjg apr 18
+
+    // this.crosslinkViewer.model.setHighlightedProteins([this.participant]); // mjg apr 18
+    var p = this.crosslinkViewer.getEventPoint(evt);
+    this.crosslinkViewer.model.get("tooltipModel")
+        .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
+        .set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor(this.participant))
+        .set("location", {
+            pageX: p.x,
+            pageY: p.y
+        });
 };
 
 Molecule.prototype.mouseOut = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt);
-    this.showHighlight(false);
-    //        this.controller.hideTooltip();
-    return false;
+    //     this.controller.preventDefaultsAndStopPropagation(evt);
+    //     this.showHighlight(false);
+    //     //        this.controller.hideTooltip();
+    //     return false;
+    // };
+    // CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
+    //     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    //     //this.showHighlight(false);	// mjg apr 18
+    this.crosslinkViewer.model.setHighlightedProteins([]); // mjg apr 18
+    this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 };
 
 Molecule.prototype.getBlobRadius = function() {
     return 15;
 };
 
-
 Molecule.prototype.showHighlight = function(show) {
-    // default do nothing
-    /*
+    //     // default do nothing
+    //     /*
+    //     if (show === true) {
+    //         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+    //         this.highlight.setAttribute("stroke-opacity", "1");
+    //     } else {
+    //         //~ if (this.isSelected == false) {
+    //                 this.highlight.setAttribute("stroke-opacity", "0");
+    //         //~ }
+    //         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+    //     }
+    //     * */
+    // };
+    // CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
+    var d3HighSel = d3.select(this.highlight);
+    this.isHighlighted = show ? true : false; // mjg apr 18
     if (show === true) {
-        //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-        this.highlight.setAttribute("stroke-opacity", "1");
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+        d3HighSel
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true)
+            .attr("stroke-opacity", "1");
     } else {
-        //~ if (this.isSelected == false) {
-                this.highlight.setAttribute("stroke-opacity", "0");
-        //~ }
-        //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+        if (this.isSelected == false) {
+            d3HighSel.attr("stroke-opacity", "0");
+        }
+        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false);
     }
-    * */
 };
 
 Molecule.prototype.setSelected = function(select) {
@@ -117,16 +181,18 @@ Molecule.prototype.getPosition = function() {
 }
 
 // more accurately described as setting transform for top svg elements (sets scale also)
-Molecule.prototype.setPosition = function(x, y) {
-    this.x = x;
-    this.y = y;
-    if (this.form === 1) {
-        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
-            " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-    } else {
-        this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
-            " scale(" + (this.controller.z) + ") ");
-    }
+Molecule.prototype.setPosition = function(xPos, yPos) {
+    this.px = this.x;
+    this.py = this.y;
+    this.x = xPos;
+    this.y = yPos;
+    // if (this.form === 1) {
+    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
+        " scale(" + (this.crosslinkViewer.z) + ") "); // + "rotate(" + this.rotation + ")");
+    // } else {
+    //     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
+    //         " scale(" + (this.crosslinkViewer.z) + ") ");
+    // }
 };
 
 Molecule.prototype.getAggregateSelfLinkPath = function() {
@@ -167,25 +233,38 @@ Molecule.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 Molecule.prototype.setAllLinkCoordinates = function() {
-    var links = this.naryLinks.values();
-    var c = links.length;
+    var nLinks = this.naryLinks.values();
+    var c = nLinks.length;
     for (var l = 0; l < c; l++) {
-        links[l].setLinkCoordinates();
+        nLinks[l].setLinkCoordinates();
     }
-    links = this.binaryLinks.values();
-    c = links.length;
-    for (var l = 0; l < c; l++) {
-        var link = links[l];
-        link.setLinkCoordinates();
+
+    var pLinks = this.renderedP_PLinks;
+    var plCount = pLinks.length;
+    for (var pl = 0; pl < plCount; pl++) {
+        pLinks[pl].setLineCoordinates(this);
     }
-    if (this.selfLink) {
-        this.selfLink.setLinkCoordinates();
+
+    var renderedCrossLinks = this.renderedCrossLinks;
+    var rclCount = renderedCrossLinks.length;
+    for (var rcl = 0; rcl < rclCount; rcl++) {
+        renderedCrossLinks[rcl].setLineCoordinates(this);
     }
-    links = this.sequenceLinks.values();
-    c = links.length;
-    for (var l = 0; l < c; l++) {
-        links[l].setLinkCoordinates();
-    }
+
+    // links = this.binaryLinks.values();
+    // c = links.length;
+    // for (var l = 0; l < c; l++) {
+    //     var link = links[l];
+    //     link.setLinkCoordinates();
+    // }
+    // /*if (this.selfLink) {
+    //     this.selfLink.setLinkCoordinates();
+    // }*/
+    // links = this.sequenceLinks.values();
+    // c = links.length;
+    // for (var l = 0; l < c; l++) {
+    //     links[l].setLinkCoordinates();
+    // }
 };
 
 //todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
@@ -255,3 +334,11 @@ Molecule.prototype.showData = function(evt) {
 }
 
 Molecule.prototype.setForm = function(form, svgP) {};
+
+Molecule.prototype.getRenderedParticipant = function() {
+    if (this.complex && this.complex.form == 0) {
+        return this.complex.getRenderedParticipant();
+    } else {
+        return this;
+    }
+}

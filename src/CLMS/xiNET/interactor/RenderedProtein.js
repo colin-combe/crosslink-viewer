@@ -153,6 +153,7 @@ CLMS.xiNET.RenderedProtein.prototype.init = function() {
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
 }
 
+/*
 CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     //stop layout
@@ -179,28 +180,21 @@ CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
     this.crosslinkViewer.dragStart = evt; //this.crosslinkViewer.mouseToSVG(p.x, p.y);
     return false;
 };
+*/
 
 CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
-    //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    //this.showHighlight(true);	// mjg apr 18
-
     this.crosslinkViewer.model.setHighlightedProteins([this.participant]); // mjg apr 18
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.model.get("tooltipModel")
-        .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
-        .set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor(this.participant))
-        .set("location", {
-            pageX: p.x,
-            pageY: p.y
-        });
+    Molecule.prototype.mouseOver.call(this, evt);
 };
 
+/*
 CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //this.showHighlight(false);	// mjg apr 18
     this.crosslinkViewer.model.setHighlightedProteins([]); // mjg apr 18
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 };
+*/
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
     var br = Math.sqrt(this.participant.size / Math.PI) * 0.7;
@@ -221,25 +215,25 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
     };
 };
 
-CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
-    var d3HighSel = d3.select(this.highlight);
-    this.isHighlighted = show ? true : false; // mjg apr 18
-    if (show === true) {
-        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-        d3HighSel
-            .classed("selectedProtein", false)
-            .classed("highlightedProtein", true)
-            .attr("stroke-opacity", "1");
-    } else {
-        if (this.isSelected == false) {
-            d3HighSel.attr("stroke-opacity", "0");
-        }
-        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-        d3HighSel
-            .classed("selectedProtein", true)
-            .classed("highlightedProtein", false);
-    }
-};
+// CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
+//     var d3HighSel = d3.select(this.highlight);
+//     this.isHighlighted = show ? true : false; // mjg apr 18
+//     if (show === true) {
+//         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+//         d3HighSel
+//             .classed("selectedProtein", false)
+//             .classed("highlightedProtein", true)
+//             .attr("stroke-opacity", "1");
+//     } else {
+//         if (this.isSelected == false) {
+//             d3HighSel.attr("stroke-opacity", "0");
+//         }
+//         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+//         d3HighSel
+//             .classed("selectedProtein", true)
+//             .classed("highlightedProtein", false);
+//     }
+// };
 
 CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
     if (select) {
@@ -532,23 +526,6 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     }
 };
 
-
-CLMS.xiNET.RenderedProtein.prototype.inCollapsedComplex = function() {
-    if (this.complex && this.complex.form == 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-CLMS.xiNET.RenderedProtein.prototype.targetNode = function() {
-    if (this.complex && this.complex.form == 0) {
-        return this.complex;
-    } else {
-        return this;
-    }
-}
-
 CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //~ if (!this.participant.hidden){
     this.busy = true;
@@ -840,7 +817,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     d3.select(this.ticks).transition().attr("opacity", 1)
         .delay(CLMS.xiNET.RenderedProtein.transitionTime * 0.8).duration(CLMS.xiNET.RenderedProtein.transitionTime / 2);
 };
-
+/*
 CLMS.xiNET.RenderedProtein.prototype.getAggregateSelfLinkPath = function() {
     var intraR = this.getBlobRadius() + 7;
     var sectorSize = 45;
@@ -853,7 +830,7 @@ CLMS.xiNET.RenderedProtein.prototype.getAggregateSelfLinkPath = function() {
         ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y +
         ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
-
+*/
 CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLink) {
     var x1 = this.getResXwithStickZoom(renderedCrossLink.crossLink.fromResidue);
     var baseLine = 0;
@@ -996,6 +973,7 @@ CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
 }
 
 // update all lines (e.g after a move)
+/*
 CLMS.xiNET.RenderedProtein.prototype.setAllLinkCoordinates = function() {
 
     var links = this.naryLinks.values();
@@ -1017,7 +995,7 @@ CLMS.xiNET.RenderedProtein.prototype.setAllLinkCoordinates = function() {
     }
 
 };
-
+*/
 CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
     var pLinks = this.renderedP_PLinks;
     var plCount = pLinks.length;
