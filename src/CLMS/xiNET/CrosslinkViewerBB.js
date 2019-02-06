@@ -818,7 +818,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setAllLineCoordinates();
             }
             var groupsArr = self.cola.groups();
-            console.log("groups", groupsArr);
         });
         this.cola.start(10, 15, 20);
     },
