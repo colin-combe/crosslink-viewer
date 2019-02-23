@@ -203,6 +203,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
+        this.listenTo(CLMSUI.vent, "goAnnotationsUpdated", this.goAnnotationsUpdated);
 
         this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
             self.clickModeIsSelect = true;
@@ -803,10 +804,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var groupArray = Array.from(groupSet);
 
         this.cola = cola.d3adaptor().nodes(nodeArray)
-                                    .groups(groupArray)
-                                    .avoidOverlaps(true)
-                                    .size([width, height])
-                                    .links(linkArray);
+            .groups(groupArray)
+            .avoidOverlaps(true)
+            .size([width, height])
+            .links(linkArray);
 
         var self = this;
 
@@ -867,7 +868,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
-                var offsetX = node.x;// + node.width / 2;
+                var offsetX = node.x; // + node.width / 2;
                 var offsetY = node.y; //- node.upperGroup.getBBox().y;
                 node.setPosition(offsetX, offsetY);
                 node.setAllLinkCoordinates();
@@ -1055,9 +1056,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var gCount = groupMap.size();
         for (var g = 0; g < gCount; g++) {
             var group = {
-                "name":groupsArr[g].key,
-                "id":groupsArr[g].value.values().sort().join('-'),
-                "participants":groupsArr[g].value
+                "name": groupsArr[g].key,
+                "id": groupsArr[g].value.values().sort().join('-'),
+                "participants": groupsArr[g].value
             }
             // var groupName = ;
             // var participantSet = ;
@@ -1093,6 +1094,78 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
 
+        return this;
+    },
+
+    goAnnotationsUpdated: function(go) {
+        //console.log([...go.groups.entries()].sort((a, b) => b[1].size - a[1].size));
+
+        // update groups
+        //this.groups = [];
+        // var groupMap = new d3.map();
+        // var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
+        // var pCount = participantsArr.length;
+        // for (var p = 0; p < pCount; p++) {
+        //     var participant = participantsArr[p];
+        //     if (participant.meta && participant.meta.group) {
+        //         group = participant.meta.group;
+        //         if (groupMap.get(group)) {
+        //             groupMap.get(group).add(participant.accession);
+        //         } else {
+        //             var groupParticipants = new d3.set();
+        //             groupParticipants.add(participant.accession);
+        //             groupMap.set(group, groupParticipants)
+        //         }
+        //     }
+        // }
+
+        this.groups = [];
+        // init n-ary link
+
+
+
+        var groupsArr = groupMap.entries();
+        var gCount = groupMap.size();
+        for (var g = 0; g < gCount; g++) {
+            var group = {
+                "name": groupsArr[g].key,
+                "id": groupsArr[g].value.values().sort().join('-'),
+                "participants": groupsArr[g].value
+            }
+            // var groupName = ;
+            // var participantSet = ;
+            // var nLinkId = participantSet.
+            // //doesn't already exist, make new nLink
+            nLink = new NaryLink(group.id, this);
+            this.groups.push(nLink);
+
+            var complex = new Complex(group, this);
+
+            var pArr = group.participants.values();
+            var pc = pArr.length;
+            for (var pi = 0; pi < pc; pi++) {
+                var pid = pArr[pi];
+                var renderedProtein = this.renderedProteins.get(pid);
+                renderedProtein.naryLinks.set(group.id, nLink);
+                renderedProtein.complex = complex;
+                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
+                    nLink.renderedParticipants.push(renderedProtein);
+                }
+            }
+
+            complex.initMolecule(nLink);
+
+            //Link.show();
+
+            //complex.show();
+            // complex.setPosition(complex.getPosition());
+            this.renderedProteins.set(group.id, complex);
+            //self.allNaryLinks.set(nLinkId, nLink);
+            //alot of time is being spent on creating these IDs, stash them in the interaction object?
+            //interaction.naryId =  nLinkId;
+        }
+
+*/
         return this;
     },
 
