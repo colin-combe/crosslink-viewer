@@ -1119,17 +1119,38 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //     }
         // }
 
-        this.groups = [];
+        // this.groups = [];
         // init n-ary link
 
+        var tempGroups = new d3.map();
+        var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
+        var pCount = participantsArr.length;
+        for (var p = 0; p < pCount; p++) {
+            var participant = participantsArr[p];
+            if (participant.go) {
+                participant.go.sort((a, b) => go.groups.get(b).length - go.groups.get(a).length);
+                // if (participant.go[1]) {
+                    var term = participant.go[0]
+                    participant.complex
+                    if (tempGroups.has(term)){
+                        tempGroups.get(term).push(participant.accession);
+                    }else {
+                        tempGroups.set(term, [participant.accession]);
+                    }
+                // }
+            } else {
+                //console.log("no go mol.func.:"+participant.accession);
+            }
+        }
 
 
-        var groupsArr = groupMap.entries();
-        var gCount = groupMap.size();
+        var groupsArr = tempGroups.entries();
+        var gCount = tempGroups.size();
         for (var g = 0; g < gCount; g++) {
             var group = {
                 "name": groupsArr[g].key,
-                "id": groupsArr[g].value.values().sort().join('-'),
+                // "name": this.model.get("go").get(groupsArr[g].key).name,
+                "id": groupsArr[g].value.sort().join('-'),
                 "participants": groupsArr[g].value
             }
             // var groupName = ;
@@ -1141,7 +1162,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             var complex = new Complex(group, this);
 
-            var pArr = group.participants.values();
+            var pArr = group.participants;
             var pc = pArr.length;
             for (var pi = 0; pi < pc; pi++) {
                 var pid = pArr[pi];
@@ -1165,7 +1186,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //interaction.naryId =  nLinkId;
         }
 
-*/
+
         return this;
     },
 
