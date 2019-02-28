@@ -1009,64 +1009,48 @@ CLMS.xiNET.RenderedProtein.prototype.clearPositionalFeatures = function(posFeats
     this.annotations = new Map();
     if (this.circDomains) d3.select(this.circDomains).selectAll("*").remove();
     if (this.rectDomains) d3.select(this.rectDomains).selectAll("*").remove();
-}
+};
 
 CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     this.clearPositionalFeatures();
     var annotationTypes = this.crosslinkViewer.model.get("annotationTypes");
     //create new annotations
-    var featuresShown = [];
 
+    /*
     //add the aligned regions, if they're selected
-    var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
-        id: "Alignment-PDB aligned region"
-    })
-    var alignmentAnnotationType = filtered[0];
+    var alignmentAnnotationType = annotationTypes.get(annotationTypes.modelId({category:"Alignment", type:"PDB aligned region"}));
     if (alignmentAnnotationType.get("shown") === true) {
         var features = this.crosslinkViewer.model.get("alignColl").getAlignmentsAsFeatures(this.participant.id);
         featuresShown = featuresShown.concat(features);
     }
 
     //add the digestible residues, if they're selected
-    var filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
-        id: "AA-Digestible"
-    })
-    var alignmentAnnotationType = filtered[0];
+    alignmentAnnotationType = annotationTypes.get(annotationTypes.modelId({category:"AA", type:"digestible"}));
     if (alignmentAnnotationType.get("shown") === true) {
         var features = this.crosslinkViewer.model.get("clmsModel").getDigestibleResiduesAsFeatures(this.participant);
         featuresShown = featuresShown.concat(features);
     }
 
     //add the crosslinkable residues, if they're selected
-    filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
-        id: "AA-Cross-linkable-1"
-    })
-    alignmentAnnotationType = filtered[0];
+    alignmentAnnotationType = annotationTypes.get(annotationTypes.modelId({category:"AA", type:"Cross-linkable-1"}));
     if (alignmentAnnotationType.get("shown") === true) {
         var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant, 1);
         featuresShown = featuresShown.concat(features);
     }
-    filtered = this.crosslinkViewer.model.get("annotationTypes").filter({
-        id: "AA-Cross-linkable-2"
-    })
-    alignmentAnnotationType = filtered[0];
+
+    alignmentAnnotationType = annotationTypes.get(annotationTypes.modelId({category:"AA", type:"Cross-linkable-2"}));
     if (alignmentAnnotationType.get("shown") === true) {
         var features = this.crosslinkViewer.model.get("clmsModel").getCrosslinkableResiduesAsFeatures(this.participant, 2);
         featuresShown = featuresShown.concat(features);
     }
 
-    var disulfidBonds = [];
     //add uniprot features
     if (this.participant.uniprot) {
         var features = this.participant.uniprot.features;
         var fCount = features.length;
         for (var f = 0; f < fCount; f++) {
             var feature = features[f];
-            var annotationTypeId = feature.category + "-" + feature.type
-            var filtered = annotationTypes.filter({
-                id: annotationTypeId
-            })
-            var annotationType = filtered[0];
+            var annotationType = annotationTypes.get(annotationTypes.modelId(feature));
             if (annotationType.get("shown") === true) {
                 if (annotationType != "DISULFID") {
                     featuresShown.push(feature);
@@ -1076,6 +1060,13 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             }
         }
     }
+    */
+    
+    // does all of the commented out above, and picks up user-defined annotations
+    var featuresShown = this.crosslinkViewer.model.getFilteredFeatures (this.participant);
+    var split = _.partition (featuresShown, function (f) { return f.type == "disulfide bond"; });
+    var disulfidBonds = split[0];
+    featuresShown = split[1];
 
     if (featuresShown || disulfidBonds) {
         //draw longest regions first
@@ -1098,10 +1089,16 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             var convEnd = anno.end;
             var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
             var withinAlignedRange = true;
-            if (anno.category != "AA" // this handles not aligning certain features, todo; check for tidier way
-                &&
-                alignModel) {
-                var alignmentID = anno.alignmentID || "Canonical";
+            
+            // mjg next 5 lines
+            var annotationTypeModel = annotationTypes.get (annotationTypes.modelId (anno));
+            var annotationTypeModelAlignmentID = annotationTypeModel ? annotationTypeModel.get("typeAlignmentID") : undefined; 
+            var alignmentID = anno.alignmentID || annotationTypeModelAlignmentID; // individual feature alignment ids trump feature type alignment ids (needed for multiple pdb chain alignments)
+            // it will be undefined for annotations/annotaion types aligned to search sequence so skips the next bit
+            
+            if (//anno.category != "AA" // this handles not aligning certain features, todo; check for tidier way
+                alignmentID && alignModel) {
+                //var alignmentID = anno.alignmentID || "Canonical";
                 var conv = alignModel.rangeToSearch(alignmentID, anno.begin, anno.end);
                 if (conv) {
                     convStart = conv[0];
@@ -1111,8 +1108,8 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                 }
             }
             //TODO: tooltip requring these to be written into feature object, seems wrong?
-            anno.fstart = convStart;
-            anno.fend = convEnd;
+            anno.fstart = +convStart;   // + to convert to number
+            anno.fend = +convEnd;
 
             var fid = anno.category + "-" + anno.type + "-" + anno.alignmentID + "[" + convStart + " - " + convEnd + "]";
 
@@ -1121,6 +1118,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                 var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
 
                 if (anno.type != "DISULFID") {
+                //if (anno.type != "disulfide bond") {
                     if (this.form === 0) {
                         pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
                         colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
@@ -1133,8 +1131,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     colouredRect.setAttribute("stroke-width", 1);
                     colouredRect.setAttribute("fill-opacity", "0.5");
 
-                    //var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
-                    var c = CLMSUI.domainColours(anno.category, anno.type);
+                    var c = annotationTypes.getColour (anno.category, anno.type);   // CLMSUI.domainColours(anno.category, anno.type);
                     pieSlice.setAttribute("fill", c);
                     pieSlice.setAttribute("stroke", c);
                     colouredRect.setAttribute("fill", c);
@@ -1151,8 +1148,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     pieSlice.setAttribute("stroke-width", 1);
                     colouredRect.setAttribute("stroke-width", 1);
 
-                    //var c = CLMSUI.domainColours((anno.category + "-" + anno.type).toUpperCase());
-                    var c = CLMSUI.domainColours(anno.category, anno.type);
+                    var c = annotationTypes.getColour (anno.category, anno.type);   // CLMSUI.domainColours(anno.category, anno.type);
                     pieSlice.setAttribute("fill", "none");
                     pieSlice.setAttribute("stroke", c);
                     colouredRect.setAttribute("fill", "none");
