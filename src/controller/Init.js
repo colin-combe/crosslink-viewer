@@ -383,7 +383,7 @@ xiNET.Controller.prototype.exportSVG = function() {
 
     var oldToNewTypes = {
         "application/svg": "image/svg+xml;charset=utf-8",
-        "plain/text": "plain/text;charset=utf-8",
+        "plain/text": "plain/text;charset=utf-8"
     };
     var newContentType = oldToNewTypes[contentType] || contentType;
 
