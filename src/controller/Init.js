@@ -80,9 +80,9 @@ xiNET.Controller = function(targetDiv) {
 	//key press
 	document.onkeypress = function (evt) {
 		if (evt.key == "a") {
-			
+
 			var out = "ProteinId,AnnotName,StartRes,EndRes,Color\n";
-			
+
 			var proteins = self.proteins.values();
 			var proteinCount = proteins.length;
 			for (var p = 0; p < proteinCount; p++) {
@@ -91,17 +91,17 @@ xiNET.Controller = function(targetDiv) {
 				var annotCount = annots.length;
 				for (var a = 0; a < annotCount; a++) {
 					var annot = annots[a];
-					out += prot.id + "," 
+					out += prot.id + ","
 						+ annot.name + ","
-						+ annot.start + ","  
-						+ annot.end + ","  
-						+ annot.colour.toHex() + "\n"  
+						+ annot.start + ","
+						+ annot.end + ","
+						+ annot.colour.toHex() + "\n"
 				}
 			}
-			
+
 			var asURL = 'data:application/txt;filename=annotations.csv,' + encodeURIComponent(out);
 			window.open(asURL, 'annotations.csv');
-			
+
 		}
 	}
 
@@ -364,19 +364,94 @@ xiNET.Controller.prototype.resetZoom = function() {
 xiNET.Controller.prototype.exportSVG = function() {
     var svgXml = this.svgElement.parentNode.innerHTML.replace(/<rect .*?\/rect>/i, "");//take out white background fill
     svgXml = svgXml.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" ')
-    if (Blob) {
-        var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
-        saveAs(blob, "xiNET_output.svg");
-    } else {
-        var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-        + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
-        + svgXml;
-        var xmlAsUrl;
-        //xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
-        xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
-        xmlAsUrl += encodeURIComponent(xml);
-        var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+    // if (Blob) {
+    //     var blob = new Blob([svgXml], {type: "data:image/svg;charset=utf-8"});
+    //     saveAs(blob, "xiNET_output.svg");
+    // } else {
+    //     var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+    //     + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">"
+    //     + svgXml;
+    //     var xmlAsUrl;
+    //     //xmlAsUrl = 'data:xml;filename=xiNET_output.xml,'
+    //     xmlAsUrl = 'data:image/svg;filename=xiNET-output.svg,';
+    //     xmlAsUrl += encodeURIComponent(xml);
+    //     var win = window.open(xmlAsUrl, 'xiNET-output.svg');
+    // }
+    var content = svgXml;
+    var fileName = document.getElementsByTagName("title")[0].innerHTML;
+    var contentType = "application/svg";
+
+    var oldToNewTypes = {
+        "application/svg": "image/svg+xml;charset=utf-8",
+        "plain/text": "plain/text;charset=utf-8",
+    };
+    var newContentType = oldToNewTypes[contentType] || contentType;
+
+    function dataURItoBlob(binary) {
+        var array = [];
+        var te;
+
+        try {
+            te = new TextEncoder("utf-8");
+        } catch (e) {
+            te = undefined;
+        }
+
+        if (te) {
+            array = te.encode (binary); // html5 encoding api way
+        } else {
+            // https://stackoverflow.com/a/18729931/368214
+            // fixes unicode bug
+             for (var i=0; i < binary.length; i++) {
+                var charcode = binary.charCodeAt(i);
+                if (charcode < 0x80) array.push(charcode);
+                else if (charcode < 0x800) {
+                    array.push(0xc0 | (charcode >> 6),
+                              0x80 | (charcode & 0x3f));
+                }
+                else if (charcode < 0xd800 || charcode >= 0xe000) {
+                    array.push(0xe0 | (charcode >> 12),
+                              0x80 | ((charcode>>6) & 0x3f),
+                              0x80 | (charcode & 0x3f));
+                }
+                // surrogate pair
+                else {
+                    i++;
+                    // UTF-16 encodes 0x10000-0x10FFFF by
+                    // subtracting 0x10000 and splitting the
+                    // 20 bits of 0x0-0xFFFFF into two halves
+                    charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+                              | (binary.charCodeAt(i) & 0x3ff));
+                    array.push(0xf0 | (charcode >>18),
+                              0x80 | ((charcode>>12) & 0x3f),
+                              0x80 | ((charcode>>6) & 0x3f),
+                              0x80 | (charcode & 0x3f));
+                }
+            }
+        }
+
+        return new Blob([new Uint8Array(array)], {
+            type: newContentType
+        });
     }
+
+    var blob = dataURItoBlob(content);
+
+    if (navigator.msSaveOrOpenBlob) {
+        navigator.msSaveOrOpenBlob(blob, fileName);
+    } else {
+        var a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        // Give filename you wish to download
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(a.href);   // clear up url reference to blob so it can be g.c.'ed
+    }
+
+    blob = null;
 };
 
 xiNET.Controller.prototype.message = function(text, preformatted) {

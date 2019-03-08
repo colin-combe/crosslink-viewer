@@ -8,23 +8,23 @@
 			//your connection string here
 			// $connectionString = "host= dbname= user= password=";
 			include('../../uploadsConnectionString.php');
-			$dbconn = mysql_connect($server,$user,$password) or die('Could not connect: ' . mysql_error()); 
+			$dbconn = mysql_connect($server,$user,$password) or die('Could not connect: ' . mysql_error());
 			mysql_select_db($db, $dbconn) or die("Could not select database.");
 			$uid = $_GET["uid"];
 			$query = "SELECT links, filename, layout, fasta, annot FROM upload WHERE rand = '" . $uid . "';";
 			// echo $query;
 			$result = mysql_query($query) or die('Query failed: ' . mysql_error());
-			$line = mysql_fetch_array($result);			
+			$line = mysql_fetch_array($result);
 			$clmsCsv = $line['links'];
 			$filename = $line['filename'];
 			$layout = $line['layout'];
 			$fasta = $line['fasta'];
 			$annot = $line['annot'];
-			echo ('<title> xiNET | ' . $filename . '</title>');
+			echo ('<title>' . $filename . '</title>');
         ?>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="xiNET is a visualisation tool for cross-linking and mass spectrometry data." />
-		<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />	
+		<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -38,7 +38,7 @@
         <script type="text/javascript" src="../vendor/d3.js"></script>
         <script type="text/javascript" src="../vendor/colorbrewer.js"></script>
        	<script type="text/javascript" src="../vendor/FileSaver.js"></script>
-        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>   
+        <script type="text/javascript" src="../vendor/rgbcolor.js"></script>
         <!--xiNET-->
 		<script type="text/javascript" src="../build/crosslinkviewer.js"></script>
         <!--
@@ -62,7 +62,7 @@
     </head>
     <body>
 
-	<!-- Slidey panels -->	
+	<!-- Slidey panels -->
 	<div class="overlay-box" id="infoPanel">
 	<div id="networkCaption">
 		<p>No selection.</p>
@@ -111,12 +111,12 @@
 			<td>'Flip' self-links</td>
 			<td>Right-click on self-link</td>
 		</tr>
-	</table> 
-</div>	
+	</table>
+</div>
 
 <div class="overlay-box" id="legendPanel">
 	<div><img src="../demo/images/fig3_1.svg"></div>
-</div>	
+</div>
 
 
 		<script type="text/javascript">
@@ -132,7 +132,7 @@
 						showHelpPanel();
 					}
 				}
-				
+
 				function toggleInfoPanel() {
 					if (infoShown){
 						hideInfoPanel();
@@ -149,7 +149,7 @@
 						showLegendPanel();
 					}
 				}
-				
+
 				function showHelpPanel() {
 						helpShown = true;
 						d3.select("#helpPanel").transition().style("height", "500px").style("top", "100px").duration(700);
@@ -182,7 +182,7 @@
 		</script>
 		<!-- Main -->
 		<div id="main">
-			<div class="container">   	 				
+			<div class="container">
 				<h1 class="page-header">
 					<button class="btn btn-1 btn-1a network-control resetzoom" onclick="saveLayout();">
 							Save layout
@@ -191,7 +191,7 @@
 							Reset
 					</button>
 					<button class="btn btn-1 btn-1a network-control" onclick="xlv.exportSVG();">Export SVG</button>
-							
+
 					<div style='float:right'>
 						<label class="btn">
 								Legend
@@ -207,29 +207,29 @@
 						</label>
 					</div>
 				</h1>
-   	 		</div>				   	
-			
+   	 		</div>
+
 			<div id="networkContainer"></div>
-			
-			<div class="controlsexamplespage">						
+
+			<div class="controlsexamplespage">
 						<label>Self-Links
-								<input checked="checked" 
-									   id="selfLinks" 			
-									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)" 
+								<input checked="checked"
+									   id="selfLinks"
+									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)"
 									   type="checkbox"
 								/>
 						</label>
 						<label>&nbsp;&nbsp;Ambig.
-								<input checked="checked" 
-									   id="ambig" 			
-									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)" 
+								<input checked="checked"
+									   id="ambig"
+									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)"
 									   type="checkbox"
 								/>
 						</label>
 						<label>&nbsp;&nbsp;Decoys
-								<input checked="checked" 
-									   id="decoy" 			
-									   onclick="hideDecoys(!document.getElementById('decoy').checked)" 
+								<input checked="checked"
+									   id="decoy"
+									   onclick="hideDecoys(!document.getElementById('decoy').checked)"
 									   type="checkbox"
 								/>
 						</label>
@@ -238,44 +238,44 @@
 							<input id="slide" type="range" min="0" max="100" step="1" value="0" oninput="sliderChanged()"/>
 							&nbsp;<p class="scoreLabel" id="scoreLabel2"></p>
 							<p id="cutoffLabel">(cut-off)</p>
-							
+
 						</div> <!-- outlined scoreSlider -->
 						<div style='float:right'>
 							<label>Annot.
 							<select id="annotationsSelect" onChange="changeAnnotations();">
-								<option selected='selected'>Custom</option> 
-								<option>UniprotKB</option> 
-								<option>SuperFamily</option>  
-								<option>Lysines</option>  
-								<option>None</option>  
+								<option selected='selected'>Custom</option>
+								<option>UniprotKB</option>
+								<option>SuperFamily</option>
+								<option>Lysines</option>
+								<option>None</option>
 							</select>
-							</label>	
+							</label>
 						</div>
-			
+
 					</div>
-					<script type="text/javascript">	
+					<script type="text/javascript">
 							//<![CDATA[
-							
+
 							var sliderDecimalPlaces = 1;
 							function getMinScore(){
 								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
+									var powerOfTen = Math.pow(10, sliderDecimalPlaces);
 									return (Math.floor(xlv.scores.min * powerOfTen) / powerOfTen)
 											.toFixed(sliderDecimalPlaces);
 								}
 							}
 							function getMaxScore(){
 								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
+									var powerOfTen = Math.pow(10, sliderDecimalPlaces);
 									return (Math.ceil(xlv.scores.max * powerOfTen) / powerOfTen)
 											.toFixed(sliderDecimalPlaces);
 								}
 							}
 							function sliderChanged(){
 								var slide = document.getElementById('slide');
-								var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
-								
-								var cut = ((slide.value / 100) 
+								var powerOfTen = Math.pow(10, sliderDecimalPlaces);
+
+								var cut = ((slide.value / 100)
 											* (getMaxScore() - getMinScore()))
 											+ (getMinScore() / 1);
 								cut = cut.toFixed(sliderDecimalPlaces);
@@ -283,10 +283,10 @@
 								cutoffLabel.innerHTML = '(' + cut + ')';
 								xlv.setCutOff(cut);
 							}
-							
+
 							//]]>
 					</script>
-						
+
 		</div> <!-- MAIN -->
 
 		<script>
@@ -327,7 +327,7 @@
 			changeAnnotations();
 			xlv.showSelfLinks(document.getElementById('selfLinks').checked);
 			xlv.showAmbig(document.getElementById('ambig').checked);
-	
+
 				function saveLayout () {
 					var layout = xlv.getLayout();
 		//            xlv.message(xlv.id + ", layout sent:" + layout, true);
@@ -344,7 +344,7 @@
 					}
 					xmlhttp.send(params);
 				}
-            	 
+
 				 function changeAnnotations(){
 					var annotationSelect = document.getElementById('annotationsSelect');
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);

@@ -4,7 +4,7 @@
 			<title>xiNET | Examples</title>
 			<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 			<meta name="description" content="xiNET is a visualisation tool for cross-linking and mass spectrometry data." />
-			<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />	
+			<meta name="keywords" content="xiNET, biologists, mass-spectrometrists, cross-linking, protein, complexes, 3d, models, rappsilber, software" />
 			<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 			<meta name="apple-mobile-web-app-capable" content="yes">
 			<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -21,7 +21,7 @@
         <script type="text/javascript" src="./vendor/d3.js"></script>
         <script type="text/javascript" src="./vendor/colorbrewer.js"></script>
        	<script type="text/javascript" src="./vendor/FileSaver.js"></script>
-        <script type="text/javascript" src="./vendor/rgbcolor.js"></script>   
+        <script type="text/javascript" src="./vendor/rgbcolor.js"></script>
         <!--xiNET-->
         <script type="text/javascript" src="./src/controller/Init.js"></script>
         <script type="text/javascript" src="./src/controller/MouseEvents.js"></script>
@@ -39,10 +39,10 @@
         <script type="text/javascript" src="./src/controller/xiNET_Storage.js"></script>
         <script type="text/javascript" src="./src/controller/ReadCSV.js"></script>
         <script type="text/javascript" src="./src/controller/Fasta.js"></script>
-	</head>	
+	</head>
 	<body>
 
-	<!-- Slidey panels -->	
+	<!-- Slidey panels -->
 	<div class="overlay-box" id="infoPanel">
 	<div id="networkCaption">
 		<p>No selection.</p>
@@ -91,12 +91,12 @@
 			<td>'Flip' self-links</td>
 			<td>Right-click on self-link</td>
 		</tr>
-	</table> 
-</div>	
+	</table>
+</div>
 
 <div class="overlay-box" id="legendPanel">
 	<div><img src="./demo/images/fig3_1.svg"></div>
-</div>	
+</div>
 
 <script type="text/javascript">
 				//<![CDATA[
@@ -111,7 +111,7 @@
 						showHelpPanel();
 					}
 				}
-				
+
 				function toggleInfoPanel() {
 					if (infoShown){
 						hideInfoPanel();
@@ -128,7 +128,7 @@
 						showLegendPanel();
 					}
 				}
-				
+
 				function showHelpPanel() {
 						helpShown = true;
 						d3.select("#helpPanel").transition().style("height", "500px").style("top", "100px").duration(700);
@@ -161,7 +161,7 @@
 </script>
 		<!-- Main -->
 		<div id="main">
-			<div class="container">   	 				
+			<div class="container">
 				<h1 class="page-header">Example:&nbsp;
 					<select class="btn btn-1 btn-1a" id="dataSets"  onchange="loadData();" >
 <!--
@@ -175,9 +175,7 @@
 						<button class="btn btn-1 btn-1a network-control resetzoom" onclick="xlv.reset();">
 							Reset
 						</button>
-						<!--
 						<button class="btn btn-1 btn-1a network-control" onclick="xlv.exportSVG('networkSVG');">Export SVG</button>
-						-->
 						<label class="btn">
 								Legend
 								<input id="selection" onclick="toggleLegendPanel()" type="checkbox">
@@ -192,21 +190,21 @@
 						</label>
 					</div>
 				</h1>
-   	 		</div>				   	
-			<div class="long-citation" id="citation"></div> 				
+   	 		</div>
+			<div class="long-citation" id="citation"></div>
 			<div id="networkContainer"></div>
-								<div class="controlsexamplespage">						
+								<div class="controlsexamplespage">
 						<label>Self-Links
-								<input checked="checked" 
-									   id="selfLinks" 			
-									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)" 
+								<input checked="checked"
+									   id="selfLinks"
+									   onclick="xlv.showSelfLinks(document.getElementById('selfLinks').checked)"
 									   type="checkbox"
 								/>
 						</label>
 						<label>&nbsp;Ambig.
-								<input checked="checked" 
-									   id="ambig" 			
-									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)" 
+								<input checked="checked"
+									   id="ambig"
+									   onclick="xlv.showAmbig(document.getElementById('ambig').checked)"
 									   type="checkbox"
 								/>
 						</label>
@@ -215,43 +213,43 @@
 							<input id="slide" type="range" min="0" max="100" step="1" value="0" oninput="sliderChanged()"/>
 							&nbsp;<p class="scoreLabel" id="scoreLabel2"></p>
 							<p id="cutoffLabel">(cut-off)</p>
-							
+
 						</div> <!-- outlined scoreSlider -->
 						<div style='float:right'>
 							<label>Annot.
 							<select id="annotationsSelect" onChange="changeAnnotations();">
-								<option selected='selected'>Custom</option> 
-								<option>UniprotKB</option> 
-								<option>SuperFamily</option>  
-								<option>None</option>  
+								<option selected='selected'>Custom</option>
+								<option>UniprotKB</option>
+								<option>SuperFamily</option>
+								<option>None</option>
 							</select>
-							</label>	
+							</label>
 						</div>
-			
+
 					</div>
-					<script type="text/javascript">	
+					<script type="text/javascript">
 							//<![CDATA[
-							
+
 							var sliderDecimalPlaces = 1;
 							function getMinScore(){
 								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
+									var powerOfTen = Math.pow(10, sliderDecimalPlaces);
 									return (Math.floor(xlv.scores.min * powerOfTen) / powerOfTen)
 											.toFixed(sliderDecimalPlaces);
 								}
 							}
 							function getMaxScore(){
 								if (xlv.scores){
-									var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
+									var powerOfTen = Math.pow(10, sliderDecimalPlaces);
 									return (Math.ceil(xlv.scores.max * powerOfTen) / powerOfTen)
 											.toFixed(sliderDecimalPlaces);
 								}
 							}
 							function sliderChanged(){
 								var slide = document.getElementById('slide');
-								var powerOfTen = Math.pow(10, sliderDecimalPlaces); 
-								
-								var cut = ((slide.value / 100) 
+								var powerOfTen = Math.pow(10, sliderDecimalPlaces);
+
+								var cut = ((slide.value / 100)
 											* (getMaxScore() - getMinScore()))
 											+ (getMinScore() / 1);
 								cut = cut.toFixed(sliderDecimalPlaces);
@@ -259,15 +257,15 @@
 								cutoffLabel.innerHTML = '(' + cut + ')';
 								xlv.setCutOff(cut);
 							}
-							
+
 							//]]>
 					</script>
-						
+
 		</div> <!-- MAIN -->
-	  	
+
 	  	<script type="text/javascript">
-	  	//<![CDATA[	  	
-			var config = [				
+	  	//<![CDATA[
+			var config = [
 				//~ {//TFIIF
 					//~ file:"./data/TFIIF.csv",
 					//~ cite:"<p>Data from <a href='http://www.nature.com/emboj/journal/v29/n4/full/emboj2009401a.html' target='_blank'>Chen ZA, Jawhari A, Fischer L, Buchen C, Tahir S, Kamenski T, Rasmussen M, Lariviere L, Bukowski-Wills J-C, Nilges M, Cramer P &amp; Rappsilber J (2010) Architecture of the RNA polymerase II–TFIIF complex revealed by cross-linking and mass spectrometry. The EMBO Journal 29: 717–726</a>.</p>"
@@ -284,14 +282,14 @@
 				{//NPC
 					file:"./demo/data/NPC.csv",
 					cite:"<p>Data from <a href='http://www.sciencedirect.com/science/article/pii/S0092867413014165' target='_blank'>Bui, K. H., von Appen, A., DiGuilio, A. L., Ori, A., Sparks, L., Mackmull, M.-T., Bock, T., Hagen, W., Andrés-Pons, A., Glavy, J. S., and Beck, M. (2013) Integrated Structural Analysis of the Human Nuclear Pore Complex Scaffold. Cell 155, 1233–1243</a>.</p>"
-				}				
+				}
 			];
-			
+
 			function loadData(){
 				var dataSetsSelect = document.getElementById('dataSets');
 				var path = config[dataSetsSelect.selectedIndex].file;
 				document.getElementById('citation').innerHTML = config[dataSetsSelect.selectedIndex].cite;
-				
+
 				if (config[dataSetsSelect.selectedIndex].customAnnot){
 					d3.text(config[dataSetsSelect.selectedIndex].customAnnot, "text/csv", function(annot) {
 						d3.text(path, "text/csv", function(text) {
@@ -307,13 +305,13 @@
 						xlv.readCSV(text);
 						initSlider();
 					});
-				}						
+				}
 			}
-			
+
 			//~ window.addEventListener('load', function() {
 				var targetDiv = document.getElementById('networkContainer');
                 xlv = new xiNET.Controller(targetDiv);
-                
+
 			    var targetDiv = document.getElementById('networkContainer');
                 var messageDiv = document.getElementById('networkCaption');
                 xlv = new xiNET.Controller(targetDiv);
@@ -323,7 +321,7 @@
                 xlv.showSelfLinks(document.getElementById('selfLinks').checked);
                 xlv.showAmbig(document.getElementById('ambig').checked);
 			//~ }, false);
-            	 
+
 				 function changeAnnotations(){
 					var annotationSelect = document.getElementById('annotationsSelect');
 					xlv.setAnnotations(annotationSelect.options[annotationSelect.selectedIndex].value);
@@ -338,8 +336,8 @@
 							sliderChanged();
 							d3.select('#scoreSlider').style('display', 'inline-block');
 						}
-				  };               
-                  
+				  };
+
                  //]]>
 	  	</script>
 	</body>
