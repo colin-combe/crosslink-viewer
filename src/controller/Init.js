@@ -378,7 +378,7 @@ xiNET.Controller.prototype.exportSVG = function() {
     //     var win = window.open(xmlAsUrl, 'xiNET-output.svg');
     // }
     var content = svgXml;
-    var fileName = document.getElementsByTagName("title")[0].innerHTML.slice(0, -3) + ".svg";
+    var fileName = document.getElementsByTagName("title")[0].innerHTML.slice(0, -4) + ".svg";
     var contentType = "application/svg";
 
     var oldToNewTypes = {
