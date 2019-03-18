@@ -736,7 +736,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         this.model.trigger("hiddenChanged");
-        this.model.get("filterModel").trigger("change", this.get("filterModel"));
+        this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
     },
 
     autoLayout: function() {
