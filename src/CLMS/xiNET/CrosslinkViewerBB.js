@@ -722,7 +722,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 protein.stickZoom = protLayout["stickZoom"];
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];
-                protein.manuallyHidden = protLayout["manuallyHidden"];
+                protein.participant.manuallyHidden = protLayout["manuallyHidden"];
             } else {
                 console.log("! protein in layout but not search:" + protLayout.id);
             }
