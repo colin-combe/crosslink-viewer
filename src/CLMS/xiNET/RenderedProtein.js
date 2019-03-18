@@ -213,7 +213,7 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
         form: this.form,
         stickZoom: this.stickZoom,
         flipped: this.isFlipped,
-        manuallyHidden: this.manuallyHidden,
+        manuallyHidden: this.participant.manuallyHidden,
     };
 };
 
@@ -1030,7 +1030,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
         }
     }
     */
-    
+
     // does all of the commented out above, and picks up user-defined annotations
     var featuresShown = this.crosslinkViewer.model.getFilteredFeatures (this.participant);
     var split = _.partition (featuresShown, function (f) { return f.type == "disulfide bond"; });
@@ -1058,13 +1058,13 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             var convEnd = anno.end;
             var alignModel = this.crosslinkViewer.model.get("alignColl").get(this.participant.id);
             var withinAlignedRange = true;
-            
+
             // mjg next 5 lines
             var annotationTypeModel = annotationTypes.get (annotationTypes.modelId (anno));
-            var annotationTypeModelAlignmentID = annotationTypeModel ? annotationTypeModel.get("typeAlignmentID") : undefined; 
+            var annotationTypeModelAlignmentID = annotationTypeModel ? annotationTypeModel.get("typeAlignmentID") : undefined;
             var alignmentID = anno.alignmentID || annotationTypeModelAlignmentID; // individual feature alignment ids trump feature type alignment ids (needed for multiple pdb chain alignments)
             // it will be undefined for annotations/annotaion types aligned to search sequence so skips the next bit
-            
+
             if (//anno.category != "AA" // this handles not aligning certain features, todo; check for tidier way
                 alignmentID && alignModel) {
                 //var alignmentID = anno.alignmentID || "Canonical";
