@@ -75,7 +75,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         var contextMenu = d3.select(".custom-menu-margin").node();
         contextMenu.onmouseout = function(evt) {
-            var e = event.toElement || event.relatedTarget;
+            var e = evt.toElement || evt.relatedTarget;
             do {
                 if (e == this) return;
                 e = e.parentNode;
