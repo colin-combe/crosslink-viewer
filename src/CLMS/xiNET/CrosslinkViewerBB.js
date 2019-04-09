@@ -20,8 +20,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         MOUSE_UP: 0,
         SELECT_PAN: 1,
         DRAGGING: 2,
-        ROTATING: 3,
-        SELECTING: 6
+        ROTATING: 3
     },
 
     barScales: [0.01, 0.2, 1, 2, 4, 8],
@@ -951,8 +950,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var manuallyHidden = 0;
         for (var rp = 0; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
-            if (renderedParticipant.hidden != renderedParticipant.participant.manuallyHidden) {
-                renderedParticipant.setHidden(renderedParticipant.participant.manuallyHidden);
+            if (renderedParticipant.hidden != renderedParticipant.participant.hidden) {
+                renderedParticipant.setHidden(renderedParticipant.participant.hidden);
             }
             if (renderedParticipant.participant.manuallyHidden == true) {
                 manuallyHidden++;
