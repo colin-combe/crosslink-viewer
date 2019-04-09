@@ -1121,7 +1121,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         // this.groups = [];
         // init n-ary link
-
+/*
         var tempGroups = new d3.map();
         var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
         var pCount = participantsArr.length;
@@ -1185,6 +1185,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //alot of time is being spent on creating these IDs, stash them in the interaction object?
             //interaction.naryId =  nLinkId;
         }
+        */
 
 
         return this;

@@ -336,9 +336,9 @@ Molecule.prototype.showData = function(evt) {
 Molecule.prototype.setForm = function(form, svgP) {};
 
 Molecule.prototype.getRenderedParticipant = function() {
-    if (this.complex && this.complex.form == 0) {
-        return this.complex.getRenderedParticipant();
-    } else {
+    // if (this.complex && this.complex.form == 0) {
+    //     return this.complex.getRenderedParticipant();
+    // } else {
         return this;
-    }
+    // }
 }
