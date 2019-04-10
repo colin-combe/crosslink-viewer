@@ -20,8 +20,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         MOUSE_UP: 0,
         SELECT_PAN: 1,
         DRAGGING: 2,
-        ROTATING: 3,
-        SELECTING: 6
+        ROTATING: 3
     },
 
     barScales: [0.01, 0.2, 1, 2, 4, 8],
@@ -75,7 +74,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         var contextMenu = d3.select(".custom-menu-margin").node();
         contextMenu.onmouseout = function(evt) {
-            var e = event.toElement || event.relatedTarget;
+            var e = evt.toElement || evt.relatedTarget;
             do {
                 if (e == this) return;
                 e = e.parentNode;
@@ -239,6 +238,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.renderedProteins = new Map();
         this.renderedCrossLinks = new Map();
         this.renderedP_PLinks = new Map();
+        this.renderedNaryLinks = new Map();
 
         this.layout = null;
         this.z = 1;
@@ -250,39 +250,33 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     render: function() {
+        console.log("!xinet render");
         if (this.wasEmpty) {
             this.wasEmpty = false;
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
             } else {
-                var renderedParticipantsArr = CLMS.arrayFromMapValues(this.renderedProteins);
-                var rpCount = renderedParticipantsArr.length;
-                for (var rp = 0; rp < rpCount; rp++) {
-                    var prot = renderedParticipantsArr[rp];
+                for (let prot of this.renderedProteins.values()) {
                     prot.init();
                 }
                 this.autoLayout();
-            };
+            }
         }
 
         CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
-        var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
-        var plCount = pLinksArr.length;
-        for (var pl = 0; pl < plCount; pl++) {
-            var p_pCrossLinkCount = pLinksArr[pl].check();
+        for (var p_pLink of this.renderedP_PLinks.values()) {
+            var p_pCrossLinkCount = p_pLink.check();
             if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
                 CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
             }
         }
 
-        for (pl = 0; pl < plCount; pl++) {
-            pLinksArr[pl].update();
+        for (var p_pLink of this.renderedP_PLinks.values()) {
+            p_pLink.update();
         }
 
-        var cLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
-        var clCount = cLinksArr.length;
-        for (var cl = 0; cl < clCount; cl++) {
-            cLinksArr[cl].check();
+        for (var cLink of this.renderedCrossLinks.values()) {
+            cLink.check();
         }
 
     },
@@ -587,7 +581,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
     },
 
-
     // this ends all dragging and rotating
     mouseUp: function(evt) {
         this.preventDefaultsAndStopPropagation(evt);
@@ -726,11 +719,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 }
                 protein.x = protLayout["x"];
                 protein.y = protLayout["y"];
-                protein.form = protLayout["form"] - 0;
+                protein.newForm = protLayout["form"] - 0;
                 protein.stickZoom = protLayout["stickZoom"];
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];
-                protein.manuallyHidden = protLayout["manuallyHidden"];
+                protein.participant.manuallyHidden = protLayout["manuallyHidden"];
             } else {
                 console.log("! protein in layout but not search:" + protLayout.id);
             }
@@ -742,6 +735,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var prot = renderedParticipantArr[rp];
             prot.init();
         }
+
+        this.model.trigger("hiddenChanged");
+        this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
     },
 
     autoLayout: function() {
@@ -751,17 +747,37 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.resetZoom();
 
-        // var nodes = []; // not hidden nodes
-        // var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        // var rpCount = renderedParticipantArr.length;
-        // for (var rp = 0; rp < rpCount; rp++) {
-        //     var renderedParticipant = renderedParticipantArr[rp];
-        //     if ((renderedParticipant.participant && renderedParticipant.participant.hidden === false) &&
-        //         renderedParticipant.inCollapsedComplex() == false) {
-        //         nodes.push(renderedParticipant);
+        // var groupMap = {};
+        // graph.nodes.forEach(function (v, i) {
+        //     var g = v.group;
+        //     if (typeof groupMap[g] == 'undefined') {
+        //         groupMap[g] = [];
         //     }
+        //     groupMap[g].push(i);
+        //
+        //     v.width = v.height = 10;
+        // });
+        //
+        // var groups = [];
+        // for (var g in groupMap) {
+        //     groups.push({ id: g, leaves: groupMap[g] });
         // }
 
+        var nodes = []; // not hidden nodes
+        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var rpCount = renderedParticipantArr.length;
+        for (var rp = 0; rp < rpCount; rp++) {
+            var renderedParticipant = renderedParticipantArr[rp];
+            if (renderedParticipant.participant.hidden === false) {
+                nodes.push(renderedParticipant);
+            }
+        }
+
+        var groups = [{
+            leaves: nodes.slice(5, 7)
+        }];
+
+        this.cola = cola.d3adaptor().nodes(nodes).avoidOverlaps(true);
 
         var links = new Map();
         var nodeSet = new Set();
@@ -873,7 +889,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, offsetY);
                 node.setAllLinkCoordinates();
             }
-
+            var groupsArr = self.cola.groups();
         });
         this.cola.start(10, 15, 20);
     },

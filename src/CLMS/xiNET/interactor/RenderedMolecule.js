@@ -21,27 +21,7 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 }
 
 Molecule.prototype.mouseDown = function(evt) {
-    //     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-    //     //if a force layout exists then stop it
-    //     if (this.controller.force) {
-    //         this.controller.force.stop();
-    //     }
-    //
-    //     this.controller.dragElement = this;
-    //     //~ if (evt.controllerKey === false) {
-    //     this.controller.clearSelection();
-    //     this.setSelected(true);
-    //     //~ } else {
-    //     //~ this.setSelected(!this.isSelected);
-    //     //~ }
-    //     //store start location
-    //     var p = this.controller.getEventPoint(evt);
-    //     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    //     //~ this.showData();
-    //     return false;
-    // };
-    // CLMS.xiNET.RenderedProtein.prototype.mouseDown = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //stop layout
     if (this.crosslinkViewer.cola) {
         this.crosslinkViewer.cola.stop();
@@ -55,26 +35,7 @@ Molecule.prototype.mouseDown = function(evt) {
 };
 
 Molecule.prototype.touchStart = function(evt) {
-    //     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-    //     //if a force layout exists then stop it
-    //     if (this.controller.force !== undefined) {
-    //         this.controller.force.stop();
-    //     }
-    //     this.controller.dragElement = this;
-    //     //~ if (evt.controllerKey === false) {
-    //     this.controller.clearSelection();
-    //     this.setSelected(true);
-    //     //~ } else {
-    //     //~ this.setSelected(!this.isSelected);
-    //     //~ }
-    //     //store start location
-    //     var p = this.controller.getTouchEventPoint(evt);
-    //     this.controller.dragStart = this.controller.mouseToSVG(p.x, p.y);
-    //     //        this.showData();
-    //     return false;
-    // };
-    // CLMS.xiNET.RenderedProtein.prototype.touchStart = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //stop layout
     if (this.crosslinkViewer.cola) {
         this.crosslinkViewer.cola.stop();
@@ -87,17 +48,6 @@ Molecule.prototype.touchStart = function(evt) {
 };
 
 Molecule.prototype.mouseOver = function(evt) {
-    //     this.controller.preventDefaultsAndStopPropagation(evt);
-    //     this.showHighlight(true);
-    //     //~ this.controller.setTooltip(this.id);
-    //     return false;
-    // };
-    //
-    // CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
-    //     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    //     //this.showHighlight(true);	// mjg apr 18
-
-    // this.crosslinkViewer.model.setHighlightedProteins([this.participant]); // mjg apr 18
     var p = this.crosslinkViewer.getEventPoint(evt);
     this.crosslinkViewer.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
@@ -109,14 +59,6 @@ Molecule.prototype.mouseOver = function(evt) {
 };
 
 Molecule.prototype.mouseOut = function(evt) {
-    //     this.controller.preventDefaultsAndStopPropagation(evt);
-    //     this.showHighlight(false);
-    //     //        this.controller.hideTooltip();
-    //     return false;
-    // };
-    // CLMS.xiNET.RenderedProtein.prototype.mouseOut = function(evt) {
-    //     //~ this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    //     //this.showHighlight(false);	// mjg apr 18
     this.crosslinkViewer.model.setHighlightedProteins([]); // mjg apr 18
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
 };
@@ -335,10 +277,35 @@ Molecule.prototype.showData = function(evt) {
 
 Molecule.prototype.setForm = function(form, svgP) {};
 
+Molecule.prototype.getX = function() {
+    return this.x;
+}
+
+Molecule.prototype.getY = function() {
+    return this.y;
+}
+
+Molecule.prototype.updateName = function(annotation) {
+    this.labelTextNode.textContent = this.participant.name;
+};
+
+Molecule.prototype.showLabel = function(show) {
+    d3.select(this.labelSVG).attr("display", show ? null : "none");
+};
+
+/*CLMS.xiNET.RenderedProtein.prototype.hasExternalLink = function() {
+    var pLinks = this.renderedP_PLinks;
+    var plCount = pLinks.length;
+    for (var pl = 0; pl < plCount; pl++) {
+        if (pLinks[pl].crossLinks[0].isSelfLink() === false) return true;
+    }
+    return false;
+};*/
+
 Molecule.prototype.getRenderedParticipant = function() {
     // if (this.complex && this.complex.form == 0) {
     //     return this.complex.getRenderedParticipant();
     // } else {
-        return this;
+    return this;
     // }
 }
