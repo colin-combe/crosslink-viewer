@@ -1,0 +1,140 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9UMX1", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9UMX1"
+            }, 
+            "label": "sufu_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAELRPSGAPGPTAPPAPGPTAPPAFASLFPPGLHAIYGECRRLYPDQPNPLQVTAIVKYWLGGPDPLDYVSMYRNVGSPSANIPEHWHYISFGLSDLYGDNRVHEFTGTDGPSGFGFELTFRLKRETGESAPPTWPAELMQGLARYVFQSENTFCSGDHVSWHSPLDNSESRIQHMLLTEDPQMQPVQTPFGVVTFLQIVGVCTEELHSAQQWNGQGILELLRTVPIAGGPWLITDMRRGETIFEIDPHLQERVDKGIETDGSNLSGVSAKCAWDDLSRPPEDDEDSRSICIGTQPRRLSGKDTEQIRETLRRGLEINSKPVLPPINPQRQNGLAHDRAPSRKDSLESDSSTAIIPHELIRTRQLESVHLKFNQESGALIPLCLRGRLLHGRHFTYKSITGDMAITFVSTGVEGAFATEEHPYAAHGPWLQILLTEEFVEKMLEDLEDLTSPEEFKLPKEYSWPEKKLKVSILPDVVFDSPLH", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_P10071", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P10071"
+            }, 
+            "label": "gli3_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MEAQSHSSTTTEKKKVENSIVKCSTRTDVSEKAVASSTTSNEDESPGQTYHRERRNAITMQPQNVQGLSKVSEEPSTSSDERASLIKKEIHGSLPHVAEPSVPYRGTVFAMDPRNGYMEPHYHPPHLFPAFHPPVPIDARHHEGRYHYDPSPIPPLHMTSALSSSPTYPDLPFIRISPHRNPTAASESPFSPPHPYINPYMDYIRSLHSSPSLSMISATRGLSPTDAPHAGVSPAEYYHQMALLTGQRSPYADIIPSAATAGTGAIHMEYLHAMDSTRFSSPRLSARPSRKRTLSISPLSDHSFDLQTMIRTSPNSLVTILNNSRSSSSASGSYGHLSASAISPALSFTYSSAPVSLHMHQQILSRQQSLGSAFGHSPPLIHPAPTFPTQRPIPGIPTVLNPVQVSSGPSESSQNKPTSESAVSSTGDPMHNKRSKIKPDEDLPSPGARGQQEQPEGTTLVKEEGDKDESKQEPEVIYETNCHWEGCAREFDTQEQLVHHINNDHIHGEKKEFVCRWLDCSREQKPFKAQYMLVVHMRRHTGEKPHKCTFEGCTKAYSRLENLKTHLRSHTGEKPYVCEHEGCNKAFSNASDRAKHQNRTHSNEKPYVCKIPGCTKRYTDPSSLRKHVKTVHGPEAHVTKKQRGDIHPRPPPPRDSGSHSQSRSPGRPTQGALGEQQDLSNTTSKREECLQVKTVKAEKPMTSQPSPGGQSSCSSQQSPISNYSNSGLELPLTDGGSIGDLSAIDETPIMDSTISTATTALALQARRNPAGTKWMEHVKLERLKQVNGMFPRLNPILPPKAPAVSPLIGNGTQSNNTCSLGGPMTLLPGRSDLSGVDVTMLNMLNRRDSSASTISSAYLSSRRSSGISPCFSSRRSSEASQAEGRPQNVSVADSYDPISTDASRRSSEASQSDGLPSLLSLTPAQQYRLKAKYAAATGGPPPTPLPNMERMSLKTRLALLGDALEPGVALPPVHAPRRCSDGGAHGYGRRHLQPHDAPGHGVRRASDPVRTGSEGLALPRVPRFSSLSSCNPPAMATSAEKRSLVLQNYTRPEGGQSRNFHSSPCPPSITENVTLESLTMDADANLNDEDFLPDDVVQYLNSQNQAGYEQHFPSALPDDSKVPHGPGDFDAPGLPDSHAGQQFHALEQPCPEGSKTDLPIQWNEVSSGSADLSSSKLKCGPRPAVPQTRAFGFCNGMVVHPQNPLRSGPAGGYQTLGENSNPYGGPEHLMLHNSPGSGTSGNAFHEQPCKAPQYGNCLNRQPVAPGALDGACGAGIQASKLKSTPMQGSGGQLNFGLPVAPNESAGSMVNGMQNQDPVGQGYLAHQLLGDSMQHPGAGRPGQQMLGQISATSHINIYQGPESCLPGAHGMGSQPSSLAVVRGYQPCASFGGSRRQAMPRDSLALQSGQLSDTSQTCRVNGIKMEMKGQPHPLCSNLQNYSGQFYDQTVGFSQQDTKAGSFSISDASCLLQGTSAKNSELLSPGANQVTSTVDSLDSHDLEGVQIDFDAIIDDGDHSSLMSGALSPSIIQNLSHSSSRLTTPRASLPFPALSMSTTNMAIGDMSSLLTSLAEESKFLAVMQ", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "wwpdb_4bld", 
+            "identifiers": [
+                {
+                    "db": "wwpdb", 
+                    "id": "4bld"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-10828997"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "otherFeatures", 
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "gli3 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9UMX1", 
+                                    "participantRef": "1", 
+                                    "pos": "361-483"
+                                }, 
+                                {
+                                    "interactorRef": "uniprotkb_Q9UMX1", 
+                                    "participantRef": "1", 
+                                    "pos": "32-278"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0442", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q9UMX1", 
+                    "stoichiometry": "1"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "otherFeatures", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "sufu binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_P10071", 
+                                    "participantRef": "4", 
+                                    "pos": "328-344"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0442", 
+                                "name": "sufficient binding region"
+                            }
+                        }
+                    ], 
+                    "id": "4", 
+                    "interactorRef": "uniprotkb_P10071", 
+                    "stoichiometry": "1"
+                }
+            ]
+        }
+    ]
+}

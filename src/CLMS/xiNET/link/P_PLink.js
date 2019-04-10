@@ -129,7 +129,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.thickLine.oncontextmenu = function() {
         return false;
     };
-}
+};
 
 CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
     var p = this.crosslinkViewer.getEventPoint(evt);
@@ -352,23 +352,25 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
+CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(participant) {
+    target = participant.getRenderedParticipant();
+
     if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            if (this.renderedFromProtein === interactor) {
-                this.line.setAttribute("x1", interactor.x);
-                this.line.setAttribute("y1", interactor.y);
-                this.highlightLine.setAttribute("x1", interactor.x);
-                this.highlightLine.setAttribute("y1", interactor.y);
-                this.thickLine.setAttribute("x1", interactor.x);
-                this.thickLine.setAttribute("y1", interactor.y);
-            } else if (this.renderedToProtein === interactor) {
-                this.line.setAttribute("x2", interactor.x);
-                this.line.setAttribute("y2", interactor.y);
-                this.highlightLine.setAttribute("x2", interactor.x);
-                this.highlightLine.setAttribute("y2", interactor.y);
-                this.thickLine.setAttribute("x2", interactor.x);
-                this.thickLine.setAttribute("y2", interactor.y);
+            if (this.renderedFromProtein === participant) {
+                this.line.setAttribute("x1", target.x);
+                this.line.setAttribute("y1", target.y);
+                this.highlightLine.setAttribute("x1", target.x);
+                this.highlightLine.setAttribute("y1", target.y);
+                this.thickLine.setAttribute("x1", target.x);
+                this.thickLine.setAttribute("y1", target.y);
+            } else if (this.renderedToProtein === participant) {
+                this.line.setAttribute("x2", target.x);
+                this.line.setAttribute("y2", target.y);
+                this.highlightLine.setAttribute("x2", target.x);
+                this.highlightLine.setAttribute("y2", target.y);
+                this.thickLine.setAttribute("x2", target.x);
+                this.thickLine.setAttribute("y2", target.y);
             }
         }
     }

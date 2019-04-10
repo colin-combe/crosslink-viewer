@@ -1,0 +1,3223 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_Q9BTT4", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9BTT4"
+            }, 
+            "label": "med10_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAEKFDHLEEHLEKFVENIRQLGIIVSDFQPSSQAGLNQKLNFIVTGLQDIDKCRQQLHDITVPLEVFEYIDQGRNPQLYTKECLERALAKNEQVKGKIDTMKKFKSLLIQELSKVFPEDMAKYRSIRGEDHPPS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O43513", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O43513"
+            }, 
+            "label": "med7_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGEPQQVSALPPPPMQYIKEYTDENIQEGLAPKPPPPIKDSYMMFGNQFQCDDLIIRPLESQGIERLHPMQFDHKKELRKLNMSILINFLDLLDILIRSPGSIKREEKLEDLKLLFVHVHHLINEYRPHQARETLRVMMEVQKRQRLETAERFQKHLERVIEMIQNCLASLPDDLPHSEAGMRVKTEPMDADDSNNCTGQNEHQRENSGHRRDQIIEKDAALCVLIDEMNERP", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9NX70", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NX70"
+            }, 
+            "label": "med29_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAASQQQASAASSAAGVSGPSSAGGPGPQQQPQPPAQLVGPAQSGLLQQQQQDFDPVQRYKMLIPQLKESLQTLMKVAAQNLIQNTNIDNGQKSSDGPIQRFDKCLEEFYALCDQLELCLRLAHECLSQSCDSAKHSPTLVPTATKPDAVQPDSLPYPQYLAVIKAQISCAKDIHTALLDCANKVTGKTPAPPAGPGGTL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q96G25", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q96G25"
+            }, 
+            "label": "med8_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MQREEKQLEASLDALLSQVADLKNSLGSFICKLENEYGRLTWPSVLDSFALLSGQLNTLNKVLKHEKTPLFRNQVIIPLVLSPDRDEDLMRQTEGRVPVFSHEVVPDHLRTKPDPEVEEQEKQLTTDAARIGADAAQKQIQSLNKMCSNLLEKISKEERESESGGLRPNKQTFNPTDTNALVAAVAFGKGLSNWRPSGSSGPGQAGQPGAGTILAGTSGLQQVQMAGAPSQQQPMLSGVQMAQAGQPGKMPSGIKTNIKSASMHPYQR", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q96RN5", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q96RN5"
+            }, 
+            "label": "med15_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MDVSGQETDWRSTAFRQKLVSQIEDAMRKAGVAHSKSSKDMESHVFLKAKTRDEYLSLVARLIIHFRDIHNKKSQASVSDPMNALQSLTGGPAAGAAGIGMPPRGPGQSLGGMGSLGAMGQPMSLSGQPPPGTSGMAPHSMAVVSTATPQTQLQLQQVALQQQQQQQQFQQQQQAALQQQQQQQQQQQFQAQQSAMQQQFQAVVQQQQQLQQQQQQQQHLIKLHHQNQQQIQQQQQQLQRIAQLQLQQQQQQQQQQQQQQQQALQAQPPIQQPPMQQPQPPPSQALPQQLQQMHHTQHHQPPPQPQQPPVAQNQPSQLPPQSQTQPLVSQAQALPGQMLYTQPPLKFVRAPMVVQQPPVQPQVQQQQTAVQTAQAAQMVAPGVQMITEALAQGGMHIRARFPPTTAVSAIPSSSIPLGRQPMAQVSQSSLPMLSSPSPGQQVQTPQSMPPPPQPSPQPGQPSSQPNSNVSSGPAPSPSSFLPSPSPQPSQSPVTARTPQNFSVPSPGPLNTPVNPSSVMSPAGSSQAEEQQYLDKLKQLSKYIEPLRRMINKIDKNEDRKKDLSKMKSLLDILTDPSKRCPLKTLQKCEIALEKLKNDMAVPTPPPPPVPPTKQQYLCQPLLDAVLANIRSPVFNHSLYRTFVPAMTAIHGPPITAPVVCTRKRRLEDDERQSIPSVLQGEVARLDPKFLVNLDPSHCSNNGTVHLICKLDDKDLPSVPPLELSVPADYPAQSPLWIDRQWQYDANPFLQSVHRCMTSRLLQLPDKHSVTALLNTWAQSVHQACLSAA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q15528", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q15528"
+            }, 
+            "label": "med22_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAQQRALPQSKETLLQSYNKRLKDDIKSIMDNFTEIIKTAKIEDETQVSRATQGEQDNYEMHVRAANIVRAGESLMKLVSDLKQFLILNDFPSVNEAIDQRNQQLRTLQEECDRKLITLRDEISIDLYELEEEYYSSSSSLCEANDLPLCEAYGRLDLDTDSADGLSAPLLASPEPSAGPLQVAAPAHSHAGGPGPTEHA", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q6P2C8", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q6P2C8"
+            }, 
+            "label": "med27_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MADVINVSVNLEAFSQAISAIQALRSSVSRVFDCLKDGMRNKETLEGREKAFIAHFQDNLHSVNRDLNELERLSNLVGKPSENHPLHNSGLLSLDPVQDKTPLYSQLLQAYKWSNKLQYHAGLASGLLNQQSLKRSANQMGVSAKRRPKAQPTTLVLPPQYVDDVISRIDRMFPEMSIHLSRPNGTSAMLLVTLGKVLKVIVVMRSLFIDRTIVKGYNENVYTEDGKLDIWSKSNYQVFQKVTDHATTALLHYQLPQMPDVVVRSFMTWLRSYIKLFQAPCQRCGKFLQDGLPPTWRDFRTLEAFHDTCRQ", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_A0JLT2", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "A0JLT2"
+            }, 
+            "label": "med19_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MENFTALFGAQADPPPPPTALGFGPGKPPPPPPPPAGGGPGTAPPPTAATAPPGADKSGAGCGPFYLMRELPGSTELTGSTNLITHYNLEQAYNKFCGKKVKEKLSNFLPDLPGMIDLPGSHDNSSLRSLIEKPPILSSSFNPITGTMLAGFRLHTGPLPEQCRLMHIQPPKKKNKHKHKQSRTQDPVPPETPSDSDHKKKKKKKEEDPDRKRKKKEKKKKKNRHSPDHPGMGSSQASSSSSLR", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O95402", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O95402"
+            }, 
+            "label": "med26_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MTAAPASPQQIRDRLLQAIDPQSNIRNMVAVLEVISSLEKYPITKEALEETRLGKLINDVRKKTKNEELAKRAKKLLRSWQKLIEPAHQHEAALRGLAGATGSANGGAHNCRPEVGAAGPPRSIHDLKSRNDLQRLPGQRLDRLGSRKRRGDQRDLGHPGPPPKVSKASHDPLVPNSSPLPTNGISGSPESFASSLDGSGHAGPEGSRLERDENDKHSGKIPVNAVRPHTSSPGLGKPPGPCLQPKASVLQQLDRVDETPGPPHPKGPPRCSFSPRNSRHEGSFARQQSLYAPKGSVPSPSPRPQALDATQVPSPLPLAQPSTPPVRRLELLPSAESPVCWLEQPESHQRLAGPGCKAGLSPAEPLLSRAGFSPDSSKADSDAASSGGSDSKKKKRYRPRDYTVNLDGQVAEAGVKPVRLKERKLTFDPMTRQIKPLTQKEPVRADSPVHMEQQSRTELDKQEAKASLQSPFEQTNWKELSRNEIIQSYLSRQSSLLSSSGAQTPGAHHFMSEYLKQEESTRQGARQLHVLVPQSPPTDLPGLTREVTQDDLDRIQASQWPGVNGCQDTQGNWYDWTQCISLDPHGDDGRLNILPYVCLD", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9ULK4", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9ULK4"
+            }, 
+            "label": "med23_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "METQLQSIFEEVVKTEVIEEAFPGMFMDTPEDEKTKLISCLGAFRQFWGGLSQESHEQCIQWIVKFIHGQHSPKRISFLYDCLAMAVETGLLPPRLVCESLINSDTLEWERTQLWALTFKLVRKIIGGVDYKGVRDLLKVILEKILTIPNTVSSAVVQQLLAAREVIAYILERNACLLPAYFAVTEIRKLYPEGKLPHWLLGNLVSDFVDTFRPTARINSICGRCSLLPVVNNSGAICNSWKLDPATLRFPLKGLLPYDKDLFEPQTALLRYVLEQPYSRDMVCNMLGLNKQHKQRCPVLEDQLVDLVVYAMERSETEEKFDDGGTSQLLWQHLSSQLIFFVLFQFASFPHMVLSLHQKLAGRGLIKGRDHLMWVLLQFISGSIQKNALADFLPVMKLFDLLYPEKEYIPVPDINKPQSTHAFAMTCIWIHLNRKAQNDNSKLQIPIPHSLRLHHEFLQQSLRNKSLQMNDYKIALLCNAYSTNSECFTLPMGALVETIYGNGIMRIPLPGTNCMASGSITPLPMNLLDSLTVHAKMSLIHSIATRVIKLAHAKSSVALAPALVETYSRLLVYMEIESLGIKGFISQLLPTVFKSHAWGILHTLLEMFSYRMHHIQPHYRVQLLSHLHTLAAVAQTNQNQLHLCVESTALRLITALGSSEVQPQFTRFLSDPKTVLSAESEELNRALILTLARATHVTDFFTGSDSIQGTWCKDILQTIMSFTPHNWASHTLSCFPGPLQAFFKQNNVPQESRFNLKKNVEEEYRKWKSMSNENDIITHFSMQGSPPLFLCLLWKMLLETDHINQIGYRVLERIGARALVAHVRTFADFLVYEFSTSAGGQQLNKCIEILNDMVWKYNIVTLDRLILCLAMRSHEGNEAQVCYFIIQLLLLKPNDFRNRVSDFVKENSPEHWLQNDWHTKHMNYHKKYPEKLYFEGLAEQVDPPVQIQSPYLPIYFGNVCLRFLPVFDIVIHRFLELLPVSKSLETLLDHLGGLYKFHDRPVTYLYNTLHYYEMHLRDRAFLKRKLVHAIIGSLKDNRPQGWCLSDTYLKCAMNAREENPWVPDDTYYCRLIGRLVDTMAGKSPGPFPNCDWRFNEFPNPAAHALHVTCVELMALAVSGKEVGNALLNVVLKSQPLVPRENITAWMNAIGLIITALPEPYWIVLHDRIVSVISSPSLTSETEWVGYPFRLFDFTACHQSYSEMSCSYTLALAHAVWHHSSIGQLSLIPKFLTEVLLPIVKTEFQLLYVYHLVGPFLQRFQQERTRCMIEIGVAFYDMLLNVDQCSTHLNYMDPICDFLYHMKYMFTGDSVKEQVEKIICNLKPALKLRLRFITHISKMEPAAVPPQAMNSGSPAPQSNQVPVSLPVTQ", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O75448", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O75448"
+            }, 
+            "label": "med24_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MKVVNLKQAILQAWKERWSDYQWAINMKKFFPKGATWDILNLADALLEQAMIGPSPNPLILSYLKYAISSQMVSYSSVLTAISKFDDFSRDLCVQALLDIMDMFCDRLSCHGKAEECIGLCRALLSALHWLLRCTAASAERLREGLEAGTPAAGEKQLAMCLQRLEKTLSSTKNRALLHIAKLEEASSWTAIEHSLLKLGEILANLSNPQLRSQAEQCGTLIRSIPTMLSVHAEQMHKTGFPTVHAVILLEGTMNLTGETQSLVEQLTMVKRMQHIPTPLFVLEIWKACFVGLIESPEGTEELKWTAFTFLKIPQVLVKLKKYSHGDKDFTEDVNCAFEFLLKLTPLLDKADQRCNCDCTNFLLQECGKQGLLSEASVNNLMAKRKADREHAPQQKSGENANIQPNIQLILRAEPTVTNILKTMDADHSKSPEGLLGVLGHMLSGKSLDLLLAAAAATGKLKSFARKFINLNEFTTYGSEESTKPASVRALLFDISFLMLCHVAQTYGSEVILSESRTGAEVPFFETWMQTCMPEEGKILNPDHPCFRPDSTKVESLVALLNNSSEMKLVQMKWHEACLSISAAILEILNAWENGVLAFESIQKITDNIKGKVCSLAVCAVAWLVAHVRMLGLDEREKSLQMIRQLAGPLFSENTLQFYNERVVIMNSILERMCADVLQQTATQIKFPSTGVDTMPYWNLLPPKRPIKEVLTDIFAKVLEKGWVDSRSIHIFDTLLHMGGVYWFCNNLIKELLKETRKEHTLRAVELLYSIFCLDMQQVTLVLLGHILPGLLTDSSKWHSLMDPPGTALAKLAVWCALSSYSSHKGQASTRQKKRHREDIEDYISLFPLDDVQPSKLMRLLSSNEDDANILSSPTDRSMSSSLSASQLHTVNMRDPLNRVLANLFLLISSILGSRTAGPHTQFVQWFMEECVDCLEQGGRGSVLQFMPFTTVSELVKVSAMSSPKVVLAITDLSLPLGRQVAAKAIAAL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q15648", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q15648"
+            }, 
+            "label": "med1_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MKAQGETEESEKLSKMSSLLERLHAKFNQNRPWSETIKLVRQVMEKRVVMSSGGHQHLVSCLETLQKALKVTSLPAMTDRLESIARQNGLGSHLSASGTECYITSDMFYVEVQLDPAGQLCDVKVAHHGENPVSCPELVQQLREKNFDEFSKHLKGLVNLYNLPGDNKLKTKMYLALQSLEQDLSKMAIMYWKATNAGPLDKILHGSVGYLTPRSGGHLMNLKYYVSPSDLLDDKTASPIILHENNVSRSLGMNASVTIEGTSAVYKLPIAPLIMGSHPVDNKWTPSFSSITSANSVDLPACFFLKFPQPIPVSRAFVQKLQNCTGIPLFETQPTYAPLYELITQFELSKDPDPIPLNHNMRFYAALPGQQHCYFLNKDAPLPDGRSLQGTLVSKITFQHPGRVPLILNLIRHQVAYNTLIGSCVKRTILKEDSPGLLQFEVCPLSESRFSVSFQHPVNDSLVCVVMDVQDSTHVSCKLYKGLSDALICTDDFIAKVVQRCMSIPVTMRAIRRKAETIQADTPALSLIAETVEDMVKKNLPPASSPGYGMTTGNNPMSGTTTPTNTFPGGPITTLFNMSMSIKDRHESVGHGEDFSKVSQNPILTSLLQITGNGGSTIGSSPTPPHHTPPPVSSMAGNTKNHPMLMNLLKDNPAQDFSTLYGSSPLERQNSSSGSPRMEICSGSNKTKKKKSSRLPPEKPKHQTEDDFQRELFSMDVDSQNPIFDVNMTADTLDTPHITPAPSQCSTPPTTYPQPVPHPQPSIQRMVRLSSSDSIGPDVTDILSDIAEEASKLPSTSDDCPAIGTPLRDSSSSGHSQSTLFDSDVFQTNNNENPYTDPADLIADAAGSPSSDSPTNHFFHDGVDFNPDLLNSQSQSGFGEEYFDESSQSGDNDDFKGFASQALNTLGVPMLGGDNGETKFKGNNQADTVDFSIISVAGKALAPADLMEHHSGSQGPLLTTGDLGKEKTQKRVKEGNGTSNSTLSGPGLDSKPGKRSRTPSNDGKSKDKPPKRKKADTEGKSPSHSSSNRPFTPPTSTGGSKSPGSAGRSQTPPGVATPPIPKITIQIPKGTVMVGKPSSHSQYTSSGSVSSSGSKSHHSHSSSSSSSASTSGKMKSSKSEGSSSSKLSSSMYSSQGSSGSSQSKNSSQSGGKPGSSPITKHGLSSGSSSTKMKPQGKPSSLMNPSLSKPNISPSHSRPPGGSDKLASPMKPVPGTPPSSKAKSPISSGSGGSHMSGTSSSSGMKSSSGLGSSGSLSQKTPPSSNSCTASSSSFSSSGSSMSSSQNQHGSSKGKSPSRNKKPSLTAVIDKLKHGVVTSGPGGEDPLDGQMGVSTNSSSHPMSSKHNMSGGEFQGKREKSDKDKSKVSTSGSSVDSSKKTSESKNVGSTGVAKIIISKHDGGSPSIKAKVTLQKPGESSGEGLRPQMASSKNYGSPLISGSTPKHERGSPSHSKSPAYTPQNLDSESESGSSIAEKSYQNSPSSDDGIRPLPEYSTEKHKKHKKEKKKVKDKDRDRDRDKDRDKKKSHSIKPESWSKSPISSDQSLSMTSNTILSADRPSRLSPDFMIGEEDDDLMDVALIGN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9Y3C7", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9Y3C7"
+            }, 
+            "label": "med31_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAAAVAMETDDAGNRLRFQLELEFVQCLANPNYLNFLAQRGYFKDKAFVNYLKYLLYWKDPEYAKYLKYPQCLHMLELLQYEHFRKELVNAQCAKFIDEQQILHWQHYSRKRMRLQQALAEQQQQNNTSGK", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9NVC6", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NVC6"
+            }, 
+            "label": "med17_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSGVRAVRISIESACEKQVHEVGLDGTETYLPPLSMSQNLARLAQRIDFSQGSGSEEEEAAGTEGDAQEWPGAGSSADQDDEEGVVKFQPSLWPWDSVRNNLRSALTEMCVLYDVLSIVRDKKFMTLDPVSQDALPPKQNPQTLQLISKKKSLAGAAQILLKGAERLTKSVTENQENKLQRDFNSELLRLRQHWKLRKVGDKILGDLSYRSAGSLFPHHGTFEVIKNTDLDLDKKIPEDYCPLDVQIPSDLEGSAYIKVSIQKQAPDIGDLGTVNLFKRPLPKSKPGSPHWQTKLEAAQNVLLCKEIFAQLSREAVQIKSQVPHIVVKNQIISQPFPSLQLSISLCHSSNDKKSQKFATEKQCPEDHLYVLEHNLHLLIREFHKQTLSSIMMPHPASAPFGHKRMRLSGPQAFDKNEINSLQSSEGLLEKIIKQAKHIFLRSRAAATIDSLASRIEDPQIQAHWSNINDVYESSVKVLITSQGYEQICKSIQLQLNIGVEQIRVVHRDGRVITLSYQEQELQDFLLSQMSQHQVHAVQQLAKVMGWQVLSFSNHVGLGPIESIGNASAITVASPSGDYAISVRNGPESGSKIMVQFPRNQCKDLPKSDVLQDNKWSHLRGPFKEVQWNKMEGRNFVYKMELLMSALSPCLL", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9P086", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9P086"
+            }, 
+            "label": "med11_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MATYSLANERLRALEDIEREIGAILQNAGTVILELSKEKTNERLLDRQAAAFTASVQHVEAELSAQIRYLTQVATGQPHEGSSYSSRKDCQMALKRVDYARLKLSDVARTCEQMLEN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9Y2X0", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9Y2X0"
+            }, 
+            "label": "med16_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MCDLRRPAAGGMMDLAYVCEWEKWSKSTHCPSVPLACAWSCRNLIAFTMDLRSDDQDLTRMIHILDTEHPWDLHSIPSEHHEAITCLEWDQSGSRLLSADADGQIKCWSMADHLANSWESSVGSLVEGDPIVALSWLHNGVKLALHVEKSGASSFGEKFSRVKFSPSLTLFGGKPMEGWIAVTVSGLVTVSLLKPSGQVLTSTESLCRLRGRVALADIAFTGGGNIVVATADGSSASPVQFYKVCVSVVSEKCRIDTEILPSLFMRCTTDLNRKDKFPAITHLKFLARDMSEQVLLCASSQTSSIVECWSLRKEGLPVNNIFQQISPVVGDKQPTILKWRILSATNDLDRVSAVALPKLPISLTNTDLKVASDTQFYPGLGLALAFHDGSVHIVHRLSLQTMAVFYSSAAPRPVDEPAMKRPRTAGPAVHLKAMQLSWTSLALVGIDSHGKLSVLRLSPSMGHPLEVGLALRHLLFLLEYCMVTGYDWWDILLHVQPSMVQSLVEKLHEEYTRQTAALQQVLSTRILAMKASLCKLSPCTVTRVCDYHTKLFLIAISSTLKSLLRPHFLNTPDKSPGDRLTEICTKITDVDIDKVMINLKTEEFVLDMNTLQALQQLLQWVGDFVLYLLASLPNQGSLLRPGHSFLRDGTSLGMLRELMVVIRIWGLLKPSCLPVYTATSDTQDSMSLLFRLLTKLWICCRDEGPASEPDEALVDECCLLPSQLLIPSLDWLPASDGLVSRLQPKQPLRLQFGRAPTLPGSAATLQLDGLARAPGQPKIDHLRRLHLGACPTEECKACTRCGCVTMLKSPNRTTAVKQWEQRWIKNCLAVEGRGPDACVTSRASEEAPAFVQLGPQSTHHSPRTPRSLDHLHPEDRP", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9BUE0", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9BUE0"
+            }, 
+            "label": "med18_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MEAPPVTMMPVTGGTINMMEYLLQGSVLDHSLESLIHRLRGLCDNMEPETFLDHEMVFLLKGQQASPFVLRARRSMDRAGAPWHLRYLGQPEMGDKNRHALVRNCVDIATSENLTDFLMEMGFRMDHEFVAKGHLFRKGIMKIMVYKIFRILVPGNTDSTEALSLSYLVELSVVAPAGQDMVSDDMKNFAEQLKPLVHLEKIDPKRLM", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q96HR3", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q96HR3"
+            }, 
+            "label": "med30_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MSTPPLAASGMAPGPFAGPQAQQAAREVNTASLCRIGQETVQDIVYRTMEIFQLLRNMQLPNGVTYHTGTYQDRLTKLQDNLRQLSVLFRKLRLVYDKCNENCGGMDPIPVEQLIPYVEEDGSKNDDRAGPPRFASEERREIAEVNKKLKQKNQQLKQIMDQLRNLIWDINAMLAMRN", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9H204", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9H204"
+            }, 
+            "label": "med28_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAAPLGGMFSGQPPGPPQAPPGLPGQASLLQAAPGAPRPSSSTLVDELESSFEACFASLVSQDYVNGTDQEEIRTGVDQCIQKFLDIARQTECFFLQKRLQLSVQKPEQVIKEDVSELRNELQRKDALVQKHLTKLRHWQQVLEDINVQHKKPADIPQGSLAYLEQASANIPAPLKPT", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9NPJ6", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NPJ6"
+            }, 
+            "label": "med4_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAASSSGEKEKERLGGGLGVAGGNSTRERLLSALEDLEVLSRELIEMLAISRNQKLLQAGEENQVLELLIHRDGEFQELMKLALNQGKIHHEMQVLEKEVEKRDSDIQQLQKQLKEAEQILATAVYQAKEKLKSIEKARKGAISSEEIIKYAHRISASNAVCAPLTWVPGDPRRPYPTDLEMRSGLLGQMNNPSTNGVNGHLPGDALAAGRLPDVLAPQYPWQSNDMSMNMLPPNHSSDFLLEPPGHNKENEDDVEIMSTDSSSSSSESD", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O60244", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O60244"
+            }, 
+            "label": "med14_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAPVQLENHQLVPPGGGGGGSGGPPSAPAPPPPGAAVAAAAAAAASPGYRLSTLIEFLLHRAYSELMVLTDLLPRKSDVERKIEIVQFASRTRQLFVRLLALVKWANNAGKVEKCAMISSFLDQQAILFVDTADRLASLARDALVHARLPSFAIPYAIDVLTTGSYPRLPTCIRDKIIPPDPITKIEKQATLHQLNQILRHRLVTTDLPPQLANLTVANGRVKFRVEGEFEATLTVMGDDPDVPWRLLKLEILVEDKETGDGRALVHSMQISFIHQLVQSRLFADEKPLQDMYNCLHSFCLSLQLEVLHSQTLMLIRERWGDLVQVERYHAGKCLSLSVWNQQVLGRKTGTASVHKVTIKIDENDVSKPLQIFHDPPLPASDSKLVERAMKIDHLSIEKLLIDSVHARAHQKLQELKAILRGFNANENSSIETALPALVVPILEPCGNSECLHIFVDLHSGMFQLMLYGLDQATLDDMEKSVNDDMKRIIPWIQQLKFWLGQQRCKQSIKHLPTISSETLQLSNYSTHPIGNLSKNKLFIKLTRLPQYYIVVEMLEVPNKPTQLSYKYYFMSVNAADREDSPAMALLLQQFKENIQDLVFRTKTGKQTRTNAKRKLSDDPCPVESKKTKRAGEMCAFNKVLAHFVAMCDTNMPFVGLRLELSNLEIPHQGVQVEGDGFSHAIRLLKIPPCKGITEETQKALDRSLLDCTFRLQGRNNRTWVAELVFANCPLNGTSTREQGPSRHVYLTYENLLSEPVGGRKVVEMFLNDWNSIARLYECVLEFARSLPDIPAHLNIFSEVRVYNYRKLILCYGTTKGSSISIQWNSIHQKFHISLGTVGPNSGCSNCHNTILHQLQEMFNKTPNVVQLLQVLFDTQAPLNAINKLPTVPMLGLTQRTNTAYQCFSILPQSSTHIRLAFRNMYCIDIYCRSRGVVAIRDGAYSLFDNSKLVEGFYPAPGLKTFLNMFVDSNQDARRRSVNEDDNPPSPIGGDMMDSLISQLQPPPQQQPFPKQPGTSGAYPLTSPPTSYHSTVNQSPSMMHTQSPGNLHAASSPSGALRAPSPASFVPTPPPSSHGISIGPGASFASPHGTLDPSSPYTMVSPSGRAGNWPGSPQVSGPSPAARMPGMSPANPSLHSPVPDASHSPRAGTSSQTMPTNMPPPRKLPQRSWAASIPTILTHSALNILLLPSPTPGLVPGLAGSYLCSPLERFLGSVIMRRHLQRIIQQETLQLINSNEPGVIMFKTDALKCRVALSPKTNQTLQLKVTPENAGQWKPDELQVLEKFFETRVAGPPFKANTLIAFTKLLGAPTHILRDCVHIMKLELFPDQATQLKWNVQFCLTIPPSAPPIAPPGTPAVVLKSKMLFFLQLTQKTSVPPQEPVSIIVPIIYDMASGTTQQADIPRQQNSSVAAPMMVSNILKRFAEMNPPRQGECTIFAAVRDLMANLTLPPGGRP", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_O75586", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "O75586"
+            }, 
+            "label": "med6_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MAAVDIRDNLLGISWVDSSWIPILNSGSVLDYFSERSNPFYDRTCNNEVVKMQRLTLEHLNQMVGIEYILLHAQEPILFIIRKQQRQSPAQVIPLADYYIIAGVIYQAPDLGSVINSRVLTAVHGIQSAFDEAMSYCRYHPSKGYWWHFKDHEEQDKVRPKAKRKEEPSSIFQRQRVDALLLDLRQKFPPKFVQLKPGEKPVPVDQTKKEAEPIPETVKPEEKETTKNVQQTVSAKGPPEKRMRLQ", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q13503", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q13503"
+            }, 
+            "label": "med21_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MADRLTQLQDAVNSLADQFCNAIGVLQQCGPPASFNNIQTAINKDQPANPTEEYAQLFAALIARTAKDIDVLIDSLPSEESTAALQAASLYKLEEENHEAATCLEDVVYRGDMLLEKIQSALADIAQSQLKTRSGTHSQSLPDS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9H944", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9H944"
+            }, 
+            "label": "med20_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MGVTCVSQMPVAEGKSVQQTVELLTRKLEMLGAEKQGTFCVDCETYHTAASTLGSQGQTGKLMYVMHNSEYPLSCFALFENGPCLIADTNFDVLMVKLKGFFQSAKASKIETRGTRYQYCDFLVKVGTVTMGPSARGISVEVEYGPCVVASDCWSLLLEFLQSFLGSHTPGAPAVFGNRHDAVYGPADTMVQYMELFNKIRKQQQVPVAGIR", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q9NWA0", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q9NWA0"
+            }, 
+            "label": "med9_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MASAGVAAGRQAEDVLPPTSDQPLPDTKPLPPPQPPPVPAPQPQQSPAPRPQSPARAREEENYSFLPLVHNIIKCMDKDSPEVHQDLNALKSKFQEMRKLISTMPGIHLSPEQQQQQLQSLREQVRTKNELLQKYKSLCMFEIPKE", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "id": "uniprotkb_Q71SY5", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "Q71SY5"
+            }, 
+            "label": "med25_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MVPGSEGPARAGSVVADVVFVIEGTANLGPYFEGLRKHYLLPAIEYFNGGPPAETDFGGDYGGTQYSLVVFNTVDCAPESYVQCHAPTSSAYEFVTWLDGIKFMGGGGESCSLIAEGLSTALQLFDDFKKMREQIGQTHRVCLLICNSPPYLLPAVESTTYSGCTTENLVQQIGERGIHFSIVSPRKLPALRLLFEKAAPPALLEPLQPPTDVSQDPRHMVLVRGLVLPVGGGSAPGPLQSKQPVPLPPAAPSGATLSAAPQQPLPPVPPQYQVPGNLSAAQVAAQNAVEAAKNQKAGLGPRFSPITPLQQAAPGVGPPFSQAPAPQLPPGPPGAPKPPPASQPSLVSTVAPGSGLAPTAQPGAPSMAGTVAPGGVSGPSPAQLGAPALGGQQSVSNKLLAWSGVLEWQEKPKPASVDANTKLTRSLPCQVYVNHGENLKTEQWPQKLIMQLIPQQLLTTLGPLFRNSRMVQFHFTNKDLESLKGLYRIMGNGFAGCVHFPHTAPCEVRVLMLLYSSKKKIFMGLIPYDQSGFVNGIRQVITNHKQVQQQKLEQQQRGMGGQQAPPGLGPILEDQARPSQNLLQLRPPQPQPQGTVGASGATGQPQPQGTAQPPPGAPQGPPGAASGPPPPGPILRPQNPGANPQLRSLLLNPPPPQTGVPPPQASLHHLQPPGAPALLPPPHQGLGQPQLGPPLLHPPPAQSWPAQLPPRAPLPGQMLLSGGPRGPVPQPGLQPSVMEDDILMDLI", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "emdb_EMD-2635", 
+            "identifiers": [
+                {
+                    "db": "emdb", 
+                    "id": "EMD-2635"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-9696567"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0915", 
+                "name": "physical association"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "2", 
+                            "linkedFeatures": [
+                                "3"
+                            ], 
+                            "name": "med7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BTT4", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "4", 
+                            "linkedFeatures": [
+                                "5"
+                            ], 
+                            "name": "med1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BTT4", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "6", 
+                            "linkedFeatures": [
+                                "7"
+                            ], 
+                            "name": "med21 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BTT4", 
+                                    "participantRef": "1", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_Q9BTT4"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "9", 
+                            "linkedFeatures": [
+                                "10"
+                            ], 
+                            "name": "med31 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43513", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "11", 
+                            "linkedFeatures": [
+                                "12"
+                            ], 
+                            "name": "med26 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43513", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "13", 
+                            "linkedFeatures": [
+                                "14"
+                            ], 
+                            "name": "med1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43513", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "3", 
+                            "linkedFeatures": [
+                                "2"
+                            ], 
+                            "name": "med10 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O43513", 
+                                    "participantRef": "8", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "8", 
+                    "interactorRef": "uniprotkb_O43513"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "16", 
+                            "linkedFeatures": [
+                                "17"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NX70", 
+                                    "participantRef": "15", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "18", 
+                            "linkedFeatures": [
+                                "19"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NX70", 
+                                    "participantRef": "15", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "20", 
+                            "linkedFeatures": [
+                                "21"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NX70", 
+                                    "participantRef": "15", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "22", 
+                            "linkedFeatures": [
+                                "23"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NX70", 
+                                    "participantRef": "15", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "24", 
+                            "linkedFeatures": [
+                                "25"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NX70", 
+                                    "participantRef": "15", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "15", 
+                    "interactorRef": "uniprotkb_Q9NX70"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "23", 
+                            "linkedFeatures": [
+                                "22"
+                            ], 
+                            "name": "med29 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "27", 
+                            "linkedFeatures": [
+                                "28"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "29", 
+                            "linkedFeatures": [
+                                "30"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "31", 
+                            "linkedFeatures": [
+                                "32"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "33", 
+                            "linkedFeatures": [
+                                "34"
+                            ], 
+                            "name": "med19 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "35", 
+                            "linkedFeatures": [
+                                "36"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "37", 
+                            "linkedFeatures": [
+                                "38"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "39", 
+                            "linkedFeatures": [
+                                "40"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "41", 
+                            "linkedFeatures": [
+                                "42"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96G25", 
+                                    "participantRef": "26", 
+                                    "pos": "22-22"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "26", 
+                    "interactorRef": "uniprotkb_Q96G25"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "44", 
+                            "linkedFeatures": [
+                                "45"
+                            ], 
+                            "name": "med25 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96RN5", 
+                                    "participantRef": "43", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "46", 
+                            "linkedFeatures": [
+                                "47"
+                            ], 
+                            "name": "med14 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96RN5", 
+                                    "participantRef": "43", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "48", 
+                            "linkedFeatures": [
+                                "49"
+                            ], 
+                            "name": "med16 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96RN5", 
+                                    "participantRef": "43", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "43", 
+                    "interactorRef": "uniprotkb_Q96RN5"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "42", 
+                            "linkedFeatures": [
+                                "41"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "51", 
+                            "linkedFeatures": [
+                                "52"
+                            ], 
+                            "name": "med18 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "53", 
+                            "linkedFeatures": [
+                                "54"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "25", 
+                            "linkedFeatures": [
+                                "24"
+                            ], 
+                            "name": "med29 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "55", 
+                            "linkedFeatures": [
+                                "56"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "57", 
+                            "linkedFeatures": [
+                                "58"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "59", 
+                            "linkedFeatures": [
+                                "60"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "61", 
+                            "linkedFeatures": [
+                                "62"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15528", 
+                                    "participantRef": "50", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "50", 
+                    "interactorRef": "uniprotkb_Q15528"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "64", 
+                            "linkedFeatures": [
+                                "65"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "28", 
+                            "linkedFeatures": [
+                                "27"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "66", 
+                            "linkedFeatures": [
+                                "67"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "68", 
+                            "linkedFeatures": [
+                                "69"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "70", 
+                            "linkedFeatures": [
+                                "71"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "56", 
+                            "linkedFeatures": [
+                                "55"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q6P2C8", 
+                                    "participantRef": "63", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "63", 
+                    "interactorRef": "uniprotkb_Q6P2C8"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "73", 
+                            "linkedFeatures": [
+                                "74"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_A0JLT2", 
+                                    "participantRef": "72", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "34", 
+                            "linkedFeatures": [
+                                "33"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_A0JLT2", 
+                                    "participantRef": "72", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "75", 
+                            "linkedFeatures": [
+                                "76"
+                            ], 
+                            "name": "med26 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_A0JLT2", 
+                                    "participantRef": "72", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "77", 
+                            "linkedFeatures": [
+                                "78"
+                            ], 
+                            "name": "med31 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_A0JLT2", 
+                                    "participantRef": "72", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "72", 
+                    "interactorRef": "uniprotkb_A0JLT2"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "12", 
+                            "linkedFeatures": [
+                                "11"
+                            ], 
+                            "name": "med7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O95402", 
+                                    "participantRef": "79", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "80", 
+                            "linkedFeatures": [
+                                "81"
+                            ], 
+                            "name": "med4 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O95402", 
+                                    "participantRef": "79", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "76", 
+                            "linkedFeatures": [
+                                "75"
+                            ], 
+                            "name": "med19 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O95402", 
+                                    "participantRef": "79", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "79", 
+                    "interactorRef": "uniprotkb_O95402"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "83", 
+                            "linkedFeatures": [
+                                "84"
+                            ], 
+                            "name": "med25 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9ULK4", 
+                                    "participantRef": "82", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "85", 
+                            "linkedFeatures": [
+                                "86"
+                            ], 
+                            "name": "med16 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9ULK4", 
+                                    "participantRef": "82", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "82", 
+                    "interactorRef": "uniprotkb_Q9ULK4"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "88", 
+                            "linkedFeatures": [
+                                "89"
+                            ], 
+                            "name": "med25 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75448", 
+                                    "participantRef": "87", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "90", 
+                            "linkedFeatures": [
+                                "91"
+                            ], 
+                            "name": "med14 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75448", 
+                                    "participantRef": "87", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "92", 
+                            "linkedFeatures": [
+                                "93"
+                            ], 
+                            "name": "med16 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75448", 
+                                    "participantRef": "87", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "87", 
+                    "interactorRef": "uniprotkb_O75448"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "95", 
+                            "linkedFeatures": [
+                                "96"
+                            ], 
+                            "name": "med9 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15648", 
+                                    "participantRef": "94", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "97", 
+                            "linkedFeatures": [
+                                "98"
+                            ], 
+                            "name": "med21 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15648", 
+                                    "participantRef": "94", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "99", 
+                            "linkedFeatures": [
+                                "100"
+                            ], 
+                            "name": "med4 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15648", 
+                                    "participantRef": "94", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "14", 
+                            "linkedFeatures": [
+                                "13"
+                            ], 
+                            "name": "med7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15648", 
+                                    "participantRef": "94", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "5", 
+                            "linkedFeatures": [
+                                "4"
+                            ], 
+                            "name": "med10 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q15648", 
+                                    "participantRef": "94", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "94", 
+                    "interactorRef": "uniprotkb_Q15648"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "10", 
+                            "linkedFeatures": [
+                                "9"
+                            ], 
+                            "name": "med7 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3C7", 
+                                    "participantRef": "101", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "78", 
+                            "linkedFeatures": [
+                                "77"
+                            ], 
+                            "name": "med19 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y3C7", 
+                                    "participantRef": "101", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "101", 
+                    "interactorRef": "uniprotkb_Q9Y3C7"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "62", 
+                            "linkedFeatures": [
+                                "61"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "103", 
+                            "linkedFeatures": [
+                                "104"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "105", 
+                            "linkedFeatures": [
+                                "106"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "107", 
+                            "linkedFeatures": [
+                                "108"
+                            ], 
+                            "name": "med18 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "109", 
+                            "linkedFeatures": [
+                                "110"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "111", 
+                            "linkedFeatures": [
+                                "112"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NVC6", 
+                                    "participantRef": "102", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "102", 
+                    "interactorRef": "uniprotkb_Q9NVC6"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "30", 
+                            "linkedFeatures": [
+                                "29"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "114", 
+                            "linkedFeatures": [
+                                "115"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "116", 
+                            "linkedFeatures": [
+                                "117"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "118", 
+                            "linkedFeatures": [
+                                "119"
+                            ], 
+                            "name": "med18 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "112", 
+                            "linkedFeatures": [
+                                "111"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "120", 
+                            "linkedFeatures": [
+                                "121"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9P086", 
+                                    "participantRef": "113", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "113", 
+                    "interactorRef": "uniprotkb_Q9P086"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "123", 
+                            "linkedFeatures": [
+                                "124"
+                            ], 
+                            "name": "med25 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y2X0", 
+                                    "participantRef": "122", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "125", 
+                            "linkedFeatures": [
+                                "126"
+                            ], 
+                            "name": "med14 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y2X0", 
+                                    "participantRef": "122", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "86", 
+                            "linkedFeatures": [
+                                "85"
+                            ], 
+                            "name": "med23 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y2X0", 
+                                    "participantRef": "122", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "93", 
+                            "linkedFeatures": [
+                                "92"
+                            ], 
+                            "name": "med24 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y2X0", 
+                                    "participantRef": "122", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "49", 
+                            "linkedFeatures": [
+                                "48"
+                            ], 
+                            "name": "med15 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9Y2X0", 
+                                    "participantRef": "122", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "122", 
+                    "interactorRef": "uniprotkb_Q9Y2X0"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "119", 
+                            "linkedFeatures": [
+                                "118"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BUE0", 
+                                    "participantRef": "127", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "52", 
+                            "linkedFeatures": [
+                                "51"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BUE0", 
+                                    "participantRef": "127", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "128", 
+                            "linkedFeatures": [
+                                "129"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BUE0", 
+                                    "participantRef": "127", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "108", 
+                            "linkedFeatures": [
+                                "107"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BUE0", 
+                                    "participantRef": "127", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "130", 
+                            "linkedFeatures": [
+                                "131"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9BUE0", 
+                                    "participantRef": "127", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "127", 
+                    "interactorRef": "uniprotkb_Q9BUE0"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "58", 
+                            "linkedFeatures": [
+                                "57"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "38", 
+                            "linkedFeatures": [
+                                "37"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "21", 
+                            "linkedFeatures": [
+                                "20"
+                            ], 
+                            "name": "med29 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "133", 
+                            "linkedFeatures": [
+                                "134"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "71", 
+                            "linkedFeatures": [
+                                "70"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "135", 
+                            "linkedFeatures": [
+                                "136"
+                            ], 
+                            "name": "med20 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q96HR3", 
+                                    "participantRef": "132", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "132", 
+                    "interactorRef": "uniprotkb_Q96HR3"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "134", 
+                            "linkedFeatures": [
+                                "133"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "36", 
+                            "linkedFeatures": [
+                                "35"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "115", 
+                            "linkedFeatures": [
+                                "114"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "65", 
+                            "linkedFeatures": [
+                                "64"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "19", 
+                            "linkedFeatures": [
+                                "18"
+                            ], 
+                            "name": "med29 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "138", 
+                            "linkedFeatures": [
+                                "139"
+                            ], 
+                            "name": "med6 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "106", 
+                            "linkedFeatures": [
+                                "105"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H204", 
+                                    "participantRef": "137", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "137", 
+                    "interactorRef": "uniprotkb_Q9H204"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "81", 
+                            "linkedFeatures": [
+                                "80"
+                            ], 
+                            "name": "med26 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NPJ6", 
+                                    "participantRef": "140", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "100", 
+                            "linkedFeatures": [
+                                "99"
+                            ], 
+                            "name": "med1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NPJ6", 
+                                    "participantRef": "140", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "141", 
+                            "linkedFeatures": [
+                                "142"
+                            ], 
+                            "name": "med9 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NPJ6", 
+                                    "participantRef": "140", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "143", 
+                            "linkedFeatures": [
+                                "144"
+                            ], 
+                            "name": "med21 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NPJ6", 
+                                    "participantRef": "140", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "140", 
+                    "interactorRef": "uniprotkb_Q9NPJ6"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "146", 
+                            "linkedFeatures": [
+                                "147"
+                            ], 
+                            "name": "med25 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O60244", 
+                                    "participantRef": "145", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "126", 
+                            "linkedFeatures": [
+                                "125"
+                            ], 
+                            "name": "med16 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O60244", 
+                                    "participantRef": "145", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "91", 
+                            "linkedFeatures": [
+                                "90"
+                            ], 
+                            "name": "med24 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O60244", 
+                                    "participantRef": "145", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "47", 
+                            "linkedFeatures": [
+                                "46"
+                            ], 
+                            "name": "med15 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O60244", 
+                                    "participantRef": "145", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "145", 
+                    "interactorRef": "uniprotkb_O60244"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "67", 
+                            "linkedFeatures": [
+                                "66"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "74", 
+                            "linkedFeatures": [
+                                "73"
+                            ], 
+                            "name": "med19 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "54", 
+                            "linkedFeatures": [
+                                "53"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "117", 
+                            "linkedFeatures": [
+                                "116"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "139", 
+                            "linkedFeatures": [
+                                "138"
+                            ], 
+                            "name": "med28 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "32", 
+                            "linkedFeatures": [
+                                "31"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "131", 
+                            "linkedFeatures": [
+                                "130"
+                            ], 
+                            "name": "med18 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "104", 
+                            "linkedFeatures": [
+                                "103"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_O75586", 
+                                    "participantRef": "148", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "148", 
+                    "interactorRef": "uniprotkb_O75586"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "144", 
+                            "linkedFeatures": [
+                                "143"
+                            ], 
+                            "name": "med4 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q13503", 
+                                    "participantRef": "149", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "98", 
+                            "linkedFeatures": [
+                                "97"
+                            ], 
+                            "name": "med1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q13503", 
+                                    "participantRef": "149", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "7", 
+                            "linkedFeatures": [
+                                "6"
+                            ], 
+                            "name": "med10 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q13503", 
+                                    "participantRef": "149", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "150", 
+                            "linkedFeatures": [
+                                "151"
+                            ], 
+                            "name": "med9 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q13503", 
+                                    "participantRef": "149", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "149", 
+                    "interactorRef": "uniprotkb_Q13503"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "40", 
+                            "linkedFeatures": [
+                                "39"
+                            ], 
+                            "name": "med8 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "121", 
+                            "linkedFeatures": [
+                                "120"
+                            ], 
+                            "name": "med11 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "17", 
+                            "linkedFeatures": [
+                                "16"
+                            ], 
+                            "name": "med29 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "69", 
+                            "linkedFeatures": [
+                                "68"
+                            ], 
+                            "name": "med27 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "136", 
+                            "linkedFeatures": [
+                                "135"
+                            ], 
+                            "name": "med30 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "60", 
+                            "linkedFeatures": [
+                                "59"
+                            ], 
+                            "name": "med22 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "110", 
+                            "linkedFeatures": [
+                                "109"
+                            ], 
+                            "name": "med17 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "129", 
+                            "linkedFeatures": [
+                                "128"
+                            ], 
+                            "name": "med18 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9H944", 
+                                    "participantRef": "152", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "152", 
+                    "interactorRef": "uniprotkb_Q9H944"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "96", 
+                            "linkedFeatures": [
+                                "95"
+                            ], 
+                            "name": "med1 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NWA0", 
+                                    "participantRef": "153", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "142", 
+                            "linkedFeatures": [
+                                "141"
+                            ], 
+                            "name": "med4 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NWA0", 
+                                    "participantRef": "153", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "151", 
+                            "linkedFeatures": [
+                                "150"
+                            ], 
+                            "name": "med21 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q9NWA0", 
+                                    "participantRef": "153", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "153", 
+                    "interactorRef": "uniprotkb_Q9NWA0"
+                }, 
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "features": [
+                        {
+                            "category": "bindingSites", 
+                            "id": "84", 
+                            "linkedFeatures": [
+                                "83"
+                            ], 
+                            "name": "med23 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q71SY5", 
+                                    "participantRef": "154", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "147", 
+                            "linkedFeatures": [
+                                "146"
+                            ], 
+                            "name": "med14 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q71SY5", 
+                                    "participantRef": "154", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "89", 
+                            "linkedFeatures": [
+                                "88"
+                            ], 
+                            "name": "med24 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q71SY5", 
+                                    "participantRef": "154", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "124", 
+                            "linkedFeatures": [
+                                "123"
+                            ], 
+                            "name": "med16 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q71SY5", 
+                                    "participantRef": "154", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }, 
+                        {
+                            "category": "bindingSites", 
+                            "id": "45", 
+                            "linkedFeatures": [
+                                "44"
+                            ], 
+                            "name": "med15 binding region", 
+                            "sequenceData": [
+                                {
+                                    "interactorRef": "uniprotkb_Q71SY5", 
+                                    "participantRef": "154", 
+                                    "pos": "?-?"
+                                }
+                            ], 
+                            "type": {
+                                "id": "MI:0117", 
+                                "name": "binding-associated region"
+                            }
+                        }
+                    ], 
+                    "id": "154", 
+                    "interactorRef": "uniprotkb_Q71SY5"
+                }
+            ]
+        }
+    ]
+}
