@@ -304,10 +304,12 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.highlightLine.setAttribute("d", path);
             this.line.setAttribute("d", path);
         } else {
-            this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
-            this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
-            this.setLineCoordinates(this.renderedFromProtein);
-            this.setLineCoordinates(this.renderedToProtein);
+            if (!this.crossLink.isSelfLink()) {
+                this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
+                this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+                this.setLineCoordinates(this.renderedFromProtein);
+                this.setLineCoordinates(this.renderedToProtein);
+            }
         }
         d3.select(this.highlightLine).style("display", null);
         d3.select(this.line).style("display", null);
@@ -427,7 +429,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
         }
     }
 
-    var rotated = CLMS.xiNET.RenderedProtein.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
+    var rotated = Molecule.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
 
     x = rotated[0] + renderedInteractor.x;
     y = rotated[1] + renderedInteractor.y;
