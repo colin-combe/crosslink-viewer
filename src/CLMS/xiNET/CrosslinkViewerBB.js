@@ -238,7 +238,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.renderedProteins = new Map();
         this.renderedCrossLinks = new Map();
         this.renderedP_PLinks = new Map();
-        this.renderedNaryLinks = new Map();
 
         this.layout = null;
         this.z = 1;
@@ -250,11 +249,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     render: function() {
-        console.log("!xinet render");
         if (this.wasEmpty) {
             this.wasEmpty = false;
             if (this.model.get("clmsModel").get("xiNETLayout")) {
-                this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
+                this.loadLayout(this.model.get("clmsModel").get("xiNETLayout").layout);
             } else {
                 for (let prot of this.renderedProteins.values()) {
                     prot.init();
@@ -773,15 +771,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        var groups = [{
-            leaves: nodes.slice(5, 7)
-        }];
+        // var groups = [{
+        //     leaves: nodes.slice(5, 7)
+        // }];
 
         this.cola = cola.d3adaptor().nodes(nodes).avoidOverlaps(true);
 
         var links = new Map();
-        var nodeSet = new Set();
-        var groupSet = new Set();
+        // var nodeSet = new Set();
+        // var groupSet = new Set();
 
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
         var clCount = filteredCrossLinks.length;
@@ -794,16 +792,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var linkId = fromId + "-" + toId;
                 if (!links.has(linkId)) {
                     var linkObj = {};
-                    linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
-                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
-                    nodeSet.add(linkObj.source);
-                    nodeSet.add(linkObj.target);
-                    if (linkObj.source.complex && linkObj.source.complex.form == 1) {
-                        groupSet.add(linkObj.source.complex.naryLink);
-                    }
-                    if (linkObj.target.complex && linkObj.target.complex.form == 1) {
-                        groupSet.add(linkObj.target.complex.naryLink);
-                    }
+                    linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id);//.getRenderedParticipant();
+                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id);//.getRenderedParticipant();
+                    // nodeSet.add(linkObj.source);
+                    // nodeSet.add(linkObj.target);
+                    // if (linkObj.source.complex && linkObj.source.complex.form == 1) {
+                    //     groupSet.add(linkObj.source.complex.naryLink);
+                    // }
+                    // if (linkObj.target.complex && linkObj.target.complex.form == 1) {
+                    //     groupSet.add(linkObj.target.complex.naryLink);
+                    // }
                     linkObj.id = linkId;
                     links.set(linkId, linkObj);
                 }
@@ -815,15 +813,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var height = bBox.height;
         var k = 30; //Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
 
-        var linkArray = CLMS.arrayFromMapValues(links);
-        var nodeArray = Array.from(nodeSet);
-        var groupArray = Array.from(groupSet);
+        var linkArr = CLMS.arrayFromMapValues(links);
+        // var nodeArray = Array.from(nodeSet);
+        // var groupArray = Array.from(groupSet);
+         // = cola.d3adaptor().nodes(nodeArray)
+         //    // .groups(groupArray)
 
-        this.cola = cola.d3adaptor().nodes(nodeArray)
-            .groups(groupArray)
-            .avoidOverlaps(true)
-            .size([width, height])
-            .links(linkArray);
+
+        this.cola.size([width, height]).links(linkArr);
 
         var self = this;
 
@@ -889,7 +886,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, offsetY);
                 node.setAllLinkCoordinates();
             }
-            var groupsArr = self.cola.groups();
+            // var groupsArr = self.cola.groups();
         });
         this.cola.start(10, 15, 20);
     },

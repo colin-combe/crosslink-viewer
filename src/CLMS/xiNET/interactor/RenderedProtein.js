@@ -126,9 +126,6 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         return false;
     };
 
-    this.busy = false;
-    this.stickZoom = this.crosslinkViewer.defaultBarScale;
-
     Object.defineProperty(this, "width", {
         get: function width() {
             return this.upperGroup.getBBox().width;
@@ -147,6 +144,9 @@ CLMS.xiNET.RenderedProtein.prototype = new Molecule();
 // - could remove this as part of tidying up overall initialisation?
 CLMS.xiNET.RenderedProtein.prototype.init = function() {
     this.busy = false;
+    if (!this.stickZoom) {
+        this.stickZoom = this.crosslinkViewer.defaultBarScale;
+    }
     this.showHighlight(this.isHighlighted);
     this.setSelected(this.isSelected);
     this.setPosition(this.x, this.y);
