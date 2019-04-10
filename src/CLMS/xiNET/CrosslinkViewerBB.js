@@ -246,34 +246,27 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout"));
             } else {
-                var renderedParticipantsArr = CLMS.arrayFromMapValues(this.renderedProteins);
-                var rpCount = renderedParticipantsArr.length;
-                for (var rp = 0; rp < rpCount; rp++) {
-                    var prot = renderedParticipantsArr[rp];
+                for (let prot of this.renderedProteins.values()) {
                     prot.init();
                 }
                 this.autoLayout();
-            };
+            }
         }
 
         CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
-        var pLinksArr = CLMS.arrayFromMapValues(this.renderedP_PLinks);
-        var plCount = pLinksArr.length;
-        for (var pl = 0; pl < plCount; pl++) {
-            var p_pCrossLinkCount = pLinksArr[pl].check();
+        for (let p_pLink of this.renderedP_PLinks.values()) {
+            var p_pCrossLinkCount = p_pLink.check();
             if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
                 CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
             }
         }
 
-        for (pl = 0; pl < plCount; pl++) {
-            pLinksArr[pl].update();
+        for (let p_pLink of this.renderedP_PLinks.values()) {
+            p_pLink.update();
         }
 
-        var cLinksArr = CLMS.arrayFromMapValues(this.renderedCrossLinks);
-        var clCount = cLinksArr.length;
-        for (var cl = 0; cl < clCount; cl++) {
-            cLinksArr[cl].check();
+        for (let cLink of this.renderedCrossLinks.values()) {
+            cLink.check();
         }
 
     },
@@ -717,7 +710,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 }
                 protein.x = protLayout["x"];
                 protein.y = protLayout["y"];
-                protein.form = protLayout["form"] - 0;
+                protein.newForm = protLayout["form"] - 0;
                 protein.stickZoom = protLayout["stickZoom"];
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];

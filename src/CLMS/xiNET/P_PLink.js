@@ -129,7 +129,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     this.thickLine.oncontextmenu = function() {
         return false;
     };
-}
+};
 
 CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
     var p = this.crosslinkViewer.getEventPoint(evt);
