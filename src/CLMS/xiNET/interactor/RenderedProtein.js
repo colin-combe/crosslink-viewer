@@ -1027,8 +1027,8 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceArcPath = function(ann
     }
 
     var radius = this.getBlobRadius() - 2;
-    var arcStart = CLMS.xiNET.RenderedProtein.trig(radius, startAngle - 90);
-    var arcEnd = CLMS.xiNET.RenderedProtein.trig(radius, endAngle - 90);
+    var arcStart = Molecule.trig(radius, startAngle - 90);
+    var arcEnd = Molecule.trig(radius, endAngle - 90);
     return "M0,0 L" + arcStart.x + "," + arcStart.y + " A" + radius + "," +
         radius + " 0 " + largeArcFlag + " " + sweepFlag + " " + arcEnd.x + "," + arcEnd.y + " Z";
 };
@@ -1038,13 +1038,13 @@ CLMS.xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = func
     var startAngle = ((annotation.fstart - 1) / this.participant.size) * 360;
     var endAngle = ((annotation.fend) / this.participant.size) * 360;
     var pieRadius = this.getBlobRadius() - 2;
-    var arcStart = CLMS.xiNET.RenderedProtein.trig(pieRadius, startAngle - 90);
-    var arcEnd = CLMS.xiNET.RenderedProtein.trig(pieRadius, endAngle - 90);
+    var arcStart = Molecule.trig(pieRadius, startAngle - 90);
+    var arcEnd = Molecule.trig(pieRadius, endAngle - 90);
     var approximatePiePath = "M 0,0";
     var stepsInArc = 5;
     for (var sia = 0; sia <= CLMS.xiNET.RenderedProtein.stepsInArc; sia++) {
         var angle = startAngle + ((endAngle - startAngle) * (sia / stepsInArc));
-        var siaCoord = CLMS.xiNET.RenderedProtein.trig(pieRadius, angle - 90);
+        var siaCoord = Molecule.trig(pieRadius, angle - 90);
         approximatePiePath += " L " + siaCoord.x + "," + siaCoord.y;
     }
     approximatePiePath += " L " + 0 + "," + 0;
