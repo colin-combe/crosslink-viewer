@@ -337,7 +337,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var prot = renderedParticipantArr[rp];
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
-            prot.stickZoom = this.defaultBarScale;
+            if (!prot.stickZoom){
+                prot.stickZoom = this.defaultBarScale;
+            }
             prot.scale();
         }
 
