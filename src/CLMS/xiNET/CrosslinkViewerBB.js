@@ -254,9 +254,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout").layout);
             } else {
-                for (let prot of this.renderedProteins.values()) {
-                    prot.init();
-                }
+                // for (var prot of this.renderedProteins.values()) {
+                //     prot.init();
+                // }
                 this.autoLayout();
             }
         }
@@ -301,9 +301,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (protSize > maxSeqLength) {
                     maxSeqLength = protSize;
                 }
-                if (this.wasEmpty == false) {
-                    newProt.init();
-                }
+                // if (this.wasEmpty == false) {
+                //     newProt.init();
+                // }
             }
         }
         var width = this.svgElement.parentNode.clientWidth;
@@ -337,6 +337,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var prot = renderedParticipantArr[rp];
             this.proteinLower.appendChild(prot.lowerGroup);
             this.proteinUpper.appendChild(prot.upperGroup);
+            prot.stickZoom = this.defaultBarScale;
+            prot.scale();
         }
 
         //may need to comment out following if probs
@@ -715,7 +717,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
-                protein.x = protLayout["x"];
+                protein.x = protLayout["x"];        this.stickZoom = this.crosslinkViewer.defaultBarScale;
                 protein.y = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 protein.stickZoom = protLayout["stickZoom"];
@@ -731,7 +733,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
-            prot.init();
+            prot.setEverything();
         }
 
         this.model.trigger("hiddenChanged");
