@@ -508,7 +508,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
     d3.select(this.circDomains).transition().attr("opacity", 1)
         .attr("transform", "scale(1, 1)")
-        .duration(CLMS.xiNET.RenderedProtein.transitionTime);-(r + 5)
+        .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
     var stickZoomInterpol = d3.interpolate(this.stickZoom, 0);
     var rotationInterpol = d3.interpolate((this.rotation > 180) ? this.rotation - 360 : this.rotation, 0);
