@@ -719,7 +719,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
-                protein.x = protLayout["x"];        this.stickZoom = this.crosslinkViewer.defaultBarScale;
+                protein.x = protLayout["x"];
                 protein.y = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 protein.stickZoom = protLayout["stickZoom"];
