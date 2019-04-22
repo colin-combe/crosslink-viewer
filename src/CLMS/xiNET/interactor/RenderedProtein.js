@@ -8,6 +8,7 @@
 CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.participant = participant;
     this.crosslinkViewer = crosslinkViewer;
+    this.busy = false;
 
     this.renderedP_PLinks = [];
     this.renderedCrossLinks = [];
@@ -20,9 +21,9 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 0.5;
-    this.form = null; // 0 = blob, 1 = stick
+    this.form = 0; // 0 = blob, 1 = stick
     this.isFlipped = false;
-    //rendered-protein state
+    //renderedProtein state
     this.isSelected = false;
     this.isHighlighted = false; // mjg apr 18
     //rotators
@@ -100,6 +101,23 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
 
     this.scaleLabels = [];
 
+    //since form is set to 0, make this a circle, this stuff is equivalant to
+    // end result of toCircle but without transition
+    var r = this.getBlobRadius();
+    d3.select(this.outline)
+        .attr("fill-opacity", 1)
+        .attr("fill", "#ffffff")
+        .attr("x", -r).attr("y", -r)
+        .attr("width", r * 2).attr("height", r * 2)
+        .attr("rx", r).attr("ry", r);
+    d3.select(this.highlight)
+        .attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+        .attr("x", -r - 2.5).attr("y", -r - 2.5)
+        .attr("rx", r + 2.5).attr("ry", r + 2.5)
+        .attr("stroke-opacity", 0);
+    this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
+
+
     // events
     var self = this;
     this.upperGroup.onmousedown = function(evt) {
@@ -126,6 +144,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         return false;
     };
 
+    //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
             return this.upperGroup.getBBox().width;
@@ -140,9 +159,9 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
 
 CLMS.xiNET.RenderedProtein.prototype = new Molecule();
 
-//when we get here all prot's should have had their sequence set, so protein.MAXSIZE has correct value;
-// - could remove this as part of tidying up overall initialisation?
-CLMS.xiNET.RenderedProtein.prototype.init = function() {
+//when we get here all prot's have been created and defaultBarScale will have value
+//this is called by loadLayout function
+CLMS.xiNET.RenderedProtein.prototype.setEverything = function() {
     this.busy = false;
     if (!this.stickZoom) {
         this.stickZoom = this.crosslinkViewer.defaultBarScale;
@@ -475,7 +494,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     var r = this.getBlobRadius();
 
     d3.select(this.outline).transition()
-        .attr("stroke-opacity", 1) //needed?
+        //.attr("stroke-opacity", 1) //needed?
         .attr("fill-opacity", 1)
         .attr("fill", "#ffffff")
         .attr("x", -r).attr("y", -r)
