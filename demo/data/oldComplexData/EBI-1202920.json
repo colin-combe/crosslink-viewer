@@ -1,0 +1,69 @@
+{
+    "data": [
+        {
+            "id": "uniprotkb_P12004", 
+            "identifier": {
+                "db": "uniprotkb", 
+                "id": "P12004"
+            }, 
+            "label": "pcna_human", 
+            "object": "interactor", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "sequence": "MFEARLVQGSILKKVLEALKDLINEACWDISSSGVNLQSMDSSHVSLVQLTLRSEGFDTYRCDRNLAMGVNLTSMSKILKCAGNEDIITLRAEDNADTLALVFEAPNQEKVSDYEMKLMDLDVEQLGIPEQEYSCVVKMPSGEFARICRDLSHIGDAVVISCAKDGVKFSASGELGNGNIKLSQTSNVDKEEEAVTIEMNEPVQLTFALRYLNFFTKATPLSSTVTLSMSADVPLVVEYKIADMGHLKYYLAPKIEDEEGS", 
+            "type": {
+                "id": "MI:0326", 
+                "name": "protein"
+            }
+        }, 
+        {
+            "complexType": {
+                "id": "MI:1302", 
+                "name": "stable complex"
+            }, 
+            "evidenceType": {
+                "id": "ECO:0000353", 
+                "name": "physical interaction evidence used in manual assertion"
+            }, 
+            "id": "reactome_REACT_2542", 
+            "identifiers": [
+                {
+                    "db": "reactome", 
+                    "id": "REACT_2542"
+                }, 
+                {
+                    "db": "protein ontology", 
+                    "id": "PR:000026440"
+                }, 
+                {
+                    "db": "intact", 
+                    "id": "EBI-1202920"
+                }
+            ], 
+            "interactionType": {
+                "id": "MI:0407", 
+                "name": "direct interaction"
+            }, 
+            "object": "interaction", 
+            "organism": {
+                "common": "human", 
+                "scientific": "Homo sapiens", 
+                "taxid": "9606"
+            }, 
+            "participants": [
+                {
+                    "bioRole": {
+                        "id": "MI:0499", 
+                        "name": "unspecified role"
+                    }, 
+                    "id": "1", 
+                    "interactorRef": "uniprotkb_P12004", 
+                    "stoichiometry": "3"
+                }
+            ]
+        }
+    ]
+}
