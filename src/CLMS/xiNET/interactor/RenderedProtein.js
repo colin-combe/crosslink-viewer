@@ -953,9 +953,6 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             if (withinAlignedRange) {
                 var pieSlice = document.createElementNS(this.crosslinkViewer.svgns, "path");
                 var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
-                
-                console.log ("tttt", anno.type);
-
                 if (anno.type != CLMS.xiNET.disulfide) {
                     //if (anno.type != "disulfide bond") {
                     if (this.form === 0) {
