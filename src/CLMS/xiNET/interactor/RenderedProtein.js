@@ -5,6 +5,8 @@
 //
 //  CLMS.xiNET.RenderedProtein.js
 
+CLMS.xiNET.disulfide = "disulfide bond";
+
 CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.participant = participant;
     this.crosslinkViewer = crosslinkViewer;
@@ -562,7 +564,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
                 feature = anno.feature,
                 pieSlice = anno.pieSlice,
                 rectDomain = anno.colouredRect;
-            if (feature.type != "DISULFID") {
+            if (feature.type != CLMS.xiNET.disulfide) {
                 d3.select(pieSlice).transition().attr("d", this.getAnnotationPieSliceApproximatePath(feature))
                     .duration(CLMS.xiNET.RenderedProtein.transitionTime).each("end",
                         function() {
@@ -709,7 +711,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
                 pieSlice = anno.pieSlice,
                 rectDomain = anno.colouredRect;
 
-            if (feature.type != "DISULFID") {
+            if (feature.type != CLMS.xiNET.disulfide) {
                 pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
                 d3.select(pieSlice).transition().attr("d", this.getAnnotationRectPath(feature))
                     .duration(CLMS.xiNET.RenderedProtein.transitionTime);
@@ -898,7 +900,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
     // does all of the commented out above, and picks up user-defined annotations
     var featuresShown = this.crosslinkViewer.model.getFilteredFeatures(this.participant);
     var split = _.partition(featuresShown, function(f) {
-        return f.type == "disulfide bond";
+        return f.type == CLMS.xiNET.disulfide;
     });
     var disulfidBonds = split[0];
     featuresShown = split[1];
@@ -951,8 +953,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
             if (withinAlignedRange) {
                 var pieSlice = document.createElementNS(this.crosslinkViewer.svgns, "path");
                 var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
-
-                if (anno.type != "DISULFID") {
+                if (anno.type != CLMS.xiNET.disulfide) {
                     //if (anno.type != "disulfide bond") {
                     if (this.form === 0) {
                         pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
