@@ -165,9 +165,7 @@ Complex.prototype.setForm = function(form, svgP) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();
             rp.setHidden(true);
-            if (rp.selfLink) {
-                rp.selfLink.hide();
-            }
+            rp.checkLinks();
         }
         this.naryLink.hide();
         this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
@@ -179,9 +177,7 @@ Complex.prototype.setForm = function(form, svgP) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();
             rp.setHidden(false);
-            if (rp.selfLink) {
-                rp.selfLink.show();
-            }
+            rp.checkLinks();
         }
         this.naryLink.show();
         this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
