@@ -448,8 +448,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //prevent default, but allow propogation
         evt.preventDefault();
         //stop layout
-        if (this.cola) {
-            this.cola.stop();
+        if (this.d3cola) {
+            this.d3cola.stop();
         }
 
         this.dragStart = evt;
@@ -546,7 +546,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     var rpCount = renderedParticipantArr.length;
                     for (var rp = 0; rp < rpCount; rp++) {
                         var renderedParticipant = renderedParticipantArr[rp];
-                        if (renderedParticipant.participant.hidden !== true) {
+                        if (renderedParticipant.hidden !== true) {
                             var svgRect = this.svgElement.createSVGRect();
                             svgRect.x = rectX;
                             svgRect.y = rectY;
@@ -748,62 +748,34 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.resetZoom();
 
-        // var groupMap = {};
-        // graph.nodes.forEach(function (v, i) {
-        //     var g = v.group;
-        //     if (typeof groupMap[g] == 'undefined') {
-        //         groupMap[g] = [];
-        //     }
-        //     groupMap[g].push(i);
-        //
-        //     v.width = v.height = 10;
-        // });
-        //
-        // var groups = [];
-        // for (var g in groupMap) {
-        //     groups.push({ id: g, leaves: groupMap[g] });
-        // }
-
-        // var nodes = []; // not hidden nodes
-        // var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        // var rpCount = renderedParticipantArr.length;
-        // for (var rp = 0; rp < rpCount; rp++) {
-        //     var renderedParticipant = renderedParticipantArr[rp];
-        //     if (renderedParticipant.participant.hidden === false) {
-        //         nodes.push(renderedParticipant);
-        //     }
-        // }
-
-
         var links = new Map();
         var nodeSet = new Set();
-        // var groupSet = new Set();
 
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
         var clCount = filteredCrossLinks.length;
         for (var cl = 0; cl < clCount; ++cl) {
             var crossLink = filteredCrossLinks[cl];
             //visible, non-self cross-links only
-            if (crossLink.isSelfLink() === false) {
-                var fromId = crossLink.fromProtein.id;
-                var toId = crossLink.toProtein.id;
-                var linkId = fromId + "-" + toId;
-                if (!links.has(linkId)) {
-                    var linkObj = {};
-                    linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
-                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
-                    nodeSet.add(linkObj.source);
-                    nodeSet.add(linkObj.target);
-                    // if (linkObj.source.complex && linkObj.source.complex.form == 1) {
-                    //     groupSet.add(linkObj.source.complex.naryLink);
-                    // }
-                    // if (linkObj.target.complex && linkObj.target.complex.form == 1) {
-                    //     groupSet.add(linkObj.target.complex.naryLink);
-                    // }
-                    linkObj.id = linkId;
-                    links.set(linkId, linkObj);
-                }
+            // if (crossLink.isSelfLink() === false) {
+            var fromId = crossLink.fromProtein.id;
+            var toId = crossLink.toProtein.id;
+            var linkId = fromId + "-" + toId;
+            if (!links.has(linkId)) {
+                var linkObj = {};
+                linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
+                linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
+                nodeSet.add(linkObj.source);
+                nodeSet.add(linkObj.target);
+                // if (linkObj.source.complex && linkObj.source.complex.form == 1) {
+                //     groupSet.add(linkObj.source.complex.naryLink);
+                // }
+                // if (linkObj.target.complex && linkObj.target.complex.form == 1) {
+                //     groupSet.add(linkObj.target.complex.naryLink);
+                // }
+                linkObj.id = linkId;
+                links.set(linkId, linkObj);
             }
+            // }
         }
 
         // var bBox = this.svgElement.getBoundingClientRect();
@@ -813,9 +785,26 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         var linkArr = CLMS.arrayFromMapValues(links);
         var nodeArray = Array.from(nodeSet);
-        // var groupArray = Array.from(groupSet);
-        // = cola.d3adaptor().nodes(nodeArray)
-        //    // .groups(groupArray)
+
+        var groups = [];
+        if (this.complexes) {
+            for (var g of this.complexes) {
+                if (g.form == 1) {
+                    var leaves = [];
+                    for (var rp of g.naryLink.renderedParticipants) {
+                        // var rp = this.renderedProteins.get(p.id);
+                        var i = nodeArray.indexOf(rp);
+                        if (i != -1) {
+                            leaves.push(i);
+                        }
+                    }
+                    groups.push({
+                        id: "ribosome",
+                        leaves: leaves
+                    });
+                }
+            }
+        }
 
         delete this.d3cola._lastStress;
         delete this.d3cola._alpha;
@@ -823,7 +812,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         delete this.d3cola._rootGroup;
 
 
-        this.d3cola.nodes(nodeArray).avoidOverlaps(true).links(linkArr);
+        this.d3cola.nodes(nodeArray).groups(groups).avoidOverlaps(true).links(linkArr);
 
         var self = this;
 
@@ -1143,10 +1132,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         complex.initMolecule(nLink);
 
-        // complex.show();
-        var pos = complex.getPosition(); //todo - fix
-        complex.setPosition(pos[0], pos[1]);
         this.renderedProteins.set(group.id, complex);
+        this.complexes = [complex];
         //self.allNaryLinks.set(nLinkId, nLink);
         //alot of time is being spent on creating these IDs, stash them in the interaction object?
         //interaction.naryId =  nLinkId;

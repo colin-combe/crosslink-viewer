@@ -124,9 +124,9 @@ Complex.prototype.initMolecule = function(naryLink) {
     naryLink.path.setAttribute('stroke', 'black');
     naryLink.path.setAttribute('stroke-linejoin', 'round');
     naryLink.path.setAttribute('stroke-width', 8);
+    var pos = this.getPosition();; //todo tidy up
+    this.setPosition(pos[0], pos[1]);
     this.setForm(this.form);
-    // var pos = this.getPosition();; //todo tidy up
-    // this.setPosition(pos[0], pos[1]);
 };
 
 Complex.prototype.mouseOver = function(evt) {
@@ -176,7 +176,7 @@ Complex.prototype.setForm = function(form, svgP) {
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();
-            rp.setHidden(false);
+            rp.setHidden(rp.participant.hidden);
             rp.checkLinks();
         }
         this.naryLink.show();

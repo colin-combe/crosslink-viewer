@@ -286,9 +286,10 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden ||
+    if (this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
         this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1 ||
-        this.filteredCrossLinkCount === 0) {
+        this.filteredCrossLinkCount === 0
+      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.form == 0)) {
         this.hide();
     } else {
         this.show();
@@ -352,26 +353,30 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(participant) {
-    target = participant.getRenderedParticipant();
+CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
+    target = this.renderedFromProtein.getRenderedParticipant();
+    source = this.renderedToProtein.getRenderedParticipant();
+    if (!target.x || !target.y) {
+        console.log("NOT");
+    }
 
     if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            if (this.renderedFromProtein === participant) {
-                this.line.setAttribute("x1", target.x);
-                this.line.setAttribute("y1", target.y);
-                this.highlightLine.setAttribute("x1", target.x);
-                this.highlightLine.setAttribute("y1", target.y);
-                this.thickLine.setAttribute("x1", target.x);
-                this.thickLine.setAttribute("y1", target.y);
-            } else if (this.renderedToProtein === participant) {
-                this.line.setAttribute("x2", target.x);
-                this.line.setAttribute("y2", target.y);
-                this.highlightLine.setAttribute("x2", target.x);
-                this.highlightLine.setAttribute("y2", target.y);
-                this.thickLine.setAttribute("x2", target.x);
-                this.thickLine.setAttribute("y2", target.y);
-            }
+            //     if (this.renderedFromProtein === participant) {
+            this.line.setAttribute("x1", source.x);
+            this.line.setAttribute("y1", source.y);
+            this.highlightLine.setAttribute("x1", source.x);
+            this.highlightLine.setAttribute("y1", source.y);
+            this.thickLine.setAttribute("x1", source.x);
+            this.thickLine.setAttribute("y1", source.y);
+            // } else if (this.renderedToProtein === participant) {
+            this.line.setAttribute("x2", target.x);
+            this.line.setAttribute("y2", target.y);
+            this.highlightLine.setAttribute("x2", target.x);
+            this.highlightLine.setAttribute("y2", target.y);
+            this.thickLine.setAttribute("x2", target.x);
+            this.thickLine.setAttribute("y2", target.y);
+            // }
         }
     }
 }

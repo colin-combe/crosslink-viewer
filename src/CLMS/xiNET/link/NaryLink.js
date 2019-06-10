@@ -74,7 +74,7 @@ NaryLink.prototype.show = function() {
 
 NaryLink.prototype.hide = function() {
     d3.select(this.path).style("display", "none");
-//    this.controller.groupsSVG.removeChild(this.path);
+    //    this.controller.groupsSVG.removeChild(this.path);
 };
 
 NaryLink.prototype.setLinkCoordinates = function() {
@@ -101,20 +101,22 @@ NaryLink.prototype.getMappedCoordinates = function() {
     var rpCount = renderedParticipants.length;
     for (var i = 0; i < rpCount; i++) {
         var rp = renderedParticipants[i];
-        if (rp.type == 'complex') {
-            mapped = mapped.concat(NaryLink.orbitNodes(rp.naryLink.getMappedCoordinates()));
-        } else if (rp.form === 1) {
-            var start = rp.getResidueCoordinates(0);
-            var end = rp.getResidueCoordinates(rp.participant.size);
-            if (!isNaN(start[0]) && !isNaN(start[1]) &&
-                !isNaN(end[0]) && !isNaN(end[1])) {
-                mapped.push(start);
-                mapped.push(end);
+        if (rp.hidden == false) {
+            if (rp.type == 'complex') {
+                mapped = mapped.concat(NaryLink.orbitNodes(rp.naryLink.getMappedCoordinates()));
+            } else if (rp.form === 1) {
+                var start = rp.getResidueCoordinates(0);
+                var end = rp.getResidueCoordinates(rp.participant.size);
+                if (!isNaN(start[0]) && !isNaN(start[1]) &&
+                    !isNaN(end[0]) && !isNaN(end[1])) {
+                    mapped.push(start);
+                    mapped.push(end);
+                } else {
+                    mapped.push(rp.getPosition());
+                }
             } else {
                 mapped.push(rp.getPosition());
             }
-        } else {
-            mapped.push(rp.getPosition());
         }
     }
     return mapped;

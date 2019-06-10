@@ -43,16 +43,12 @@ Link.prototype.highlightMolecules = function(show) {
 Link.prototype.mouseDown = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.controller.force) {
-        this.controller.force.stop();
+    if (this.controller.d3cola) {
+        this.controller.d3cola.stop();
     }
-    this.controller.dragElement = this;
-    //this.controller.clearSelection();
-    /* //this.setSelected(true); */
+    // this.controller.dragElement = this;
     //store start location
-    //var p = this.controller.getEventPoint(evt); // seems to be correct, see above
     this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
-    //~ this.showData();
     return false;
 }
 
