@@ -610,7 +610,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                         if (rightclick) {
                             if (this.dragElement.form === 0) {
                                 this.dragElement.setForm(1);
-                            } else if (this.dragElement.type == "complex") {
+                            } else if (this.dragElement.type == "nary") {
                                 this.dragElement.setForm(0);
                             } else {
                                 this.model.get("tooltipModel").set("contents", null);

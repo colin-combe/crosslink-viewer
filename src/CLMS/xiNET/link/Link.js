@@ -46,7 +46,7 @@ Link.prototype.mouseDown = function(evt) {
     if (this.controller.d3cola) {
         this.controller.d3cola.stop();
     }
-    // this.controller.dragElement = this;
+    this.controller.dragElement = this;
     //store start location
     this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
     return false;
