@@ -22,7 +22,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.y = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
-    this.stickZoom = 0.5;
+    //this.stickZoom = 0.5;
     this.form = 0; // 0 = blob, 1 = stick
     this.isFlipped = false;
     //renderedProtein state
