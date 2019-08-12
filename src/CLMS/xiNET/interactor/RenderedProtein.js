@@ -149,12 +149,12 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width;
+            return this.upperGroup.getBBox().width * this.crosslinkViewer.z;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height;
+            return this.upperGroup.getBBox().height * this.crosslinkViewer.z;
         }
     });
 };

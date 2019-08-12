@@ -202,7 +202,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
-        this.listenTo(this.model, "groupsChanged", this.groupsChanged);
+        this.listenTo(this.model, "groupedGoTermsChanged", this.groupsChanged);
 
         this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
             self.clickModeIsSelect = true;
@@ -722,7 +722,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 protein.y = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 if (this.barScales.indexOf(+protLayout["stickZoom"]) > -1) {
-                protein.stickZoom = protLayout["stickZoom"];
+                    protein.stickZoom = protLayout["stickZoom"];
                 }
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];
@@ -748,7 +748,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
 
-        this.resetZoom();
+        //this.resetZoom();
 
         var links = new Map();
         var nodeSet = new Set();
@@ -780,10 +780,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             // }
         }
 
-        // var bBox = this.svgElement.getBoundingClientRect();
-        // var width = bBox.width;
-        // var height = bBox.height;
-        var k = 30; //Math.sqrt((width * height ) / (this.renderedProteins.size * this.renderedProteins.size));
+        var bBox = this.svgElement.getBoundingClientRect();
+        var width = bBox.width;
+        var height = bBox.height;
 
         var linkArr = CLMS.arrayFromMapValues(links);
         var nodeArray = Array.from(nodeSet);
@@ -813,70 +812,74 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         delete this.d3cola._descent;
         delete this.d3cola._rootGroup;
 
-
         this.d3cola.nodes(nodeArray).groups(groups).avoidOverlaps(true).links(linkArr);
 
         var self = this;
 
-        // var groupDebug = d3.select(this.svgElement).selectAll('.group')
-        //     .data(groupArray)
-        //     .enter().append('rect')
-        //     .classed('group', true)
-        //     .attr({
-        //         rx: 5,
-        //         ry: 5
-        //     })
-        //     .style('stroke', "blue")
-        //     .style('fill', "none");
-        //
-        // var participantDebug = d3.select(this.svgElement).selectAll('.node')
-        //     .data(nodeArray)
-        //     .enter().append('rect')
-        //     .classed('node', true)
-        //     .attr({
-        //         rx: 5,
-        //         ry: 5
-        //     })
-        //     .style('stroke', "red")
-        //     .style('fill', "none");
+        var groupDebugSel = d3.select(this.groupsSVG).selectAll('.group')
+            .data(groups);
 
-        this.d3cola.symmetricDiffLinkLengths(k).on("tick", function(e) {
-            // groupDebug.attr({
-            //     x: function(d) {
-            //         return d.bounds.x
-            //     },
-            //     y: function(d) {
-            //         return d.bounds.y
-            //     },
-            //     width: function(d) {
-            //         return d.bounds.width()
-            //     },
-            //     height: function(d) {
-            //         return d.bounds.height()
-            //     }
-            // });
-            //
-            // participantDebug.attr({
-            //     x: function(d) {
-            //         return d.bounds.x
-            //     },
-            //     y: function(d) {
-            //         return d.bounds.y
-            //     },
-            //     width: function(d) {
-            //         return d.bounds.width()
-            //     },
-            //     height: function(d) {
-            //         return d.bounds.height()
-            //     }
-            // });
+        groupDebugSel.enter().append('rect')
+            .classed('group', true)
+            .attr({
+                rx: 5,
+                ry: 5
+            })
+            .style('stroke', "blue")
+            .style('fill', "none");
+
+        var participantDebugSel = d3.select(this.groupsSVG).selectAll('.node')
+            .data(nodeArray);
+
+        participantDebugSel.enter().append('rect')
+            .classed('node', true)
+            .attr({
+                rx: 5,
+                ry: 5
+            })
+            .style('stroke', "red")
+            .style('fill', "none");
+
+        groupDebugSel.exit().remove();
+        participantDebugSel.exit().remove();
+
+        this.d3cola.symmetricDiffLinkLengths(30).on("tick", function(e) {
+            groupDebugSel.attr({
+                x: function(d) {
+                    return d.bounds.x + (width / 2);
+                },
+                y: function(d) {
+                    return d.bounds.y + (height / 2);
+                },
+                width: function(d) {
+                    return d.bounds.width()
+                },
+                height: function(d) {
+                    return d.bounds.height()
+                }
+            });
+
+            participantDebugSel.attr({
+                x: function(d) {
+                    return d.bounds.x + (width / 2);
+                },
+                y: function(d) {
+                    return d.bounds.y + (height / 2);
+                },
+                width: function(d) {
+                    return d.bounds.width()
+                },
+                height: function(d) {
+                    return d.bounds.height()
+                }
+            });
 
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
-                var offsetX = node.x; // + node.width / 2;
-                var offsetY = node.y; //- node.upperGroup.getBBox().y;
+                var offsetX = node.x + (width / 2) + (node.width / 2 - (node.getBlobRadius() * self.z));
+                var offsetY = node.y + (height / 2); //- node.upperGroup.getBBox().y;
                 node.setPosition(offsetX, offsetY);
                 node.setAllLinkCoordinates();
             }
@@ -1103,39 +1106,44 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
+
     groupsChanged: function(go) {
+
         // update groups
         // init n-ary link
-        var groupsArr = this.model.get("groups");
-        var groupParticipants = groupsArr[groupsArr.length - 1];
-        var group = {
-            "name": "Group", //groupsArr[g].key,
-            "id": "group.id", //groupsArr[g].value.values().sort().join('-'),
-            "participants": groupParticipants
-        }
-        // var groupName = ;
-        // var participantSet = ;
-        // var nLinkId = participantSet.
-        // //doesn't already exist, make new nLink
-        nLink = new NaryLink(group.id, this);
-        // this.groups.push(nLink);
+        var groupsArr = this.model.get("groupedGoTerms");
 
-        var complex = new Complex(group, this);
+        for (var group of groupsArr) {
+            var groupParticipants = group.getInteractors();
+            // var group = {
+            //     "name": "Group", //groupsArr[g].key,
+            //     "id": "group.id", //groupsArr[g].value.values().sort().join('-'),
+            //     "participants": groupParticipants
+            // }
+                  // var groupName = ;
+                  // var participantSet = ;
+                  // var nLinkId = participantSet.
+                  // //doesn't already exist, make new nLink
+            nLink = new NaryLink(group.id, this);
+            // this.groups.push(nLink);
 
-        for (var p of groupParticipants) {
-            var pid = p.id;
-            var renderedProtein = this.renderedProteins.get(pid);
-            renderedProtein.naryLinks.set(group.id, nLink);
-            renderedProtein.complex = complex;
-            if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                nLink.renderedParticipants.push(renderedProtein);
+            var complex = new Complex(group, this);
+
+            for (var p of groupParticipants) {
+                var pid = p.id;
+                var renderedProtein = this.renderedProteins.get(pid);
+                renderedProtein.naryLinks.set(group.id, nLink);
+                renderedProtein.complex = complex;
+                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
+                    nLink.renderedParticipants.push(renderedProtein);
+                }
             }
+            complex.initMolecule(nLink);
+
+            this.renderedProteins.set(group.id, complex);
+            this.complexes = [complex];
+
         }
-
-        complex.initMolecule(nLink);
-
-        this.renderedProteins.set(group.id, complex);
-        this.complexes = [complex];
         //self.allNaryLinks.set(nLinkId, nLink);
         //alot of time is being spent on creating these IDs, stash them in the interaction object?
         //interaction.naryId =  nLinkId;
@@ -1144,8 +1152,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.scale();
         this.render();
+        this.autoLayout();
         return this;
     },
+
 
     showLabels: function(show) {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
