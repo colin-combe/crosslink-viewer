@@ -84,12 +84,15 @@ NaryLink.prototype.setLinkCoordinates = function() {
     var calculateHullPath = function(values) {
         var calced = d3.geom.hull(values);
         // self.hull = calced;//hack?
+        // if (calced.length == 0) { //means all participants hidden
+        //   console.log("!");
+        // }
         return "M" + calced.join("L") + "Z";
     };
     var self = this; // TODO: - tidy hack above?
     var mapped = NaryLink.orbitNodes(this.getMappedCoordinates());
     var hullValues = calculateHullPath(mapped);
-    if (hullValues) {
+    if (hullValues != "MZ") {
         this.path.setAttribute('d', hullValues);
     }
     if (this.complex) {

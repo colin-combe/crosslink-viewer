@@ -91,6 +91,17 @@ function Complex(group, xlvController) {
         self.touchStart(evt);
     };
 
+    //TODO - this wastes a bit memory coz the property is not on the prototype, fix
+    // Object.defineProperty(this, "width", {
+    //     get: function width() {
+    //         return this.upperGroup.getBBox().width * this.crosslinkViewer.z;
+    //     }
+    // });
+    // Object.defineProperty(this, "height", {
+    //     get: function height() {
+    //         return this.upperGroup.getBBox().height * this.crosslinkViewer.z;
+    //     }
+    // });
 
     // Object.defineProperty(this, "x", {
     //     get: function _x() {
@@ -180,7 +191,7 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.checkLinks();
         }
         this.naryLink.show();
-        this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
+//        this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
     }
 };
 
