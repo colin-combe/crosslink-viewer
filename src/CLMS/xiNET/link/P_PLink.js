@@ -353,7 +353,7 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(participant) {
-    target = participant.getRenderedParticipant();
+    var target = participant.getRenderedParticipant();
 
     if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
