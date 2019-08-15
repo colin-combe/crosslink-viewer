@@ -20,7 +20,7 @@ function Complex(group, xlvController) {
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-    this.form = 0;
+    this.form = 1;
     this.type = 'complex';
 
     this.size = 10; //hack, layout is using this

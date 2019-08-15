@@ -119,7 +119,6 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         .attr("stroke-opacity", 0);
     this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
 
-
     // events
     var self = this;
     this.upperGroup.onmousedown = function(evt) {
