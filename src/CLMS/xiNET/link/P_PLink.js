@@ -280,7 +280,7 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
-        this.ambiguous = this.ambiguous && altP_PLinks.size > 1;
+        this.ambiguous = altP_PLinks.size > 1;
     }
     return this.filteredCrossLinkCount;
 };
