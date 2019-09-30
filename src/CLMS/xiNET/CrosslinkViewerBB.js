@@ -214,7 +214,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
         this.listenTo(CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
         this.listenTo(CLMSUI.vent, "xiNetShowLabels", this.showLabels);
-        this.listenTo(CLMSUI.vent, "change:xiNetLinkWidthScale", this.render);
+        this.listenTo(this.model, "change:xiNetLinkWidthScale", this.render);
+        this.listenTo(this.model, "change:xiNetLinkWidthAuto", this.render);
         return this;
     },
 
@@ -266,8 +267,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
             }
         }
-        if (this.model.get("xiNetLinkWidthScale") == null) {
-          d3.select(".xiNetLinkWidth").property("value", (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks))
+        //console.log("xn render", this.model.get("xiNetLinkWidthAuto"), this.model.get("xiNetLinkWidthScale"));
+        if (this.model.get("xiNetLinkWidthAuto") === true) {
+            this.model.set("xiNetLinkWidthScale", (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2));
         }
 
         for (var p_pLink of this.renderedP_PLinks.values()) {

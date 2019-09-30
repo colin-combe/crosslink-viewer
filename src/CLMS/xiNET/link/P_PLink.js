@@ -323,10 +323,20 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     d3.select(this.line).style("display", null);
     //}
 
+    //console.log("ppl render", this.crosslinkViewer.model.get("xiNetLinkWidthAuto"), this.crosslinkViewer.model.get("xiNetLinkWidthScale"));
+
     if (this.filteredCrossLinkCount < 2) {
         this.thickLine.setAttribute("stroke-width", 0);
     } else {
-        this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
+        var linkWidthScale;
+        if (this.crosslinkViewer.model.get("xiNetLinkWidthAuto") === true) {
+            linkWidthScale = (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2);
+        }
+        else {
+            linkWidthScale = this.crosslinkViewer.model.get("xiNetLinkWidthScale");
+        }
+
+        this.w = this.filteredCrossLinkCount * linkWidthScale;
         if (this.renderedFromProtein === this.renderedToProtein) {
             this.thickLine.setAttribute("stroke-width", this.w);
         } else {
