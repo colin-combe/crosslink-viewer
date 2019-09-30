@@ -20,7 +20,7 @@ function Complex(group, xlvController) {
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-    this.form = 0;
+    this.form = 1;
     this.type = 'complex';
 
     this.size = 10; //hack, layout is using this
@@ -91,6 +91,17 @@ function Complex(group, xlvController) {
         self.touchStart(evt);
     };
 
+    //TODO - this wastes a bit memory coz the property is not on the prototype, fix
+    // Object.defineProperty(this, "width", {
+    //     get: function width() {
+    //         return this.upperGroup.getBBox().width * this.crosslinkViewer.z;
+    //     }
+    // });
+    // Object.defineProperty(this, "height", {
+    //     get: function height() {
+    //         return this.upperGroup.getBBox().height * this.crosslinkViewer.z;
+    //     }
+    // });
 
     // Object.defineProperty(this, "x", {
     //     get: function _x() {
@@ -124,9 +135,9 @@ Complex.prototype.initMolecule = function(naryLink) {
     naryLink.path.setAttribute('stroke', 'black');
     naryLink.path.setAttribute('stroke-linejoin', 'round');
     naryLink.path.setAttribute('stroke-width', 8);
+    var pos = this.getPosition();; //todo tidy up
+    this.setPosition(pos[0], pos[1]);
     this.setForm(this.form);
-    // var pos = this.getPosition();; //todo tidy up
-    // this.setPosition(pos[0], pos[1]);
 };
 
 Complex.prototype.mouseOver = function(evt) {
@@ -165,9 +176,7 @@ Complex.prototype.setForm = function(form, svgP) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();
             rp.setHidden(true);
-            if (rp.selfLink) {
-                rp.selfLink.hide();
-            }
+            rp.checkLinks();
         }
         this.naryLink.hide();
         this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
@@ -178,13 +187,11 @@ Complex.prototype.setForm = function(form, svgP) {
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();
-            rp.setHidden(false);
-            if (rp.selfLink) {
-                rp.selfLink.show();
-            }
+            rp.setHidden(rp.participant.hidden);
+            rp.checkLinks();
         }
         this.naryLink.show();
-        this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
+//        this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
     }
 };
 

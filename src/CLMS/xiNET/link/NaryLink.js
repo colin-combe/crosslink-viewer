@@ -28,6 +28,8 @@ function NaryLink(id, xlvController) {
     this.tooltip = this.id;
     //used to avoid some unnecessary manipulation of DOM
     this.initSVG();
+    this.type = "nary";
+    this.x = "x"; //hack
 }
 
 NaryLink.prototype.initSVG = function() {
@@ -74,7 +76,7 @@ NaryLink.prototype.show = function() {
 
 NaryLink.prototype.hide = function() {
     d3.select(this.path).style("display", "none");
-//    this.controller.groupsSVG.removeChild(this.path);
+    //    this.controller.groupsSVG.removeChild(this.path);
 };
 
 NaryLink.prototype.setLinkCoordinates = function() {
@@ -82,12 +84,15 @@ NaryLink.prototype.setLinkCoordinates = function() {
     var calculateHullPath = function(values) {
         var calced = d3.geom.hull(values);
         // self.hull = calced;//hack?
+        // if (calced.length == 0) { //means all participants hidden
+        //   console.log("!");
+        // }
         return "M" + calced.join("L") + "Z";
     };
     var self = this; // TODO: - tidy hack above?
     var mapped = NaryLink.orbitNodes(this.getMappedCoordinates());
     var hullValues = calculateHullPath(mapped);
-    if (hullValues) {
+    if (hullValues != "MZ") {
         this.path.setAttribute('d', hullValues);
     }
     if (this.complex) {
@@ -101,20 +106,22 @@ NaryLink.prototype.getMappedCoordinates = function() {
     var rpCount = renderedParticipants.length;
     for (var i = 0; i < rpCount; i++) {
         var rp = renderedParticipants[i];
-        if (rp.type == 'complex') {
-            mapped = mapped.concat(NaryLink.orbitNodes(rp.naryLink.getMappedCoordinates()));
-        } else if (rp.form === 1) {
-            var start = rp.getResidueCoordinates(0);
-            var end = rp.getResidueCoordinates(rp.participant.size);
-            if (!isNaN(start[0]) && !isNaN(start[1]) &&
-                !isNaN(end[0]) && !isNaN(end[1])) {
-                mapped.push(start);
-                mapped.push(end);
+        if (rp.hidden == false) {
+            if (rp.type == 'complex') {
+                mapped = mapped.concat(NaryLink.orbitNodes(rp.naryLink.getMappedCoordinates()));
+            } else if (rp.form === 1) {
+                var start = rp.getResidueCoordinates(0);
+                var end = rp.getResidueCoordinates(rp.participant.size);
+                if (!isNaN(start[0]) && !isNaN(start[1]) &&
+                    !isNaN(end[0]) && !isNaN(end[1])) {
+                    mapped.push(start);
+                    mapped.push(end);
+                } else {
+                    mapped.push(rp.getPosition());
+                }
             } else {
                 mapped.push(rp.getPosition());
             }
-        } else {
-            mapped.push(rp.getPosition());
         }
     }
     return mapped;

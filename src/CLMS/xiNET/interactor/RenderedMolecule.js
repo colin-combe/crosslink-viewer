@@ -271,9 +271,6 @@ Molecule.trig = function(radius, angleDegrees) {
     };
 };
 
-Molecule.prototype.showData = function(evt) {
-    //~ alert ("molecule!");
-}
 
 Molecule.prototype.setForm = function(form, svgP) {};
 
@@ -303,9 +300,9 @@ Molecule.prototype.showLabel = function(show) {
 };*/
 
 Molecule.prototype.getRenderedParticipant = function() {
-    // if (this.complex && this.complex.form == 0) {
-    //     return this.complex.getRenderedParticipant();
-    // } else {
-    return this;
-    // }
+    if (this.complex && this.complex.form == 0) {
+        return this.complex.getRenderedParticipant();
+    } else {
+        return this;
+    }
 }

@@ -280,15 +280,16 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
-        this.ambiguous = this.ambiguous && altP_PLinks.size > 1;
+        this.ambiguous = altP_PLinks.size > 1;
     }
     return this.filteredCrossLinkCount;
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden ||
+    if (this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
         this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1 ||
-        this.filteredCrossLinkCount === 0) {
+        this.filteredCrossLinkCount === 0
+      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.form == 0)) {
         this.hide();
     } else {
         this.show();
@@ -322,10 +323,20 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     d3.select(this.line).style("display", null);
     //}
 
+    //console.log("ppl render", this.crosslinkViewer.model.get("xiNetLinkWidthAuto"), this.crosslinkViewer.model.get("xiNetLinkWidthScale"));
+
     if (this.filteredCrossLinkCount < 2) {
         this.thickLine.setAttribute("stroke-width", 0);
     } else {
-        this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
+        var linkWidthScale;
+        if (this.crosslinkViewer.model.get("xiNetLinkWidthAuto") === true) {
+            linkWidthScale = (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2);
+        }
+        else {
+            linkWidthScale = this.crosslinkViewer.model.get("xiNetLinkWidthScale");
+        }
+
+        this.w = this.filteredCrossLinkCount * linkWidthScale;
         if (this.renderedFromProtein === this.renderedToProtein) {
             this.thickLine.setAttribute("stroke-width", this.w);
         } else {
@@ -352,26 +363,30 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(participant) {
-    var target = participant.getRenderedParticipant();
+CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
+    var target = this.renderedFromProtein.getRenderedParticipant();
+    var source = this.renderedToProtein.getRenderedParticipant();
+    if (!target.x || !target.y) {
+        console.log("NOT");
+    }
 
     if (this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            if (this.renderedFromProtein === participant) {
-                this.line.setAttribute("x1", target.x);
-                this.line.setAttribute("y1", target.y);
-                this.highlightLine.setAttribute("x1", target.x);
-                this.highlightLine.setAttribute("y1", target.y);
-                this.thickLine.setAttribute("x1", target.x);
-                this.thickLine.setAttribute("y1", target.y);
-            } else if (this.renderedToProtein === participant) {
-                this.line.setAttribute("x2", target.x);
-                this.line.setAttribute("y2", target.y);
-                this.highlightLine.setAttribute("x2", target.x);
-                this.highlightLine.setAttribute("y2", target.y);
-                this.thickLine.setAttribute("x2", target.x);
-                this.thickLine.setAttribute("y2", target.y);
-            }
+            //     if (this.renderedFromProtein === participant) {
+            this.line.setAttribute("x1", source.x);
+            this.line.setAttribute("y1", source.y);
+            this.highlightLine.setAttribute("x1", source.x);
+            this.highlightLine.setAttribute("y1", source.y);
+            this.thickLine.setAttribute("x1", source.x);
+            this.thickLine.setAttribute("y1", source.y);
+            // } else if (this.renderedToProtein === participant) {
+            this.line.setAttribute("x2", target.x);
+            this.line.setAttribute("y2", target.y);
+            this.highlightLine.setAttribute("x2", target.x);
+            this.highlightLine.setAttribute("y2", target.y);
+            this.thickLine.setAttribute("x2", target.x);
+            this.thickLine.setAttribute("y2", target.y);
+            // }
         }
     }
 }
