@@ -1063,12 +1063,25 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     proteinMetadataUpdated: function(meta) {
-        // update names
+        // update prots
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var protColourModel = CLMSUI.compositeModelInst.get("proteinColourModel");
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
-            renderedParticipantArr[rp].updateName();
+            var renderedParticipant = renderedParticipantArr[rp];
+            renderedParticipant.updateName();
+            if (protColourModel) {
+                if (renderedParticipant.participant.meta){
+                  d3.select(renderedParticipant.outline)
+                      .attr("fill", protColourModel.getColour(renderedParticipant.participant));
+                } else {
+                  d3.select(renderedParticipant.outline)
+                      .attr("fill", "#ffffff");  
+                }
+            }
         }
+
+
         // update groups
         //this.groups = [];
         /*var groupMap = new d3.map();
