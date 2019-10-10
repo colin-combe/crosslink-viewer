@@ -194,6 +194,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model, "change:selection", this.selectionChanged);
         this.listenTo(this.model, "change:linkColourAssignment", this.render);
         this.listenTo(this.model, "currentColourModelChanged", this.render); // mjg - when current colour scale changes its internal values
+        
+        this.listenTo(this.model, "change:proteinColourAssignment currentProteinColourModelChanged", this.render); // mjg - protein colour model listener
+        
         this.listenTo(this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
         this.listenTo(this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
         this.listenTo(this.model, "change:selectedProteins", this.selectedParticipantsChanged);
@@ -1065,7 +1068,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     proteinMetadataUpdated: function(meta) {
         // update prots
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        var protColourModel = CLMSUI.compositeModelInst.get("proteinColourModel");
+        var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
