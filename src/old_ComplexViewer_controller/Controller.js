@@ -1095,7 +1095,7 @@ xiNET.Controller.prototype.collapseAll = function() {
     var mCount = molecules.length;
     for (var m = 0; m < mCount; m++) {
         var molecule = molecules[m];
-        if (molecule.form === 1){
+        if (molecule.participant.form === 1){
              molecule.setForm(0);
         }
     }
@@ -1106,7 +1106,7 @@ xiNET.Controller.prototype.expandAll = function() {
     var mCount = molecules.length;
     for (var m = 0; m < mCount; m++) {
         var molecule = molecules[m];
-        if (molecule.form === 0){
+        if (molecule.participant.form === 0){
              molecule.setForm(1);
         }
     }
@@ -1267,7 +1267,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                         this.dragElement.switchStickScale(c);
                     } else {
                         if (this.sequenceInitComplete === true){
-                               if (this.dragElement.form === 0) {
+                               if (this.dragElement.participant.form === 0) {
                                 this.dragElement.setForm(1, c);
                             } else {
                                 this.dragElement.setForm(0, c);
@@ -1464,7 +1464,7 @@ xiNET.Controller.prototype.touchEnd = function(evt) {
                 if (typeof this.dragElement.x === 'undefined') { //if not protein
                     //this.dragElement.showID();
                 } else {
-                    if (this.dragElement.form === 0) {
+                    if (this.dragElement.participant.form === 0) {
                         this.dragElement.setForm(1);
                     } else {
                         this.dragElement.setForm(0);
