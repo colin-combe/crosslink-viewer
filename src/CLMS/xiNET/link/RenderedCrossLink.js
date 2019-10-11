@@ -91,7 +91,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    if (this.renderedFromProtein.busy == false && this.renderedToProtein.busy == false) {
+    if (this.renderedFromProtein.busy == false && (!this.renderedToProtein || this.renderedToProtein.busy == false)) {
         var p = this.crosslinkViewer.getEventPoint(evt);
 
         var toHighlight = [this.crossLink];
@@ -267,14 +267,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-
-    if (this.renderedFromProtein.form == 0 && this.renderedToProtein.form == 0) {
+    if (this.renderedFromProtein.form == 0 && (this.renderedToProtein? this.renderedToProtein.form == 0 : false)) {
         this.hide();
         return false;
     }
 
     if (this.renderedFromProtein.participant.hidden === true ||
-        this.renderedToProtein.participant.hidden == true) {
+        (this.renderedToProtein && this.renderedToProtein.participant.hidden == true)) {
         this.hide();
         return false;
     }

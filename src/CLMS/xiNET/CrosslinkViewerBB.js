@@ -295,6 +295,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var maxSeqLength = 0;
         for (var p = 0; p < pCount; p++) {
             var participant = participantsArr[p];
+
             if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
                 var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
                 this.renderedProteins.set(participant.id, newProt);
@@ -363,12 +364,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var clmsModel = this.model.get("clmsModel");
         for (var cl = 0; cl < clCount; cl++) {
             var crossLink = crossLinksArr[cl];
-            if (crossLink.isDecoyLink() == false) {
+            console.log("toP", crossLink.toProtein);
+            var decoyLink = crossLink.isDecoyLink();
+            if (decoyLink == false) {
                 if (!this.renderedCrossLinks.has(crossLink.id)) {
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-
-                    var p_pId = crossLink.fromProtein.id + "-" + crossLink.toProtein.id;
+                    var toId = crossLink.toProtein? crossLink.toProtein.id : "null"
+                    var p_pId = crossLink.fromProtein.id + "-" + toId;
                     var p_pLink = this.renderedP_PLinks.get(p_pId);
                     if (typeof p_pLink == 'undefined') {
                         p_pLink = new CLMS.xiNET.P_PLink(p_pId, crossLink, this);
@@ -946,9 +949,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
                 if (renderedCrossLink.renderedFromProtein.form == 1 ||
-                    renderedCrossLink.renderedToProtein.form == 1) {
+                    (renderedCrossLink.renderedToProtein && renderedCrossLink.renderedToProtein.form == 1)) {
                     renderedCrossLink.showHighlight(true);
-                } else {
+                } else if (renderedCrossLink.renderedToProtein) {
                     var p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
                     p_pLink.showHighlight(true);
@@ -1076,7 +1079,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                       .attr("fill", protColourModel.getColour(renderedParticipant.participant));
                 } else {
                   d3.select(renderedParticipant.outline)
-                      .attr("fill", "#ffffff");  
+                      .attr("fill", "#ffffff");
                 }
             }
         }
