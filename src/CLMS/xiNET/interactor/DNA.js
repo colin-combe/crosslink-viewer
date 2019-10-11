@@ -32,7 +32,7 @@ function DNA(id, xlvController, json, name) {
     this.rotation = 0;
     this.previousRotation = this.rotation;
     this.stickZoom = 1;
-    this.form = 0; //null; // 0 = blob, 1 = stick
+    this.participant.form = 0; //null; // 0 = blob, 1 = stick
     this.isParked = false;
     this.isSelected = false;
 

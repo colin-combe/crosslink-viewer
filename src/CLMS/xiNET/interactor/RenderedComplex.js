@@ -20,7 +20,7 @@ function Complex(group, xlvController) {
     this.binaryLinks = d3.map();
     this.selfLink = null;
     this.sequenceLinks = d3.map();
-    this.form = 1;
+    this.participant.form = 1;
     this.type = 'complex';
 
     this.size = 10; //hack, layout is using this
@@ -169,7 +169,7 @@ Complex.prototype.getResidueCoordinates = function(x, y) {
 
 Complex.prototype.setForm = function(form, svgP) {
     if (form == 0) {
-        this.form = 0;
+        this.participant.form = 0;
         var renderedParticipants = this.naryLink.renderedParticipants;
         var rpCount = renderedParticipants.length;
         for (var i = 0; i < rpCount; i++) {
@@ -181,7 +181,7 @@ Complex.prototype.setForm = function(form, svgP) {
         this.naryLink.hide();
         this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
     } else {
-        this.form = 1;
+        this.participant.form = 1;
         var renderedParticipants = this.naryLink.renderedParticipants;
         var rpCount = renderedParticipants.length;
         for (var i = 0; i < rpCount; i++) {

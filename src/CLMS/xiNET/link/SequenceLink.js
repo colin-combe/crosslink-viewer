@@ -123,7 +123,7 @@ SequenceLink.prototype.check = function() {
 SequenceLink.prototype.anyMoleculeIsBar = function() {
     var ic = this.interactors.length;
     for (var i = 0; i < ic; i++) {
-        if (this.interactors[i].form === 1) {
+        if (this.interactors[i].participant.form === 1) {
             return true;
         }
     }
@@ -174,7 +174,7 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
 
     function getPathSegments(midPoint, controlPoint, startRes, endRes, interactor, yOffset) {
         var startPoint, endPoint;
-        if (interactor.form === 0) {
+        if (interactor.participant.form === 0) {
             startPoint = interactor.getPosition();
             endPoint = startPoint;
         } else {
@@ -225,12 +225,12 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
     var toMolecule = this.toSequenceData[0].node;
     //calculate mid points of from and to sequence data
     var fMid, tMid;
-    if (fromMolecule.form === 0) {
+    if (fromMolecule.participant.form === 0) {
         fMid = fromMolecule.getPosition();
     } else {
         fMid = sequenceDataMidPoint(this.fromSequenceData, fromMolecule);
     }
-    if (toMolecule.form === 0) {
+    if (toMolecule.participant.form === 0) {
         tMid = toMolecule.getPosition();
     } else {
         tMid = sequenceDataMidPoint(this.toSequenceData, toMolecule);
@@ -277,14 +277,14 @@ SequenceLink.prototype.setLinkCoordinates = function(interactor) {
     var ftMid = [fMid[0] + (30 * Math.sin(fRotRad) * this.controller.z),
         fMid[1] - (30 * Math.cos(fRotRad) * this.controller.z)
     ];
-    if (fromMolecule.form === 0) {
+    if (fromMolecule.participant.form === 0) {
         ftMid = fMid;
     }
 
     var ttMid = [tMid[0] + (30 * Math.sin(tRotRad) * this.controller.z),
         tMid[1] - (30 * Math.cos(tRotRad) * this.controller.z)
     ];
-    if (toMolecule.form === 0) {
+    if (toMolecule.participant.form === 0) {
         ttMid = tMid;
     }
 
