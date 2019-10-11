@@ -102,13 +102,16 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.upperGroup.appendChild(this.circDomains);
 
     this.scaleLabels = [];
+    
+    var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
 
     //since form is set to 0, make this a circle, this stuff is equivalant to
     // end result of toCircle but without transition
     var r = this.getBlobRadius();
     d3.select(this.outline)
         .attr("fill-opacity", 1)
-        .attr("fill", "#ffffff")
+        //.attr("fill", "#ffffff")
+        .attr("fill", protColourModel.getColour(participant))
         .attr("x", -r).attr("y", -r)
         .attr("width", r * 2).attr("height", r * 2)
         .attr("rx", r).attr("ry", r);
@@ -493,11 +496,13 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
     var protLength = this.participant.size * this.stickZoom;
     var r = this.getBlobRadius();
+    var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
 
     d3.select(this.outline).transition()
         //.attr("stroke-opacity", 1) //needed?
         .attr("fill-opacity", 1)
-        .attr("fill", "#ffffff")
+        //.attr("fill", "#ffffff")
+        .attr("fill", protColourModel.getColour(this.participant))
         .attr("x", -r).attr("y", -r)
         .attr("width", r * 2).attr("height", r * 2)
         .attr("rx", r).attr("ry", r)
@@ -671,10 +676,12 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     d3.select(this.rectDomains).transition().attr("opacity", 1)
         //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
         .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-
+    
+    var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
     d3.select(this.outline).transition().attr("stroke-opacity", 1)
         .attr("fill-opacity", 0)
-        .attr("fill", "#FFFFFF")
+        //.attr("fill", "#ffffff")
+        .attr("fill", protColourModel.getColour(this.participant))
         .attr("height", CLMS.xiNET.RenderedProtein.STICKHEIGHT)
         .attr("y", -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2)
         .attr("rx", 0).attr("ry", 0)
