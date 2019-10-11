@@ -128,7 +128,7 @@ Molecule.prototype.setPosition = function(xPos, yPos) {
     this.py = this.y;
     this.x = xPos;
     this.y = yPos;
-    // if (this.form === 1) {
+    // if (this.participant.form === 1) {
     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
         " scale(" + (this.crosslinkViewer.z) + ") "); // + "rotate(" + this.rotation + ")");
     // } else {
@@ -237,7 +237,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             anno.begin = anno.begin - 0;
             anno.end = anno.end - 0;
             anno.pieSlice = document.createElementNS(Config.svgns, "path");
-            if (this.form === 0) {
+            if (this.participant.form === 0) {
                 anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
             } else {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
@@ -300,7 +300,7 @@ Molecule.prototype.showLabel = function(show) {
 };*/
 
 Molecule.prototype.getRenderedParticipant = function() {
-    if (this.complex && this.complex.form == 0) {
+    if (this.complex && this.complex.participant.form == 0) {
         return this.complex.getRenderedParticipant();
     } else {
         return this;

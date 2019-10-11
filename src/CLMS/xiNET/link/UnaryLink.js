@@ -149,7 +149,7 @@ UnaryLink.prototype.showHighlight = function(show) {
 };
 
 UnaryLink.prototype.check = function() {
-    if (this.interactors[0].form !== 1) {
+    if (this.interactors[0].participant.form !== 1) {
         this.show();
         return true;
     } else {

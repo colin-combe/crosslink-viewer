@@ -91,7 +91,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    if (this.renderedFromProtein.busy == false && this.renderedToProtein.busy == false) {
+    if (this.renderedFromProtein.busy == false && (!this.renderedToProtein || this.renderedToProtein.busy == false)) {
         var p = this.crosslinkViewer.getEventPoint(evt);
 
         var toHighlight = [this.crossLink];
@@ -180,10 +180,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
                 fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
                 toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
             }
-            if (this.renderedFromProtein.form == 1) {
+            if (this.renderedFromProtein.participant.form == 1) {
                 this.showPeptides(fromPeptides, this.renderedFromProtein);
             }
-            if (this.renderedToProtein && this.renderedToProtein.form == 1) {
+            if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
                 this.showPeptides(toPeptides, this.renderedToProtein);
             }
         } else {
@@ -267,14 +267,13 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-
-    if (this.renderedFromProtein.form == 0 && this.renderedToProtein.form == 0) {
+    if (this.renderedFromProtein.participant.form == 0 && (this.renderedToProtein? this.renderedToProtein.participant.form == 0 : false)) {
         this.hide();
         return false;
     }
 
     if (this.renderedFromProtein.participant.hidden === true ||
-        this.renderedToProtein.participant.hidden == true) {
+        (this.renderedToProtein && this.renderedToProtein.participant.hidden == true)) {
         this.hide();
         return false;
     }
@@ -296,7 +295,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
         }
         if (!this.renderedToProtein) {
             var path;
-            if (this.renderedFromProtein.form === 1) {
+            if (this.renderedFromProtein.participant.form === 1) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
                 path = this.renderedFromProtein.getAggregateSelfLinkPath();
@@ -318,7 +317,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
     if (this.crossLink.isSelfLink() && this.renderedToProtein) {
         if (this.homomultimer != this.crossLink.confirmedHomomultimer) {
             var path;
-            if (this.renderedFromProtein.form === 1) {
+            if (this.renderedFromProtein.participant.form === 1) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
                 path = this.renderedFromProtein.getAggregateSelfLinkPath();
@@ -355,10 +354,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             //~ if (this.shown) {//don't waste time changing DOM if link not visible
             var x, y;
             // from end
-            if (this.renderedFromProtein.form === 0) {
+            if (this.renderedFromProtein.participant.form === 0) {
                 x = this.renderedFromProtein.x;
                 y = this.renderedFromProtein.y;
-            } else //if (this.form == 1)
+            } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
                 x = coord[0];
@@ -370,10 +369,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             this.highlightLine.setAttribute("y1", y);
 
             // to end
-            if (this.renderedToProtein.form === 0) {
+            if (this.renderedToProtein.participant.form === 0) {
                 x = this.renderedToProtein.x;
                 y = this.renderedToProtein.y;
-            } else //if (this.form == 1)
+            } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
                 x = coord[0];

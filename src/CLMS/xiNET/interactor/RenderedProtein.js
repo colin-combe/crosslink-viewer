@@ -23,7 +23,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.rotation = 0;
     this.previousRotation = this.rotation;
     //this.stickZoom = 0.5;
-    this.form = 0; // 0 = blob, 1 = stick
+    this.participant.form = 0; // 0 = blob, 1 = stick
     this.isFlipped = false;
     //renderedProtein state
     this.isSelected = false;
@@ -256,7 +256,7 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
             .translate(Math.abs(labelTransform.translate[0]), -CLMS.xiNET.RenderedProtein.labelY)
             .rotate(180, 0, 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.form === 1) {
+        if (this.participant.form === 1) {
             for (var i = 0; i < sll; i++) {
                 this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
             }
@@ -266,7 +266,7 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
         var k = svg.createSVGMatrix()
             .translate(-(Math.abs(labelTransform.translate[0])), CLMS.xiNET.RenderedProtein.labelY);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.form === 1) {
+        if (this.participant.form === 1) {
             for (var j = 0; j < sll; j++) {
                 this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
             }
@@ -281,7 +281,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
     this.py = this.y;
     this.x = x;
     this.y = y;
-    if (this.form === 1) {
+    if (this.participant.form === 1) {
         this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
             " scale(" + (this.crosslinkViewer.z) + ") " + "rotate(" + this.rotation + ")");
         this.lowerGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
@@ -339,7 +339,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
 CLMS.xiNET.RenderedProtein.prototype.scale = function() {
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
     var protLength = (this.participant.size) * this.stickZoom;
-    if (this.form === 1) {
+    if (this.participant.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.crosslinkViewer.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
             .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.x, -c.y);
@@ -478,11 +478,11 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
     if (this.busy !== true) {
         if (form == 1) {
-            if (this.form !== 1) {
+            if (this.participant.form !== 1) {
                 this.toStick();
             }
         } else {
-            if (this.form !== 0) {
+            if (this.participant.form !== 0) {
                 this.toCircle(svgP);
             }
         }
@@ -614,7 +614,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
         if (interp === 1) { // finished - tidy up
             //bring in new
-            self.form = 0;
+            self.participant.form = 0;
             var renderedCrossLinks = self.renderedCrossLinks;
             var rclCount = renderedCrossLinks.length;
             for (var rcl = 0; rcl < rclCount; rcl++) {
@@ -647,7 +647,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     this.busy = true;
-    this.form = 1;
+    this.participant.form = 1;
 
     //place rotators
     this.upperGroup.appendChild(this.lowerRotator.svg);
@@ -961,7 +961,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                 var colouredRect = document.createElementNS(this.crosslinkViewer.svgns, "path");
                 if (anno.type != CLMS.xiNET.disulfide) {
                     //if (anno.type != "disulfide bond") {
-                    if (this.form === 0) {
+                    if (this.participant.form === 0) {
                         pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
                         colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
                     } else {
@@ -980,7 +980,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     colouredRect.setAttribute("stroke", c);
                 } else {
 
-                    if (this.form === 0) {
+                    if (this.participant.form === 0) {
                         pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                         colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                     } else {

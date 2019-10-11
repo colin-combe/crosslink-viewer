@@ -75,7 +75,7 @@ Polymer.prototype.setRotation = function(angle) {
             .translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
             .rotate(180, 0, 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.form === 1) {
+        if (this.participant.form === 1) {
             for (var i = 0; i < sll; i++) {
                 this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
             }
@@ -85,7 +85,7 @@ Polymer.prototype.setRotation = function(angle) {
         var k = svg.createSVGMatrix()
             .translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.form === 1) {
+        if (this.participant.form === 1) {
             for (var j = 0; j < sll; j++) {
                 this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
             }
@@ -100,7 +100,7 @@ Polymer.prototype.switchStickScale = function(svgP) {
     if (this.isParked) {
         this.toggleParked();
     }
-    if (this.form === 0) {
+    if (this.participant.form === 0) {
         this.toStick();
     } else {
         var pixPerRes = Polymer.UNITS_PER_RESIDUE * this.stickZoom; // / this.controller.z;
@@ -127,7 +127,7 @@ Polymer.prototype.switchStickScale = function(svgP) {
 
 Polymer.prototype.scale = function() {
     var protLength = (this.size) * Polymer.UNITS_PER_RESIDUE * this.stickZoom;
-    if (this.form === 1) {
+    if (this.participant.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
             .translate((-(((this.size / 2) * Polymer.UNITS_PER_RESIDUE * this.stickZoom) + 10)), Molecule.labelY); //.scale(z).translate(-c.x, -c.y);
@@ -383,7 +383,7 @@ Polymer.prototype.toCircle = function(svgP) {
         self.setAllLinkCoordinates();
 
         if (interp === 1) { // finished - tidy up
-            self.form = 0;
+            self.participant.form = 0;
             self.checkLinks();
             self.stickZoom = originalStickZoom;
             self.rotation = originalRotation;
@@ -399,7 +399,7 @@ Polymer.prototype.toCircle = function(svgP) {
 
 Polymer.prototype.toStick = function() {
     this.busy = true;
-    this.form = 1;
+    this.participant.form = 1;
 
     //place rotators
     /*this.upperGroup.appendChild(this.lowerRotator.svg);

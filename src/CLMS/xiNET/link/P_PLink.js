@@ -21,7 +21,7 @@ CLMS.xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
         this.renderedToProtein.renderedP_PLinks.push(this);
     }
 
-    this.name = crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
+    this.name = p_pId;//crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //layout stuff
@@ -268,7 +268,8 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
                 var mclCount = matchCrossLinks.length;
                 for (var mcl = 0; mcl < mclCount; mcl++) {
                     var matchCrossLink = matchCrossLinks[mcl];
-                    var p_pId = matchCrossLink.fromProtein.id + "-" + matchCrossLink.toProtein.id;
+                    var toId = matchCrossLink.toProtein? matchCrossLink.toProtein.id : "null";
+                    var p_pId = matchCrossLink.fromProtein.id + "-" + toId;
                     var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
 
                     altP_PLinks.set(p_pLink.id, p_pId);
@@ -286,10 +287,10 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
-        this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1 ||
+    if (!this.renderedToProtein || this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
+        this.renderedFromProtein.participant.form == 1 || this.renderedToProtein.participant.form == 1 ||
         this.filteredCrossLinkCount === 0
-      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.form == 0)) {
+      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.participant.form == 0)) {
         this.hide();
     } else {
         this.show();
@@ -364,15 +365,15 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
-    var target = this.renderedFromProtein.getRenderedParticipant();
-    var source = this.renderedToProtein.getRenderedParticipant();
-    if (!target.x || !target.y) {
-        console.log("NOT");
-    }
-
-    if (this.renderedFromProtein != this.renderedToProtein) {
+    if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            //     if (this.renderedFromProtein === participant) {
+            var target = this.renderedFromProtein.getRenderedParticipant();
+            var source = this.renderedToProtein.getRenderedParticipant();
+            if (!target.x || !target.y) {
+                console.log("NOT");
+            }
+
+                  //     if (this.renderedFromProtein === participant) {
             this.line.setAttribute("x1", source.x);
             this.line.setAttribute("y1", source.y);
             this.highlightLine.setAttribute("x1", source.x);
