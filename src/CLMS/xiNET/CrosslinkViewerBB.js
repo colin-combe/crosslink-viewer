@@ -193,9 +193,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model, "change:highlights", this.highlightsChanged);
         this.listenTo(this.model, "change:selection", this.selectionChanged);
         this.listenTo(this.model, "change:linkColourAssignment currentColourModelChanged", this.render); // mjg - when current colour scale changes its internal values
-        
+
         this.listenTo(this.model, "change:proteinColourAssignment currentProteinColourModelChanged", this.proteinMetadataUpdated); // mjg - protein colour model listener
-        
+
         this.listenTo(this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
         this.listenTo(this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
         this.listenTo(this.model, "change:selectedProteins", this.selectedParticipantsChanged);
@@ -372,7 +372,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (!this.renderedCrossLinks.has(crossLink.id)) {
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
-                    var toId = crossLink.toProtein? crossLink.toProtein.id : "null"
+                    var toId = crossLink.toProtein ? crossLink.toProtein.id : "null"
                     var p_pId = crossLink.fromProtein.id + "-" + toId;
                     var p_pLink = this.renderedP_PLinks.get(p_pId);
                     if (typeof p_pLink == 'undefined') {
@@ -769,23 +769,26 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var crossLink = filteredCrossLinks[cl];
             //visible, non-self cross-links only
             // if (crossLink.isSelfLink() === false) {
-            var fromId = crossLink.fromProtein.id;
-            var toId = crossLink.toProtein.id;
-            var linkId = fromId + "-" + toId;
-            if (!links.has(linkId)) {
-                var linkObj = {};
-                linkObj.source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
-                linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
-                nodeSet.add(linkObj.source);
-                nodeSet.add(linkObj.target);
-                // if (linkObj.source.complex && linkObj.source.complex.participant.form == 1) {
-                //     groupSet.add(linkObj.source.complex.naryLink);
-                // }
-                // if (linkObj.target.complex && linkObj.target.complex.participant.form == 1) {
-                //     groupSet.add(linkObj.target.complex.naryLink);
-                // }
-                linkObj.id = linkId;
-                links.set(linkId, linkObj);
+            var source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant()
+            nodeSet.add(source);
+            if (crossLink.toProtein && crossLink.fromProtein != crossLink.toProtein) {
+                var fromId = crossLink.fromProtein.id;
+                var toId = crossLink.toProtein.id;
+                var linkId = fromId + "-" + toId;
+                if (!links.has(linkId)) {
+                    var linkObj = {};
+                    linkObj.source = source;
+                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
+                    nodeSet.add(linkObj.target);
+                    // if (linkObj.source.complex && linkObj.source.complex.participant.form == 1) {
+                    //     groupSet.add(linkObj.source.complex.naryLink);
+                    // }
+                    // if (linkObj.target.complex && linkObj.target.complex.participant.form == 1) {
+                    //     groupSet.add(linkObj.target.complex.naryLink);
+                    // }
+                    linkObj.id = linkId;
+                    links.set(linkId, linkObj);
+                }
             }
             // }
         }
@@ -951,7 +954,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
                 if (renderedCrossLink.renderedFromProtein.participant.form == 1 ||
-                    (renderedCrossLink.renderedToProtein && renderedCrossLink.renderedToProtein.participant.form == 1)) {
+                    !renderedCrossLink.renderedToProtein || renderedCrossLink.renderedToProtein.participant.form == 1) {
                     renderedCrossLink.showHighlight(true);
                 } else if (renderedCrossLink.renderedToProtein) {
                     var p_pLink = this.renderedP_PLinks.get(
@@ -979,9 +982,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
                 renderedCrossLink.setSelected(true);
-                var p_pLink = this.renderedP_PLinks.get(
-                    renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
-                p_pLink.setSelected(true);
+                if (renderedCrossLink.renderedToProtein) {
+                    var p_pLink = this.renderedP_PLinks.get(
+                        renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
+                    p_pLink.setSelected(true);
+                }
             } else {
                 renderedCrossLink.setSelected(false);
             }
@@ -1075,17 +1080,17 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rp = 0; rp < rpCount; rp++) {
             var renderedParticipant = renderedParticipantArr[rp];
             renderedParticipant.updateName();
-            
+
             if (protColourModel) {
                 //if (renderedParticipant.participant.meta){
-                  d3.select(renderedParticipant.outline)
-                      .attr("fill", protColourModel.getColour(renderedParticipant.participant));
+                d3.select(renderedParticipant.outline)
+                    .attr("fill", protColourModel.getColour(renderedParticipant.participant));
                 //} else {
                 //  d3.select(renderedParticipant.outline)
-                //      .attr("fill", "#ffffff");  
+                //      .attr("fill", "#ffffff");
                 //}
             }
-            
+
         }
 
 

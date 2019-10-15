@@ -102,7 +102,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.upperGroup.appendChild(this.circDomains);
 
     this.scaleLabels = [];
-    
+
     var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
 
     //since form is set to 0, make this a circle, this stuff is equivalant to
@@ -545,18 +545,27 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
         .attr("rx", r + 2.5).attr("ry", r + 2.5)
         .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-    var renderedCrossLinks = this.renderedCrossLinks;
-    var rclCount = renderedCrossLinks.length;
-    for (var rcl = 0; rcl < rclCount; rcl++) {
-        var residueLink = renderedCrossLinks[rcl];
-        var selectLine = d3.select(residueLink.line);
-        selectLine.attr("d", this.getCrossLinkPath(residueLink));
-        selectLine.transition().attr("d", this.getAggregateSelfLinkPath())
-            .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-        var highlightLine = d3.select(residueLink.highlightLine);
-        highlightLine.attr("d", this.getCrossLinkPath(residueLink));
-        highlightLine.transition().attr("d", this.getAggregateSelfLinkPath())
-            .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    var aggSelfLinkPath = this.getAggregateSelfLinkPath();
+    for (var residueLink of this.renderedCrossLinks) {
+        var crosslinkPath = this.getCrossLinkPath(residueLink);
+        var lineSel = d3.select(residueLink.line);
+        if (residueLink.crossLink.isSelfLink()) {
+            lineSel.attr("d", crosslinkPath);
+            lineSel.transition().attr("d", aggSelfLinkPath)
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            var highlightLineSel = d3.select(residueLink.highlightLine);
+            highlightLineSel.attr("d", crosslinkPath);
+            highlightLineSel.transition().attr("d", aggSelfLinkPath)
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+        } else if (residueLink.crossLink.isMonoLink()) {
+            lineSel.attr("d", crosslinkPath);
+            lineSel.transition().attr("d", "M 0,0 L 0,0 L 0,0 L 0,0")
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            var highlightLineSel = d3.select(residueLink.highlightLine);
+            highlightLineSel.attr("d", crosslinkPath);
+            highlightLineSel.transition().attr("d", "M 0,0 L 0,0 L 0,0 L 0,0")
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+        }
     }
 
     var self = this;
@@ -676,7 +685,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     d3.select(this.rectDomains).transition().attr("opacity", 1)
         //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
         .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-    
+
     var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
     d3.select(this.outline).transition().attr("stroke-opacity", 1)
         .attr("fill-opacity", 0)
@@ -693,16 +702,24 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         .attr("rx", 0).attr("ry", 0)
         .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
-    var renderedCrossLinks = this.renderedCrossLinks;
-    var rclCount = renderedCrossLinks.length;
-    for (var rcl = 0; rcl < rclCount; rcl++) {
-        var residueLink = renderedCrossLinks[rcl];
-        if (residueLink.crossLink.isSelfLink() === true) {
-            d3.select(residueLink.line).attr("d", this.getAggregateSelfLinkPath());
-            d3.select(residueLink.line).transition().attr("d", this.getCrossLinkPath(residueLink))
+    var aggSelfLinkPath = this.getAggregateSelfLinkPath();
+    for (var residueLink of this.renderedCrossLinks) {
+        var crosslinkPath = this.getCrossLinkPath(residueLink);
+        var lineSel = d3.select(residueLink.line);
+        var highlightLineSel = d3.select(residueLink.highlightLine);
+        if (residueLink.crossLink.isSelfLink()) {
+            lineSel.attr("d", aggSelfLinkPath);
+            lineSel.transition().attr("d", crosslinkPath)
                 .duration(CLMS.xiNET.RenderedProtein.transitionTime);
-            d3.select(residueLink.highlightLine).attr("d", this.getAggregateSelfLinkPath());
-            d3.select(residueLink.highlightLine).transition().attr("d", this.getCrossLinkPath(residueLink))
+            highlightLineSel.attr("d", aggSelfLinkPath);
+            highlightLineSel.transition().attr("d", crosslinkPath)
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+        } else if (residueLink.crossLink.isMonoLink()) {
+            lineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
+            lineSel.transition().attr("d", crosslinkPath)
+                .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            highlightLineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
+            highlightLineSel.transition().attr("d", crosslinkPath)
                 .duration(CLMS.xiNET.RenderedProtein.transitionTime);
         }
     }
@@ -777,74 +794,73 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
         baseLine = -5;
     }
 
-    //~ following draws little flags - not in use
-    //~ if (isNaN(parseFloat(renderedCrossLink.crossLink.toResidue))){ //linker modified peptide
-    //~ if (renderedCrossLink.ambig === false){
-    //~ renderedCrossLink.line.setAttribute("fill", xiNET.defaultSelfLinkColour.toRGB());
-    //~ }
-    //~ var p1 = [x1, 26];
-    //~ var p3 = [x1, 18];
-    //~ var p2 = CLMS.xiNET.RenderedProtein.rotatePointAboutPoint(p1, p3, 60);
-    //~ baseLine = baseLine * -1;
-    //~ return "M " + x1 + "," + baseLine
-    //~ + " L " + p1[0] + "," + p1[1]
-    //~ + " L " +  p2[0] + "," + p2[1]
-    //~ + " L " + p3[0] + "," + p3[1];
-    //~ }
-    //~ else {
-
-    var x2 = this.getResXwithStickZoom(renderedCrossLink.crossLink.toResidue);
-    var height, cp1, cp2, arcStart, arcEnd, arcRadius;
-    arcRadius = (Math.abs(x2 - x1)) / 2;
-    var height = -((CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) + 3);
-    if (arcRadius < 15) {
-        height = -28 + arcRadius;
-    }
-
-    var start = [x1, baseLine];
-    var end = [x2, baseLine];
-
-    var angle;
-
-    //~ // draws a a little triangle for *truly* intraMolecular - e.g. internally linked peptides
-    //~ // not in use
-    //~ if (renderedCrossLink.intraMolecular === true){
-    //~ var curveMidX = x1 + ((x2 - x1) / 2);
-    //~ arcStart = [ curveMidX, height - arcRadius];
-    //~ arcEnd =  [ curveMidX, height - arcRadius];
-    //~ cp1 = [ curveMidX, height - arcRadius];
-    //~ cp2 =  [ curveMidX, height - arcRadius];
-
-    //~ }
-    //~ else
-    if (renderedCrossLink.crossLink.confirmedHomomultimer) {
-        var curveMidX = x1 + ((x2 - x1) / 2);
-        arcStart = [curveMidX, height - arcRadius];
-        arcEnd = [curveMidX, height - arcRadius];
-        cp1 = Molecule.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
-        cp2 = Molecule.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
-
-        //flip
-        start[1] = start[1] * -1;
-        cp1[1] = cp1[1] * -1;
-        arcStart[1] = arcStart[1] * -1;
-        arcEnd[1] = arcEnd[1] * -1;
-        cp2[1] = cp2[1] * -1;
-        end[1] = end[1] * -1;
-
+    //~ following draws little flags
+    if (isNaN(parseFloat(renderedCrossLink.crossLink.toResidue))) { //linker modified peptide
+        // if (renderedCrossLink.ambig === false) {
+        //     renderedCrossLink.line.setAttribute("fill", "red"); //xiNET.defaultSelfLinkColour.toRGB());
+        // }
+        var p1 = [x1, 26];
+        var p3 = [x1, 18];
+        var p2 = Molecule.rotatePointAboutPoint(p1, p3, 60);
+        baseLine = baseLine * -1;
+        return "M " + x1 + "," + baseLine +
+            " L " + p1[0] + "," + p1[1] +
+            " L " + p2[0] + "," + p2[1] +
+            " L " + p3[0] + "," + p3[1];
     } else {
-        cp1 = [x1, height];
-        cp2 = [x2, baseLine];
-        arcStart = [x1, height];
-        arcEnd = [x2, height];
+
+        var x2 = this.getResXwithStickZoom(renderedCrossLink.crossLink.toResidue);
+        var height, cp1, cp2, arcStart, arcEnd, arcRadius;
+        arcRadius = (Math.abs(x2 - x1)) / 2;
+        var height = -((CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) + 3);
+        if (arcRadius < 15) {
+            height = -28 + arcRadius;
+        }
+
+        var start = [x1, baseLine];
+        var end = [x2, baseLine];
+
+        var angle;
+
+        //~ // draws a a little triangle for *truly* intraMolecular - e.g. internally linked peptides
+        //~ // not in use
+        //~ if (renderedCrossLink.intraMolecular === true){
+        //~ var curveMidX = x1 + ((x2 - x1) / 2);
+        //~ arcStart = [ curveMidX, height - arcRadius];
+        //~ arcEnd =  [ curveMidX, height - arcRadius];
+        //~ cp1 = [ curveMidX, height - arcRadius];
+        //~ cp2 =  [ curveMidX, height - arcRadius];
+
+        //~ }
+        //~ else
+        if (renderedCrossLink.crossLink.confirmedHomomultimer) {
+            var curveMidX = x1 + ((x2 - x1) / 2);
+            arcStart = [curveMidX, height - arcRadius];
+            arcEnd = [curveMidX, height - arcRadius];
+            cp1 = Molecule.rotatePointAboutPoint([x1, height - arcRadius], start, -20);
+            cp2 = Molecule.rotatePointAboutPoint([x2, height - arcRadius], end, 20);
+
+            //flip
+            start[1] = start[1] * -1;
+            cp1[1] = cp1[1] * -1;
+            arcStart[1] = arcStart[1] * -1;
+            arcEnd[1] = arcEnd[1] * -1;
+            cp2[1] = cp2[1] * -1;
+            end[1] = end[1] * -1;
+
+        } else {
+            cp1 = [x1, height];
+            cp2 = [x2, baseLine];
+            arcStart = [x1, height];
+            arcEnd = [x2, height];
+        }
+
+        return " M " + start[0] + "," + start[1] +
+            " Q " + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1] +
+            " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0] + "," + arcEnd[1] +
+            " Q " + cp2[0] + ',' + cp2[1] + " " + end[0] + "," + end[1];
+
     }
-
-    return " M " + start[0] + "," + start[1] +
-        " Q " + cp1[0] + ',' + cp1[1] + ' ' + arcStart[0] + "," + arcStart[1] +
-        " A " + arcRadius + "," + arcRadius + "  0 0 1 " + arcEnd[0] + "," + arcEnd[1] +
-        " Q " + cp2[0] + ',' + cp2[1] + " " + end[0] + "," + end[1];
-
-    //~ }
 }
 
 CLMS.xiNET.RenderedProtein.prototype.getResXwithStickZoom = function(r) {
