@@ -30,7 +30,7 @@ CLMS.xiNET.RenderedCrossLink = function(crossLink, crosslinkViewer) {
 CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
-    if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
+    if (this.crossLink.isSelfLink() || this.crossLink.isMonoLink()) {
         this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
         this.line.setAttribute("stroke-width", this.crosslinkViewer.linkWidth);
         this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "path");

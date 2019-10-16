@@ -794,8 +794,8 @@ CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLi
         baseLine = -5;
     }
 
-    //~ following draws little flags
-    if (isNaN(parseFloat(renderedCrossLink.crossLink.toResidue))) { //linker modified peptide
+    // following draws little flags
+    if (renderedCrossLink.crossLink.isMonoLink()) { //linker modified peptide
         // if (renderedCrossLink.ambig === false) {
         //     renderedCrossLink.line.setAttribute("fill", "red"); //xiNET.defaultSelfLinkColour.toRGB());
         // }
