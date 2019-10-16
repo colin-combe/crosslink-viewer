@@ -157,34 +157,36 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
     var self = this;
-    if (this.shown && this.crossLink.filteredMatches_pp[0].match.matchedPeptides[0].seq_mods) {
+    if (this.shown) {
         if (show) {
             //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
             d3.select(this.highlightLine).classed("selectedLink", false);
             d3.select(this.highlightLine).classed("highlightedLink", true);
             this.highlightLine.setAttribute("stroke-opacity", "0.7");
-            var fromPeptides = [],
-                toPeptides = [];
-            //this is where we need the peptide positions
-            var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
-            var fm_ppCount = filteredMatchesAndPeptidePositions.length;
-            for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
-                var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
-                var match = matchAndPepPos.match;
+            if (this.crossLink.filteredMatches_pp[0].match.matchedPeptides[0].seq_mods) {
+                var fromPeptides = [],
+                    toPeptides = [];
+                //this is where we need the peptide positions
+                var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
+                var fm_ppCount = filteredMatchesAndPeptidePositions.length;
+                for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
+                    var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
+                    var match = matchAndPepPos.match;
 
-                var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
-                var fromPepLength = matchAndPepPos.pepPos[0].length;
-                var toPepStart = matchAndPepPos.pepPos[1].start - 1;
-                var toPepLength = matchAndPepPos.pepPos[1].length;
+                    var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
+                    var fromPepLength = matchAndPepPos.pepPos[0].length;
+                    var toPepStart = matchAndPepPos.pepPos[1].start - 1;
+                    var toPepLength = matchAndPepPos.pepPos[1].length;
 
-                fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
-                toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
-            }
-            if (this.renderedFromProtein.participant.form == 1) {
-                this.showPeptides(fromPeptides, this.renderedFromProtein);
-            }
-            if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
-                this.showPeptides(toPeptides, this.renderedToProtein);
+                    fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+                    toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
+                }
+                if (this.renderedFromProtein.participant.form == 1) {
+                    this.showPeptides(fromPeptides, this.renderedFromProtein);
+                }
+                if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
+                    this.showPeptides(toPeptides, this.renderedToProtein);
+                }
             }
         } else {
             //if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
