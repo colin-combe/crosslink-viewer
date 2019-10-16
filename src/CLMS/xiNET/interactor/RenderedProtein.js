@@ -371,7 +371,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
             "translate(" + (this.getResXwithStickZoom(this.participant.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
 
         for (let residueLink of this.renderedCrossLinks) {
-            if (residueLink.crossLink.isSelfLink()) {
+            if (residueLink.crossLink.isSelfLink() || residueLink.crossLink.isMonoLink()) {
                 var path = this.getCrossLinkPath(residueLink);
                 d3.select(residueLink.line).attr("d", path);
                 d3.select(residueLink.highlightLine).attr("d", path);
