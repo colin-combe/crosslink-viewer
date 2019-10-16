@@ -157,7 +157,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
 CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
     var self = this;
-    if (this.shown) {
+    if (this.shown && this.crossLink.filteredMatches_pp[0].match.matchedPeptides[0].seq_mods) {
         if (show) {
             //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
             d3.select(this.highlightLine).classed("selectedLink", false);
