@@ -367,8 +367,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var cl = 0; cl < clCount; cl++) {
             var crossLink = crossLinksArr[cl];
             //console.log("toP", crossLink.toProtein);
-            var decoyLink = crossLink.isDecoyLink();
-            if (decoyLink == false) {
+            if (!crossLink.isDecoyLink() && !crossLink.isLinearLink()) {
                 if (!this.renderedCrossLinks.has(crossLink.id)) {
                     var renderedCrossLink = new CLMS.xiNET.RenderedCrossLink(crossLink, this);
                     this.renderedCrossLinks.set(crossLink.id, renderedCrossLink);
