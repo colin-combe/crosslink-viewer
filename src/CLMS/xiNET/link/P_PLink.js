@@ -268,11 +268,13 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
                 var mclCount = matchCrossLinks.length;
                 for (var mcl = 0; mcl < mclCount; mcl++) {
                     var matchCrossLink = matchCrossLinks[mcl];
-                    var toId = matchCrossLink.toProtein? matchCrossLink.toProtein.id : "null";
-                    var p_pId = matchCrossLink.fromProtein.id + "-" + toId;
-                    var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
+                    if (!matchCrossLink.isDecoyLink()) {
+                      var toId = matchCrossLink.toProtein? matchCrossLink.toProtein.id : "null";
+                      var p_pId = matchCrossLink.fromProtein.id + "-" + toId;
+                      var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
 
-                    altP_PLinks.set(p_pLink.id, p_pId);
+                      altP_PLinks.set(p_pLink.id, p_pId);
+                    }
                 }
             }
 
