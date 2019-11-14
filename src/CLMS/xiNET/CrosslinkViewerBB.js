@@ -24,15 +24,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     barScales: [0.01, 0.2, 1, 2, 4, 8],
 
-    collapseProtein: function(evt) {
-        var p = this.getEventPoint(evt); // seems to be correct, see below
-        var c = p.matrixTransform(this.container.getCTM().inverse());
-
-        d3.select(".custom-menu-margin").style("display", "none");
-        this.contextMenuProt.setForm(0, c);
-        this.contextMenuProt == null;
-    },
-
     initialize: function() {
 
         this.clickModeIsSelect = false;
@@ -247,6 +238,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.resetZoom();
         this.state = this.STATES.MOUSE_UP;
+    },
+
+    collapseProtein: function(evt) {
+        var p = this.getEventPoint(evt); // seems to be correct, see below
+        var c = p.matrixTransform(this.container.getCTM().inverse());
+
+        d3.select(".custom-menu-margin").style("display", "none");
+        this.contextMenuProt.setForm(0, c);
+        this.contextMenuProt == null;
     },
 
     render: function() {
@@ -497,8 +497,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
                         for (var d = 0; d < toDrag.length; d++) {
                             var renderedProtein = this.renderedProteins.get(toDrag[d].id);
-                            ox = renderedProtein.x;
-                            oy = renderedProtein.y;
+                            ox = renderedProtein.cx;
+                            oy = renderedProtein.cy;
                             nx = ox - dx;
                             ny = oy - dy;
                             renderedProtein.setPosition(nx, ny);
@@ -508,9 +508,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     this.dragStart = evt;
                 } else if (this.state === this.STATES.ROTATING) {
                     // Distance from mouse x and center of stick.
-                    var _dx = c.x - this.dragElement.x
+                    var _dx = c.x - this.dragElement.cx
                     // Distance from mouse y and center of stick.
-                    var _dy = c.y - this.dragElement.y;
+                    var _dy = c.y - this.dragElement.cy;
                     //see http://en.wikipedia.org/wiki/Atan2#Motivation
                     var centreToMouseAngleRads = Math.atan2(_dy, _dx);
                     if (this.whichRotator === 0) {

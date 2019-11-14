@@ -21,13 +21,13 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 }
 
 Molecule.prototype.mouseDown = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.controller.cola) {
+        this.controller.cola.stop();
     }
-    this.crosslinkViewer.dragElement = this;
-    this.crosslinkViewer.dragStart = evt;
+    this.controller.dragElement = this;
+    this.controller.dragStart = evt;
 
     d3.select("#container-menu").style("display", "none");
 
@@ -35,21 +35,21 @@ Molecule.prototype.mouseDown = function(evt) {
 };
 
 Molecule.prototype.touchStart = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.controller.cola) {
+        this.controller.cola.stop();
     }
-    this.crosslinkViewer.dragElement = this;
+    this.controller.dragElement = this;
     //store start location
-    //var p = this.crosslinkViewer.getTouchEventPoint(evt); //oh dear - now broken
-    this.crosslinkViewer.dragStart = evt; //this.crosslinkViewer.mouseToSVG(p.x, p.y);
+    //var p = this.controller.getTouchEventPoint(evt); //oh dear - now broken
+    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
     return false;
 };
 
 Molecule.prototype.mouseOver = function(evt) {
-    var p = this.crosslinkViewer.getEventPoint(evt);
-    this.crosslinkViewer.model.get("tooltipModel")
+    var p = this.controller.getEventPoint(evt);
+    this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
         .set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor(this.participant))
         .set("location", {
@@ -59,8 +59,8 @@ Molecule.prototype.mouseOver = function(evt) {
 };
 
 Molecule.prototype.mouseOut = function(evt) {
-    this.crosslinkViewer.model.setHighlightedProteins([]); // mjg apr 18
-    this.crosslinkViewer.model.get("tooltipModel").set("contents", null);
+    this.controller.model.setHighlightedProteins([]); // mjg apr 18
+    this.controller.model.get("tooltipModel").set("contents", null);
 };
 
 Molecule.prototype.getBlobRadius = function() {
@@ -119,21 +119,21 @@ Molecule.prototype.setSelected = function(select) {
 };
 
 Molecule.prototype.getPosition = function() {
-    return [this.x, this.y];
+    return [this.cx, this.cy];
 }
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 Molecule.prototype.setPosition = function(xPos, yPos) {
-    this.px = this.x;
-    this.py = this.y;
-    this.x = xPos;
-    this.y = yPos;
+    this.px = this.cx;
+    this.py = this.cy;
+    this.cx = xPos;
+    this.cy = yPos;
     // if (this.participant.form === 1) {
-    this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
-        " scale(" + (this.crosslinkViewer.z) + ") "); // + "rotate(" + this.rotation + ")");
+    this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+        " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
     // } else {
     //     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
-    //         " scale(" + (this.crosslinkViewer.z) + ") ");
+    //         " scale(" + (this.controller.z) + ") ");
     // }
 };
 
@@ -275,11 +275,11 @@ Molecule.trig = function(radius, angleDegrees) {
 Molecule.prototype.setForm = function(form, svgP) {};
 
 Molecule.prototype.getX = function() {
-    return this.x;
+    return this.cx;
 }
 
 Molecule.prototype.getY = function() {
-    return this.y;
+    return this.cy;
 }
 
 Molecule.prototype.updateName = function(annotation) {

@@ -1168,7 +1168,7 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
         if (this.state === MouseEventCodes.DRAGGING) {
             // we are currently dragging things around
             var ox, oy, nx, ny;
-            if (typeof this.dragElement.x === 'undefined') { // if not an Molecule
+            if (typeof this.dragElement.cx === 'undefined') { // if not an Molecule
                 var nodes = this.dragElement.interactors;
                 var nodeCount = nodes.length;
                 for (var i = 0; i < nodeCount; i++) {
@@ -1185,8 +1185,8 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
                 }
             } else {
                 //its a protein - drag it TODO: DRAG SELECTED
-                ox = this.dragElement.x;
-                oy = this.dragElement.y;
+                ox = this.dragElement.cx;
+                oy = this.dragElement.cy;
                 nx = ox - dx;
                 ny = oy - dy;
                 this.dragElement.setPosition(nx, ny);
@@ -1197,9 +1197,9 @@ xiNET.Controller.prototype.mouseMove = function(evt) {
 
         else if (this.state === MouseEventCodes.ROTATING) {
             // Distance from mouse x and center of stick.
-            var _dx = c.x - this.dragElement.x
+            var _dx = c.cx - this.dragElement.x
             // Distance from mouse y and center of stick.
-            var _dy = c.y - this.dragElement.y;
+            var _dy = c.cy - this.dragElement.y;
             //see http://en.wikipedia.org/wiki/Atan2#Motivation
             var centreToMouseAngleRads = Math.atan2(_dy, _dx);
             if (this.whichRotator === 0) {
@@ -1261,7 +1261,7 @@ xiNET.Controller.prototype.mouseUp = function(evt) {
                     //can't be used? problem with IE (scroll thingy)
                 }
                 else { //left click; show matches for link, toggle form for protein, switch stick scale
-                    if (typeof this.dragElement.x === 'undefined') { //if not protein
+                    if (typeof this.dragElement.cx === 'undefined') { //if not protein
                         //~ this.dragElement.showData();
                     } else if (evt.shiftKey) { //if shift key
                         this.dragElement.switchStickScale(c);
@@ -1393,8 +1393,8 @@ xiNET.Controller.prototype.touchMove = function(evt) {
                     var nodeCount = nodes.length;
                     for (var i = 0; i < nodeCount; i++) {
                         var protein = nodes[i];
-                        ox = protein.x;
-                        oy = protein.y;
+                        ox = protein.cx;
+                        oy = protein.cy;
                         nx = ox - dx;
                         ny = oy - dy;
                         protein.setPosition(nx, ny);
@@ -1405,8 +1405,8 @@ xiNET.Controller.prototype.touchMove = function(evt) {
                     }
                 } else {
                     //its a protein - drag it TODO: DRAG SELECTED
-                    ox = this.dragElement.x;
-                    oy = this.dragElement.y;
+                    ox = this.dragElement.cx;
+                    oy = this.dragElement.cy;
                     nx = ox - dx;
                     ny = oy - dy;
                     this.dragElement.setPosition(nx, ny);
@@ -1417,9 +1417,9 @@ xiNET.Controller.prototype.touchMove = function(evt) {
 
             else if (this.state === MouseEventCodes.ROTATING) {
                 // Distance from mouse x and center of stick.
-                var _dx = c.x - this.dragElement.x
+                var _dx = c.x - this.dragElement.cx;
                 // Distance from mouse y and center of stick.
-                var _dy = c.y - this.dragElement.y;
+                var _dy = c.y - this.dragElement.cy;
                 //see http://en.wikipedia.org/wiki/Atan2#Motivation
                 var centreToMouseAngleRads = Math.atan2(_dy, _dx);
                 if (this.whichRotator === 0) {

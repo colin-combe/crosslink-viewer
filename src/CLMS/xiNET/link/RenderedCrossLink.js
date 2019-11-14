@@ -361,8 +361,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             var x, y;
             // from end
             if (this.renderedFromProtein.participant.form === 0) {
-                x = this.renderedFromProtein.x;
-                y = this.renderedFromProtein.y;
+                x = this.renderedFromProtein.cx;
+                y = this.renderedFromProtein.cy;
             } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
@@ -376,8 +376,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
 
             // to end
             if (this.renderedToProtein.participant.form === 0) {
-                x = this.renderedToProtein.x;
-                y = this.renderedToProtein.y;
+                x = this.renderedToProtein.cx;
+                y = this.renderedToProtein.cy;
             } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
@@ -400,8 +400,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
     if (renderedInteractor.stickZoom > 8) { //if sequence shown
         var from = this.renderedFromProtein,
             to = this.renderedToProtein;
-        var deltaX = from.x - to.x;
-        var deltaY = from.y - to.y;
+        var deltaX = from.cx - to.cx;
+        var deltaY = from.cy - to.cy;
         var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
         //todo: tidy up trig code so eveything is always in radians?
         var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
@@ -436,7 +436,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
 
     var rotated = Molecule.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
 
-    x = rotated[0] + renderedInteractor.x;
-    y = rotated[1] + renderedInteractor.y;
+    x = rotated[0] + renderedInteractor.cx;
+    y = rotated[1] + renderedInteractor.cy;
     return [x, y];
 };
