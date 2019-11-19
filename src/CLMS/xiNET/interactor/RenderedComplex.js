@@ -132,17 +132,24 @@ function Complex(group, xlvController) {
 
 Complex.prototype.initMolecule = function(naryLink) {
     this.naryLink = naryLink;
-    naryLink.path.setAttribute('stroke', 'black');
-    naryLink.path.setAttribute('stroke-linejoin', 'round');
-    naryLink.path.setAttribute('stroke-width', 8);
-    var pos = this.getPosition();; //todo tidy up
-    this.setPosition(pos[0], pos[1]);
+    // naryLink.path.setAttribute('stroke', 'black');
+    // naryLink.path.setAttribute('stroke-linejoin', 'round');
+    // naryLink.path.setAttribute('stroke-width', 8);
+    this.padding = 15;
     this.setForm(this.form);
 };
 
 Complex.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
-    Molecule.prototype.mouseOver.call(this, evt);
+    //doesn't do anything
+    /*var p = this.controller.getEventPoint(evt);
+    this.controller.model.get("tooltipModel")
+        .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
+        .set("contents", CLMSUI.modelUtils.makeTooltipContents.complex(this))
+        .set("location", {
+            pageX: p.x,
+            pageY: p.y
+        });*/
 };
 
 Complex.prototype.mouseOut = function(evt) {

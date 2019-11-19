@@ -156,8 +156,8 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
 // event handler for starting dragging or rotation (or flipping internal links)
 CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //stop layout
-    if (this.cola) {
-        this.cola.stop();
+    if (this.d3cola) {
+        this.d3cola.stop();
     }
 
     this.crosslinkViewer.dragElement = this;
@@ -184,8 +184,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.setMarkedCrossLinks("selection", this.crossLinks);

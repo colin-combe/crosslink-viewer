@@ -111,8 +111,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
 CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
 
@@ -141,8 +141,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
     var add = evt.shiftKey || evt.ctrlKey;

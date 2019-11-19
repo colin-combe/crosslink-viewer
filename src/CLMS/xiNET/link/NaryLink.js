@@ -47,6 +47,9 @@ NaryLink.prototype.initSVG = function() {
     this.path.onmousedown = function(evt) {
         self.mouseDown(evt);
     };
+    this.path.onmouseup = function(evt) {
+        self.controller.preventDefaultsAndStopPropagation(evt);
+    };
     this.path.onmouseover = function(evt) {
         self.mouseOver(evt);
     };
@@ -57,6 +60,27 @@ NaryLink.prototype.initSVG = function() {
         self.touchStart(evt);
     };
 };
+
+// event handler for starting dragging or rotation (or flipping internal links)
+NaryLink.prototype.mouseDown = function(evt) {
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    //if a force layout exists then stop it
+    if (this.controller.d3cola) {
+        this.controller.d3cola.stop();
+    }
+  //  this.controller.dragElement = this;
+    //store start location
+  //  this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
+    var add = evt.ctrlKey || evt.shiftKey;
+    var participants = [];
+    for (var rp of this.renderedParticipants){
+      participants.push(rp.participant);
+    }
+
+    this.controller.model.setSelectedProteins(participants, add);
+
+    return false;
+}
 
 NaryLink.prototype.showHighlight = function(show) {
     this.highlightMolecules(show);

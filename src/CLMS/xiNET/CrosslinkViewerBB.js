@@ -25,7 +25,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 1, 2, 4, 8],
 
     initialize: function() {
-
+        this.debug = false;
         this.clickModeIsSelect = false;
 
         //avoids prob with 'save - web page complete'
@@ -233,7 +233,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.renderedCrossLinks = new Map();
         this.renderedP_PLinks = new Map();
 
-        this.layout = null;
         this.z = 1;
 
         this.resetZoom();
@@ -401,7 +400,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
-            prot.setPosition(prot.x, prot.y); // this rescales the protein
+            prot.setPosition(prot.cx, prot.cy); // this rescales the protein
             if (prot.participant.form !== 0)
                 prot.setAllLinkCoordinates();
         }
@@ -727,8 +726,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
-                protein.x = protLayout["x"];
-                protein.y = protLayout["y"];
+                protein.cx = protLayout["x"];
+                protein.cy = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 if (this.barScales.indexOf(+protLayout["stickZoom"]) > -1) {
                     protein.stickZoom = protLayout["stickZoom"];
@@ -757,10 +756,18 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
 
-        //this.resetZoom();
+        var width = this.svgElement.parentNode.clientWidth; //this.svgElement.getBoundingClientRect().width;
+        var height = this.svgElement.parentNode.clientHeight;
 
+        if (this.acknowledgement) {
+            this.acknowledgement.setAttribute("transform", "translate(5, " + (height - 40) + ")");
+        }
+        //// TODO: prune leaves from network then layout, then add back leaves and layout again
+
+        var self = this;
         var links = new Map();
         var nodeSet = new Set();
+        var layoutObj = {};
 
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
         var clCount = filteredCrossLinks.length;
@@ -768,16 +775,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var crossLink = filteredCrossLinks[cl];
             //visible, non-self cross-links only
             // if (crossLink.isSelfLink() === false) {
-            var source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant()
+            var source = this.renderedProteins.get(crossLink.fromProtein.id);//.getRenderedParticipant()
             nodeSet.add(source);
-            if (crossLink.toProtein && crossLink.fromProtein != crossLink.toProtein) {
+          //  if (crossLink.toProtein && crossLink.fromProtein != crossLink.toProtein) {
                 var fromId = crossLink.fromProtein.id;
                 var toId = crossLink.toProtein.id;
                 var linkId = fromId + "-" + toId;
                 if (!links.has(linkId)) {
                     var linkObj = {};
                     linkObj.source = source;
-                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
+                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id);//.getRenderedParticipant();
                     nodeSet.add(linkObj.target);
                     // if (linkObj.source.complex && linkObj.source.complex.participant.form == 1) {
                     //     groupSet.add(linkObj.source.complex.naryLink);
@@ -788,16 +795,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     linkObj.id = linkId;
                     links.set(linkId, linkObj);
                 }
-            }
-            // }
+            //}
         }
 
-        var bBox = this.svgElement.getBoundingClientRect();
-        var width = bBox.width;
-        var height = bBox.height;
+
 
         var linkArr = CLMS.arrayFromMapValues(links);
         var nodeArray = Array.from(nodeSet);
+
+        for (var link of links) {
+          link.source = nodeArray.indexOf(link.source);
+          link.target = nodeArray.indexOf(link.target);
+      }
+
 
         var groups = [];
         if (this.groups) {
@@ -811,7 +821,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             g.leaves.push(i);
                         }
                     }
-                    groups.push(g);
+                    if (g.leaves.length > 0) {
+                      groups.push(g);
+                    }
                 }
             }
         }
@@ -836,73 +848,54 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //     }
         // }
 
+        this.d3cola = cola.d3adaptor();
+        //console.log("groups", groups);
+
         delete this.d3cola._lastStress;
         delete this.d3cola._alpha;
         delete this.d3cola._descent;
         delete this.d3cola._rootGroup;
 
-        this.d3cola = cola.d3adaptor();
-        this.d3cola.nodes(nodeArray).groups(groups).avoidOverlaps(true).links(linkArr);
+        layoutObj.nodes = nodeArray;
+        layoutObj.links = linkArr;
 
-        var self = this;
+        console.log(layoutObj);
 
-        var groupDebugSel = d3.select(this.groupsSVG).selectAll('.group')
-            .data(groups);
+        this.d3cola.nodes(layoutObj.nodes).groups(groups).links(layoutObj.links).avoidOverlaps(true);
 
-        groupDebugSel.enter().append('rect')
-            .classed('group', true)
-            .attr({
-                rx: 5,
-                ry: 5
-            })
-            .style('stroke', "blue")
-            .style('fill', "none");
+        if (self.debug) {
 
-        var participantDebugSel = d3.select(this.groupsSVG).selectAll('.node')
-            .data(nodeArray);
+            var groupDebugSel = d3.select(this.groupsSVG).selectAll('.group')
+                .data(groups);
 
-        participantDebugSel.enter().append('rect')
-            .classed('node', true)
-            .attr({
-                rx: 5,
-                ry: 5
-            })
-            .style('stroke', "red")
-            .style('fill', "none");
+            groupDebugSel.enter().append('rect')
+                .classed('group', true)
+                .attr({
+                    rx: 5,
+                    ry: 5
+                })
+                .style('stroke', "blue")
+                .style('fill', "none");
 
-        groupDebugSel.exit().remove();
-        participantDebugSel.exit().remove();
-        //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
-        this.d3cola.symmetricDiffLinkLengths(25 * self.z).on("tick", function(e) {
-            groupDebugSel.attr({
-                x: function(d) {
-                    return d.bounds.x + (width / 2);
-                },
-                y: function(d) {
-                    return d.bounds.y + (height / 2);
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            });
+            var participantDebugSel = d3.select(this.groupsSVG).selectAll('.node')
+                .data(layoutObj.nodes);
 
-            participantDebugSel.attr({
-                x: function(d) {
-                    return d.bounds.x + (width / 2);
-                },
-                y: function(d) {
-                    return d.bounds.y + (height / 2);
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            });
+            participantDebugSel.enter().append('rect')
+                .classed('node', true)
+                .attr({
+                    rx: 5,
+                    ry: 5
+                })
+                .style('stroke', "red")
+                .style('fill', "none");
+
+            groupDebugSel.exit().remove();
+            participantDebugSel.exit().remove();
+            //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
+        }
+
+        this.d3cola.symmetricDiffLinkLengths(10).on("tick", function(e) {
+
 
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
@@ -919,8 +912,40 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, offsetY);
                 node.setAllLinkCoordinates();
             }
+
+            if (self.debug) {
+                groupDebugSel.attr({
+                    x: function(d) {
+                        return d.bounds.x + (width / 2);
+                    },
+                    y: function(d) {
+                        return d.bounds.y + (height / 2);
+                    },
+                    width: function(d) {
+                        return d.bounds.width()
+                    },
+                    height: function(d) {
+                        return d.bounds.height()
+                    }
+                });
+
+                participantDebugSel.attr({
+                    x: function(d) {
+                        return d.bounds.x + (width / 2);
+                    },
+                    y: function(d) {
+                        return d.bounds.y + (height / 2);
+                    },
+                    width: function(d) {
+                        return d.bounds.width()
+                    },
+                    height: function(d) {
+                        return d.bounds.height()
+                    }
+                });
+            }
         });
-        this.d3cola.start(10, 0, 20);
+        this.d3cola.start(20, 0, 20);
     },
 
     downloadSVG: function() {
@@ -1103,10 +1128,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (participant.meta && participant.meta.complex) {
                 group = participant.meta.complex;
                 if (groupMap.get(group)) {
-                    groupMap.get(group).add(participant.accession);
+                    groupMap.get(group).add(participant.id);
                 } else {
                     var groupParticipants = new d3.set();
-                    groupParticipants.add(participant.accession);
+                    groupParticipants.add(participant.id);
                     groupMap.set(group, groupParticipants)
                 }
             }
@@ -1122,10 +1147,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 "id": groupsArr[g].value.values().sort().join('-'),
                 "participants": groupsArr[g].value
             }
-            // var groupName = ;
-            // var participantSet = ;
-            // var nLinkId = participantSet.
-            // //doesn't already exist, make new nLink
+
             nLink = new NaryLink(group.id, this);
 
             var complex = new Complex(group, this);
@@ -1145,20 +1167,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             complex.initMolecule(nLink);
 
-            //Link.show();
-
-            //complex.show();
-            // complex.setPosition(complex.getPosition());
-            this.renderedProteins.set(group.id, complex);
-            //self.allNaryLinks.set(nLinkId, nLink);
-            //alot of time is being spent on creating these IDs, stash them in the interaction object?
-            //interaction.naryId =  nLinkId;
         }
-
 
         return this;
     },
-
 
     groupsChanged: function(go) {
 
@@ -1209,7 +1221,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.autoLayout();
         return this;
     },
-
 
     showLabels: function(show) {
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);

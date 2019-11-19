@@ -23,8 +23,8 @@ Molecule.prototype.addStoichiometryLabel = function(stoich) {
 Molecule.prototype.mouseDown = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.controller.cola) {
-        this.controller.cola.stop();
+    if (this.controller.d3cola) {
+        this.controller.d3cola.stop();
     }
     this.controller.dragElement = this;
     this.controller.dragStart = evt;
@@ -37,8 +37,8 @@ Molecule.prototype.mouseDown = function(evt) {
 Molecule.prototype.touchStart = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.controller.cola) {
-        this.controller.cola.stop();
+    if (this.controller.d3cola) {
+        this.controller.d3cola.stop();
     }
     this.controller.dragElement = this;
     //store start location
@@ -128,10 +128,14 @@ Molecule.prototype.setPosition = function(xPos, yPos) {
     this.py = this.cy;
     this.cx = xPos;
     this.cy = yPos;
+    console.log("!", this.cx, this.cy);
+
     // if (this.participant.form === 1) {
+    console.log(this.name, "before", this.upperGroup.getAttribute("transform"));
     this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
         " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
-    // } else {
+    console.log(this.name, "after", this.upperGroup.getAttribute("transform"));
+        // } else {
     //     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
     //         " scale(" + (this.controller.z) + ") ");
     // }
