@@ -12,7 +12,7 @@
 
 NaryLink.naryColours = d3.scale.ordinal().range(colorbrewer.Paired[6]); //d3.scale.category20c();//d3.scale.ordinal().range(colorbrewer.Paired[12]);//
 NaryLink.orbitNodeCount = 16;
-NaryLink.orbitRadius = 20;
+NaryLink.orbitRadius = 25;
 
 NaryLink.prototype = new Link();
 

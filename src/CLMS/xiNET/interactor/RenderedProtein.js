@@ -15,6 +15,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.renderedP_PLinks = [];
     this.renderedCrossLinks = [];
 
+    this.complexes = new Set();
     this.naryLinks = d3.map();
 
     // layout info

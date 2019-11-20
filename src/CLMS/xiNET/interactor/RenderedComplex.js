@@ -135,7 +135,7 @@ Complex.prototype.initMolecule = function(naryLink) {
     // naryLink.path.setAttribute('stroke', 'black');
     // naryLink.path.setAttribute('stroke-linejoin', 'round');
     // naryLink.path.setAttribute('stroke-width', 8);
-    this.padding = 15;
+    this.padding = 25;
     this.setForm(this.form);
 };
 

@@ -1176,7 +1176,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 var pid = pArr[pi];
                 var renderedProtein = this.renderedProteins.get(pid);
                 renderedProtein.naryLinks.set(group.id, nLink);
-                renderedProtein.complex = complex;
+                renderedProtein.complexes.add(complex);
+                if (renderedProtein.complexes.size > 1) {
+                  console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
+                }
                 if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
                     nLink.renderedParticipants.push(renderedProtein);
                 }
