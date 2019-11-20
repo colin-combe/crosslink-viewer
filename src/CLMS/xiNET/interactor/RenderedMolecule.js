@@ -212,7 +212,7 @@ Molecule.prototype.setAllLinkCoordinates = function() {
     //     links[l].setLinkCoordinates();
     // }
 };
-
+/*
 //todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
 Molecule.prototype.clearPositionalFeatures = function(posFeats) {
     this.annotations = [];
@@ -263,7 +263,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             }
         }
     }
-};
+};*/
 
 //TODO: remove this, use rotateAboutPoint instead
 Molecule.trig = function(radius, angleDegrees) {

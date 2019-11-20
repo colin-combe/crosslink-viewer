@@ -16,11 +16,12 @@ NaryLink.orbitRadius = 20;
 
 NaryLink.prototype = new Link();
 
-function NaryLink(id, xlvController) {
-    this.id = id;
+function NaryLink(group, xlvController) {
+    this.id = group.id;
+    this.name = group.name;
     this.evidences = d3.map();
     this.renderedParticipants = new Array();
-    this.leaves = this.renderedParticipants; // temp (?) for cola
+    //this.leaves = this.renderedParticipants; // temp (?) for cola
     this.sequenceLinks = d3.map();
     this.binaryLinks = d3.map();
     this.unaryLinks = d3.map();
@@ -42,6 +43,8 @@ NaryLink.prototype.initSVG = function() {
     //~ }
     this.path.setAttribute('fill-opacity', 0.3);
 
+    this.controller.groupsSVG.appendChild(this.path);
+
     //set the events for it
     var self = this;
     this.path.onmousedown = function(evt) {
@@ -49,6 +52,8 @@ NaryLink.prototype.initSVG = function() {
     };
     this.path.onmouseup = function(evt) {
         self.controller.preventDefaultsAndStopPropagation(evt);
+        self.controller.dragElement = null;
+        self.controller.dragStart = null;
     };
     this.path.onmouseover = function(evt) {
         self.mouseOver(evt);
@@ -68,15 +73,17 @@ NaryLink.prototype.mouseDown = function(evt) {
     if (this.controller.d3cola) {
         this.controller.d3cola.stop();
     }
-  //  this.controller.dragElement = this;
+    this.controller.dragElement = this;
     //store start location
-  //  this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
+    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
     var add = evt.ctrlKey || evt.shiftKey;
     var participants = [];
-    for (var rp of this.renderedParticipants){
-      participants.push(rp.participant);
+    for (var rp of this.renderedParticipants) {
+        rp.participant.manuallyHidden = false;
+        participants.push(rp.participant);
     }
 
+    this.controller.model.get("filterModel").trigger("change");
     this.controller.model.setSelectedProteins(participants, add);
 
     return false;
@@ -87,14 +94,19 @@ NaryLink.prototype.showHighlight = function(show) {
 };
 
 NaryLink.prototype.check = function() {
-    this.show();
-    return true;
+    for (var rp of this.renderedParticipants) {
+        if (rp.hidden == false) {
+            this.show();
+            return true;
+        }
+    }
+    this.hide();
+    return false;
 };
 
 NaryLink.prototype.show = function() {
     this.path.setAttribute("stroke-width", this.controller.z * 1);
     this.setLinkCoordinates();
-    this.controller.groupsSVG.appendChild(this.path);
     d3.select(this.path).style("display", null);
 };
 
