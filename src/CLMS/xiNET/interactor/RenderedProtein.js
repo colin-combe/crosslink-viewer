@@ -173,7 +173,7 @@ CLMS.xiNET.RenderedProtein.prototype.setEverything = function() {
     }
     this.showHighlight(this.isHighlighted);
     this.setSelected(this.isSelected);
-    this.setPosition(this.cx, this.y);
+    this.setPosition(this.cx, this.cy);
     this.scale();
     this.setAllLinkCoordinates();
     this.setForm(this.newForm);
