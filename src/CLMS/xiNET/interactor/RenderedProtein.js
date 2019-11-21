@@ -44,7 +44,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.highlight = document.createElementNS(this.controller.svgns, "rect");
     this.highlight.setAttribute("class", "highlightedProtein");
     this.highlight.setAttribute("stroke-width", "5");
-    this.highlight.setAttribute("fill", "none");
+    this.highlight.setAttribute("fill", "#ffffff");
     this.lowerGroup.appendChild(this.highlight);
 
     //domains in rectangle form (shown underneath links)

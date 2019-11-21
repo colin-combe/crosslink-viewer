@@ -915,7 +915,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
         }
 
-        this.d3cola.symmetricDiffLinkLengths(10).on("tick", function(e) {
+        this.d3cola.jaccardLinkLengths(40,0.7).on("tick", function(e) {
 
 
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
