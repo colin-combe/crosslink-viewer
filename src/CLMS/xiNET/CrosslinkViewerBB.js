@@ -256,9 +256,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (this.model.get("clmsModel").get("xiNETLayout")) {
                 this.loadLayout(this.model.get("clmsModel").get("xiNETLayout").layout);
             } else {
-                // for (var prot of this.renderedProteins.values()) {
-                //     prot.init();
-                // }
                 this.autoLayout();
             }
         }
@@ -632,12 +629,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             if (this.dragElement != null) { // a thing has been clicked
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                    if (this.dragElement.x) { //if the thing is a protein
+                    if (this.dragElement.cx) { //if the thing is a protein
                         if (rightclick) {
                             if (this.dragElement.participant.form === 0) {
                                 this.dragElement.setForm(1);
-                            } else if (this.dragElement.type == "nary") {
-                                this.dragElement.setForm(0);
+                            // } else if (this.dragElement.type == "nary") {
+                            //     this.dragElement.setForm(0);
                             } else {
                                 this.model.get("tooltipModel").set("contents", null);
                                 this.contextMenuProt = this.dragElement;
