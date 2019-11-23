@@ -42,7 +42,8 @@ NaryLink.prototype.initSVG = function() {
     //this.path.setAttribute('fill', '#70BDBD');
     //~ }
     this.path.setAttribute('fill-opacity', 0.3);
-
+    this.path.setAttribute("stroke-dasharray", (8) + ", " + (8));
+    this.path.setAttribute("stroke-width", "30");
     this.controller.groupsSVG.appendChild(this.path);
 
     //set the events for it
@@ -105,7 +106,7 @@ NaryLink.prototype.check = function() {
 };
 
 NaryLink.prototype.show = function() {
-    this.path.setAttribute("stroke-width", this.controller.z * 1);
+    // this.path.setAttribute("stroke-width", this.controller.z * 1);
     this.setLinkCoordinates();
     d3.select(this.path).style("display", null);
 };
@@ -113,6 +114,20 @@ NaryLink.prototype.show = function() {
 NaryLink.prototype.hide = function() {
     d3.select(this.path).style("display", "none");
     //    this.controller.groupsSVG.removeChild(this.path);
+};
+
+NaryLink.prototype.dashedLine = function(dash) {
+    if (dash) {
+        // if (this.renderedFromProtein === this.renderedToProtein) {
+        //     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+        // } else {
+        //     this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
+        // }
+            this.path.setAttribute("stroke", NaryLink.naryColours(this.id));
+    } else {
+        this.path.removeAttribute("stroke", "none");
+    }
+
 };
 
 NaryLink.prototype.setLinkCoordinates = function() {

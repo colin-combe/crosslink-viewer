@@ -1111,6 +1111,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             messgeSel.style("display", "block");
         }
 
+        for (var group of this.groups){
+            var hasHidden = false;
+            for (var p of group.naryLink.renderedParticipants) {
+                if (p.participant.manuallyHidden) {
+                    hasHidden = true;
+                }
+            }
+            group.naryLink.dashedLine(hasHidden);
+        }
+
         return this;
     },
 
