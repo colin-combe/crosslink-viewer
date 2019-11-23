@@ -62,7 +62,7 @@ Link.prototype.getToolTip = function() {}
 Link.prototype.mouseOut = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(false, true);
-    // this.controller.hideTooltip();
+    this.controller.model.get("tooltipModel").set("contents", null);
     return false;
 }
 

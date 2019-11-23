@@ -30,7 +30,7 @@ function NaryLink(group, xlvController) {
     //used to avoid some unnecessary manipulation of DOM
     this.initSVG();
     this.type = "nary";
-    this.x = "x"; //hack
+    // this.x = "x"; //hack
 }
 
 NaryLink.prototype.initSVG = function() {
