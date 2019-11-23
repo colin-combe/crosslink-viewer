@@ -507,7 +507,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             renderedProtein.setAllLinkCoordinates();
                         }
                     }
-                    else if (this.dragElement.type = "nary") {
+                    else if (this.dragElement.type == "nary") {
                       var toDrag = this.dragElement.renderedParticipants;
                       for (var d = 0; d < toDrag.length; d++) {
                           var renderedProtein = toDrag[d];
