@@ -39,18 +39,6 @@ Link.prototype.highlightMolecules = function(show) {
     }
 }
 
-// event handler for starting dragging or rotation (or flipping internal links)
-Link.prototype.mouseDown = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-    //if a force layout exists then stop it
-    if (this.controller.d3cola) {
-        this.controller.d3cola.stop();
-    }
-    this.controller.dragElement = this;
-    //store start location
-    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
-    return false;
-}
 
 // highlight on mouseover, all 'subclasses' need a showHighlight method
 Link.prototype.mouseOver = function(evt) {
@@ -58,6 +46,14 @@ Link.prototype.mouseOver = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(true, true);
     //this.controller.setTooltip(this.getToolTip());
+    var p = this.controller.getEventPoint(evt);
+    this.controller.model.get("tooltipModel")
+        .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
+        .set("contents", CLMSUI.modelUtils.makeTooltipContents.complex(this))
+        .set("location", {
+            pageX: p.x,
+            pageY: p.y
+        });
     return false;
 }
 
@@ -66,7 +62,7 @@ Link.prototype.getToolTip = function() {}
 Link.prototype.mouseOut = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.showHighlight(false, true);
-    // this.controller.hideTooltip();
+    this.controller.model.get("tooltipModel").set("contents", null);
     return false;
 }
 

@@ -13,8 +13,8 @@ Complex.prototype = new Molecule();
 function Complex(group, xlvController) {
     this.id = group.id;
     this.name = group.name;
-    this.participant = group;
-    this.crosslinkViewer = xlvController;
+    this.participant = group;//confusing
+    this.controller = xlvController;
     //links
     this.naryLinks = d3.map();
     this.binaryLinks = d3.map();
@@ -30,13 +30,13 @@ function Complex(group, xlvController) {
      * svg group for elements that appear above links
      */
 
-    this.upperGroup = document.createElementNS(this.crosslinkViewer.svgns, "g");
+    this.upperGroup = document.createElementNS(this.controller.svgns, "g");
     //~ this.upperGroup.setAttribute("class", "protein upperGroup");
 
     //for polygon
     var points = "15,0 8,-13 -7,-13 -15,0 -8,13 7,13";
     //make highlight
-    this.highlight = document.createElementNS(this.crosslinkViewer.svgns, "polygon");
+    this.highlight = document.createElementNS(this.controller.svgns, "polygon");
     this.highlight.setAttribute("points", points);
     // this.highlight.setAttribute("stroke", this.controller.highlightColour);
     this.highlight.setAttribute("stroke-width", "5");
@@ -47,7 +47,7 @@ function Complex(group, xlvController) {
     this.upperGroup.appendChild(this.highlight);
 
     //create label - we will move this svg element around when protein form changes
-    this.labelSVG = document.createElementNS(this.crosslinkViewer.svgns, "text");
+    this.labelSVG = document.createElementNS(this.controller.svgns, "text");
     this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
@@ -64,7 +64,7 @@ function Complex(group, xlvController) {
     this.upperGroup.appendChild(this.labelSVG);
 
     //make blob
-    this.outline = document.createElementNS(this.crosslinkViewer.svgns, "polygon");
+    this.outline = document.createElementNS(this.controller.svgns, "polygon");
     this.outline.setAttribute("points", points);
 
     this.outline.setAttribute("stroke", "black");
@@ -94,12 +94,12 @@ function Complex(group, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     // Object.defineProperty(this, "width", {
     //     get: function width() {
-    //         return this.upperGroup.getBBox().width * this.crosslinkViewer.z;
+    //         return this.upperGroup.getBBox().width * this.controller.z;
     //     }
     // });
     // Object.defineProperty(this, "height", {
     //     get: function height() {
-    //         return this.upperGroup.getBBox().height * this.crosslinkViewer.z;
+    //         return this.upperGroup.getBBox().height * this.controller.z;
     //     }
     // });
 
@@ -132,17 +132,24 @@ function Complex(group, xlvController) {
 
 Complex.prototype.initMolecule = function(naryLink) {
     this.naryLink = naryLink;
-    naryLink.path.setAttribute('stroke', 'black');
-    naryLink.path.setAttribute('stroke-linejoin', 'round');
-    naryLink.path.setAttribute('stroke-width', 8);
-    var pos = this.getPosition();; //todo tidy up
-    this.setPosition(pos[0], pos[1]);
+    // naryLink.path.setAttribute('stroke', 'black');
+    // naryLink.path.setAttribute('stroke-linejoin', 'round');
+    // naryLink.path.setAttribute('stroke-width', 8);
+    this.padding = 25;
     this.setForm(this.form);
 };
 
 Complex.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
-    Molecule.prototype.mouseOver.call(this, evt);
+    //doesn't do anything
+    /*var p = this.controller.getEventPoint(evt);
+    this.controller.model.get("tooltipModel")
+        .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
+        .set("contents", CLMSUI.modelUtils.makeTooltipContents.complex(this))
+        .set("location", {
+            pageX: p.x,
+            pageY: p.y
+        });*/
 };
 
 Complex.prototype.mouseOut = function(evt) {
@@ -179,7 +186,7 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.checkLinks();
         }
         this.naryLink.hide();
-        this.crosslinkViewer.proteinUpper.appendChild(this.upperGroup);
+        this.controller.proteinUpper.appendChild(this.upperGroup);
     } else {
         this.participant.form = 1;
         var renderedParticipants = this.naryLink.renderedParticipants;
@@ -191,7 +198,7 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.checkLinks();
         }
         this.naryLink.show();
-//        this.crosslinkViewer.proteinUpper.removeChild(this.upperGroup);
+//        this.controller.proteinUpper.removeChild(this.upperGroup);
     }
 };
 

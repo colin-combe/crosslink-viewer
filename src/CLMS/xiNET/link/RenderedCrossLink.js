@@ -30,7 +30,7 @@ CLMS.xiNET.RenderedCrossLink = function(crossLink, crosslinkViewer) {
 CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
-    if (this.crossLink.isSelfLink() === true || this.crossLink.toProtein === null) {
+    if (this.crossLink.isSelfLink() || this.crossLink.isMonoLink()) {
         this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
         this.line.setAttribute("stroke-width", this.crosslinkViewer.linkWidth);
         this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "path");
@@ -111,8 +111,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
 CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
     this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
 
@@ -141,8 +141,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 
 CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
     var add = evt.shiftKey || evt.ctrlKey;
@@ -163,28 +163,30 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
             d3.select(this.highlightLine).classed("selectedLink", false);
             d3.select(this.highlightLine).classed("highlightedLink", true);
             this.highlightLine.setAttribute("stroke-opacity", "0.7");
-            var fromPeptides = [],
-                toPeptides = [];
-            //this is where we need the peptide positions
-            var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
-            var fm_ppCount = filteredMatchesAndPeptidePositions.length;
-            for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
-                var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
-                var match = matchAndPepPos.match;
+            if (this.crossLink.filteredMatches_pp[0].match.matchedPeptides[0].seq_mods) {
+                var fromPeptides = [],
+                    toPeptides = [];
+                //this is where we need the peptide positions
+                var filteredMatchesAndPeptidePositions = this.crossLink.filteredMatches_pp;
+                var fm_ppCount = filteredMatchesAndPeptidePositions.length;
+                for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
+                    var matchAndPepPos = filteredMatchesAndPeptidePositions[fm_pp];
+                    var match = matchAndPepPos.match;
 
-                var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
-                var fromPepLength = matchAndPepPos.pepPos[0].length;
-                var toPepStart = matchAndPepPos.pepPos[1].start - 1;
-                var toPepLength = matchAndPepPos.pepPos[1].length;
+                    var fromPepStart = matchAndPepPos.pepPos[0].start - 1;
+                    var fromPepLength = matchAndPepPos.pepPos[0].length;
+                    var toPepStart = matchAndPepPos.pepPos[1].start - 1;
+                    var toPepLength = matchAndPepPos.pepPos[1].length;
 
-                fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
-                toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
-            }
-            if (this.renderedFromProtein.participant.form == 1) {
-                this.showPeptides(fromPeptides, this.renderedFromProtein);
-            }
-            if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
-                this.showPeptides(toPeptides, this.renderedToProtein);
+                    fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
+                    toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
+                }
+                if (this.renderedFromProtein.participant.form == 1) {
+                    this.showPeptides(fromPeptides, this.renderedFromProtein);
+                }
+                if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
+                    this.showPeptides(toPeptides, this.renderedToProtein);
+                }
             }
         } else {
             //if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
@@ -298,7 +300,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             if (this.renderedFromProtein.participant.form === 1) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
-                path = this.renderedFromProtein.getAggregateSelfLinkPath();
+                path = this.crossLink.isMonoLink() ? "M 0,0 L 0,0 L 0,0 L 0,0" : this.renderedFromProtein.getAggregateSelfLinkPath();
             }
             this.highlightLine.setAttribute("d", path);
             this.line.setAttribute("d", path);
@@ -328,7 +330,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
         }
     }
 
-    this.dashedLine(this.crossLink.ambiguous);
+    this.dashedLine(this.crossLink.ambiguous && this.crossLink.isMonoLink() == false);
+
+    if (this.crossLink.isMonoLink()) {
+        this.line.setAttribute("fill", this.crossLink.ambiguous ? "none" : this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
+    }
 
     this.line.setAttribute("stroke",
         this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
@@ -355,8 +361,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             var x, y;
             // from end
             if (this.renderedFromProtein.participant.form === 0) {
-                x = this.renderedFromProtein.x;
-                y = this.renderedFromProtein.y;
+                x = this.renderedFromProtein.cx;
+                y = this.renderedFromProtein.cy;
             } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
@@ -370,8 +376,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
 
             // to end
             if (this.renderedToProtein.participant.form === 0) {
-                x = this.renderedToProtein.x;
-                y = this.renderedToProtein.y;
+                x = this.renderedToProtein.cx;
+                y = this.renderedToProtein.cy;
             } else //if (this.participant.form == 1)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
@@ -394,8 +400,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
     if (renderedInteractor.stickZoom > 8) { //if sequence shown
         var from = this.renderedFromProtein,
             to = this.renderedToProtein;
-        var deltaX = from.x - to.x;
-        var deltaY = from.y - to.y;
+        var deltaX = from.cx - to.cx;
+        var deltaY = from.cy - to.cy;
         var angleBetweenMidPoints = Math.atan2(deltaY, deltaX);
         //todo: tidy up trig code so eveything is always in radians?
         var abmpDeg = angleBetweenMidPoints / (2 * Math.PI) * 360;
@@ -430,7 +436,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
 
     var rotated = Molecule.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
 
-    x = rotated[0] + renderedInteractor.x;
-    y = rotated[1] + renderedInteractor.y;
+    x = rotated[0] + renderedInteractor.cx;
+    y = rotated[1] + renderedInteractor.cy;
     return [x, y];
 };
