@@ -871,50 +871,22 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         groupDebugSel.exit().remove();
         participantDebugSel.exit().remove(); */
         //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
-        this.d3cola.symmetricDiffLinkLengths(25 * self.z).on("tick", function(e) {
-            /*groupDebugSel.attr({
-                x: function(d) {
-                    return d.bounds.x + (width / 2);
-                },
-                y: function(d) {
-                    return d.bounds.y + (height / 2);
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            });
+        this.d3cola.symmetricDiffLinkLengths(25).on("tick", function(e) {
 
-            participantDebugSel.attr({
-                x: function(d) {
-                    return d.bounds.x + (width / 2);
-                },
-                y: function(d) {
-                    return d.bounds.y + (height / 2);
-                },
-                width: function(d) {
-                    return d.bounds.width()
-                },
-                height: function(d) {
-                    return d.bounds.height()
-                }
-            }); */
 
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
-                var offsetX = node.x + (width / 2);
+                /*var offsetX = node.x + (width / 2);
                 if (node.width) {
                     offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())); // * self.z));
                 }
                 var offsetY = node.y + (height / 2); //- node.upperGroup.getBBox().y;
                 if (!offsetX) {
                     console.log("!");
-                }
-                node.setPosition(offsetX, offsetY);
+                }*/
+                node.setPosition(node.x, node.y);
                 node.setAllLinkCoordinates();
             }
         });
