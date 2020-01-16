@@ -69,8 +69,8 @@ Link.prototype.mouseOut = function(evt) {
 Link.prototype.touchStart = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     //if a force layout exists then stop it
-    if (this.controller.force !== undefined) {
-        this.controller.force.stop();
+    if (this.controller.d3cola !== undefined) {
+        this.controller.d3cola.stop();
     }
     this.controller.dragElement = this;
     this.controller.clearSelection();
