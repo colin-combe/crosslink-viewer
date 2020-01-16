@@ -773,6 +773,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         this.resetZoom();
+        for (renderedProtein of this.renderedProteins.values()){
+            renderedProtein.setPosition(40,40);
+        }
 
         var width = this.svgElement.parentNode.clientWidth; //this.svgElement.getBoundingClientRect().width;
         var height = this.svgElement.parentNode.clientHeight;
