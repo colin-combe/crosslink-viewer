@@ -969,7 +969,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 });
             }
         });
-        this.d3cola.start(10, 0, 60);
+        this.d3cola.start(20, 0, 20);
     },
 
     downloadSVG: function() {
