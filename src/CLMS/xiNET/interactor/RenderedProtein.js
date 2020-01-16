@@ -278,8 +278,8 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
-    this.px = this.cx;
-    this.py = this.cy;
+    // this.px = this.cx;
+    // this.py = this.cy;
     this.cx = x;
     this.cy = y;
     if (this.participant.form === 1) {
