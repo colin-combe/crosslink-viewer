@@ -185,8 +185,8 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
-    var br = Math.sqrt(this.participant.size / Math.PI) * 0.7;
-    return br;
+    // var br = Math.sqrt(this.participant.size / Math.PI) * 0.7;
+    return 6;
 };
 
 //only output the info needed to reproduce the layout, used by save layout function
