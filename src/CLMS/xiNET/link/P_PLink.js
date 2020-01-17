@@ -328,9 +328,22 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 
     //console.log("ppl render", this.crosslinkViewer.model.get("xiNetLinkWidthAuto"), this.crosslinkViewer.model.get("xiNetLinkWidthScale"));
 
+    var thickLineWidth;
     if (this.filteredCrossLinkCount < 2) {
-        this.thickLine.setAttribute("stroke-width", 0);
+        thickLineWidth = 0;
+    } else if (this.filteredCrossLinkCount < 6) {
+        thickLineWidth = 5;
     } else {
+        thickLineWidth = 10;
+    }
+
+    if (this.renderedFromProtein === this.renderedToProtein) {
+        this.thickLine.setAttribute("stroke-width", thickLineWidth);
+    } else {
+        this.thickLine.setAttribute("stroke-width",  this.crosslinkViewer.z * thickLineWidth);
+    }
+
+    /* else {
         var linkWidthScale;
         if (this.crosslinkViewer.model.get("xiNetLinkWidthAuto") === true) {
             linkWidthScale = (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2);
@@ -345,7 +358,8 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
         } else {
             this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
         }
-    }
+    }*/
+
     this.dashedLine(this.ambiguous);
 
     if (this.colours.size == 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") != "Default") {
