@@ -120,7 +120,8 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         .attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
         .attr("x", -r - 2.5).attr("y", -r - 2.5)
         .attr("rx", r + 2.5).attr("ry", r + 2.5)
-        .attr("stroke-opacity", 0);
+        .attr("stroke-opacity", 0)
+        .attr("fill-opacity", 0);
     this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
 
     // events
@@ -152,12 +153,12 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width;// * this.controller.z;
+            return this.upperGroup.getBBox().width; // * this.controller.z;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height;// * this.controller.z;
+            return this.upperGroup.getBBox().height; // * this.controller.z;
         }
     });
 };
@@ -185,10 +186,27 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
-    // var br = Math.sqrt(this.participant.size / Math.PI) * 0.7;
-    return 6;
+    if (this.controller.fixedSize) {
+        return 6;
+    } else {
+        return Math.sqrt(this.participant.size / Math.PI) * 0.6;
+    }
 };
 
+CLMS.xiNET.RenderedProtein.prototype.resize = function() {
+    if (this.participant.form == 0) {
+        var r = this.getBlobRadius();
+        d3.select(this.outline)
+            .attr("x", -r).attr("y", -r)
+            .attr("width", r * 2).attr("height", r * 2)
+            .attr("rx", r).attr("ry", r);
+        d3.select(this.highlight)
+            .attr("width", (r * 2) + 5).attr("height", (r * 2) + 5)
+            .attr("x", -r - 2.5).attr("y", -r - 2.5)
+            .attr("rx", r + 2.5).attr("ry", r + 2.5)
+        this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
+    }
+}
 //only output the info needed to reproduce the layout, used by save layout function
 CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
     return {

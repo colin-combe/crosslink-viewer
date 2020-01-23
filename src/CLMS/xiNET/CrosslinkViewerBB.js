@@ -27,6 +27,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     initialize: function() {
         this.debug = false;
         this.clickModeIsSelect = false;
+        this.fixedSize = false;
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
@@ -207,8 +208,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
         this.listenTo(CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
         this.listenTo(CLMSUI.vent, "xiNetShowLabels", this.showLabels);
-        this.listenTo(this.model, "change:xiNetLinkWidthScale", this.render);
-        this.listenTo(this.model, "change:xiNetLinkWidthAuto", this.render);
+        this.listenTo(CLMSUI.vent, "xiNetFixedSize", this.setFixedSize);
+        this.listenTo(this.model, "change:xinetPpiSteps", this.render);
         return this;
     },
 
@@ -1257,6 +1258,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             renderedParticipantArr[rp].showLabel(show);
+        }
+        return this;
+    },
+
+    setFixedSize: function(fixed) {
+        this.fixedSize = fixed;
+        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
+        var rpCount = renderedParticipantArr.length;
+        for (var rp = 0; rp < rpCount; rp++) {
+            renderedParticipantArr[rp].resize();
         }
         return this;
     },
