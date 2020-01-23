@@ -328,10 +328,12 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 
     //console.log("ppl render", this.crosslinkViewer.model.get("xiNetLinkWidthAuto"), this.crosslinkViewer.model.get("xiNetLinkWidthScale"));
 
+    var steps = this.crosslinkViewer.model.get("xinetPpiSteps");
+
     var thickLineWidth;
-    if (this.filteredCrossLinkCount < 2) {
+    if (this.filteredCrossLinkCount < steps[0]) {
         thickLineWidth = 0;
-    } else if (this.filteredCrossLinkCount < 6) {
+    } else if (this.filteredCrossLinkCount < steps[1]) {
         thickLineWidth = 5;
     } else {
         thickLineWidth = 10;
