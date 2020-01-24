@@ -332,13 +332,13 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
 
     var thickLineWidth;
     if (this.filteredCrossLinkCount < steps[0]) {
-        thickLineWidth = 0;
+        thickLineWidth = 1;
     } else if (this.filteredCrossLinkCount < steps[1]) {
         thickLineWidth = 5;
     } else {
         thickLineWidth = 10;
     }
-
+    this.w = thickLineWidth;//todo - tidy up
     if (this.renderedFromProtein === this.renderedToProtein) {
         this.thickLine.setAttribute("stroke-width", thickLineWidth);
     } else {
