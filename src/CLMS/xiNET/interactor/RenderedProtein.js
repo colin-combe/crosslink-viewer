@@ -19,8 +19,8 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.naryLinks = d3.map();
 
     // layout info
-    this.cx = 100;
-    this.cy = 40;
+    this.ix = 100;
+    this.iy = 40;
     this.rotation = 0;
     this.previousRotation = this.rotation;
     //this.stickZoom = 0.5;
@@ -174,7 +174,7 @@ CLMS.xiNET.RenderedProtein.prototype.setEverything = function() {
     }
     this.showHighlight(this.isHighlighted);
     this.setSelected(this.isSelected);
-    this.setPosition(this.cx, this.cy);
+    this.setPosition(this.ix, this.iy);
     this.scale();
     this.setAllLinkCoordinates();
     this.setForm(this.newForm);
@@ -211,8 +211,8 @@ CLMS.xiNET.RenderedProtein.prototype.resize = function() {
 CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
     return {
         id: this.participant.id,
-        x: this.cx,
-        y: this.cy,
+        x: this.ix,
+        y: this.iy,
         rot: this.rotation,
         form: this.form,
         stickZoom: this.stickZoom,
@@ -261,9 +261,9 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
     if (this.rotation < 0) {
         this.rotation += 360;
     }
-    this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+    this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
         " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-    this.lowerGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+    this.lowerGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
         " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
 
     var svg = this.controller.svgElement;
@@ -296,29 +296,29 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
-    // this.px = this.cx;
-    // this.py = this.cy;
-    this.cx = x;
-    this.cy = y;
+    // this.px = this.ix; //previous position? cola seeming not to care about this
+    // this.py = this.iy;
+    this.ix = x;
+    this.iy = y;
     if (this.participant.form === 1) {
-        this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+        this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
-        this.lowerGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+        this.lowerGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
     } else {
-        this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+        this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") ");
-        this.lowerGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+        this.lowerGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") ");
         if (this.selfLink != null) {
             if (typeof this.selfLink.thickLine !== 'undefined') {
-                this.selfLink.thickLine.setAttribute("transform", "translate(" + this.cx +
-                    " " + this.cy + ")" + " scale(" + (this.controller.z) + ")");
+                this.selfLink.thickLine.setAttribute("transform", "translate(" + this.ix +
+                    " " + this.iy + ")" + " scale(" + (this.controller.z) + ")");
             }
-            this.selfLink.line.setAttribute("transform", "translate(" + this.cx +
-                " " + this.cy + ")" + " scale(" + (this.controller.z) + ")");
-            this.selfLink.highlightLine.setAttribute("transform", "translate(" + this.cx +
-                " " + this.cy + ")" + " scale(" + (this.controller.z) + ")");
+            this.selfLink.line.setAttribute("transform", "translate(" + this.ix +
+                " " + this.iy + ")" + " scale(" + (this.controller.z) + ")");
+            this.selfLink.highlightLine.setAttribute("transform", "translate(" + this.ix +
+                " " + this.iy + ")" + " scale(" + (this.controller.z) + ")");
         }
     }
 };
@@ -330,8 +330,8 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
     var oldScale = this.stickZoom;
 
     //dist from centre
-    var dx = (this.cx - svgP.x);
-    var dy = (this.cy - svgP.y);
+    var dx = (this.ix - svgP.x);
+    var dy = (this.iy - svgP.y);
 
     // new dist from centre
     var nx = dx * scale / oldScale;
@@ -346,8 +346,8 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
     }
 
     //new pos
-    var x = this.cx + rx;
-    var y = this.cy + ry;
+    var x = this.ix + rx;
+    var y = this.iy + ry;
 
     this.stickZoom = scale;
     this.scale();
@@ -361,7 +361,7 @@ CLMS.xiNET.RenderedProtein.prototype.scale = function() {
     if (this.participant.form === 1) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-            .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), Molecule.labelY); //.scale(z).translate(-c.cx, -c.y);
+            .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), Molecule.labelY); //.scale(z).translate(-c.ix, -c.y);
         this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations) {
@@ -545,8 +545,8 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     var xInterpol = null,
         yInterpol = null;
     if (typeof svgP !== 'undefined' && svgP !== null) {
-        xInterpol = d3.interpolate(this.cx, svgP.x);
-        yInterpol = d3.interpolate(this.cy, svgP.y);
+        xInterpol = d3.interpolate(this.ix, svgP.x);
+        yInterpol = d3.interpolate(this.iy, svgP.y);
     }
 
     var self = this;
@@ -628,7 +628,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
     function update(interp) {
         var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.cx, -c.y);
+        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.ix, -c.y);
         self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
         if (xInterpol !== null) {
             self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
@@ -770,7 +770,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 
     function update(interp) {
         var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
-        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.cx, -c.y);
+        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.ix, -c.y);
         self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
 
         var rot = rotationInterpol(cubicInOut(interp));
@@ -897,8 +897,8 @@ CLMS.xiNET.RenderedProtein.prototype.getResidueCoordinates = function(r, yOff) {
     } else {
         y = yOff;
     }
-    x = x + this.cx;
-    y = y + this.cy;
+    x = x + this.ix;
+    y = y + this.iy;
     return [x, y];
 };
 

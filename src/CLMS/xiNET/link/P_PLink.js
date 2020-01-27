@@ -307,13 +307,13 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     this.shown = true;
     if (this.renderedFromProtein === this.renderedToProtein) {
         this.thickLine.setAttribute("transform", "translate(" +
-            this.renderedFromProtein.cx + " " + this.renderedFromProtein.cy + ")" // possibly not neccessary
+            this.renderedFromProtein.ix + " " + this.renderedFromProtein.iy + ")" // possibly not neccessary
             +
             " scale(" + (this.crosslinkViewer.z) + ")");
-        this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.cx +
-            " " + this.renderedFromProtein.cy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-        this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.cx +
-            " " + this.renderedFromProtein.cy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+        this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.ix +
+            " " + this.renderedFromProtein.iy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+        this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.ix +
+            " " + this.renderedFromProtein.iy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
     } else {
         this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
@@ -387,24 +387,24 @@ CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
         if (this.shown) {
             var target = this.renderedFromProtein.getRenderedParticipant();
             var source = this.renderedToProtein.getRenderedParticipant();
-            if (!target.cx || !target.cy) {
+            if (!target.ix || !target.iy) {
                 console.log("NOT");
             }
 
                   //     if (this.renderedFromProtein === participant) {
-            this.line.setAttribute("x1", source.cx);
-            this.line.setAttribute("y1", source.cy);
-            this.highlightLine.setAttribute("x1", source.cx);
-            this.highlightLine.setAttribute("y1", source.cy);
-            this.thickLine.setAttribute("x1", source.cx);
-            this.thickLine.setAttribute("y1", source.cy);
+            this.line.setAttribute("x1", source.ix);
+            this.line.setAttribute("y1", source.iy);
+            this.highlightLine.setAttribute("x1", source.ix);
+            this.highlightLine.setAttribute("y1", source.iy);
+            this.thickLine.setAttribute("x1", source.ix);
+            this.thickLine.setAttribute("y1", source.iy);
             // } else if (this.renderedToProtein === participant) {
-            this.line.setAttribute("x2", target.cx);
-            this.line.setAttribute("y2", target.cy);
-            this.highlightLine.setAttribute("x2", target.cx);
-            this.highlightLine.setAttribute("y2", target.cy);
-            this.thickLine.setAttribute("x2", target.cx);
-            this.thickLine.setAttribute("y2", target.cy);
+            this.line.setAttribute("x2", target.ix);
+            this.line.setAttribute("y2", target.iy);
+            this.highlightLine.setAttribute("x2", target.ix);
+            this.highlightLine.setAttribute("y2", target.iy);
+            this.thickLine.setAttribute("x2", target.ix);
+            this.thickLine.setAttribute("y2", target.iy);
             // }
         }
     }

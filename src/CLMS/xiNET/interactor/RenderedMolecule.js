@@ -119,20 +119,20 @@ Molecule.prototype.setSelected = function(select) {
 };
 
 Molecule.prototype.getPosition = function() {
-    return [this.cx, this.cy];
+    return [this.ix, this.iy];
 }
 
 // more accurately described as setting transform for top svg elements (sets scale also)
 Molecule.prototype.setPosition = function(xPos, yPos) {
-    this.px = this.cx;
-    this.py = this.cy;
-    this.cx = xPos;
-    this.cy = yPos;
-    console.log("!", this.cx, this.cy);
+    this.px = this.ix;
+    this.py = this.iy;
+    this.ix = xPos;
+    this.iy = yPos;
+    console.log("!", this.ix, this.iy);
 
     // if (this.participant.form === 1) {
     console.log(this.name, "before", this.upperGroup.getAttribute("transform"));
-    this.upperGroup.setAttribute("transform", "translate(" + this.cx + " " + this.cy + ")" +
+    this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
         " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
     console.log(this.name, "after", this.upperGroup.getAttribute("transform"));
         // } else {
@@ -279,11 +279,11 @@ Molecule.trig = function(radius, angleDegrees) {
 Molecule.prototype.setForm = function(form, svgP) {};
 
 Molecule.prototype.getX = function() {
-    return this.cx;
+    return this.ix;
 }
 
 Molecule.prototype.getY = function() {
-    return this.cy;
+    return this.iy;
 }
 
 Molecule.prototype.updateName = function(annotation) {

@@ -404,7 +404,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
-            prot.setPosition(prot.cx, prot.cy); // this rescales the protein
+            prot.setPosition(prot.ix, prot.iy); // this rescales the protein
             if (prot.participant.form !== 0)
                 prot.setAllLinkCoordinates();
         }
@@ -500,8 +500,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
                         for (var d = 0; d < toDrag.length; d++) {
                             var renderedProtein = this.renderedProteins.get(toDrag[d].id);
-                            ox = renderedProtein.cx;
-                            oy = renderedProtein.cy;
+                            ox = renderedProtein.ix;
+                            oy = renderedProtein.iy;
                             nx = ox - dx;
                             ny = oy - dy;
                             renderedProtein.setPosition(nx, ny);
@@ -512,8 +512,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                       var toDrag = this.dragElement.renderedParticipants;
                       for (var d = 0; d < toDrag.length; d++) {
                           var renderedProtein = toDrag[d];
-                          ox = renderedProtein.cx;
-                          oy = renderedProtein.cy;
+                          ox = renderedProtein.ix;
+                          oy = renderedProtein.iy;
                           nx = ox - dx;
                           ny = oy - dy;
                           renderedProtein.setPosition(nx, ny);
@@ -523,9 +523,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     this.dragStart = evt;
                 } else if (this.state === this.STATES.ROTATING) {
                     // Distance from mouse x and center of stick.
-                    var _dx = c.x - this.dragElement.cx
+                    var _dx = c.x - this.dragElement.ix
                     // Distance from mouse y and center of stick.
-                    var _dy = c.y - this.dragElement.cy;
+                    var _dy = c.y - this.dragElement.iy;
                     //see http://en.wikipedia.org/wiki/Atan2#Motivation
                     var centreToMouseAngleRads = Math.atan2(_dy, _dx);
                     if (this.whichRotator === 0) {
@@ -630,7 +630,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             if (this.dragElement != null) { // a thing has been clicked
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                    if (this.dragElement.cx) { //if the thing is a protein
+                    if (this.dragElement.ix) { //if the thing is a protein
                         if (rightclick) {
                             if (this.dragElement.participant.form === 0) {
                                 this.dragElement.setForm(1);
@@ -743,8 +743,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
-                protein.cx = protLayout["x"];
-                protein.cy = protLayout["y"];
+                protein.ix = protLayout["x"];
+                protein.iy = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 if (this.barScales.indexOf(+protLayout["stickZoom"]) > -1) {
                     protein.stickZoom = protLayout["stickZoom"];
@@ -837,6 +837,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var groups = [];
         if (this.groups) {
             for (var g of this.groups) {
+                delete g.index;
                 if (g.participant.form == 1) {
                     g.leaves = [];
                     for (var rp of g.naryLink.renderedParticipants) {
@@ -970,7 +971,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 });
             }
         });
-        this.d3cola.start(20, 0, 20);
+        this.d3cola.start(10, 15, 20, 0);
     },
 
     downloadSVG: function() {
