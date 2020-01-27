@@ -195,7 +195,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
-        //this.listenTo(this.model, "groupedGoTermsChanged", this.groupsChanged);
+        this.listenTo(this.model, "groupsChanged", function() {this.groupsChanged(this.model.get("groups"));});
 
         this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
             self.clickModeIsSelect = true;
@@ -1154,7 +1154,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         // update groups
-        //this.groups = [];
         var groupMap = new d3.map();
         var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
         var pCount = participantsArr.length;
@@ -1172,55 +1171,48 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        this.groups = [];
         // init n-ary link
-        var groupsArr = groupMap.entries();
-        var gCount = groupMap.size();
-        for (var g = 0; g < gCount; g++) {
-            var group = {
-                "name": groupsArr[g].key,
-                "id": groupsArr[g].value.values().sort().join('-'),
-                "participants": groupsArr[g].value
-            }
-            nLink = new NaryLink(group, this);
-            var complex = new Complex(group, this);
-            this.groups.push(complex);
-            var pArr = group.participants.values();
-            var pc = pArr.length;
-            for (var pi = 0; pi < pc; pi++) {
-                var pid = pArr[pi];
-                var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein.naryLinks.set(group.id, nLink);
-                renderedProtein.complexes.add(complex);
-                if (renderedProtein.complexes.size > 1) {
-                  console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
-                }
-                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                    nLink.renderedParticipants.push(renderedProtein);
-                }
-            }
-            complex.initMolecule(nLink);
-        }
+        this.groupsChanged(groupMap.entries());
+
         return this;
     },
 
-    groupsChanged: function(go) {
-
+    groupsChanged: function(groupsArr) {
+      this.groups = [];
+      var gCount = groupsArr.length;//groupMap.size();
+      for (var g = 0; g < gCount; g++) {
+          var group = {
+              "name": groupsArr[g].key,//"USER",
+              "id": groupsArr[g].value.values().sort().join('-'),//"group"+g,//
+              "participants": groupsArr[g].value//groupsArr
+          }
+          nLink = new NaryLink(group, this);
+          var complex = new Complex(group, this);
+          this.groups.push(complex);
+          var pArr = group.participants.values();
+          var pc = pArr.length;
+          for (var pi = 0; pi < pc; pi++) {
+              var pid = pArr[pi];
+              var renderedProtein = this.renderedProteins.get(pid);
+              renderedProtein.naryLinks.set(group.id, nLink);
+              renderedProtein.complexes.add(complex);
+              if (renderedProtein.complexes.size > 1) {
+                console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
+              }
+              if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
+                  nLink.renderedParticipants.push(renderedProtein);
+              }
+          }
+          complex.initMolecule(nLink);
+      }
         // update groups
         // init n-ary link
-        var groupsArr = this.model.get("groupedGoTerms");
-        this.complexes = [];
+      /*     var groupsArr = this.model.get("groups");
+     this.groups = [];
         for (var group of groupsArr) {
-            var groupParticipants = group.getInteractors();
+            var groupParticipants = group;//.getInteractors();
             console.log(group, groupParticipants);
-            // var group = {
-            //     "name": "Group", //groupsArr[g].key,
-            //     "id": "group.id", //groupsArr[g].value.values().sort().join('-'),
-            //     "participants": groupParticipants
-            // }
-            // var groupName = ;
-            // var participantSet = ;
-            // var nLinkId = participantSet.
+
             // //doesn't already exist, make new nLink
             nLink = new NaryLink(group.id, this);
             // this.groups.push(nLink);
@@ -1239,19 +1231,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             complex.initMolecule(nLink);
 
             this.renderedProteins.set(group.id, complex);
-            this.complexes.push(complex);
+            this.groups.push(complex);
 
         }
-        //self.allNaryLinks.set(nLinkId, nLink);
-        //alot of time is being spent on creating these IDs, stash them in the interaction object?
-        //interaction.naryId =  nLinkId;
-        // }
-
-
         this.scale();
         this.render();
         this.autoLayout();
-        return this;
+        return this; */
+
+
     },
 
     showLabels: function(show) {
