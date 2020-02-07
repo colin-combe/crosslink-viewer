@@ -207,7 +207,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
         this.listenTo(CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
         this.listenTo(CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
-        this.listenTo(CLMSUI.vent, "xiNetShowLabels", this.showLabels);
+        this.listenTo(this.model, "change:xinetShowLabels", this.showLabels);
         this.listenTo(CLMSUI.vent, "xiNetFixedSize", this.setFixedSize);
         this.listenTo(this.model, "change:xinetPpiSteps", this.render);
         return this;
@@ -1242,7 +1242,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     },
 
-    showLabels: function(show) {
+    showLabels: function() {
+        var show = this.model.get("xinetShowLabels");
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
