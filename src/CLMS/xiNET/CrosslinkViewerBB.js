@@ -195,7 +195,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
-        this.listenTo(this.model, "groupsChanged", function() {this.groupsChanged(this.model.get("groups"));});
+        this.listenTo(this.model, "change:groups", this.groupsChanged);
 
         this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
             self.clickModeIsSelect = true;
@@ -1177,22 +1177,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    groupsChanged: function(groupsArr) {
+    groupsChanged: function() {
+      var groupMap = this.model.get("groups");
       this.groups = [];
-      var gCount = groupsArr.length;//groupMap.size();
-      for (var g = 0; g < gCount; g++) {
+      for (var g of groupMap.entries()) {
           var group = {
-              "name": groupsArr[g].key,//"USER",
-              "id": groupsArr[g].value.values().sort().join('-'),//"group"+g,//
-              "participants": groupsArr[g].value//groupsArr
+              "name":g[0],
+              "id": g[0],
+              "participants": g[1]
           }
           nLink = new NaryLink(group, this);
           var complex = new Complex(group, this);
           this.groups.push(complex);
-          var pArr = group.participants.values();
-          var pc = pArr.length;
-          for (var pi = 0; pi < pc; pi++) {
-              var pid = pArr[pi];
+          for (var pid of group.participants) {
               var renderedProtein = this.renderedProteins.get(pid);
               renderedProtein.naryLinks.set(group.id, nLink);
               renderedProtein.complexes.add(complex);
@@ -1205,6 +1202,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
           }
           complex.initMolecule(nLink);
       }
+
+
+
         // update groups
         // init n-ary link
       /*     var groupsArr = this.model.get("groups");
