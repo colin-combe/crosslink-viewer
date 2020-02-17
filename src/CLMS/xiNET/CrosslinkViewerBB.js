@@ -26,7 +26,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     initialize: function() {
         this.debug = false;
-        this.clickModeIsSelect = false;
         this.fixedSize = false;
 
         //avoids prob with 'save - web page complete'
@@ -197,13 +196,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
         this.listenTo(this.model, "change:groups", this.groupsChanged);
 
-        this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
-            self.clickModeIsSelect = true;
-        });
-        this.listenTo(CLMSUI.vent, "xiNetDragToPan", function() {
-            self.clickModeIsSelect = false;
-        });
-        this.listenTo(CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
+        this.listenTo(CLMSUI.vent, "xinetSvgDownload", this.downloadSVG);
         this.listenTo(CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
         this.listenTo(CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
         this.listenTo(CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
@@ -542,7 +535,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     }
                 }
             } else if (this.state === this.STATES.SELECT_PAN) {
-                if (this.clickModeIsSelect) {
+                if (!this.model.get("xinetDragToPan")) {
                     //SELECT
                     var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
                     var dx = c.x - ds.x;
@@ -656,10 +649,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             } else if (!this.mouseMoved) { //unselect crosslinks
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setMarkedCrossLinks("selection", [], false, add);
-                //~ if (!this.clickModeIsSelect) {
                 this.model.setSelectedProteins([]);
-                //~ }
-            } else if (this.clickModeIsSelect) {
+            } else if (!this.model.get("xinetDragToPan")) {
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setSelectedProteins(this.toSelect, add);
             }
