@@ -322,29 +322,31 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
         this.setLineCoordinates(this.renderedToProtein);
     }
     d3.select(this.thickLine).style("display", null);
-    d3.select(this.highlightLine).style("display", null);
     d3.select(this.line).style("display", null);
     //}
 
-    //console.log("ppl render", this.crosslinkViewer.model.get("xiNetLinkWidthAuto"), this.crosslinkViewer.model.get("xiNetLinkWidthScale"));
-
-    var steps = this.crosslinkViewer.model.get("xinetPpiSteps");
-
-    var thickLineWidth;
-    if (this.filteredCrossLinkCount < steps[0]) {
-        thickLineWidth = 1;
-    } else if (this.filteredCrossLinkCount < steps[1]) {
-        thickLineWidth = 5;
-    } else {
-        thickLineWidth = 10;
+    if (this.crosslinkViewer.thickLinks == false) {
+        d3.select(this.thickLine).style("display", "none");
     }
-    this.w = thickLineWidth;//todo - tidy up
-    if (this.renderedFromProtein === this.renderedToProtein) {
-        this.thickLine.setAttribute("stroke-width", thickLineWidth);
-    } else {
-        this.thickLine.setAttribute("stroke-width",  this.crosslinkViewer.z * thickLineWidth);
-    }
+    else {
+        d3.select(this.highlightLine).style("display", null);
+        var steps = this.crosslinkViewer.model.get("xinetPpiSteps");
 
+        var thickLineWidth;
+        if (this.filteredCrossLinkCount < steps[0]) {
+            thickLineWidth = 1;
+        } else if (this.filteredCrossLinkCount < steps[1]) {
+            thickLineWidth = 5;
+        } else {
+            thickLineWidth = 10;
+        }
+        this.w = thickLineWidth;//todo - tidy up
+        if (this.renderedFromProtein === this.renderedToProtein) {
+            this.thickLine.setAttribute("stroke-width", thickLineWidth);
+        } else {
+            this.thickLine.setAttribute("stroke-width",  this.crosslinkViewer.z * thickLineWidth);
+        }
+    }
     /* else {
         var linkWidthScale;
         if (this.crosslinkViewer.model.get("xiNetLinkWidthAuto") === true) {

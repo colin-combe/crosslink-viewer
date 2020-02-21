@@ -200,8 +200,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(CLMSUI.vent, "xinetAutoLayout", this.autoLayout);
         this.listenTo(CLMSUI.vent, "xinetLoadLayout", this.loadLayout);
         this.listenTo(CLMSUI.vent, "xinetSaveLayout", this.saveLayout);
+
         this.listenTo(this.model, "change:xinetShowLabels", this.showLabels);
         this.listenTo(this.model, "change:xinetFixedSize", this.setFixedSize);
+        this.listenTo(this.model, "change:xinetThickLinks", this.setThickLinks);
         this.listenTo(this.model, "change:xinetPpiSteps", this.render);
         return this;
     },
@@ -1243,13 +1245,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    setFixedSize: function(fixed) {
+    setFixedSize: function() {
         this.fixedSize = this.model.get("xinetFixedSize");
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             renderedParticipantArr[rp].resize();
         }
+        return this;
+    },
+
+    setThickLinks: function() {
+        this.thickLinks = this.model.get("xinetThickLinks");
+        this.render();
         return this;
     },
 
