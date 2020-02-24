@@ -22,11 +22,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         ROTATING: 3
     },
 
-    barScales: [0.01, 0.2, 1, 2, 4, 8],
+    barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
         this.debug = false;
-        this.clickModeIsSelect = false;
         this.fixedSize = false;
 
         //avoids prob with 'save - web page complete'
@@ -195,20 +194,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
-        //this.listenTo(this.model, "groupedGoTermsChanged", this.groupsChanged);
+        this.listenTo(this.model, "change:groups", this.groupsChanged);
 
-        this.listenTo(CLMSUI.vent, "xiNetDragToSelect", function() {
-            self.clickModeIsSelect = true;
-        });
-        this.listenTo(CLMSUI.vent, "xiNetDragToPan", function() {
-            self.clickModeIsSelect = false;
-        });
-        this.listenTo(CLMSUI.vent, "xiNetSvgDownload", this.downloadSVG);
-        this.listenTo(CLMSUI.vent, "xiNetAutoLayout", this.autoLayout);
-        this.listenTo(CLMSUI.vent, "xiNetLoadLayout", this.loadLayout);
-        this.listenTo(CLMSUI.vent, "xiNetSaveLayout", this.saveLayout);
-        this.listenTo(CLMSUI.vent, "xiNetShowLabels", this.showLabels);
-        this.listenTo(CLMSUI.vent, "xiNetFixedSize", this.setFixedSize);
+        this.listenTo(CLMSUI.vent, "xinetSvgDownload", this.downloadSVG);
+        this.listenTo(CLMSUI.vent, "xinetAutoLayout", this.autoLayout);
+        this.listenTo(CLMSUI.vent, "xinetLoadLayout", this.loadLayout);
+        this.listenTo(CLMSUI.vent, "xinetSaveLayout", this.saveLayout);
+
+        this.listenTo(this.model, "change:xinetShowLabels", this.showLabels);
+        this.listenTo(this.model, "change:xinetFixedSize", this.setFixedSize);
+        this.listenTo(this.model, "change:xinetThickLinks", this.setThickLinks);
         this.listenTo(this.model, "change:xinetPpiSteps", this.render);
         return this;
     },
@@ -404,7 +399,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
-            prot.setPosition(prot.cx, prot.cy); // this rescales the protein
+            prot.setPosition(prot.ix, prot.iy); // this rescales the protein
             if (prot.participant.form !== 0)
                 prot.setAllLinkCoordinates();
         }
@@ -500,8 +495,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
                         for (var d = 0; d < toDrag.length; d++) {
                             var renderedProtein = this.renderedProteins.get(toDrag[d].id);
-                            ox = renderedProtein.cx;
-                            oy = renderedProtein.cy;
+                            ox = renderedProtein.ix;
+                            oy = renderedProtein.iy;
                             nx = ox - dx;
                             ny = oy - dy;
                             renderedProtein.setPosition(nx, ny);
@@ -512,8 +507,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                       var toDrag = this.dragElement.renderedParticipants;
                       for (var d = 0; d < toDrag.length; d++) {
                           var renderedProtein = toDrag[d];
-                          ox = renderedProtein.cx;
-                          oy = renderedProtein.cy;
+                          ox = renderedProtein.ix;
+                          oy = renderedProtein.iy;
                           nx = ox - dx;
                           ny = oy - dy;
                           renderedProtein.setPosition(nx, ny);
@@ -523,9 +518,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     this.dragStart = evt;
                 } else if (this.state === this.STATES.ROTATING) {
                     // Distance from mouse x and center of stick.
-                    var _dx = c.x - this.dragElement.cx
+                    var _dx = c.x - this.dragElement.ix
                     // Distance from mouse y and center of stick.
-                    var _dy = c.y - this.dragElement.cy;
+                    var _dy = c.y - this.dragElement.iy;
                     //see http://en.wikipedia.org/wiki/Atan2#Motivation
                     var centreToMouseAngleRads = Math.atan2(_dy, _dx);
                     if (this.whichRotator === 0) {
@@ -542,7 +537,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     }
                 }
             } else if (this.state === this.STATES.SELECT_PAN) {
-                if (this.clickModeIsSelect) {
+                if (!this.model.get("xinetDragToPan")) {
                     //SELECT
                     var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
                     var dx = c.x - ds.x;
@@ -630,7 +625,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
             if (this.dragElement != null) { // a thing has been clicked
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                    if (this.dragElement.cx) { //if the thing is a protein
+                    if (this.dragElement.ix) { //if the thing is a protein
                         if (rightclick) {
                             if (this.dragElement.participant.form === 0) {
                                 this.dragElement.setForm(1);
@@ -656,10 +651,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             } else if (!this.mouseMoved) { //unselect crosslinks
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setMarkedCrossLinks("selection", [], false, add);
-                //~ if (!this.clickModeIsSelect) {
                 this.model.setSelectedProteins([]);
-                //~ }
-            } else if (this.clickModeIsSelect) {
+            } else if (!this.model.get("xinetDragToPan")) {
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setSelectedProteins(this.toSelect, add);
             }
@@ -743,8 +736,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
-                protein.cx = protLayout["x"];
-                protein.cy = protLayout["y"];
+                protein.ix = protLayout["x"];
+                protein.iy = protLayout["y"];
                 protein.newForm = protLayout["form"] - 0;
                 if (this.barScales.indexOf(+protLayout["stickZoom"]) > -1) {
                     protein.stickZoom = protLayout["stickZoom"];
@@ -837,6 +830,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var groups = [];
         if (this.groups) {
             for (var g of this.groups) {
+                delete g.index;
                 if (g.participant.form == 1) {
                     g.leaves = [];
                     for (var rp of g.naryLink.renderedParticipants) {
@@ -970,7 +964,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 });
             }
         });
-        this.d3cola.start(20, 0, 20);
+        this.d3cola.start(10, 15, 20, 0);
     },
 
     downloadSVG: function() {
@@ -1153,8 +1147,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         // update groups
-        //this.groups = [];
-        var groupMap = new d3.map();
+        //TODO - this prob shouldn't be here
+        var groupMap = new Map();
         var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
         var pCount = participantsArr.length;
         for (var p = 0; p < pCount; p++) {
@@ -1164,62 +1158,55 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (groupMap.get(group)) {
                     groupMap.get(group).add(participant.id);
                 } else {
-                    var groupParticipants = new d3.set();
+                    var groupParticipants = new Set();
                     groupParticipants.add(participant.id);
                     groupMap.set(group, groupParticipants)
                 }
             }
         }
 
-        this.groups = [];
         // init n-ary link
-        var groupsArr = groupMap.entries();
-        var gCount = groupMap.size();
-        for (var g = 0; g < gCount; g++) {
-            var group = {
-                "name": groupsArr[g].key,
-                "id": groupsArr[g].value.values().sort().join('-'),
-                "participants": groupsArr[g].value
-            }
-            nLink = new NaryLink(group, this);
-            var complex = new Complex(group, this);
-            this.groups.push(complex);
-            var pArr = group.participants.values();
-            var pc = pArr.length;
-            for (var pi = 0; pi < pc; pi++) {
-                var pid = pArr[pi];
-                var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein.naryLinks.set(group.id, nLink);
-                renderedProtein.complexes.add(complex);
-                if (renderedProtein.complexes.size > 1) {
-                  console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
-                }
-                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                    nLink.renderedParticipants.push(renderedProtein);
-                }
-            }
-            complex.initMolecule(nLink);
-        }
+        this.model.set("groups", groupMap);
+
         return this;
     },
 
-    groupsChanged: function(go) {
+    groupsChanged: function() {
+      var groupMap = this.model.get("groups");
+      this.groups = [];
+      for (var g of groupMap.entries()) {
+          var group = {
+              "name":g[0],
+              "id": g[0],
+              "participants": g[1]
+          }
+          nLink = new NaryLink(group, this);
+          var complex = new Complex(group, this);
+          this.groups.push(complex);
+          for (var pid of group.participants) {
+              var renderedProtein = this.renderedProteins.get(pid);
+              renderedProtein.naryLinks.set(group.id, nLink);
+              renderedProtein.complexes.add(complex);
+              if (renderedProtein.complexes.size > 1) {
+                console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
+              }
+              if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
+                  nLink.renderedParticipants.push(renderedProtein);
+              }
+          }
+          complex.initMolecule(nLink);
+      }
+
+
 
         // update groups
         // init n-ary link
-        var groupsArr = this.model.get("groupedGoTerms");
-        this.complexes = [];
+      /*     var groupsArr = this.model.get("groups");
+     this.groups = [];
         for (var group of groupsArr) {
-            var groupParticipants = group.getInteractors();
+            var groupParticipants = group;//.getInteractors();
             console.log(group, groupParticipants);
-            // var group = {
-            //     "name": "Group", //groupsArr[g].key,
-            //     "id": "group.id", //groupsArr[g].value.values().sort().join('-'),
-            //     "participants": groupParticipants
-            // }
-            // var groupName = ;
-            // var participantSet = ;
-            // var nLinkId = participantSet.
+
             // //doesn't already exist, make new nLink
             nLink = new NaryLink(group.id, this);
             // this.groups.push(nLink);
@@ -1238,22 +1225,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             complex.initMolecule(nLink);
 
             this.renderedProteins.set(group.id, complex);
-            this.complexes.push(complex);
+            this.groups.push(complex);
 
         }
-        //self.allNaryLinks.set(nLinkId, nLink);
-        //alot of time is being spent on creating these IDs, stash them in the interaction object?
-        //interaction.naryId =  nLinkId;
-        // }
-
-
         this.scale();
         this.render();
         this.autoLayout();
-        return this;
+        return this; */
+
+
     },
 
-    showLabels: function(show) {
+    showLabels: function() {
+        var show = this.model.get("xinetShowLabels");
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
@@ -1262,13 +1246,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    setFixedSize: function(fixed) {
-        this.fixedSize = fixed;
+    setFixedSize: function() {
+        this.fixedSize = this.model.get("xinetFixedSize");
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             renderedParticipantArr[rp].resize();
         }
+        return this;
+    },
+
+    setThickLinks: function() {
+        this.thickLinks = this.model.get("xinetThickLinks");
+        this.render();
         return this;
     },
 
