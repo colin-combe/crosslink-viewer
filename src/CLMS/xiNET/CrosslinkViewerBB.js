@@ -22,7 +22,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         ROTATING: 3
     },
 
-    barScales: [0.01, 0.2, 1, 2, 4, 8],
+    barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
         this.debug = false;
