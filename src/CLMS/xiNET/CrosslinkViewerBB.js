@@ -1147,7 +1147,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         // update groups
-        var groupMap = new d3.map();
+        //TODO - this prob shouldn't be here
+        var groupMap = new Map();
         var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
         var pCount = participantsArr.length;
         for (var p = 0; p < pCount; p++) {
@@ -1157,7 +1158,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (groupMap.get(group)) {
                     groupMap.get(group).add(participant.id);
                 } else {
-                    var groupParticipants = new d3.set();
+                    var groupParticipants = new Set();
                     groupParticipants.add(participant.id);
                     groupMap.set(group, groupParticipants)
                 }
@@ -1165,7 +1166,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         // init n-ary link
-        this.groupsChanged(groupMap.entries());
+        this.model.set("groups", groupMap);
 
         return this;
     },
