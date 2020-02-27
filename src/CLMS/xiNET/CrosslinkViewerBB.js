@@ -772,7 +772,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
         this.resetZoom();
+        var fixSelected = this.model.get("xinetFixSelected");
         for (renderedProtein of this.renderedProteins.values()){
+            if (!fixSelected){
+                delete renderedProtein.x;
+                delete renderedProtein.y;
+                delete renderedProtein.px;  // todo - check if this is necessry
+                delete renderedProtein.py;  
+            }
             delete renderedProtein.index;
         }
 
@@ -783,7 +790,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var nodeSet = new Set();
         var layoutObj = {};
 
-        var fixSelected = this.model.get("xinetFixSelected");
         var selected = this.model.get("selectedProteins");
 
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
