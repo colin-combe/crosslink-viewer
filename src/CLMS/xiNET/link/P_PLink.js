@@ -325,7 +325,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     d3.select(this.line).style("display", null);
     //}
 
-    if (this.crosslinkViewer.thickLinks == false) {
+    if (this.crosslinkViewer.model.get("xinetThickLinks") == false) {
         d3.select(this.thickLine).style("display", "none");
     }
     else {

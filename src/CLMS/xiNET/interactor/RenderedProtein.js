@@ -295,9 +295,12 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
 };
 
 // more accurately described as setting transform for top svg elements (sets scale also)
-CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y) {
-    // this.px = this.ix; //previous position? cola seeming not to care about this
-    // this.py = this.iy;
+CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
+    if (!fromCola){
+        this.x = x - (this.width / 2 - (this.getBlobRadius()));
+        this.y = y;
+    }
+
     this.ix = x;
     this.iy = y;
     if (this.participant.form === 1) {
