@@ -256,18 +256,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        CLMS.xiNET.P_PLink.maxNoCrossLinks = 1;
-        for (var p_pLink of this.renderedP_PLinks.values()) {
-            var p_pCrossLinkCount = p_pLink.check();
-            if (p_pCrossLinkCount > CLMS.xiNET.P_PLink.maxNoCrossLinks) {
-                CLMS.xiNET.P_PLink.maxNoCrossLinks = p_pCrossLinkCount;
-            }
-        }
-        //console.log("xn render", this.model.get("xiNetLinkWidthAuto"), this.model.get("xiNetLinkWidthScale"));
-        if (this.model.get("xiNetLinkWidthAuto") === true) {
-            this.model.set("xiNetLinkWidthScale", (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2));
-        }
-
         for (var p_pLink of this.renderedP_PLinks.values()) {
             p_pLink.update();
         }
@@ -880,7 +868,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         layoutObj.links = linkArr;
 
         console.log(layoutObj);
-        var length = (layoutObj.nodes.length < 20)? 70 : 20;
+        var length = (layoutObj.nodes.length < 20)? 40 : 20;
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
         this.d3cola.nodes(layoutObj.nodes).groups(groups).links(layoutObj.links)
@@ -976,7 +964,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         });
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
-        this.d3cola.start(100, 0, 30, 0);
+        this.d3cola.start(100, 0, 100, 0);
     },
 
     downloadSVG: function() {
