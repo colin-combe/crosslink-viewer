@@ -90,52 +90,14 @@ function Complex(group, xlvController) {
     this.upperGroup.ontouchstart = function(evt) {
         self.touchStart(evt);
     };
-
-    //TODO - this wastes a bit memory coz the property is not on the prototype, fix
-    // Object.defineProperty(this, "width", {
-    //     get: function width() {
-    //         return this.upperGroup.getBBox().width * this.controller.z;
-    //     }
-    // });
-    // Object.defineProperty(this, "height", {
-    //     get: function height() {
-    //         return this.upperGroup.getBBox().height * this.controller.z;
-    //     }
-    // });
-
-    // Object.defineProperty(this, "x", {
-    //     get: function _x() {
-    //         var mapped = this.naryLink.getMappedCoordinates();
-    //         var mc = mapped.length;
-    //         var xSum = 0;
-    //         for (var m = 0; m < mc; m++) {
-    //             xSum += mapped[m][0];
-    //         }
-    //         return xSum / mc;
-    //     }
-    // });
-    //
-    // Object.defineProperty(this, "y", {
-    //     get: function _y() {
-    //         var mapped = this.naryLink.getMappedCoordinates();
-    //         var mc = mapped.length;
-    //         var ySum = 0;
-    //         for (var m = 0; m < mc; m++) {
-    //             ySum += mapped[m][1];
-    //         }
-    //         return ySum / mc;
-    //     }
-    // });
-
-    this.isSelected = false;
 }
 
 Complex.prototype.initMolecule = function(naryLink) {
     this.naryLink = naryLink;
-    // naryLink.path.setAttribute('stroke', 'black');
+    naryLink.path.setAttribute('fill', 'none');
     // naryLink.path.setAttribute('stroke-linejoin', 'round');
     // naryLink.path.setAttribute('stroke-width', 8);
-    this.padding = 25;
+    this.padding = 40;
     this.setForm(this.form);
 };
 
