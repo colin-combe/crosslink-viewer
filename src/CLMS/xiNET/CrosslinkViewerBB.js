@@ -213,7 +213,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         if (this.d3cola) { // cola layout
             this.d3cola.stop();
         }
-        this.d3cola = cola.d3adaptor();
+        this.d3cola = cola.d3adaptor().groupCompactness(1e-5).avoidOverlaps(true);
+
         d3.select(this.groupsSVG).selectAll("*").remove();
         d3.select(this.p_pLinksWide).selectAll("*").remove();
         d3.select(this.highlights).selectAll("*").remove();
@@ -872,11 +873,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
         this.d3cola.nodes(layoutObj.nodes).groups(groups).links(layoutObj.links)
-            .size([height, width])
-            // .convergenceThreshold(1e-1)
-            // .groupCompactness(1e-5)
-            //        .linkDistance(30)
-            .symmetricDiffLinkLengths(length).avoidOverlaps(true);
+            .size([height, width]).symmetricDiffLinkLengths(length);
 
         if (self.debug) {
 

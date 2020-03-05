@@ -108,11 +108,11 @@ NaryLink.prototype.check = function() {
 NaryLink.prototype.show = function() {
     // this.path.setAttribute("stroke-width", this.controller.z * 1);
     this.setLinkCoordinates();
-    d3.select(this.path).style("display", null);
+    d3.select(this.path).style("visibility", null);
 };
 
 NaryLink.prototype.hide = function() {
-    d3.select(this.path).style("display", "none");
+    d3.select(this.path).style("visibility", "hidden");
     //    this.controller.groupsSVG.removeChild(this.path);
 };
 
