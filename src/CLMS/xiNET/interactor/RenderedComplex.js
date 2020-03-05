@@ -94,10 +94,10 @@ function Complex(group, xlvController) {
 
 Complex.prototype.initMolecule = function(naryLink) {
     this.naryLink = naryLink;
-    naryLink.path.setAttribute('fill', 'none');
+    // naryLink.path.setAttribute('fill', );
     // naryLink.path.setAttribute('stroke-linejoin', 'round');
     // naryLink.path.setAttribute('stroke-width', 8);
-    this.padding = 40;
+    this.padding = 30;
     this.setForm(this.form);
 };
 

@@ -493,8 +493,8 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
     // MJG
-    d3.select(this.upperGroup).style("display", bool ? "none" : null);
-    d3.select(this.lowerGroup).style("display", bool ? "none" : null);
+    d3.select(this.upperGroup).style("visibility", bool ? "hidden" : null);
+    d3.select(this.lowerGroup).style("visibility", bool ? "hidden" : null);
     this.hidden = bool ? true : false;
 };
 
