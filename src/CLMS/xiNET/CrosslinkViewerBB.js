@@ -907,56 +907,52 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
 
-        var cycle = 0;
         this.d3cola. /*symmetricDiffLinkLengths(length).*/ on("tick", function(e) {
-            cycle++;
-            if (cycle % 3 == 0) {
-                var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
-                var nCount = nodesArr.length;
-                for (var n = 0; n < nCount; n++) {
-                    var node = nodesArr[n];
-                    var offsetX = node.x;
-                    // if (node.width) {
-                    offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
-                    // }
-                    // else {
-                    //     console.log("!");
-                    // }
-                    node.setPosition(offsetX, node.y, true);
-                    node.setAllLinkCoordinates();
-                }
+            var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
+            var nCount = nodesArr.length;
+            for (var n = 0; n < nCount; n++) {
+                var node = nodesArr[n];
+                var offsetX = node.x;
+                // if (node.width) {
+                offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
+                // }
+                // else {
+                //     console.log("!");
+                // }
+                node.setPosition(offsetX, node.y, true);
+                node.setAllLinkCoordinates();
+            }
 
-                if (self.debug) {
-                    groupDebugSel.attr({
-                        x: function(d) {
-                            return d.bounds.x;
-                        },
-                        y: function(d) {
-                            return d.bounds.y;
-                        },
-                        width: function(d) {
-                            return d.bounds.width()
-                        },
-                        height: function(d) {
-                            return d.bounds.height()
-                        }
-                    });
+            if (self.debug) {
+                groupDebugSel.attr({
+                    x: function(d) {
+                        return d.bounds.x;
+                    },
+                    y: function(d) {
+                        return d.bounds.y;
+                    },
+                    width: function(d) {
+                        return d.bounds.width()
+                    },
+                    height: function(d) {
+                        return d.bounds.height()
+                    }
+                });
 
-                    participantDebugSel.attr({
-                        x: function(d) {
-                            return d.bounds.x;
-                        },
-                        y: function(d) {
-                            return d.bounds.y;
-                        },
-                        width: function(d) {
-                            return d.bounds.width()
-                        },
-                        height: function(d) {
-                            return d.bounds.height()
-                        }
-                    });
-                }
+                participantDebugSel.attr({
+                    x: function(d) {
+                        return d.bounds.x;
+                    },
+                    y: function(d) {
+                        return d.bounds.y;
+                    },
+                    width: function(d) {
+                        return d.bounds.width()
+                    },
+                    height: function(d) {
+                        return d.bounds.height()
+                    }
+                });
             }
         });
         var width = this.svgElement.parentNode.clientWidth;
