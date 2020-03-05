@@ -153,12 +153,12 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width; // * this.controller.z;
+            return this.upperGroup.getBBox().width + 10; // * this.controller.z;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height; // * this.controller.z;
+            return this.upperGroup.getBBox().height + 10; // * this.controller.z;
         }
     });
 };
@@ -297,8 +297,10 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
 // more accurately described as setting transform for top svg elements (sets scale also)
 CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
     if (!fromCola){
-        this.x = x - (this.width / 2 - (this.getBlobRadius()));
-        this.y = y;
+      this.px = this.x;
+      this.py = this.y;
+      this.x = x - (this.width / 2 - (this.getBlobRadius()) + 5);
+      this.y = y;
     }
 
     this.ix = x;
@@ -491,8 +493,8 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
     // MJG
-    d3.select(this.upperGroup).style("display", bool ? "none" : null);
-    d3.select(this.lowerGroup).style("display", bool ? "none" : null);
+    d3.select(this.upperGroup).style("visibility", bool ? "hidden" : null);
+    d3.select(this.lowerGroup).style("visibility", bool ? "hidden" : null);
     this.hidden = bool ? true : false;
 };
 
