@@ -10,7 +10,7 @@
 
 Complex.prototype = new Molecule();
 
-function Complex(group, xlvController) {
+function Complex(group, xlvController) { // TODO: rename to Group
     this.id = group.id;
     this.name = group.name;
     this.participant = group;//confusing

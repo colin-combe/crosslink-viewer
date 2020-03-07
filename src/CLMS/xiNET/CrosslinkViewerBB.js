@@ -1173,60 +1173,22 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 "id": g[0],
                 "participants": g[1]
             }
-            nLink = new NaryLink(group, this);
+            // nLink = new NaryLink(group, this);
             var complex = new Complex(group, this);
             this.groups.push(complex);
             for (var pid of group.participants) {
                 var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein.naryLinks.set(group.id, nLink);
+                // renderedProtein.naryLinks.set(group.id, nLink);
                 renderedProtein.complexes.add(complex);
                 if (renderedProtein.complexes.size > 1) {
                     console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
                 }
-                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                    nLink.renderedParticipants.push(renderedProtein);
-                }
+                // if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
+                //     nLink.renderedParticipants.push(renderedProtein);
+                // }
             }
-            complex.initMolecule(nLink);
+            // complex.initMolecule(nLink);
         }
-
-
-
-        // update groups
-        // init n-ary link
-        /*     var groupsArr = this.model.get("groups");
-     this.groups = [];
-        for (var group of groupsArr) {
-            var groupParticipants = group;//.getInteractors();
-            console.log(group, groupParticipants);
-
-            // //doesn't already exist, make new nLink
-            nLink = new NaryLink(group.id, this);
-            // this.groups.push(nLink);
-
-            var complex = new Complex(group, this);
-
-            for (var p of groupParticipants) {
-                var pid = p.id;
-                var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein.naryLinks.set(group.id, nLink);
-                renderedProtein.complex = complex;
-                if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                    nLink.renderedParticipants.push(renderedProtein);
-                }
-            }
-            complex.initMolecule(nLink);
-
-            this.renderedProteins.set(group.id, complex);
-            this.groups.push(complex);
-
-        }
-        this.scale();
-        this.render();
-        this.autoLayout();
-        return this; */
-
-
     },
 
     showLabels: function() {
