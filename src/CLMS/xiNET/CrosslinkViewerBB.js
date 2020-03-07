@@ -25,7 +25,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        //this.debug = true;
+        this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
 
         //avoids prob with 'save - web page complete'
@@ -267,7 +267,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         for (var g of this.groups) {
-            g.naryLink.check();
+            // g.naryLink.check();
         }
 
     },
@@ -396,7 +396,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
             prot.setPosition(prot.ix, prot.iy); // this rescales the protein
-            if (prot.participant.form !== 0)
+            if (prot.expanded !== 0)
                 prot.setAllLinkCoordinates();
         }
 
@@ -418,7 +418,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var pl = 0; pl < plCount; pl++) {
             var p_pLink = p_pLinksArr[pl];
             if ((p_pLink.renderedFromProtein != p_pLink.renderedToProtein) &&
-                p_pLink.renderedFromProtein.participant.form === 0 && p_pLink.renderedToProtein.participant.form === 0) {
+                p_pLink.renderedFromProtein.expanded == false && p_pLink.renderedToProtein.expanded == false) {
                 if (p_pLink.line) {
                     p_pLink.line.setAttribute("stroke-width", this.z * this.linkWidth);
                     p_pLink.highlightLine.setAttribute("stroke-width", this.z * 10);
@@ -622,7 +622,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
                     if (this.dragElement.ix) { //if the thing is a protein
                         if (rightclick) {
-                            if (this.dragElement.participant.form === 0) {
+                            if (this.dragElement.expanded == false) {
                                 this.dragElement.setForm(1);
                                 // } else if (this.dragElement.type == "nary") {
                                 //     this.dragElement.setForm(0);
@@ -800,10 +800,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 linkObj.source.fixed = fixSelected && selected.indexOf(source.participant) != -1;
                 linkObj.target.fixed = fixSelected && selected.indexOf(linkObj.target.participant) != -1;
 
-                // if (linkObj.source.complex && linkObj.source.complex.participant.form == 1) {
+                // if (linkObj.source.complex && linkObj.source.complex.expanded == true) {
                 //     groupSet.add(linkObj.source.complex.naryLink);
                 // }
-                // if (linkObj.target.complex && linkObj.target.complex.participant.form == 1) {
+                // if (linkObj.target.complex && linkObj.target.complex.expanded == true) {
                 //     groupSet.add(linkObj.target.complex.naryLink);
                 // }
 
@@ -821,9 +821,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         if (this.groups) {
             for (var g of this.groups) {
                 delete g.index;
-                if (g.participant.form == 1) {
+                if (g.expanded == true) {
                     g.leaves = [];
-                    for (var rp of g.naryLink.renderedParticipants) {
+                    for (var rp of g.renderedParticipants) {
                         // var rp = this.renderedProteins.get(p.id);
                         var i = nodeArray.indexOf(rp);
                         if (i != -1) {
@@ -840,7 +840,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         // if (this.groups) {
         //     for (var c = 0; c < this.groups.length; c++) {
         //         var g = this.groups[c];
-        //         // if (g.participant.form == 1) {
+        //         // if (g.expanded == true) {
         //         g.leaves = [];
         //         g.groups = [];
         //         for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
@@ -957,7 +957,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         });
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
-        this.d3cola.start(100, 0, 100, 0);
+        this.d3cola.start(30, 0, 60, 0);
     },
 
     downloadSVG: function() {
@@ -989,8 +989,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         for (var rcl = 0; rcl < rclCount; rcl++) {
             var renderedCrossLink = renderedCrossLinksArr[rcl];
             if (highlightedCrossLinks.indexOf(renderedCrossLink.crossLink) != -1) {
-                if (renderedCrossLink.renderedFromProtein.participant.form == 1 ||
-                    !renderedCrossLink.renderedToProtein || renderedCrossLink.renderedToProtein.participant.form == 1) {
+                if (renderedCrossLink.renderedFromProtein.expanded == true ||
+                    !renderedCrossLink.renderedToProtein || renderedCrossLink.renderedToProtein.expanded == true) {
                     renderedCrossLink.showHighlight(true);
                 } else if (renderedCrossLink.renderedToProtein) {
                     var p_pLink = this.renderedP_PLinks.get(
@@ -1107,12 +1107,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         for (var group of this.groups) {
             var hasHidden = false;
-            for (var p of group.naryLink.renderedParticipants) {
+            for (var p of group.renderedParticipants) {
                 if (p.participant.manuallyHidden) {
                     hasHidden = true;
                 }
             }
-            group.naryLink.dashedLine(hasHidden);
+            //group.naryLink.dashedLine(hasHidden);
         }
 
         return this;
@@ -1173,21 +1173,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 "id": g[0],
                 "participants": g[1]
             }
-            // nLink = new NaryLink(group, this);
             var complex = new Complex(group, this);
             this.groups.push(complex);
             for (var pid of group.participants) {
                 var renderedProtein = this.renderedProteins.get(pid);
-                // renderedProtein.naryLinks.set(group.id, nLink);
                 renderedProtein.complexes.add(complex);
                 if (renderedProtein.complexes.size > 1) {
                     console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
                 }
-                // if (nLink.renderedParticipants.indexOf(renderedProtein) === -1) {
-                //     nLink.renderedParticipants.push(renderedProtein);
-                // }
             }
-            // complex.initMolecule(nLink);
+            complex.initMolecule();
         }
     },
 

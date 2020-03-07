@@ -13,16 +13,15 @@ Complex.prototype = new Molecule();
 function Complex(group, xlvController) { // TODO: rename to Group
     this.id = group.id;
     this.name = group.name;
-    this.participant = group;//confusing
     this.controller = xlvController;
+    this.renderedParticipants = [];
+    for (var p of group.participants){
+        this.renderedParticipants.push(this.controller.renderedProteins.get(p));
+    }
     //links
-    this.naryLinks = d3.map();
-    this.binaryLinks = d3.map();
     this.selfLink = null;
-    this.sequenceLinks = d3.map();
-    this.participant.form = 1;
+    this.expanded = true;
     this.type = 'complex';
-
     this.size = 10; //hack, layout is using this
 
     /*
@@ -92,13 +91,13 @@ function Complex(group, xlvController) { // TODO: rename to Group
     };
 }
 
-Complex.prototype.initMolecule = function(naryLink) {
-    this.naryLink = naryLink;
+Complex.prototype.initMolecule = function() {
+    // this.naryLink = naryLink;
     // naryLink.path.setAttribute('fill', );
     // naryLink.path.setAttribute('stroke-linejoin', 'round');
     // naryLink.path.setAttribute('stroke-width', 8);
     this.padding = 30;
-    this.setForm(this.form);
+    this.setForm(this.expanded);
 };
 
 Complex.prototype.mouseOver = function(evt) {
@@ -119,7 +118,7 @@ Complex.prototype.mouseOut = function(evt) {
     Molecule.prototype.mouseOut.call(this, evt);
 };
 
-Complex.prototype.getPosition = function() {
+/*Complex.prototype.getPosition = function() {
     var mapped = this.naryLink.getMappedCoordinates();
     var mc = mapped.length;
     var xSum = 0,
@@ -129,7 +128,7 @@ Complex.prototype.getPosition = function() {
         ySum += mapped[m][1];
     }
     return [xSum / mc, ySum / mc];
-};
+};*/
 
 // Complex.prototype.setPosition = function(x, y) {};
 Complex.prototype.getResidueCoordinates = function(x, y) {
@@ -138,8 +137,8 @@ Complex.prototype.getResidueCoordinates = function(x, y) {
 
 Complex.prototype.setForm = function(form, svgP) {
     if (form == 0) {
-        this.participant.form = 0;
-        var renderedParticipants = this.naryLink.renderedParticipants;
+        this.expanded = 0;
+        var renderedParticipants = this.renderedParticipants;
         var rpCount = renderedParticipants.length;
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
@@ -147,11 +146,11 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.setHidden(true);
             rp.checkLinks();
         }
-        this.naryLink.hide();
-        this.controller.proteinUpper.appendChild(this.upperGroup);
+        // this.naryLink.hide();
+        // this.controller.proteinUpper.appendChild(this.upperGroup);
     } else {
-        this.participant.form = 1;
-        var renderedParticipants = this.naryLink.renderedParticipants;
+        this.expanded = 1;
+        var renderedParticipants = this.renderedParticipants;
         var rpCount = renderedParticipants.length;
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
@@ -159,14 +158,14 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.setHidden(rp.participant.hidden);
             rp.checkLinks();
         }
-        this.naryLink.show();
+        // this.naryLink.show();
 //        this.controller.proteinUpper.removeChild(this.upperGroup);
     }
 };
 
 // update all lines (e.g after a move)
 Complex.prototype.setAllLinkCoordinates = function() {
-    var renderedParticipants = this.naryLink.renderedParticipants;
+    var renderedParticipants = this.renderedParticipants;
     var rpCount = renderedParticipants.length;
     for (var i = 0; i < rpCount; i++) {
         var rp = renderedParticipants[i];

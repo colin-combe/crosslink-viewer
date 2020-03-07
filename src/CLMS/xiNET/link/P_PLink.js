@@ -290,9 +290,9 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
     if (!this.renderedToProtein || this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
-        this.renderedFromProtein.participant.form == 1 || this.renderedToProtein.participant.form == 1 ||
+        this.renderedFromProtein.expanded == true || this.renderedToProtein.expanded == true ||
         this.filteredCrossLinkCount === 0
-      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.participant.form == 0)) {
+      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complexexpanded == false)) {
         this.hide();
     } else {
         this.show();

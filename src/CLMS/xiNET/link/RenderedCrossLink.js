@@ -181,10 +181,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
                     fromPeptides.push([fromPepStart, fromPepLength, match.overlap[0], match.overlap[1]]);
                     toPeptides.push([toPepStart, toPepLength, match.overlap[0], match.overlap[1]]);
                 }
-                if (this.renderedFromProtein.participant.form == 1) {
+                if (this.renderedFromProtein.expanded == true) {
                     this.showPeptides(fromPeptides, this.renderedFromProtein);
                 }
-                if (this.renderedToProtein && this.renderedToProtein.participant.form == 1) {
+                if (this.renderedToProtein && this.renderedToProtein.expanded == true) {
                     this.showPeptides(toPeptides, this.renderedToProtein);
                 }
             }
@@ -269,7 +269,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-    if (this.renderedFromProtein.participant.form == 0 && (this.renderedToProtein? this.renderedToProtein.participant.form == 0 : false)) {
+    if (this.renderedFromProtein.expanded == false && (this.renderedToProtein? this.renderedToProtein.expanded == false : false)) {
         this.hide();
         return false;
     }
@@ -297,7 +297,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
         }
         if (!this.renderedToProtein) {
             var path;
-            if (this.renderedFromProtein.participant.form === 1) {
+            if (this.renderedFromProtein.expanded == true) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
                 path = this.crossLink.isMonoLink() ? "M 0,0 L 0,0 L 0,0 L 0,0" : this.renderedFromProtein.getAggregateSelfLinkPath();
@@ -319,7 +319,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
     if (this.crossLink.isSelfLink() && this.renderedToProtein) {
         if (this.homomultimer != this.crossLink.confirmedHomomultimer) {
             var path;
-            if (this.renderedFromProtein.participant.form === 1) {
+            if (this.renderedFromProtein.expanded == true) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
                 path = this.renderedFromProtein.getAggregateSelfLinkPath();
@@ -360,10 +360,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             //~ if (this.shown) {//don't waste time changing DOM if link not visible
             var x, y;
             // from end
-            if (this.renderedFromProtein.participant.form === 0) {
+            if (this.renderedFromProtein.expanded == false) {
                 x = this.renderedFromProtein.ix;
                 y = this.renderedFromProtein.iy;
-            } else //if (this.participant.form == 1)
+            } else //if (this.expanded == true)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
                 x = coord[0];
@@ -375,10 +375,10 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
             this.highlightLine.setAttribute("y1", y);
 
             // to end
-            if (this.renderedToProtein.participant.form === 0) {
+            if (this.renderedToProtein.expanded == false) {
                 x = this.renderedToProtein.ix;
                 y = this.renderedToProtein.iy;
-            } else //if (this.participant.form == 1)
+            } else //if (this.expanded == true)
             {
                 var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
                 x = coord[0];

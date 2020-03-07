@@ -160,7 +160,7 @@ NaryLink.prototype.getMappedCoordinates = function() {
         if (rp.hidden == false) {
             if (rp.type == 'complex') {
                 mapped = mapped.concat(NaryLink.orbitNodes(rp.naryLink.getMappedCoordinates()));
-            } else if (rp.participant.form === 1) {
+            } else if (rpexpanded == true) {
                 var start = rp.getResidueCoordinates(0);
                 var end = rp.getResidueCoordinates(rp.participant.size);
                 if (!isNaN(start[0]) && !isNaN(start[1]) &&

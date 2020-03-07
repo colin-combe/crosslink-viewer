@@ -130,7 +130,7 @@ Molecule.prototype.setPosition = function(xPos, yPos) {
     this.iy = yPos;
     console.log("!", this.ix, this.iy);
 
-    // if (this.participant.form === 1) {
+    // if (this.expanded == true) {
     console.log(this.name, "before", this.upperGroup.getAttribute("transform"));
     this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
         " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
@@ -160,7 +160,7 @@ Molecule.rotatePointAboutPoint = function(p, o, theta) {
     var ry = Math.sin(theta) * (p[0] - o[0]) + Math.cos(theta) * (p[1] - o[1]) + o[1];
     return [rx, ry];
 }
-
+/*
 Molecule.prototype.checkLinks = function() {
     function checkAll(linkMap) {
         var links = linkMap.values();
@@ -175,15 +175,16 @@ Molecule.prototype.checkLinks = function() {
     if (this.selfLink !== null) {
         this.selfLink.check();
     }
-}
+}*/
+
 
 // update all lines (e.g after a move)
 Molecule.prototype.setAllLinkCoordinates = function() {
-    var nLinks = this.naryLinks.values();
-    var c = nLinks.length;
-    for (var l = 0; l < c; l++) {
-        nLinks[l].setLinkCoordinates();
-    }
+    // var nLinks = this.naryLinks.values();
+    // var c = nLinks.length;
+    // for (var l = 0; l < c; l++) {
+    //     nLinks[l].setLinkCoordinates();
+    // }
 
     var pLinks = this.renderedP_PLinks;
     var plCount = pLinks.length;
@@ -241,7 +242,7 @@ Molecule.prototype.setPositionalFeatures = function(posFeats) {
             anno.begin = anno.begin - 0;
             anno.end = anno.end - 0;
             anno.pieSlice = document.createElementNS(Config.svgns, "path");
-            if (this.participant.form === 0) {
+            if (this.expanded == false) {
                 anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
             } else {
                 anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
@@ -304,7 +305,7 @@ Molecule.prototype.showLabel = function(show) {
 };*/
 
 Molecule.prototype.getRenderedParticipant = function() {
-    if (this.complex && this.complex.participant.form == 0) {
+    if (this.complex && this.complexexpanded == false) {
         return this.complex.getRenderedParticipant();
     } else {
         return this;
