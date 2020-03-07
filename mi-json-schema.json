@@ -1,0 +1,1000 @@
+{
+    "type":"object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "required":false,
+    "properties":{
+        "data": {
+            "type":"array",
+            "required":true,
+            "description":"Data array containing all interactions, interactors and complexes",
+            "items":
+                [
+                    {
+                        "type":"object",
+                        "required":true,
+                        "description":"An interactor object represents an interacting molecule.",
+                        "properties":{
+                            "id": {
+                                "type":"string",
+                                "required":true,
+                                "description":"Unique identifier for this interactor. In most of the cases, it is generated from the interactor main database accession"
+                            },
+                            "identifier": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The preferred identifier for this interactor. It is usually a primary database accession (uniprotkb for proteins, ensembl for genes, chebi for small molecules, refseq for nucleic acids, etc.)",
+                                "properties":{
+                                    "db": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The database name. Most of the time, the name will match a term from the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0444&termName=database%20citation. It represents the unique PSI shortlabel for this database"
+                                    },
+                                    "id": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The database identifier/accession. It usually represents the primary accession of this object in a specific database."
+                                    }
+                                }
+                            },
+                            "label": {
+                                "type":"string",
+                                "required":true,
+                                "description":"The short name of the interactor which is usually used for visualizing an interactor in a network"
+                            },
+                            "object": {
+                                "type":"string",
+                                "required":true,
+                                "description":"The object for an interactor is always 'interactor'. It helps to distinguish interactors from interactions in the data array"
+                            },
+                            "organism": {
+                                "type":"object",
+                                "required":false,
+                                "description":"Organism for this interactor.",
+                                "properties":{
+                                    "common": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The common name or short name of the organism."
+                                    },
+                                    "scientific": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The scientific name of full name of the organism."
+                                    },
+                                    "taxid": {
+                                        "type":"number",
+                                        "required":true,
+                                        "description":"The uniprot taxonomy identifier for this organism. Can be -1 if in vitro, -2 if chemical synthesis, -3 if unknown, -4 if in vivo"
+                                    }
+                                }
+                            },
+                            "sequence": {
+                                "type":"string",
+                                "required":false,
+                                "description":"The sequence of nucleic acids/amino acids of this interactor if it is a nucleic acid/protein"
+                            },
+                            "type": {
+                                "type":"object",
+                                "required":true,
+                                "description":"The interactor type. It is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type",
+                                "properties":{
+                                    "id": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The interactor type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type"
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The interactor type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type"
+                                    }
+                                }
+                            },
+                            "setComponents": {
+                                "type":"array",
+                                "required":false,
+                                "description":"If the interactor is a set of interactors (we don't know which one interacts but one of them does interact), we can describe all the interactors which are member of this set.",
+                                "items":{
+                                    "type":"object",
+                                    "required":true,
+                                    "description":"An interactor object member of an interactor set.",
+                                    "properties":{
+                                        "identifier": {
+                                            "type":"object",
+                                            "required":false,
+                                            "description":"The preferred identifier for this interactor. It is usually a primary database accession (uniprotkb for proteins, ensembl for genes, chebi for small molecules, refseq for nucleic acids, etc.)",
+                                            "properties":{
+                                                "db": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The database name. Most of the time, the name will match a term from the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0444&termName=database%20citation. It represents the unique PSI shortlabel for this database"
+                                                },
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The database identifier/accession. It usually represents the primary accession of this object in a specific database."
+                                                }
+                                            }
+                                        },
+                                        "label": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"The short name of the interactor which is usually used for visualizing an interactor in a network"
+                                        },
+                                        "organism": {
+                                            "type":"object",
+                                            "required":false,
+                                            "description":"Organism for this interactor.",
+                                            "properties":{
+                                                "common": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The common name or short name of the organism."
+                                                },
+                                                "scientific": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The scientific name of full name of the organism."
+                                                },
+                                                "taxid": {
+                                                    "type":"number",
+                                                    "required":true,
+                                                    "description":"The uniprot taxonomy identifier for this organism. Can be -1 if in vitro, -2 if chemical synthesis, -3 if unknown, -4 if in vivo"
+                                                }
+                                            }
+                                        },
+                                        "sequence": {
+                                            "type":"string",
+                                            "required":false,
+                                            "description":"The sequence of nucleic acids/amino acids of this interactor if it is a nucleic acid/protein"
+                                        },
+                                        "type": {
+                                            "type":"object",
+                                            "required":true,
+                                            "description":"The interactor type. It is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The interactor type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type"
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The interactor type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type":"object",
+                        "required":true,
+                        "description":"An interaction object represents an interaction between one to many interactor instances (participants). It can be an interaction evidence (experiment is provided and is not inferred by curator) or a biological complex which can be then re-used as an interactor in another interaction (no experiment provided or experiment provided with inferred by curator).",
+                        "properties":{
+                            "experiment": {
+                                "type":"object",
+                                "required":false,
+                                "description":"Experiment where this interaction has been detected. If the interaction detection method is inferred by curator, the interaction is probably a biological complex and not a real interaction evidence.",
+                                "properties":{
+                                    "detmethod": {
+                                        "type":"object",
+                                        "required":true,
+                                        "description":"Interaction detection method. It is usually a term of the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0001&termName=interaction%20detection%20method",
+                                        "properties":{
+                                            "id": {
+                                                "type":"string",
+                                                "required":false,
+                                                "description":"The interaction detection method MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0001&termName=interaction%20detection%20method"
+                                            },
+                                            "name": {
+                                                "type":"string",
+                                                "required":true,
+                                                "description":"The interaction detection method unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0001&termName=interaction%20detection%20method"
+                                            }
+                                        }
+                                    },
+                                    "experimentModifications": {
+                                        "type":"array",
+                                        "required":false,
+                                        "description":"A list of experimental modifications done in a specific experiment.",
+                                        "items":
+                                        {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"The description of the experimental modification done in a specific experiment. It is a free text comment."
+                                        }
+                                    },
+                                    "figures": {
+                                        "type":"array",
+                                        "required":false,
+                                        "description":"A list of figure legends.",
+                                        "items":
+                                        {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"The figure legend which illustrate this experiment in a scientific publication. It is a free text comment."
+                                        }
+
+
+                                    },
+                                    "host": {
+                                        "type":"object",
+                                        "required":false,
+                                        "description":"The host organism where the interaction has been detected.",
+                                        "properties":{
+                                            "common": {
+                                                "type":"string",
+                                                "required":false,
+                                                "description":"The common name or short name of the organism."
+                                            },
+                                            "scientific": {
+                                                "type":"string",
+                                                "required":false,
+                                                "description":"The scientific name of full name of the organism."
+                                            },
+                                            "taxid": {
+                                                "type":"number",
+                                                "required":true,
+                                                "description":"The uniprot taxonomy identifier for this organism. Can be -1 if in vitro, -2 if chemical synthesis, -3 if unknown, -4 if in vivo"
+                                            },
+                                            "cellType": {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The cell type of the host organism.",
+                                                "properties":{
+                                                    "id": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The cell type ontology identifier if one exists."
+                                                    },
+                                                    "name": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"The cell type short name."
+                                                    }
+                                                }
+                                            },
+                                            "tissue": {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The source tissue of the host organism.",
+                                                "properties":{
+                                                    "id": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The source tissue ontology identifier if one exists."
+                                                    },
+                                                    "name": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"The source tissue short name."
+                                                    }
+                                                }
+                                            },
+                                            "compartment": {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The subcellular compartment of the host organism.",
+                                                "properties":{
+                                                    "id": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The subcellular compartment ontology identifier if one exists."
+                                                    },
+                                                    "name": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"The subcellular compartment type short name."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pubid": {
+                                        "type":"array",
+                                        "required":false,
+                                        "description":"The list of publication identifiers where this experiment has been reported (pubmed, doi, imex, etc.).",
+                                        "items":
+                                        {
+                                            "type":"object",
+                                            "required":true,
+                                            "properties":{
+                                                "db": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The database name (usually pubmed, doi or imex). Most of the time, the name will match a term from the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0444&termName=database%20citation. It represents the unique PSI shortlabel for this database"
+                                                },
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The database identifier/accession. It usually represents the primary accession of this object in a specific database."
+                                                }
+                                            }
+                                        }
+
+
+                                    },
+                                    "sourceDatabase": {
+                                        "type":"object",
+                                        "required":false,
+                                        "description":"The institution/organisation which have curated and provided these experimental details. Most of the time, it is aterm of the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0461&termName=interaction%20database",
+                                        "properties":{
+                                            "id": {
+                                                "type":"string",
+                                                "required":false,
+                                                "description":"The institution MI identifier if it exists form the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0461&termName=interaction%20database."
+                                            },
+                                            "name": {
+                                                "type":"string",
+                                                "required":true,
+                                                "description":"The institution name. Most of the time, the name will match a term from the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0461&termName=interaction%20database. It represents the unique PSI shortlabel for this database"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "id": {
+                                "type":"string",
+                                "required":true,
+                                "description":"Unique identifier for this interaction. For biological complexes, it is generated from the complex main database accession and for interaction evidences, it usually is the IMEx identifier or a automatically generated id"
+                            },
+                            "identifiers": {
+                                "type":"array",
+                                "required":false,
+                                "description":"An list of database identifiers for this interaction.",
+                                "items":
+                                {
+                                    "type":"object",
+                                    "required":false,
+                                    "description":"A database identifier for this interaction. It usually can be used to link to interaction resources for more details.",
+                                    "properties":{
+                                        "db": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"The database name. Most of the time, the name will match a term from the PSI-MI ontology http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0444&termName=database%20citation. It represents the unique PSI shortlabel for this database"
+                                        },
+                                        "id": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"The database identifier/accession. It usually represents the primary accession of this object in a specific database."
+                                        }
+                                    }
+                                }
+
+
+                            },
+                            "interactionType": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The interaction type which is usually term from PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0190&termName=interaction%20type.",
+                                "properties":{
+                                    "id": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The interaction type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0190&termName=interaction%20type."
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The interaction type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0190&termName=interaction%20type."
+                                    }
+                                }
+                            },
+                            "object": {
+                                "type":"string",
+                                "required":true,
+                                "description":"The object for an interaction or biological complex is always 'interaction'. It helps to distinguish interactors from interactions in the data array"
+                            },
+                            "participants": {
+                                "type":"array",
+                                "required":true,
+                                "description":"The list of participants/interactor instances which are involved in this interaction.",
+                                "items":
+                                {
+                                    "type":"object",
+                                    "required":true,
+                                    "description":"Participant involved in this interaction. It represents an instance of the interactor/molecule within this interaction",
+                                    "properties":{
+                                        "bioRole": {
+                                            "type":"object",
+                                            "required":true,
+                                            "description":"Participant biological role which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0500&termName=biological%20role",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The biological role MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0500&termName=biological%20role."
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The biological role unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0500&termName=biological%20role."
+                                                }
+                                            }
+                                        },
+                                        "expRole": {
+                                            "type":"object",
+                                            "required":false,
+                                            "description":"Participant experimental role (only for interaction evidences, not biological complexes) which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0495&termName=experimental%20role",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The experimental role MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0495&termName=experimental%20role."
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The experimental role unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0495&termName=experimental%20role."
+                                                }
+                                            }
+                                        },
+                                        "identificationMethods": {
+                                            "type":"array",
+                                            "required":false,
+                                            "description":"List of participant identification methods if the participant is from an interaction evidence, not a biological complex. It is usually a term from PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0002&termName=participant%20identification%20method",
+                                            "items":
+                                            {
+                                                "type":"object",
+                                                "required":false,
+                                                "description":"Participant identification method (only for interaction evidences, not biological complexes) which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0002&termName=participant%20identification%20method",
+                                                "properties":{
+                                                    "id": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The participant identification method MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0002&termName=participant%20identification%20method."
+                                                    },
+                                                    "name": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"The participant identification method unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0002&termName=participant%20identification%20method."
+                                                    }
+                                                }
+                                            }
+
+
+                                        },
+                                        "expressedIn": {
+                                            "type":"object",
+                                            "required":false,
+                                            "description":"The host organism where the participant has been expressed in. It is only valid for interaction evidences and does not make sense for biological complexes.",
+                                            "properties":{
+                                                "common": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The common name or short name of the organism."
+                                                },
+                                                "scientific": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The scientific name of full name of the organism."
+                                                },
+                                                "taxid": {
+                                                    "type":"number",
+                                                    "required":true,
+                                                    "description":"The uniprot taxonomy identifier for this organism. Can be -1 if in vitro, -2 if chemical synthesis, -3 if unknown, -4 if in vivo"
+                                                },
+                                                "cellType": {
+                                                    "type":"object",
+                                                    "required":true,
+                                                    "description":"The cell type of the host organism.",
+                                                    "properties":{
+                                                        "id": {
+                                                            "type":"string",
+                                                            "required":false,
+                                                            "description":"The cell type ontology identifier if one exists."
+                                                        },
+                                                        "name": {
+                                                            "type":"string",
+                                                            "required":true,
+                                                            "description":"The cell type short name."
+                                                        }
+                                                    }
+                                                },
+                                                "tissue": {
+                                                    "type":"object",
+                                                    "required":true,
+                                                    "description":"The source tissue of the host organism.",
+                                                    "properties":{
+                                                        "id": {
+                                                            "type":"string",
+                                                            "required":false,
+                                                            "description":"The source tissue ontology identifier if one exists."
+                                                        },
+                                                        "name": {
+                                                            "type":"string",
+                                                            "required":true,
+                                                            "description":"The source tissue short name."
+                                                        }
+                                                    }
+                                                },
+                                                "compartment": {
+                                                    "type":"object",
+                                                    "required":true,
+                                                    "description":"The subcellular compartment of the host organism.",
+                                                    "properties":{
+                                                        "id": {
+                                                            "type":"string",
+                                                            "required":false,
+                                                            "description":"The subcellular compartment ontology identifier if one exists."
+                                                        },
+                                                        "name": {
+                                                            "type":"string",
+                                                            "required":true,
+                                                            "description":"The subcellular compartment type short name."
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "confidences": {
+                                            "type":"array",
+                                            "required":false,
+                                            "description":"List of experimental confidences for this participant. It does not make sense for biological complexes.",
+                                            "items":
+                                            {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The experimental confidence determined fro this participant.",
+                                                "properties":{
+                                                    "type": {
+                                                        "type":"object",
+                                                        "required":true,
+                                                        "description":"Confidence type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence",
+                                                        "properties":{
+                                                            "id": {
+                                                                "type":"string",
+                                                                "required":false,
+                                                                "description":"The confidence type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence."
+                                                            },
+                                                            "name": {
+                                                                "type":"string",
+                                                                "required":true,
+                                                                "description":"The confidence type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence."
+                                                            }
+                                                        }
+                                                    },
+                                                    "value": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"Confidence value which is free text as it can be quantitative as qualitative."
+                                                    }
+                                                }
+                                            }
+
+
+                                        },
+                                        "parameters": {
+                                            "type":"array",
+                                            "required":false,
+                                            "description":"List of experimental parameters for this participant. It does not make sense for biological complexes.",
+                                            "items":
+                                            {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The experimental parameter determined fro this participant.",
+                                                "properties":{
+                                                    "type": {
+                                                        "type":"object",
+                                                        "required":true,
+                                                        "description":"Parameter type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type",
+                                                        "properties":{
+                                                            "id": {
+                                                                "type":"string",
+                                                                "required":false,
+                                                                "description":"The parameter type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                            },
+                                                            "name": {
+                                                                "type":"string",
+                                                                "required":true,
+                                                                "description":"The parameter type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                            }
+                                                        }
+                                                    },
+                                                    "value": {
+                                                        "type":"string",
+                                                        "required":true,
+                                                        "description":"Parameter value. (for instance 2x10^(-5))"
+                                                    },
+                                                    "unit": {
+                                                        "type":"object",
+                                                        "required":false,
+                                                        "description":"Parameter unit which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit",
+                                                        "properties":{
+                                                            "id": {
+                                                                "type":"string",
+                                                                "required":false,
+                                                                "description":"The parameter unit MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                            },
+                                                            "name": {
+                                                                "type":"string",
+                                                                "required":true,
+                                                                "description":"The parameter unit unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+
+                                        },
+                                        "id": {
+                                            "type":"integer",
+                                            "required":true,
+                                            "description":"Unique identifier for this participant/interactor instance."
+                                        },
+                                        "interactorRef": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"Interactor id reference for this participant. It points to the id of an interactor described in this data array."
+                                        },
+                                        "features": {
+                                            "type":"array",
+                                            "required":false,
+                                            "description":"List of features attached to this participant.",
+                                            "items":
+                                            {
+                                                "type":"object",
+                                                "required":true,
+                                                "description":"The feature attached to this participant (tag, etc.). See the PSI-MI ontology for all types of features: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type",
+                                                "properties":{
+                                                    "id": {
+                                                        "type":"integer",
+                                                        "required":true,
+                                                        "description":"Unique identifier for this feature instance."
+                                                    },
+                                                    "name": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The feature short name."
+                                                    },
+                                                    "sequenceData": {
+                                                        "type":"array",
+                                                        "required":true,
+                                                        "description":"The list of feature sequence ranges.",
+                                                        "items":
+                                                        {
+                                                            "type":"object",
+                                                            "required":true,
+                                                            "properties":{
+                                                                "interactorRef": {
+                                                                    "type":"string",
+                                                                    "required":true,
+                                                                    "description":"The id of the interactor/molecule this feature is referring to."
+                                                                },
+                                                                "participantRef": {
+                                                                    "type":"integer",
+                                                                    "required":true,
+                                                                    "description":"The id of the interactor instance/participant this feature belongs to.."
+                                                                },
+                                                                "pos": {
+                                                                    "type":"string",
+                                                                    "required":true,
+                                                                    "description":"The sequence positions. If the sequence positions are unknown, they are encoded with ?-?. If the positions are n-terminal range, they are encoded with n-n. If the positions are C terminal range, they are encoded with c-c. If the positions are fuzzy, they are encoded with x1..x2-x3..x4."
+                                                                }
+                                                            }
+                                                        }
+
+
+                                                    },
+                                                    "detMethods": {
+                                                        "type":"array",
+                                                        "required":false,
+                                                        "description":"List of feature detection methods if the feature is from an interaction evidence, not a biological complex. It is usually a term from PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0003&termName=feature%20detection%20method",
+                                                        "items":
+                                                        {
+                                                            "type":"object",
+                                                            "required":false,
+                                                            "description":"Feature detection method (only for interaction evidences, not biological complexes) which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0003&termName=feature%20detection%20method",
+                                                            "properties":{
+                                                                "id": {
+                                                                    "type":"string",
+                                                                    "required":false,
+                                                                    "description":"The feature detection method MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0003&termName=feature%20detection%20method."
+                                                                },
+                                                                "name": {
+                                                                    "type":"string",
+                                                                    "required":true,
+                                                                    "description":"The feature detection method unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0003&termName=feature%20detection%20method."
+                                                                }
+                                                            }
+                                                        }
+
+
+                                                    },
+                                                    "parameters": {
+                                                        "type":"array",
+                                                        "required":false,
+                                                        "description":"List of experimental parameters for this feature. It does not make sense for biological complexes.",
+                                                        "items":
+                                                        {
+                                                            "type":"object",
+                                                            "required":true,
+                                                            "description":"The experimental parameter determined fro this feature.",
+                                                            "properties":{
+                                                                "type": {
+                                                                    "type":"object",
+                                                                    "required":true,
+                                                                    "description":"Parameter type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type",
+                                                                    "properties":{
+                                                                        "id": {
+                                                                            "type":"string",
+                                                                            "required":false,
+                                                                            "description":"The parameter type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                                        },
+                                                                        "name": {
+                                                                            "type":"string",
+                                                                            "required":true,
+                                                                            "description":"The parameter type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "value": {
+                                                                    "type":"string",
+                                                                    "required":true,
+                                                                    "description":"Parameter value. (for instance 2x10^(-5))"
+                                                                },
+                                                                "unit": {
+                                                                    "type":"object",
+                                                                    "required":false,
+                                                                    "description":"Parameter unit which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit",
+                                                                    "properties":{
+                                                                        "id": {
+                                                                            "type":"string",
+                                                                            "required":false,
+                                                                            "description":"The parameter unit MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                                        },
+                                                                        "name": {
+                                                                            "type":"string",
+                                                                            "required":true,
+                                                                            "description":"The parameter unit unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+
+                                                    },
+                                                    "linkedFeatures": {
+                                                        "type":"array",
+                                                        "required":false,
+                                                        "description":"List of feature ids this feature is linked to.",
+                                                        "items":
+                                                        {
+                                                            "type":"integer",
+                                                            "required":true,
+                                                            "description":"The feature id of the feature which is linked to the parent feature."
+                                                        }
+
+
+                                                    },
+                                                    "type": {
+                                                        "type":"object",
+                                                        "required":true,
+                                                        "description":"Feature type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type",
+                                                        "properties":{
+                                                            "id": {
+                                                                "type":"string",
+                                                                "required":false,
+                                                                "description":"The feature type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type."
+                                                            },
+                                                            "name": {
+                                                                "type":"string",
+                                                                "required":true,
+                                                                "description":"The feature type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type."
+                                                            }
+                                                        }
+                                                    },
+                                                     "category": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"Category of feature, e.g. bindingSite, otherFeatures, experimentalFeature, ptm"
+                                                    },
+                                                    "role": {
+                                                        "type":"object",
+                                                        "required":true,
+                                                        "description":"Feature role which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0925&termName=observed%20ptm",
+                                                        "properties":{
+                                                            "id": {
+                                                                "type":"string",
+                                                                "required":false,
+                                                                "description":"The feature role MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0925&termName=observed%20ptm."
+                                                            },
+                                                            "name": {
+                                                                "type":"string",
+                                                                "required":true,
+                                                                "description":"The feature role unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0925&termName=observed%20ptm."
+                                                            }
+                                                        }
+                                                    },
+                                                    "InterPro": {
+                                                        "type":"string",
+                                                        "required":false,
+                                                        "description":"The InterPro identifier which identifies this feature."
+                                                    }
+
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            },
+                            "confidences": {
+                                "type":"array",
+                                "required":false,
+                                "description":"List of experimental confidences for this interaction. It does not make sense for biological complexes.",
+                                "items":
+                                {
+                                    "type":"object",
+                                    "required":true,
+                                    "description":"The experimental confidence determined fro this interaction.",
+                                    "properties":{
+                                        "type": {
+                                            "type":"object",
+                                            "required":true,
+                                            "description":"Confidence type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The confidence type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence."
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The confidence type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1064&termName=confidence."
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"Confidence value which is free text as it can be quantitative as qualitative."
+                                        }
+                                    }
+                                }
+
+
+                            },
+                            "parameters": {
+                                "type":"array",
+                                "required":false,
+                                "description":"List of experimental parameters for this interaction. It does not make sense for biological complexes.",
+                                "items":
+                                {
+                                    "type":"object",
+                                    "required":true,
+                                    "description":"The experimental parameter determined fro this interaction.",
+                                    "properties":{
+                                        "type": {
+                                            "type":"object",
+                                            "required":true,
+                                            "description":"Parameter type which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The parameter type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The parameter type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type."
+                                                }
+                                            }
+                                        },
+                                        "value": {
+                                            "type":"string",
+                                            "required":true,
+                                            "description":"Parameter value. (for instance 2x10^(-5))"
+                                        },
+                                        "unit": {
+                                            "type":"object",
+                                            "required":false,
+                                            "description":"Parameter unit which is usually a term from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit",
+                                            "properties":{
+                                                "id": {
+                                                    "type":"string",
+                                                    "required":false,
+                                                    "description":"The parameter unit MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                },
+                                                "name": {
+                                                    "type":"string",
+                                                    "required":true,
+                                                    "description":"The parameter unit unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0647&termName=parameter%20unit."
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            },
+                            "organism": {
+                                "type":"object",
+                                "required":false,
+                                "description":"Organism for this biological complex. This is only provided when the interaction is a biological complex",
+                                "properties":{
+                                    "common": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The common name or short name of the organism."
+                                    },
+                                    "scientific": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The scientific name of full name of the organism."
+                                    },
+                                    "taxid": {
+                                        "type":"number",
+                                        "required":true,
+                                        "description":"The uniprot taxonomy identifier for this organism. Can be -1 if in vitro, -2 if chemical synthesis, -3 if unknown, -4 if in vivo"
+                                    }
+                                }
+                            },
+                            "evidenceType": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The biological complex evidence type which is usually term from ECO ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ECO.",
+                                "properties":{
+                                    "id": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The evidence type identifier from the ECO ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ECO."
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The evidence type short name from the ECO ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ECO."
+                                    }
+                                }
+                            },
+                            "complexType": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The complex type (only if the interaction is a biological complex) which is usually term from PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1298&termName=complex%20type.",
+                                "properties":{
+                                    "id": {
+                                        "type":"string",
+                                        "required":false,
+                                        "description":"The complex type MI identifier from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1298&termName=complex%20type."
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The complex type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1298&termName=complex%20type."
+                                    }
+                                }
+                            },
+                            "expansion": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The complex expansion method use to explode a n-ary interaction in n-1 binary interactions. It does not make sense for biological complexes. It is usually a term of the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1059&termName=complex%20expansion",
+                                "properties":{
+                                    "id": {
+                                        "type":"integer",
+                                        "required":false,
+                                        "description":"The complex expansion id which is unique per expanded n-ary interactions. It helps to detect all binary pairs that were part of the same n-ary interaction."
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The complex expansion method short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1059&termName=complex%20expansion."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+
+        }
+    }
+}
+

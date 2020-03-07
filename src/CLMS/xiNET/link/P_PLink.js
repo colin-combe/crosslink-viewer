@@ -21,7 +21,7 @@ CLMS.xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
         this.renderedToProtein.renderedP_PLinks.push(this);
     }
 
-    this.name = crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
+    this.name = p_pId;//crossLink.fromProtein.name + " - " + crossLink.toProtein.name;
     //used to avoid some unnecessary manipulation of DOM
     this.shown = false;
     //layout stuff
@@ -156,8 +156,8 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
 // event handler for starting dragging or rotation (or flipping internal links)
 CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //stop layout
-    if (this.cola) {
-        this.cola.stop();
+    if (this.d3cola) {
+        this.d3cola.stop();
     }
 
     this.crosslinkViewer.dragElement = this;
@@ -184,8 +184,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
 
 CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
     //stop layout
-    if (this.crosslinkViewer.cola) {
-        this.crosslinkViewer.cola.stop();
+    if (this.crosslinkViewer.d3cola) {
+        this.crosslinkViewer.d3cola.stop();
     }
     this.crosslinkViewer.dragElement = this;
     this.crosslinkViewer.model.setMarkedCrossLinks("selection", this.crossLinks);
@@ -268,10 +268,13 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
                 var mclCount = matchCrossLinks.length;
                 for (var mcl = 0; mcl < mclCount; mcl++) {
                     var matchCrossLink = matchCrossLinks[mcl];
-                    var p_pId = matchCrossLink.fromProtein.id + "-" + matchCrossLink.toProtein.id;
-                    var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
+                    if (!matchCrossLink.isDecoyLink()) {
+                      var toId = matchCrossLink.toProtein? matchCrossLink.toProtein.id : "null";
+                      var p_pId = matchCrossLink.fromProtein.id + "-" + toId;
+                      var p_pLink = this.crosslinkViewer.renderedP_PLinks.get(p_pId);
 
-                    altP_PLinks.set(p_pLink.id, p_pId);
+                      altP_PLinks.set(p_pLink.id, p_pId);
+                    }
                 }
             }
 
@@ -280,15 +283,16 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
-        this.ambiguous = this.ambiguous && altP_PLinks.size > 1;
+        this.ambiguous = altP_PLinks.size > 1;
     }
     return this.filteredCrossLinkCount;
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (this.renderedFromProtein.participant.hidden || this.renderedToProtein.participant.hidden ||
-        this.renderedFromProtein.form == 1 || this.renderedToProtein.form == 1 ||
-        this.filteredCrossLinkCount === 0) {
+    if (!this.renderedToProtein || this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
+        this.renderedFromProtein.participant.form == 1 || this.renderedToProtein.participant.form == 1 ||
+        this.filteredCrossLinkCount === 0
+      || (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.participant.form == 0)) {
         this.hide();
     } else {
         this.show();
@@ -303,13 +307,13 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     this.shown = true;
     if (this.renderedFromProtein === this.renderedToProtein) {
         this.thickLine.setAttribute("transform", "translate(" +
-            this.renderedFromProtein.x + " " + this.renderedFromProtein.y + ")" // possibly not neccessary
+            this.renderedFromProtein.ix + " " + this.renderedFromProtein.iy + ")" // possibly not neccessary
             +
             " scale(" + (this.crosslinkViewer.z) + ")");
-        this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.x +
-            " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
-        this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.x +
-            " " + this.renderedFromProtein.y + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+        this.line.setAttribute("transform", "translate(" + this.renderedFromProtein.ix +
+            " " + this.renderedFromProtein.iy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
+        this.highlightLine.setAttribute("transform", "translate(" + this.renderedFromProtein.ix +
+            " " + this.renderedFromProtein.iy + ")" + " scale(" + (this.crosslinkViewer.z) + ")");
 
     } else {
         this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
@@ -318,20 +322,48 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
         this.setLineCoordinates(this.renderedToProtein);
     }
     d3.select(this.thickLine).style("display", null);
-    d3.select(this.highlightLine).style("display", null);
     d3.select(this.line).style("display", null);
     //}
 
-    if (this.filteredCrossLinkCount < 2) {
-        this.thickLine.setAttribute("stroke-width", 0);
-    } else {
-        this.w = this.filteredCrossLinkCount * (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks);
+    if (this.crosslinkViewer.model.get("xinetThickLinks") == false) {
+        d3.select(this.thickLine).style("display", "none");
+    }
+    else {
+        d3.select(this.highlightLine).style("display", null);
+        var steps = this.crosslinkViewer.model.get("xinetPpiSteps");
+
+        var thickLineWidth;
+        if (this.filteredCrossLinkCount < steps[0]) {
+            thickLineWidth = 1;
+        } else if (this.filteredCrossLinkCount < steps[1]) {
+            thickLineWidth = 5;
+        } else {
+            thickLineWidth = 10;
+        }
+        this.w = thickLineWidth;//todo - tidy up
+        if (this.renderedFromProtein === this.renderedToProtein) {
+            this.thickLine.setAttribute("stroke-width", thickLineWidth);
+        } else {
+            this.thickLine.setAttribute("stroke-width",  this.crosslinkViewer.z * thickLineWidth);
+        }
+    }
+    /* else {
+        var linkWidthScale;
+        if (this.crosslinkViewer.model.get("xiNetLinkWidthAuto") === true) {
+            linkWidthScale = (45 / CLMS.xiNET.P_PLink.maxNoCrossLinks).toFixed(2);
+        }
+        else {
+            linkWidthScale = this.crosslinkViewer.model.get("xiNetLinkWidthScale");
+        }
+
+        this.w = this.filteredCrossLinkCount * linkWidthScale;
         if (this.renderedFromProtein === this.renderedToProtein) {
             this.thickLine.setAttribute("stroke-width", this.w);
         } else {
             this.thickLine.setAttribute("stroke-width", this.crosslinkViewer.z * this.w);
         }
-    }
+    }*/
+
     this.dashedLine(this.ambiguous);
 
     if (this.colours.size == 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") != "Default") {
@@ -352,24 +384,30 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function(interactor) {
-    if (this.renderedFromProtein != this.renderedToProtein) {
+CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
+    if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            if (this.renderedFromProtein === interactor) {
-                this.line.setAttribute("x1", interactor.x);
-                this.line.setAttribute("y1", interactor.y);
-                this.highlightLine.setAttribute("x1", interactor.x);
-                this.highlightLine.setAttribute("y1", interactor.y);
-                this.thickLine.setAttribute("x1", interactor.x);
-                this.thickLine.setAttribute("y1", interactor.y);
-            } else if (this.renderedToProtein === interactor) {
-                this.line.setAttribute("x2", interactor.x);
-                this.line.setAttribute("y2", interactor.y);
-                this.highlightLine.setAttribute("x2", interactor.x);
-                this.highlightLine.setAttribute("y2", interactor.y);
-                this.thickLine.setAttribute("x2", interactor.x);
-                this.thickLine.setAttribute("y2", interactor.y);
+            var target = this.renderedFromProtein.getRenderedParticipant();
+            var source = this.renderedToProtein.getRenderedParticipant();
+            if (!target.ix || !target.iy) {
+                console.log("NOT");
             }
+
+                  //     if (this.renderedFromProtein === participant) {
+            this.line.setAttribute("x1", source.ix);
+            this.line.setAttribute("y1", source.iy);
+            this.highlightLine.setAttribute("x1", source.ix);
+            this.highlightLine.setAttribute("y1", source.iy);
+            this.thickLine.setAttribute("x1", source.ix);
+            this.thickLine.setAttribute("y1", source.iy);
+            // } else if (this.renderedToProtein === participant) {
+            this.line.setAttribute("x2", target.ix);
+            this.line.setAttribute("y2", target.iy);
+            this.highlightLine.setAttribute("x2", target.ix);
+            this.highlightLine.setAttribute("y2", target.iy);
+            this.thickLine.setAttribute("x2", target.ix);
+            this.thickLine.setAttribute("y2", target.iy);
+            // }
         }
     }
 }
