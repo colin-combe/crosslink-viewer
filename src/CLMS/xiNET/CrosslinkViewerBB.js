@@ -13,7 +13,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     svgns: "http://www.w3.org/2000/svg", // namespace for svg elements
-    linkWidth: 1.1, // default line width
+    linkWidth: 1, // default line width
     //static var's signifying Controller's status
     STATES: {
         MOUSE_UP: 0,
@@ -25,8 +25,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        this.debug = true;
+        this.debug = false;
         this.fixedSize = this.model.get("xinetFixedSize");
+        var self = this;
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
@@ -38,14 +39,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         customMenuSel.append("li").classed("collapse", true).text("Collapse");
         var scaleButtonsListItemSel = customMenuSel.append("li").text("Scale: ");
-        // var dataSubsetDivSel = mainDivSel.append("div").attr ("class", "filterControlGroup");
+
         var scaleButtons = scaleButtonsListItemSel.selectAll("ul.custom-menu")
             .data(this.barScales)
             .enter()
             .append("div")
             .attr("class", "barScale")
             .append("label");
-        var self = this;
         scaleButtons.append("span")
             .text(function(d) {
                 if (d == 8) return "AA";
@@ -89,7 +89,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.onmouseup = function(evt) {
             self.mouseUp(evt);
         };
-        //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); };
+        //this.svgElement.onmouseout = function(evt) { self.mouseOut(evt); }; //TODO - look at events fired when mouse leaves xiNET
 
         this.el.oncontextmenu = function(evt) {
             if (evt.preventDefault) { // necessary for addEventListener, works with traditional
@@ -112,7 +112,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 self.mouseWheel(evt);
             }, false);
         }
+
         this.lastMouseUp = new Date().getTime();
+
         this.svgElement.ontouchstart = function(evt) {
             self.touchStart(evt);
         };
@@ -267,7 +269,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         for (var g of this.groups) {
-            // g.naryLink.check();
+            g.check();
         }
 
     },
@@ -337,7 +339,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         //may need to comment out following if probs
-        /*if (pCount < 3) {
+        /*if (pCount < 3) { // TODO
             var renderedParticipantsArr = Array.from(this.renderedProteins.values());
             var rpCount =  renderedParticipantsArr.length;
             for (var rp = 0; rp < rpCount; rp++ ) {
@@ -906,7 +908,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
         }
 
-
         this.d3cola. /*symmetricDiffLinkLengths(length).*/ on("tick", function(e) {
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
@@ -1128,13 +1129,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             renderedParticipant.updateName();
 
             if (protColourModel) {
-                //if (renderedParticipant.participant.meta){
                 d3.select(renderedParticipant.outline)
                     .attr("fill", protColourModel.getColour(renderedParticipant.participant));
-                //} else {
-                //  d3.select(renderedParticipant.outline)
-                //      .attr("fill", "#ffffff");
-                //}
             }
 
         }
@@ -1157,8 +1153,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-
-        // init n-ary link
         this.model.set("groups", groupMap);
 
         return this;
@@ -1205,11 +1199,5 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
         return this;
     },
-
-    // setThickLinks: function() {
-    //     this.thickLinks = this.model.get("xinetThickLinks");
-    //     this.render();
-    //     return this;
-    // },
 
 });

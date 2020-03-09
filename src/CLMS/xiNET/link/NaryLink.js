@@ -121,7 +121,7 @@ NaryLink.prototype.dashedLine = function(dash) {
         // if (this.renderedFromProtein === this.renderedToProtein) {
         //     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
         // } else {
-        //     this.line.setAttribute("stroke-dasharray", (4 * this.crosslinkViewer.z) + ", " + (4 * this.crosslinkViewer.z));
+        //     this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
         // }
             this.path.setAttribute("stroke", NaryLink.naryColours(this.id));
     } else {

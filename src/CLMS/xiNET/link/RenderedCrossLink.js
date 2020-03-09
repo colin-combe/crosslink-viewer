@@ -8,14 +8,12 @@
 
 CLMS.xiNET.RenderedCrossLink = function(crossLink, crosslinkViewer) {
     this.crossLink = crossLink;
-    this.crosslinkViewer = crosslinkViewer;
+    this.controller = crosslinkViewer;
 
-    this.renderedFromProtein =
-        this.crosslinkViewer.renderedProteins.get(this.crossLink.fromProtein.id);
+    this.renderedFromProtein = this.controller.renderedProteins.get(this.crossLink.fromProtein.id);
     this.renderedFromProtein.renderedCrossLinks.push(this);
     if (this.crossLink.toProtein) {
-        this.renderedToProtein =
-            this.crosslinkViewer.renderedProteins.get(this.crossLink.toProtein.id);
+        this.renderedToProtein = this.controller.renderedProteins.get(this.crossLink.toProtein.id);
         this.renderedToProtein.renderedCrossLinks.push(this);
     }
 
@@ -27,23 +25,23 @@ CLMS.xiNET.RenderedCrossLink = function(crossLink, crosslinkViewer) {
     this.shown = false;
 }
 
-CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.RenderedLink();
+CLMS.xiNET.RenderedCrossLink.prototype = new CLMS.xiNET.Link();
 
 CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     if (this.crossLink.isSelfLink() || this.crossLink.isMonoLink()) {
-        this.line = document.createElementNS(this.crosslinkViewer.svgns, "path");
-        this.line.setAttribute("stroke-width", this.crosslinkViewer.linkWidth);
-        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "path");
+        this.line = document.createElementNS(this.controller.svgns, "path");
+        this.line.setAttribute("stroke-width", this.controller.linkWidth);
+        this.highlightLine = document.createElementNS(this.controller.svgns, "path");
         this.renderedFromProtein.selfLinksHighlights.appendChild(this.highlightLine);
         this.renderedFromProtein.selfLinks.appendChild(this.line);
 
     } else {
-        this.line = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.line = document.createElementNS(this.controller.svgns, "line");
         this.line.setAttribute("stroke-linecap", "round");
-        this.highlightLine = document.createElementNS(this.crosslinkViewer.svgns, "line");
+        this.highlightLine = document.createElementNS(this.controller.svgns, "line");
         this.highlightLine.setAttribute("stroke-linecap", "round");
-        this.crosslinkViewer.highlights.appendChild(this.highlightLine);
-        this.crosslinkViewer.res_resLinks.appendChild(this.line);
+        this.controller.highlights.appendChild(this.highlightLine);
+        this.controller.res_resLinks.appendChild(this.line);
     }
     this.line.setAttribute("class", "link");
     this.line.setAttribute("fill", "none");
@@ -63,9 +61,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     this.line.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-    this.line.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
+    // this.line.ontouchstart = function(evt) {
+    //     self.touchStart(evt);
+    // };
     //todo: following may not work in IE
     this.line.oncontextmenu = function() {
         return false;
@@ -80,9 +78,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
     this.highlightLine.onmouseout = function(evt) {
         self.mouseOut(evt);
     };
-    this.highlightLine.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
+    // this.highlightLine.ontouchstart = function(evt) {
+    //     self.touchStart(evt);
+    // };
     //todo: following may not work in IE
     this.highlightLine.oncontextmenu = function() {
         return false;
@@ -90,15 +88,15 @@ CLMS.xiNET.RenderedCrossLink.prototype.initSVG = function() {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
+    this.controller.preventDefaultsAndStopPropagation(evt);
     if (this.renderedFromProtein.busy == false && (!this.renderedToProtein || this.renderedToProtein.busy == false)) {
-        var p = this.crosslinkViewer.getEventPoint(evt);
+        var p = this.controller.getEventPoint(evt);
 
         var toHighlight = [this.crossLink];
 
-        this.crosslinkViewer.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
+        this.controller.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
-        this.crosslinkViewer.model.get("tooltipModel")
+        this.controller.model.get("tooltipModel")
             .set("header", CLMSUI.modelUtils.makeTooltipTitle.link())
             .set("contents", CLMSUI.modelUtils.makeTooltipContents.link(this.crossLink))
             .set("location", {
@@ -109,12 +107,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseOver = function(evt) {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
-    this.crosslinkViewer.preventDefaultsAndStopPropagation(evt);
-    //stop layout
-    if (this.crosslinkViewer.d3cola) {
-        this.crosslinkViewer.d3cola.stop();
-    }
-    this.crosslinkViewer.dragElement = this;
+    this.controller.preventDefaultsAndStopPropagation(evt);
+    this.controller.d3cola.stop();
+    this.controller.dragElement = this;
 
     var rightclick, middleclick; //which button has just been raised
     if (evt.which)
@@ -131,26 +126,23 @@ CLMS.xiNET.RenderedCrossLink.prototype.mouseDown = function(evt) {
 
     } else {
         var add = evt.shiftKey || evt.ctrlKey;
-        this.crosslinkViewer.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
+        this.controller.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
     }
     //store start location
-    this.crosslinkViewer.dragStart = evt;
+    this.controller.dragStart = evt;
 
     d3.select("#container-menu").style("display", "none");
 };
 
-CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
-    //stop layout
-    if (this.crosslinkViewer.d3cola) {
-        this.crosslinkViewer.d3cola.stop();
-    }
-    this.crosslinkViewer.dragElement = this;
+/*CLMS.xiNET.RenderedCrossLink.prototype.touchStart = function(evt) {
+    this.controller.d3cola.stop();
+    this.controller.dragElement = this;
     var add = evt.shiftKey || evt.ctrlKey;
-    this.crosslinkViewer.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
+    this.controller.model.setMarkedCrossLinks("selection", [this.crossLink], false, add);
     //store start location
-    //var p = this.crosslinkViewer.getTouchEventPoint(evt);// broke
-    this.crosslinkViewer.dragStart = evt; //this.crosslinkViewer.mouseToSVG(p.x, p.y);
-}
+    //var p = this.controller.getTouchEventPoint(evt);// broke
+    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
+}*/
 
 // andAlternatives means highlight alternative links in case of site ambiguity,
 // need to be able to switch this on and off to avoid inifite loop
@@ -189,7 +181,6 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
                 }
             }
         } else {
-            //if (this.highlightLine) this.highlightLine.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
             d3.select(this.highlightLine).classed("selectedLink", true);
             d3.select(this.highlightLine).classed("highlightedLink", false);
             if (this.isSelected == false) {
@@ -206,7 +197,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showPeptides = function(pepBounds, render
     var yIncrement = CLMS.xiNET.RenderedProtein.STICKHEIGHT / count;
     for (var i = 0; i < count; i++) {
         var pep = pepBounds[i];
-        var annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
+        var annotColouredRect = document.createElementNS(this.controller.svgns, "rect");
         annotColouredRect.setAttribute("class", "protein");
 
         //make domain rect's
@@ -224,7 +215,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.showPeptides = function(pepBounds, render
         this.pepSvgArr.push(annotColouredRect);
 
         if (typeof pep[2] != "undefined") { //homodimer like
-            annotColouredRect = document.createElementNS(this.crosslinkViewer.svgns, "rect");
+            annotColouredRect = document.createElementNS(this.controller.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
             var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size / 2));
             var annoLength = (pep[3] - pep[2]);
@@ -269,7 +260,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-    if (this.renderedFromProtein.expanded == false && (this.renderedToProtein? this.renderedToProtein.expanded == false : false)) {
+    if (this.renderedFromProtein.expanded == false && (this.renderedToProtein ? this.renderedToProtein.expanded == false : false)) {
         this.hide();
         return false;
     }
@@ -306,8 +297,8 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
             this.line.setAttribute("d", path);
         } else {
             if (!this.crossLink.isSelfLink()) {
-                this.line.setAttribute("stroke-width", this.crosslinkViewer.z * this.crosslinkViewer.linkWidth);
-                this.highlightLine.setAttribute("stroke-width", this.crosslinkViewer.z * 10);
+                this.line.setAttribute("stroke-width", this.controller.z * this.controller.linkWidth);
+                this.highlightLine.setAttribute("stroke-width", this.controller.z * 10);
                 this.setLineCoordinates(this.renderedFromProtein);
                 this.setLineCoordinates(this.renderedToProtein);
             }
@@ -333,11 +324,11 @@ CLMS.xiNET.RenderedCrossLink.prototype.show = function() {
     this.dashedLine(this.crossLink.ambiguous && this.crossLink.isMonoLink() == false);
 
     if (this.crossLink.isMonoLink()) {
-        this.line.setAttribute("fill", this.crossLink.ambiguous ? "none" : this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
+        this.line.setAttribute("fill", this.crossLink.ambiguous ? "none" : this.controller.model.get("linkColourAssignment").getColour(this.crossLink));
     }
 
     this.line.setAttribute("stroke",
-        this.crosslinkViewer.model.get("linkColourAssignment").getColour(this.crossLink));
+        this.controller.model.get("linkColourAssignment").getColour(this.crossLink));
 
     this.setSelected(this.isSelected);
 };
@@ -393,9 +384,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.setLineCoordinates = function() {
     }
 }
 
-//calculate the  coordinates of a residue (relative to this.crosslinkViewer.container)
+//calculate the  coordinates of a residue (relative to this.controller.container)
 CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, renderedInteractor) {
-    var x = renderedInteractor.getResXwithStickZoom(r) * this.crosslinkViewer.z;
+    var x = renderedInteractor.getResXwithStickZoom(r) * this.controller.z;
     var y = 0;
     if (renderedInteractor.stickZoom > 8) { //if sequence shown
         var from = this.renderedFromProtein,
@@ -420,7 +411,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
                 fyOffset = -5;
             }
 
-            y = fyOffset * this.crosslinkViewer.z;
+            y = fyOffset * this.controller.z;
         } else { // renderedInteractor === to
             out = (abmpDeg - to.rotation);
             if (out < 0) {
@@ -430,7 +421,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
             if (out > 180) {
                 tyOffset = -5;
             }
-            y = tyOffset * this.crosslinkViewer.z;
+            y = tyOffset * this.controller.z;
         }
     }
 

@@ -14,18 +14,16 @@ Molecule.labelY = -5; //label Y offset, better if calc'd half height of label on
 
 function Molecule() {}
 
-Molecule.prototype.addStoichiometryLabel = function(stoich) {
-    if (this.labelSVG) { //complexes don't have labels (yet?)
-        this.labelSVG.childNodes[0].data = this.labelSVG.childNodes[0].data + ' [' + stoich + ']';
-    }
-}
-
+// Molecule.prototype.addStoichiometryLabel = function(stoich) {
+//     if (this.labelSVG) { //complexes don't have labels (yet?)
+//         this.labelSVG.childNodes[0].data = this.labelSVG.childNodes[0].data + ' [' + stoich + ']';
+//     }
+// }
+//
 Molecule.prototype.mouseDown = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout
-    if (this.controller.d3cola) {
-        this.controller.d3cola.stop();
-    }
+    this.controller.d3cola.stop();
     this.controller.dragElement = this;
     this.controller.dragStart = evt;
 
@@ -33,20 +31,17 @@ Molecule.prototype.mouseDown = function(evt) {
 
     return false;
 };
-
-Molecule.prototype.touchStart = function(evt) {
-    this.controller.preventDefaultsAndStopPropagation(evt);
-    //stop layout
-    if (this.controller.d3cola) {
-        this.controller.d3cola.stop();
-    }
-    this.controller.dragElement = this;
-    //store start location
-    //var p = this.controller.getTouchEventPoint(evt); //oh dear - now broken
-    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
-    return false;
-};
-
+//
+// /*Molecule.prototype.touchStart = function(evt) {
+//     this.controller.preventDefaultsAndStopPropagation(evt);
+//     this.controller.d3cola.stop();
+//     this.controller.dragElement = this;
+//     //store start location
+//     //var p = this.controller.getTouchEventPoint(evt); //oh dear - now broken
+//     this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
+//     return false;
+// };*/
+//
 Molecule.prototype.mouseOver = function(evt) {
     var p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
@@ -57,90 +52,90 @@ Molecule.prototype.mouseOver = function(evt) {
             pageY: p.y
         });
 };
-
+//
 Molecule.prototype.mouseOut = function(evt) {
     this.controller.model.setHighlightedProteins([]); // mjg apr 18
     this.controller.model.get("tooltipModel").set("contents", null);
 };
-
-Molecule.prototype.getBlobRadius = function() {
-    return 15;
-};
-
-Molecule.prototype.showHighlight = function(show) {
-    //     // default do nothing
-    //     /*
-    //     if (show === true) {
-    //         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
-    //         this.highlight.setAttribute("stroke-opacity", "1");
-    //     } else {
-    //         //~ if (this.isSelected == false) {
-    //                 this.highlight.setAttribute("stroke-opacity", "0");
-    //         //~ }
-    //         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
-    //     }
-    //     * */
-    // };
-    // CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
-    var d3HighSel = d3.select(this.highlight);
-    this.isHighlighted = show ? true : false; // mjg apr 18
-    if (show === true) {
-        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
-        d3HighSel
-            .classed("selectedProtein", false)
-            .classed("highlightedProtein", true)
-            .attr("stroke-opacity", "1");
-    } else {
-        if (this.isSelected == false) {
-            d3HighSel.attr("stroke-opacity", "0");
-        }
-        //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
-        d3HighSel
-            .classed("selectedProtein", true)
-            .classed("highlightedProtein", false);
-    }
-};
-
-Molecule.prototype.setSelected = function(select) {
-    //do nothing
-    /*
-     if (select && this.isSelected === false) {
-         this.controller.selected.set(this.id, this);
-         this.isSelected = true;
-         this.highlight.setAttribute("stroke", Config.selectedColour);
-         this.highlight.setAttribute("stroke-opacity", "1");
-     }
-     else if (select === false && this.isSelected === true) {
-         this.controller.selected.remove(this.id);
-         this.isSelected = false;
-         this.highlight.setAttribute("stroke-opacity", "0");
-         this.highlight.setAttribute("stroke", Config.highlightColour);
-     }*/
-};
-
-Molecule.prototype.getPosition = function() {
-    return [this.ix, this.iy];
-}
-
-// more accurately described as setting transform for top svg elements (sets scale also)
-Molecule.prototype.setPosition = function(xPos, yPos) {
-    this.px = this.ix;
-    this.py = this.iy;
-    this.ix = xPos;
-    this.iy = yPos;
-    console.log("!", this.ix, this.iy);
-
-    // if (this.expanded == true) {
-    console.log(this.name, "before", this.upperGroup.getAttribute("transform"));
-    this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
-        " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
-    console.log(this.name, "after", this.upperGroup.getAttribute("transform"));
-        // } else {
-    //     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
-    //         " scale(" + (this.controller.z) + ") ");
-    // }
-};
-
+//
+// Molecule.prototype.getBlobRadius = function() {
+//     return 15;
+// };
+//
+// Molecule.prototype.showHighlight = function(show) {
+//     //     // default do nothing
+//     //     /*
+//     //     if (show === true) {
+//     //         //~ this.highlight.setAttribute("stroke", xiNET.highlightColour.toRGB());
+//     //         this.highlight.setAttribute("stroke-opacity", "1");
+//     //     } else {
+//     //         //~ if (this.isSelected == false) {
+//     //                 this.highlight.setAttribute("stroke-opacity", "0");
+//     //         //~ }
+//     //         //~ this.highlight.setAttribute("stroke", xiNET.selectedColour.toRGB());
+//     //     }
+//     //     * */
+//     // };
+//     // CLMS.xiNET.RenderedProtein.prototype.showHighlight = function(show) {
+//     var d3HighSel = d3.select(this.highlight);
+//     this.isHighlighted = show ? true : false; // mjg apr 18
+//     if (show === true) {
+//         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
+//         d3HighSel
+//             .classed("selectedProtein", false)
+//             .classed("highlightedProtein", true)
+//             .attr("stroke-opacity", "1");
+//     } else {
+//         if (this.isSelected == false) {
+//             d3HighSel.attr("stroke-opacity", "0");
+//         }
+//         //~ this.highlight.setAttribute("stroke", CLMS.xiNET.selectedColour.toRGB());
+//         d3HighSel
+//             .classed("selectedProtein", true)
+//             .classed("highlightedProtein", false);
+//     }
+// };
+//
+// Molecule.prototype.setSelected = function(select) {
+//     //do nothing
+//     /*
+//      if (select && this.isSelected === false) {
+//          this.controller.selected.set(this.id, this);
+//          this.isSelected = true;
+//          this.highlight.setAttribute("stroke", Config.selectedColour);
+//          this.highlight.setAttribute("stroke-opacity", "1");
+//      }
+//      else if (select === false && this.isSelected === true) {
+//          this.controller.selected.remove(this.id);
+//          this.isSelected = false;
+//          this.highlight.setAttribute("stroke-opacity", "0");
+//          this.highlight.setAttribute("stroke", Config.highlightColour);
+//      }*/
+// };
+//
+// Molecule.prototype.getPosition = function() {
+//     return [this.ix, this.iy];
+// }
+//
+// // more accurately described as setting transform for top svg elements (sets scale also)
+// Molecule.prototype.setPosition = function(xPos, yPos) {
+//     this.px = this.ix;
+//     this.py = this.iy;
+//     this.ix = xPos;
+//     this.iy = yPos;
+//     console.log("!", this.ix, this.iy);
+//
+//     // if (this.expanded == true) {
+//     console.log(this.name, "before", this.upperGroup.getAttribute("transform"));
+//     this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
+//         " scale(" + (this.controller.z) + ") "); // + "rotate(" + this.rotation + ")");
+//     console.log(this.name, "after", this.upperGroup.getAttribute("transform"));
+//         // } else {
+//     //     this.upperGroup.setAttribute("transform", "translate(" + this.x + " " + this.y + ")" +
+//     //         " scale(" + (this.controller.z) + ") ");
+//     // }
+// };
+//
 Molecule.prototype.getAggregateSelfLinkPath = function() {
     var intraR = this.getBlobRadius() + 7;
     var sectorSize = 45;
@@ -213,58 +208,6 @@ Molecule.prototype.setAllLinkCoordinates = function() {
     //     links[l].setLinkCoordinates();
     // }
 };
-/*
-//todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
-Molecule.prototype.clearPositionalFeatures = function(posFeats) {
-    this.annotations = [];
-    if (this.annotationsSvgGroup) this.controller.emptyElement(this.annotationsSvgGroup);
-}
-
-//todo: some tidying with regards whats in Molecule, whats in Polymer and whats in Gene,Protein, etc
-Molecule.prototype.setPositionalFeatures = function(posFeats) {
-    if (posFeats !== undefined && posFeats !== null) {
-        var y = -Molecule.STICKHEIGHT / 2;
-        //draw longest regions first
-        posFeats.sort(function(a, b) {
-            return (b.end - b.begin) - (a.end - a.begin);
-        });
-        this.annotations = posFeats;
-        if (this.annotations.length == 0) {
-            //~ alert("no annot");
-            this.annotations.push({
-                begin: 1,
-                end: this.size,
-                description: "No annotations"
-            });
-        }
-        for (var i = 0; i < posFeats.length; i++) {
-            var anno = posFeats[i];
-            anno.begin = anno.begin - 0;
-            anno.end = anno.end - 0;
-            anno.pieSlice = document.createElementNS(Config.svgns, "path");
-            if (this.expanded == false) {
-                anno.pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
-            } else {
-                anno.pieSlice.setAttribute("d", this.getAnnotationRectPath(anno));
-            }
-            anno.pieSlice.setAttribute("stroke-width", 1);
-            anno.pieSlice.setAttribute("fill-opacity", "0.6");
-            var text = anno.description + " [" + anno.begin + " - " + anno.end + "]";
-            anno.pieSlice.name = text;
-            var xlv = this.controller;
-            var self = this;
-            anno.pieSlice.onmouseover = function(evt) {
-                var el = (evt.target.correspondingUseElement) ? evt.target.correspondingUseElement : evt.target;
-                xlv.preventDefaultsAndStopPropagation(evt);
-                xlv.setTooltip(el.name, el.getAttribute('fill'));
-                self.showHighlight(true);
-            };
-            if (this.annotationsSvgGroup) { //hack
-                this.annotationsSvgGroup.appendChild(anno.pieSlice);
-            }
-        }
-    }
-};*/
 
 //TODO: remove this, use rotateAboutPoint instead
 Molecule.trig = function(radius, angleDegrees) {
@@ -277,16 +220,16 @@ Molecule.trig = function(radius, angleDegrees) {
 };
 
 
-Molecule.prototype.setForm = function(form, svgP) {};
-
-Molecule.prototype.getX = function() {
-    return this.ix;
-}
-
-Molecule.prototype.getY = function() {
-    return this.iy;
-}
-
+// Molecule.prototype.setForm = function(form, svgP) {};
+//
+// Molecule.prototype.getX = function() {
+//     return this.ix;
+// }
+//
+// Molecule.prototype.getY = function() {
+//     return this.iy;
+// }
+//
 Molecule.prototype.updateName = function(annotation) {
     this.labelTextNode.textContent = this.participant.name;
 };
