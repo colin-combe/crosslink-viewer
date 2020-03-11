@@ -25,7 +25,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        this.debug = false;
+        this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
         var self = this;
 
@@ -235,8 +235,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.groups = [];
 
         this.z = 1;
+        this.container.setAttribute("transform", "scale(1)");
 
-        this.resetZoom();
         this.state = this.STATES.MOUSE_UP;
     },
 
@@ -374,19 +374,17 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
     },
 
-    reset: function() {
-        this.resetZoom();
-        this.autoLayout();
-    },
-
-    resetZoom: function() {
+    zoomToFullExtent: function() {
         // this.container.setAttribute("transform", "scale(1)");
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
-        this.container.setAttribute("transform", "translate(" + (width / 4) + " " + -(height / 4) + ")");
-        if (this.acknowledgement) {
-            this.acknowledgement.setAttribute("transform", "translate(5, " + (height - 40) + ")");
-        }
+        var bbox = this.container.getBBox();
+        var xr = width / bbox.width;
+        var yr = height / bbox.height;
+
+        console.log("!", this.container.getBBox());
+        this.container.setAttribute("transform", "scale("+((yr < xr)?yr:xr) +") translate(" + -bbox.x + " " + -bbox.y + ")");
+
         this.scale();
     },
 
@@ -453,17 +451,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //prevent default, but allow propogation
         evt.preventDefault();
         //stop layout
-        if (this.d3cola) {
-            this.d3cola.stop();
-        }
-
+        this.d3cola.stop();
         this.dragStart = evt;
         this.state = this.STATES.SELECT_PAN;
         this.mouseMoved = false;
-
-        //var toHighlight = [] // todo we dont have synched participant highlighting
         this.toSelect = [];
-
         d3.select("#container-menu").style("display", "none");
     },
 
@@ -670,6 +662,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
      */
     mouseWheel: function(evt) {
         this.preventDefaultsAndStopPropagation(evt);
+        this.d3cola.stop();
         var delta;
         //see http://stackoverflow.com/questions/5527601/normalizing-mousewheel-speed-across-browsers
         if (evt.wheelDelta) {
@@ -724,7 +717,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     loadLayout: function(layout) {
-        this.resetZoom();
         for (var prot in layout) {
             var protLayout = layout[prot];
             var protein = this.renderedProteins.get(protLayout.id);
@@ -756,13 +748,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.model.trigger("hiddenChanged");
         this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
+
+        this.zoomToFullExtent();
     },
 
     autoLayout: function() {
-        if (this.d3cola) {
-            this.d3cola.stop();
-        }
-        this.resetZoom();
+        this.d3cola.stop();
         var fixSelected = this.model.get("xinetFixSelected");
         for (renderedProtein of this.renderedProteins.values()) {
             if (!fixSelected) {
@@ -779,7 +770,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var self = this;
         var links = new Map();
         var nodeSet = new Set();
-        var layoutObj = {};
 
         var selected = this.model.get("selectedProteins");
 
@@ -816,8 +806,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
 
-        var linkArr = CLMS.arrayFromMapValues(links);
-        var nodeArray = Array.from(nodeSet);
+        var linkArr = Array.from(links.values());
+        var nodeArr = Array.from(nodeSet);
 
         var groups = [];
         if (this.groups) {
@@ -827,7 +817,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     g.leaves = [];
                     for (var rp of g.renderedParticipants) {
                         // var rp = this.renderedProteins.get(p.id);
-                        var i = nodeArray.indexOf(rp);
+                        var i = nodeArr.indexOf(rp);
                         if (i != -1) {
                             g.leaves.push(i);
                         }
@@ -859,7 +849,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //     }
         // }
 
-        //this.d3cola = cola.d3adaptor();
         //console.log("groups", groups);
 
         delete this.d3cola._lastStress;
@@ -867,20 +856,20 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         delete this.d3cola._descent;
         delete this.d3cola._rootGroup;
 
-        layoutObj.nodes = nodeArray;
-        layoutObj.links = linkArr;
-
-        console.log(layoutObj);
-        var length = (layoutObj.nodes.length < 20) ? 40 : 20;
+        var length = (nodeArr.length < 20) ? 40 : 20;
         var width = this.svgElement.parentNode.clientWidth;
         var height = this.svgElement.parentNode.clientHeight;
-        this.d3cola.nodes(layoutObj.nodes).groups(groups).links(layoutObj.links)
-            .size([height, width]).symmetricDiffLinkLengths(length);
+
+        this.d3cola.nodes(nodeArr)
+                    .groups(groups)
+                    .links(linkArr)
+                    .size([height, width])
+                    .symmetricDiffLinkLengths(length);
 
         if (self.debug) {
 
             var participantDebugSel = d3.select(this.groupsSVG).selectAll('.node')
-                .data(layoutObj.nodes);
+                .data(nodeArr);
 
             participantDebugSel.enter().append('rect')
                 .classed('node', true)
@@ -908,7 +897,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //console.log("debug", self.z, 30 * self.z, 0.7 * self.z); // some problem here; it'll will have to wait
         }
 
-        this.d3cola. /*symmetricDiffLinkLengths(length).*/ on("tick", function(e) {
+        this.d3cola.on("tick", function(e) {
             var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
@@ -923,6 +912,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, node.y, true);
                 node.setAllLinkCoordinates();
             }
+            self.zoomToFullExtent();
 
             if (self.debug) {
                 groupDebugSel.attr({
