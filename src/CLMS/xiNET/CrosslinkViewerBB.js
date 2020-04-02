@@ -269,15 +269,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         for (var g of this.groups) {
-            g.check();
+            //g.check();
         }
 
     },
 
     update: function() {
-        if (this.d3cola) { // cola layout
-            this.d3cola.stop();
-        }
+        this.d3cola.stop();
 
         var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
         var pCount = participantsArr.length;
@@ -382,8 +380,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var xr = width / bbox.width;
         var yr = height / bbox.height;
 
-        console.log("!", this.container.getBBox());
-        this.container.setAttribute("transform", "scale("+((yr < xr)?yr:xr) +") translate(" + -bbox.x + " " + -bbox.y + ")");
+        if (yr < xr) {
+            this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x + ((width - bbox.width) / 2))+ " " + -bbox.y + ")");
+        } else {
+          this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y + ((height - bbox.height) / 2)) + ")");
+        }
 
         this.scale();
     },
@@ -861,10 +862,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var height = this.svgElement.parentNode.clientHeight;
 
         this.d3cola.nodes(nodeArr)
-                    .groups(groups)
-                    .links(linkArr)
-                    .size([height, width])
-                    .symmetricDiffLinkLengths(length);
+            .groups(groups)
+            .links(linkArr)
+            .size([height, width])
+            .symmetricDiffLinkLengths(length);
 
         if (self.debug) {
 
