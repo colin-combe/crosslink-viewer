@@ -719,6 +719,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     loadLayout: function(layout) {
+        var layoutIsDodgy = false;
         for (var prot in layout) {
             var protLayout = layout[prot];
             var protein = this.renderedProteins.get(protLayout.id);
@@ -737,6 +738,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 protein.flipped = protLayout["flipped"];
                 protein.participant.manuallyHidden = protLayout["manuallyHidden"];
             } else {
+                layoutIsDodgy = true;
                 console.log("! protein in layout but not search:" + protLayout.id);
             }
         }
@@ -752,6 +754,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
 
         this.zoomToFullExtent();
+
+        if (layoutIsDodgy) {
+            alert("Looks like something went wrong with the saved layout, if you can't see your proteins click Auto layout");
+        }
     },
 
     autoLayout: function() {
