@@ -248,7 +248,7 @@ Molecule.prototype.showLabel = function(show) {
 };*/
 
 Molecule.prototype.getRenderedParticipant = function() {
-    if (this.complex && this.complexexpanded == false) {
+    if (this.complex && this.complex.expanded == false) {
         return this.complex.getRenderedParticipant();
     } else {
         return this;

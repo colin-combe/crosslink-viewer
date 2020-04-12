@@ -204,6 +204,11 @@ CLMS.xiNET.RenderedProtein.prototype.resize = function() {
             .attr("x", -r - 2.5).attr("y", -r - 2.5)
             .attr("rx", r + 2.5).attr("ry", r + 2.5)
         this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
+        for (var ppLink of this.renderedP_PLinks) {
+            if (ppLink.crossLinks[0].isSelfLink() && ppLink.shown) {
+              ppLink.initSelfLinkSVG();
+            }
+        }
     }
 }
 //only output the info needed to reproduce the layout, used by save layout function
@@ -213,7 +218,7 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
         x: this.ix,
         y: this.iy,
         rot: this.rotation,
-        form: thisexpanded,
+        form: this.expanded,
         stickZoom: this.stickZoom,
         flipped: this.isFlipped,
         manuallyHidden: this.participant.manuallyHidden,
@@ -645,7 +650,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
         if (interp === 1) { // finished - tidy up
             //bring in new
-            selfexpanded = 0;
+            self.expanded = 0;
             var renderedCrossLinks = self.renderedCrossLinks;
             var rclCount = renderedCrossLinks.length;
             for (var rcl = 0; rcl < rclCount; rcl++) {

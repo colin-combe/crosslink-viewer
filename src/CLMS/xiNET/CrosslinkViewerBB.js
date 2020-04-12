@@ -25,7 +25,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        this.debug = true;
+        // this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
         var self = this;
 
@@ -381,9 +381,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var yr = height / bbox.height;
 
         if (yr < xr) {
-            this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x + ((width - bbox.width) / 2))+ " " + -bbox.y + ")");
+            //console.log("yr < xr");
+            this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x /*+ ((width - bbox.width) / 2)*/ ) + " " + -bbox.y + ")");
         } else {
-          this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y + ((height - bbox.height) / 2)) + ")");
+            this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/) + ")");
         }
 
         this.scale();

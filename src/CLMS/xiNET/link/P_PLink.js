@@ -303,12 +303,13 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     }
     d3.select(this.thickLine).style("display", null);
     d3.select(this.line).style("display", null);
+    d3.select(this.highlightLine).style("display", null);
     //}
 
     if (this.controller.model.get("xinetThickLinks") == false) {
         d3.select(this.thickLine).style("display", "none");
     } else {
-        d3.select(this.highlightLine).style("display", null);
+        d3.select(this.thickLine).style("display", null);
         var steps = this.controller.model.get("xinetPpiSteps");
 
         var thickLineWidth;
