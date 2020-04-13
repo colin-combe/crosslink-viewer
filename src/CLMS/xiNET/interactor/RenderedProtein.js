@@ -152,12 +152,16 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width + 10; // * this.controller.z;
+            var w = this.upperGroup.getBBox().width + 10;
+            // console.log("* " + this.labelText + " width", w + " *");
+            return w;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height + 10; // * this.controller.z;
+          var h = this.upperGroup.getBBox().height + 10
+          // console.log(this.labelText + " height", h);
+          return h;
         }
     });
 };
@@ -303,7 +307,11 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
     if (!fromCola){
       this.px = this.x;
       this.py = this.y;
-      this.x = x - (this.width / 2 - (this.getBlobRadius()) + 5);
+      var xOffset = 0;
+      if (!this.hidden){
+        xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
+      }
+      this.x = x - xOffset;
       this.y = y;
     }
 

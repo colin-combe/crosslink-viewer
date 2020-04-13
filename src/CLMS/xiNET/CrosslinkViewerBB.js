@@ -384,7 +384,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             //console.log("yr < xr");
             this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x /*+ ((width - bbox.width) / 2)*/ ) + " " + -bbox.y + ")");
         } else {
-            this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/) + ")");
+            this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/ ) + ")");
         }
 
         this.scale();
