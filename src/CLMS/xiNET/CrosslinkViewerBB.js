@@ -337,17 +337,14 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         //may need to comment out following if probs
-        /*if (pCount < 3) { // TODO
+        if (pCount < 3) { // TODO
             var renderedParticipantsArr = Array.from(this.renderedProteins.values());
-            var rpCount =  renderedParticipantsArr.length;
-            for (var rp = 0; rp < rpCount; rp++ ) {
+            var rpCount = renderedParticipantsArr.length;
+            for (var rp = 0; rp < rpCount; rp++) {
                 var renderedParticipant = renderedParticipantsArr[rp];
-                //~ if (renderedParticipant.hidden == false) {//todo: appears to be not working
-                    //renderedParticipant.busy = false;
-                    renderedParticipant.setForm(1);
-                //~ }
+                renderedParticipant.toStickNoTransition();
             }
-        }*/
+        }
 
         var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
         var clCount = crossLinksArr.length;
@@ -380,12 +377,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var xr = width / bbox.width;
         var yr = height / bbox.height;
 
-        if (yr < xr) {
+        if (xr > 1) {
             //console.log("yr < xr");
             this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x /*+ ((width - bbox.width) / 2)*/ ) + " " + -bbox.y + ")");
-        } else {
-            this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/) + ")");
         }
+        // else {
+        //     this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/ ) + ")");
+        // }
 
         this.scale();
     },
