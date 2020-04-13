@@ -16,7 +16,6 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.renderedCrossLinks = [];
 
     this.complexes = new Set();
-    this.naryLinks = d3.map();
 
     // layout info
     this.ix = 100;
@@ -24,7 +23,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.rotation = 0;
     this.previousRotation = this.rotation;
     //this.stickZoom = 0.5;
-    this.participant.form = 0; // 0 = blob, 1 = stick
+    this.expanded = false;
     this.isFlipped = false;
     //renderedProtein state
     this.isSelected = false;
@@ -153,12 +152,16 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width + 10; // * this.controller.z;
+            var w = this.upperGroup.getBBox().width + 10;
+            // console.log("* " + this.labelText + " width", w + " *");
+            return w;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height + 10; // * this.controller.z;
+          var h = this.upperGroup.getBBox().height + 10
+          // console.log(this.labelText + " height", h);
+          return h;
         }
     });
 };
@@ -187,14 +190,14 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
     if (this.controller.fixedSize) {
-        return 6;
+        return 5;
     } else {
         return Math.sqrt(this.participant.size / Math.PI) * 0.6;
     }
 };
 
 CLMS.xiNET.RenderedProtein.prototype.resize = function() {
-    if (this.participant.form == 0) {
+    if (this.expanded == false) {
         var r = this.getBlobRadius();
         d3.select(this.outline)
             .attr("x", -r).attr("y", -r)
@@ -205,6 +208,11 @@ CLMS.xiNET.RenderedProtein.prototype.resize = function() {
             .attr("x", -r - 2.5).attr("y", -r - 2.5)
             .attr("rx", r + 2.5).attr("ry", r + 2.5)
         this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
+        for (var ppLink of this.renderedP_PLinks) {
+            if (ppLink.crossLinks[0].isSelfLink() && ppLink.shown) {
+              ppLink.initSelfLinkSVG();
+            }
+        }
     }
 }
 //only output the info needed to reproduce the layout, used by save layout function
@@ -214,7 +222,7 @@ CLMS.xiNET.RenderedProtein.prototype.toJSON = function() {
         x: this.ix,
         y: this.iy,
         rot: this.rotation,
-        form: this.form,
+        form: this.expanded,
         stickZoom: this.stickZoom,
         flipped: this.isFlipped,
         manuallyHidden: this.participant.manuallyHidden,
@@ -275,7 +283,7 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
             .translate(Math.abs(labelTransform.translate[0]), -Molecule.labelY)
             .rotate(180, 0, 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.participant.form === 1) {
+        if (this.expanded == true) {
             for (var i = 0; i < sll; i++) {
                 this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
             }
@@ -285,7 +293,7 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
         var k = svg.createSVGMatrix()
             .translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.participant.form === 1) {
+        if (this.expanded == true) {
             for (var j = 0; j < sll; j++) {
                 this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
             }
@@ -299,13 +307,20 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
     if (!fromCola){
       this.px = this.x;
       this.py = this.y;
-      this.x = x - (this.width / 2 - (this.getBlobRadius()) + 5);
+      var xOffset = 0;
+      if (!this.hidden){
+        xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
+        // if (this.expanded) {
+        //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+        // }
+      }
+      this.x = x - xOffset;
       this.y = y;
     }
 
     this.ix = x;
     this.iy = y;
-    if (this.participant.form === 1) {
+    if (this.expanded == true) {
         this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
         this.lowerGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
@@ -363,7 +378,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
 CLMS.xiNET.RenderedProtein.prototype.scale = function() {
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
     var protLength = (this.participant.size) * this.stickZoom;
-    if (this.participant.form === 1) {
+    if (this.expanded == true) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
             .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), Molecule.labelY); //.scale(z).translate(-c.ix, -c.y);
@@ -493,8 +508,8 @@ CLMS.xiNET.RenderedProtein.prototype.toggleFlipped = function() {
 
 CLMS.xiNET.RenderedProtein.prototype.setHidden = function(bool) {
     // MJG
-    d3.select(this.upperGroup).style("visibility", bool ? "hidden" : null);
-    d3.select(this.lowerGroup).style("visibility", bool ? "hidden" : null);
+    d3.select(this.upperGroup).style("display", bool ? "none" : null);
+    d3.select(this.lowerGroup).style("display", bool ? "none" : null);
     this.hidden = bool ? true : false;
 };
 
@@ -502,11 +517,11 @@ CLMS.xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
     this.controller.model.get("tooltipModel").set("contents", null);
     if (this.busy !== true) {
         if (form == 1) {
-            if (this.participant.form !== 1) {
+            if (this.expanded !== 1) {
                 this.toStick();
             }
         } else {
-            if (this.participant.form !== 0) {
+            if (this.expanded !== 0) {
                 this.toCircle(svgP);
             }
         }
@@ -646,7 +661,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
         if (interp === 1) { // finished - tidy up
             //bring in new
-            self.participant.form = 0;
+            self.expanded = 0;
             var renderedCrossLinks = self.renderedCrossLinks;
             var rclCount = renderedCrossLinks.length;
             for (var rcl = 0; rcl < rclCount; rcl++) {
@@ -671,7 +686,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     this.busy = true;
-    this.participant.form = 1;
+    this.expanded = 1;
 
     //place rotators
     this.upperGroup.appendChild(this.lowerRotator.svg);
@@ -800,6 +815,140 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     this.setScaleGroup();
     d3.select(this.ticks).transition().attr("opacity", 1)
         .delay(CLMS.xiNET.RenderedProtein.transitionTime * 0.8).duration(CLMS.xiNET.RenderedProtein.transitionTime / 2);
+};
+
+
+CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo - tidy this mess
+    this.busy = true;
+    this.expanded = 1;
+
+    //place rotators
+    this.upperGroup.appendChild(this.lowerRotator.svg);
+    this.upperGroup.appendChild(this.upperRotator.svg);
+    this.lowerRotator.svg.setAttribute("transform",
+        "translate(" + (this.getResXwithStickZoom(0.5) - CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
+    this.upperRotator.svg.setAttribute("transform",
+        "translate(" + (this.getResXwithStickZoom(this.participant.size - 0 + 0.5) + CLMS.xiNET.RenderedProtein.rotOffset) + " 0)");
+
+    var protLength = this.participant.size * this.stickZoom;
+    var r = this.getBlobRadius();
+
+    var lengthInterpol = d3.interpolate((2 * r), protLength);
+    var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
+    var rotationInterpol = d3.interpolate(0, (this.rotation > 180) ? this.rotation - 360 : this.rotation);
+    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * this.stickZoom) + 10));
+
+    var origStickZoom = this.stickZoom;
+    this.stickZoom = 0;
+    this.checkLinks();
+    this.stickZoom = origStickZoom;
+
+    d3.select(this.circDomains).attr("opacity", 0);
+        //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    d3.select(this.rectDomains).attr("opacity", 1);
+        //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+
+    var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
+    d3.select(this.outline).attr("stroke-opacity", 1)
+        .attr("fill-opacity", 0)
+        //.attr("fill", "#ffffff")
+        .attr("fill", protColourModel.getColour(this.participant))
+        .attr("height", CLMS.xiNET.RenderedProtein.STICKHEIGHT)
+        .attr("y", -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2)
+        .attr("rx", 0).attr("ry", 0);
+        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+
+    d3.select(this.highlight)
+        .attr("width", protLength + 5).attr("height", CLMS.xiNET.RenderedProtein.STICKHEIGHT + 5)
+        .attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) - 2.5)
+        .attr("rx", 0).attr("ry", 0);
+        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+
+    var aggSelfLinkPath = this.getAggregateSelfLinkPath();
+    for (var residueLink of this.renderedCrossLinks) {
+        var crosslinkPath = this.getCrossLinkPath(residueLink);
+        var lineSel = d3.select(residueLink.line);
+        var highlightLineSel = d3.select(residueLink.highlightLine);
+        if (residueLink.crossLink.isSelfLink()) {
+            lineSel.attr("d", aggSelfLinkPath);
+            lineSel.attr("d", crosslinkPath);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            highlightLineSel.attr("d", aggSelfLinkPath);
+            highlightLineSel.attr("d", crosslinkPath);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+        } else if (residueLink.crossLink.isMonoLink()) {
+            lineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
+            lineSel.attr("d", crosslinkPath);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            highlightLineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
+            highlightLineSel.attr("d", crosslinkPath);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+        }
+    }
+
+    if (this.annotations) {
+        //var bottom = CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2, top = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+        var annotArr = CLMS.arrayFromMapValues(this.annotations);
+        var annotationCount = annotArr.length;
+        for (var a = 0; a < annotationCount; a++) {
+            var anno = annotArr[a],
+                feature = anno.feature,
+                pieSlice = anno.pieSlice,
+                rectDomain = anno.colouredRect;
+
+            if (feature.type != CLMS.xiNET.disulfide) {
+                pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
+                d3.select(pieSlice).attr("d", this.getAnnotationRectPath(feature));
+                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                d3.select(rectDomain).attr("d", this.getAnnotationRectPath(feature));
+                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            } else {
+                d3.select(pieSlice).attr("d", this.getDisulfidAnnotationRectPath(feature));
+                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                d3.select(rectDomain).attr("d", this.getDisulfidAnnotationRectPath(feature));
+                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+
+            }
+        }
+    }
+
+    var self = this;
+    var cubicInOut = d3.ease('cubic-in-out');
+    d3.timer(function(elapsed) {
+        return update(elapsed / CLMS.xiNET.RenderedProtein.transitionTime);
+    });
+
+    update(1);
+
+    function update(interp) {
+        var labelTransform = d3.transform(self.labelSVG.getAttribute("transform"));
+        var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.ix, -c.y);
+        self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
+
+        var rot = rotationInterpol(cubicInOut(interp));
+        self.setRotation(rot);
+
+        var currentLength = lengthInterpol(cubicInOut(interp));
+        d3.select(self.outline).attr("width", currentLength).attr("x", -(currentLength / 2) + (0.5 * self.stickZoom));
+        self.stickZoom = stickZoomInterpol(cubicInOut(interp))
+        self.setAllLinkCoordinates();
+
+        if (interp === 1) { // finished - tidy up
+            self.busy = false;
+            return true;
+        } else if (interp > 1) {
+            return update(1);
+        } else {
+            return false;
+        }
+    }
+
+    d3.select(this.ticks).attr("opacity", 0);
+    this.setScaleGroup();
+    d3.select(this.ticks).attr("opacity", 1);
+
 };
 
 CLMS.xiNET.RenderedProtein.prototype.getCrossLinkPath = function(renderedCrossLink) {
@@ -992,7 +1141,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                 var colouredRect = document.createElementNS(this.controller.svgns, "path");
                 if (anno.type != CLMS.xiNET.disulfide) {
                     //if (anno.type != "disulfide bond") {
-                    if (this.participant.form === 0) {
+                    if (this.expanded == false) {
                         pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
                         colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
                     } else {
@@ -1011,7 +1160,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     colouredRect.setAttribute("stroke", c);
                 } else {
 
-                    if (this.participant.form === 0) {
+                    if (this.expanded == false) {
                         pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                         colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                     } else {
