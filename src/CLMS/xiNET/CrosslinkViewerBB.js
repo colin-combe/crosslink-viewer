@@ -376,15 +376,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var bbox = this.container.getBBox();
         var xr = width / bbox.width;
         var yr = height / bbox.height;
-        console.log("xr:", xr, "yr:", yr);
-        if (yr < 1 || xr < 1) {
+        // console.log("xr:", xr, "yr:", yr);
+        // if (yr < 1 || xr < 1) {
           if (yr < xr) {
               //console.log("yr < xr");
               this.container.setAttribute("transform", "scale(" + yr + ") translate(" + (-bbox.x /*+ ((width - bbox.width) / 2)*/ ) + " " + -bbox.y + ")");
           } else {
               this.container.setAttribute("transform", "scale(" + xr + ") translate(" + (-bbox.x) + " " + (-bbox.y /*+ ((height - bbox.height) / 2)*/ ) + ")");
           }
-        }
+        // }
         this.scale();
     },
 
@@ -909,11 +909,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
                 var offsetX = node.x;
-                // if (node.width) {
-                offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
-                // }
+                if (!node.expanded) {
+                  offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
+                }
                 // else {
-                //     console.log("!");
+                //   offsetX = offsetX + (node.width / 2);// - (node.getBlobRadius())) - 5;
                 // }
                 node.setPosition(offsetX, node.y, true);
                 node.setAllLinkCoordinates();

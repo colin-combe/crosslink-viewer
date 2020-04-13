@@ -310,6 +310,9 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
       var xOffset = 0;
       if (!this.hidden){
         xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
+        // if (this.expanded) {
+        //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+        // }
       }
       this.x = x - xOffset;
       this.y = y;
