@@ -250,6 +250,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     render: function() {
+        this.d3cola.stop(); // too paranoid?
+
         if (this.wasEmpty) {
             this.wasEmpty = false;
             if (this.model.get("clmsModel").get("xiNETLayout")) {
@@ -1080,6 +1082,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     hiddenParticipantsChanged: function() {
+        this.d3cola.stop();
+        
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         var manuallyHidden = 0;
