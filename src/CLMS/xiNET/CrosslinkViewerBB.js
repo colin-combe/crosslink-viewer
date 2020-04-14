@@ -25,7 +25,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        // this.debug = true;
+        this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
         var self = this;
 
@@ -378,15 +378,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var bbox = this.container.getBBox();
         var xr = width / bbox.width;
         var yr = height / bbox.height;
-        // console.log("xr:", xr, "yr:", yr);
-        // if (yr < 1 || xr < 1) {
-          if (yr < xr) {
-              //console.log("yr < xr");
-              this.container.setAttribute("transform", "scale(" + yr + ") translate(" + ((width / yr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
-          } else {
-              this.container.setAttribute("transform","scale(" + xr + ") translate(" + ((width / xr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
-          }
-        // }
+        if (yr < xr) {
+            this.container.setAttribute("transform", "scale(" + yr + ") translate(" + ((width / yr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
+        } else {
+            this.container.setAttribute("transform", "scale(" + xr + ") translate(" + ((width / xr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
+        }
         this.scale();
     },
 
@@ -898,7 +894,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     ry: 5
                 })
                 .style('stroke', "blue")
-                .style('fill', "grey");
+                .style('fill', "none");
 
             groupDebugSel.exit().remove();
             participantDebugSel.exit().remove();
@@ -906,13 +902,13 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         this.d3cola.on("tick", function(e) {
-            var nodesArr = self.d3cola.nodes(); // these nodes are our RenderedProteins
+            var nodesArr = self.d3cola.nodes(); // these nodes are our (visible) RenderedProteins or collapsed groups
             var nCount = nodesArr.length;
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
                 var offsetX = node.x;
                 if (!node.expanded) {
-                  offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
+                    offsetX = offsetX + (node.width / 2 - (node.getBlobRadius())) - 5; // * self.z));
                 }
                 // else {
                 //   offsetX = offsetX + (node.width / 2);// - (node.getBlobRadius())) - 5;
@@ -920,6 +916,11 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 node.setPosition(offsetX, node.y, true);
                 node.setAllLinkCoordinates();
             }
+
+            for (var g of groups) {
+                g.setPosition();
+            }
+
             self.zoomToFullExtent();
 
             if (self.debug) {
@@ -1083,7 +1084,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
     hiddenParticipantsChanged: function() {
         this.d3cola.stop();
-        
+
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         var rpCount = renderedParticipantArr.length;
         var manuallyHidden = 0;
@@ -1159,6 +1160,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     groupsChanged: function() {
+        this.d3cola.stop();
+
         var groupMap = this.model.get("groups");
         this.groups = [];
         for (var g of groupMap.entries()) {
