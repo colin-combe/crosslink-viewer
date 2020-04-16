@@ -277,7 +277,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var c = p.matrixTransform(this.container.getCTM().inverse());
 
         d3.select(".custom-menu-margin").style("display", "none");
-        this.contextMenuProt.setForm(0);//, c);
+        this.contextMenuProt.setForm(0); //, c);
         this.contextMenuProt == null;
     },
 
@@ -286,8 +286,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         // todo - contextMenuProt now poorly named
         //this.contextMenuProt.setForm(0, c);
         //console.log("**", this.model.get("groups"));
-        this.model.get("groups").remove(this.contextMenuProt.id);
-        this.model.trigger("groupsChanged");
+        this.model.get("groups").delete(this.contextMenuProt.id);
+        this.model.trigger("change:groups");
         this.contextMenuProt == null;
     },
 
@@ -1226,7 +1226,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.d3cola.stop();
 
         var groupMap = this.model.get("groups");
-        this.groups = [];
+        //clear out any old groups
+        for (var g of this.groups) {
+            // if (!groupMap.has(g.id)) {
+                for (var rp of g.renderedParticipants) {
+                    rp.complexes.delete(g);
+                }
+                this.groupsSVG.removeChild(g.upperGroup);
+            // }
+        }
+
         for (var g of groupMap.entries()) {
             var group = {
                 "name": g[0],
@@ -1245,6 +1254,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             complex.initMolecule();
             complex.setPosition();
         }
+
+
     },
 
     showLabels: function() {

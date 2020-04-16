@@ -110,7 +110,18 @@ Complex.prototype.mouseDown = function(evt) {
     this.controller.dragElement = this;
     //store start location
     this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
-    if (evt.button === 2) {
+
+    var rightclick, middleclick; //which button has just been raised
+    if (evt.which)
+        rightclick = (evt.which === 3);
+    else if (evt.button)
+        rightclick = (evt.button === 2);
+    if (evt.which)
+        middleclick = (evt.which === 2);
+    else if (evt.button)
+        middleclick = (evt.button === 1);
+
+    if (!rightclick) {
         var add = evt.ctrlKey || evt.shiftKey;
         var participants = [];
         for (var rp of this.renderedParticipants) {
