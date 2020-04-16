@@ -82,7 +82,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             .append("div").classed("custom-menu", true)
             .append("ul");
 
-        groupCustomMenuSel.append("li").classed("collapse", true).text("Collapse");
+        groupCustomMenuSel.append("li").classed("collapseGroup", true).text("Collapse");
         groupCustomMenuSel.append("li").classed("ungroup", true).text("Ungroup");
         var groupContextMenu = d3.select(".group-custom-menu-margin").node();
         groupContextMenu.onmouseout = function(evt) {
@@ -908,7 +908,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         //     }
         // }
 
-        //console.log("groups", groups);
+        console.log("groups", groups);
 
         delete this.d3cola._lastStress;
         delete this.d3cola._alpha;
@@ -1218,7 +1218,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
         }
         this.model.set("groups", groupMap);
-
+        this.model.trigger("change:groups");
         return this;
     },
 
@@ -1235,6 +1235,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 this.groupsSVG.removeChild(g.upperGroup);
             // }
         }
+        this.groups = [];
 
         for (var g of groupMap.entries()) {
             var group = {
@@ -1250,6 +1251,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 if (renderedProtein.complexes.size > 1) {
                     console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
                 }
+                renderedProtein.complex = complex;
             }
             complex.initMolecule();
             complex.setPosition();

@@ -270,7 +270,8 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (!this.renderedToProtein || this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
+    if (!this.renderedToProtein || (this.renderedFromProtein.getRenderedParticipant().participant && this.renderedFromProtein.getRenderedParticipant().participant.hidden)
+                                || (this.renderedToProtein.getRenderedParticipant().participant && this.renderedFromProtein.getRenderedParticipant().participant.hidden) ||
         this.renderedFromProtein.expanded == true || this.renderedToProtein.expanded == true ||
         this.filteredCrossLinkCount === 0 ||
         (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) {

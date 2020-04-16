@@ -116,17 +116,19 @@ Complex.prototype.mouseDown = function(evt) {
         rightclick = (evt.which === 3);
     else if (evt.button)
         rightclick = (evt.button === 2);
-    if (evt.which)
-        middleclick = (evt.which === 2);
-    else if (evt.button)
-        middleclick = (evt.button === 1);
+    // if (evt.which)
+    //     middleclick = (evt.which === 2);
+    // else if (evt.button)
+    //     middleclick = (evt.button === 1);
 
     if (!rightclick) {
         var add = evt.ctrlKey || evt.shiftKey;
         var participants = [];
-        for (var rp of this.renderedParticipants) {
-            rp.participant.manuallyHidden = false;
-            participants.push(rp.participant);
+        if (this.expanded == false) {
+            for (var rp of this.renderedParticipants) {
+                rp.participant.manuallyHidden = false;
+                participants.push(rp.participant);
+            }
         }
 
         this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
@@ -153,17 +155,17 @@ Complex.prototype.mouseOut = function(evt) {
     Molecule.prototype.mouseOut.call(this, evt);
 };
 
-/*Complex.prototype.getPosition = function() {
-    var mapped = this.naryLink.getMappedCoordinates();
-    var mc = mapped.length;
-    var xSum = 0,
-        ySum = 0;
-    for (var m = 0; m < mc; m++) {
-        xSum += mapped[m][0];
-        ySum += mapped[m][1];
-    }
-    return [xSum / mc, ySum / mc];
-};*/
+Complex.prototype.getPosition = function() {
+    // var mapped = this.naryLink.getMappedCoordinates();
+    // var mc = mapped.length;
+    // var xSum = 0,
+    //     ySum = 0;
+    // for (var m = 0; m < mc; m++) {
+    //     xSum += mapped[m][0];
+    //     ySum += mapped[m][1];
+    // }
+    return [this.ix, this.iy]; //[xSum / mc, ySum / mc];
+};
 
 Complex.prototype.setPosition = function(x, y) {
     var x1, y1, x2, y2;
@@ -231,6 +233,16 @@ Complex.prototype.setForm = function(form, svgP) {
         this.expanded = 0;
         var renderedParticipants = this.renderedParticipants;
         var rpCount = renderedParticipants.length;
+
+        var xSum = 0,
+            ySum = 0;
+        for (var rp of this.renderedParticipants) {
+            xSum += rp.ix;
+            ySum += rp.iy;
+        }
+        this.ix = xSum / rpCount;
+        this.iy = ySum / rpCount;
+
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
             rp.setAllLinkCoordinates();

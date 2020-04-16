@@ -341,6 +341,10 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
                 " " + this.iy + ")" + " scale(" + (this.controller.z) + ")");
         }
     }
+
+    for (var complex of this.complexes) {
+        complex.setPosition();
+    }
 };
 
 CLMS.xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
