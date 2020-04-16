@@ -162,7 +162,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //store start location
     this.controller.dragStart = evt;
 
-    d3.select("#container-menu").style("display", "none");
+    d3.select(".custom-menu-margin").style("display", "none");
+    d3.select(".group-custom-menu-margin").style("display", "none");
 };
 
 /*CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {

@@ -8,7 +8,7 @@
 //
 //		authors: Colin Combe
 
-Complex.prototype = new Molecule();
+Complex.prototype = new Molecule(); // TODO - renameing - Complex to Group, Molecule to Interactor
 
 function Complex(group, xlvController) { // TODO: rename to Group
     this.id = group.id;
@@ -32,44 +32,44 @@ function Complex(group, xlvController) { // TODO: rename to Group
     this.upperGroup = document.createElementNS(this.controller.svgns, "g");
     //~ this.upperGroup.setAttribute("class", "protein upperGroup");
 
-    this.pad = 10; // a border used by xiNET
+    this.pad = 5; // a border used by xiNET
     this.padding = 40; // used by cola.js
 
     /* //for polygon
     var points = "15,0 8,-13 -7,-13 -15,0 -8,13 7,13";*/
     //make highlight
-    this.highlight = document.createElementNS(this.controller.svgns, "rect");
+    /*this.highlight = document.createElementNS(this.controller.svgns, "rect");
     /* this.highlight.setAttribute("points", points); */
-    // this.highlight.setAttribute("stroke", this.controller.highlightColour);
+    /* // this.highlight.setAttribute("stroke", this.controller.highlightColour);
     this.highlight.setAttribute("stroke-width", "5");
     // this.highlight.setAttribute("fill", "lightGray");
     //this.highlight.setAttribute("fill-opacity", 1);
     //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0);
+    d3.select(this.highlight).attr("stroke-opacity", 0);*/
     //this.upperGroup.appendChild(this.highlight);
 
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(this.controller.svgns, "text");
-    this.labelSVG.setAttribute("text-anchor", "end");
+    // this.labelSVG.setAttribute("text-anchor", "end");
     this.labelSVG.setAttribute("fill", "black")
     this.labelSVG.setAttribute("x", 0);
-    this.labelSVG.setAttribute("y", 10);
+    this.labelSVG.setAttribute("y", 0);
     this.labelSVG.setAttribute("class", "xlv_text proteinLabel");
-    this.labelSVG.setAttribute('font-family', 'Arial');
-    this.labelSVG.setAttribute('font-size', '16');
+    // this.labelSVG.setAttribute('font-family', 'Arial');
+    // this.labelSVG.setAttribute('font-size', '16');
+    // this.labelSVG.setAttribute('alignment-baseline','baseline');
 
     this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
-    this.upperGroup.appendChild(this.labelSVG);
+    //this.upperGroup.appendChild(this.labelSVG);
 
     //make blob
     this.outline = document.createElementNS(this.controller.svgns, "rect");
     /* this.outline.setAttribute("points", points); */
 
     //this.outline.setAttribute("stroke", "black");
-    this.outline.setAttribute("rx", this.pad);
-    this.outline.setAttribute("ry", this.pad);
+
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 0.5)
         .attr("fill", "#cccccc");
     //append outline
@@ -90,9 +90,9 @@ function Complex(group, xlvController) { // TODO: rename to Group
         self.mouseOut(evt);
     };
 
-    this.upperGroup.ontouchstart = function(evt) {
-        self.touchStart(evt);
-    };
+    // this.upperGroup.ontouchstart = function(evt) {
+    //     self.touchStart(evt);
+    // };
 }
 
 Complex.prototype.initMolecule = function() {
@@ -103,21 +103,42 @@ Complex.prototype.initMolecule = function() {
     this.setForm(this.expanded);
 };
 
+// event handler for starting dragging or rotation (or flipping internal links)
+Complex.prototype.mouseDown = function(evt) {
+    this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+    this.controller.d3cola.stop();
+    this.controller.dragElement = this;
+    //store start location
+    this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
+    if (evt.button === 2) {
+        var add = evt.ctrlKey || evt.shiftKey;
+        var participants = [];
+        for (var rp of this.renderedParticipants) {
+            rp.participant.manuallyHidden = false;
+            participants.push(rp.participant);
+        }
+
+        this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
+        this.controller.model.setSelectedProteins(participants, add);
+    }
+    return false;
+}
+
 Complex.prototype.mouseOver = function(evt) {
-    //this.showHighlight(true);
+    this.showHighlight(true);
     //doesn't do anything
-    /*var p = this.controller.getEventPoint(evt);
+    var p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
         .set("contents", CLMSUI.modelUtils.makeTooltipContents.complex(this))
         .set("location", {
             pageX: p.x,
             pageY: p.y
-        });*/
+        });
 };
 
 Complex.prototype.mouseOut = function(evt) {
-    //this.showHighlight(false);
+    this.showHighlight(false);
     Molecule.prototype.mouseOut.call(this, evt);
 };
 
@@ -136,7 +157,7 @@ Complex.prototype.mouseOut = function(evt) {
 Complex.prototype.setPosition = function(x, y) {
     var x1, y1, x2, y2;
     var z = this.controller.z,
-        pad = this.pad;
+        pad = this.pad * z;
     for (var rp of this.renderedParticipants) {
         if (rp.hidden == false) {
             // rp.setAllLinkCoordinates();
@@ -158,15 +179,18 @@ Complex.prototype.setPosition = function(x, y) {
             }
         }
     }
-    var pad = 5;
+
     if (x1) {
-        this.outline.setAttribute("x", x1 + pad);
-        this.outline.setAttribute("y", y1 + pad - 20);
+        this.outline.setAttribute("x", x1 - pad);
+        this.outline.setAttribute("y", y1 - pad);
         this.outline.setAttribute("width", x2 - x1 + (2 * pad));
-        this.outline.setAttribute("height", y2 - y1 + (2 * pad) + 20);
+        this.outline.setAttribute("height", y2 - y1 + (2 * pad));
+        this.outline.setAttribute("rx", pad);
+        this.outline.setAttribute("ry", pad);
+        // }
+        this.labelSVG.setAttribute("transform",
+            "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
     }
-    this.labelSVG.setAttribute("transform",
-        "translate( " + x1 + " " + (y1 + pad) + ") scale(" + z + ")"); // the hexagon has slightly bigger diameter
     // d3.select(this.labelSVG).attr("transform",
     //     "translate( -" + (20) + " " + Molecule.labelY + ")"); // the hexagon has slightly bigger diameter
 
@@ -175,6 +199,18 @@ Complex.prototype.setPosition = function(x, y) {
 Complex.prototype.getResidueCoordinates = function(x, y) {
     return this.getPosition()
 };
+
+Complex.prototype.setHidden = function(bool) {
+    d3.select(this.upperGroup).style("display", bool ? "none" : null);
+    //d3.select(this.lowerGroup).style("display", bool ? "none" : null);
+    this.hidden = bool ? true : false;
+};
+
+Complex.prototype.showHighlight = function(show) {
+    for (var rp of this.renderedParticipants) {
+        rp.showHighlight(show);
+    }
+}
 
 Complex.prototype.setForm = function(form, svgP) {
     // if (!this.busy) {

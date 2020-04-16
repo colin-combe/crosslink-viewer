@@ -159,7 +159,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-          var h = this.upperGroup.getBBox().height + 10
+          var h = this.upperGroup.getBBox().height + 10;
           // console.log(this.labelText + " height", h);
           return h;
         }
