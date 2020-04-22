@@ -691,7 +691,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                                 menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
                             }
                         }
-                    } else if (this.dragElement.ix) { // its a protein
+                    } else if (this.dragElement.participant) { // its a protein
                         var add = evt.ctrlKey || evt.shiftKey;
                         this.model.setSelectedProteins([this.dragElement.participant], add);
                     }
@@ -1152,16 +1152,15 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     hiddenParticipantsChanged: function() {
         this.d3cola.stop();
 
-        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        var rpCount = renderedParticipantArr.length;
         var manuallyHidden = 0;
-        for (var rp = 0; rp < rpCount; rp++) {
-            var renderedParticipant = renderedParticipantArr[rp];
-            if (renderedParticipant.hidden != renderedParticipant.participant.hidden) {
-                renderedParticipant.setHidden(renderedParticipant.participant.hidden);
-            }
+        for (var renderedParticipant of this.renderedProteins.values()) {
             if (renderedParticipant.participant.manuallyHidden == true) {
                 manuallyHidden++;
+            }
+            if (!renderedParticipant.complex || renderedParticipant.complex.expanded) {
+                renderedParticipant.setHidden(renderedParticipant.participant.hidden);
+            } else {
+                renderedParticipant.setHidden(true);
             }
         }
 
@@ -1175,13 +1174,10 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         for (var group of this.groups) {
-            var hasManuallyHidden = false;
             var hasVisible = false;
             for (var p of group.renderedParticipants) {
                 if (p.participant.hidden == false) {
                     hasVisible = true;
-                } else if (p.participant.manuallyHidden) {
-                    hasManuallyHidden = true;
                 }
             }
             if (!hasVisible) {
@@ -1191,7 +1187,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                     group.updateExpandedGroup();
                 }
             }
-            //group.naryLink.dashedLine(hasManuallyHidden);
         }
 
         return this;

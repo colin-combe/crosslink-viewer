@@ -284,6 +284,8 @@ Complex.prototype.updateExpandedGroup = function() {
         this.outline.setAttribute("ry", pad);
         // this.labelSVG.setAttribute("transform",
         //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
+    } else {
+      alert("!error!")
     }
 };
 
