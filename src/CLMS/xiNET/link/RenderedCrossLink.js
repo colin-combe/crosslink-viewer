@@ -261,17 +261,27 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-    if (this.renderedFromProtein.expanded == false && (this.renderedToProtein ? this.renderedToProtein.expanded == false : false)) {
-        this.hide();
-        return false;
-    }
+  // neither end a bar? then hide
+  if (this.renderedFromProtein.expanded == false && (this.renderedToProtein ? this.renderedToProtein.expanded == false : false)) {
+      this.hide();
+      return false;
+  }
 
+  // both ends in a collapsed complex? then hide
+  if (this.renderedFromProtein.complex && !this.renderedFromProtein.complex.expanded
+      && (this.renderedToProtein && this.renderedToProtein.complex && !this.renderedToProtein.complex.expanded)) {
+      this.hide();
+      return false;
+  }
+
+    // either end manually hidden? then hide
     if (this.renderedFromProtein.participant.hidden === true ||
         (this.renderedToProtein && this.renderedToProtein.participant.hidden == true)) {
         this.hide();
         return false;
     }
 
+    // no crosslinks passed filter? then hide
     if (this.crossLink.filteredMatches_pp.length > 0) {
         this.show();
         return true;

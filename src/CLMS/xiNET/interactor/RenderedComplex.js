@@ -170,7 +170,9 @@ Complex.prototype.mouseOut = function(evt) {
 };
 
 Complex.prototype.getAverageParticipantPosition = function() {
-    var xSum = 0, ySum = 0, rpCount = this.renderedParticipants.length;
+    var xSum = 0,
+        ySum = 0,
+        rpCount = this.renderedParticipants.length;
     for (var rp of this.renderedParticipants) {
         xSum += rp.ix;
         ySum += rp.iy;
@@ -182,24 +184,47 @@ Complex.prototype.getPosition = function() {
     return [this.ix, this.iy];
 };
 
-Complex.prototype.setPosition = function(x, y, fromCola) { //todo - array as coord param?
-    if (this.expanded == false) {
-        if (!fromCola) {
-            this.px = this.x;
-            this.py = this.y;
-            var xOffset = 0;
-            if (!this.hidden) {
-                xOffset = (this.width / 2); // - (this.getBlobRadius()) + 5)
-                // if (this.expanded) {
-                //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
-                // }
-            }
-            this.x = x - xOffset;
-            this.y = y;
-        }
+/* leave this.x and this.y as they were set by cola,
+    calculate centre of interactor's glyph,
+    call setPosition with those
+*/
+Complex.prototype.setPositionFromCola = function() {
+    this.px = this.x;
+    this.py = this.y;
+    var xOffset = 0;
+    if (!this.hidden) { // todo - hacky
+        xOffset = (this.width / 20);// - (this.getBlobRadius()) + 5)
+        // if (this.expanded) {
+        //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+        // }
+    }
+    this.setPosition(this.x /*- xOffset*/ , this.y);
+}
 
-        this.ix = x;
-        this.iy = y;
+/* calculate top left of interactor's glyph,
+set this.x and this.y as cola would have them,
+    call setPosition with same params this recieved
+*/
+Complex.prototype.setPositionFromXinet = function(ix, iy) {
+    this.px = this.x;
+    this.py = this.y;
+    var xOffset = 0;
+    if (!this.hidden) { // todo - hacky
+        xOffset = (this.width / 2);// - (this.getBlobRadius()) + 5)
+        // if (this.expanded) {
+        //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+        // }
+    }
+    this.x = ix - xOffset;
+    this.y = iy;
+    this.setPosition(ix, iy);
+}
+
+Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param?
+    if (this.expanded == false) {
+
+        this.ix = ix;
+        this.iy = iy;
         var pad = 20;
         this.outline.setAttribute("x", this.ix - (pad * this.controller.z));
         this.outline.setAttribute("y", this.iy - (pad * this.controller.z));
@@ -219,41 +244,46 @@ Complex.prototype.setPosition = function(x, y, fromCola) { //todo - array as coo
         //     "translate( -" + (20) + " " + Molecule.labelY + ")"); // the hexagon has slightly bigger diameter
 
     } else {
-        var x1, y1, x2, y2;
-        var z = this.controller.z,
-            pad = this.pad * z;
-        for (var rp of this.renderedParticipants) {
-            if (rp.hidden == false) {
-                // rp.setAllLinkCoordinates();
-                // rp.setHidden(rp.participant.hidden);
-                // rp.checkLinks();
-                var rpBbox = rp.upperGroup.getBBox();
-                // console.log("*", rpBbox.x, rpBbox.y);
-                if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
-                    x1 = (rpBbox.x * z) + rp.ix;
-                }
-                if (!y1 || (rpBbox.y * z) + rp.iy < y1) {
-                    y1 = (rpBbox.y * z) + rp.iy;
-                }
-                if (!x2 || ((rpBbox.x + rpBbox.width) * z) + rp.ix > x2) {
-                    x2 = ((rpBbox.x + rpBbox.width) * z) + rp.ix;
-                }
-                if (!y2 || ((rpBbox.y + rpBbox.height) * z) + rp.iy > y2) {
-                    y2 = ((rpBbox.y + rpBbox.height) * z) + rp.iy;
-                }
+        alert("error");
+    }
+};
+
+Complex.prototype.updateExpandedGroup = function() {
+
+    var x1, y1, x2, y2;
+    var z = this.controller.z,
+        pad = this.pad * z;
+    for (var rp of this.renderedParticipants) {
+        if (rp.hidden == false) {
+            // rp.setAllLinkCoordinates();
+            // rp.setHidden(rp.participant.hidden);
+            // rp.checkLinks();
+            var rpBbox = rp.upperGroup.getBBox();
+            // console.log("*", rpBbox.x, rpBbox.y);
+            if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
+                x1 = (rpBbox.x * z) + rp.ix;
+            }
+            if (!y1 || (rpBbox.y * z) + rp.iy < y1) {
+                y1 = (rpBbox.y * z) + rp.iy;
+            }
+            if (!x2 || ((rpBbox.x + rpBbox.width) * z) + rp.ix > x2) {
+                x2 = ((rpBbox.x + rpBbox.width) * z) + rp.ix;
+            }
+            if (!y2 || ((rpBbox.y + rpBbox.height) * z) + rp.iy > y2) {
+                y2 = ((rpBbox.y + rpBbox.height) * z) + rp.iy;
             }
         }
+    }
 
-        if (x1) {
-            this.outline.setAttribute("x", x1 - pad);
-            this.outline.setAttribute("y", y1 - pad);
-            this.outline.setAttribute("width", x2 - x1 + (2 * pad));
-            this.outline.setAttribute("height", y2 - y1 + (2 * pad));
-            this.outline.setAttribute("rx", pad);
-            this.outline.setAttribute("ry", pad);
-            // this.labelSVG.setAttribute("transform",
-            //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
-        }
+    if (x1) {
+        this.outline.setAttribute("x", x1 - pad);
+        this.outline.setAttribute("y", y1 - pad);
+        this.outline.setAttribute("width", x2 - x1 + (2 * pad));
+        this.outline.setAttribute("height", y2 - y1 + (2 * pad));
+        this.outline.setAttribute("rx", pad);
+        this.outline.setAttribute("ry", pad);
+        // this.labelSVG.setAttribute("transform",
+        //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
     }
 };
 
@@ -262,8 +292,9 @@ Complex.prototype.getResidueCoordinates = function(x, y) {
 };
 
 Complex.prototype.setHidden = function(bool) {
-    d3.select(this.upperGroup).style("display", bool ? "none" : null);
-    //d3.select(this.lowerGroup).style("display", bool ? "none" : null);
+  d3.select(this.upperGroup).style("display", bool ? "none" : null);
+  d3.select(this.labelSVG).style("display", bool ? "none" : null);
+  //d3.select(this.lowerGroup).style("display", bool ? "none" : null);
     this.hidden = bool ? true : false;
 };
 
@@ -286,7 +317,7 @@ Complex.prototype.setForm = function(form, svgP) {
         var rpCount = renderedParticipants.length;
 
         var pPos = this.getAverageParticipantPosition();
-        this.setPosition(pPos[0], pPos[1]);
+        this.setPositionFromXinet(pPos[0], pPos[1]);
 
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
@@ -306,7 +337,7 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.setHidden(rp.participant.hidden);
             rp.checkLinks();
         }
-        this.setPosition();
+        this.updateExpandedGroup();
     }
 };
 

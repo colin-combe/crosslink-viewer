@@ -435,7 +435,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         var rpCount = renderedParticipantArr.length;
         for (var rp = 0; rp < rpCount; rp++) {
             var prot = renderedParticipantArr[rp];
-            prot.setPosition(prot.ix, prot.iy); // this rescales the protein
+            prot.setPositionFromXinet(prot.ix, prot.iy); // this rescales the protein
             if (prot.expanded !== 0)
                 prot.setAllLinkCoordinates();
         }
@@ -472,7 +472,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         for (var g of this.groups) {
             if (g.expanded == true) {
-                g.setPosition();
+                g.updateExpandedGroup();
             }
         }
     },
@@ -536,7 +536,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             oy = renderedProtein.iy;
                             nx = ox - dx;
                             ny = oy - dy;
-                            renderedProtein.setPosition(nx, ny);
+                            renderedProtein.setPositionFromXinet(nx, ny);
                             renderedProtein.setAllLinkCoordinates();
                         }
                     } else if (this.dragElement.type == "complex") {
@@ -548,16 +548,16 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                                 oy = renderedProtein.iy;
                                 nx = ox - dx;
                                 ny = oy - dy;
-                                renderedProtein.setPosition(nx, ny);
+                                renderedProtein.setPositionFromXinet(nx, ny);
                                 renderedProtein.setAllLinkCoordinates();
                             }
-                            this.dragElement.setPosition();
+                            this.dragElement.updateExpandedGroup();
                         } else {
                             ox = this.dragElement.ix;
                             oy = this.dragElement.iy;
                             nx = ox - dx;
                             ny = oy - dy;
-                            this.dragElement.setPosition(nx, ny);
+                            this.dragElement.setPositionFromXinet(nx, ny);
                             this.dragElement.setAllLinkCoordinates();
                         }
                     }
@@ -786,7 +786,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var protLayout = layout[prot];
             var protein = this.renderedProteins.get(protLayout.id);
             if (protein !== undefined) {
-                protein.setPosition(protLayout["x"], protLayout["y"]);
+                protein.setPositionFromXinet(protLayout["x"], protLayout["y"]);
                 if (typeof protLayout['rot'] !== 'undefined') {
                     protein.rotation = protLayout["rot"] - 0;
                 }
@@ -972,19 +972,19 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             for (var n = 0; n < nCount; n++) {
                 var node = nodesArr[n];
                 var offsetX = node.x;
-                if (!node.expanded) {
-                    offsetX = offsetX + ((node.width / 2)); // todo - quick hack, look at again// - (node.getBlobRadius())) - 5);
-                }
+                // if (!node.expanded) {
+                //     offsetX = offsetX + ((node.width / 2)); // todo - quick hack, look at again// - (node.getBlobRadius())) - 5);
+                // }
                 // else {
                 //   offsetX = offsetX + (node.width / 2);// - (node.getBlobRadius())) - 5;
                 // }
-                node.setPosition(offsetX, node.y, true);
+                node.setPositionFromCola(node.x, node.y);
                 node.setAllLinkCoordinates();
             }
 
             for (var g of groups) {
                 if (g.expanded == true) {
-                  g.setPosition();
+                    g.updateExpandedGroup();
                 }
             }
 
@@ -1187,7 +1187,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (!hasVisible) {
                 group.setHidden(true);
             } else {
-                group.setPosition()
+                if (group.expanded == true) {
+                    group.updateExpandedGroup();
+                }
             }
             //group.naryLink.dashedLine(hasManuallyHidden);
         }

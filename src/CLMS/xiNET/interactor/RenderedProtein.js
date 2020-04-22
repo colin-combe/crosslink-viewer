@@ -159,9 +159,9 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-          var h = this.upperGroup.getBBox().height + 10;
-          // console.log(this.labelText + " height", h);
-          return h;
+            var h = this.upperGroup.getBBox().height + 10;
+            // console.log(this.labelText + " height", h);
+            return h;
         }
     });
 };
@@ -177,7 +177,7 @@ CLMS.xiNET.RenderedProtein.prototype.setEverything = function() {
     }
     this.showHighlight(this.isHighlighted);
     this.setSelected(this.isSelected);
-    this.setPosition(this.ix, this.iy);
+    this.setPositionFromXinet(this.ix, this.iy);
     this.scale();
     this.setAllLinkCoordinates();
     this.setForm(this.newForm);
@@ -210,7 +210,7 @@ CLMS.xiNET.RenderedProtein.prototype.resize = function() {
         this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
         for (var ppLink of this.renderedP_PLinks) {
             if (ppLink.crossLinks[0].isSelfLink() && ppLink.shown) {
-              ppLink.initSelfLinkSVG();
+                ppLink.initSelfLinkSVG();
             }
         }
     }
@@ -302,24 +302,46 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
     }
 };
 
-// more accurately described as setting transform for top svg elements (sets scale also)
-CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
-    if (!fromCola){
-      this.px = this.x;
-      this.py = this.y;
-      var xOffset = 0;
-      if (!this.hidden){
-        xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
-        // if (this.expanded) {
-        //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
-        // }
-      }
-      this.x = x - xOffset;
-      this.y = y;
-    }
+/* leave this.x and this.y as they were set by cola,
+    calculate centre of interactor's glyph,
+    call setPosition with those
+*/
+CLMS.xiNET.RenderedProtein.prototype.setPositionFromCola = function() {
+  this.px = this.x;
+  this.py = this.y;
+  var xOffset = 0;
+  if (!this.hidden) { // todo - hacky
+      xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
+      // if (this.expanded) {
+      //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+      // }
+  }
+  this.setPosition(this.x /*- xOffset*/, this.y);
+}
 
-    this.ix = x;
-    this.iy = y;
+/* calculate top left of interactor's glyph,
+set this.x and this.y as cola would have them,
+    call setPosition with same params this recieved
+*/
+CLMS.xiNET.RenderedProtein.prototype.setPositionFromXinet = function(ix, iy) {
+  this.px = this.x;
+  this.py = this.y;
+  var xOffset = 0;
+  if (!this.hidden) { // todo - hacky
+      xOffset = (this.width / 2 - (this.getBlobRadius()) + 5)
+      // if (this.expanded) {
+      //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+      // }
+  }
+  this.x = ix - xOffset;
+  this.y = iy;
+  this.setPosition(ix, iy);
+}
+
+// more accurately described as setting transform for top svg elements (sets scale also)
+CLMS.xiNET.RenderedProtein.prototype.setPosition = function(ix, iy) {
+    this.ix = ix;
+    this.iy = iy;
     if (this.expanded == true) {
         this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
@@ -344,7 +366,7 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
 
     for (var complex of this.complexes) {
         if (complex.expanded == true) {
-          complex.setPosition();
+            complex.updateExpandedGroup();
         }
     }
 };
@@ -377,7 +399,7 @@ CLMS.xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
 
     this.stickZoom = scale;
     this.scale();
-    this.setPosition(x, y)
+    this.setPositionFromXinet(x, y)
     this.setAllLinkCoordinates();
 };
 
@@ -657,7 +679,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
         var k = self.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate).translate(labelTranslateInterpol(cubicInOut(interp)), CLMS.xiNET.RenderedProtein.labelY); //.scale(z).translate(-c.ix, -c.y);
         self.labelSVG.transform.baseVal.initialize(self.controller.svgElement.createSVGTransformFromMatrix(k));
         if (xInterpol !== null) {
-            self.setPosition(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
+            self.setPositionFromXinet(xInterpol(cubicInOut(interp)), yInterpol(cubicInOut(interp)));
         }
         var rot = rotationInterpol(cubicInOut(interp));
         self.stickZoom = stickZoomInterpol(cubicInOut(interp));
@@ -682,8 +704,8 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
             self.rotation = originalRotation;
             self.busy = false;
 
-            if (this.complex){
-                this.complex.setPosition();
+            if (this.complex) {
+                this.complex.updateExpandedGroup();
             }
 
             return true;
@@ -815,8 +837,8 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
         if (interp === 1) { // finished - tidy up
             self.busy = false;
 
-            if (this.complex){
-                this.complex.setPosition();
+            if (this.complex) {
+                this.complex.updateExpandedGroup();
             }
 
             return true;
@@ -860,11 +882,11 @@ CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo -
     this.stickZoom = origStickZoom;
 
     d3.select(this.circDomains).attr("opacity", 0);
-        //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
-        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
     d3.select(this.rectDomains).attr("opacity", 1);
-        //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
-        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    //~ .attr("transform", "scale(" + this.stickZoom + ", 1)")
+    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
     var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
     d3.select(this.outline).attr("stroke-opacity", 1)
@@ -874,13 +896,13 @@ CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo -
         .attr("height", CLMS.xiNET.RenderedProtein.STICKHEIGHT)
         .attr("y", -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2)
         .attr("rx", 0).attr("ry", 0);
-        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
     d3.select(this.highlight)
         .attr("width", protLength + 5).attr("height", CLMS.xiNET.RenderedProtein.STICKHEIGHT + 5)
         .attr("x", this.getResXwithStickZoom(0.5) - 2.5).attr("y", (-CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2) - 2.5)
         .attr("rx", 0).attr("ry", 0);
-        // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
     var aggSelfLinkPath = this.getAggregateSelfLinkPath();
     for (var residueLink of this.renderedCrossLinks) {
@@ -890,17 +912,17 @@ CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo -
         if (residueLink.crossLink.isSelfLink()) {
             lineSel.attr("d", aggSelfLinkPath);
             lineSel.attr("d", crosslinkPath);
-                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
             highlightLineSel.attr("d", aggSelfLinkPath);
             highlightLineSel.attr("d", crosslinkPath);
-                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
         } else if (residueLink.crossLink.isMonoLink()) {
             lineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
             lineSel.attr("d", crosslinkPath);
-                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
             highlightLineSel.attr("d", "M 0,0 L 0,0 L 0,0 L 0,0");
             highlightLineSel.attr("d", crosslinkPath);
-                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+            // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
         }
     }
 
@@ -917,14 +939,14 @@ CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo -
             if (feature.type != CLMS.xiNET.disulfide) {
                 pieSlice.setAttribute("d", this.getAnnotationPieSliceApproximatePath(feature));
                 d3.select(pieSlice).attr("d", this.getAnnotationRectPath(feature));
-                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
                 d3.select(rectDomain).attr("d", this.getAnnotationRectPath(feature));
-                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
             } else {
                 d3.select(pieSlice).attr("d", this.getDisulfidAnnotationRectPath(feature));
-                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
                 d3.select(rectDomain).attr("d", this.getDisulfidAnnotationRectPath(feature));
-                    // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
+                // .duration(CLMS.xiNET.RenderedProtein.transitionTime);
 
             }
         }
@@ -1073,6 +1095,7 @@ CLMS.xiNET.RenderedProtein.prototype.getResidueCoordinates = function(r, yOff) {
 };
 
 CLMS.xiNET.RenderedProtein.prototype.checkLinks = function() {
+    //todo - this split between check and upadte no longer needed, coz no longer scales thick line way it did before
     var pLinks = this.renderedP_PLinks;
     var plCount = pLinks.length;
     for (var pl = 0; pl < plCount; pl++) {
