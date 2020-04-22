@@ -20,7 +20,7 @@ function Complex(group, xlvController) { // TODO: rename to Group
     }
     //links
     // this.selfLink = null;
-    this.expanded = 1; //todo - stop using 1 and 0 for expanded instead of true / false
+    this.expanded = 0; //todo - stop using 1 and 0 for expanded instead of true / false
     this.type = 'complex';
     this.size = 10; //hack, layout is using this
 
@@ -57,7 +57,8 @@ function Complex(group, xlvController) { // TODO: rename to Group
     this.labelSVG.setAttribute("class", "xlv_text proteinLabel");
     // this.labelSVG.setAttribute('font-family', 'Arial');
     // this.labelSVG.setAttribute('font-size', '16');
-    // this.labelSVG.setAttribute('alignment-baseline','baseline');
+    this.labelSVG.setAttribute('alignment-baseline', 'central');
+    this.labelSVG.setAttribute('text-anchor', 'middle');
 
     this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
@@ -93,13 +94,26 @@ function Complex(group, xlvController) { // TODO: rename to Group
     // this.upperGroup.ontouchstart = function(evt) {
     //     self.touchStart(evt);
     // };
+
+
+    //TODO - this wastes a bit memory coz the property is not on the prototype, fix
+    Object.defineProperty(this, "width", {
+        get: function width() {
+            var w = this.upperGroup.getBBox().width + 10;
+            // console.log("* " + this.labelText + " width", w + " *");
+            return w;
+        }
+    });
+    Object.defineProperty(this, "height", {
+        get: function height() {
+            var h = this.upperGroup.getBBox().height + 10;
+            // console.log(this.labelText + " height", h);
+            return h;
+        }
+    });
 }
 
 Complex.prototype.initMolecule = function() {
-    // this.naryLink = naryLink;
-    // naryLink.path.setAttribute('fill', );
-    // naryLink.path.setAttribute('stroke-linejoin', 'round');
-    // naryLink.path.setAttribute('stroke-width', 8);
     this.setForm(this.expanded);
 };
 
@@ -124,14 +138,14 @@ Complex.prototype.mouseDown = function(evt) {
     if (!rightclick) {
         var add = evt.ctrlKey || evt.shiftKey;
         var participants = [];
-        if (this.expanded == false) {
+        if (this.expanded == true) {
             for (var rp of this.renderedParticipants) {
-                rp.participant.manuallyHidden = false;
+                //rp.participant.manuallyHidden = false;
                 participants.push(rp.participant);
             }
         }
 
-        this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
+        // this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
         this.controller.model.setSelectedProteins(participants, add);
     }
     return false;
@@ -155,58 +169,92 @@ Complex.prototype.mouseOut = function(evt) {
     Molecule.prototype.mouseOut.call(this, evt);
 };
 
+Complex.prototype.getAverageParticipantPosition = function() {
+    var xSum = 0, ySum = 0, rpCount = this.renderedParticipants.length;
+    for (var rp of this.renderedParticipants) {
+        xSum += rp.ix;
+        ySum += rp.iy;
+    }
+    return [xSum / rpCount, ySum / rpCount];
+}
+
 Complex.prototype.getPosition = function() {
-    // var mapped = this.naryLink.getMappedCoordinates();
-    // var mc = mapped.length;
-    // var xSum = 0,
-    //     ySum = 0;
-    // for (var m = 0; m < mc; m++) {
-    //     xSum += mapped[m][0];
-    //     ySum += mapped[m][1];
-    // }
-    return [this.ix, this.iy]; //[xSum / mc, ySum / mc];
+    return [this.ix, this.iy];
 };
 
-Complex.prototype.setPosition = function(x, y) {
-    var x1, y1, x2, y2;
-    var z = this.controller.z,
-        pad = this.pad * z;
-    for (var rp of this.renderedParticipants) {
-        if (rp.hidden == false) {
-            // rp.setAllLinkCoordinates();
-            // rp.setHidden(rp.participant.hidden);
-            // rp.checkLinks();
-            var rpBbox = rp.upperGroup.getBBox();
-            // console.log("*", rpBbox.x, rpBbox.y);
-            if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
-                x1 = (rpBbox.x * z) + rp.ix;
+Complex.prototype.setPosition = function(x, y, fromCola) { //todo - array as coord param?
+    if (this.expanded == false) {
+        if (!fromCola) {
+            this.px = this.x;
+            this.py = this.y;
+            var xOffset = 0;
+            if (!this.hidden) {
+                xOffset = (this.width / 2); // - (this.getBlobRadius()) + 5)
+                // if (this.expanded) {
+                //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
+                // }
             }
-            if (!y1 || (rpBbox.y * z) + rp.iy < y1) {
-                y1 = (rpBbox.y * z) + rp.iy;
-            }
-            if (!x2 || ((rpBbox.x + rpBbox.width) * z) + rp.ix > x2) {
-                x2 = ((rpBbox.x + rpBbox.width) * z) + rp.ix;
-            }
-            if (!y2 || ((rpBbox.y + rpBbox.height) * z) + rp.iy > y2) {
-                y2 = ((rpBbox.y + rpBbox.height) * z) + rp.iy;
+            this.x = x - xOffset;
+            this.y = y;
+        }
+
+        this.ix = x;
+        this.iy = y;
+        var pad = 20;
+        this.outline.setAttribute("x", this.ix - (pad * this.controller.z));
+        this.outline.setAttribute("y", this.iy - (pad * this.controller.z));
+        this.outline.setAttribute("width", (2 * (pad * this.controller.z)));
+        this.outline.setAttribute("height", (2 * (pad * this.controller.z)));
+        this.outline.setAttribute("rx", 5 * this.controller.z);
+        this.outline.setAttribute("ry", 5 * this.controller.z);
+
+
+        // this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
+        //     " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
+        this.labelSVG.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
+            " scale(" + (this.controller.z) + ")");
+
+
+        // d3.select(this.labelSVG).attr("transform",
+        //     "translate( -" + (20) + " " + Molecule.labelY + ")"); // the hexagon has slightly bigger diameter
+
+    } else {
+        var x1, y1, x2, y2;
+        var z = this.controller.z,
+            pad = this.pad * z;
+        for (var rp of this.renderedParticipants) {
+            if (rp.hidden == false) {
+                // rp.setAllLinkCoordinates();
+                // rp.setHidden(rp.participant.hidden);
+                // rp.checkLinks();
+                var rpBbox = rp.upperGroup.getBBox();
+                // console.log("*", rpBbox.x, rpBbox.y);
+                if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
+                    x1 = (rpBbox.x * z) + rp.ix;
+                }
+                if (!y1 || (rpBbox.y * z) + rp.iy < y1) {
+                    y1 = (rpBbox.y * z) + rp.iy;
+                }
+                if (!x2 || ((rpBbox.x + rpBbox.width) * z) + rp.ix > x2) {
+                    x2 = ((rpBbox.x + rpBbox.width) * z) + rp.ix;
+                }
+                if (!y2 || ((rpBbox.y + rpBbox.height) * z) + rp.iy > y2) {
+                    y2 = ((rpBbox.y + rpBbox.height) * z) + rp.iy;
+                }
             }
         }
-    }
 
-    if (x1) {
-        this.outline.setAttribute("x", x1 - pad);
-        this.outline.setAttribute("y", y1 - pad);
-        this.outline.setAttribute("width", x2 - x1 + (2 * pad));
-        this.outline.setAttribute("height", y2 - y1 + (2 * pad));
-        this.outline.setAttribute("rx", pad);
-        this.outline.setAttribute("ry", pad);
-        // }
-        this.labelSVG.setAttribute("transform",
-            "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
+        if (x1) {
+            this.outline.setAttribute("x", x1 - pad);
+            this.outline.setAttribute("y", y1 - pad);
+            this.outline.setAttribute("width", x2 - x1 + (2 * pad));
+            this.outline.setAttribute("height", y2 - y1 + (2 * pad));
+            this.outline.setAttribute("rx", pad);
+            this.outline.setAttribute("ry", pad);
+            // this.labelSVG.setAttribute("transform",
+            //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
+        }
     }
-    // d3.select(this.labelSVG).attr("transform",
-    //     "translate( -" + (20) + " " + Molecule.labelY + ")"); // the hexagon has slightly bigger diameter
-
 };
 
 Complex.prototype.getResidueCoordinates = function(x, y) {
@@ -231,17 +279,14 @@ Complex.prototype.setForm = function(form, svgP) {
     // var self = this;
     if (form == 0) {
         this.expanded = 0;
+        this.controller.proteinUpper.appendChild(this.upperGroup);
+        this.controller.proteinUpper.appendChild(this.labelSVG);
+        this.outline.setAttribute("fill-opacity", 1);
         var renderedParticipants = this.renderedParticipants;
         var rpCount = renderedParticipants.length;
 
-        var xSum = 0,
-            ySum = 0;
-        for (var rp of this.renderedParticipants) {
-            xSum += rp.ix;
-            ySum += rp.iy;
-        }
-        this.ix = xSum / rpCount;
-        this.iy = ySum / rpCount;
+        var pPos = this.getAverageParticipantPosition();
+        this.setPosition(pPos[0], pPos[1]);
 
         for (var i = 0; i < rpCount; i++) {
             var rp = renderedParticipants[i];
@@ -249,53 +294,20 @@ Complex.prototype.setForm = function(form, svgP) {
             rp.setHidden(true);
             rp.checkLinks();
         }
-        // this.naryLink.hide();
-        // this.controller.proteinUpper.appendChild(this.upperGroup);
     } else {
         this.expanded = 1;
-        // var x1, y1, x2, y2;
+        this.controller.groupsSVG.append(this.upperGroup);
+        if (this.controller.proteinUpper.contains(this.labelSVG)) {
+            this.controller.proteinUpper.removeChild(this.labelSVG);
+        }
+        this.outline.setAttribute("fill-opacity", 0.5);
         for (var rp of this.renderedParticipants) {
             rp.setAllLinkCoordinates();
             rp.setHidden(rp.participant.hidden);
             rp.checkLinks();
-            // var rpBbox = rp.upperGroup.getBBox();
-            // console.log("*", rpBbox.x, rpBbox.y);
-            // if (!x1 || rpBbox.x + rp.ix < x1) {
-            //   x1 = rpBbox.x + rp.ix ;
-            // }
-            // if (!y1 || rpBbox.y + rp.iy < y1) {
-            //   y1 = rpBbox.y + rp.iy ;
-            // }
-            // if (!x2 || (rpBbox.x + rpBbox.width + rp.ix ) > x2) {
-            //   x2 = rpBbox.x + rpBbox.width + rp.ix ;
-            // }
-            // if (!y2 || (rpBbox.y + rpBbox.height + rp.iy )) {
-            //   y2 = rpBbox.y + rpBbox.height + rp.iy ;
-            // }
         }
-        // this.outline.setAttribute("x", x1);
-        // this.outline.setAttribute("y", y1);
-        // this.outline.setAttribute("width", x2 - x1);
-        // this.outline.setAttribute("height", y2 - y1);
-
-        //   {
-        //     x: function(d) {
-        //         return d.bounds.x;
-        //     },
-        //     y: function(d) {
-        //         return d.bounds.y;
-        //     },
-        //     width: function(d) {
-        //         return d.bounds.width()
-        //     },
-        //     height: function(d) {
-        //         return d.bounds.height()
-        //     }
-        // });
-        // this.naryLink.show();
-        //        this.controller.proteinUpper.removeChild(this.upperGroup);
+        this.setPosition();
     }
-    // }
 };
 
 // update all lines (e.g after a move)

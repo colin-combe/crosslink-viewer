@@ -343,7 +343,9 @@ CLMS.xiNET.RenderedProtein.prototype.setPosition = function(x, y, fromCola) {
     }
 
     for (var complex of this.complexes) {
-        complex.setPosition();
+        if (complex.expanded == true) {
+          complex.setPosition();
+        }
     }
 };
 
@@ -679,6 +681,11 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
             self.stickZoom = originalStickZoom;
             self.rotation = originalRotation;
             self.busy = false;
+
+            if (this.complex){
+                this.complex.setPosition();
+            }
+
             return true;
         } else if (interp > 1) {
             return update(1);
@@ -807,6 +814,11 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
 
         if (interp === 1) { // finished - tidy up
             self.busy = false;
+
+            if (this.complex){
+                this.complex.setPosition();
+            }
+
             return true;
         } else if (interp > 1) {
             return update(1);
