@@ -10,7 +10,7 @@
 
 //josh - should these be moved to Config.js?
 Molecule.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
-Molecule.labelY = -5; //label Y offset, better if calc'd half height of label once rendered
+Molecule.labelY = 0; //todo - take out this sourec of error //label Y offset, better if calc'd half height of label once rendered
 
 function Molecule() {} // toDo -rename to Interactor
 

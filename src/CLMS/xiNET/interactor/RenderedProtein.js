@@ -69,10 +69,11 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
 
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(this.controller.svgns, "text");
-    this.labelSVG.setAttribute("text-anchor", "end");
+    this.labelSVG.setAttribute("text-anchor", "middle");
+    this.labelSVG.setAttribute("alignment-baseline", "middle");
     this.labelSVG.setAttribute("fill", this.participant.is_decoy ? "#FB8072" : "black")
     this.labelSVG.setAttribute("x", 0);
-    this.labelSVG.setAttribute("y", 10);
+    this.labelSVG.setAttribute("y", 0);//10);
     this.labelSVG.setAttribute("class", "protein xlv_text proteinLabel");
     //choose label text
     this.labelText = this.participant.name;
@@ -81,9 +82,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     }
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
-    d3.select(this.labelSVG).attr("transform",
-        "translate( -" + (5) + " " + CLMS.xiNET.RenderedProtein.labelY + ") rotate(0) scale(1, 1)");
-    this.upperGroup.appendChild(this.labelSVG);
+
 
     //ticks (and animo acid letters)
     this.ticks = document.createElementNS(this.controller.svgns, "g");
@@ -100,6 +99,7 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.circDomains = document.createElementNS(this.controller.svgns, "g");
     this.circDomains.setAttribute("opacity", 1);
     this.upperGroup.appendChild(this.circDomains);
+    this.upperGroup.appendChild(this.labelSVG);
 
     this.scaleLabels = [];
 
@@ -121,8 +121,9 @@ CLMS.xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         .attr("rx", r + 2.5).attr("ry", r + 2.5)
         .attr("stroke-opacity", 0)
         .attr("fill-opacity", 0);
-    this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
-
+    // this.labelSVG.setAttribute("transform", "translate(" + (-(r + 5)) + "," + "-5)");
+    d3.select(this.labelSVG).attr("transform",
+        "translate( 0" /*+ (-5) + " "*/ + CLMS.xiNET.RenderedProtein.labelY + ") rotate(0) scale(1, 1)");
     // events
     var self = this;
     this.upperGroup.onmousedown = function(evt) {
@@ -190,7 +191,7 @@ CLMS.xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
 
 CLMS.xiNET.RenderedProtein.prototype.getBlobRadius = function() {
     if (this.controller.fixedSize) {
-        return 5;
+        return 12;
     } else {
         return Math.sqrt(this.participant.size / Math.PI) * 0.6;
     }
@@ -291,7 +292,7 @@ CLMS.xiNET.RenderedProtein.prototype.setRotation = function(angle) {
         }
     } else {
         var k = svg.createSVGMatrix()
-            .translate(-(Math.abs(labelTransform.translate[0])), Molecule.labelY);
+            .translate(-(Math.abs(labelTransform.translate[0])), 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
         if (this.expanded == true) {
             for (var j = 0; j < sll; j++) {
@@ -588,7 +589,7 @@ CLMS.xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
     //todo: should take current tranform of label as start
     var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
     var labelStartPoint = labelTransform.translate[0]; //-(((this.participant.size / 2) * this.stickZoom) + 10);
-    var labelTranslateInterpol = d3.interpolate(labelStartPoint, -(r + 5));
+    var labelTranslateInterpol = d3.interpolate(labelStartPoint, 0);//-(r + 5));
 
     var xInterpol = null,
         yInterpol = null;
@@ -735,7 +736,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStick = function() {
     var lengthInterpol = d3.interpolate((2 * r), protLength);
     var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
     var rotationInterpol = d3.interpolate(0, (this.rotation > 180) ? this.rotation - 360 : this.rotation);
-    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * this.stickZoom) + 10));
+    var labelTranslateInterpol = d3.interpolate(0/*-(r + 5)*/, -(((this.participant.size / 2) * this.stickZoom) + 10));
 
     var origStickZoom = this.stickZoom;
     this.stickZoom = 0;
@@ -874,7 +875,7 @@ CLMS.xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo -
     var lengthInterpol = d3.interpolate((2 * r), protLength);
     var stickZoomInterpol = d3.interpolate(0, this.stickZoom);
     var rotationInterpol = d3.interpolate(0, (this.rotation > 180) ? this.rotation - 360 : this.rotation);
-    var labelTranslateInterpol = d3.interpolate(-(r + 5), -(((this.participant.size / 2) * this.stickZoom) + 10));
+    var labelTranslateInterpol = d3.interpolate(0/*-(r + 5)*/, -(((this.participant.size / 2) * this.stickZoom) + 10));
 
     var origStickZoom = this.stickZoom;
     this.stickZoom = 0;
@@ -1341,6 +1342,6 @@ CLMS.xiNET.RenderedProtein.prototype.getDisulfidAnnotationCircPath = function(an
 
 CLMS.xiNET.RenderedProtein.STICKHEIGHT = 20; // height of stick in pixels
 CLMS.xiNET.RenderedProtein.LABELMAXLENGTH = 60; // maximal width reserved for protein-labels
-CLMS.xiNET.RenderedProtein.labelY = -5; // label Y offset, better if calc'd half height of label once rendered
+CLMS.xiNET.RenderedProtein.labelY = 0;//-5; // label Y offset, better if calc'd half height of label once rendered
 CLMS.xiNET.RenderedProtein.transitionTime = 650;
 CLMS.xiNET.RenderedProtein.stepsInArc = 5;
