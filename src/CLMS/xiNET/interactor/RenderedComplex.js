@@ -134,12 +134,10 @@ Complex.prototype.mouseDown = function(evt) {
     if (!rightclick) {
         var add = evt.ctrlKey || evt.shiftKey;
         var participants = [];
-        if (this.expanded == true) {
             for (var rp of this.renderedParticipants) {
                 //rp.participant.manuallyHidden = false;
                 participants.push(rp.participant);
             }
-        }
 
         // this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
         this.controller.model.setSelectedProteins(participants, add);
@@ -235,7 +233,7 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
         this.highlight.setAttribute("height", (2 * (pad * this.controller.z)));
         this.highlight.setAttribute("rx", 5 * this.controller.z);
         this.highlight.setAttribute("ry", 5 * this.controller.z);
-        this.highlight.setAttribute("stroke-width", 5 * this.controller.z);
+        this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 
 
         // this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
@@ -321,9 +319,9 @@ Complex.prototype.showHighlight = function(show) {
             .classed("highlightedProtein", true)
             .attr("stroke-opacity", "1");
     } else {
-        if (this.isSelected == false) {
+        // if (this.isSelected == false) {
             d3HighSel.attr("stroke-opacity", "0");
-        }
+        // }
         d3HighSel
             .classed("selectedProtein", true)
             .classed("highlightedProtein", false);
@@ -332,6 +330,22 @@ Complex.prototype.showHighlight = function(show) {
         rp.showHighlight(show);
     }
 }
+
+// CLMS.xiNET.RenderedProtein.prototype.setSelected = function(select) {
+//     var d3HighSel = d3.select(this.highlight);
+//     this.isSelected = select ? true : false;
+//     if (select === true) {
+//         d3HighSel
+//             .classed("selectedProtein", true)
+//             .classed("highlightedProtein", false)
+//             .attr("stroke-opacity", "1");
+//     } else {
+//         d3HighSel
+//             .attr("stroke-opacity", "0")
+//             .classed("selectedProtein", false)
+//             .classed("highlightedProtein", true);
+//     }
+// };
 
 Complex.prototype.setForm = function(form, svgP) {
     // if (!this.busy) {
