@@ -226,6 +226,7 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
         this.outline.setAttribute("height", (2 * (pad * this.controller.z)));
         this.outline.setAttribute("rx", 5 * this.controller.z);
         this.outline.setAttribute("ry", 5 * this.controller.z);
+        this.outline.setAttribute("stroke-width", 3 * this.controller.z);
 
         this.highlight.setAttribute("x", this.ix - (pad * this.controller.z));
         this.highlight.setAttribute("y", this.iy - (pad * this.controller.z));
@@ -284,6 +285,7 @@ Complex.prototype.updateExpandedGroup = function() {
         this.outline.setAttribute("height", y2 - y1 + (2 * pad));
         this.outline.setAttribute("rx", pad);
         this.outline.setAttribute("ry", pad);
+        this.outline.setAttribute("stroke-width", 3 * this.controller.z);
 
         this.highlight.setAttribute("x", x1 - pad);
         this.highlight.setAttribute("y", y1 - pad);
@@ -291,6 +293,7 @@ Complex.prototype.updateExpandedGroup = function() {
         this.highlight.setAttribute("height", y2 - y1 + (2 * pad));
         this.highlight.setAttribute("rx", pad);
         this.highlight.setAttribute("ry", pad);
+        this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 
         // this.labelSVG.setAttribute("transform",
         //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
