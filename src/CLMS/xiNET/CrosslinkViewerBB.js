@@ -27,7 +27,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function() {
-        this.debug = true;
+        // this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
         var self = this;
 
@@ -471,8 +471,12 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
 
         for (var g of this.groups) {
-            if (g.expanded == true) {
-                g.updateExpandedGroup();
+            if (!g.hidden) {
+                if (g.expanded == true) {
+                    g.updateExpandedGroup();
+                } else {
+                    g.setPositionFromXinet(g.ix, g.iy);
+                }
             }
         }
     },
@@ -988,7 +992,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 }
             }
 
-            //self.zoomToFullExtent();
+            self.zoomToFullExtent();
 
             if (self.debug) {
                 groupDebugSel.attr({
@@ -1240,6 +1244,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             // if (!groupMap.has(g.id)) {
             for (var rp of g.renderedParticipants) {
                 rp.complexes.delete(g);
+                rp.complex = null; // todo -hacky ,this whole ting with the .complexes and .complex is temp // HACK
             }
             if (g.expanded == true) {
                 this.groupsSVG.removeChild(g.upperGroup);
@@ -1250,6 +1255,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             // }
         }
         this.groups = [];
+
+        //todo - sort groups by size here?
 
         for (var g of groupMap.entries()) {
             var group = {
@@ -1269,6 +1276,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             }
             complex.initMolecule();
         }
+
+        this.hiddenParticipantsChanged();
     },
 
     showLabels: function() {

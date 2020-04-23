@@ -20,7 +20,7 @@ function Complex(group, xlvController) { // TODO: rename to Group
     }
     //links
     // this.selfLink = null;
-    this.expanded = 0; //todo - stop using 1 and 0 for expanded instead of true / false
+    this.expanded = 1; //todo - stop using 1 and 0 for expanded instead of true / false
     this.type = 'complex';
     this.size = 10; //hack, layout is using this
 
@@ -35,18 +35,15 @@ function Complex(group, xlvController) { // TODO: rename to Group
     this.pad = 5; // a border used by xiNET
     this.padding = 40; // used by cola.js
 
-    /* //for polygon
-    var points = "15,0 8,-13 -7,-13 -15,0 -8,13 7,13";*/
     //make highlight
-    /*this.highlight = document.createElementNS(this.controller.svgns, "rect");
-    /* this.highlight.setAttribute("points", points); */
-    /* // this.highlight.setAttribute("stroke", this.controller.highlightColour);
+    this.highlight = document.createElementNS(this.controller.svgns, "rect");
+    this.highlight.setAttribute("stroke", this.controller.highlightColour);
     this.highlight.setAttribute("stroke-width", "5");
-    // this.highlight.setAttribute("fill", "lightGray");
+    this.highlight.setAttribute("fill", "none");
     //this.highlight.setAttribute("fill-opacity", 1);
     //attributes that may change
-    d3.select(this.highlight).attr("stroke-opacity", 0);*/
-    //this.upperGroup.appendChild(this.highlight);
+    d3.select(this.highlight).attr("stroke-opacity", 0);
+    this.upperGroup.appendChild(this.highlight);
 
     //create label - we will move this svg element around when protein form changes
     this.labelSVG = document.createElementNS(this.controller.svgns, "text");
@@ -67,9 +64,8 @@ function Complex(group, xlvController) { // TODO: rename to Group
 
     //make blob
     this.outline = document.createElementNS(this.controller.svgns, "rect");
-    /* this.outline.setAttribute("points", points); */
-
-    //this.outline.setAttribute("stroke", "black");
+    this.outline.setAttribute("stroke", "white");
+    this.outline.setAttribute("stroke-width", 3);
 
     d3.select(this.outline).attr("stroke-opacity", 1).attr("fill-opacity", 0.5)
         .attr("fill", "#cccccc");
@@ -153,7 +149,6 @@ Complex.prototype.mouseDown = function(evt) {
 
 Complex.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
-    //doesn't do anything
     var p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
@@ -193,7 +188,7 @@ Complex.prototype.setPositionFromCola = function() {
     this.py = this.y;
     var xOffset = 0;
     if (!this.hidden) { // todo - hacky
-        xOffset = (this.width / 20);// - (this.getBlobRadius()) + 5)
+        xOffset = (this.width / 20); // - (this.getBlobRadius()) + 5)
         // if (this.expanded) {
         //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
         // }
@@ -210,7 +205,7 @@ Complex.prototype.setPositionFromXinet = function(ix, iy) {
     this.py = this.y;
     var xOffset = 0;
     if (!this.hidden) { // todo - hacky
-        xOffset = (this.width / 2);// - (this.getBlobRadius()) + 5)
+        xOffset = (this.width / 2); // - (this.getBlobRadius()) + 5)
         // if (this.expanded) {
         //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
         // }
@@ -225,6 +220,7 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
 
         this.ix = ix;
         this.iy = iy;
+
         var pad = 20;
         this.outline.setAttribute("x", this.ix - (pad * this.controller.z));
         this.outline.setAttribute("y", this.iy - (pad * this.controller.z));
@@ -232,6 +228,14 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
         this.outline.setAttribute("height", (2 * (pad * this.controller.z)));
         this.outline.setAttribute("rx", 5 * this.controller.z);
         this.outline.setAttribute("ry", 5 * this.controller.z);
+
+        this.highlight.setAttribute("x", this.ix - (pad * this.controller.z));
+        this.highlight.setAttribute("y", this.iy - (pad * this.controller.z));
+        this.highlight.setAttribute("width", (2 * (pad * this.controller.z)));
+        this.highlight.setAttribute("height", (2 * (pad * this.controller.z)));
+        this.highlight.setAttribute("rx", 5 * this.controller.z);
+        this.highlight.setAttribute("ry", 5 * this.controller.z);
+        this.highlight.setAttribute("stroke-width", 5 * this.controller.z);
 
 
         // this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
@@ -244,7 +248,7 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
         //     "translate( -" + (20) + " " + Molecule.labelY + ")"); // the hexagon has slightly bigger diameter
 
     } else {
-        alert("error");
+        console.log("error");
     }
 };
 
@@ -282,10 +286,18 @@ Complex.prototype.updateExpandedGroup = function() {
         this.outline.setAttribute("height", y2 - y1 + (2 * pad));
         this.outline.setAttribute("rx", pad);
         this.outline.setAttribute("ry", pad);
+
+        this.highlight.setAttribute("x", x1 - pad);
+        this.highlight.setAttribute("y", y1 - pad);
+        this.highlight.setAttribute("width", x2 - x1 + (2 * pad));
+        this.highlight.setAttribute("height", y2 - y1 + (2 * pad));
+        this.highlight.setAttribute("rx", pad);
+        this.highlight.setAttribute("ry", pad);
+
         // this.labelSVG.setAttribute("transform",
         //     "translate( " + x1 + " " + (y1) + ") scale(" + z + ")");
     } else {
-      alert("!error!")
+        console.log("!error!");
     }
 };
 
@@ -294,13 +306,28 @@ Complex.prototype.getResidueCoordinates = function(x, y) {
 };
 
 Complex.prototype.setHidden = function(bool) {
-  d3.select(this.upperGroup).style("display", bool ? "none" : null);
-  d3.select(this.labelSVG).style("display", bool ? "none" : null);
-  //d3.select(this.lowerGroup).style("display", bool ? "none" : null);
+    d3.select(this.upperGroup).style("display", bool ? "none" : null);
+    d3.select(this.labelSVG).style("display", bool ? "none" : null);
+    //d3.select(this.lowerGroup).style("display", bool ? "none" : null);
     this.hidden = bool ? true : false;
 };
 
 Complex.prototype.showHighlight = function(show) {
+    var d3HighSel = d3.select(this.highlight);
+    this.isHighlighted = show ? true : false; // mjg apr 18
+    if (show === true) {
+        d3HighSel
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true)
+            .attr("stroke-opacity", "1");
+    } else {
+        if (this.isSelected == false) {
+            d3HighSel.attr("stroke-opacity", "0");
+        }
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false);
+    }
     for (var rp of this.renderedParticipants) {
         rp.showHighlight(show);
     }

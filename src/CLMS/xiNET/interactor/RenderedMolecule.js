@@ -8,10 +8,6 @@
 //
 //      authors: Colin Combe
 
-//josh - should these be moved to Config.js?
-Molecule.LABELMAXLENGTH = 90; // maximal width reserved for protein-labels
-Molecule.labelY = 0; //todo - take out this sourec of error //label Y offset, better if calc'd half height of label once rendered
-
 function Molecule() {} // toDo -rename to Interactor
 
 // Molecule.prototype.addStoichiometryLabel = function(stoich) {
@@ -19,7 +15,7 @@ function Molecule() {} // toDo -rename to Interactor
 //         this.labelSVG.childNodes[0].data = this.labelSVG.childNodes[0].data + ' [' + stoich + ']';
 //     }
 // }
-//
+
 Molecule.prototype.mouseDown = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     //stop layout

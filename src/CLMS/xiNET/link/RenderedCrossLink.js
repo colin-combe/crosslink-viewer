@@ -259,20 +259,21 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 };
 
 
-//used when filter changed
+//used when filter changed // todo - tidy
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-  // neither end a bar? then hide
-  if (this.renderedFromProtein.expanded == false && (this.renderedToProtein ? this.renderedToProtein.expanded == false : false)) {
-      this.hide();
-      return false;
-  }
+    // neither end is a bar which isn't in a collpased complex? then hide
+    if ((this.renderedFromProtein.expanded == false || (this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) &&
+        (this.renderedToProtein ? (this.renderedToProtein.expanded == false || (this.renderedToProtein.complex && this.renderedToProtein.complex.expanded == false)) : false)) {
+        this.hide();
+        return false;
+    }
 
-  // both ends in a collapsed complex? then hide
-  if (this.renderedFromProtein.complex && !this.renderedFromProtein.complex.expanded
-      && (this.renderedToProtein && this.renderedToProtein.complex && !this.renderedToProtein.complex.expanded)) {
-      this.hide();
-      return false;
-  }
+    // both ends in a collapsed complex? then hide
+    // if (this.renderedFromProtein.complex && !this.renderedFromProtein.complex.expanded
+    //     && (this.renderedToProtein && this.renderedToProtein.complex && !this.renderedToProtein.complex.expanded)) {
+    //     this.hide();
+    //     return false;
+    // }
 
     // either end manually hidden? then hide
     if (this.renderedFromProtein.participant.hidden === true ||
