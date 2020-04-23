@@ -1250,7 +1250,6 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                 this.groupsSVG.removeChild(g.upperGroup);
             } else {
                 this.proteinUpper.removeChild(g.upperGroup);
-                this.proteinUpper.removeChild(g.labelSVG);
             }
             // }
         }
