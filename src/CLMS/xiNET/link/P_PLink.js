@@ -162,7 +162,8 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //store start location
     this.controller.dragStart = evt;
 
-    d3.select("#container-menu").style("display", "none");
+    d3.select(".custom-menu-margin").style("display", "none");
+    d3.select(".group-custom-menu-margin").style("display", "none");
 };
 
 /*CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
@@ -269,9 +270,16 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
 };
 
 CLMS.xiNET.P_PLink.prototype.update = function() {
-    if (!this.renderedToProtein || this.renderedFromProtein.getRenderedParticipant().participant.hidden || this.renderedToProtein.getRenderedParticipant().participant.hidden ||
-        this.renderedFromProtein.expanded == true || this.renderedToProtein.expanded == true ||
+    if (!this.renderedToProtein || // todo - ok... check why this is here
+        //hide if prot either end is hidden
+        this.renderedFromProtein.participant.hidden ||
+        this.renderedToProtein.participant.hidden ||
+        // or either end is expanded to bar and not in collapsed complex
+        (this.renderedFromProtein.expanded == true && !(this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) ||
+        (this.renderedToProtein.expanded == true && !(this.renderedToProtein.complex && this.renderedToProtein.complex.expanded == false)) ||
+        // or no matches pass filter
         this.filteredCrossLinkCount === 0 ||
+        // or is self link in collapsed group
         (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) {
         this.hide();
     } else {
