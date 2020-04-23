@@ -60,7 +60,7 @@ function Complex(group, xlvController) { // TODO: rename to Group
     this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
-    //this.upperGroup.appendChild(this.labelSVG);
+    this.upperGroup.appendChild(this.labelSVG);
 
     //make blob
     this.outline = document.createElementNS(this.controller.svgns, "rect");
@@ -354,7 +354,7 @@ Complex.prototype.setForm = function(form, svgP) {
     if (form == 0) {
         this.expanded = 0;
         this.controller.proteinUpper.appendChild(this.upperGroup);
-        this.controller.proteinUpper.appendChild(this.labelSVG);
+        this.upperGroup.appendChild(this.labelSVG);
         this.outline.setAttribute("fill-opacity", 1);
         var renderedParticipants = this.renderedParticipants;
         var rpCount = renderedParticipants.length;
@@ -371,8 +371,8 @@ Complex.prototype.setForm = function(form, svgP) {
     } else {
         this.expanded = 1;
         this.controller.groupsSVG.append(this.upperGroup);
-        if (this.controller.proteinUpper.contains(this.labelSVG)) {
-            this.controller.proteinUpper.removeChild(this.labelSVG);
+        if (this.upperGroup.contains(this.labelSVG)) {
+            this.upperGroup.removeChild(this.labelSVG);
         }
         this.outline.setAttribute("fill-opacity", 0.5);
         for (var rp of this.renderedParticipants) {
