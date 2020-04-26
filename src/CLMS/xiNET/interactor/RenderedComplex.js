@@ -233,7 +233,7 @@ Complex.prototype.setPosition = function(ix, iy) { //todo - array as coord param
         this.highlight.setAttribute("width", (2 * (pad * this.controller.z)));
         this.highlight.setAttribute("height", (2 * (pad * this.controller.z)));
         this.highlight.setAttribute("rx", 5 * this.controller.z);
-        this.highlight.setAttribute("ry", 5 * this.controller.z);
+this.highlight.setAttribute("ry", 5 * this.controller.z);
         this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 
 
