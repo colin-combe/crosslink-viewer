@@ -11,10 +11,10 @@ CLMS.xiNET.RenderedCrossLink = function(crossLink, crosslinkViewer) {
     this.controller = crosslinkViewer;
 
     this.renderedFromProtein = this.controller.renderedProteins.get(this.crossLink.fromProtein.id);
-    this.renderedFromProtein.renderedCrossLinks.push(this);
+    this.renderedFromProtein.renderedCrosslinks.push(this);
     if (this.crossLink.toProtein) {
         this.renderedToProtein = this.controller.renderedProteins.get(this.crossLink.toProtein.id);
-        this.renderedToProtein.renderedCrossLinks.push(this);
+        this.renderedToProtein.renderedCrosslinks.push(this);
     }
 
     this.pepSvgArr = [];
@@ -193,9 +193,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.showHighlight = function(show) {
 };
 
 CLMS.xiNET.RenderedCrossLink.prototype.showPeptides = function(pepBounds, renderedProtein) {
-    var y = -CLMS.xiNET.RenderedProtein.STICKHEIGHT / 2;
+    var y = -xiNET.RenderedProtein.STICKHEIGHT / 2;
     var count = pepBounds.length;
-    var yIncrement = CLMS.xiNET.RenderedProtein.STICKHEIGHT / count;
+    var yIncrement = xiNET.RenderedProtein.STICKHEIGHT / count;
     for (var i = 0; i < count; i++) {
         var pep = pepBounds[i];
         var annotColouredRect = document.createElementNS(this.controller.svgns, "rect");
@@ -437,7 +437,7 @@ CLMS.xiNET.RenderedCrossLink.prototype.getResidueCoordinates = function(r, rende
         }
     }
 
-    var rotated = Molecule.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
+    var rotated = xiNET.Interactor.rotatePointAboutPoint([x, y], [0, 0], renderedInteractor.rotation);
 
     x = rotated[0] + renderedInteractor.ix;
     y = rotated[1] + renderedInteractor.iy;
