@@ -1098,7 +1098,7 @@ xiNET.RenderedProtein.prototype.getResidueCoordinates = function(r, yOff) {
 };
 
 xiNET.RenderedProtein.prototype.checkLinks = function() {
-    for (var p_pLink of his.renderedP_PLinks) {
+    for (var p_pLink of this.renderedP_PLinks) {
         p_pLink.check();
         p_pLink.update();
     }

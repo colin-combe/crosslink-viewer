@@ -10,9 +10,7 @@
 
 var xiNET = xiNET || {};
 
-xiNET.Group.prototype = new xiNET.Interactor();
-
-function xiNET.Group(group, xlvController) {
+xiNET.Group = function (group, xlvController) {
     this.id = group.id;
     this.name = group.name;
     this.controller = xlvController;
@@ -127,6 +125,8 @@ xiNET.Group.prototype.mouseDown = function(evt) {
     }
     return false;
 }
+
+xiNET.Group.prototype = new xiNET.Interactor();
 
 xiNET.Group.prototype.mouseOver = function(evt) {
     this.showHighlight(true);

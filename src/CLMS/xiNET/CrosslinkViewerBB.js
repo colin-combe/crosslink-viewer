@@ -203,8 +203,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         this.update();
 
         this.listenTo(this.model, "filteringDone", this.render);
-        this.listenTo(this.model, "hiddenChanged", this.hiddenParticipantsChanged);
-        this.listenTo(this.model, "change:highlights", this.highlightsChanged);
+        this.listenTo(this.model, "hiddenChanged", this.hiddenProteinsChanged);
+        this.listenTo(this.model, "change:highlights", this.highlightedLinksChanged);
         this.listenTo(this.model, "change:selection", this.selectedLinksChanged);
 
         this.listenTo(this.model, "change:linkColourAssignment currentColourModelChanged", this.render);
@@ -212,8 +212,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         this.listenTo(this.model.get("annotationTypes"), "change:shown", this.setAnnotations);
         this.listenTo(this.model.get("alignColl"), "bulkAlignChange", this.setAnnotations);
-        this.listenTo(this.model, "change:selectedProteins", this.selectedParticipantsChanged);
-        this.listenTo(this.model, "change:highlightedProteins", this.highlightedParticipantsChanged);
+        this.listenTo(this.model, "change:selectedProteins", this.selectedProteinsChanged);
+        this.listenTo(this.model, "change:highlightedProteins", this.highlightedProteinsChanged);
         this.listenTo(this.model.get("clmsModel"), "change:matches", this.update);
 
         this.listenTo(CLMSUI.vent, "proteinMetadataUpdated", this.proteinMetadataUpdated);
@@ -305,7 +305,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             var participant = participantsArr[p];
 
             if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
-                var newProt = new CLMS.xiNET.RenderedProtein(participant, this);
+                var newProt = new xiNET.RenderedProtein(participant, this);
                 this.renderedProteins.set(participant.id, newProt);
 
                 var protSize = participant.size;
@@ -708,8 +708,9 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
     },
 
     mouseOut: function(evt) {
-        d3.select(".custom-menu-margin").style("display", "none");
-        d3.select(".group-custom-menu-margin").style("display", "none");
+        // don't, causes prob's - RenderedInteractor mouseOut getting getting propogated?
+        // d3.select(".custom-menu-margin").style("display", "none");
+        // d3.select(".group-custom-menu-margin").style("display", "none");
     },
 
     getEventPoint: function(evt) {
@@ -985,7 +986,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         download(svgXML, 'application/svg', fileName + ".svg");
     },
 
-    highlightsChanged: function() {
+    highlightedLinksChanged: function() {
         for (var p_pLink of this.renderedP_PLinks.values()) {
             p_pLink.showHighlight(false);
         }
@@ -1027,44 +1028,44 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    selectedParticipantsChanged: function() {
-        var selectedParticipants = this.model.get("selectedProteins");
-        for (var renderedParticipant of this.renderedParticipants.values()) {
-            if (selectedParticipants.indexOf(renderedParticipant.participant) == -1 && renderedParticipant.isSelected == true) {
-                renderedParticipant.setSelected(false);
+    selectedProteinsChanged: function() {
+        var selectedProteins = this.model.get("selectedProteins");
+        for (var renderedProtein of this.renderedProteins.values()) {
+            if (selectedProteins.indexOf(renderedProtein.participant) == -1 && renderedProtein.isSelected == true) {
+                renderedProtein.setSelected(false);
             }
         }
-        for (var selectedParticipant of selectedParticipants) {
-            if (selectedParticipant.is_decoy != true) {
-                var renderedParticipant = this.renderedProteins.get(selectedParticipant.id);
-                if (renderedParticipant.isSelected == false) {
-                    renderedParticipant.setSelected(true);
+        for (var selectedProtein of selectedProteins) {
+            if (selectedProtein.is_decoy != true) {
+                var renderedProtein = this.renderedProteins.get(selectedProtein.id);
+                if (renderedProtein.isSelected == false) {
+                    renderedProtein.setSelected(true);
                 }
             }
         }
         return this;
     },
 
-    highlightedParticipantsChanged: function() { // todo - tidy
-        var highlightedParticipants = this.model.get("highlightedProteins");
-        for (var renderedParticipant of this.renderedParticipants.values()) {
-            if (highlightedParticipants.indexOf(renderedParticipant.participant) == -1 && renderedParticipant.isHighlighted == true) {
-                renderedParticipant.showHighlight(false);
-                renderedParticipant.isHighlighted = false;
+    highlightedProteinsChanged: function() {
+        var highlightedProteins = this.model.get("highlightedProteins");
+        for (var renderedProtein of this.renderedProteins.values()) {
+            if (highlightedProteins.indexOf(renderedProtein.participant) == -1 && renderedProtein.isHighlighted == true) {
+                renderedProtein.showHighlight(false);
+                renderedProtein.isHighlighted = false;
             }
         }
-        for (var highlightedParticipants of renderedParticipants) {
-            if (highlightedParticipants[sp].is_decoy != true) {
-                var renderedParticipant = this.renderedProteins.get(highlightedParticipant.id);
-                if (renderedParticipant.isHighlighted == false) {
-                    renderedParticipant.showHighlight(true);
+        for (var highlightedProtein of highlightedProteins) {
+            if (highlightedProtein.is_decoy != true) {
+                var renderedProtein = this.renderedProteins.get(highlightedProtein.id);
+                if (renderedProtein.isHighlighted == false) {
+                    renderedProtein.showHighlight(true);
                 }
             }
         }
         return this;
     },
 
-    hiddenParticipantsChanged: function() {
+    hiddenProteinsChanged: function() {
         this.d3cola.stop();
 
         var manuallyHidden = 0;

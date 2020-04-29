@@ -10,15 +10,15 @@
 
 var xiNET = xiNET || {};
 
-function xiNET.Interactor() {}
+xiNET.Interactor = function() {};
 
 xiNET.Interactor.prototype.mouseDown = function(evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.controller.d3cola.stop();
     this.controller.dragElement = this;
     this.controller.dragStart = evt;
-    d3.select(".custom-menu-margin").style("display", "none");
-    d3.select(".group-custom-menu-margin").style("display", "none");
+    //d3.select(".custom-menu-margin").style("display", "none");
+    //d3.select(".group-custom-menu-margin").style("display", "none");
     return false;
 };
 
@@ -44,7 +44,8 @@ xiNET.Interactor.prototype.mouseOver = function(evt) {
 };
 
 xiNET.Interactor.prototype.mouseOut = function(evt) {
-    this.controller.model.setHighlightedProteins([]); // mjg apr 18
+    //this.controller.preventDefaultsAndStopPropagation(evt); // isn't stopping mouseOut in controller getting called
+    this.controller.model.setHighlightedProteins([]);
     this.controller.model.get("tooltipModel").set("contents", null);
 };
 
