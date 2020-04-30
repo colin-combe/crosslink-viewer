@@ -200,9 +200,20 @@ xiNET.Interactor.prototype.showLabel = function(show) {
 };
 
 xiNET.Interactor.prototype.getRenderedParticipant = function() {
-    if (this.complex && this.complex.expanded == false) {
-        return this.complex.getRenderedParticipant();
+    if (this.inCollapsedGroup()) {
+        var groupIt = this.groups.values();
+        var firstGroup = groupIt.next().value;
+        return firstGroup.getRenderedParticipant();
     } else {
         return this;
     }
+}
+
+xiNET.Interactor.prototype.inCollapsedGroup = function() {
+    if (this.groups && this.groups.size == 1) {
+        var groupIt = this.groups.values();
+        var firstGroup = groupIt.next().value;
+        return !firstGroup.expanded;
+    }
+    return false;
 }

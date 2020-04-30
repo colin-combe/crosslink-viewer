@@ -274,13 +274,13 @@ CLMS.xiNET.P_PLink.prototype.update = function() {
         //hide if prot either end is hidden
         this.renderedFromProtein.participant.hidden ||
         this.renderedToProtein.participant.hidden ||
-        // or either end is expanded to bar and not in collapsed complex
-        (this.renderedFromProtein.expanded == true && !(this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) ||
-        (this.renderedToProtein.expanded == true && !(this.renderedToProtein.complex && this.renderedToProtein.complex.expanded == false)) ||
+        // or either end is expanded to bar and not in collapsed group
+        (this.renderedFromProtein.expanded == true && !this.renderedFromProtein.inCollapsedGroup()) ||
+        (this.renderedToProtein.expanded == true && !this.renderedToProtein.inCollapsedGroup()) ||
         // or no matches pass filter
         this.filteredCrossLinkCount === 0 ||
         // or is self link in collapsed group
-        (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) {
+        (this.crossLinks[0].isSelfLink() && this.renderedFromProtein.inCollapsedGroup())) {
         this.hide();
     } else {
         this.show();

@@ -17,7 +17,7 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.renderedP_PLinks = [];
     this.renderedCrosslinks = [];
 
-    this.complexes = new Set(); //// TODO: rename to groups
+    this.groups = new Set(); //// TODO: rename to groups
 
     // layout info
     this.ix = 100;
@@ -120,7 +120,7 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
         .attr("rx", r + 2.5).attr("ry", r + 2.5)
         .attr("stroke-opacity", 0)
         .attr("fill-opacity", 0);
-  d3.select(this.labelSVG).attr("transform",
+    d3.select(this.labelSVG).attr("transform",
         "translate(0, 0) rotate(0) scale(1, 1)");
     // events
     var self = this;
@@ -364,9 +364,9 @@ xiNET.RenderedProtein.prototype.setPosition = function(ix, iy) {
         }
     }
 
-    for (var complex of this.complexes) {
-        if (complex.expanded == true && !this.hidden) {
-            complex.updateExpandedGroup();
+    for (var group of this.groups) {
+        if (group.expanded && !this.hidden) {
+            group.updateExpandedGroup();
         }
     }
 };
@@ -836,9 +836,8 @@ xiNET.RenderedProtein.prototype.toStick = function() {
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
         self.setAllLinkCoordinates();
 
-
-        if (self.complex) {
-            self.complex.updateExpandedGroup();
+        for (var group of self.groups) {
+            group.updateExpandedGroup();
         }
 
         if (interp === 1) { // finished - tidy up

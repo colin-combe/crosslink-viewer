@@ -505,7 +505,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             renderedProtein.setPositionFromXinet(nx, ny);
                             renderedProtein.setAllLinkCoordinates();
                         }
-                    } else if (this.dragElement.type == "complex") {
+                    } else if (this.dragElement.type == "group") {
                         if (this.dragElement.expanded == true) {
                             var toDrag = this.dragElement.renderedParticipants;
                             for (var d = 0; d < toDrag.length; d++) {
@@ -648,7 +648,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
                             this.contextMenuParticipant = this.dragElement;
                             this.contextMenuPoint = c;
 
-                            if (this.dragElement.type != "complex") {
+                            if (this.dragElement.type != "group") {
                                 var menu = d3.select(".custom-menu-margin")
                                 menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
                                 d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
@@ -1075,7 +1075,7 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             if (renderedParticipant.participant.manuallyHidden == true) {
                 manuallyHidden++;
             }
-            if (!renderedParticipant.complex || renderedParticipant.complex.expanded) {
+            if (!renderedParticipant.inCollapsedGroup()) {
                 renderedParticipant.setHidden(renderedParticipant.participant.hidden);
             } else {
                 renderedParticipant.setHidden(true);
@@ -1126,8 +1126,8 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
 
         }
 
+        //todo - move this
         // update groups
-        //TODO - this prob shouldn't be here
         var groupMap = new Map();
         var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
         var pCount = participantsArr.length;
@@ -1146,19 +1146,18 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
         }
         this.model.set("groups", groupMap);
         this.model.trigger("change:groups");
+
         return this;
     },
 
     groupsChanged: function() {
         this.d3cola.stop();
-
         var groupMap = this.model.get("groups");
         //clear out any old groups
         for (var g of this.groups) {
             // if (!groupMap.has(g.id)) {
             for (var rp of g.renderedParticipants) {
-                rp.complexes.delete(g);
-                rp.complex = null; // todo -hacky ,this whole ting with the .complexes and .complex is temp // HACK
+                rp.groups.delete(g);
             }
             if (g.expanded == true) {
                 this.groupsSVG.removeChild(g.upperGroup);
@@ -1168,28 +1167,18 @@ CLMS.xiNET.CrosslinkViewer = Backbone.View.extend({
             // }
         }
         this.groups = [];
-
-        //todo - sort groups by size here?
-
         for (var g of groupMap.entries()) {
-            var group = {
-                "name": g[0],
-                "id": g[0],
-                "participants": g[1]
-            }
-            var complex = new xiNET.Group(group, this);
-            this.groups.push(complex);
-            for (var pid of group.participants) {
-                var renderedProtein = this.renderedProteins.get(pid);
-                renderedProtein.complexes.add(complex);
-                if (renderedProtein.complexes.size > 1) {
-                    console.log("GROUP OVERLAP!", renderedProtein.participant.name, renderedProtein.complexes);
-                }
-                renderedProtein.complex = complex;
-            }
-            complex.init();
-        }
+            // if (groups doesn't contain) ...
+            var group = new xiNET.Group(g[0], g[1], this);
+            this.groups.push(group);
 
+            // for (var pid of g[1]) { //todo - tidy, make part of constructor?
+            //     var renderedProtein = this.renderedProteins.get(pid);
+            //     renderedProtein.groups.add(group);
+            // }
+
+            group.init();
+        }
         this.hiddenProteinsChanged();
     },
 

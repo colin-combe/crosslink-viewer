@@ -261,9 +261,9 @@ CLMS.xiNET.RenderedCrossLink.prototype.setSelected = function(select) {
 
 //used when filter changed // todo - tidy
 CLMS.xiNET.RenderedCrossLink.prototype.check = function(filter) {
-    // neither end is a bar which isn't in a collpased complex? then hide
-    if ((this.renderedFromProtein.expanded == false || (this.renderedFromProtein.complex && this.renderedFromProtein.complex.expanded == false)) &&
-        (this.renderedToProtein ? (this.renderedToProtein.expanded == false || (this.renderedToProtein.complex && this.renderedToProtein.complex.expanded == false)) : false)) {
+    // neither end is a bar which isn't in a collpased group? then hide
+    if ((this.renderedFromProtein.expanded == false || (this.renderedFromProtein.inCollapsedGroup())) &&
+        (this.renderedToProtein ? (this.renderedToProtein.expanded == false || (this.renderedToProtein.inCollapsedGroup())) : false)) {
         this.hide();
         return false;
     }

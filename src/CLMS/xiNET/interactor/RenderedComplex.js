@@ -10,16 +10,18 @@
 
 var xiNET = xiNET || {};
 
-xiNET.Group = function (group, xlvController) {
-    this.id = group.id;
-    this.name = group.name;
+xiNET.Group = function(id, participantIds, xlvController) {
+    this.id = id;
+    this.name = id;
     this.controller = xlvController;
     this.renderedParticipants = [];
-    for (var p of group.participants) {
-        this.renderedParticipants.push(this.controller.renderedProteins.get(p));
+    for (var p of participantIds) {
+        var rp = this.controller.renderedProteins.get(p)
+        this.renderedParticipants.push(rp);
+        rp.groups.add(this);
     }
     this.expanded = true;
-    this.type = 'complex';
+    this.type = 'group';
 
     this.padding = 40; // used by cola.js
 
@@ -262,7 +264,7 @@ xiNET.Group.prototype.updateExpandedGroup = function() {
 };
 
 xiNET.Group.prototype.getResidueCoordinates = function(x, y) {
-  return [this.ix, this.iy];
+    return [this.ix, this.iy];
 };
 
 xiNET.Group.prototype.setHidden = function(bool) {
