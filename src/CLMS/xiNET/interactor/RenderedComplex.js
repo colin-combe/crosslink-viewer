@@ -95,6 +95,8 @@ xiNET.Group = function (group, xlvController) {
     });
 }
 
+xiNET.Group.prototype = new xiNET.Interactor();
+
 xiNET.Group.prototype.init = function() {
     this.setForm(this.expanded);
 };
@@ -126,7 +128,6 @@ xiNET.Group.prototype.mouseDown = function(evt) {
     return false;
 }
 
-xiNET.Group.prototype = new xiNET.Interactor();
 
 xiNET.Group.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
