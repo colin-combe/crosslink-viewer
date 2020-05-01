@@ -613,28 +613,29 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
             if (this.dragElement != null) { // a thing has been clicked
                 if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                    if (rightclick) {
-                        if (!this.dragElement.expanded) {
-                            this.dragElement.setExpanded(true);
-                        } else {
-                            this.model.get("tooltipModel").set("contents", null);
-                            this.contextMenuParticipant = this.dragElement;
-                            this.contextMenuPoint = c;
-
-                            if (this.dragElement.type != "group") {
-                                var menu = d3.select(".custom-menu-margin")
-                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
+                    if (this.dragElement.ix || this.dragElement.type == "group") { //if the thing is protein or group, in pther words not a link, todo-tidy
+                        if (rightclick) {
+                            if (!this.dragElement.expanded) {
+                                this.dragElement.setExpanded(true);
                             } else {
-                                var menu = d3.select(".group-custom-menu-margin")
-                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                this.model.get("tooltipModel").set("contents", null);
+                                this.contextMenuParticipant = this.dragElement;
+                                this.contextMenuPoint = c;
+
+                                if (this.dragElement.type != "group") {
+                                    var menu = d3.select(".custom-menu-margin")
+                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                    d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
+                                } else {
+                                    var menu = d3.select(".group-custom-menu-margin")
+                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                }
                             }
+                        } else if (this.dragElement.participant) { // its a protein
+                            var add = evt.ctrlKey || evt.shiftKey;
+                            this.model.setSelectedProteins([this.dragElement.participant], add);
                         }
-                    } else if (this.dragElement.participant) { // its a protein
-                        var add = evt.ctrlKey || evt.shiftKey;
-                        this.model.setSelectedProteins([this.dragElement.participant], add);
                     }
-                    //} // else flip selflink
                 } else if (this.state === this.STATES.ROTATING) {
                     //round protein rotation to nearest 5 degrees (looks neater)
                     this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
@@ -1101,10 +1102,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         //TODO - move this
         // update groups
         var groupMap = new Map();
-        var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
-        var pCount = participantsArr.length;
-        for (var p = 0; p < pCount; p++) {
-            var participant = participantsArr[p];
+        for (var participant of meta.items.values()) {
             if (participant.meta && participant.meta.complex) {
                 group = participant.meta.complex;
                 if (groupMap.get(group)) {
@@ -1124,11 +1122,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     groupsChanged: function() {
         this.d3cola.stop();
+        // a Map of with group id as key and Set of protein ids as value
         var groupMap = this.model.get("groups");
         //clear out all old groups, just wipe everything
         for (var g of this.groups) {
             for (var rp of g.renderedParticipants) {
-                rp.groups.delete(g);
+                rp.parentGroups.delete(g);
             }
             if (g.expanded) {
                 this.groupsSVG.removeChild(g.upperGroup);
@@ -1138,11 +1137,18 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
 
         this.groups = [];
+        //we need to get leaves (i.e. proteins) and groups (i.e. sub groups)
+
+        //first, sort by number protein ids in group
+
+        console.log("***", groupMap);
+
         for (var g of groupMap.entries()) {
             var group = new xiNET.Group(g[0], g[1], this);
             group.init();
             this.groups.push(group);
         }
+
 
 
         this.hiddenProteinsChanged();

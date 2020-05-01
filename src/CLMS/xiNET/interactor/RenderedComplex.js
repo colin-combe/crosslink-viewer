@@ -14,11 +14,11 @@ xiNET.Group = function(id, participantIds, xlvController) {
     this.id = id;
     this.name = id;
     this.controller = xlvController;
-    this.renderedParticipants = [];
-    for (var p of participantIds) {
-        var rp = this.controller.renderedProteins.get(p)
+    this.renderedParticipants = []; // todo - change to .leaves, .groups, which is subgroup
+    for (var pId of participantIds) {
+        var rp = this.controller.renderedProteins.get(pId)
         this.renderedParticipants.push(rp);
-        rp.groups.add(this);
+        rp.parentGroups.add(this);
     }
     this.expanded = true;
     this.type = 'group';

@@ -201,7 +201,7 @@ xiNET.Interactor.prototype.showLabel = function(show) {
 
 xiNET.Interactor.prototype.getRenderedParticipant = function() {
     if (this.inCollapsedGroup()) {
-        var groupIt = this.groups.values();
+        var groupIt = this.parentGroups.values();
         var firstGroup = groupIt.next().value;
         return firstGroup.getRenderedParticipant();
     } else {
@@ -210,8 +210,8 @@ xiNET.Interactor.prototype.getRenderedParticipant = function() {
 }
 
 xiNET.Interactor.prototype.inCollapsedGroup = function() {
-    if (this.groups && this.groups.size == 1) {
-        var groupIt = this.groups.values();
+    if (this.parentGroups && this.parentGroups.size == 1) {
+        var groupIt = this.parentGroups.values();
         var firstGroup = groupIt.next().value;
         return !firstGroup.expanded;
     }

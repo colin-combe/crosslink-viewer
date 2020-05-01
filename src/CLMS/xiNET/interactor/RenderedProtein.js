@@ -17,7 +17,7 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.renderedP_PLinks = [];
     this.renderedCrosslinks = [];
 
-    this.groups = new Set(); //// TODO: rename to groups
+    this.parentGroups = new Set(); //// TODO: rename to groups
 
     // layout info
     this.ix = 100;
@@ -364,7 +364,7 @@ xiNET.RenderedProtein.prototype.setPosition = function(ix, iy) {
         }
     }
 
-    for (var group of this.groups) {
+    for (var group of this.parentGroups) {
         if (group.expanded && !this.hidden) {
             group.updateExpandedGroup();
         }
@@ -836,7 +836,7 @@ xiNET.RenderedProtein.prototype.toStick = function() {
         self.stickZoom = stickZoomInterpol(cubicInOut(interp))
         self.setAllLinkCoordinates();
 
-        for (var group of self.groups) {
+        for (var group of self.parentGroups) {
             group.updateExpandedGroup();
         }
 
