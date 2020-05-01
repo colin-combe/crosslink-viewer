@@ -3,10 +3,10 @@
 //
 //  author: Colin Combe
 //
-//  CLMS.xiNET.P_PLink.js
+//  xiNET.P_PLink.js
 //  the class representing a protein-protein link
 
-CLMS.xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
+xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
     this.id = p_pId;
     this.controller = crosslinkViewer;
     this.crossLinks = [];
@@ -21,9 +21,9 @@ CLMS.xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
     this.colours = new Set(); // TODO - problems here
 };
 
-CLMS.xiNET.P_PLink.prototype = new CLMS.xiNET.Link();
+xiNET.P_PLink.prototype = new xiNET.Link();
 
-CLMS.xiNET.P_PLink.prototype.initSVG = function() {
+xiNET.P_PLink.prototype.initSVG = function() {
     if (this.crossLinks[0].isSelfLink() === false) {
         this.line = document.createElementNS(this.controller.svgns, "line");
         this.highlightLine = document.createElementNS(this.controller.svgns, "line");
@@ -116,7 +116,7 @@ CLMS.xiNET.P_PLink.prototype.initSVG = function() {
     };
 };
 
-CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
+xiNET.P_PLink.prototype.mouseOver = function(evt) {
     var p = this.controller.getEventPoint(evt);
 
     var toHighlight = this.crossLinks.slice(0);
@@ -139,7 +139,7 @@ CLMS.xiNET.P_PLink.prototype.mouseOver = function(evt) {
 };
 
 // event handler for starting dragging or rotation (or flipping internal links)
-CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
+xiNET.P_PLink.prototype.mouseDown = function(evt) {
     //stop layout
     this.controller.d3cola.stop();
 
@@ -166,7 +166,7 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     d3.select(".group-custom-menu-margin").style("display", "none");
 };
 
-/*CLMS.xiNET.P_PLink.prototype.touchStart = function(evt) {
+/*xiNET.P_PLink.prototype.touchStart = function(evt) {
     this.controller.d3cola.stop();
     this.controller.dragElement = this;
     this.controller.model.setMarkedCrossLinks("selection", this.crossLinks);
@@ -175,14 +175,14 @@ CLMS.xiNET.P_PLink.prototype.mouseDown = function(evt) {
     this.controller.dragStart = evt;
 }*/
 
-CLMS.xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
+xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
     var path = this.renderedFromProtein.getAggregateSelfLinkPath();
     this.line.setAttribute('d', path);
     this.highlightLine.setAttribute('d', path);
     this.thickLine.setAttribute('d', path);
 };
 
-CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
+xiNET.P_PLink.prototype.showHighlight = function(show) {
     if (this.shown) {
         if (show) {
             d3.select(this.highlightLine).classed("selectedLink", false);
@@ -198,7 +198,7 @@ CLMS.xiNET.P_PLink.prototype.showHighlight = function(show) {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
+xiNET.P_PLink.prototype.setSelected = function(select) {
     if (this.shown) {
         if (select == true) {
             d3.select(this.highlightLine).classed("selectedLink", true);
@@ -213,7 +213,7 @@ CLMS.xiNET.P_PLink.prototype.setSelected = function(select) {
     this.isSelected = select;
 };
 
-CLMS.xiNET.P_PLink.prototype.check = function() {
+xiNET.P_PLink.prototype.check = function() {
     this.ambiguous = true;
     this.hd = false;
 
@@ -269,14 +269,14 @@ CLMS.xiNET.P_PLink.prototype.check = function() {
     return this.filteredCrossLinkCount;
 };
 
-CLMS.xiNET.P_PLink.prototype.update = function() {
+xiNET.P_PLink.prototype.update = function() {
     if (!this.renderedToProtein || // todo - ok... check why this is here
         //hide if prot either end is hidden
         this.renderedFromProtein.participant.hidden ||
         this.renderedToProtein.participant.hidden ||
         // or either end is expanded to bar and not in collapsed group
-        (this.renderedFromProtein.expanded == true && !this.renderedFromProtein.inCollapsedGroup()) ||
-        (this.renderedToProtein.expanded == true && !this.renderedToProtein.inCollapsedGroup()) ||
+        (this.renderedFromProtein.expanded && !this.renderedFromProtein.inCollapsedGroup()) ||
+        (this.renderedToProtein.expanded && !this.renderedToProtein.inCollapsedGroup()) ||
         // or no matches pass filter
         this.filteredCrossLinkCount === 0 ||
         // or is self link in collapsed group
@@ -287,7 +287,7 @@ CLMS.xiNET.P_PLink.prototype.update = function() {
     }
 }
 
-CLMS.xiNET.P_PLink.prototype.show = function() {
+xiNET.P_PLink.prototype.show = function() {
     //if (!this.shown) { - causing problems with load layout, TODO - look at again
     if (typeof this.line === 'undefined') {
         this.initSVG();
@@ -347,7 +347,7 @@ CLMS.xiNET.P_PLink.prototype.show = function() {
     this.setSelected(this.isSelected);
 };
 
-CLMS.xiNET.P_PLink.prototype.hide = function() {
+xiNET.P_PLink.prototype.hide = function() {
     if (this.shown) {
         this.shown = false;
         d3.select(this.thickLine).style("display", "none");
@@ -356,7 +356,7 @@ CLMS.xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
+xiNET.P_PLink.prototype.setLineCoordinates = function() {
     if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
             var target = this.renderedFromProtein.getRenderedParticipant();
@@ -384,7 +384,7 @@ CLMS.xiNET.P_PLink.prototype.setLineCoordinates = function() {
     }
 }
 
-CLMS.xiNET.P_PLink.prototype.getOtherEnd = function(protein) {
+xiNET.P_PLink.prototype.getOtherEnd = function(protein) {
     if (this.fromProtein === protein) {
         return this.toProtein;
     } else {

@@ -29,8 +29,8 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.isSelected = false;
     this.isHighlighted = false;
     //rotators
-    this.lowerRotator = new CLMS.xiNET.Rotator(this, 0, this.controller);
-    this.upperRotator = new CLMS.xiNET.Rotator(this, 1, this.controller);
+    this.lowerRotator = new xiNET.Rotator(this, 0, this.controller);
+    this.upperRotator = new xiNET.Rotator(this, 1, this.controller);
 
     /*
      * Lower group
@@ -104,7 +104,7 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
 
     var protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
 
-    //since form is set to 0, make this a circle, this stuff is equivalant to
+    //since this.expanded is false, make this a circle, this stuff is equivalant to
     // end result of toCircle but without transition
     var r = this.getBlobRadius();
     d3.select(this.outline)
@@ -179,7 +179,7 @@ xiNET.RenderedProtein.prototype.setEverything = function() {
     this.setPositionFromXinet(this.ix, this.iy);
     this.scale();
     this.setAllLinkCoordinates();
-    this.setForm(this.newForm);
+    this.setExpanded(this.newForm);
 }
 
 xiNET.RenderedProtein.prototype.mouseOver = function(evt) {
@@ -196,7 +196,7 @@ xiNET.RenderedProtein.prototype.getBlobRadius = function() {
 };
 
 xiNET.RenderedProtein.prototype.resize = function() {
-    if (this.expanded == false) {
+    if (!this.expanded) {
         var r = this.getBlobRadius();
         d3.select(this.outline)
             .attr("x", -r).attr("y", -r)
@@ -283,7 +283,7 @@ xiNET.RenderedProtein.prototype.setRotation = function(angle) {
             .translate(Math.abs(labelTransform.translate[0]), 0)
             .rotate(180, 0, 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.expanded == true) {
+        if (this.expanded) {
             for (var i = 0; i < sll; i++) {
                 this.scaleLabels[i].setAttribute("transform", "scale(-1,1)");
             }
@@ -293,7 +293,7 @@ xiNET.RenderedProtein.prototype.setRotation = function(angle) {
         var k = svg.createSVGMatrix()
             .translate(-(Math.abs(labelTransform.translate[0])), 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
-        if (this.expanded == true) {
+        if (this.expanded) {
             for (var j = 0; j < sll; j++) {
                 this.scaleLabels[j].setAttribute("transform", "scale(1,1)");
             }
@@ -342,7 +342,7 @@ xiNET.RenderedProtein.prototype.setPositionFromXinet = function(ix, iy) {
 xiNET.RenderedProtein.prototype.setPosition = function(ix, iy) {
     this.ix = ix;
     this.iy = iy;
-    if (this.expanded == true) {
+    if (this.expanded) {
         this.upperGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ") " + "rotate(" + this.rotation + ")");
         this.lowerGroup.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
@@ -371,7 +371,7 @@ xiNET.RenderedProtein.prototype.setPosition = function(ix, iy) {
     }
 };
 
-xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see CLMS.xiNET.Rotator.js
+xiNET.RenderedProtein.rotOffset = 25 * 0.7; // see xiNET.Rotator.js
 xiNET.RenderedProtein.minXDist = 30;
 
 xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
@@ -406,7 +406,7 @@ xiNET.RenderedProtein.prototype.setStickScale = function(scale, svgP) {
 xiNET.RenderedProtein.prototype.scale = function() {
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
     var protLength = (this.participant.size) * this.stickZoom;
-    if (this.expanded == true) {
+    if (this.expanded) {
         var labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         var k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
             .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), 0);
@@ -541,15 +541,15 @@ xiNET.RenderedProtein.prototype.setHidden = function(bool) {
     this.hidden = bool ? true : false;
 };
 
-xiNET.RenderedProtein.prototype.setForm = function(form, svgP) {
+xiNET.RenderedProtein.prototype.setExpanded = function(expanded, svgP) {
     this.controller.model.get("tooltipModel").set("contents", null);
     if (this.busy !== true) {
-        if (form == 1) {
-            if (this.expanded !== 1) {
+        if (expanded) {
+            if (this.expanded != expanded) {
                 this.toStick();
             }
         } else {
-            if (this.expanded !== 0) {
+            if (this.expanded != expanded) {
                 this.toCircle(svgP);
             }
         }
@@ -689,7 +689,7 @@ xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
         if (interp === 1) { // finished - tidy up
             //bring in new
-            self.expanded = 0;
+            self.expanded = false;
             var renderedCrossLinks = self.renderedCrosslinks;
             var rclCount = renderedCrossLinks.length;
             for (var rcl = 0; rcl < rclCount; rcl++) {
@@ -720,7 +720,7 @@ xiNET.RenderedProtein.prototype.toCircle = function(svgP) {
 
 xiNET.RenderedProtein.prototype.toStick = function() {
     this.busy = true;
-    this.expanded = 1;
+    this.expanded = true;
 
     //place rotators
     this.upperGroup.appendChild(this.lowerRotator.svg);
@@ -859,7 +859,7 @@ xiNET.RenderedProtein.prototype.toStick = function() {
 
 xiNET.RenderedProtein.prototype.toStickNoTransition = function() { //TODo - tidy this mess
     this.busy = true;
-    this.expanded = 1;
+    this.expanded = true;
 
     //place rotators
     this.upperGroup.appendChild(this.lowerRotator.svg);
@@ -1175,7 +1175,7 @@ xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                 var colouredRect = document.createElementNS(this.controller.svgns, "path");
                 if (anno.type != xiNET.disulfide) {
                     //if (anno.type != "disulfide bond") {
-                    if (this.expanded == false) {
+                    if (!this.expanded) {
                         pieSlice.setAttribute("d", this.getAnnotationPieSliceArcPath(anno));
                         colouredRect.setAttribute("d", this.getAnnotationPieSliceApproximatePath(anno));
                     } else {
@@ -1194,7 +1194,7 @@ xiNET.RenderedProtein.prototype.setPositionalFeatures = function() {
                     colouredRect.setAttribute("stroke", c);
                 } else {
 
-                    if (this.expanded == false) {
+                    if (!this.expanded) {
                         pieSlice.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                         colouredRect.setAttribute("d", this.getDisulfidAnnotationCircPath(anno));
                     } else {

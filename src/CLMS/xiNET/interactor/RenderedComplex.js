@@ -100,7 +100,7 @@ xiNET.Group = function(id, participantIds, xlvController) {
 xiNET.Group.prototype = new xiNET.Interactor();
 
 xiNET.Group.prototype.init = function() {
-    this.setForm(this.expanded);
+    this.setExpanded(this.expanded);
 };
 
 // event handler for starting dragging or rotation (or flipping internal links)
@@ -196,7 +196,7 @@ xiNET.Group.prototype.setPositionFromXinet = function(ix, iy) {
 }
 
 xiNET.Group.prototype.setPosition = function(ix, iy) { //todo - array as coord param?
-    if (this.expanded == false) {
+    if (!this.expanded) {
         this.ix = ix;
         this.iy = iy;
         var pad = 20;
@@ -311,12 +311,12 @@ xiNET.Group.prototype.showHighlight = function(show) {
 //     }
 // };
 
-xiNET.Group.prototype.setForm = function(form, svgP) {
+xiNET.Group.prototype.setExpanded = function(expanded, svgP) {
     // if (!this.busy) {
     //   this.busy = true;
     // var self = this;
-    if (form == 0) {
-        this.expanded = 0;
+    if (!expanded) {
+        this.expanded = expanded ? true : false;
         this.controller.proteinUpper.appendChild(this.upperGroup);
         this.upperGroup.appendChild(this.labelSVG);
         this.outline.setAttribute("fill-opacity", 1);
@@ -333,7 +333,7 @@ xiNET.Group.prototype.setForm = function(form, svgP) {
             rp.checkLinks();
         }
     } else {
-        this.expanded = 1;
+        this.expanded = expanded ? true : false;
         this.controller.groupsSVG.append(this.upperGroup);
         if (this.upperGroup.contains(this.labelSVG)) {
             this.upperGroup.removeChild(this.labelSVG);

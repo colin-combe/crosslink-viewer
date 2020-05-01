@@ -8,15 +8,15 @@
 //
 //  Link.js
 
-//'superclass' for CLMS.xiNET.RenderedCrossLink, CLMS.xiNET.P_PLink
-CLMS.xiNET.Link = function() {};
+//'superclass' for xiNET.RenderedCrossLink, xiNET.P_PLink
+xiNET.Link = function() {};
 
-CLMS.xiNET.Link.prototype.mouseOut = function(evt) {
+xiNET.Link.prototype.mouseOut = function(evt) {
     this.controller.model.setMarkedCrossLinks("highlights", []); // which pokes highlighted matches into changing too
     this.controller.model.get("tooltipModel").set("contents", null);
 }
 
-CLMS.xiNET.Link.prototype.dashedLine = function(dash) {
+xiNET.Link.prototype.dashedLine = function(dash) {
     if (this.shown) {
         if (dash) {
             if (this.renderedFromProtein === this.renderedToProtein) {

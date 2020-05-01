@@ -6,9 +6,9 @@
 //
 //    author: Colin Combe
 //
-//    CLMS.xiNET.Rotator.js
+//    xiNET.Rotator.js
 
-CLMS.xiNET.Rotator = function(protein, upperOrLower, controller) {
+xiNET.Rotator = function(protein, upperOrLower, controller) {
     var self = this;
     this.controller = controller;
     this.protein = protein;
@@ -69,15 +69,15 @@ CLMS.xiNET.Rotator = function(protein, upperOrLower, controller) {
     };
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseOver = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseOver = function(evt) {
     this.rotatorSymbol.setAttribute("display", "block");
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseOut = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseOut = function(evt) {
     this.rotatorSymbol.setAttribute("display", "none");
 }
 
-CLMS.xiNET.Rotator.prototype.rotatorMouseDown = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseDown = function(evt) {
     this.controller.state = this.controller.STATES.ROTATING;
     this.controller.dragElement = this.protein;
     this.controller.whichRotator = this.upperOrLower;
