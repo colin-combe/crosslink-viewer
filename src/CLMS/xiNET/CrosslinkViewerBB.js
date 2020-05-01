@@ -296,15 +296,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     update: function() {
         this.d3cola.stop();
 
-        var participantsArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("participants"));
-        var pCount = participantsArr.length;
-
         this.wasEmpty = (this.renderedProteins.size == 0);
 
+        // calculate default bar scale
         var maxSeqLength = 0;
-        for (var p = 0; p < pCount; p++) {
-            var participant = participantsArr[p];
-
+        for (var participant of this.model.get("clmsModel").get("participants").values()) {
             if (participant.is_decoy == false && this.renderedProteins.has(participant.id) == false) {
                 var newProt = new xiNET.RenderedProtein(participant, this);
                 this.renderedProteins.set(participant.id, newProt);
@@ -316,11 +312,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
         var width = this.svgElement.parentNode.clientWidth;
-        var defaultPixPerRes = ((width * 0.8) -
-            xiNET.RenderedProtein.LABELMAXLENGTH) / maxSeqLength;
-
-        console.log("defautPixPerRes:" + defaultPixPerRes);
-
+        var defaultPixPerRes = ((width * 0.8) - xiNET.RenderedProtein.LABELMAXLENGTH) / maxSeqLength;
         // https://stackoverflow.com/questions/12141150/from-list-of-integers-get-number-closest-to-a-given-value/12141511#12141511
         function takeClosest(myList, myNumber) {
             var bisect = d3.bisector(function(d) {
@@ -336,37 +328,22 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             var before = myList[pos - 1]
             return before;
         }
-
         this.defaultBarScale = takeClosest(this.barScales, defaultPixPerRes);
-        // console.log("default bar scale: " + this.defaultBarScale)
 
-        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        var rpCount = renderedParticipantArr.length;
-        for (var rp = 0; rp < rpCount; rp++) {
-            var prot = renderedParticipantArr[rp];
-            this.proteinLower.appendChild(prot.lowerGroup);
-            this.proteinUpper.appendChild(prot.upperGroup);
-            if (!prot.stickZoom) {
-                prot.stickZoom = this.defaultBarScale;
+        var expand = this.renderedProteins.values().size < 5;
+        for (var rp of this.renderedProteins.values()) {
+            this.proteinLower.appendChild(rp.lowerGroup);
+            this.proteinUpper.appendChild(rp.upperGroup);
+            if (!rp.stickZoom) {
+                rp.stickZoom = this.defaultBarScale;
             }
-            prot.scale();
-        }
-
-        //may need to comment out following if probs
-        if (pCount < 3) {
-            var renderedParticipantsArr = Array.from(this.renderedProteins.values());
-            var rpCount = renderedParticipantsArr.length;
-            for (var rp = 0; rp < rpCount; rp++) {
-                var renderedParticipant = renderedParticipantsArr[rp];
-                renderedParticipant.toStickNoTransition();
+            rp.scale();
+            if (expand) {
+                rp.toStickNoTransition()
             }
         }
 
-        var crossLinksArr = CLMS.arrayFromMapValues(this.model.get("clmsModel").get("crossLinks"));
-        var clCount = crossLinksArr.length;
-        var clmsModel = this.model.get("clmsModel");
-        for (var cl = 0; cl < clCount; cl++) {
-            var crossLink = crossLinksArr[cl];
+        for (var crossLink of this.model.get("clmsModel").get("crossLinks").values()) {
             if (!crossLink.isDecoyLink() && !crossLink.isLinearLink()) {
                 if (!this.renderedCrosslinks.has(crossLink.id)) {
                     var renderedCrossLink = new xiNET.RenderedCrosslink(crossLink, this);
@@ -746,8 +723,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     loadLayout: function(layout) {
         var layoutIsDodgy = false;
-        for (var prot in layout) {
-            var protLayout = layout[prot];
+        for (var protLayout of layout) {
             var protein = this.renderedProteins.get(protLayout.id);
             if (protein !== undefined) {
                 protein.setPositionFromXinet(protLayout["x"], protLayout["y"]);
@@ -769,11 +745,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        var rpCount = renderedParticipantArr.length;
-        for (var rp = 0; rp < rpCount; rp++) {
-            var prot = renderedParticipantArr[rp];
-            prot.setEverything();
+        for (var rp of this.renderedProteins.values()) {
+            rp.setEverything();
         }
 
         //todo - read groups
@@ -790,6 +763,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     autoLayout: function() {
         this.d3cola.stop();
+
         var fixSelected = this.model.get("xinetFixSelected");
         for (renderedProtein of this.renderedProteins.values()) {
             if (!fixSelected) {
@@ -806,9 +780,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         var self = this;
         var links = new Map();
         var nodeSet = new Set();
-
         var selected = this.model.get("selectedProteins");
-
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
         var clCount = filteredCrossLinks.length;
         for (var cl = 0; cl < clCount; ++cl) {
@@ -861,59 +833,31 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-
-/*
-
-var links = this.allBinaryLinks.values();
-var linkCount = links.length;
-for (var l = 0; l < linkCount; l++) {
-    var link = links[l];
-    var fromMol = link.interactors[0];
-    var toMol = link.interactors[1];
-    var source = fromMol; //molLookUp[fromMol.id];
-    var target = toMol; //molLookUp[toMol.id];
-
-    if (source !== target && nodes.indexOf(source) != -1 && nodes.indexOf(target) != -1) {
-
-        if (typeof source !== 'undefined' && typeof target !== 'undefined') {
-            var linkObj = {};
-            linkObj.source = molLookUp[fromMol.id];
-            linkObj.target = molLookUp[toMol.id];
-            linkObj.id = link.id;
-            layoutObj.links.push(linkObj);
-        } else {
-            alert("NOT RIGHT");
-        }
-    }
-}
-
-// todo: add containing group?
-var groups = [];
-if (this.complexes) {
-    for (var c = 0; c < this.complexes.length; c++) {
-        var g = this.complexes[c];
-        g.leaves = [];
-        g.groups = [];
-        for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
-            var i = layoutObj.nodes.indexOf(g.naryLink.interactors[pi]);
-            if (g.naryLink.interactors[pi].type != "complex") {
-                g.leaves.push(i);
+        /*
+        if (this.complexes) {
+            for (var c = 0; c < this.complexes.length; c++) {
+                var g = this.complexes[c];
+                g.leaves = [];
+                g.groups = [];
+                for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
+                    var i = layoutObj.nodes.indexOf(g.naryLink.interactors[pi]);
+                    if (g.naryLink.interactors[pi].type != "complex") {
+                        g.leaves.push(i);
+                    }
+                }
+                groups.push(g);
+            }
+            for (var c = 0; c < this.complexes.length; c++) {
+                var g = this.complexes[c];
+                for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
+                    var i = groups.indexOf(g.naryLink.interactors[pi]);
+                    if (g.naryLink.interactors[pi].type == "complex") {
+                        g.groups.push(i);
+                    }
+                }
             }
         }
-        groups.push(g);
-    }
-    for (var c = 0; c < this.complexes.length; c++) {
-        var g = this.complexes[c];
-        for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
-            var i = groups.indexOf(g.naryLink.interactors[pi]);
-            if (g.naryLink.interactors[pi].type == "complex") {
-                g.groups.push(i);
-            }
-        }
-    }
-}
-
-*/
+        */
         console.log("groups", groups);
 
         delete this.d3cola._lastStress;
@@ -961,7 +905,7 @@ if (this.complexes) {
                 node.setPositionFromCola(node.x, node.y);
                 node.setAllLinkCoordinates();
             }
-            for (var g of groups) { // todo - of self.d3cola.groups() ?
+            for (var g of self.d3cola.groups()) {
                 if (g.expanded) {
                     g.updateExpandedGroup();
                 }
@@ -1154,7 +1098,7 @@ if (this.complexes) {
 
         }
 
-        //todo - move this
+        //TODO - move this
         // update groups
         var groupMap = new Map();
         var participantsArr = CLMS.arrayFromMapValues(meta.items); // its not a d3 map so we need to use this shim
@@ -1181,9 +1125,8 @@ if (this.complexes) {
     groupsChanged: function() {
         this.d3cola.stop();
         var groupMap = this.model.get("groups");
-        //clear out any old groups
+        //clear out all old groups, just wipe everything
         for (var g of this.groups) {
-            // if (!groupMap.has(g.id)) {
             for (var rp of g.renderedParticipants) {
                 rp.groups.delete(g);
             }
@@ -1192,21 +1135,16 @@ if (this.complexes) {
             } else {
                 this.proteinUpper.removeChild(g.upperGroup);
             }
-            // }
         }
+
         this.groups = [];
         for (var g of groupMap.entries()) {
-            // if (groups doesn't contain) ...
             var group = new xiNET.Group(g[0], g[1], this);
-            this.groups.push(group);
-
-            // for (var pid of g[1]) { //todo - tidy, make part of constructor?
-            //     var renderedProtein = this.renderedProteins.get(pid);
-            //     renderedProtein.groups.add(group);
-            // }
-
             group.init();
+            this.groups.push(group);
         }
+
+
         this.hiddenProteinsChanged();
     },
 
