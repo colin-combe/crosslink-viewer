@@ -14,12 +14,16 @@ xiNET.Group = function(id, participantIds, xlvController) {
     this.id = id;
     this.name = id;
     this.controller = xlvController;
-    this.renderedParticipants = []; // todo - change to .leaves, .groups, which is subgroup
+
+    this.renderedParticipants = []; // todo - entirly replace with .leaves, .groups[which is subgroups]
     for (var pId of participantIds) {
         var rp = this.controller.renderedProteins.get(pId)
         this.renderedParticipants.push(rp);
         rp.parentGroups.add(this);
     }
+    this.parentGroups = new Set();
+    this.subgroups = [];
+
     this.expanded = true;
     this.type = 'group';
 
@@ -98,6 +102,26 @@ xiNET.Group = function(id, participantIds, xlvController) {
 }
 
 xiNET.Group.prototype = new xiNET.Interactor();
+
+xiNET.Group.prototype.isSubsetOf = function(anotherGroup) {
+    var rpCount = this.renderedParticipants.length;
+    for (var rp = 0; rp < rpCount; rp++) {
+        if (anotherGroup.renderedParticipants.indexOf(this.renderedParticipants[rp]) == -1) {
+            return false;
+        }
+    }
+    return true;
+};
+
+xiNET.Group.prototype.contains = function(renderedProtein) {
+    var rpCount = this.renderedParticipants.length;
+    for (var rp = 0; rp < rpCount; rp++) {
+        if (rp === renderedProtein) {
+            return true;
+        }
+    }
+    return false;
+};
 
 xiNET.Group.prototype.init = function() {
     this.setExpanded(this.expanded);

@@ -448,7 +448,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         d3.select(".group-custom-menu-margin").style("display", "none");
     },
 
-    // dragging/rotation/SELECT_PAN/selecting
+    // dragging/rotation/panning/selecting
     mouseMove: function(evt) {
         if (this.dragStart) {
             var p = this.getEventPoint(evt); // seems to be correct, see below
@@ -783,9 +783,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         var nodeSet = new Set();
         var selected = this.model.get("selectedProteins");
         var filteredCrossLinks = this.model.getFilteredCrossLinks();
-        var clCount = filteredCrossLinks.length;
-        for (var cl = 0; cl < clCount; ++cl) {
-            var crossLink = filteredCrossLinks[cl];
+
+        var groupSet = new Set();
+
+
+
+        for (var crossLink of filteredCrossLinks) {
             var source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant()
             nodeSet.add(source);
 
@@ -796,16 +799,28 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 var linkObj = {};
                 linkObj.source = source;
                 linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
+                if (!linkObj.target) {
+                  alert("!");
+                }
                 nodeSet.add(linkObj.target);
 
                 linkObj.source.fixed = fixSelected && selected.indexOf(source.participant) != -1;
                 linkObj.target.fixed = fixSelected && selected.indexOf(linkObj.target.participant) != -1;
 
-                // if (linkObj.source.complex && linkObj.source.complex.expanded == true) {
-                //     groupSet.add(linkObj.source.complex.naryLink);
+                //if in group (expanded? - no must be expanded, coz getRenderedParticipant)
+                // then add highest parent (all parents must also be expanded)
+                // if (linkObj.source.parentGroups.size) {
+                //     // u r here - i think it needs to be all parent groups?
+                //     var topGroups = linkObj.source.getTopParentGroups();
+                //     for (var tg of topGroups) {
+                //         groupSet.add(tg);
+                //     }
                 // }
-                // if (linkObj.target.complex && linkObj.target.complex.expanded == true) {
-                //     groupSet.add(linkObj.target.complex.naryLink);
+                // if (linkObj.target.parentGroups.size) {
+                //     var topGroups = linkObj.target.getTopParentGroups();
+                //     for (var tg of topGroups) {
+                //         groupSet.add(tg);
+                //     }
                 // }
 
                 linkObj.id = linkId;
@@ -813,52 +828,63 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
+
+
         var linkArr = Array.from(links.values());
         var nodeArr = Array.from(nodeSet);
+
+        //temp(?)
+        // for (var link of linkArr){
+        //
+        // }
 
         var groups = [];
         if (this.groups) {
             for (var g of this.groups) {
                 delete g.index;
-                if (g.expanded) {
+                if (!g.hidden && g.expanded) {
+                    // if (g.expanded) { // if it contains visible participants it must be
                     g.leaves = [];
+                    g.groups = []; // u r here, now need to fill this after this loop NEEDS TO BE INDEXES
+                    // for (var rp of g.renderedParticipants) {
+                    //     var i = nodeArr.indexOf(rp);
+                    //     if (i != -1) {
+                    //         g.leaves.push(i);
+                    //     }
+                    // }
+                    // if (g.leaves.length > 0) {
+                    //     groups.push(g);
+                    // }
+
+                    // put any rp not contained in a subgroup(recursive) in group1.leaves
+
                     for (var rp of g.renderedParticipants) {
-                        var i = nodeArr.indexOf(rp);
-                        if (i != -1) {
-                            g.leaves.push(i);
+                        if (!rp.hidden) {
+                            var inSubGroup = false;
+                            for (var subgroup of g.groups) {
+                                if (subgroup.contains(rp)) {
+                                    inSubGroup = true;
+                                    // break; ?
+                                }
+                            }
+                            if (!inSubGroup) {
+                                g.leaves.push(nodeArr.indexOf(rp));
+                            }
                         }
                     }
-                    if (g.leaves.length > 0) {
+                    // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
                         groups.push(g);
-                    }
+                    // }
                 }
+                // } // end expanded check
+            }
+            //terible hack, change whole thing to use Interactor.subGroups
+            for (var g of groups) {
+              for (var i = 0; i < g.subgroups.length; i++){
+                    g.groups[i] = groups.indexOf(g.subgroups[i]);
+              }
             }
         }
-        /*
-        if (this.complexes) {
-            for (var c = 0; c < this.complexes.length; c++) {
-                var g = this.complexes[c];
-                g.leaves = [];
-                g.groups = [];
-                for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
-                    var i = layoutObj.nodes.indexOf(g.naryLink.interactors[pi]);
-                    if (g.naryLink.interactors[pi].type != "complex") {
-                        g.leaves.push(i);
-                    }
-                }
-                groups.push(g);
-            }
-            for (var c = 0; c < this.complexes.length; c++) {
-                var g = this.complexes[c];
-                for (var pi = 0; pi < g.naryLink.interactors.length; pi++) {
-                    var i = groups.indexOf(g.naryLink.interactors[pi]);
-                    if (g.naryLink.interactors[pi].type == "complex") {
-                        g.groups.push(i);
-                    }
-                }
-            }
-        }
-        */
         console.log("groups", groups);
 
         delete this.d3cola._lastStress;
@@ -1122,8 +1148,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     groupsChanged: function() {
         this.d3cola.stop();
-        // a Map of with group id as key and Set of protein ids as value
-        var groupMap = this.model.get("groups");
         //clear out all old groups, just wipe everything
         for (var g of this.groups) {
             for (var rp of g.renderedParticipants) {
@@ -1136,20 +1160,79 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
+        // a Map with group id as key and Set of protein ids to group as value
+        var groupMap = this.model.get("groups");
+        //sort it by count id's
+        var sortedGroupMap = new Map([...groupMap.entries()].sort((a, b) => a[1].size - b[1].size));
+
         this.groups = [];
-        //we need to get leaves (i.e. proteins) and groups (i.e. sub groups)
-
-        //first, sort by number protein ids in group
-
-        console.log("***", groupMap);
-
-        for (var g of groupMap.entries()) {
+        //init
+        for (var g of sortedGroupMap.entries()) {
             var group = new xiNET.Group(g[0], g[1], this);
             group.init();
             this.groups.push(group);
         }
 
+        //find subgroups
+        var gCount = this.groups.length;
+        for (var gi = 0; gi < gCount - 1; gi++) {
+            var group1 = this.groups[gi];
+            for (var gj = gi + 1; gj < gCount; gj++) {
+                var group2 = this.groups[gj];
+                if (group1.isSubsetOf(group2)) {
+                    group2.subgroups.push(group1);
+                    // group1.parentGroups.add(group2);
+                    console.log(group1.name, "is SUBSET of", group2.name)
+                }
+            }
+        }
 
+        //remove obselete subgroups
+        for (var gi = 0; gi < gCount - 1; gi++) {
+            var group1 = this.groups[gi];
+            //if subgroup has parent also in group1.subgroups then remove it
+            var subgroupCount = group1.subgroups.length;
+            var subgroupsToRemove = [];
+            for (var gj = 0; gj < subgroupCount - 1; gj++) {
+                var subgroup1 = group1.subgroups[gj];
+                for (var gk = gj + 1; gk < subgroupCount; gk++) {
+                    var subgroup2 = group1.subgroups[gk];
+                    if (subgroup1.isSubsetOf(subgroup2)) {
+                        subgroupsToRemove.push(subgroup2);
+                    }
+                }
+            }
+            for (var sgToremove of subgroupsToRemove) {
+                var index = group1.subgroups.indexOf(sgToremove);
+                group1.subgroups = group1.subgroups.splice(index, 1);
+            }
+        }
+
+        //sort out parentGroups
+        for (var group1 of this.groups) {
+            for (var group2 of group1.subgroups) {
+                group2.parentGroups.add(group1);
+            }
+        }
+
+        //sort out leaves
+        // for (var group1 of this.groups) {
+        //
+        //     // put any rp not contained in a subgroup(recursive) in group1.leaves
+        //
+        //     for (var rp of group1.renderedParticipants) {
+        //         var inGroup = false;
+        //         for (var subgroup of group1.groups) {
+        //             if (subgroup.contains(rp)) {
+        //                 inGroup = true;
+        //                 // break; ?
+        //             }
+        //         }
+        //         if (!inGroup) {
+        //             group1.leaves.push(rp);
+        //         }
+        //     }
+        // }
 
         this.hiddenProteinsChanged();
     },

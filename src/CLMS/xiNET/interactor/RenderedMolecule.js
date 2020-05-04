@@ -210,10 +210,26 @@ xiNET.Interactor.prototype.getRenderedParticipant = function() {
 }
 
 xiNET.Interactor.prototype.inCollapsedGroup = function() {
-    if (this.parentGroups && this.parentGroups.size == 1) {
+    // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
+    if (this.parentGroups.size == 1) {
         var groupIt = this.parentGroups.values();
         var firstGroup = groupIt.next().value;
-        return !firstGroup.expanded;
+        return !firstGroup.expanded; //alert xiNET error
     }
     return false;
+}
+
+
+xiNET.Interactor.prototype.getTopParentGroups = function(results) {
+    if (!results) {
+        results = new Set();
+    }
+    for (var pg of this.parentGroups) {
+        if (pg.parentGroups.size) {
+            pg.getTopParentGroups(results);
+        } else {
+            results.add(pg);
+        }
+    }
+    return results;
 }

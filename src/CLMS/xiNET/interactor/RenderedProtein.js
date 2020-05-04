@@ -17,7 +17,7 @@ xiNET.RenderedProtein = function(participant, crosslinkViewer) {
     this.renderedP_PLinks = [];
     this.renderedCrosslinks = [];
 
-    this.parentGroups = new Set(); //// TODO: rename to groups
+    this.parentGroups = new Set();
 
     // layout info
     this.ix = 100;
