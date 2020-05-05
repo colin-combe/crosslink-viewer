@@ -235,7 +235,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
         this.d3cola = cola.d3adaptor()
-            //.groupCompactness(1e-5)
+            .groupCompactness(1e-5)
             .avoidOverlaps(true);
 
         d3.select(this.groupsSVG).selectAll("*").remove();
@@ -374,9 +374,9 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         } else {
             scaleFactor = xr;
         }
-        if (scaleFactor > 1) {
-            scaleFactor = scaleFactor * 0.8;
-        }
+        // if (scaleFactor > 1) {
+        //     scaleFactor = scaleFactor / 0.8;
+        // }
         this.container.setAttribute("transform", "scale(" + yr + ") translate(" + ((width / yr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
         this.scale();
     },
@@ -800,7 +800,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 linkObj.source = source;
                 linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
                 if (!linkObj.target) {
-                  alert("!");
+                    alert("!");
                 }
                 nodeSet.add(linkObj.target);
 
@@ -845,7 +845,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 if (!g.hidden && g.expanded) {
                     // if (g.expanded) { // if it contains visible participants it must be
                     g.leaves = [];
-                    g.groups = []; // u r here, now need to fill this after this loop NEEDS TO BE INDEXES
+                    g.groups = [];
                     // for (var rp of g.renderedParticipants) {
                     //     var i = nodeArr.indexOf(rp);
                     //     if (i != -1) {
@@ -861,7 +861,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                     for (var rp of g.renderedParticipants) {
                         if (!rp.hidden) {
                             var inSubGroup = false;
-                            for (var subgroup of g.groups) {
+                            for (var subgroup of g.subgroups) {
+                                // UR HERE
                                 if (subgroup.contains(rp)) {
                                     inSubGroup = true;
                                     // break; ?
@@ -873,16 +874,16 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         }
                     }
                     // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
-                        groups.push(g);
+                    groups.push(g);
                     // }
                 }
                 // } // end expanded check
             }
-            //terible hack, change whole thing to use Interactor.subGroups
+            //need to use indexes of groups
             for (var g of groups) {
-              for (var i = 0; i < g.subgroups.length; i++){
+                for (var i = 0; i < g.subgroups.length; i++) {
                     g.groups[i] = groups.indexOf(g.subgroups[i]);
-              }
+                }
             }
         }
         console.log("groups", groups);
@@ -1100,6 +1101,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             if (!hasVisible) {
                 group.setHidden(true);
             } else {
+                group.setHidden(false);
                 if (group.expanded) {
                     group.updateExpandedGroup();
                 }

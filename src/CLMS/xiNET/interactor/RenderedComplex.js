@@ -114,8 +114,7 @@ xiNET.Group.prototype.isSubsetOf = function(anotherGroup) {
 };
 
 xiNET.Group.prototype.contains = function(renderedProtein) {
-    var rpCount = this.renderedParticipants.length;
-    for (var rp = 0; rp < rpCount; rp++) {
+    for (var rp of this.renderedParticipants) {
         if (rp === renderedProtein) {
             return true;
         }
