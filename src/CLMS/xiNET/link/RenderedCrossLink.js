@@ -359,13 +359,17 @@ xiNET.RenderedCrosslink.prototype.hide = function() {
 xiNET.RenderedCrosslink.prototype.setLineCoordinates = function() {
     if (this.shown) {
         //if not self link && not linker modified pep
-        if (this.crossLink.isSelfLink() === false) {
-            //~ if (this.shown) {//don't waste time changing DOM if link not visible
+        if (!this.crossLink.isSelfLink()) {
             var x, y;
+            var source = this.renderedFromProtein.getRenderedParticipant();
+            var target = this.renderedToProtein.getRenderedParticipant();
+            if (!source.ix || !source.iy) {
+                console.log("NOT");
+            }
             // from end
-            if (!this.renderedFromProtein.expanded) {
-                x = this.renderedFromProtein.ix;
-                y = this.renderedFromProtein.iy;
+            if (source.type == "group" || !source.expanded) {
+                x = source.ix;
+                y = source.iy;
             } else {
                 var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
                 x = coord[0];
@@ -377,9 +381,9 @@ xiNET.RenderedCrosslink.prototype.setLineCoordinates = function() {
             this.highlightLine.setAttribute("y1", y);
 
             // to end
-            if (!this.renderedToProtein.expanded) {
-                x = this.renderedToProtein.ix;
-                y = this.renderedToProtein.iy;
+            if (target.type == "group" || !target.expanded) {
+                x = target.ix;
+                y = target.iy;
             } else {
                 var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
                 x = coord[0];
@@ -392,6 +396,34 @@ xiNET.RenderedCrosslink.prototype.setLineCoordinates = function() {
 
         }
     }
+
+/*    if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
+        if (this.shown) {
+            var target = this.renderedFromProtein.getRenderedParticipant();
+            var source = this.renderedToProtein.getRenderedParticipant();
+            if (!target.ix || !target.iy) {
+                console.log("NOT");
+            }
+
+            //     if (this.renderedFromProtein === participant) {
+            this.line.setAttribute("x1", source.ix);
+            this.line.setAttribute("y1", source.iy);
+            this.highlightLine.setAttribute("x1", source.ix);
+            this.highlightLine.setAttribute("y1", source.iy);
+            this.thickLine.setAttribute("x1", source.ix);
+            this.thickLine.setAttribute("y1", source.iy);
+            // } else if (this.renderedToProtein === participant) {
+            this.line.setAttribute("x2", target.ix);
+            this.line.setAttribute("y2", target.iy);
+            this.highlightLine.setAttribute("x2", target.ix);
+            this.highlightLine.setAttribute("y2", target.iy);
+            this.thickLine.setAttribute("x2", target.ix);
+            this.thickLine.setAttribute("y2", target.iy);
+            // }
+        }
+    }
+*/
+
 }
 
 //calculate the  coordinates of a residue (relative to this.controller.container)

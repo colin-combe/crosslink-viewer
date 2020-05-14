@@ -19,7 +19,7 @@ xiNET.Group = function(id, participantIds, xlvController) {
     for (var pId of participantIds) {
         var rp = this.controller.renderedProteins.get(pId)
         this.renderedParticipants.push(rp);
-        rp.parentGroups.add(this);
+        // rp.parentGroups.add(this);
     }
     this.parentGroups = new Set();
     this.subgroups = [];

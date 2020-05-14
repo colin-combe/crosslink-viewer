@@ -359,9 +359,9 @@ xiNET.P_PLink.prototype.hide = function() {
 xiNET.P_PLink.prototype.setLineCoordinates = function() {
     if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
         if (this.shown) {
-            var target = this.renderedFromProtein.getRenderedParticipant();
-            var source = this.renderedToProtein.getRenderedParticipant();
-            if (!target.ix || !target.iy) {
+            var source = this.renderedFromProtein.getRenderedParticipant();
+            var target = this.renderedToProtein.getRenderedParticipant();
+            if (!source.ix || !source.iy) {
                 console.log("NOT");
             }
 
