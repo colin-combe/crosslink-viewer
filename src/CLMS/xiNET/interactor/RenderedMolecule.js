@@ -209,6 +209,7 @@ xiNET.Interactor.prototype.getRenderedParticipant = function() {
     }
 }
 
+ // NEEDS TO RECURSE
 xiNET.Interactor.prototype.inCollapsedGroup = function() {
     // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
     if (this.parentGroups.size == 1) {

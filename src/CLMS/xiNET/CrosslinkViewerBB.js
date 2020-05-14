@@ -252,7 +252,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.renderedProteins = new Map();
         this.renderedCrosslinks = new Map();
         this.renderedP_PLinks = new Map();
-        this.groups = [];
+        this.groups = new Map();
 
         this.z = 1;
         this.container.setAttribute("transform", "scale(1)");
@@ -410,7 +410,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-        for (var g of this.groups) {
+        for (var g of this.groups.values()) {
             if (!g.hidden) {
                 if (g.expanded) {
                     g.updateExpandedGroup();
@@ -762,6 +762,152 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
     },
 
+    groupsChanged: function() {
+        this.d3cola.stop();
+
+        // a Map with group id as key and Set of protein ids to group as value
+        var groupMap = this.model.get("groups");
+
+        //clear out all old groups
+        var groupIdsToremove = [];
+        for (var group of this.groups.values()) {
+            if (!groupMap.has(group.id)) {
+              group.parentGroups = [];//don't think necessary but just in case
+              group.subroups = [];
+              groupIdsToremove.push(group.id);
+                for (var rp of group.renderedParticipants) {
+                    rp.parentGroups.delete(group);
+                }
+                if (group.expanded) {
+                    this.groupsSVG.removeChild(group.upperGroup);
+                } else {
+                    this.proteinUpper.removeChild(group.upperGroup);
+                }
+            }
+        }
+        for (var rgId of groupIdsToremove){
+            this.groups.remove(rgId);
+        }
+
+
+        //init
+        for (var g of groupMap.entries()) {
+            if (!this.groups.has(g[0])) {
+                var group = new xiNET.Group(g[0], g[1], this);
+                group.init(); // z ordering... later
+                this.groups.set(group.id, group);
+            }
+        }
+
+        this.hiddenProteinsChanged();
+    },
+
+
+    // handle changes to manually hidden proteins,
+    // but also deal with stuff to do with groups / group hierarchy
+    // specifically subgroups could change as result of things being hidden so this is here
+    // (i.e overlapping group becomes subgroup)
+    hiddenProteinsChanged: function() {
+        this.d3cola.stop();
+
+        // parent groups may change, so clear
+        for (var g of this.groups.values()) {
+            g.subgroups = [];
+            g.parentGroups = new Set ();
+            // for (var rp of g.renderedParticipants) {
+            //     rp.parentGroups.delete(g);
+            // }
+        }
+
+        //sort it by count id's XX sort it by count not hidden (not manually hidden and not filtered)
+        var sortedGroupMap = new Map([...this.groups.entries()].sort((a, b) => a[1].unhiddenParticipantCount() - b[1].unhiddenParticipantCount()));
+
+        var groups = Array.from(sortedGroupMap.values());
+        var gCount = groups.length; // contains xiNET.Groups
+        for (var gi = 0; gi < gCount - 1; gi++) {
+            var group1 = groups[gi];
+            for (var gj = gi + 1; gj < gCount; gj++) {
+                var group2 = groups[gj];
+                if (group1.isSubsetOf(group2)) {
+                    group2.subgroups.push(group1);
+                    console.log(group1.name, "is SUBSET of", group2.name)
+                }
+            }
+        }
+
+        //remove obselete subgroups
+        for (var gi = 0; gi < gCount - 1; gi++) {
+            var group1 = groups[gi];
+            //if subgroup has parent also in group1.subgroups then remove it
+            var subgroupCount = group1.subgroups.length;
+            var subgroupsToRemove = [];
+            for (var gj = 0; gj < subgroupCount - 1; gj++) {
+                var subgroup1 = group1.subgroups[gj];
+                for (var gk = gj + 1; gk < subgroupCount; gk++) {
+                    var subgroup2 = group1.subgroups[gk];
+                    if (subgroup1.isSubsetOf(subgroup2)) {
+                        subgroupsToRemove.push(subgroup2);
+                    }
+                }
+            }
+            for (var sgToremove of subgroupsToRemove) {
+                var index = group1.subgroups.indexOf(sgToremove);
+                group1.subgroups = group1.subgroups.splice(index, 1);
+            }
+        }
+
+        //sort out parentGroups
+        for (var group1 of groups) {
+            for (var group2 of group1.subgroups) {
+                group2.parentGroups.add(group1);
+            }
+        }
+
+
+        var manuallyHidden = 0;
+        for (var renderedParticipant of this.renderedProteins.values()) {
+            if (renderedParticipant.participant.manuallyHidden == true) {
+                manuallyHidden++;
+            }
+            if (!renderedParticipant.inCollapsedGroup()) {
+                renderedParticipant.setHidden(renderedParticipant.participant.hidden);
+            } else {
+                renderedParticipant.setHidden(true);
+            }
+        }
+
+        if (manuallyHidden == 0) {
+            d3.select("#hiddenProteinsMessage").style("display", "none");
+        } else {
+            var pSel = d3.select("#hiddenProteinsText");
+            pSel.text((manuallyHidden > 1) ? (manuallyHidden + " Hidden Proteins") : (manuallyHidden + " Hidden Protein"));
+            var messgeSel = d3.select("#hiddenProteinsMessage");
+            messgeSel.style("display", "block");
+        }
+
+
+
+
+        for (var group of this.groups.values()) { // todo z-ordering, do earlier?
+            var hasVisible = false;
+            for (var p of group.renderedParticipants) {
+                if (p.participant.hidden == false) {
+                    hasVisible = true;
+                }
+            }
+            if (!hasVisible) {
+                group.setHidden(true);
+            } else {
+                group.setHidden(false);
+                if (group.expanded) {
+                    group.updateExpandedGroup();
+                }
+            }
+        }
+
+        return this;
+    },
+
     autoLayout: function() {
         this.d3cola.stop();
 
@@ -1067,50 +1213,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         return this;
     },
 
-    hiddenProteinsChanged: function() {
-        this.d3cola.stop();
-
-        var manuallyHidden = 0;
-        for (var renderedParticipant of this.renderedProteins.values()) {
-            if (renderedParticipant.participant.manuallyHidden == true) {
-                manuallyHidden++;
-            }
-            if (!renderedParticipant.inCollapsedGroup()) {
-                renderedParticipant.setHidden(renderedParticipant.participant.hidden);
-            } else {
-                renderedParticipant.setHidden(true);
-            }
-        }
-
-        if (manuallyHidden == 0) {
-            d3.select("#hiddenProteinsMessage").style("display", "none");
-        } else {
-            var pSel = d3.select("#hiddenProteinsText");
-            pSel.text((manuallyHidden > 1) ? (manuallyHidden + " Hidden Proteins") : (manuallyHidden + " Hidden Protein"));
-            var messgeSel = d3.select("#hiddenProteinsMessage");
-            messgeSel.style("display", "block");
-        }
-
-        for (var group of this.groups) {
-            var hasVisible = false;
-            for (var p of group.renderedParticipants) {
-                if (p.participant.hidden == false) {
-                    hasVisible = true;
-                }
-            }
-            if (!hasVisible) {
-                group.setHidden(true);
-            } else {
-                group.setHidden(false);
-                if (group.expanded) {
-                    group.updateExpandedGroup();
-                }
-            }
-        }
-
-        return this;
-    },
-
     proteinMetadataUpdated: function(meta) {
         // update prots
         var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
@@ -1146,97 +1248,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.model.trigger("change:groups");
 
         return this;
-    },
-
-    groupsChanged: function() {
-        this.d3cola.stop();
-        //clear out all old groups, just wipe everything
-        for (var g of this.groups) {
-            for (var rp of g.renderedParticipants) {
-                rp.parentGroups.delete(g);
-            }
-            if (g.expanded) {
-                this.groupsSVG.removeChild(g.upperGroup);
-            } else {
-                this.proteinUpper.removeChild(g.upperGroup);
-            }
-        }
-
-        // a Map with group id as key and Set of protein ids to group as value
-        var groupMap = this.model.get("groups");
-        //sort it by count id's
-        var sortedGroupMap = new Map([...groupMap.entries()].sort((a, b) => a[1].size - b[1].size));
-
-        this.groups = [];
-        //init
-        for (var g of sortedGroupMap.entries()) {
-            var group = new xiNET.Group(g[0], g[1], this);
-            group.init();
-            this.groups.push(group);
-        }
-
-        //find subgroups
-        var gCount = this.groups.length;
-        for (var gi = 0; gi < gCount - 1; gi++) {
-            var group1 = this.groups[gi];
-            for (var gj = gi + 1; gj < gCount; gj++) {
-                var group2 = this.groups[gj];
-                if (group1.isSubsetOf(group2)) {
-                    group2.subgroups.push(group1);
-                    // group1.parentGroups.add(group2);
-                    console.log(group1.name, "is SUBSET of", group2.name)
-                }
-            }
-        }
-
-        //remove obselete subgroups
-        for (var gi = 0; gi < gCount - 1; gi++) {
-            var group1 = this.groups[gi];
-            //if subgroup has parent also in group1.subgroups then remove it
-            var subgroupCount = group1.subgroups.length;
-            var subgroupsToRemove = [];
-            for (var gj = 0; gj < subgroupCount - 1; gj++) {
-                var subgroup1 = group1.subgroups[gj];
-                for (var gk = gj + 1; gk < subgroupCount; gk++) {
-                    var subgroup2 = group1.subgroups[gk];
-                    if (subgroup1.isSubsetOf(subgroup2)) {
-                        subgroupsToRemove.push(subgroup2);
-                    }
-                }
-            }
-            for (var sgToremove of subgroupsToRemove) {
-                var index = group1.subgroups.indexOf(sgToremove);
-                group1.subgroups = group1.subgroups.splice(index, 1);
-            }
-        }
-
-        //sort out parentGroups
-        for (var group1 of this.groups) {
-            for (var group2 of group1.subgroups) {
-                group2.parentGroups.add(group1);
-            }
-        }
-
-        //sort out leaves
-        // for (var group1 of this.groups) {
-        //
-        //     // put any rp not contained in a subgroup(recursive) in group1.leaves
-        //
-        //     for (var rp of group1.renderedParticipants) {
-        //         var inGroup = false;
-        //         for (var subgroup of group1.groups) {
-        //             if (subgroup.contains(rp)) {
-        //                 inGroup = true;
-        //                 // break; ?
-        //             }
-        //         }
-        //         if (!inGroup) {
-        //             group1.leaves.push(rp);
-        //         }
-        //     }
-        // }
-
-        this.hiddenProteinsChanged();
     },
 
     showLabels: function() {
