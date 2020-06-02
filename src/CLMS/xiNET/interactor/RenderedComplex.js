@@ -16,8 +16,8 @@ xiNET.Group = function(id, participantIds, xlvController) {
     this.controller = xlvController;
 
     this.renderedParticipants = [];
-    for (var pId of participantIds) {
-        var rp = this.controller.renderedProteins.get(pId)
+    for (let pId of participantIds) {
+        const rp = this.controller.renderedProteins.get(pId);
         this.renderedParticipants.push(rp);
         // rp.parentGroups.add(this);
     }
@@ -70,7 +70,7 @@ xiNET.Group = function(id, participantIds, xlvController) {
     this.controller.groupsSVG.appendChild(this.upperGroup);
 
     // events
-    var self = this;
+    const self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
     this.upperGroup.onmousedown = function(evt) {
         self.mouseDown(evt);
@@ -89,13 +89,13 @@ xiNET.Group = function(id, participantIds, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            var w = this.upperGroup.getBBox().width + 10;
+            const w = this.upperGroup.getBBox().width + 10;
             return w;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            var h = this.upperGroup.getBBox().height + 10;
+            const h = this.upperGroup.getBBox().height + 10;
             return h;
         }
     });
@@ -104,8 +104,8 @@ xiNET.Group = function(id, participantIds, xlvController) {
 xiNET.Group.prototype = new xiNET.Interactor();
 
 xiNET.Group.prototype.unhiddenParticipantCount = function() {
-    var count = 0;
-    for (var renderedParticipant of this.renderedParticipants) {
+    let count = 0;
+    for (let renderedParticipant of this.renderedParticipants) {
         if (!renderedParticipant.participant.hidden) {
             count++;
         }
@@ -114,7 +114,7 @@ xiNET.Group.prototype.unhiddenParticipantCount = function() {
 };
 
 xiNET.Group.prototype.isSubsetOf = function(anotherGroup) {
-    for (var renderedParticipant of this.renderedParticipants) {
+    for (let renderedParticipant of this.renderedParticipants) {
         if (!renderedParticipant.participant.hidden && anotherGroup.renderedParticipants.indexOf(renderedParticipant) == -1) {
             return false;
         }
@@ -123,7 +123,7 @@ xiNET.Group.prototype.isSubsetOf = function(anotherGroup) {
 };
 
 xiNET.Group.prototype.contains = function(renderedProtein) {
-    for (var rp of this.renderedParticipants) {
+    for (let rp of this.renderedParticipants) {
         if (rp === renderedProtein) {
             return true;
         }
@@ -143,16 +143,16 @@ xiNET.Group.prototype.mouseDown = function(evt) {
     //store start location
     this.controller.dragStart = evt;
 
-    var rightclick; //which button has just been raised
+    let rightclick; //which button has just been raised
     if (evt.which)
         rightclick = (evt.which === 3);
     else if (evt.button)
         rightclick = (evt.button === 2);
 
     if (!rightclick) {
-        var add = evt.ctrlKey || evt.shiftKey;
-        var participants = [];
-        for (var rp of this.renderedParticipants) {
+        const add = evt.ctrlKey || evt.shiftKey;
+        const participants = [];
+        for (let rp of this.renderedParticipants) {
             //rp.participant.manuallyHidden = false;
             participants.push(rp.participant);
         }
@@ -165,7 +165,7 @@ xiNET.Group.prototype.mouseDown = function(evt) {
 
 xiNET.Group.prototype.mouseOver = function(evt) {
     this.showHighlight(true);
-    var p = this.controller.getEventPoint(evt);
+    const p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.complex(this))
         .set("contents", CLMSUI.modelUtils.makeTooltipContents.complex(this))
@@ -181,10 +181,10 @@ xiNET.Group.prototype.mouseOut = function(evt) {
 };
 
 xiNET.Group.prototype.getAverageParticipantPosition = function() {
-    var xSum = 0,
-        ySum = 0,
-        rpCount = this.renderedParticipants.length;
-    for (var rp of this.renderedParticipants) {
+    let xSum = 0,
+        ySum = 0;
+    const rpCount = this.renderedParticipants.length;
+    for (let rp of this.renderedParticipants) {
         xSum += rp.ix;
         ySum += rp.iy;
     }
@@ -198,7 +198,7 @@ xiNET.Group.prototype.getAverageParticipantPosition = function() {
 xiNET.Group.prototype.setPositionFromCola = function() {
     this.px = this.x;
     this.py = this.y;
-    var xOffset = 0;
+    let xOffset = 0;
     if (!this.hidden) { // todo - hacky
         xOffset = (this.width / 20); // - (this.getBlobRadius()) + 5)
         // if (this.expanded) {
@@ -215,7 +215,7 @@ set this.x and this.y as cola would have them,
 xiNET.Group.prototype.setPositionFromXinet = function(ix, iy) {
     this.px = this.x;
     this.py = this.y;
-    var xOffset = 0;
+    let xOffset = 0;
     if (!this.hidden) { // todo - hacky
         xOffset = (this.width / 2); // - (this.getBlobRadius()) + 5)
         // if (this.expanded) {
@@ -227,11 +227,12 @@ xiNET.Group.prototype.setPositionFromXinet = function(ix, iy) {
     this.setPosition(ix, iy);
 }
 
+//also setting size of collapsed group symbol; scaling line widths, corner radii
 xiNET.Group.prototype.setPosition = function(ix, iy) { //todo - array as coord param?
     if (!this.expanded) {
         this.ix = ix;
         this.iy = iy;
-        var pad = 20;
+        const pad = 20;
 
         this.outline.setAttribute("x", this.ix - (pad * this.controller.z));
         this.outline.setAttribute("y", this.iy - (pad * this.controller.z));
@@ -257,12 +258,12 @@ xiNET.Group.prototype.setPosition = function(ix, iy) { //todo - array as coord p
 };
 
 xiNET.Group.prototype.updateExpandedGroup = function() {
-    var x1, y1, x2, y2;
-    var z = this.controller.z,
+    let x1, y1, x2, y2;
+    const z = this.controller.z,
         pad = 5 * z;
-    for (var rp of this.renderedParticipants) {
+    for (let rp of this.renderedParticipants) {
         if (rp.hidden == false) {
-            var rpBbox = rp.upperGroup.getBBox();
+            const rpBbox = rp.upperGroup.getBBox();
             if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
                 x1 = (rpBbox.x * z) + rp.ix;
             }
@@ -302,12 +303,12 @@ xiNET.Group.prototype.getResidueCoordinates = function(x, y) {
 xiNET.Group.prototype.setHidden = function(bool) {
     d3.select(this.upperGroup).style("display", bool ? "none" : null);
     d3.select(this.labelSVG).style("display", bool ? "none" : null);
-    this.hidden = bool ? true : false;
+    this.hidden = !!bool;
 };
 
 xiNET.Group.prototype.showHighlight = function(show) {
-    var d3HighSel = d3.select(this.highlight);
-    this.isHighlighted = show ? true : false; // mjg apr 18
+    const d3HighSel = d3.select(this.highlight);
+    this.isHighlighted = !!show;
     if (show === true) {
         d3HighSel
             .classed("selectedProtein", false)
@@ -321,7 +322,7 @@ xiNET.Group.prototype.showHighlight = function(show) {
             .classed("selectedProtein", true)
             .classed("highlightedProtein", false);
     }
-    for (var rp of this.renderedParticipants) {
+    for (let rp of this.renderedParticipants) {
         rp.showHighlight(show);
     }
 }
@@ -343,49 +344,61 @@ xiNET.Group.prototype.showHighlight = function(show) {
 //     }
 // };
 
+
 xiNET.Group.prototype.setExpanded = function(expanded, svgP) {
     // if (!this.busy) {
     //   this.busy = true;
     // var self = this;
-    if (!expanded) {
-        this.expanded = expanded ? true : false;
+
+
+    
+    this.expanded = !!expanded;
+    if (!expanded) { // is collapsing
+        this.hideSubgroups();
         this.controller.proteinUpper.appendChild(this.upperGroup);
         this.upperGroup.appendChild(this.labelSVG);
-        this.outline.setAttribute("fill-opacity", 1);
-        var renderedParticipants = this.renderedParticipants;
-        var rpCount = renderedParticipants.length;
-
-        var pPos = this.getAverageParticipantPosition();
+        this.outline.setAttribute("fill-opacity", "1");
+        const pPos = this.getAverageParticipantPosition(); // todo - use svgP
         this.setPositionFromXinet(pPos[0], pPos[1]);
-
-        for (var i = 0; i < rpCount; i++) {
-            var rp = renderedParticipants[i];
+        for (let rp of this.renderedParticipants) {
             rp.setAllLinkCoordinates();
             rp.setHidden(true);
             rp.checkLinks();
         }
-    } else {
-        this.expanded = expanded ? true : false;
-        this.controller.groupsSVG.append(this.upperGroup);
+    } else { // is expanding
+        this.showSubgroups();
+        this.controller.groupsSVG.appendChild(this.upperGroup);
         if (this.upperGroup.contains(this.labelSVG)) {
             this.upperGroup.removeChild(this.labelSVG);
         }
-        this.outline.setAttribute("fill-opacity", 0.5);
-        for (var rp of this.renderedParticipants) {
+        this.outline.setAttribute("fill-opacity", "0.5");
+        for (let rp of this.renderedParticipants) {
             rp.setAllLinkCoordinates();
             rp.setHidden(rp.participant.hidden);
             rp.checkLinks();
         }
         this.updateExpandedGroup();
     }
+
+};
+
+xiNET.Group.prototype.hideSubgroups = function() {
+    for (let subgroup of this.subgroups){
+        subgroup.hideSubgroups();
+        subgroup.upperGroup.parentNode.removeChild(subgroup.upperGroup);
+    }
+};
+
+xiNET.Group.prototype.showSubgroups = function() {
+    for (let subgroup of this.subgroups){
+        subgroup.setExpanded(subgroup.expanded);
+        subgroup.showSubgroups();
+    }
 };
 
 // update all lines (e.g after a move)
 xiNET.Group.prototype.setAllLinkCoordinates = function() {
-    var renderedParticipants = this.renderedParticipants;
-    var rpCount = renderedParticipants.length;
-    for (var i = 0; i < rpCount; i++) {
-        var rp = renderedParticipants[i];
+    for (let rp of this.renderedParticipants) {
         rp.setAllLinkCoordinates();
     }
 };

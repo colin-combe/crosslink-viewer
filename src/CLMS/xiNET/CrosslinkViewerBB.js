@@ -79,7 +79,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             .append("ul");
         groupCustomMenuSel.append("li").classed("collapseGroup", true).text("Collapse");
         groupCustomMenuSel.append("li").classed("ungroup", true).text("Ungroup");
-        groupCustomMenuSel.append("li").classed("ungroupAll", true).text("Clear All Groups");
+        // groupCustomMenuSel.append("li").classed("ungroupAll", true).text("Clear All Groups");
         var groupContextMenu = d3.select(".group-custom-menu-margin").node();
         groupContextMenu.onmouseout = function(evt) {
             var e = evt.toElement || evt.relatedTarget;
@@ -235,7 +235,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
         this.d3cola = cola.d3adaptor()
-            .groupCompactness(1e-5)
+            // .groupCompactness(1e-5)
             .avoidOverlaps(true);
 
         d3.select(this.groupsSVG).selectAll("*").remove();
@@ -380,7 +380,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         // if (scaleFactor > 1) {
         //     scaleFactor = scaleFactor / 0.8;
         // }
-        this.container.setAttribute("transform", "scale(" + yr + ") translate(" + ((width / yr) - bbox.width - bbox.x) + " " + -bbox.y + ")");
+        this.container.setAttribute("transform", "scale(" + scaleFactor + ") translate(" + ((width / scaleFactor) - bbox.width - bbox.x) + " " + -bbox.y + ")");
         this.scale();
     },
 
@@ -550,7 +550,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         .attr("x", rectX)
                         .attr("y", rectY)
                         .attr("width", Math.abs(sx))
-                        .attr("height", Math.abs(sy));;
+                        .attr("height", Math.abs(sy));
 
                     var renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
                     var rpCount = renderedParticipantArr.length;
@@ -719,15 +719,27 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     saveLayout: function(callback) {
-        var layout = Array.from(this.renderedProteins.values());
+        var layout = {};
+        layout.proteins = Array.from(this.renderedProteins.values());
         layout.groups = this.model.get("groups");
         var myJSONText = JSON.stringify(layout, null);
+        console.log("SAVING", layout);
         callback(myJSONText.replace(/\\u0000/gi, ''));
     },
 
     loadLayout: function(layout) {
+        console.log("LOADING", layout);
+        var proteinPositions, groups;
+        // for backwards compatibility (after groups added to layout)
+        if (layout.proteins) {
+            proteinPositions = layout.proteins;
+            groups = layout.groups;
+        }
+        else {
+            proteinPositions = layout;
+        }
         var layoutIsDodgy = false;
-        for (var protLayout of layout) {
+        for (var protLayout of proteinPositions) {
             var protein = this.renderedProteins.get(protLayout.id);
             if (protein !== undefined) {
                 protein.setPositionFromXinet(protLayout["x"], protLayout["y"]);
@@ -753,9 +765,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             rp.setEverything();
         }
 
-        //todo - read groups
+        if (groups) {
+            this.model.set("groups", groups);
+        } else {
+            this.model.trigger("hiddenChanged");
+        }
 
-        this.model.trigger("hiddenChanged");
         this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
 
         this.zoomToFullExtent();
@@ -791,7 +806,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         for (var rgId of groupIdsToremove) {
             this.groupMap.delete(rgId);
         }
-
 
         //init
         for (var g of modelGroups.entries()) {
@@ -878,7 +892,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             if (renderedParticipant.participant.manuallyHidden == true) {
                 manuallyHidden++;
             }
-            if (!renderedParticipant.inCollapsedGroup()) {
+            if (renderedParticipant.inCollapsedGroup() == false) {
                 renderedParticipant.setHidden(renderedParticipant.participant.hidden);
             } else {
                 renderedParticipant.setHidden(true);

@@ -8,7 +8,7 @@
 //
 //    xiNET.Rotator.js
 
-xiNET.Rotator = function(protein, upperOrLower, controller) {
+xiNET.Rotator = function (protein, upperOrLower, controller) {
     var self = this;
     this.controller = controller;
     this.protein = protein;
@@ -58,26 +58,26 @@ xiNET.Rotator = function(protein, upperOrLower, controller) {
 
     this.svg.appendChild(this.inner);
 
-    this.svg.onmouseover = function(evt) {
+    this.svg.onmouseover = function (evt) {
         self.rotatorMouseOver(evt);
     };
-    this.svg.onmouseout = function(evt) {
+    this.svg.onmouseout = function (evt) {
         self.rotatorMouseOut(evt);
     };
-    this.svg.onmousedown = function(evt) {
+    this.svg.onmousedown = function (evt) {
         self.rotatorMouseDown(evt);
     };
 }
 
-xiNET.Rotator.prototype.rotatorMouseOver = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseOver = function (evt) {
     this.rotatorSymbol.setAttribute("display", "block");
 }
 
-xiNET.Rotator.prototype.rotatorMouseOut = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseOut = function (evt) {
     this.rotatorSymbol.setAttribute("display", "none");
 }
 
-xiNET.Rotator.prototype.rotatorMouseDown = function(evt) {
+xiNET.Rotator.prototype.rotatorMouseDown = function (evt) {
     this.controller.state = this.controller.STATES.ROTATING;
     this.controller.dragElement = this.protein;
     this.controller.whichRotator = this.upperOrLower;

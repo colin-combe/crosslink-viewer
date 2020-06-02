@@ -33,7 +33,7 @@ xiNET.Interactor.prototype.mouseDown = function(evt) {
 // };*/
 
 xiNET.Interactor.prototype.mouseOver = function(evt) {
-    var p = this.controller.getEventPoint(evt);
+    const p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
         .set("contents", CLMSUI.modelUtils.makeTooltipContents.interactor(this.participant))
@@ -121,12 +121,12 @@ xiNET.Interactor.prototype.mouseOut = function(evt) {
 // };
 
 xiNET.Interactor.prototype.getAggregateSelfLinkPath = function() {
-    var intraR = this.getBlobRadius() + 7;
-    var sectorSize = 45;
-    var arcStart = xiNET.Interactor.trig(intraR, 25 + sectorSize);
-    var arcEnd = xiNET.Interactor.trig(intraR, -25 + sectorSize);
-    var cp1 = xiNET.Interactor.trig(intraR, 40 + sectorSize);
-    var cp2 = xiNET.Interactor.trig(intraR, -40 + sectorSize);
+    const intraR = this.getBlobRadius() + 7;
+    const sectorSize = 45;
+    const arcStart = xiNET.Interactor.trig(intraR, 25 + sectorSize);
+    const arcEnd = xiNET.Interactor.trig(intraR, -25 + sectorSize);
+    const cp1 = xiNET.Interactor.trig(intraR, 40 + sectorSize);
+    const cp2 = xiNET.Interactor.trig(intraR, -40 + sectorSize);
     return 'M 0,0 ' +
         'Q ' + cp1.x + ',' + -cp1.y + ' ' + arcStart.x + ',' + -arcStart.y +
         ' A ' + intraR + ' ' + intraR + ' 0 0 1 ' + arcEnd.x + ',' + -arcEnd.y +
@@ -135,8 +135,8 @@ xiNET.Interactor.prototype.getAggregateSelfLinkPath = function() {
 
 xiNET.Interactor.rotatePointAboutPoint = function(p, o, theta) {
     theta = (theta / 360) * Math.PI * 2; //TODO: change theta arg to radians not degrees
-    var rx = Math.cos(theta) * (p[0] - o[0]) - Math.sin(theta) * (p[1] - o[1]) + o[0];
-    var ry = Math.sin(theta) * (p[0] - o[0]) + Math.cos(theta) * (p[1] - o[1]) + o[1];
+    const rx = Math.cos(theta) * (p[0] - o[0]) - Math.sin(theta) * (p[1] - o[1]) + o[0];
+    const ry = Math.sin(theta) * (p[0] - o[0]) + Math.cos(theta) * (p[1] - o[1]) + o[1];
     return [rx, ry];
 }
 
@@ -161,22 +161,17 @@ xiNET.Interactor.prototype.checkLinks = function() {
 
 // update all lines (e.g after a move)
 xiNET.Interactor.prototype.setAllLinkCoordinates = function() {
-    var pLinks = this.renderedP_PLinks;
-    var plCount = pLinks.length;
-    for (var pl = 0; pl < plCount; pl++) {
-        pLinks[pl].setLineCoordinates(this);
+    for (let pl of this.renderedP_PLinks) {
+        pl.setLineCoordinates(this);
     }
-
-    var renderedCrossLinks = this.renderedCrosslinks;
-    var rclCount = renderedCrossLinks.length;
-    for (var rcl = 0; rcl < rclCount; rcl++) {
-        renderedCrossLinks[rcl].setLineCoordinates(this);
+    for (let rcl of this.renderedCrosslinks) {
+        rcl.setLineCoordinates(this);
     }
 };
 
 xiNET.Interactor.trig = function(radius, angleDegrees) { //TODO: change theta arg to radians not degrees
     //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
-    var radians = (angleDegrees / 360) * Math.PI * 2;
+    const radians = (angleDegrees / 360) * Math.PI * 2;
     return {
         x: (radius * Math.cos(radians)),
         y: (radius * Math.sin(radians))
@@ -191,7 +186,7 @@ xiNET.Interactor.trig = function(radius, angleDegrees) { //TODO: change theta ar
 //     return this.iy;
 // }
 
-xiNET.Interactor.prototype.updateName = function(annotation) {
+xiNET.Interactor.prototype.updateName = function() {
     this.labelTextNode.textContent = this.participant.name;
 };
 
@@ -201,22 +196,25 @@ xiNET.Interactor.prototype.showLabel = function(show) {
 
 xiNET.Interactor.prototype.getRenderedParticipant = function() {
     if (this.inCollapsedGroup()) {
-        var groupIt = this.parentGroups.values();
-        var firstGroup = groupIt.next().value;
+        const groupIt = this.parentGroups.values();
+        const firstGroup = groupIt.next().value;
         return firstGroup.getRenderedParticipant();
     } else {
         return this;
     }
 }
 
- // NEEDS TO RECURSE
 xiNET.Interactor.prototype.inCollapsedGroup = function() {
     // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
-    console.log("**",this.parentGroups.size);
-    if (this.parentGroups.size == 1) {
-        var groupIt = this.parentGroups.values();
-        var firstGroup = groupIt.next().value;
-        return !firstGroup.expanded; //alert xiNET error
+    // console.log("**",this.parentGroups.size);
+    if (this.parentGroups.size > 0) {
+        const groupIt = this.parentGroups.values();
+        const firstGroup = groupIt.next().value;
+        if (firstGroup.expanded) {
+            return firstGroup.inCollapsedGroup();
+        } else {
+            return true;
+        }
     }
     return false;
 }
