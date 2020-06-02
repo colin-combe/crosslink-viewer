@@ -10,9 +10,10 @@
 
 var xiNET = xiNET || {};
 
-xiNET.Interactor = function() {};
+xiNET.Interactor = function () {
+};
 
-xiNET.Interactor.prototype.mouseDown = function(evt) {
+xiNET.Interactor.prototype.mouseDown = function (evt) {
     this.controller.preventDefaultsAndStopPropagation(evt);
     this.controller.d3cola.stop();
     this.controller.dragElement = this;
@@ -32,7 +33,7 @@ xiNET.Interactor.prototype.mouseDown = function(evt) {
 //     return false;
 // };*/
 
-xiNET.Interactor.prototype.mouseOver = function(evt) {
+xiNET.Interactor.prototype.mouseOver = function (evt) {
     const p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
         .set("header", CLMSUI.modelUtils.makeTooltipTitle.interactor(this.participant))
@@ -43,7 +44,7 @@ xiNET.Interactor.prototype.mouseOver = function(evt) {
         });
 };
 
-xiNET.Interactor.prototype.mouseOut = function(evt) {
+xiNET.Interactor.prototype.mouseOut = function (evt) {
     //this.controller.preventDefaultsAndStopPropagation(evt); // isn't stopping mouseOut in controller getting called
     this.controller.model.setHighlightedProteins([]);
     this.controller.model.get("tooltipModel").set("contents", null);
@@ -120,7 +121,7 @@ xiNET.Interactor.prototype.mouseOut = function(evt) {
 //     // }
 // };
 
-xiNET.Interactor.prototype.getAggregateSelfLinkPath = function() {
+xiNET.Interactor.prototype.getAggregateSelfLinkPath = function () {
     const intraR = this.getBlobRadius() + 7;
     const sectorSize = 45;
     const arcStart = xiNET.Interactor.trig(intraR, 25 + sectorSize);
@@ -133,7 +134,7 @@ xiNET.Interactor.prototype.getAggregateSelfLinkPath = function() {
         ' Q ' + cp2.x + ',' + -cp2.y + ' 0,0';
 }
 
-xiNET.Interactor.rotatePointAboutPoint = function(p, o, theta) {
+xiNET.Interactor.rotatePointAboutPoint = function (p, o, theta) {
     theta = (theta / 360) * Math.PI * 2; //TODO: change theta arg to radians not degrees
     const rx = Math.cos(theta) * (p[0] - o[0]) - Math.sin(theta) * (p[1] - o[1]) + o[0];
     const ry = Math.sin(theta) * (p[0] - o[0]) + Math.cos(theta) * (p[1] - o[1]) + o[1];
@@ -160,7 +161,7 @@ xiNET.Interactor.prototype.checkLinks = function() {
 
 
 // update all lines (e.g after a move)
-xiNET.Interactor.prototype.setAllLinkCoordinates = function() {
+xiNET.Interactor.prototype.setAllLinkCoordinates = function () {
     for (let pl of this.renderedP_PLinks) {
         pl.setLineCoordinates(this);
     }
@@ -169,7 +170,7 @@ xiNET.Interactor.prototype.setAllLinkCoordinates = function() {
     }
 };
 
-xiNET.Interactor.trig = function(radius, angleDegrees) { //TODO: change theta arg to radians not degrees
+xiNET.Interactor.trig = function (radius, angleDegrees) { //TODO: change theta arg to radians not degrees
     //x = rx + radius * cos(theta) and y = ry + radius * sin(theta)
     const radians = (angleDegrees / 360) * Math.PI * 2;
     return {
@@ -186,15 +187,15 @@ xiNET.Interactor.trig = function(radius, angleDegrees) { //TODO: change theta ar
 //     return this.iy;
 // }
 
-xiNET.Interactor.prototype.updateName = function() {
+xiNET.Interactor.prototype.updateName = function () {
     this.labelTextNode.textContent = this.participant.name;
 };
 
-xiNET.Interactor.prototype.showLabel = function(show) {
+xiNET.Interactor.prototype.showLabel = function (show) {
     d3.select(this.labelSVG).attr("display", show ? null : "none");
 };
 
-xiNET.Interactor.prototype.getRenderedParticipant = function() {
+xiNET.Interactor.prototype.getRenderedParticipant = function () {
     if (this.inCollapsedGroup()) {
         const groupIt = this.parentGroups.values();
         const firstGroup = groupIt.next().value;
@@ -204,7 +205,7 @@ xiNET.Interactor.prototype.getRenderedParticipant = function() {
     }
 }
 
-xiNET.Interactor.prototype.inCollapsedGroup = function() {
+xiNET.Interactor.prototype.inCollapsedGroup = function () {
     // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
     // console.log("**",this.parentGroups.size);
     if (this.parentGroups.size > 0) {

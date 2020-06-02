@@ -10,7 +10,7 @@
 
 var xiNET = xiNET || {};
 
-xiNET.Group = function(id, participantIds, xlvController) {
+xiNET.Group = function (id, participantIds, xlvController) {
     this.id = id;
     this.name = id;
     this.controller = xlvController;
@@ -72,13 +72,13 @@ xiNET.Group = function(id, participantIds, xlvController) {
     // events
     const self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
-    this.upperGroup.onmousedown = function(evt) {
+    this.upperGroup.onmousedown = function (evt) {
         self.mouseDown(evt);
     };
-    this.upperGroup.onmouseover = function(evt) {
+    this.upperGroup.onmouseover = function (evt) {
         self.mouseOver(evt);
     };
-    this.upperGroup.onmouseout = function(evt) {
+    this.upperGroup.onmouseout = function (evt) {
         self.mouseOut(evt);
     };
     // this.upperGroup.ontouchstart = function(evt) {
@@ -89,21 +89,19 @@ xiNET.Group = function(id, participantIds, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            const w = this.upperGroup.getBBox().width + 10;
-            return w;
+            return this.upperGroup.getBBox().width + 10;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            const h = this.upperGroup.getBBox().height + 10;
-            return h;
+            return this.upperGroup.getBBox().height + 10;
         }
     });
 }
 
 xiNET.Group.prototype = new xiNET.Interactor();
 
-xiNET.Group.prototype.unhiddenParticipantCount = function() {
+xiNET.Group.prototype.unhiddenParticipantCount = function () {
     let count = 0;
     for (let renderedParticipant of this.renderedParticipants) {
         if (!renderedParticipant.participant.hidden) {
@@ -113,16 +111,16 @@ xiNET.Group.prototype.unhiddenParticipantCount = function() {
     return count;
 };
 
-xiNET.Group.prototype.isSubsetOf = function(anotherGroup) {
+xiNET.Group.prototype.isSubsetOf = function (anotherGroup) {
     for (let renderedParticipant of this.renderedParticipants) {
-        if (!renderedParticipant.participant.hidden && anotherGroup.renderedParticipants.indexOf(renderedParticipant) == -1) {
+        if (!renderedParticipant.participant.hidden && anotherGroup.renderedParticipants.indexOf(renderedParticipant) === -1) {
             return false;
         }
     }
     return true;
 };
 
-xiNET.Group.prototype.contains = function(renderedProtein) {
+xiNET.Group.prototype.contains = function (renderedProtein) {
     for (let rp of this.renderedParticipants) {
         if (rp === renderedProtein) {
             return true;
@@ -131,23 +129,19 @@ xiNET.Group.prototype.contains = function(renderedProtein) {
     return false;
 };
 
-xiNET.Group.prototype.init = function() {
+xiNET.Group.prototype.init = function () {
     this.setExpanded(this.expanded);
 };
 
 // event handler for starting dragging or rotation (or flipping internal links)
-xiNET.Group.prototype.mouseDown = function(evt) {
+xiNET.Group.prototype.mouseDown = function (evt) {
     this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
     this.controller.d3cola.stop();
     this.controller.dragElement = this;
     //store start location
     this.controller.dragStart = evt;
 
-    let rightclick; //which button has just been raised
-    if (evt.which)
-        rightclick = (evt.which === 3);
-    else if (evt.button)
-        rightclick = (evt.button === 2);
+    let rightclick = (evt.button === 2);
 
     if (!rightclick) {
         const add = evt.ctrlKey || evt.shiftKey;
@@ -163,7 +157,7 @@ xiNET.Group.prototype.mouseDown = function(evt) {
 }
 
 
-xiNET.Group.prototype.mouseOver = function(evt) {
+xiNET.Group.prototype.mouseOver = function (evt) {
     this.showHighlight(true);
     const p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")
@@ -175,12 +169,12 @@ xiNET.Group.prototype.mouseOver = function(evt) {
         });
 };
 
-xiNET.Group.prototype.mouseOut = function(evt) {
+xiNET.Group.prototype.mouseOut = function (evt) {
     this.showHighlight(false);
     xiNET.Interactor.prototype.mouseOut.call(this, evt);
 };
 
-xiNET.Group.prototype.getAverageParticipantPosition = function() {
+xiNET.Group.prototype.getAverageParticipantPosition = function () {
     let xSum = 0,
         ySum = 0;
     const rpCount = this.renderedParticipants.length;
@@ -195,7 +189,7 @@ xiNET.Group.prototype.getAverageParticipantPosition = function() {
     calculate centre of interactor's glyph,
     call setPosition with those
 */
-xiNET.Group.prototype.setPositionFromCola = function() {
+xiNET.Group.prototype.setPositionFromCola = function () {
     this.px = this.x;
     this.py = this.y;
     let xOffset = 0;
@@ -205,14 +199,14 @@ xiNET.Group.prototype.setPositionFromCola = function() {
         //   xOffset = xOffset + (this.participant.size / 2 * this.stickZoom );
         // }
     }
-    this.setPosition(this.x /*- xOffset*/ , this.y);
+    this.setPosition(this.x /*- xOffset*/, this.y);
 }
 
 /* calculate top left of interactor's glyph,
 set this.x and this.y as cola would have them,
     call setPosition with same params this recieved
 */
-xiNET.Group.prototype.setPositionFromXinet = function(ix, iy) {
+xiNET.Group.prototype.setPositionFromXinet = function (ix, iy) {
     this.px = this.x;
     this.py = this.y;
     let xOffset = 0;
@@ -228,7 +222,7 @@ xiNET.Group.prototype.setPositionFromXinet = function(ix, iy) {
 }
 
 //also setting size of collapsed group symbol; scaling line widths, corner radii
-xiNET.Group.prototype.setPosition = function(ix, iy) { //todo - array as coord param?
+xiNET.Group.prototype.setPosition = function (ix, iy) { //todo - array as coord param?
     if (!this.expanded) {
         this.ix = ix;
         this.iy = iy;
@@ -257,12 +251,12 @@ xiNET.Group.prototype.setPosition = function(ix, iy) { //todo - array as coord p
     }
 };
 
-xiNET.Group.prototype.updateExpandedGroup = function() {
+xiNET.Group.prototype.updateExpandedGroup = function () {
     let x1, y1, x2, y2;
     const z = this.controller.z,
         pad = 5 * z;
     for (let rp of this.renderedParticipants) {
-        if (rp.hidden == false) {
+        if (rp.hidden === false) {
             const rpBbox = rp.upperGroup.getBBox();
             if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
                 x1 = (rpBbox.x * z) + rp.ix;
@@ -296,17 +290,17 @@ xiNET.Group.prototype.updateExpandedGroup = function() {
     this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 };
 
-xiNET.Group.prototype.getResidueCoordinates = function(x, y) {
+xiNET.Group.prototype.getResidueCoordinates = function (x, y) {
     return [this.ix, this.iy];
 };
 
-xiNET.Group.prototype.setHidden = function(bool) {
+xiNET.Group.prototype.setHidden = function (bool) {
     d3.select(this.upperGroup).style("display", bool ? "none" : null);
     d3.select(this.labelSVG).style("display", bool ? "none" : null);
     this.hidden = !!bool;
 };
 
-xiNET.Group.prototype.showHighlight = function(show) {
+xiNET.Group.prototype.showHighlight = function (show) {
     const d3HighSel = d3.select(this.highlight);
     this.isHighlighted = !!show;
     if (show === true) {
@@ -345,11 +339,10 @@ xiNET.Group.prototype.showHighlight = function(show) {
 // };
 
 
-xiNET.Group.prototype.setExpanded = function(expanded, svgP) {
+xiNET.Group.prototype.setExpanded = function (expanded, svgP) {
     // if (!this.busy) {
     //   this.busy = true;
     // var self = this;
-
 
 
     this.expanded = !!expanded;
@@ -382,22 +375,22 @@ xiNET.Group.prototype.setExpanded = function(expanded, svgP) {
 
 };
 
-xiNET.Group.prototype.hideSubgroups = function() {
-    for (let subgroup of this.subgroups){
+xiNET.Group.prototype.hideSubgroups = function () {
+    for (let subgroup of this.subgroups) {
         subgroup.hideSubgroups();
         subgroup.upperGroup.parentNode.removeChild(subgroup.upperGroup);
     }
 };
 
-xiNET.Group.prototype.showSubgroups = function() {
-    for (let subgroup of this.subgroups){
+xiNET.Group.prototype.showSubgroups = function () {
+    for (let subgroup of this.subgroups) {
         subgroup.setExpanded(subgroup.expanded);
         subgroup.showSubgroups();
     }
 };
 
 // update all lines (e.g after a move)
-xiNET.Group.prototype.setAllLinkCoordinates = function() {
+xiNET.Group.prototype.setAllLinkCoordinates = function () {
     for (let rp of this.renderedParticipants) {
         rp.setAllLinkCoordinates();
     }

@@ -6,7 +6,7 @@
 //  xiNET.P_PLink.js
 //  the class representing a protein-protein link
 
-xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
+xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     this.id = p_pId;
     this.controller = crosslinkViewer;
     this.crossLinks = [];
@@ -23,7 +23,7 @@ xiNET.P_PLink = function(p_pId, crossLink, crosslinkViewer) {
 
 xiNET.P_PLink.prototype = new xiNET.Link();
 
-xiNET.P_PLink.prototype.initSVG = function() {
+xiNET.P_PLink.prototype.initSVG = function () {
     if (this.crossLinks[0].isSelfLink() === false) {
         this.line = document.createElementNS(this.controller.svgns, "line");
         this.highlightLine = document.createElementNS(this.controller.svgns, "line");
@@ -60,66 +60,66 @@ xiNET.P_PLink.prototype.initSVG = function() {
     this.controller.p_pLinks.appendChild(this.line);
 
     //set the events for it
-    var self = this;
-    this.line.onmousedown = function(evt) {
+    const self = this;
+    this.line.onmousedown = function (evt) {
         self.mouseDown(evt);
     };
 
-    this.line.onmouseover = function(evt) {
+    this.line.onmouseover = function (evt) {
         self.mouseOver(evt);
     };
-    this.line.onmouseout = function(evt) {
+    this.line.onmouseout = function (evt) {
         self.mouseOut(evt);
     };
     // this.line.ontouchstart = function(evt) {
     //     self.touchStart(evt);
     // };
     //todo: following may not work in IE
-    this.line.oncontextmenu = function() {
+    this.line.oncontextmenu = function () {
         return false;
     };
 
-    this.highlightLine.onmousedown = function(evt) {
+    this.highlightLine.onmousedown = function (evt) {
         self.mouseDown(evt);
     };
-    this.highlightLine.onmouseover = function(evt) {
+    this.highlightLine.onmouseover = function (evt) {
         self.mouseOver(evt);
     };
-    this.highlightLine.onmouseout = function(evt) {
+    this.highlightLine.onmouseout = function (evt) {
         self.mouseOut(evt);
     };
     // this.highlightLine.ontouchstart = function(evt) {
     //     self.touchStart(evt);
     // };
     //todo: following may not work in IE
-    this.highlightLine.oncontextmenu = function() {
+    this.highlightLine.oncontextmenu = function () {
         return false;
     };
-    this.thickLine.onmousedown = function(evt) {
+    this.thickLine.onmousedown = function (evt) {
         self.mouseDown(evt);
     };
-    this.thickLine.onmousedown = function(evt) {
+    this.thickLine.onmousedown = function (evt) {
         self.mouseDown(evt);
     };
-    this.thickLine.onmouseover = function(evt) {
+    this.thickLine.onmouseover = function (evt) {
         self.mouseOver(evt);
     };
-    this.thickLine.onmouseout = function(evt) {
+    this.thickLine.onmouseout = function (evt) {
         self.mouseOut(evt);
     };
     // this.thickLine.ontouchstart = function(evt) {
     //     self.touchStart(evt);
     // };
     //todo: following may not work in IE
-    this.thickLine.oncontextmenu = function() {
+    this.thickLine.oncontextmenu = function () {
         return false;
     };
 };
 
-xiNET.P_PLink.prototype.mouseOver = function(evt) {
-    var p = this.controller.getEventPoint(evt);
+xiNET.P_PLink.prototype.mouseOver = function (evt) {
+    const p = this.controller.getEventPoint(evt);
 
-    var toHighlight = this.crossLinks.slice(0);
+    const toHighlight = this.crossLinks.slice(0);
 
     this.controller.model.setMarkedCrossLinks("highlights", toHighlight, true, false);
 
@@ -139,17 +139,17 @@ xiNET.P_PLink.prototype.mouseOver = function(evt) {
 };
 
 // event handler for starting dragging or rotation (or flipping internal links)
-xiNET.P_PLink.prototype.mouseDown = function(evt) {
+xiNET.P_PLink.prototype.mouseDown = function (evt) {
     //stop layout
     this.controller.d3cola.stop();
 
     this.controller.dragElement = this;
     if (evt.shiftKey || evt.ctrlKey) {
-        var selection = this.controller.model.get("selection");
+        let selection = this.controller.model.get("selection");
         if (this.isSelected) {
-            var self = this;
-            selection = selection.filter(function(d) {
-                return self.crossLinks.indexOf(d) == -1;
+            const self = this;
+            selection = selection.filter(function (d) {
+                return self.crossLinks.indexOf(d) === -1;
             });
         } else {
             selection = selection.concat(this.crossLinks);
@@ -175,14 +175,14 @@ xiNET.P_PLink.prototype.mouseDown = function(evt) {
     this.controller.dragStart = evt;
 }*/
 
-xiNET.P_PLink.prototype.initSelfLinkSVG = function() {
-    var path = this.renderedFromProtein.getAggregateSelfLinkPath();
+xiNET.P_PLink.prototype.initSelfLinkSVG = function () {
+    const path = this.renderedFromProtein.getAggregateSelfLinkPath();
     this.line.setAttribute('d', path);
     this.highlightLine.setAttribute('d', path);
     this.thickLine.setAttribute('d', path);
 };
 
-xiNET.P_PLink.prototype.showHighlight = function(show) {
+xiNET.P_PLink.prototype.showHighlight = function (show) {
     if (this.shown) {
         if (show) {
             d3.select(this.highlightLine).classed("selectedLink", false);
@@ -191,16 +191,16 @@ xiNET.P_PLink.prototype.showHighlight = function(show) {
         } else {
             d3.select(this.highlightLine).classed("selectedLink", true);
             d3.select(this.highlightLine).classed("highlightedLink", false);
-            if (this.isSelected == false) {
+            if (this.isSelected === false) {
                 this.highlightLine.setAttribute("stroke-opacity", "0");
             }
         }
     }
 };
 
-xiNET.P_PLink.prototype.setSelected = function(select) {
+xiNET.P_PLink.prototype.setSelected = function (select) {
     if (this.shown) {
-        if (select == true) {
+        if (select === true) {
             d3.select(this.highlightLine).classed("selectedLink", true);
             d3.select(this.highlightLine).classed("highlightedLink", false);
             this.highlightLine.setAttribute("stroke-opacity", "1");
@@ -213,31 +213,31 @@ xiNET.P_PLink.prototype.setSelected = function(select) {
     this.isSelected = select;
 };
 
-xiNET.P_PLink.prototype.check = function() {
+xiNET.P_PLink.prototype.check = function () {
     this.ambiguous = true;
     this.hd = false;
 
-    var filteredCrossLinks = new Set();
+    const filteredCrossLinks = new Set();
     this.filteredMatches = new Map();
-    var altP_PLinks = new Map();
+    const altP_PLinks = new Map();
 
-    var crossLinks = this.crossLinks;
-    var clCount = crossLinks.length;
+    const crossLinks = this.crossLinks;
+    const clCount = crossLinks.length;
 
     this.colours.clear();
 
-    for (var cl = 0; cl < clCount; cl++) {
-        var crossLink = crossLinks[cl];
+    for (let cl = 0; cl < clCount; cl++) {
+        const crossLink = crossLinks[cl];
 
 
         if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink);
             this.colours.add(CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(crossLink));
         }
-        var filteredMatchesAndPepPos = crossLink.filteredMatches_pp;
-        var fm_ppCount = filteredMatchesAndPepPos.length;
-        for (var fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
-            var match = filteredMatchesAndPepPos[fm_pp].match;
+        const filteredMatchesAndPepPos = crossLink.filteredMatches_pp;
+        const fm_ppCount = filteredMatchesAndPepPos.length;
+        for (let fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
+            const match = filteredMatchesAndPepPos[fm_pp].match;
             this.filteredMatches.set(match.id, match);
             if (match.hd === true) {
                 this.hd = true;
@@ -245,14 +245,14 @@ xiNET.P_PLink.prototype.check = function() {
             if (match.crossLinks.length === 1) {
                 this.ambiguous = false;
             } else {
-                var matchCrossLinks = match.crossLinks;
-                var mclCount = matchCrossLinks.length;
-                for (var mcl = 0; mcl < mclCount; mcl++) {
-                    var matchCrossLink = matchCrossLinks[mcl];
+                const matchCrossLinks = match.crossLinks;
+                const mclCount = matchCrossLinks.length;
+                for (let mcl = 0; mcl < mclCount; mcl++) {
+                    const matchCrossLink = matchCrossLinks[mcl];
                     if (!matchCrossLink.isDecoyLink()) {
-                        var toId = matchCrossLink.toProtein ? matchCrossLink.toProtein.id : "null";
-                        var p_pId = matchCrossLink.fromProtein.id + "-" + toId;
-                        var p_pLink = this.controller.renderedP_PLinks.get(p_pId);
+                        const toId = matchCrossLink.toProtein ? matchCrossLink.toProtein.id : "null";
+                        const p_pId = matchCrossLink.fromProtein.id + "-" + toId;
+                        const p_pLink = this.controller.renderedP_PLinks.get(p_pId);
 
                         altP_PLinks.set(p_pLink.id, p_pId);
                     }
@@ -269,7 +269,7 @@ xiNET.P_PLink.prototype.check = function() {
     return this.filteredCrossLinkCount;
 };
 
-xiNET.P_PLink.prototype.update = function() {
+xiNET.P_PLink.prototype.update = function () {
     if (!this.renderedToProtein || // todo - ok... check why this is here
         //hide if prot either end is hidden
         this.renderedFromProtein.participant.hidden ||
@@ -287,7 +287,7 @@ xiNET.P_PLink.prototype.update = function() {
     }
 }
 
-xiNET.P_PLink.prototype.show = function() {
+xiNET.P_PLink.prototype.show = function () {
     //if (!this.shown) { - causing problems with load layout, TODO - look at again
     if (typeof this.line === 'undefined') {
         this.initSVG();
@@ -314,13 +314,13 @@ xiNET.P_PLink.prototype.show = function() {
     d3.select(this.highlightLine).style("display", null);
     //}
 
-    if (this.controller.model.get("xinetThickLinks") == false) {
+    if (this.controller.model.get("xinetThickLinks") === false) {
         d3.select(this.thickLine).style("display", "none");
     } else {
         d3.select(this.thickLine).style("display", null);
-        var steps = this.controller.model.get("xinetPpiSteps");
+        const steps = this.controller.model.get("xinetPpiSteps");
 
-        var thickLineWidth;
+        let thickLineWidth;
         if (this.filteredCrossLinkCount < steps[0]) {
             thickLineWidth = 1;
         } else if (this.filteredCrossLinkCount < steps[1]) {
@@ -338,7 +338,7 @@ xiNET.P_PLink.prototype.show = function() {
 
     this.dashedLine(this.ambiguous);
 
-    if (this.colours.size == 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") != "Default") { // todo - fix this
+    if (this.colours.size === 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") !== "Default") { // todo - fix this
         this.line.setAttribute("stroke", Array.from(this.colours)[0]);
     } else {
         this.line.setAttribute("stroke", "black");
@@ -347,7 +347,7 @@ xiNET.P_PLink.prototype.show = function() {
     this.setSelected(this.isSelected);
 };
 
-xiNET.P_PLink.prototype.hide = function() {
+xiNET.P_PLink.prototype.hide = function () {
     if (this.shown) {
         this.shown = false;
         d3.select(this.thickLine).style("display", "none");
@@ -356,11 +356,11 @@ xiNET.P_PLink.prototype.hide = function() {
     }
 };
 
-xiNET.P_PLink.prototype.setLineCoordinates = function() {
-    if (this.renderedToProtein && this.renderedFromProtein != this.renderedToProtein) {
+xiNET.P_PLink.prototype.setLineCoordinates = function () {
+    if (this.renderedToProtein && this.renderedFromProtein !== this.renderedToProtein) {
         if (this.shown) {
-            var source = this.renderedFromProtein.getRenderedParticipant();
-            var target = this.renderedToProtein.getRenderedParticipant();
+            const source = this.renderedFromProtein.getRenderedParticipant();
+            const target = this.renderedToProtein.getRenderedParticipant();
             if (!source.ix || !source.iy) {
                 console.log("NOT");
             }
@@ -383,11 +383,11 @@ xiNET.P_PLink.prototype.setLineCoordinates = function() {
         }
     }
 }
-
+/*
 xiNET.P_PLink.prototype.getOtherEnd = function(protein) {
     if (this.fromProtein === protein) {
         return this.toProtein;
     } else {
         return this.fromProtein;
     }
-};
+};*/
