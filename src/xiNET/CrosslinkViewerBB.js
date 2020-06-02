@@ -635,6 +635,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 } else if (this.state === this.STATES.ROTATING) {
                     //round protein rotation to nearest 5 degrees (looks neater)
                     this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+                    this.dragElement.setAllLinkCoordinates();
                 } else {
                 } //end of protein drag; do nothing
             } else if (!this.mouseMoved) { //unselect crosslinks

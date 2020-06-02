@@ -251,6 +251,7 @@ xiNET.Group.prototype.setPosition = function (ix, iy) { //todo - array as coord 
     }
 };
 
+//U R HERE
 xiNET.Group.prototype.updateExpandedGroup = function () {
     let x1, y1, x2, y2;
     const z = this.controller.z,
@@ -290,9 +291,9 @@ xiNET.Group.prototype.updateExpandedGroup = function () {
     this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 };
 
-xiNET.Group.prototype.getResidueCoordinates = function (x, y) {
-    return [this.ix, this.iy];
-};
+// xiNET.Group.prototype.getResidueCoordinates = function (x, y) {
+//     return [this.ix, this.iy];
+// };
 
 xiNET.Group.prototype.setHidden = function (bool) {
     d3.select(this.upperGroup).style("display", bool ? "none" : null);

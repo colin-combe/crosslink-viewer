@@ -421,7 +421,7 @@ xiNET.RenderedCrosslink.prototype.setLineCoordinates = function () {
 xiNET.RenderedCrosslink.prototype.getResidueCoordinates = function (r, renderedInteractor) {
     let x = renderedInteractor.getResXwithStickZoom(r) * this.controller.z;
     let y = 0;
-    if (renderedInteractor.stickZoom > 8) { //if sequence shown
+    if (renderedInteractor.stickZoom >= 8) { //if sequence shown
         const from = this.renderedFromProtein,
             to = this.renderedToProtein;
         const deltaX = from.ix - to.ix;

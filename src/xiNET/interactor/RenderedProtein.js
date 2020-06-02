@@ -402,9 +402,10 @@ xiNET.RenderedProtein.prototype.scale = function () {
     d3.select(this.peptides).attr("transform", "scale(" + (this.stickZoom) + ", 1)");
     const protLength = (this.participant.size) * this.stickZoom;
     if (this.expanded) {
+        const labelWidth = this.labelSVG.getBBox().width;
         const labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         const k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-            .translate((-(((this.participant.size / 2) * this.stickZoom) + 10)), 0);
+            .translate((-(((this.participant.size / 2) * this.stickZoom) +  + (labelWidth / 2) + 10)), 0);
         this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations) {
@@ -1062,29 +1063,29 @@ xiNET.RenderedProtein.prototype.getResXwithStickZoom = function (r) {
 };
 
 //calculate the  coordinates of a residue (relative to this.controller.container)
-xiNET.RenderedProtein.prototype.getResidueCoordinates = function (r, yOff) {
-    if (typeof r === "undefined") {
-        alert("Error: residue number is undefined");
-    }
-    let x = this.getResXwithStickZoom(r * 1) * this.controller.z;
-    let y = 0;
-    if (x !== 0) {
-        const l = Math.abs(x);
-        const a = Math.acos(x / l);
-        const rotRad = (this.rotation / 360) * Math.PI * 2;
-        x = l * Math.cos(rotRad + a);
-        y = l * Math.sin(rotRad + a);
-        if (typeof yOff !== 'undefined') {
-            x += yOff * this.controller.z * Math.cos(rotRad + (Math.PI / 2));
-            y += yOff * this.controller.z * Math.sin(rotRad + (Math.PI / 2));
-        }
-    } else {
-        y = yOff;
-    }
-    x = x + this.ix;
-    y = y + this.iy;
-    return [x, y];
-};
+// xiNET.RenderedProtein.prototype.getResidueCoordinates = function (r, yOff) {
+//     if (typeof r === "undefined") {
+//         alert("Error: residue number is undefined");
+//     }
+//     let x = this.getResXwithStickZoom(r * 1) * this.controller.z;
+//     let y = 0;
+//     if (x !== 0) {
+//         const l = Math.abs(x);
+//         const a = Math.acos(x / l);
+//         const rotRad = (this.rotation / 360) * Math.PI * 2;
+//         x = l * Math.cos(rotRad + a);
+//         y = l * Math.sin(rotRad + a);
+//         if (typeof yOff !== 'undefined') {
+//             x += yOff * this.controller.z * Math.cos(rotRad + (Math.PI / 2));
+//             y += yOff * this.controller.z * Math.sin(rotRad + (Math.PI / 2));
+//         }
+//     } else {
+//         y = yOff;
+//     }
+//     x = x + this.ix;
+//     y = y + this.iy;
+//     return [x, y];
+// };
 
 xiNET.RenderedProtein.prototype.checkLinks = function () {
     for (let p_pLink of this.renderedP_PLinks) {
