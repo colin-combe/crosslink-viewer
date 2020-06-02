@@ -351,7 +351,7 @@ xiNET.Group.prototype.setExpanded = function(expanded, svgP) {
     // var self = this;
 
 
-    
+
     this.expanded = !!expanded;
     if (!expanded) { // is collapsing
         this.hideSubgroups();
