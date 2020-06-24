@@ -17,9 +17,7 @@ xiNET.Group = function (id, participantIds, xlvController) {
 
     this.renderedParticipants = [];
     for (let pId of participantIds) {
-        const rp = this.controller.renderedProteins.get(pId);
-        this.renderedParticipants.push(rp);
-        // rp.parentGroups.add(this);
+        this.renderedParticipants.push(this.controller.renderedProteins.get(pId));
     }
     this.parentGroups = new Set();
     this.subgroups = [];
@@ -29,30 +27,25 @@ xiNET.Group = function (id, participantIds, xlvController) {
 
     this.padding = 40; // used by cola.js
 
-    /*
-     * Upper group
-     * svg group for elements that appear above links
-     */
-
     this.upperGroup = document.createElementNS(this.controller.svgns, "g");
     this.upperGroup.setAttribute("class", "protein upperGroup");
 
     //make highlight
     this.highlight = document.createElementNS(this.controller.svgns, "rect");
-    this.highlight.setAttribute("stroke", this.controller.highlightColour);
+    this.highlight.setAttribute("class", "highlightedProtein");
     this.highlight.setAttribute("stroke-width", "5");
     this.highlight.setAttribute("fill", "none");
-    d3.select(this.highlight).attr("stroke-opacity", 0);
+    this.highlight.setAttribute("stroke-opacity", "0");
     this.upperGroup.appendChild(this.highlight);
 
     //create label - we will move this svg element around when expand / collapse
     this.labelSVG = document.createElementNS(this.controller.svgns, "text");
     this.labelSVG.setAttribute("fill", "black")
-    this.labelSVG.setAttribute("x", 0);
-    this.labelSVG.setAttribute("y", 0);
+    this.labelSVG.setAttribute("x", "0");
+    this.labelSVG.setAttribute("y", "0");
     this.labelSVG.setAttribute("class", "xlv_text proteinLabel");
-    this.labelSVG.setAttribute('alignment-baseline', 'central');
-    this.labelSVG.setAttribute('text-anchor', 'middle');
+    this.labelSVG.setAttribute("alignment-baseline", "central");
+    this.labelSVG.setAttribute("text-anchor", "middle");
     this.labelText = this.name;
     this.labelTextNode = document.createTextNode(this.labelText);
     this.labelSVG.appendChild(this.labelTextNode);
@@ -61,15 +54,16 @@ xiNET.Group = function (id, participantIds, xlvController) {
     //make blob
     this.outline = document.createElementNS(this.controller.svgns, "rect");
     this.outline.setAttribute("stroke", "white");
-    this.outline.setAttribute("stroke-width", 3);
-    this.outline.setAttribute("stroke-opacity", 1);
-    this.outline.setAttribute("fill-opacity", 0.5);
+    this.outline.setAttribute("stroke-width", "3");
+    this.outline.setAttribute("stroke-opacity", "1");
+    this.outline.setAttribute("fill-opacity", "0.5");
     this.outline.setAttribute("fill", "#cccccc");
     this.upperGroup.appendChild(this.outline);
 
+    //need to change this if default is unexpanded
     this.controller.groupsSVG.appendChild(this.upperGroup);
 
-    // events
+    // events - todo: move to initEvents function in Interactor?
     const self = this;
     //    this.upperGroup.setAttribute('pointer-events','all');
     this.upperGroup.onmousedown = function (evt) {
@@ -111,6 +105,7 @@ xiNET.Group.prototype.unhiddenParticipantCount = function () {
     return count;
 };
 
+// result depends on whats hidden
 xiNET.Group.prototype.isSubsetOf = function (anotherGroup) {
     for (let renderedParticipant of this.renderedParticipants) {
         if (!renderedParticipant.participant.hidden && anotherGroup.renderedParticipants.indexOf(renderedParticipant) === -1) {
@@ -129,6 +124,15 @@ xiNET.Group.prototype.contains = function (renderedProtein) {
     return false;
 };
 
+xiNET.Group.prototype.containsInSubgroup = function (renderedProtein) {
+    for (let subgroup of this.subgroups) {
+        if (subgroup.contains(renderedProtein)) {
+            return true;
+        }
+    }
+    return false;
+};
+
 xiNET.Group.prototype.init = function () {
     this.setExpanded(this.expanded);
 };
@@ -141,16 +145,16 @@ xiNET.Group.prototype.mouseDown = function (evt) {
     //store start location
     this.controller.dragStart = evt;
 
-    let rightclick = (evt.button === 2);
+    let rightClick = (evt.button === 2);
 
-    if (!rightclick) {
+    if (!rightClick) {
         const add = evt.ctrlKey || evt.shiftKey;
         const participants = [];
         for (let rp of this.renderedParticipants) {
             //rp.participant.manuallyHidden = false;
             participants.push(rp.participant);
         }
-        // this.controller.model.get("filterModel").trigger("change"); // coz its unhiding things
+        // this.controller.model.get("filterModel").trigger("change"); // if its unhiding things
         this.controller.model.setSelectedProteins(participants, add);
     }
     return false;
@@ -226,38 +230,42 @@ xiNET.Group.prototype.setPosition = function (ix, iy) { //todo - array as coord 
     if (!this.expanded) {
         this.ix = ix;
         this.iy = iy;
-        const pad = 20;
+        const symbolWidth = 20;
+        const x = this.ix - (symbolWidth * this.controller.z);
+        const y = this.iy - (symbolWidth * this.controller.z);
+        const scaledWidth = 2 * (symbolWidth * this.controller.z);
+        const cornerRadii = 5 * this.controller.z;
 
-        this.outline.setAttribute("x", this.ix - (pad * this.controller.z));
-        this.outline.setAttribute("y", this.iy - (pad * this.controller.z));
-        this.outline.setAttribute("width", (2 * (pad * this.controller.z)));
-        this.outline.setAttribute("height", (2 * (pad * this.controller.z)));
-        this.outline.setAttribute("rx", 5 * this.controller.z);
-        this.outline.setAttribute("ry", 5 * this.controller.z);
+        this.outline.setAttribute("x", x);
+        this.outline.setAttribute("y", y);
+        this.outline.setAttribute("width", scaledWidth);
+        this.outline.setAttribute("height", scaledWidth);
+        this.outline.setAttribute("rx", cornerRadii);
+        this.outline.setAttribute("ry", cornerRadii);
         this.outline.setAttribute("stroke-width", 3 * this.controller.z);
 
-        this.highlight.setAttribute("x", this.ix - (pad * this.controller.z));
-        this.highlight.setAttribute("y", this.iy - (pad * this.controller.z));
-        this.highlight.setAttribute("width", (2 * (pad * this.controller.z)));
-        this.highlight.setAttribute("height", (2 * (pad * this.controller.z)));
-        this.highlight.setAttribute("rx", 5 * this.controller.z);
-        this.highlight.setAttribute("ry", 5 * this.controller.z);
+        this.highlight.setAttribute("x", x);
+        this.highlight.setAttribute("y", y);
+        this.highlight.setAttribute("width", scaledWidth);
+        this.highlight.setAttribute("height", scaledWidth);
+        this.highlight.setAttribute("rx", cornerRadii);
+        this.highlight.setAttribute("ry", cornerRadii);
         this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 
         this.labelSVG.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ")");
     } else {
-        console.log("error");
+        console.log("error - calling setPosition on unexpanded Group");
     }
 };
 
-//U R HERE
 xiNET.Group.prototype.updateExpandedGroup = function () {
     let x1, y1, x2, y2;
     const z = this.controller.z,
         pad = 5 * z;
+
     for (let rp of this.renderedParticipants) {
-        if (rp.hidden === false) {
+        if (!rp.hidden && !this.containsInSubgroup(rp)) {
             const rpBbox = rp.upperGroup.getBBox();
             if (!x1 || (rpBbox.x * z) + rp.ix < x1) {
                 x1 = (rpBbox.x * z) + rp.ix;
@@ -273,6 +281,29 @@ xiNET.Group.prototype.updateExpandedGroup = function () {
             }
         }
     }
+
+    for (let sg of this.subgroups){
+        sg.updateExpandedGroup();
+        const sgBbox = sg.upperGroup.getBBox();
+        if (!x1 || (sgBbox.x) < x1) {
+            x1 = (sgBbox.x);
+        }
+        if (!y1 || (sgBbox.y) < y1) {
+            y1 = (sgBbox.y);
+        }
+        if (!x2 || ((sgBbox.x + sgBbox.width)) > x2) {
+            x2 = ((sgBbox.x + sgBbox.width));
+        }
+        if (!y2 || ((sgBbox.y + sgBbox.height)) > y2) {
+            y2 = ((sgBbox.y + sgBbox.height));
+        }
+    }
+
+    // const symbolWidth = 20;
+    // const x = this.ix - (symbolWidth * this.controller.z);
+    // const y = this.iy - (symbolWidth * this.controller.z);
+    // const scaledWidth = 2 * (symbolWidth * this.controller.z);
+    // const cornerRadii = 5 * this.controller.z;
 
     this.outline.setAttribute("x", x1 - pad);
     this.outline.setAttribute("y", y1 - pad);
@@ -290,10 +321,6 @@ xiNET.Group.prototype.updateExpandedGroup = function () {
     this.highlight.setAttribute("ry", pad);
     this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
 };
-
-// xiNET.Group.prototype.getResidueCoordinates = function (x, y) {
-//     return [this.ix, this.iy];
-// };
 
 xiNET.Group.prototype.setHidden = function (bool) {
     d3.select(this.upperGroup).style("display", bool ? "none" : null);
@@ -344,7 +371,6 @@ xiNET.Group.prototype.setExpanded = function (expanded, svgP) {
     // if (!this.busy) {
     //   this.busy = true;
     // var self = this;
-
 
     this.expanded = !!expanded;
     if (!expanded) { // is collapsing
