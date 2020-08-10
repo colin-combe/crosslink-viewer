@@ -23,16 +23,6 @@ xiNET.Interactor.prototype.mouseDown = function (evt) {
     return false;
 };
 
-// /*xiNET.Interactor.prototype.touchStart = function(evt) {
-//     this.controller.preventDefaultsAndStopPropagation(evt);
-//     this.controller.d3cola.stop();
-//     this.controller.dragElement = this;
-//     //store start location
-//     //var p = this.controller.getTouchEventPoint(evt); //oh dear - now broken
-//     this.controller.dragStart = evt; //this.controller.mouseToSVG(p.x, p.y);
-//     return false;
-// };*/
-
 xiNET.Interactor.prototype.mouseOver = function (evt) {
     const p = this.controller.getEventPoint(evt);
     this.controller.model.get("tooltipModel")

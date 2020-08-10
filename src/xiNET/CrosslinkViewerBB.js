@@ -1307,7 +1307,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     showLabels: function () {
         const show = this.model.get("xinetShowLabels");
-        for (let renderedParticipant of this.renderedParticipants.values()) {
+        for (let renderedParticipant of this.renderedProteins.values()) {
             renderedParticipant.showLabel(show);
         }
         return this;
@@ -1315,7 +1315,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     setFixedSize: function () {
         this.fixedSize = this.model.get("xinetFixedSize");
-        for (let renderedParticipant of this.renderedParticipants.values()) {
+        for (let renderedParticipant of this.renderedProteins.values()) {
             renderedParticipant.resize();
         }
         return this;
