@@ -1,7 +1,7 @@
-xiNET cross-link viewer
+xiNET crosslink viewer
 ================
 
-A web based visualisation of cross-link / mass spectrometry data developed by the Rappsilber Laboratory. It can be used at [http://crosslinkviewer.org](http://crosslinkviewer.org).
+A web based visualisation of crosslink / mass spectrometry data developed by the Rappsilber Laboratory. It can be used at [http://crosslinkviewer.org](http://crosslinkviewer.org).
 
 The content of this master branch is a work in progress, to download xiNET for local use get the [latest v1.1 release](https://github.com/colin-combe/crosslink-viewer/releases/latest).
 
