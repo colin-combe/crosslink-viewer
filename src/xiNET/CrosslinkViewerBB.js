@@ -715,13 +715,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     saveLayout: function (callback) {
         const layout = {};
+        layout.groups = Array.from(this.groupMap.values());
         layout.proteins = Array.from(this.renderedProteins.values());
-        layout.groups = this.model.get("groups");
         const myJSONText = JSON.stringify(layout, null);
         console.log("SAVING", layout);
         callback(myJSONText.replace(/\\u0000/gi, ''));
     },
 
+    //todo - this is becoming about config of all xiVIEw not just config of xiNET, should be moved
     loadLayout: function (layout) {
         console.log("LOADING", layout);
         let proteinPositions, groups;
@@ -733,6 +734,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             proteinPositions = layout;
         }
         let layoutIsDodgy = false;
+        let namesChanged = false;
         for (let protLayout of proteinPositions) {
             const protein = this.renderedProteins.get(protLayout.id);
             if (protein !== undefined) {
@@ -749,6 +751,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];
                 protein.participant.manuallyHidden = protLayout["manuallyHidden"];
+
+                if (protLayout["name"]) {
+                    protein.participant.name = protLayout["name"];
+                    namesChanged = true;
+                }
+
             } else {
                 layoutIsDodgy = true;
                 console.log("! protein in layout but not search:" + protLayout.id);
@@ -760,17 +768,40 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
 
         if (groups) {
-            this.model.set("groups", groups);
-        } else {
-            this.model.trigger("hiddenChanged");
-        }
+            const modelGroupMap = new Map();
+            for (const savedGroup of groups) {
+                modelGroupMap.set(savedGroup.id, savedGroup.participantIds);
+            }
+            this.model.set("groups", modelGroupMap);
+            this.model.trigger("change:groups");
 
-        this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
+            for (const savedGroup of groups) {
+                const xiNetGroup = this.groupMap.get(savedGroup.id);
+                if (savedGroup.expanded === false){
+                    xiNetGroup.setExpanded(savedGroup.expanded);
+                }
+                xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
+            }
+
+
+        }
+        // else {
+        //     this.model.trigger("hiddenChanged");
+        // }
+
+        //this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
 
         this.zoomToFullExtent();
 
         if (layoutIsDodgy) {
             alert("Looks like something went wrong with the saved layout, if you can't see your proteins click Auto layout");
+        }
+
+        if (namesChanged) {
+            // CLMSUI.vent.trigger("proteinMetadataUpdated", {}); //aint gonna work
+            for (renderedParticipant of this.renderedProteins.values()) {
+                renderedParticipant.updateName();
+            }
         }
     },
 
