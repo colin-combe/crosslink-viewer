@@ -529,7 +529,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                     }
                 }
             } else if (this.state === this.STATES.SELECT_PAN) {
-                if (!this.model.get("xinetDragToPan")) {
+                if (evt.which === 3) {
                     //SELECT
                     var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
                     var dx = c.x - ds.x;
@@ -642,8 +642,10 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setMarkedCrossLinks("selection", [], false, add);
                 this.model.setSelectedProteins([]);
-            } else if (!this.model.get("xinetDragToPan")) {
+            } else if (evt.which === 3) {
                 var add = evt.ctrlKey || evt.shiftKey;
+
+
                 this.model.setSelectedProteins(this.toSelect, add);
             }
 
@@ -782,14 +784,9 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
                 xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
             }
-
-
         }
-        // else {
-        //     this.model.trigger("hiddenChanged");
-        // }
 
-        //this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
+        this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
 
         this.zoomToFullExtent();
 
@@ -858,9 +855,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             g.parentGroups = new Set();
             g.leaves = []; // different from g.renderedParticipants coz only contains ungrouped RenderedProteins, used by cola.js
             //g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js
-            for (var rp of g.renderedParticipants) {
-                rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
-            }
+
+
+            // 15/09/20 following now looks like a mistake, dunno why it was here
+            // for (var rp of g.renderedParticipants) {
+            //     rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
+            // }
         }
 
         //sort it by count not hidden (not manually hidden and not filtered)
