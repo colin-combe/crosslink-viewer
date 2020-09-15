@@ -772,7 +772,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             rp.setEverything();
         }
 
-        if (groups) {
+        if (groups && typeof groups[Symbol.iterator] === 'function') {
             const modelGroupMap = new Map();
             for (const savedGroup of groups) {
                 modelGroupMap.set(savedGroup.id, savedGroup.participantIds);
