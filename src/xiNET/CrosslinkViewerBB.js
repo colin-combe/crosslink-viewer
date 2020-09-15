@@ -555,6 +555,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         .attr("width", Math.abs(sx))
                         .attr("height", Math.abs(sy));
 
+                    this.toSelect = [];
                     const renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
                     const rpCount = renderedParticipantArr.length;
                     for (let rp = 0; rp < rpCount; rp++) {
