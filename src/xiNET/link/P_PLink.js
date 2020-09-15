@@ -241,18 +241,12 @@ xiNET.P_PLink.prototype.check = function () {
             } else {
                 const matchCrossLinks = match.crossLinks;
                 const mclCount = matchCrossLinks.length;
-                for (let mcl = 0; mcl < mclCount; mcl++) {
-                    const matchCrossLink = matchCrossLinks[mcl];
+                for (let matchCrossLink of match.crossLinks) {
                     if (!matchCrossLink.isDecoyLink()) {
-                        const toId = matchCrossLink.toProtein ? matchCrossLink.toProtein.id : "null";
-                        const p_pId = matchCrossLink.fromProtein.id + "-" + toId;
-                        const p_pLink = this.controller.renderedP_PLinks.get(p_pId);
-
-                        altP_PLinks.add(p_pLink.id);
+                        altP_PLinks.add(matchCrossLink.p_pLink.id);
                     }
                 }
             }
-
         }
     }
 

@@ -360,6 +360,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         this.renderedP_PLinks.set(p_pId, p_pLink);
                     }
                     p_pLink.crossLinks.push(crossLink);
+
+                    crossLink.p_pLink = p_pLink;
                 }
             }
         }
