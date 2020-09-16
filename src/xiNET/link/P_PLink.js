@@ -231,13 +231,14 @@ xiNET.P_PLink.prototype.check = function () {
         }
 
         for (let m of crossLink.filteredMatches_pp) {
+            // i think there's a performance improvement to be had here
             const match = m.match; // oh dear, this...
             filteredMatches.add(match.id);
             if (match.hd === true) {
                 this.hd = true;
             }
             if (match.crossLinks.length === 1) {
-                this.ambiguous = false;
+                this.ambiguous = false; //yeah... whats this doing when this.ambiguous gets set later, just before end of function
             } else {
                 const matchCrossLinks = match.crossLinks;
                 const mclCount = matchCrossLinks.length;
