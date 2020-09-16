@@ -174,7 +174,11 @@ xiNET.RenderedProtein.prototype.setEverything = function () {
     this.setPositionFromXinet(this.ix, this.iy);
     this.scale();
     this.setAllLinkCoordinates();
-    this.setExpanded(this.newForm);
+    //this.setExpanded(this.newForm);
+    if (this.newForm === true){ //TODO - this looks very hacky
+        this.toStickNoTransition();
+    }
+
 }
 
 xiNET.RenderedProtein.prototype.mouseOver = function (evt) {
