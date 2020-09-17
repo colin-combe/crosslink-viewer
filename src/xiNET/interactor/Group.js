@@ -95,6 +95,21 @@ xiNET.Group = function (id, participantIds, xlvController) {
 
 xiNET.Group.prototype = new xiNET.Interactor();
 
+//only output the info needed to reproduce the layout, used by save layout function
+xiNET.Group.prototype.toJSON = function () {
+    const participantIds = [];
+    for (let rp of this.renderedParticipants) {
+        participantIds.push(rp.participant.id);
+    }
+    return {
+        id: this.id,
+        x: this.ix,
+        y: this.iy,
+        expanded: this.expanded,
+        participantIds: participantIds
+    };
+};
+
 xiNET.Group.prototype.unhiddenParticipantCount = function () {
     let count = 0;
     for (let renderedParticipant of this.renderedParticipants) {

@@ -197,7 +197,8 @@ xiNET.Interactor.prototype.getRenderedParticipant = function () {
 
 xiNET.Interactor.prototype.inCollapsedGroup = function () {
     // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
-    // console.log("**",this.parentGroups.size);
+    // console.log("**", this.participant? this.participant.name : "group", this.parentGroups.size);
+
     if (this.parentGroups.size > 0) {
         const groupIt = this.parentGroups.values();
         const firstGroup = groupIt.next().value;

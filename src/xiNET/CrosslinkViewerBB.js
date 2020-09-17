@@ -360,6 +360,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         this.renderedP_PLinks.set(p_pId, p_pLink);
                     }
                     p_pLink.crossLinks.push(crossLink);
+
+                    crossLink.p_pLink = p_pLink;
                 }
             }
         }
@@ -529,7 +531,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                     }
                 }
             } else if (this.state === this.STATES.SELECT_PAN) {
-                if (!this.model.get("xinetDragToPan")) {
+                if (evt.which === 3) {
                     //SELECT
                     var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
                     var dx = c.x - ds.x;
@@ -553,6 +555,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         .attr("width", Math.abs(sx))
                         .attr("height", Math.abs(sy));
 
+                    this.toSelect = [];
                     const renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
                     const rpCount = renderedParticipantArr.length;
                     for (let rp = 0; rp < rpCount; rp++) {
@@ -642,8 +645,10 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 var add = evt.ctrlKey || evt.shiftKey;
                 this.model.setMarkedCrossLinks("selection", [], false, add);
                 this.model.setSelectedProteins([]);
-            } else if (!this.model.get("xinetDragToPan")) {
+            } else if (evt.which === 3) {
                 var add = evt.ctrlKey || evt.shiftKey;
+
+
                 this.model.setSelectedProteins(this.toSelect, add);
             }
 
@@ -715,13 +720,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     saveLayout: function (callback) {
         const layout = {};
+        layout.groups = Array.from(this.groupMap.values());
         layout.proteins = Array.from(this.renderedProteins.values());
-        layout.groups = this.model.get("groups");
         const myJSONText = JSON.stringify(layout, null);
         console.log("SAVING", layout);
         callback(myJSONText.replace(/\\u0000/gi, ''));
     },
 
+    //todo - this is becoming about config of all xiVIEw not just config of xiNET, should be moved
     loadLayout: function (layout) {
         console.log("LOADING", layout);
         let proteinPositions, groups;
@@ -733,6 +739,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             proteinPositions = layout;
         }
         let layoutIsDodgy = false;
+        let namesChanged = false;
         for (let protLayout of proteinPositions) {
             const protein = this.renderedProteins.get(protLayout.id);
             if (protein !== undefined) {
@@ -749,6 +756,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 protein.rotation = protLayout["rot"] - 0;
                 protein.flipped = protLayout["flipped"];
                 protein.participant.manuallyHidden = protLayout["manuallyHidden"];
+
+                if (protLayout["name"]) {
+                    protein.participant.name = protLayout["name"];
+                    namesChanged = true;
+                }
+
             } else {
                 layoutIsDodgy = true;
                 console.log("! protein in layout but not search:" + protLayout.id);
@@ -759,10 +772,21 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             rp.setEverything();
         }
 
-        if (groups) {
-            this.model.set("groups", groups);
-        } else {
-            this.model.trigger("hiddenChanged");
+        if (groups && typeof groups[Symbol.iterator] === 'function') {
+            const modelGroupMap = new Map();
+            for (const savedGroup of groups) {
+                modelGroupMap.set(savedGroup.id, savedGroup.participantIds);
+            }
+            this.model.set("groups", modelGroupMap);
+            this.model.trigger("change:groups");
+
+            for (const savedGroup of groups) {
+                const xiNetGroup = this.groupMap.get(savedGroup.id);
+                if (savedGroup.expanded === false){
+                    xiNetGroup.setExpanded(savedGroup.expanded);
+                }
+                xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
+            }
         }
 
         this.model.get("filterModel").trigger("change", this.model.get("filterModel"));
@@ -771,6 +795,13 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
         if (layoutIsDodgy) {
             alert("Looks like something went wrong with the saved layout, if you can't see your proteins click Auto layout");
+        }
+
+        if (namesChanged) {
+            // CLMSUI.vent.trigger("proteinMetadataUpdated", {}); //aint gonna work
+            for (renderedParticipant of this.renderedProteins.values()) {
+                renderedParticipant.updateName();
+            }
         }
     },
 
@@ -827,9 +858,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             g.parentGroups = new Set();
             g.leaves = []; // different from g.renderedParticipants coz only contains ungrouped RenderedProteins, used by cola.js
             //g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js
-            for (var rp of g.renderedParticipants) {
-                rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
-            }
+
+
+            // 15/09/20 following now looks like a mistake, dunno why it was here
+            // for (var rp of g.renderedParticipants) {
+            //     rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
+            // }
         }
 
         //sort it by count not hidden (not manually hidden and not filtered)

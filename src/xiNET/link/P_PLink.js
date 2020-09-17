@@ -130,7 +130,7 @@ xiNET.P_PLink.prototype.mouseOver = function (evt) {
             ["From", this.renderedFromProtein.participant.name],
             ["To", this.renderedToProtein.participant.name],
             ["Unique Linked Residue Pairs", this.filteredCrossLinkCount],
-            ["Matches", this.filteredMatches ? this.filteredMatches.size : "filter not yet applied"]
+            ["Matches", this.filteredMatchCount ? this.filteredMatchCount : "filter not yet applied"]
         ])
         .set("location", {
             pageX: p.x,
@@ -218,50 +218,40 @@ xiNET.P_PLink.prototype.check = function () {
     this.hd = false;
 
     const filteredCrossLinks = new Set();
-    this.filteredMatches = new Map();
-    const altP_PLinks = new Map();
-
-    const crossLinks = this.crossLinks;
-    const clCount = crossLinks.length;
+    const filteredMatches = new Set();
+    const altP_PLinks = new Set();
 
     this.colours.clear();
 
-    for (let cl = 0; cl < clCount; cl++) {
-        const crossLink = crossLinks[cl];
-
+    for (let crossLink of this.crossLinks) {
 
         if (crossLink.filteredMatches_pp.length > 0) {
-            filteredCrossLinks.add(crossLink);
+            filteredCrossLinks.add(crossLink.id);
             this.colours.add(CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(crossLink));
         }
-        const filteredMatchesAndPepPos = crossLink.filteredMatches_pp;
-        const fm_ppCount = filteredMatchesAndPepPos.length;
-        for (let fm_pp = 0; fm_pp < fm_ppCount; fm_pp++) {
-            const match = filteredMatchesAndPepPos[fm_pp].match;
-            this.filteredMatches.set(match.id, match);
+
+        for (let m of crossLink.filteredMatches_pp) {
+            // i think there's a performance improvement to be had here
+            const match = m.match; // oh dear, this...
+            filteredMatches.add(match.id);
             if (match.hd === true) {
                 this.hd = true;
             }
             if (match.crossLinks.length === 1) {
-                this.ambiguous = false;
+                this.ambiguous = false; //yeah... whats this doing when this.ambiguous gets set later, just before end of function
             } else {
                 const matchCrossLinks = match.crossLinks;
                 const mclCount = matchCrossLinks.length;
-                for (let mcl = 0; mcl < mclCount; mcl++) {
-                    const matchCrossLink = matchCrossLinks[mcl];
+                for (let matchCrossLink of match.crossLinks) {
                     if (!matchCrossLink.isDecoyLink()) {
-                        const toId = matchCrossLink.toProtein ? matchCrossLink.toProtein.id : "null";
-                        const p_pId = matchCrossLink.fromProtein.id + "-" + toId;
-                        const p_pLink = this.controller.renderedP_PLinks.get(p_pId);
-
-                        altP_PLinks.set(p_pLink.id, p_pId);
+                        altP_PLinks.add(matchCrossLink.p_pLink.id);
                     }
                 }
             }
-
         }
     }
 
+    this.filteredMatchCount = filteredMatches.size;
     this.filteredCrossLinkCount = filteredCrossLinks.size;
     if (this.filteredCrossLinkCount > 0) {
         this.ambiguous = altP_PLinks.size > 1;
