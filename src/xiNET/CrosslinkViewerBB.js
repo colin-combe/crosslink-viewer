@@ -14,7 +14,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     svgns: "http://www.w3.org/2000/svg", // namespace for svg elements
-    linkWidth: 1, // default line width
+    linkWidth: 1.7, // default line width
     //static var's signifying Controller's status
     STATES: {
         MOUSE_UP: 0,

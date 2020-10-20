@@ -18,7 +18,7 @@ xiNET.P_PLink = function (p_pId, crossLink, crosslinkViewer) {
     }
     this.shown = false; //used to avoid some unnecessary manipulation of DOM
     this.isSelected = false;
-    this.colours = new Set(); // TODO - problems here
+    // this.colours = new Set(); // TODO - problems here
 };
 
 xiNET.P_PLink.prototype = new xiNET.Link();
@@ -51,7 +51,7 @@ xiNET.P_PLink.prototype.initSVG = function () {
 
     this.thickLine.setAttribute("class", "link");
     this.thickLine.setAttribute("fill", "none");
-    this.thickLine.setAttribute("stroke", "lightgray");
+    this.thickLine.setAttribute("stroke", "#ddd");
     this.thickLine.setAttribute("stroke-linecap", "round");
     this.thickLine.setAttribute("stroke-linejoin", "round");
 
@@ -214,20 +214,20 @@ xiNET.P_PLink.prototype.setSelected = function (select) {
 };
 
 xiNET.P_PLink.prototype.check = function () {
-    this.ambiguous = true;
+    // this.ambiguous = true; // todo - looks like this could be removed
     this.hd = false;
 
     const filteredCrossLinks = new Set();
     const filteredMatches = new Set();
     const altP_PLinks = new Set();
 
-    this.colours.clear();
+    // this.colours.clear();
 
     for (let crossLink of this.crossLinks) {
 
         if (crossLink.filteredMatches_pp.length > 0) {
             filteredCrossLinks.add(crossLink.id);
-            this.colours.add(CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(crossLink));
+            // this.colours.add(CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(crossLink));
         }
 
         for (let m of crossLink.filteredMatches_pp) {
@@ -238,7 +238,7 @@ xiNET.P_PLink.prototype.check = function () {
                 this.hd = true;
             }
             if (match.crossLinks.length === 1) {
-                this.ambiguous = false; //yeah... whats this doing when this.ambiguous gets set later, just before end of function
+                // this.ambiguous = false; //yeah... whats this doing when this.ambiguous gets set later, just before end of function
             } else {
                 const matchCrossLinks = match.crossLinks;
                 const mclCount = matchCrossLinks.length;
@@ -328,11 +328,11 @@ xiNET.P_PLink.prototype.show = function () {
 
     this.dashedLine(this.ambiguous);
 
-    if (this.colours.size === 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") !== "Default") { // todo - fix this
-        this.line.setAttribute("stroke", Array.from(this.colours)[0]);
-    } else {
-        this.line.setAttribute("stroke", "black");
-    }
+    // if (this.colours.size === 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") !== "Default") { // todo - fix this
+    //     this.line.setAttribute("stroke", Array.from(this.colours)[0]);
+    // } else {
+        this.line.setAttribute("stroke", CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(this));
+    // }
 
     this.setSelected(this.isSelected);
 };
