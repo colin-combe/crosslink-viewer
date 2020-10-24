@@ -775,7 +775,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         if (groups && typeof groups[Symbol.iterator] === 'function') {
             const modelGroupMap = new Map();
             for (const savedGroup of groups) {
-                modelGroupMap.set(savedGroup.id, savedGroup.participantIds);
+                modelGroupMap.set(savedGroup.id, new Set(savedGroup.participantIds));
             }
             this.model.set("groups", modelGroupMap);
             this.model.trigger("change:groups");
@@ -784,8 +784,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 const xiNetGroup = this.groupMap.get(savedGroup.id);
                 if (savedGroup.expanded === false){
                     xiNetGroup.setExpanded(savedGroup.expanded);
+                    xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
                 }
-                xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
             }
         }
 
@@ -1303,7 +1303,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     proteinMetadataUpdated: function (meta) {
-        // update prots
+        // update protein names and colours
         const renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
         const protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
         const rpCount = renderedParticipantArr.length;
@@ -1317,24 +1317,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
 
         }
-
-        //TODO - move this
-        // update groups
-        const groupMap = new Map(); // rename that var
-        for (let participant of meta.items.values()) {
-            if (participant.meta && participant.meta.complex) {
-                let group = participant.meta.complex;
-                if (groupMap.get(group)) {
-                    groupMap.get(group).add(participant.id);
-                } else {
-                    const groupParticipants = new Set();
-                    groupParticipants.add(participant.id);
-                    groupMap.set(group, groupParticipants)
-                }
-            }
-        }
-        this.model.set("groups", groupMap);
-        this.model.trigger("change:groups");
 
         return this;
     },
