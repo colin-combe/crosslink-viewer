@@ -83,12 +83,12 @@ xiNET.Group = function (id, participantIds, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return this.upperGroup.getBBox().width + 10;
+            return 60;//this.upperGroup.getBBox().width + 10;
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return this.upperGroup.getBBox().height + 10;
+            return 60;//this.upperGroup.getBBox().height + 10;
         }
     });
 }
