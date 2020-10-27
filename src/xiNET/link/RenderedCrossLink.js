@@ -350,7 +350,7 @@ xiNET.RenderedCrosslink.prototype.hide = function () {
 xiNET.RenderedCrosslink.prototype.setLineCoordinates = function () {
     if (this.shown) {
         //if not self link && not linker modified pep
-        if (!this.crossLink.isSelfLink()) {
+        if (!this.crossLink.isSelfLink() && this.crossLink.toProtein) {
             let x, y;
             const source = this.renderedFromProtein.getRenderedParticipant();
             const target = this.renderedToProtein.getRenderedParticipant();
