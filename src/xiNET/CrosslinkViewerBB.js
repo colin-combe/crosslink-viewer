@@ -395,7 +395,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 prot.setAllLinkCoordinates();
         }
         for (let renderedCrossLink of this.renderedCrosslinks.values()) {
-            if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false) {
+            if (renderedCrossLink.shown && renderedCrossLink.crossLink.isSelfLink() === false && renderedCrossLink.crossLink.toProtein) {
                 renderedCrossLink.line.setAttribute("stroke-width", this.z * this.linkWidth);
                 renderedCrossLink.highlightLine.setAttribute("stroke-width", this.z * 10);
                 if (renderedCrossLink.crossLink.ambiguous === true) {
@@ -404,7 +404,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
         for (let p_pLink of this.renderedP_PLinks.values()) {
-            if (p_pLink.renderedFromProtein !== p_pLink.renderedToProtein &&
+            if (p_pLink.renderedToProtein && p_pLink.renderedFromProtein !== p_pLink.renderedToProtein &&
                 !p_pLink.renderedFromProtein.expanded && !p_pLink.renderedToProtein.expanded) {
                 if (p_pLink.line) {
                     p_pLink.line.setAttribute("stroke-width", this.z * this.linkWidth);
@@ -1025,45 +1025,46 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         //THINK THIS COULD MOVE UP
 
         for (let crossLink of filteredCrossLinks) {
-            const source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
-            nodeSet.add(source);
+            if (crossLink.toProtein) {
+                const source = this.renderedProteins.get(crossLink.fromProtein.id).getRenderedParticipant();
+                nodeSet.add(source);
 
-            const fromId = crossLink.fromProtein.id;
-            const toId = crossLink.toProtein.id;
-            const linkId = fromId + "-" + toId;
-            if (!links.has(linkId)) {
-                const linkObj = {};
-                linkObj.source = source;
-                linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
-                if (!linkObj.target) {
-                    alert("!");
+                const fromId = crossLink.fromProtein.id;
+                const toId = crossLink.toProtein.id;
+                const linkId = fromId + "-" + toId;
+                if (!links.has(linkId)) {
+                    const linkObj = {};
+                    linkObj.source = source;
+                    linkObj.target = this.renderedProteins.get(crossLink.toProtein.id).getRenderedParticipant();
+                    if (!linkObj.target) {
+                        alert("!");
+                    }
+                    nodeSet.add(linkObj.target);
+
+                    linkObj.source.fixed = fixSelected && selected.indexOf(source.participant) !== -1;
+                    linkObj.target.fixed = fixSelected && selected.indexOf(linkObj.target.participant) !== -1;
+
+                    //if in group (expanded? - no must be expanded, coz getRenderedParticipant)
+                    // then add highest parent (all parents must also be expanded)
+                    // if (linkObj.source.parentGroups.size) {
+                    //     // u r here - i think it needs to be all parent groups?
+                    //     var topGroups = linkObj.source.getTopParentGroups();
+                    //     for (var tg of topGroups) {
+                    //         groupSet.add(tg);
+                    //     }
+                    // }
+                    // if (linkObj.target.parentGroups.size) {
+                    //     var topGroups = linkObj.target.getTopParentGroups();
+                    //     for (var tg of topGroups) {
+                    //         groupSet.add(tg);
+                    //     }
+                    // }
+
+                    linkObj.id = linkId;
+                    links.set(linkId, linkObj);
                 }
-                nodeSet.add(linkObj.target);
-
-                linkObj.source.fixed = fixSelected && selected.indexOf(source.participant) !== -1;
-                linkObj.target.fixed = fixSelected && selected.indexOf(linkObj.target.participant) !== -1;
-
-                //if in group (expanded? - no must be expanded, coz getRenderedParticipant)
-                // then add highest parent (all parents must also be expanded)
-                // if (linkObj.source.parentGroups.size) {
-                //     // u r here - i think it needs to be all parent groups?
-                //     var topGroups = linkObj.source.getTopParentGroups();
-                //     for (var tg of topGroups) {
-                //         groupSet.add(tg);
-                //     }
-                // }
-                // if (linkObj.target.parentGroups.size) {
-                //     var topGroups = linkObj.target.getTopParentGroups();
-                //     for (var tg of topGroups) {
-                //         groupSet.add(tg);
-                //     }
-                // }
-
-                linkObj.id = linkId;
-                links.set(linkId, linkObj);
             }
         }
-
 
         const linkArr = Array.from(links.values());
         const nodeArr = Array.from(nodeSet);
