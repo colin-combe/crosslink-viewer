@@ -23,6 +23,7 @@ xiNET.Group = function (id, participantIds, xlvController) {
     this.subgroups = [];
 
     this.expanded = true;
+    this.hidden = false;
     this.type = 'group';
 
     this.padding = 40; // used by cola.js
@@ -83,12 +84,22 @@ xiNET.Group = function (id, participantIds, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return 60;//this.upperGroup.getBBox().width + 10;
+            if (this.expanded) {
+                console.log("get width on expanded group");
+                this.upperGroup.getBBox().width + 10;
+            } else {
+                return 60;//this.upperGroup.getBBox().width + 10;
+            }
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return 60;//this.upperGroup.getBBox().height + 10;
+            if (this.expanded) {
+                console.log("get width on expanded group");
+                this.upperGroup.getBBox().height + 10;
+            } else {
+                return 60;//this.upperGroup.getBBox().height + 10;
+            }
         }
     });
 }
@@ -113,9 +124,9 @@ xiNET.Group.prototype.toJSON = function () {
 xiNET.Group.prototype.unhiddenParticipantCount = function () {
     let count = 0;
     for (let renderedParticipant of this.renderedParticipants) {
-        if (!renderedParticipant.participant.hidden) {
+        // if (!renderedParticipant.participant.hidden) {
             count++;
-        }
+        // }
     }
     return count;
 };
@@ -269,13 +280,19 @@ xiNET.Group.prototype.setPosition = function (ix, iy) { //todo - array as coord 
 
         this.labelSVG.setAttribute("transform", "translate(" + this.ix + " " + this.iy + ")" +
             " scale(" + (this.controller.z) + ")");
+
+        for (let group of this.parentGroups) {
+            if (group.expanded && !this.hidden) {
+                group.updateExpandedGroup();
+            }
+        }
     } else {
         console.log("error - calling setPosition on unexpanded Group");
     }
 };
 
 xiNET.Group.prototype.updateExpandedGroup = function () {
-    let x1, y1, x2, y2;
+    let x1 = 0, y1 = 0, x2 = 0, y2 = 0;
     const z = this.controller.z,
         pad = 5 * z;
 
@@ -298,7 +315,7 @@ xiNET.Group.prototype.updateExpandedGroup = function () {
     }
 
     for (let sg of this.subgroups){
-        sg.updateExpandedGroup();
+       // sg.updateExpandedGroup();
         const sgBbox = sg.upperGroup.getBBox();
         if (!x1 || (sgBbox.x) < x1) {
             x1 = (sgBbox.x);
@@ -335,6 +352,12 @@ xiNET.Group.prototype.updateExpandedGroup = function () {
     this.highlight.setAttribute("rx", pad);
     this.highlight.setAttribute("ry", pad);
     this.highlight.setAttribute("stroke-width", 9 * this.controller.z);
+
+    for (let group of this.parentGroups) {
+        if (group.expanded && !this.hidden) {
+            group.updateExpandedGroup();
+        }
+    }
 };
 
 xiNET.Group.prototype.setHidden = function (bool) {
@@ -409,7 +432,7 @@ xiNET.Group.prototype.setExpanded = function (expanded, svgP) {
         this.outline.setAttribute("fill-opacity", "0.5");
         for (let rp of this.renderedParticipants) {
             rp.setAllLinkCoordinates();
-            rp.setHidden(rp.participant.hidden);
+            rp.setHidden(rp.participant.hidden || rp.inCollapsedGroup());
             rp.checkLinks();
         }
         this.updateExpandedGroup();
@@ -420,13 +443,17 @@ xiNET.Group.prototype.setExpanded = function (expanded, svgP) {
 xiNET.Group.prototype.hideSubgroups = function () {
     for (let subgroup of this.subgroups) {
         subgroup.hideSubgroups();
-        subgroup.upperGroup.parentNode.removeChild(subgroup.upperGroup);
+       // if (subgroup.upperGroup.parentNode) {
+       //      subgroup.upperGroup.parentNode.removeChild(subgroup.upperGroup);
+       // }
+        subgroup.setHidden(true);
     }
 };
 
 xiNET.Group.prototype.showSubgroups = function () {
     for (let subgroup of this.subgroups) {
-        subgroup.setExpanded(subgroup.expanded);
+        // subgroup.setExpanded(subgroup.expanded);
+        subgroup.setHidden(false);
         subgroup.showSubgroups();
     }
 };

@@ -24,6 +24,7 @@ xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.iy = 40;
     this.rotation = 0;
     this.expanded = false;
+    this.hidden = false;
     this.isFlipped = false;
     this.isSelected = false;
     this.isHighlighted = false;
@@ -150,12 +151,20 @@ xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            return 60;//this.upperGroup.getBBox().width + 10;
+            if (this.expanded) {
+                this.upperGroup.getBBox().width + 10;
+            } else {
+                return 60;//this.upperGroup.getBBox().width + 10;
+            }
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            return 60;//this.upperGroup.getBBox().height + 10;
+            if (this.expanded) {
+                this.upperGroup.getBBox().height + 10;
+            } else {
+                return 60;//this.upperGroup.getBBox().height + 10;
+            }
         }
     });
 };
