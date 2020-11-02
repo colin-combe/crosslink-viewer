@@ -84,22 +84,22 @@ xiNET.Group = function (id, participantIds, xlvController) {
     //TODO - this wastes a bit memory coz the property is not on the prototype, fix
     Object.defineProperty(this, "width", {
         get: function width() {
-            if (this.expanded) {
-                console.log("get width on expanded group");
-                this.upperGroup.getBBox().width + 10;
-            } else {
+            // if (this.expanded) {
+            //     console.log("get width on expanded group");
+            //     this.upperGroup.getBBox().width + 10;
+            // } else {
                 return 60;//this.upperGroup.getBBox().width + 10;
-            }
+            // }
         }
     });
     Object.defineProperty(this, "height", {
         get: function height() {
-            if (this.expanded) {
-                console.log("get width on expanded group");
-                this.upperGroup.getBBox().height + 10;
-            } else {
+            // if (this.expanded) {
+            //     console.log("get width on expanded group");
+            //     this.upperGroup.getBBox().height + 10;
+            // } else {
                 return 60;//this.upperGroup.getBBox().height + 10;
-            }
+            // }
         }
     });
 }
@@ -124,9 +124,9 @@ xiNET.Group.prototype.toJSON = function () {
 xiNET.Group.prototype.unhiddenParticipantCount = function () {
     let count = 0;
     for (let renderedParticipant of this.renderedParticipants) {
-        // if (!renderedParticipant.participant.hidden) {
+        if (!renderedParticipant.participant.hidden) {
             count++;
-        // }
+        }
     }
     return count;
 };
@@ -160,6 +160,7 @@ xiNET.Group.prototype.containsInSubgroup = function (renderedProtein) {
 };
 
 xiNET.Group.prototype.init = function () {
+    this.controller.groupsSVG.appendChild(this.upperGroup);
     this.setExpanded(this.expanded);
 };
 
@@ -174,7 +175,9 @@ xiNET.Group.prototype.mouseDown = function (evt) {
     let rightClick = (evt.button === 2);
 
     if (!rightClick) {
-        const add = evt.ctrlKey || evt.shiftKey;
+        // this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
+        // this.controller.dragElement = this;
+        // const add = evt.ctrlKey || evt.shiftKey;
         const participants = [];
         for (let rp of this.renderedParticipants) {
             //rp.participant.manuallyHidden = false;
