@@ -26,7 +26,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     barScales: [0.01, 0.2, 0.5, 0.8, 1, 2, 4, 8],
 
     initialize: function () {
-        // this.debug = true;
+        //this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
         var self = this;
 
@@ -265,6 +265,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     collapseParticipant: function (evt) {
         d3.select(".custom-menu-margin").style("display", "none");
         this.contextMenuParticipant.setExpanded(false, this.contextMenuPoint);
+        this.hiddenProteinsChanged();
         this.contextMenuParticipant = null;
     },
 
@@ -616,6 +617,9 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         if (rightclick) {
                             if (!this.dragElement.expanded) {
                                 this.dragElement.setExpanded(true);
+                                if (this.dragElement.type === "group") {
+                                    this.hiddenProteinsChanged();
+                                }
                             } else {
                                 this.model.get("tooltipModel").set("contents", null);
                                 this.contextMenuParticipant = this.dragElement;
@@ -662,10 +666,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.lastMouseUp = time;
         return false;
     },
-
-    /**
-     * Handle mouse wheel event.
-     */
+    
     mouseWheel: function (evt) {
         this.preventDefaultsAndStopPropagation(evt);
         this.d3cola.stop();
@@ -844,7 +845,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.hiddenProteinsChanged();
     },
 
-
     // handle changes to manually hidden proteins,
     // but also deal with stuff to do with groups / group hierarchy
     // specifically subgroups could change as result of things being hidden so this is here
@@ -857,13 +857,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             g.subgroups = []; // subgroups as xiNET.Groups
             g.parentGroups = new Set();
             g.leaves = []; // different from g.renderedParticipants coz only contains ungrouped RenderedProteins, used by cola.js
-            //g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js
-
+            g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js // needed? prob not coz groups already refered to by index
 
             // 15/09/20 following now looks like a mistake, dunno why it was here
-            // for (var rp of g.renderedParticipants) {
-            //     rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
-            // }
+            for (var rp of g.renderedParticipants) {
+                rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
+            }
         }
 
         //sort it by count not hidden (not manually hidden and not filtered)
@@ -906,12 +905,65 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
+        for (var g of groups) {
+            // delete g.index;
+            // if (!g.hidden && g.expanded) {
+                // if (g.expanded) { // if it contains visible participants it must be
+                g.leaves = [];
+
+                // g.groups = [];
+                // for (var rp of g.renderedParticipants) {
+                //     var i = nodeArr.indexOf(rp);
+                //     if (i != -1) {
+                //         g.leaves.push(i);
+                //     }
+                // }
+                // if (g.leaves.length > 0) {
+                //     groups.push(g);
+                // }
+
+                // put any rp not contained in a subgroup(recursive) in group1.leaves
+
+                for (var rp of g.renderedParticipants) {
+                    // if (!rp.hidden) {
+                        let inSubGroup = false;
+                        for (let subgroup of g.subgroups) {
+                            // UR HERE
+                            if (subgroup.contains(rp)) {
+                                inSubGroup = true;
+                                // break; ?
+                            }
+                        }
+                        if (!inSubGroup) {
+                        //g.leaves.push(nodeArr.indexOf(rp)); /// URHERE - MOVE UP
+                        rp.parentGroups.add(g); /// URHERE - MOVE UP
+                        }
+                    // }
+                }
+                // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
+                // groups.push(g);
+                // }
+            // }
+            // } // end expanded check
+        }
+
         //sort out parentGroups
-        for (var group1 of groups) {
-            for (var group2 of group1.subgroups) {
-                group2.parentGroups.add(group1);
+        for (var group1 of groups.reverse()) {
+            if (!group1.hidden) {
+                //group1.init();
+                console.log("!!!!!!!!!!!!!!!", group1.id);
+                if (group1.upperGroup.parentNode) {
+                    const pn = group1.upperGroup.parentNode;
+                    pn.removeChild(group1.upperGroup);
+                    pn.appendChild(group1.upperGroup);
+                }
+                for (var group2 of group1.subgroups) {
+                    group2.parentGroups.add(group1);
+                }
             }
         }
+
+
 
 
         let manuallyHidden = 0;
@@ -936,14 +988,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
 
 
-        for (let group of this.groupMap.values()) { // todo z-ordering, do earlier?
+        for (let group of groups) { // todo z-ordering, do earlier?
             let hasVisible = false;
             for (let p of group.renderedParticipants) {
                 if (p.participant.hidden === false) {
                     hasVisible = true;
                 }
             }
-            if (!hasVisible) {
+            if (!hasVisible || group.inCollapsedGroup()) {
                 group.setHidden(true);
             } else {
                 group.setHidden(false);
@@ -953,47 +1005,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        for (var g of groups) {
-            // delete g.index;
-            if (!g.hidden && g.expanded) {
-                // if (g.expanded) { // if it contains visible participants it must be
-                g.leaves = [];
-
-                // g.groups = [];
-                // for (var rp of g.renderedParticipants) {
-                //     var i = nodeArr.indexOf(rp);
-                //     if (i != -1) {
-                //         g.leaves.push(i);
-                //     }
-                // }
-                // if (g.leaves.length > 0) {
-                //     groups.push(g);
-                // }
-
-                // put any rp not contained in a subgroup(recursive) in group1.leaves
-
-                for (var rp of g.renderedParticipants) {
-                    if (!rp.hidden) {
-                        let inSubGroup = false;
-                        for (let subgroup of g.subgroups) {
-                            // UR HERE
-                            if (subgroup.contains(rp)) {
-                                inSubGroup = true;
-                                // break; ?
-                            }
-                        }
-                        if (!inSubGroup) {
-                            //g.leaves.push(nodeArr.indexOf(rp)); /// URHERE - MOVE UP
-                            rp.parentGroups.add(g); /// URHERE - MOVE UP
-                        }
-                    }
-                }
-                // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
-                // groups.push(g);
-                // }
-            }
-            // } // end expanded check
-        }
 
         return this;
     },
@@ -1001,7 +1012,10 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     autoLayout: function () {
         this.d3cola.stop();
 
+        this.z =1; this.scale();
+
         const fixSelected = this.model.get("xinetFixSelected");
+        // HERE? clear collpased group att's also
         for (renderedProtein of this.renderedProteins.values()) {
             if (!fixSelected) {
                 delete renderedProtein.x;
@@ -1011,6 +1025,15 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
             delete renderedProtein.index;
         }
+        for (var g of this.groupMap.values()) {
+            if (!fixSelected) {
+                delete g.x;
+                delete g.y;
+                delete g.px; // todo - check if this is necessry
+                delete g.py;
+            }
+            delete g.index;
+        };
 
         //// TODO: prune leaves from network then layout, then add back leaves and layout again
 
@@ -1118,7 +1141,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             //need to use indexes of groups
             for (var g of groups) {
                 for (let i = 0; i < g.subgroups.length; i++) {
-                    g.groups[i] = groups.indexOf(g.subgroups[i]);
+                    if (g.subgroups[i].expanded) {
+                        g.groups[i] = groups.indexOf(g.subgroups[i]);
+                    } else {
+                        g.leaves.push(g.subgroups[i]);
+                    }
                 }
             }
         }
@@ -1127,7 +1154,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         delete this.d3cola._lastStress;
         delete this.d3cola._alpha;
         delete this.d3cola._descent;
-        // delete this.d3cola._rootGroup;
+        delete this.d3cola._rootGroup; // needed?
 
         const length = (nodeArr.length < 20) ? 40 : 20;
         const width = this.svgElement.parentNode.clientWidth;

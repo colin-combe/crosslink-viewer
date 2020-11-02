@@ -200,12 +200,19 @@ xiNET.Interactor.prototype.inCollapsedGroup = function () {
     // console.log("**", this.participant? this.participant.name : "group", this.parentGroups.size);
 
     if (this.parentGroups.size > 0) {
-        const groupIt = this.parentGroups.values();
-        const firstGroup = groupIt.next().value;
-        if (firstGroup.expanded) {
-            return firstGroup.inCollapsedGroup();
-        } else {
-            return true;
+        // const groupIt = this.parentGroups.values();
+        // const firstGroup = groupIt.next().value;
+        // if (firstGroup.expanded) {
+        //     return firstGroup.inCollapsedGroup();
+        // } else {
+        //     return true;
+        // }
+        for (let pg of this.parentGroups.values()) {
+            if (!pg.expanded) {
+                return true;
+            } else {
+                return pg.inCollapsedGroup();
+            }
         }
     }
     return false;
