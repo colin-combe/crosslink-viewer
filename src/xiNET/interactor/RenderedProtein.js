@@ -133,9 +133,7 @@ xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     this.upperGroup.onmouseout = function (evt) {
         self.mouseOut(evt);
     };
-    this.upperGroup.ontouchstart = function (evt) {
-        self.touchStart(evt);
-    };
+
     //going to use right click ourselves
     this.upperGroup.oncontextmenu = function (evt) {
         if (evt.preventDefault) {
@@ -152,7 +150,7 @@ xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     Object.defineProperty(this, "width", {
         get: function width() {
             if (this.expanded) {
-                this.upperGroup.getBBox().width + 10;
+                return this.upperGroup.getBBox().width + 10;
             } else {
                 return 60;//this.upperGroup.getBBox().width + 10;
             }
@@ -161,7 +159,7 @@ xiNET.RenderedProtein = function (participant, crosslinkViewer) {
     Object.defineProperty(this, "height", {
         get: function height() {
             if (this.expanded) {
-                this.upperGroup.getBBox().height + 10;
+                return this.upperGroup.getBBox().height + 10;
             } else {
                 return 60;//this.upperGroup.getBBox().height + 10;
             }
@@ -184,7 +182,7 @@ xiNET.RenderedProtein.prototype.setEverything = function () {
     this.scale();
     this.setAllLinkCoordinates();
     //this.setExpanded(this.newForm);
-    if (this.newForm === true){ //TODO - this looks very hacky
+    if (this.newForm === true) { //TODO - this looks very hacky
         this.toStickNoTransition();
     }
 
@@ -238,39 +236,39 @@ xiNET.RenderedProtein.prototype.toJSON = function () {
     };
 };
 
-xiNET.RenderedProtein.prototype.showHighlight = function (show) {
-    const d3HighSel = d3.select(this.highlight);
-    this.isHighlighted = !!show; // mjg apr 18
-    if (show === true) {
-        d3HighSel
-            .classed("selectedProtein", false)
-            .classed("highlightedProtein", true)
-            .attr("stroke-opacity", "1");
-    } else {
-        if (this.isSelected === false) {
-            d3HighSel.attr("stroke-opacity", "0");
-        }
-        d3HighSel
-            .classed("selectedProtein", true)
-            .classed("highlightedProtein", false);
-    }
-};
-
-xiNET.RenderedProtein.prototype.setSelected = function (select) {
-    const d3HighSel = d3.select(this.highlight);
-    this.isSelected = !!select;
-    if (select === true) {
-        d3HighSel
-            .classed("selectedProtein", true)
-            .classed("highlightedProtein", false)
-            .attr("stroke-opacity", "1");
-    } else {
-        d3HighSel
-            .attr("stroke-opacity", "0")
-            .classed("selectedProtein", false)
-            .classed("highlightedProtein", true);
-    }
-};
+// xiNET.RenderedProtein.prototype.showHighlight = function (show) {
+//     const d3HighSel = d3.select(this.highlight);
+//     this.isHighlighted = !!show; // mjg apr 18
+//     if (show === true) {
+//         d3HighSel
+//             .classed("selectedProtein", false)
+//             .classed("highlightedProtein", true)
+//             .attr("stroke-opacity", "1");
+//     } else {
+//         if (this.isSelected === false) {
+//             d3HighSel.attr("stroke-opacity", "0");
+//         }
+//         d3HighSel
+//             .classed("selectedProtein", true)
+//             .classed("highlightedProtein", false);
+//     }
+// };
+//
+// xiNET.RenderedProtein.prototype.setSelected = function (select) {
+//     const d3HighSel = d3.select(this.highlight);
+//     this.isSelected = !!select;
+//     if (select === true) {
+//         d3HighSel
+//             .classed("selectedProtein", true)
+//             .classed("highlightedProtein", false)
+//             .attr("stroke-opacity", "1");
+//     } else {
+//         d3HighSel
+//             .attr("stroke-opacity", "0")
+//             .classed("selectedProtein", false)
+//             .classed("highlightedProtein", true);
+//     }
+// };
 
 xiNET.RenderedProtein.prototype.setRotation = function (angle) {
     this.rotation = angle % 360;
@@ -287,7 +285,7 @@ xiNET.RenderedProtein.prototype.setRotation = function (angle) {
     const labelTransform = d3.transform(transformToContainingGroup);
     const sll = this.scaleLabels.length;
     if (this.rotation >= 90 && this.rotation < 270) {
-        var k = svg.createSVGMatrix()
+        const k = svg.createSVGMatrix()
             .translate(Math.abs(labelTransform.translate[0]), 0)
             .rotate(180, 0, 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
@@ -298,7 +296,7 @@ xiNET.RenderedProtein.prototype.setRotation = function (angle) {
             this.ticks.setAttribute("transform", "scale(1,-1)");
         }
     } else {
-        var k = svg.createSVGMatrix()
+        const k = svg.createSVGMatrix()
             .translate(-(Math.abs(labelTransform.translate[0])), 0);
         this.labelSVG.transform.baseVal.initialize(svg.createSVGTransformFromMatrix(k));
         if (this.expanded) {
@@ -418,7 +416,7 @@ xiNET.RenderedProtein.prototype.scale = function () {
         const labelWidth = this.labelSVG.getBBox().width;
         const labelTransform = d3.transform(this.labelSVG.getAttribute("transform"));
         const k = this.controller.svgElement.createSVGMatrix().rotate(labelTransform.rotate)
-            .translate((-(((this.participant.size / 2) * this.stickZoom) +  + (labelWidth / 2) + 10)), 0);
+            .translate((-(((this.participant.size / 2) * this.stickZoom) + +(labelWidth / 2) + 10)), 0);
         this.labelSVG.transform.baseVal.initialize(this.controller.svgElement.createSVGTransformFromMatrix(k));
 
         if (this.annotations) {
@@ -606,7 +604,7 @@ xiNET.RenderedProtein.prototype.toCircle = function (svgP) {
         yInterpol = d3.interpolate(this.iy, svgP.y);
     }
 
-    var self = this;
+    const self = this;
     d3.select(this.ticks).transition().attr("opacity", 0).duration(xiNET.RenderedProtein.transitionTime / 4)
         .each("end",
             function () {
@@ -628,7 +626,7 @@ xiNET.RenderedProtein.prototype.toCircle = function (svgP) {
             lineSel.attr("d", crosslinkPath);
             lineSel.transition().attr("d", aggSelfLinkPath)
                 .duration(xiNET.RenderedProtein.transitionTime);
-            var highlightLineSel = d3.select(residueLink.highlightLine);
+            const highlightLineSel = d3.select(residueLink.highlightLine);
             highlightLineSel.attr("d", crosslinkPath);
             highlightLineSel.transition().attr("d", aggSelfLinkPath)
                 .duration(xiNET.RenderedProtein.transitionTime);
@@ -636,7 +634,7 @@ xiNET.RenderedProtein.prototype.toCircle = function (svgP) {
             lineSel.attr("d", crosslinkPath);
             lineSel.transition().attr("d", "M 0,0 L 0,0 L 0,0 L 0,0")
                 .duration(xiNET.RenderedProtein.transitionTime);
-            var highlightLineSel = d3.select(residueLink.highlightLine);
+            const highlightLineSel = d3.select(residueLink.highlightLine);
             highlightLineSel.attr("d", crosslinkPath);
             highlightLineSel.transition().attr("d", "M 0,0 L 0,0 L 0,0 L 0,0")
                 .duration(xiNET.RenderedProtein.transitionTime);
@@ -1018,9 +1016,9 @@ xiNET.RenderedProtein.prototype.getCrossLinkPath = function (renderedCrossLink) 
     } else {
 
         const x2 = this.getResXwithStickZoom(renderedCrossLink.crossLink.toResidue);
-        var height, cp1, cp2, arcStart, arcEnd, arcRadius;
+        let height, cp1, cp2, arcStart, arcEnd, arcRadius;
         arcRadius = (Math.abs(x2 - x1)) / 2;
-        var height = -((xiNET.RenderedProtein.STICKHEIGHT / 2) + 3);
+        height = -((xiNET.RenderedProtein.STICKHEIGHT / 2) + 3);
         if (arcRadius < 15) {
             height = -28 + arcRadius;
         }
@@ -1142,7 +1140,7 @@ xiNET.RenderedProtein.prototype.setPositionalFeatures = function () {
         featuresShown = featuresShown.concat(disulfidBonds);
 
         const fsLen = featuresShown.length;
-        for (var f = 0; f < fsLen; f++) {
+        for (let f = 0; f < fsLen; f++) {
 
             const anno = featuresShown[f];
 
@@ -1191,7 +1189,7 @@ xiNET.RenderedProtein.prototype.setPositionalFeatures = function () {
                     colouredRect.setAttribute("stroke-width", 1);
                     colouredRect.setAttribute("fill-opacity", "0.5");
 
-                    var c = annotationTypes.getColour(anno.category, anno.type); // CLMSUI.domainColours(anno.category, anno.type);
+                    const c = annotationTypes.getColour(anno.category, anno.type); // CLMSUI.domainColours(anno.category, anno.type);
                     pieSlice.setAttribute("fill", c);
                     pieSlice.setAttribute("stroke", c);
                     colouredRect.setAttribute("fill", c);
@@ -1208,7 +1206,7 @@ xiNET.RenderedProtein.prototype.setPositionalFeatures = function () {
                     pieSlice.setAttribute("stroke-width", 1);
                     colouredRect.setAttribute("stroke-width", 1);
 
-                    var c = annotationTypes.getColour(anno.category, anno.type); // CLMSUI.domainColours(anno.category, anno.type);
+                    const c = annotationTypes.getColour(anno.category, anno.type); // CLMSUI.domainColours(anno.category, anno.type);
                     pieSlice.setAttribute("fill", "none");
                     pieSlice.setAttribute("stroke", c);
                     colouredRect.setAttribute("fill", "none");

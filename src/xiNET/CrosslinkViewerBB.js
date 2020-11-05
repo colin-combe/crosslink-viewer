@@ -28,7 +28,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     initialize: function () {
         //this.debug = true;
         this.fixedSize = this.model.get("xinetFixedSize");
-        var self = this;
+        const self = this;
 
         //avoids prob with 'save - web page complete'
         d3.select(this.el).selectAll("*").remove();
@@ -62,7 +62,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 self.contextMenuParticipant.setStickScale(d, self.contextMenuPoint);
             });
         const contextMenu = d3.select(".custom-menu-margin").node();
-        contextMenu.onmouseout = function (evt) {
+        const contextMenuMouseOut = function (evt) {
             let e = evt.toElement || evt.relatedTarget;
             do {
                 if (e === this) return;
@@ -71,6 +71,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             self.contextMenuParticipant = null;
             d3.select(this).style("display", "none");
         };
+        contextMenu.onmouseout = contextMenuMouseOut;
 
         //group context menu
         const groupCustomMenuSel = d3.select(this.el)
@@ -81,16 +82,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         groupCustomMenuSel.append("li").classed("ungroup", true).text("Ungroup");
         // groupCustomMenuSel.append("li").classed("ungroupAll", true).text("Clear All Groups");
         const groupContextMenu = d3.select(".group-custom-menu-margin").node();
-        groupContextMenu.onmouseout = function (evt) {
-            let e = evt.toElement || evt.relatedTarget;
-            do {
-                if (e === this) return;
-                e = e.parentNode;
-            } while (e);
-            self.contextMenuParticipant = null;
-            d3.select(this).style("display", "none");
-        };
-
+        groupContextMenu.onmouseout = contextMenuMouseOut;
 
         //create SVG elemnent
         this.svgElement = d3.select(this.el).append("div").style("height", "100%").append("svg").node(); //document.createElementNS(this.svgns, "svg");
@@ -98,7 +90,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.svgElement.setAttribute("height", "100%");
         this.svgElement.setAttribute("style", "pointer-events:visible");
         //add listeners
-        var self = this;
+
         this.svgElement.onmousedown = function (evt) {
             self.mouseDown(evt);
         };
@@ -123,28 +115,18 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             return false; // works with traditional, not with attachEvent or addEventListener
         };
 
-        const mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
+        const mouseWheelEvt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
         if (document.attachEvent) { //if IE (and Opera depending on user setting)
-            this.svgElement.attachEvent("on" + mousewheelevt, function (evt) {
+            this.svgElement.attachEvent("on" + mouseWheelEvt, function (evt) {
                 self.mouseWheel(evt);
             });
         } else if (document.addEventListener) { //WC3 browsers
-            this.svgElement.addEventListener(mousewheelevt, function (evt) {
+            this.svgElement.addEventListener(mouseWheelEvt, function (evt) {
                 self.mouseWheel(evt);
             }, false);
         }
 
         this.lastMouseUp = new Date().getTime();
-
-        this.svgElement.ontouchstart = function (evt) {
-            self.touchStart(evt);
-        };
-        this.svgElement.ontouchmove = function (evt) {
-            self.touchMove(evt);
-        };
-        this.svgElement.ontouchend = function (evt) {
-            self.touchEnd(evt);
-        };
 
         // various SVG groups needed
         this.wrapper = document.createElementNS(this.svgns, "g"); //in effect, a hack for fact firefox doesn't support getCTM on svgElement
@@ -235,7 +217,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             this.d3cola.stop();
         }
         this.d3cola = cola.d3adaptor()
-            // .groupCompactness(1e-5)
+            .groupCompactness(1e-5)
             .avoidOverlaps(true);
 
         d3.select(this.groupsSVG).selectAll("*").remove();
@@ -460,27 +442,27 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         if (this.dragStart) {
             const p = this.getEventPoint(evt); // seems to be correct, see below
             const c = p.matrixTransform(this.container.getCTM().inverse());
-            var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
-            var dx = ds.x - c.x;
-            var dy = ds.y - c.y;
+            const ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+            const dx = ds.x - c.x;
+            const dy = ds.y - c.y;
             if (Math.sqrt(dx * dx + dy * dy) > (5 * this.z)) {
                 this.mouseMoved = true;
             }
-            if (this.dragElement != null) { //dragging or rotating
+            if (this.dragElement != null && evt.which !== 3) { //dragging or rotating / not right click mouse down
                 if (this.state === this.STATES.DRAGGING) {
                     // we are currently dragging things around
                     let ox, oy, nx, ny;
                     if (this.dragElement.participant) {
                         //its a protein - drag it, or drag all selcted if it is selected
-                        var toDrag;
+                        let toDrag;
                         if (this.dragElement.isSelected === false) {
                             toDrag = [this.dragElement.participant];
                         } else {
                             toDrag = this.model.get("selectedProteins");
                         }
 
-                        for (var d = 0; d < toDrag.length; d++) {
-                            var renderedProtein = this.renderedProteins.get(toDrag[d].id);
+                        for (let d = 0; d < toDrag.length; d++) {
+                            const renderedProtein = this.renderedProteins.get(toDrag[d].id);
                             ox = renderedProtein.ix;
                             oy = renderedProtein.iy;
                             nx = ox - dx;
@@ -490,15 +472,23 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                         }
                     } else if (this.dragElement.type === "group") {
                         if (this.dragElement.expanded) {
-                            var toDrag = this.dragElement.renderedParticipants;
-                            for (var d = 0; d < toDrag.length; d++) {
-                                var renderedProtein = toDrag[d];
+                            const toDrag = this.dragElement.renderedParticipants;
+                            for (let d = 0; d < toDrag.length; d++) {
+                                const renderedProtein = toDrag[d];
                                 ox = renderedProtein.ix;
                                 oy = renderedProtein.iy;
                                 nx = ox - dx;
                                 ny = oy - dy;
                                 renderedProtein.setPositionFromXinet(nx, ny);
                                 renderedProtein.setAllLinkCoordinates();
+                            }
+                            for (let g of this.groupMap.values()) {
+                                ox = g.ix;
+                                oy = g.iy;
+                                nx = ox - dx;
+                                ny = oy - dy;
+                                g.setPositionFromXinet(nx, ny);
+                                g.setAllLinkCoordinates();
                             }
                             this.dragElement.updateExpandedGroup();
                         } else {
@@ -534,9 +524,9 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             } else if (this.state === this.STATES.SELECT_PAN) {
                 if (evt.which === 3) {
                     //SELECT
-                    var ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
-                    var dx = c.x - ds.x;
-                    var dy = c.y - ds.y;
+                    const ds = this.getEventPoint(this.dragStart).matrixTransform(this.wrapper.getCTM().inverse());
+                    // var dx = c.x - ds.x;
+                    // var dy = c.y - ds.y;
 
                     const sx = p.x - ds.x;
                     const sy = p.y - ds.y;
@@ -581,9 +571,9 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
                 } else {
                     //PAN
-                    var ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
-                    var dx = c.x - ds.x;
-                    var dy = c.y - ds.y;
+                    const ds = this.getEventPoint(this.dragStart).matrixTransform(this.container.getCTM().inverse());
+                    const dx = c.x - ds.x;
+                    const dy = c.y - ds.y;
 
                     this.setCTM(this.container,
                         this.container.getCTM()
@@ -598,75 +588,77 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     // this ends all dragging and rotating
     mouseUp: function (evt) {
         this.preventDefaultsAndStopPropagation(evt);
-
         //remove selection rect, may not be shown but just do this now
         this.selectionRectSel.attr("display", "none");
-
         //eliminate some spurious mouse up events
         const time = new Date().getTime();
         if ((time - this.lastMouseUp) > 150) {
-
-            const rightclick = (evt.button === 2);
-
+            const rightClick = (evt.button === 2);
+            const add = evt.ctrlKey || evt.shiftKey;
             const p = this.getEventPoint(evt);
             const c = p.matrixTransform(this.container.getCTM().inverse());
 
-            if (this.dragElement != null) { // a thing has been clicked
-                if (!(this.state === this.STATES.DRAGGING || this.state === this.STATES.ROTATING)) { //not dragging or rotating
-                    if (this.dragElement.ix || this.dragElement.type === "group") { //if the thing is protein or group, in pther words not a link, todo-tidy
-                        if (rightclick) {
-                            if (!this.dragElement.expanded) {
-                                this.dragElement.setExpanded(true);
-                                if (this.dragElement.type === "group") {
-                                    this.hiddenProteinsChanged();
-                                }
-                            } else {
-                                this.model.get("tooltipModel").set("contents", null);
-                                this.contextMenuParticipant = this.dragElement;
-                                this.contextMenuPoint = c;
+            if (this.state === this.STATES.ROTATING) {
+                //round protein rotation to nearest 5 degrees (looks neater)
+                this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
+                this.dragElement.setAllLinkCoordinates();
 
-                                if (this.dragElement.type !== "group") {
-                                    var menu = d3.select(".custom-menu-margin")
-                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                    d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
-                                } else {
-                                    var menu = d3.select(".group-custom-menu-margin")
-                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                }
-                            }
-                        } else if (this.dragElement.participant) { // its a protein
-                            var add = evt.ctrlKey || evt.shiftKey;
-                            this.model.setSelectedProteins([this.dragElement.participant], add);
+            } else {
+                if (this.dragElement) {
+                    if (rightClick) {
+                        if (this.mouseMoved) { // move and right click
+                            // ADD TO SELECT POST RIGHT CLICK DRAG -- RIGHT CLICK, HAS MOVED, NO DRAG ELEMENT
+                            this.model.setSelectedProteins(this.toSelect, add);
                         }
+                        // EXPANDING / COLLAPSING -- RIGHT CLICK, NO MOVE, IS A DRAG ELEMENT
+                        else if (!this.dragElement.expanded) {
+                            //expand the collapsed
+                            this.dragElement.setExpanded(true, c);
+                            if (this.dragElement.type === "group") {
+                                this.hiddenProteinsChanged();
+                            }
+                        } else {
+                            //give context menu that allows collapsing the expanded...
+                            this.model.get("tooltipModel").set("contents", null);
+                            this.contextMenuParticipant = this.dragElement;
+                            this.contextMenuPoint = c;
+
+                            if (this.dragElement.type !== "group") {
+                                //...for proteins
+                                const menu = d3.select(".custom-menu-margin")
+                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
+                            } else {
+                                // for groups
+                                const menu = d3.select(".group-custom-menu-margin")
+                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                            }
+                        }
+
+                    } else if (this.dragElement.participant) { // its a protein // groups are detecting the left click themselves
+
+                        // ADD SINGLE PROTEIN TO SELECTION - LEFT CLICK, NO MOVE, IS A DRAG ELEMENT
+                        this.model.setSelectedProteins([this.dragElement.participant], add);
+
                     }
-                } else if (this.state === this.STATES.ROTATING) {
-                    //round protein rotation to nearest 5 degrees (looks neater)
-                    this.dragElement.setRotation(Math.round(this.dragElement.rotation / 5) * 5);
-                    this.dragElement.setAllLinkCoordinates();
-                } else {
-                } //end of protein drag; do nothing
-            } else if (!this.mouseMoved) { //unselect crosslinks
-                var add = evt.ctrlKey || evt.shiftKey;
-                this.model.setMarkedCrossLinks("selection", [], false, add);
-                this.model.setSelectedProteins([]);
-            } else if (evt.which === 3) {
-                var add = evt.ctrlKey || evt.shiftKey;
 
+                } else { //no drag element
 
-                this.model.setSelectedProteins(this.toSelect, add);
+                        //UNSELECT - EITHER MOUSE BUTTON, NO MOVE, NO DRAG ELEMENT
+                        this.model.setMarkedCrossLinks("selection", [], false, add);
+                        this.model.setSelectedProteins([]);
+
+                }
             }
 
             this.dragElement = null;
             this.whichRotator = -1;
             this.state = this.STATES.MOUSE_UP;
-
         }
-
-
         this.lastMouseUp = time;
         return false;
     },
-    
+
     mouseWheel: function (evt) {
         this.preventDefaultsAndStopPropagation(evt);
         this.d3cola.stop();
@@ -688,7 +680,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     mouseOut: function (evt) {
-        // don't, causes prob's - RenderedInteractor mouseOut getting getting propogated?
+        // don't, causes prob's - RenderedInteractor mouseOut getting propogated?
         // d3.select(".custom-menu-margin").style("display", "none");
         // d3.select(".group-custom-menu-margin").style("display", "none");
     },
@@ -783,7 +775,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
             for (const savedGroup of groups) {
                 const xiNetGroup = this.groupMap.get(savedGroup.id);
-                if (savedGroup.expanded === false){
+                if (savedGroup.expanded === false) {
                     xiNetGroup.setExpanded(savedGroup.expanded);
                     xiNetGroup.setPositionFromXinet(savedGroup.x, savedGroup.y);
                 }
@@ -800,7 +792,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
         if (namesChanged) {
             // CLMSUI.vent.trigger("proteinMetadataUpdated", {}); //aint gonna work
-            for (renderedParticipant of this.renderedProteins.values()) {
+            for (let renderedParticipant of this.renderedProteins.values()) {
                 renderedParticipant.updateName();
             }
         }
@@ -814,7 +806,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
         //clear out old groups (can u remove while iterating)
         const groupIdsToremove = [];
-        for (var group of this.groupMap.values()) {
+        for (let group of this.groupMap.values()) {
             if (!modelGroups.has(group.id)) {
                 group.parentGroups = []; //don't think necessary but just in case
                 group.subroups = [];
@@ -836,7 +828,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         //init
         for (let g of modelGroups.entries()) {
             if (!this.groupMap.has(g[0])) {
-                var group = new xiNET.Group(g[0], g[1], this);
+                const group = new xiNET.Group(g[0], g[1], this);
                 group.init(); // z ordering... later
                 this.groupMap.set(group.id, group);
             }
@@ -853,14 +845,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.d3cola.stop();
 
         // parent groups may change, so clear
-        for (var g of this.groupMap.values()) {
+        for (let g of this.groupMap.values()) {
             g.subgroups = []; // subgroups as xiNET.Groups
             g.parentGroups = new Set();
             g.leaves = []; // different from g.renderedParticipants coz only contains ungrouped RenderedProteins, used by cola.js
             g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js // needed? prob not coz groups already refered to by index
 
             // 15/09/20 following now looks like a mistake, dunno why it was here
-            for (var rp of g.renderedParticipants) {
+            for (let rp of g.renderedParticipants) {
                 rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
             }
         }
@@ -871,11 +863,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         // get maximal set of possible subgroups
         const groups = Array.from(sortedGroupMap.values());
         const gCount = groups.length; // contains xiNET.Groups
-        for (var gi = 0; gi < gCount - 1; gi++) {
-            var group1 = groups[gi];
+        for (let gi = 0; gi < gCount - 1; gi++) {
+            const group1 = groups[gi];
             if (group1.unhiddenParticipantCount() > 0) {
-                for (var gj = gi + 1; gj < gCount; gj++) {
-                    var group2 = groups[gj];
+                for (let gj = gi + 1; gj < gCount; gj++) {
+                    const group2 = groups[gj];
                     if (group1.isSubsetOf(group2)) {
                         group2.subgroups.push(group1);
                         console.log(group1.name, "is SUBSET of", group2.name)
@@ -885,12 +877,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
 
         //remove obselete subgroups
-        for (var gi = 0; gi < gCount; gi++) {
-            var group1 = groups[gi];
+        for (let gi = 0; gi < gCount; gi++) {
+            const group1 = groups[gi];
             //if subgroup has parent also in group1.subgroups then remove it
             const subgroupCount = group1.subgroups.length;
             const subgroupsToRemove = [];
-            for (var gj = 0; gj < subgroupCount - 1; gj++) {
+            for (let gj = 0; gj < subgroupCount - 1; gj++) {
                 const subgroup1 = group1.subgroups[gj];
                 for (let gk = gj + 1; gk < subgroupCount; gk++) {
                     const subgroup2 = group1.subgroups[gk];
@@ -905,50 +897,50 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
         }
 
-        for (var g of groups) {
+        for (let g of groups) {
             // delete g.index;
             // if (!g.hidden && g.expanded) {
-                // if (g.expanded) { // if it contains visible participants it must be
-                g.leaves = [];
+            // if (g.expanded) { // if it contains visible participants it must be
+            g.leaves = [];
 
-                // g.groups = [];
-                // for (var rp of g.renderedParticipants) {
-                //     var i = nodeArr.indexOf(rp);
-                //     if (i != -1) {
-                //         g.leaves.push(i);
-                //     }
-                // }
-                // if (g.leaves.length > 0) {
-                //     groups.push(g);
-                // }
+            // g.groups = [];
+            // for (var rp of g.renderedParticipants) {
+            //     var i = nodeArr.indexOf(rp);
+            //     if (i != -1) {
+            //         g.leaves.push(i);
+            //     }
+            // }
+            // if (g.leaves.length > 0) {
+            //     groups.push(g);
+            // }
 
-                // put any rp not contained in a subgroup(recursive) in group1.leaves
+            // put any rp not contained in a subgroup(recursive) in group1.leaves
 
-                for (var rp of g.renderedParticipants) {
-                    // if (!rp.hidden) {
-                        let inSubGroup = false;
-                        for (let subgroup of g.subgroups) {
-                            // UR HERE
-                            if (subgroup.contains(rp)) {
-                                inSubGroup = true;
-                                // break; ?
-                            }
-                        }
-                        if (!inSubGroup) {
-                        //g.leaves.push(nodeArr.indexOf(rp)); /// URHERE - MOVE UP
-                        rp.parentGroups.add(g); /// URHERE - MOVE UP
-                        }
-                    // }
+            for (let rp of g.renderedParticipants) {
+                // if (!rp.hidden) {
+                let inSubGroup = false;
+                for (let subgroup of g.subgroups) {
+                    // UR HERE
+                    if (subgroup.contains(rp)) {
+                        inSubGroup = true;
+                        // break; ?
+                    }
                 }
-                // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
-                // groups.push(g);
+                if (!inSubGroup) {
+                    //g.leaves.push(nodeArr.indexOf(rp)); /// URHERE - MOVE UP
+                    rp.parentGroups.add(g); /// URHERE - MOVE UP
+                }
                 // }
+            }
+            // if (groupSet.has(g)) { //shouldn't need this? (coz g not hidden)
+            // groups.push(g);
+            // }
             // }
             // } // end expanded check
         }
 
         //sort out parentGroups
-        for (var group1 of groups.reverse()) {
+        for (let group1 of groups.reverse()) {
             if (!group1.hidden) {
                 //group1.init();
                 console.log("!!!!!!!!!!!!!!!", group1.id);
@@ -957,13 +949,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                     pn.removeChild(group1.upperGroup);
                     pn.appendChild(group1.upperGroup);
                 }
-                for (var group2 of group1.subgroups) {
+                for (let group2 of group1.subgroups) {
                     group2.parentGroups.add(group1);
                 }
             }
         }
-
-
 
 
         let manuallyHidden = 0;
@@ -1012,11 +1002,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     autoLayout: function () {
         this.d3cola.stop();
 
-        this.z =1; this.scale();
+        this.z = 1;
+        this.scale();
 
         const fixSelected = this.model.get("xinetFixSelected");
         // HERE? clear collpased group att's also
-        for (renderedProtein of this.renderedProteins.values()) {
+        for (let renderedProtein of this.renderedProteins.values()) {
             if (!fixSelected) {
                 delete renderedProtein.x;
                 delete renderedProtein.y;
@@ -1025,7 +1016,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             }
             delete renderedProtein.index;
         }
-        for (var g of this.groupMap.values()) {
+        for (let g of this.groupMap.values()) {
             if (!fixSelected) {
                 delete g.x;
                 delete g.y;
@@ -1033,7 +1024,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 delete g.py;
             }
             delete g.index;
-        };
+        }
 
         //// TODO: prune leaves from network then layout, then add back leaves and layout again
 
@@ -1042,8 +1033,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         const nodeSet = new Set();
         const selected = this.model.get("selectedProteins");
         const filteredCrossLinks = this.model.getFilteredCrossLinks();
-
-        const groupSet = new Set();
 
         //THINK THIS COULD MOVE UP
 
@@ -1099,8 +1088,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
         const groups = [];
         if (this.groupMap) {
-            for (var g of this.groupMap.values()) {
-                delete g.index;
+            for (let g of this.groupMap.values()) {
+                // delete g.index;
                 if (!g.hidden && g.expanded) {
                     // if (g.expanded) { // if it contains visible participants it must be
 //                    g.leaves = [];
@@ -1139,7 +1128,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 // } // end expanded check
             }
             //need to use indexes of groups
-            for (var g of groups) {
+            for (let g of groups) {
                 for (let i = 0; i < g.subgroups.length; i++) {
                     if (g.subgroups[i].expanded) {
                         g.groups[i] = groups.indexOf(g.subgroups[i]);
@@ -1252,7 +1241,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     highlightedLinksChanged: function () {
-        for (var p_pLink of this.renderedP_PLinks.values()) {
+        for (let p_pLink of this.renderedP_PLinks.values()) {
             p_pLink.showHighlight(false);
         }
         const highlightedCrossLinks = this.model.getMarkedCrossLinks("highlights");
@@ -1262,7 +1251,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                     !renderedCrossLink.renderedToProtein || renderedCrossLink.renderedToProtein.expanded) {
                     renderedCrossLink.showHighlight(true);
                 } else if (renderedCrossLink.renderedToProtein) {
-                    var p_pLink = this.renderedP_PLinks.get(
+                    const p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
                     p_pLink.showHighlight(true);
                 }
@@ -1274,7 +1263,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
     },
 
     selectedLinksChanged: function () {
-        for (var p_pLink of this.renderedP_PLinks.values()) {
+        for (let p_pLink of this.renderedP_PLinks.values()) {
             p_pLink.setSelected(false);
         }
         const selectedCrossLinks = this.model.getMarkedCrossLinks("selection");
@@ -1282,7 +1271,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             if (selectedCrossLinks.indexOf(renderedCrossLink.crossLink) !== -1) {
                 renderedCrossLink.setSelected(true);
                 if (renderedCrossLink.renderedToProtein) {
-                    var p_pLink = this.renderedP_PLinks.get(
+                    const p_pLink = this.renderedP_PLinks.get(
                         renderedCrossLink.renderedFromProtein.participant.id + "-" + renderedCrossLink.renderedToProtein.participant.id);
                     p_pLink.setSelected(true);
                 }
@@ -1295,14 +1284,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     selectedProteinsChanged: function () {
         const selectedProteins = this.model.get("selectedProteins");
-        for (var renderedProtein of this.renderedProteins.values()) {
+        for (let renderedProtein of this.renderedProteins.values()) {
             if (selectedProteins.indexOf(renderedProtein.participant) === -1 && renderedProtein.isSelected === true) {
                 renderedProtein.setSelected(false);
             }
         }
         for (let selectedProtein of selectedProteins) {
             if (selectedProtein.is_decoy !== true) {
-                var renderedProtein = this.renderedProteins.get(selectedProtein.id);
+                const renderedProtein = this.renderedProteins.get(selectedProtein.id);
                 if (renderedProtein.isSelected === false) {
                     renderedProtein.setSelected(true);
                 }
@@ -1313,39 +1302,45 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     highlightedProteinsChanged: function () {
         const highlightedProteins = this.model.get("highlightedProteins");
-        for (var renderedProtein of this.renderedProteins.values()) {
+
+        for (let renderedProtein of this.renderedProteins.values()) {
             if (highlightedProteins.indexOf(renderedProtein.participant) === -1 && renderedProtein.isHighlighted === true) {
                 renderedProtein.showHighlight(false);
-                renderedProtein.isHighlighted = false;
+                renderedProtein.isHighlighted = false; // todo - this is a bit wierd
             }
         }
         for (let highlightedProtein of highlightedProteins) {
             if (highlightedProtein.is_decoy !== true) {
-                var renderedProtein = this.renderedProteins.get(highlightedProtein.id);
+                const renderedProtein = this.renderedProteins.get(highlightedProtein.id);
                 if (renderedProtein.isHighlighted === false) {
                     renderedProtein.showHighlight(true);
                 }
             }
         }
+
+        if (this.groupMap) {
+            for (let g of this.groupMap.values()) {
+                g.updateHighlight();
+            }
+        }
+
         return this;
     },
 
-    proteinMetadataUpdated: function (meta) {
-        // update protein names and colours
+    // updates protein names and colours
+    proteinMetadataUpdated: function () {
         const renderedParticipantArr = CLMS.arrayFromMapValues(this.renderedProteins);
-        const protColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
+        const proteinColourModel = CLMSUI.compositeModelInst.get("proteinColourAssignment");
         const rpCount = renderedParticipantArr.length;
         for (let rp = 0; rp < rpCount; rp++) {
             const renderedParticipant = renderedParticipantArr[rp];
             renderedParticipant.updateName();
-
-            if (protColourModel) {
+            if (proteinColourModel) {
                 d3.select(renderedParticipant.outline)
-                    .attr("fill", protColourModel.getColour(renderedParticipant.participant));
+                    .attr("fill", proteinColourModel.getColour(renderedParticipant.participant));
             }
 
         }
-
         return this;
     },
 

@@ -40,6 +40,40 @@ xiNET.Interactor.prototype.mouseOut = function (evt) {
     this.controller.model.get("tooltipModel").set("contents", null);
 };
 
+xiNET.Interactor.prototype.showHighlight = function (show) {
+    const d3HighSel = d3.select(this.highlight);
+    if (show === true) {
+        d3HighSel
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true)
+            .attr("stroke-opacity", "1");
+    } else {
+        if (!this.isSelected) {
+            d3HighSel.attr("stroke-opacity", "0");
+        }
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false);
+    }
+    this.isHighlighted = !!show; // mjg apr 18
+};
+
+xiNET.Interactor.prototype.setSelected = function (select) {
+    const d3HighSel = d3.select(this.highlight);
+    if (select === true) {
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false)
+            .attr("stroke-opacity", "1");
+    } else {
+        d3HighSel
+            .attr("stroke-opacity", "0")
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true);
+    }
+    this.isSelected = !!select;
+};
+
 //// TODO:
 // xiNET.Interactor.prototype.showHighlight = function(show) {
 //     //     // default do nothing
