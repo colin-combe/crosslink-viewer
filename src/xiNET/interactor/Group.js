@@ -160,25 +160,13 @@ xiNET.Group.prototype.init = function () {
     this.setExpanded(this.expanded);
 };
 
-// event handler for starting dragging or rotation (or flipping internal links)
 xiNET.Group.prototype.mouseDown = function (evt) {
     this.controller.d3cola.stop();
     this.controller.dragElement = this;
-    //store start location
     this.controller.dragStart = evt;
-    let rightClick = (evt.button === 2);
-    if (!rightClick && !this.controller.mouseMoved) {
-        this.controller.preventDefaultsAndStopPropagation(evt); //see MouseEvents.js
-        const add = evt.ctrlKey || evt.shiftKey;
-        const participants = [];
-        for (let rp of this.renderedParticipants) {
-            participants.push(rp.participant);
-        }
-        this.controller.model.setSelectedProteins(participants, add);
-    }
+    this.controller.mouseMoved = false;
     return false;
 }
-
 
 xiNET.Group.prototype.mouseOver = function (evt) {
     this.showHighlight(true);
@@ -357,7 +345,7 @@ xiNET.Group.prototype.setHidden = function (bool) {
 
 xiNET.Group.prototype.updateHighlight = function () {
     for (let rp of this.renderedParticipants) {
-        if (!rp.hidden && rp.isHighlighted) {
+        if (rp.isHighlighted) {
             this.showHighlight(true);
             return;
         }
@@ -365,41 +353,29 @@ xiNET.Group.prototype.updateHighlight = function () {
     this.showHighlight(false);
 }
 
-// xiNET.Group.prototype.showHighlight = function (show) {
-//     const d3HighSel = d3.select(this.highlight);
-//     if (show === true) {
-//         d3HighSel
-//             .classed("selectedProtein", false)
-//             .classed("highlightedProtein", true)
-//             .attr("stroke-opacity", "1");
-//     } else {
-//         // if (this.isSelected == false) {
-//         d3HighSel.attr("stroke-opacity", "0");
-//         // }
-//         d3HighSel
-//             .classed("selectedProtein", true)
-//             .classed("highlightedProtein", false);
-//     }
-//     this.isHighlighted = !!show;
-// }
+xiNET.Group.prototype.updateSelected = function () {
+    // for (let rp of this.renderedParticipants) {
+    //     if (!rp.hidden && rp.isHighlighted) {
+    //         this.showHighlight(true);
+    //         return;
+    //     }
+    // }
+    // this.showHighlight(false);
+}
 
-//// TODO:
-// xiNET.RenderedProtein.prototype.setSelected = function(select) {
-//     var d3HighSel = d3.select(this.highlight);
-//     this.isSelected = select ? true : false;
-//     if (select === true) {
-//         d3HighSel
-//             .classed("selectedProtein", true)
-//             .classed("highlightedProtein", false)
-//             .attr("stroke-opacity", "1");
-//     } else {
-//         d3HighSel
-//             .attr("stroke-opacity", "0")
-//             .classed("selectedProtein", false)
-//             .classed("highlightedProtein", true);
-//     }
-// };
-
+xiNET.Group.prototype.dashedOutline = function (dash) {
+    // if (this.shown) {
+        if (dash) {
+            // if (this.renderedFromProtein === this.renderedToProtein) {
+            //     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
+            // } else {
+                this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+            // }
+        } else {
+            this.line.removeAttribute("stroke-dasharray");
+        }
+    // }
+};
 
 xiNET.Group.prototype.setExpanded = function (expanded) {
     this.expanded = !!expanded;

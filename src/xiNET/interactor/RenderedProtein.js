@@ -189,7 +189,7 @@ xiNET.RenderedProtein.prototype.setEverything = function () {
 }
 
 xiNET.RenderedProtein.prototype.mouseOver = function (evt) {
-    this.controller.model.setHighlightedProteins([this.participant]); // mjg apr 18
+    this.controller.model.setHighlightedProteins([this.participant]);
     xiNET.Interactor.prototype.mouseOver.call(this, evt);
 };
 
@@ -235,40 +235,6 @@ xiNET.RenderedProtein.prototype.toJSON = function () {
         name: this.participant.name // having this here is bit of hack
     };
 };
-
-// xiNET.RenderedProtein.prototype.showHighlight = function (show) {
-//     const d3HighSel = d3.select(this.highlight);
-//     this.isHighlighted = !!show; // mjg apr 18
-//     if (show === true) {
-//         d3HighSel
-//             .classed("selectedProtein", false)
-//             .classed("highlightedProtein", true)
-//             .attr("stroke-opacity", "1");
-//     } else {
-//         if (this.isSelected === false) {
-//             d3HighSel.attr("stroke-opacity", "0");
-//         }
-//         d3HighSel
-//             .classed("selectedProtein", true)
-//             .classed("highlightedProtein", false);
-//     }
-// };
-//
-// xiNET.RenderedProtein.prototype.setSelected = function (select) {
-//     const d3HighSel = d3.select(this.highlight);
-//     this.isSelected = !!select;
-//     if (select === true) {
-//         d3HighSel
-//             .classed("selectedProtein", true)
-//             .classed("highlightedProtein", false)
-//             .attr("stroke-opacity", "1");
-//     } else {
-//         d3HighSel
-//             .attr("stroke-opacity", "0")
-//             .classed("selectedProtein", false)
-//             .classed("highlightedProtein", true);
-//     }
-// };
 
 xiNET.RenderedProtein.prototype.setRotation = function (angle) {
     this.rotation = angle % 360;

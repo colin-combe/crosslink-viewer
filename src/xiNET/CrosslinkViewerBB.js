@@ -246,13 +246,14 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     collapseParticipant: function (evt) {
         d3.select(".custom-menu-margin").style("display", "none");
+        d3.select(".group-custom-menu-margin").style("display", "none");
         this.contextMenuParticipant.setExpanded(false, this.contextMenuPoint);
         this.hiddenProteinsChanged();
         this.contextMenuParticipant = null;
     },
 
     ungroup: function (evt) {
-        d3.select(".custom-menu-margin").style("display", "none");
+        d3.select(".group-custom-menu-margin").style("display", "none");
         this.model.get("groups").delete(this.contextMenuParticipant.id);
         this.model.trigger("change:groups");
         this.contextMenuParticipant = null;
@@ -421,9 +422,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         element.setAttribute("transform", s);
     },
 
-    /**
-     * Handle mousedown event.
-     */
     mouseDown: function (evt) {
         //prevent default, but allow propogation
         evt.preventDefault();
@@ -482,13 +480,15 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                                 renderedProtein.setPositionFromXinet(nx, ny);
                                 renderedProtein.setAllLinkCoordinates();
                             }
-                            for (let g of this.groupMap.values()) {
-                                ox = g.ix;
-                                oy = g.iy;
-                                nx = ox - dx;
-                                ny = oy - dy;
-                                g.setPositionFromXinet(nx, ny);
-                                g.setAllLinkCoordinates();
+                            for (let g of this.dragElement.subgroups) {
+                                if (!g.expanded) {
+                                    ox = g.ix;
+                                    oy = g.iy;
+                                    nx = ox - dx;
+                                    ny = oy - dy;
+                                    g.setPositionFromXinet(nx, ny);
+                                    g.setAllLinkCoordinates();
+                                }
                             }
                             this.dragElement.updateExpandedGroup();
                         } else {
@@ -587,6 +587,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     // this ends all dragging and rotating
     mouseUp: function (evt) {
+        console.log("*controller mouse up*");
         this.preventDefaultsAndStopPropagation(evt);
         //remove selection rect, may not be shown but just do this now
         this.selectionRectSel.attr("display", "none");
@@ -604,56 +605,73 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 this.dragElement.setAllLinkCoordinates();
 
             } else {
-                if (this.dragElement) {
+                if (this.dragElement) { // issue re selection drag that started on group, in this case drag element is set
                     if (rightClick) {
                         if (this.mouseMoved) { // move and right click
                             // ADD TO SELECT POST RIGHT CLICK DRAG -- RIGHT CLICK, HAS MOVED, NO DRAG ELEMENT
                             this.model.setSelectedProteins(this.toSelect, add);
                         }
                         // EXPANDING / COLLAPSING -- RIGHT CLICK, NO MOVE, IS A DRAG ELEMENT
-                        else if (!this.dragElement.expanded) {
-                            //expand the collapsed
-                            this.dragElement.setExpanded(true, c);
-                            if (this.dragElement.type === "group") {
-                                this.hiddenProteinsChanged();
-                            }
-                        } else {
-                            //give context menu that allows collapsing the expanded...
-                            this.model.get("tooltipModel").set("contents", null);
-                            this.contextMenuParticipant = this.dragElement;
-                            this.contextMenuPoint = c;
-
-                            if (this.dragElement.type !== "group") {
-                                //...for proteins
-                                const menu = d3.select(".custom-menu-margin")
-                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
-                                d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
+                        if (this.dragElement.ix || this.dragElement.type === "group") {
+                            if (!this.dragElement.expanded) {
+                                //expand the collapsed
+                                this.dragElement.setExpanded(true, c);
+                                if (this.dragElement.type === "group") {
+                                    this.hiddenProteinsChanged();
+                                }
                             } else {
-                                // for groups
-                                const menu = d3.select(".group-custom-menu-margin")
-                                menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                //give context menu that allows collapsing the expanded...
+                                this.model.get("tooltipModel").set("contents", null);
+                                this.contextMenuParticipant = this.dragElement;
+                                this.contextMenuPoint = c;
+
+                                if (this.dragElement.type !== "group") {
+                                    //...for proteins
+                                    const menu = d3.select(".custom-menu-margin")
+                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                    d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
+                                } else {
+                                    // for groups
+                                    const menu = d3.select(".group-custom-menu-margin")
+                                    menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
+                                }
                             }
                         }
 
-                    } else if (this.dragElement.participant) { // its a protein // groups are detecting the left click themselves
+                    } else if (this.dragElement.participant && !this.mouseMoved) { // its a protein
 
                         // ADD SINGLE PROTEIN TO SELECTION - LEFT CLICK, NO MOVE, IS A DRAG ELEMENT
                         this.model.setSelectedProteins([this.dragElement.participant], add);
 
+                    } else if (this.dragElement.type === "group" && !this.mouseMoved) { // was left click on a group, no move mouse
+                        //add all group proteins to selection
+                            const participants = [];
+                            for (let rp of this.dragElement.renderedParticipants) {
+                                participants.push(rp.participant);
+                            }
+                            this.model.setSelectedProteins(participants, add);
                     }
 
                 } else { //no drag element
+                    if (rightClick) {
+                        if (this.mouseMoved) { // move and right click
+                            // ADD TO SELECT POST RIGHT CLICK DRAG -- RIGHT CLICK, HAS MOVED, NO DRAG ELEMENT
+                            this.model.setSelectedProteins(this.toSelect, add);
+                        }
+                    } else {
 
                         //UNSELECT - EITHER MOUSE BUTTON, NO MOVE, NO DRAG ELEMENT
                         this.model.setMarkedCrossLinks("selection", [], false, add);
                         this.model.setSelectedProteins([]);
 
+                    }
                 }
             }
 
             this.dragElement = null;
             this.whichRotator = -1;
             this.state = this.STATES.MOUSE_UP;
+            this.mouseMoved = false;
         }
         this.lastMouseUp = time;
         return false;
@@ -679,7 +697,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         return false;
     },
 
-    mouseOut: function (evt) {
+    mouseOut: function (evt) { //todo
         // don't, causes prob's - RenderedInteractor mouseOut getting propogated?
         // d3.select(".custom-menu-margin").style("display", "none");
         // d3.select(".group-custom-menu-margin").style("display", "none");
@@ -1297,12 +1315,16 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
+        if (this.groupMap) {
+            for (let g of this.groupMap.values()) {
+                g.updateSelected();
+            }
+        }
         return this;
     },
 
     highlightedProteinsChanged: function () {
         const highlightedProteins = this.model.get("highlightedProteins");
-
         for (let renderedProtein of this.renderedProteins.values()) {
             if (highlightedProteins.indexOf(renderedProtein.participant) === -1 && renderedProtein.isHighlighted === true) {
                 renderedProtein.showHighlight(false);
@@ -1317,13 +1339,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-
         if (this.groupMap) {
             for (let g of this.groupMap.values()) {
                 g.updateHighlight();
             }
         }
-
         return this;
     },
 
