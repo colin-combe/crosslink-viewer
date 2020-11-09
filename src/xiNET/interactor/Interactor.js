@@ -163,7 +163,6 @@ xiNET.Interactor.prototype.getRenderedParticipant = function () {
 xiNET.Interactor.prototype.inCollapsedGroup = function () {
     // todo - sanity check, if firstgroup.expanded then parentGroups.size == 1
     // console.log("**", this.participant? this.participant.name : "group", this.parentGroups.size);
-
     if (this.parentGroups.size > 0) {
         // const groupIt = this.parentGroups.values();
         // const firstGroup = groupIt.next().value;
@@ -174,6 +173,7 @@ xiNET.Interactor.prototype.inCollapsedGroup = function () {
         // }
         for (let pg of this.parentGroups.values()) {
             if (!pg.expanded) {
+                // if (this.parentGroups.size > 1) {alert("somethings gone wrong");}
                 return true;
             } else {
                 return pg.inCollapsedGroup();

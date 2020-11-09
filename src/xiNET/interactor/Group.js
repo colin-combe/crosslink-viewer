@@ -155,6 +155,15 @@ xiNET.Group.prototype.containsInSubgroup = function (renderedProtein) {
     return false;
 };
 
+xiNET.Group.prototype.isOverlappingGroup = function () {
+    for (let renderedParticipant of this.renderedParticipants) {
+        if (!renderedParticipant.participant.hidden && renderedParticipant.parentGroups.size > 1) {
+            return true;
+        }
+    }
+    return false;
+};
+
 xiNET.Group.prototype.init = function () {
     this.controller.groupsSVG.appendChild(this.upperGroup);
     this.setExpanded(this.expanded);
@@ -344,37 +353,103 @@ xiNET.Group.prototype.setHidden = function (bool) {
 };
 
 xiNET.Group.prototype.updateHighlight = function () {
-    for (let rp of this.renderedParticipants) {
-        if (rp.isHighlighted) {
-            this.showHighlight(true);
-            return;
-        }
-    }
-    this.showHighlight(false);
-}
-
-xiNET.Group.prototype.updateSelected = function () {
     // for (let rp of this.renderedParticipants) {
-    //     if (!rp.hidden && rp.isHighlighted) {
+    //     if (rp.isHighlighted) {
+    //         this.dashedOutline(false);
     //         this.showHighlight(true);
     //         return;
     //     }
     // }
+    // this.updateSelected();
     // this.showHighlight(false);
+
+
+    let someHighlighted = false, allHighlighted = true;
+    for (let rp of this.renderedParticipants) {
+        if (rp.isHighlighted) {
+            someHighlighted = true;
+        } else {
+            allHighlighted = false;
+        }
+    }
+    if (someHighlighted) {
+        if (!allHighlighted) {
+            this.dashedOutline(true);
+        } else {
+            this.dashedOutline(false);
+        }
+        this.showHighlight(true);
+    } else {
+        this.dashedOutline(false);
+        this.showHighlight(false);
+        this.updateSelected();
+    }
+
+
 }
 
-xiNET.Group.prototype.dashedOutline = function (dash) {
-    // if (this.shown) {
-        if (dash) {
-            // if (this.renderedFromProtein === this.renderedToProtein) {
-            //     this.line.setAttribute("stroke-dasharray", (4) + ", " + (4));
-            // } else {
-                this.line.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
-            // }
+xiNET.Group.prototype.updateSelected = function () {
+    let someSelected = false, allSelected = true;
+    for (let rp of this.renderedParticipants) {
+        if (rp.isSelected) {
+            someSelected = true;
         } else {
-            this.line.removeAttribute("stroke-dasharray");
+            allSelected = false;
         }
-    // }
+    }
+    if (someSelected) {
+        if (!allSelected) {
+            this.dashedOutline(true);
+        }
+        this.setSelected(true);
+    } else {
+        this.dashedOutline(false);
+        this.setSelected(false);
+    }
+}
+
+/*
+xiNET.Group.prototype.showHighlight = function (show) {
+    const d3HighSel = d3.select(this.highlight);
+    if (show === true) {
+        d3HighSel
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true)
+            .attr("stroke-opacity", "1");
+    } else {
+        if (!this.isSelected) {
+            d3HighSel.attr("stroke-opacity", "0");
+        }
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false);
+    }
+    this.isHighlighted = !!show; // mjg apr 18
+};
+
+xiNET.Group.prototype.setSelected = function (select) {
+    const d3HighSel = d3.select(this.highlight);
+    if (select === true) {
+        d3HighSel
+            .classed("selectedProtein", true)
+            .classed("highlightedProtein", false)
+            .attr("stroke-opacity", "1");
+    } else {
+        d3HighSel
+            .attr("stroke-opacity", "0")
+            .classed("selectedProtein", false)
+            .classed("highlightedProtein", true);
+    }
+    this.isSelected = !!select;
+};
+*/
+
+xiNET.Group.prototype.dashedOutline = function (dash) {
+    if (dash) {
+        this.highlight.setAttribute("stroke-dasharray", (4 * this.controller.z) + ", " + (4 * this.controller.z));
+    } else {
+        this.highlight.removeAttribute("stroke-dasharray");
+    }
 };
 
 xiNET.Group.prototype.setExpanded = function (expanded) {

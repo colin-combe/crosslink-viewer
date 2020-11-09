@@ -9,7 +9,8 @@ var CLMSUI = CLMSUI || {};
 CLMSUI.CrosslinkViewer = Backbone.View.extend({
     events: {
         "click .collapse": "collapseParticipant",
-        "click .collapseGroup": "collapseParticipant",
+        "click .collapse-group": "collapseParticipant",
+        "click .cant-collapse-group": "cantCollapseGroup",
         "click .ungroup": "ungroup"
     },
 
@@ -78,7 +79,8 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             .append("div").classed("group-custom-menu-margin", true)
             .append("div").classed("custom-menu", true)
             .append("ul");
-        groupCustomMenuSel.append("li").classed("collapseGroup", true).text("Collapse");
+        groupCustomMenuSel.append("li").classed("cant-collapse-group", true).text("Can't Collapse (members overlap)");
+        groupCustomMenuSel.append("li").classed("collapse-group", true).text("Collapse");
         groupCustomMenuSel.append("li").classed("ungroup", true).text("Ungroup");
         // groupCustomMenuSel.append("li").classed("ungroupAll", true).text("Clear All Groups");
         const groupContextMenu = d3.select(".group-custom-menu-margin").node();
@@ -252,6 +254,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         this.contextMenuParticipant = null;
     },
 
+    cantCollapseGroup: function (evt) {
+        d3.select(".custom-menu-margin").style("display", "none");
+        d3.select(".group-custom-menu-margin").style("display", "none");
+    },
+
     ungroup: function (evt) {
         d3.select(".group-custom-menu-margin").style("display", "none");
         this.model.get("groups").delete(this.contextMenuParticipant.id);
@@ -407,6 +414,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 } else {
                     g.setPositionFromXinet(g.ix, g.iy);
                 }
+                g.updateSelected();
             }
         }
     },
@@ -587,7 +595,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
 
     // this ends all dragging and rotating
     mouseUp: function (evt) {
-        console.log("*controller mouse up*");
         this.preventDefaultsAndStopPropagation(evt);
         //remove selection rect, may not be shown but just do this now
         this.selectionRectSel.attr("display", "none");
@@ -632,6 +639,12 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                                     d3.select(".scaleButton_" + (this.dragElement.stickZoom * 100)).property("checked", true)
                                 } else {
                                     // for groups
+
+                                    const overlapping = this.dragElement.isOverlappingGroup();
+                                    const  canny = d3.select(".cant-collapse-group");
+                                    canny.style("display", (overlapping? null : "none"));
+                                    d3.select(".collapse-group").style("display", (overlapping? "none" : null));
+
                                     const menu = d3.select(".group-custom-menu-margin")
                                     menu.style("top", (evt.pageY - 20) + "px").style("left", (evt.pageX - 20) + "px").style("display", "block");
                                 }
@@ -658,7 +671,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                             // ADD TO SELECT POST RIGHT CLICK DRAG -- RIGHT CLICK, HAS MOVED, NO DRAG ELEMENT
                             this.model.setSelectedProteins(this.toSelect, add);
                         }
-                    } else {
+                    } else if (!this.mouseMoved){
 
                         //UNSELECT - EITHER MOUSE BUTTON, NO MOVE, NO DRAG ELEMENT
                         this.model.setMarkedCrossLinks("selection", [], false, add);
@@ -851,7 +864,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 this.groupMap.set(group.id, group);
             }
         }
-
+        this.scale();//just to update groups selection highlights
         this.hiddenProteinsChanged();
     },
 
@@ -961,7 +974,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         for (let group1 of groups.reverse()) {
             if (!group1.hidden) {
                 //group1.init();
-                console.log("!!!!!!!!!!!!!!!", group1.id);
+                // console.log("!!!!!!!!!!!!!!!", group1.id);
                 if (group1.upperGroup.parentNode) {
                     const pn = group1.upperGroup.parentNode;
                     pn.removeChild(group1.upperGroup);
@@ -996,6 +1009,11 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
 
 
+        for (let group of groups) {
+            if (!group.expanded && group.isOverlappingGroup()) {
+                group.setExpanded(true);
+            }
+        }
         for (let group of groups) { // todo z-ordering, do earlier?
             let hasVisible = false;
             for (let p of group.renderedParticipants) {
@@ -1012,7 +1030,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-
 
         return this;
     },
