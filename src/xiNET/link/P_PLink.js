@@ -61,59 +61,26 @@ xiNET.P_PLink.prototype.initSVG = function () {
 
     //set the events for it
     const self = this;
-    this.line.onmousedown = function (evt) {
-        self.mouseDown(evt);
+    const setMouseEvents = function (svgElement) {
+        svgElement.onmousedown = function (evt) {
+            self.mouseDown(evt);
+        };
+        svgElement.onmouseover = function (evt) {
+            self.mouseOver(evt);
+        };
+        svgElement.onmouseout = function (evt) {
+            self.mouseOut(evt);
+        };
+        // this.line.ontouchstart = function(evt) {
+        //     self.touchStart(evt);
+        // };
+        svgElement.oncontextmenu = function () {
+            return false;
+        };
     };
-
-    this.line.onmouseover = function (evt) {
-        self.mouseOver(evt);
-    };
-    this.line.onmouseout = function (evt) {
-        self.mouseOut(evt);
-    };
-    // this.line.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
-    //todo: following may not work in IE
-    this.line.oncontextmenu = function () {
-        return false;
-    };
-
-    this.highlightLine.onmousedown = function (evt) {
-        self.mouseDown(evt);
-    };
-    this.highlightLine.onmouseover = function (evt) {
-        self.mouseOver(evt);
-    };
-    this.highlightLine.onmouseout = function (evt) {
-        self.mouseOut(evt);
-    };
-    // this.highlightLine.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
-    //todo: following may not work in IE
-    this.highlightLine.oncontextmenu = function () {
-        return false;
-    };
-    this.thickLine.onmousedown = function (evt) {
-        self.mouseDown(evt);
-    };
-    this.thickLine.onmousedown = function (evt) {
-        self.mouseDown(evt);
-    };
-    this.thickLine.onmouseover = function (evt) {
-        self.mouseOver(evt);
-    };
-    this.thickLine.onmouseout = function (evt) {
-        self.mouseOut(evt);
-    };
-    // this.thickLine.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
-    //todo: following may not work in IE
-    this.thickLine.oncontextmenu = function () {
-        return false;
-    };
+    setMouseEvents(this.line);
+    setMouseEvents(this.highlightLine);
+    setMouseEvents(this.thickLine);
 };
 
 xiNET.P_PLink.prototype.mouseOver = function (evt) {
@@ -241,7 +208,6 @@ xiNET.P_PLink.prototype.check = function () {
                 // this.ambiguous = false; //yeah... whats this doing when this.ambiguous gets set later, just before end of function
             } else {
                 const matchCrossLinks = match.crossLinks;
-                const mclCount = matchCrossLinks.length;
                 for (let matchCrossLink of match.crossLinks) {
                     if (!matchCrossLink.isDecoyLink()) {
                         altP_PLinks.add(matchCrossLink.p_pLink.id);
@@ -331,7 +297,7 @@ xiNET.P_PLink.prototype.show = function () {
     // if (this.colours.size === 1 && CLMSUI.compositeModelInst.get("linkColourAssignment").get("id") !== "Default") { // todo - fix this
     //     this.line.setAttribute("stroke", Array.from(this.colours)[0]);
     // } else {
-        this.line.setAttribute("stroke", CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(this));
+    this.line.setAttribute("stroke", CLMSUI.compositeModelInst.get("linkColourAssignment").getColour(this));
     // }
 
     this.setSelected(this.isSelected);

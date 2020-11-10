@@ -52,39 +52,25 @@ xiNET.RenderedCrosslink.prototype.initSVG = function () {
     this.highlightLine.setAttribute("stroke-opacity", "0")
     //set the events for it
     const self = this;
-    this.line.onmousedown = function (evt) {
-        self.mouseDown(evt);
+    const setMouseEvents = function (svgElement) {
+        svgElement.onmousedown = function (evt) {
+            self.mouseDown(evt);
+        };
+        svgElement.onmouseover = function (evt) {
+            self.mouseOver(evt);
+        };
+        svgElement.onmouseout = function (evt) {
+            self.mouseOut(evt);
+        };
+        // this.line.ontouchstart = function(evt) {
+        //     self.touchStart(evt);
+        // };
+        svgElement.oncontextmenu = function () {
+            return false;
+        };
     };
-    this.line.onmouseover = function (evt) {
-        self.mouseOver(evt);
-    };
-    this.line.onmouseout = function (evt) {
-        self.mouseOut(evt);
-    };
-    // this.line.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
-    //todo: following may not work in IE
-    this.line.oncontextmenu = function () {
-        return false;
-    };
-
-    this.highlightLine.onmousedown = function (evt) {
-        self.mouseDown(evt);
-    };
-    this.highlightLine.onmouseover = function (evt) {
-        self.mouseOver(evt);
-    };
-    this.highlightLine.onmouseout = function (evt) {
-        self.mouseOut(evt);
-    };
-    // this.highlightLine.ontouchstart = function(evt) {
-    //     self.touchStart(evt);
-    // };
-    //todo: following may not work in IE
-    this.highlightLine.oncontextmenu = function () {
-        return false;
-    };
+    setMouseEvents(this.line);
+    setMouseEvents(this.highlightLine);
 };
 
 xiNET.RenderedCrosslink.prototype.mouseOver = function (evt) {
@@ -140,7 +126,6 @@ xiNET.RenderedCrosslink.prototype.mouseDown = function (evt) {
 // need to be able to switch this on and off to avoid inifite loop
 xiNET.RenderedCrosslink.prototype.showHighlight = function (show) {
     //~ if (!this.renderedFromProtein.busy && (!this.renderedToProtein || !this.renderedToProtein.busy)) {
-    const self = this;
     if (this.shown) {
         if (show) {
             //this.highlightLine.setAttribute("stroke", CLMS.xiNET.highlightColour.toRGB());
@@ -194,8 +179,8 @@ xiNET.RenderedCrosslink.prototype.showPeptides = function (pepBounds, renderedPr
 
         //make domain rect's
         const annoSize = pep[1] - 0.2;
-        var annotX = ((pep[0] + 0.6) - (renderedProtein.participant.size / 2));
-        var annoLength = annoSize;
+        let annotX = ((pep[0] + 0.6) - (renderedProtein.participant.size / 2));
+        let annoLength = annoSize;
         annotColouredRect.setAttribute("x", annotX);
         annotColouredRect.setAttribute("y", y);
         annotColouredRect.setAttribute("width", annoLength);
@@ -209,8 +194,8 @@ xiNET.RenderedCrosslink.prototype.showPeptides = function (pepBounds, renderedPr
         if (typeof pep[2] != "undefined") { //homodimer like
             annotColouredRect = document.createElementNS(this.controller.svgns, "rect");
             annotColouredRect.setAttribute("class", "protein");
-            var annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size / 2));
-            var annoLength = (pep[3] - pep[2]);
+            annotX = ((pep[2] + 0.5) - (renderedProtein.participant.size / 2));
+            annoLength = (pep[3] - pep[2]);
             annotColouredRect.setAttribute("x", annotX);
             annotColouredRect.setAttribute("y", y);
             annotColouredRect.setAttribute("width", annoLength);
@@ -290,7 +275,7 @@ xiNET.RenderedCrosslink.prototype.show = function () {
             this.initSVG();
         }
         if (!this.renderedToProtein) {
-            var path;
+            let path;
             if (this.renderedFromProtein.expanded) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
@@ -312,7 +297,7 @@ xiNET.RenderedCrosslink.prototype.show = function () {
 
     if (this.crossLink.isSelfLink() && this.renderedToProtein) {
         if (this.homomultimer !== this.crossLink.confirmedHomomultimer) {
-            var path;
+            let path;
             if (this.renderedFromProtein.expanded) {
                 path = this.renderedFromProtein.getCrossLinkPath(this);
             } else {
@@ -362,7 +347,7 @@ xiNET.RenderedCrosslink.prototype.setLineCoordinates = function () {
                 x = source.ix;
                 y = source.iy;
             } else {
-                var coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
+                const coord = this.getResidueCoordinates(this.crossLink.fromResidue, this.renderedFromProtein);
                 x = coord[0];
                 y = coord[1];
             }
@@ -376,7 +361,7 @@ xiNET.RenderedCrosslink.prototype.setLineCoordinates = function () {
                 x = target.ix;
                 y = target.iy;
             } else {
-                var coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
+                const coord = this.getResidueCoordinates(this.crossLink.toResidue, this.renderedToProtein);
                 x = coord[0];
                 y = coord[1];
             }
