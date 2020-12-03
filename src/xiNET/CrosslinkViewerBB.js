@@ -866,6 +866,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
         }
         this.scale();//just to update groups selection highlights
         this.hiddenProteinsChanged();
+        this.render();
     },
 
     // handle changes to manually hidden proteins,
@@ -1030,7 +1031,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 }
             }
         }
-
         return this;
     },
 

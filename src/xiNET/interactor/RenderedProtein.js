@@ -1257,7 +1257,7 @@ xiNET.RenderedProtein.prototype.getAnnotationPieSliceApproximatePath = function 
     }
     approximatePiePath += " L " + 0 + "," + 0;
     approximatePiePath += "  Z";
-    console.log(approximatePiePath);
+    //console.log(approximatePiePath);
     return approximatePiePath;
 };
 
