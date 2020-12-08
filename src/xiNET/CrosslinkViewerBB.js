@@ -883,7 +883,6 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
             g.leaves = []; // different from g.renderedParticipants coz only contains ungrouped RenderedProteins, used by cola.js
             g.groups = []; // indexes of subgroups in resulting groupArr, used by cola.js // needed? prob not coz groups already refered to by index
 
-            // 15/09/20 following now looks like a mistake, dunno why it was here
             for (let rp of g.renderedParticipants) {
                 rp.parentGroups.delete(g); // sometimes it won't have contained g as parentGroup
             }
@@ -1059,6 +1058,7 @@ CLMSUI.CrosslinkViewer = Backbone.View.extend({
                 delete g.py;
             }
             delete g.index;
+            delete g.parent;
         }
 
         //// TODO: prune leaves from network then layout, then add back leaves and layout again
